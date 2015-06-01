@@ -21,11 +21,7 @@
 			<artifactId>sitemesh</artifactId>
 			<version>2.4.2</version>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.struts</groupId>
-			<artifactId>struts2-sitemesh-plugin</artifactId>
-			<version>2.3.24</version>
-		</dependency>
+		
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
@@ -89,6 +85,19 @@
 			<groupId>org.apache.struts</groupId>
 			<artifactId>struts2-rest-plugin</artifactId>
 			<version>2.3.24</version>
+		</dependency>
+		<!-- Plugin que permite el uso de etiquetas, similares a las de struts2, 
+			para la renderización de componentes y uso de jquery -->
+		<dependency>
+			<groupId>com.jgeppert.struts2.jquery</groupId>
+			<artifactId>struts2-jquery-plugin</artifactId>
+			<version>3.7.0</version>
+		</dependency>
+		<!-- Permite hacer uso de un decorador para la renderización de las vistas -->
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts2-sitemesh-plugin</artifactId>
+			<version>${struts.version}</version>
 		</dependency>
 	</dependencies>
 	<build>

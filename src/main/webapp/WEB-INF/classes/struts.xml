@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.mapper.class" value="rest" />
+	<!-- struts2 busca paquetes que terminen, en su nombre, con las siguientes 
+		cadenas en busca de acciones -->
+	<constant name="struts.convention.package.locators" value="controller" />
+	
+	<!-- Indica el sufijo del nombre de los archivos para las acciones no mapeadas 
+		explicitamente -->
+	<constant name="struts.convention.action.suffix" value="Ctrl" />
+
+	<!-- Mapea todas las acciones encontradas aun y cuando no exista la anotacion 
+		correspondiente -->
+	<constant name="struts.convention.action.mapAllMatches" value="true" />
+	
+	<constant name="struts.convention.default.parent.package" value="rest-default"/><!-- Duda -->
+	
+	<!-- Ruta donde buscara los resultados -->
+	<constant name="struts.convention.result.path" value="/content" />
+</struts>

@@ -13,7 +13,7 @@ import mx.prisma.editor.model.EstadoElemento;
 public class Test {
 	public static void main(String []args){
 		String clave = "ACTOR";
-		int numero = 1;
+		int numero = 2;
 		String nombre = "Alumno";
 		int idCardinalidad = 3;
 		int idEstadoElemento = 1;
