@@ -35,26 +35,26 @@ public class Proyecto implements java.io.Serializable {
 	private String descripcion;
 	private Double presupuesto;
 	private String contraparte;
-	private EstadoProyecto estadoProyectoidentificador;
+	private EstadoProyecto estadoProyecto;
 
 	public Proyecto() {
 	}
 
 	public Proyecto(String clave, String nombre, Date fechaInicioProgramada,
-			Date fechaTerminoProgramada, String descripcion, String contraparte, EstadoProyecto estadoProyectoidentificador) {
+			Date fechaTerminoProgramada, String descripcion, String contraparte, EstadoProyecto estadoProyecto) {
 		this.clave = clave;
 		this.nombre = nombre;
 		this.fechaInicioProgramada = fechaInicioProgramada;
 		this.fechaTerminoProgramada = fechaTerminoProgramada;
 		this.descripcion = descripcion;
 		this.contraparte = contraparte;
-		this.estadoProyectoidentificador = estadoProyectoidentificador;
+		this.estadoProyecto = estadoProyecto;
 	}
 
 	public Proyecto(String clave, String nombre, Date fechaInicioProgramada,
 			Date fechaTerminoProgramada, Date fechaInicio, Date fechaTermino,
 			String descripcion, Double presupuesto, String contraparte,
-			EstadoProyecto estadoProyectoidentificador) {
+			EstadoProyecto estadoProyecto) {
 		this.clave = clave;
 		this.nombre = nombre;
 		this.fechaInicioProgramada = fechaInicioProgramada;
@@ -64,7 +64,7 @@ public class Proyecto implements java.io.Serializable {
 		this.descripcion = descripcion;
 		this.presupuesto = presupuesto;
 		this.contraparte = contraparte;
-		this.estadoProyectoidentificador = estadoProyectoidentificador;
+		this.estadoProyecto = estadoProyecto;
 	}
 
 	@Id
@@ -155,11 +155,11 @@ public class Proyecto implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "EstadoProyectoidentificador", nullable = false)	
-	public EstadoProyecto getEstadoProyectoidentificador() {
-		return this.estadoProyectoidentificador;
+	public EstadoProyecto getEstadoProyecto() {
+		return this.estadoProyecto;
 	}
 
-	public void setEstadoProyectoidentificador(EstadoProyecto estadoProyectoidentificador) {
-		this.estadoProyectoidentificador = estadoProyectoidentificador;
+	public void setEstadoProyecto(EstadoProyecto estadoProyecto) {
+		this.estadoProyecto = estadoProyecto;
 	}	
 }

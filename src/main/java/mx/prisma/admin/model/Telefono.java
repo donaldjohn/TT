@@ -7,6 +7,9 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -16,27 +19,54 @@ import javax.persistence.Table;
 @Table(name = "Telefono", catalog = "PRISMA")
 public class Telefono implements java.io.Serializable {
 
-	private TelefonoId id;
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Colaborador colaborador;
+	private String lada;
+	private String numero;
 	public Telefono() {
 	}
 
-	public Telefono(TelefonoId id) {
-		this.id = id;
+	public Telefono(Colaborador colaborador, String lada, String numero) {
+		this.colaborador = colaborador;
+		this.lada = lada;
+		this.numero = numero;
 	}
 
 	@EmbeddedId
 	@AttributeOverrides({
 			@AttributeOverride(name = "colaboradorCurp", column = @Column(name = "ColaboradorCURP", nullable = false, length = 18)),
 			@AttributeOverride(name = "lada", column = @Column(name = "lada", nullable = false, length = 5)),
-			@AttributeOverride(name = "numero", column = @Column(name = "numero", nullable = false, length = 10)),
-			@AttributeOverride(name = "extesion", column = @Column(name = "extesion", nullable = false, length = 10)) })
-	public TelefonoId getId() {
-		return this.id;
+			@AttributeOverride(name = "numero", column = @Column(name = "numero", nullable = false, length = 10))
+			 })
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ColaboradorCURP", nullable = false)
+	public Colaborador getColaborador() {
+		return this.colaborador;
 	}
 
-	public void setId(TelefonoId id) {
-		this.id = id;
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
 	}
 
+	@Column(name = "lada", nullable = false, length = 5)
+	public String getLada() {
+		return this.lada;
+	}
+
+	public void setLada(String lada) {
+		this.lada = lada;
+	}
+
+	@Column(name = "numero", nullable = false, length = 10)
+	public String getNumero() {
+		return this.numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}	
 }
