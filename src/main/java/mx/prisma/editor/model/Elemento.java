@@ -28,9 +28,9 @@ public class Elemento implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ElementoId id;
-	private EstadoElemento estadoElemento;
-	private Proyecto proyecto;
+	protected ElementoId id;
+	protected EstadoElemento estadoElemento;
+	protected Proyecto proyecto;
 
 	public Elemento() {
 	}
