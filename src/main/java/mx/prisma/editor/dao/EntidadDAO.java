@@ -1,28 +1,29 @@
 package mx.prisma.editor.dao;
 
+import mx.prisma.editor.model.Atributo;
+import mx.prisma.editor.model.Entidad;
+import mx.prisma.util.HibernateUtil;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import mx.prisma.editor.model.Elemento;
-import mx.prisma.util.HibernateUtil;
-
-public class ElementoDAO {
+public class EntidadDAO {
 	Session session = null;
 
-	public ElementoDAO() {
+	public EntidadDAO() {
 		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
 	}
-
-	public void registrarElemento(Elemento elemento) {
+	public void registrarEntidad(Entidad entidad) {
 		try {
 			session.beginTransaction();
-			session.save(elemento);
+			for(Atributo atributo : entidad.getAtributos()) {
+				session.save(atributo);
+			}
+			session.save(entidad);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
 	}
-	
-	//publiv void registrarActualizacon(Elemento elemento, )
 }

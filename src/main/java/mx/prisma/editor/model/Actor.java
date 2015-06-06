@@ -2,11 +2,16 @@ package mx.prisma.editor.model;
 
 // Generated 29-may-2015 2:01:49 by Hibernate Tools 4.0.0
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.PrimaryKeyJoinColumns;
 import javax.persistence.Table;
@@ -31,11 +36,12 @@ public class Actor extends Elemento implements java.io.Serializable {
 	private String descripcion;
 	private Cardinalidad cardinalidad;
 	private String otraCardinalidad;
-
+	private Set<CasoUsoActor> casosdeuso = new HashSet<CasoUsoActor>(0);
+	
 	public Actor() {
 	}
-	public Actor(ElementoId id, EstadoElemento estadoElemento, Proyecto proyecto, String descripcion, Cardinalidad cardinalidad, String otraCardinalidad) {
-		super(id, estadoElemento, proyecto);
+	public Actor(ActorId id, EstadoElemento estadoElemento, Proyecto proyecto, String descripcion, Cardinalidad cardinalidad, String otraCardinalidad) {
+		super(new ElementoId(id.getElementoclave(), id.getElementonumero(), id.getElementonombre()), estadoElemento, proyecto);
 		this.descripcion = descripcion;
 		this.cardinalidad = cardinalidad;
 		this.otraCardinalidad = otraCardinalidad;
@@ -44,7 +50,7 @@ public class Actor extends Elemento implements java.io.Serializable {
 		this.descripcion = descripcion;
 		this.cardinalidad = cardinalidad;
 	}
-
+	
 	@Column(name = "descripcion", nullable = false, length = 999)
 	public String getDescripcion() {
 		return this.descripcion;
@@ -72,6 +78,14 @@ public class Actor extends Elemento implements java.io.Serializable {
 
 	public void setOtraCardinalidad(String otraCardinalidad) {
 		this.otraCardinalidad = otraCardinalidad;
+	}
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "id.actor", cascade = CascadeType.ALL)
+	public Set<CasoUsoActor> getCasosdeuso() {
+		return casosdeuso;
+	}
+	public void setCasosdeuso(Set<CasoUsoActor> casosdeuso) {
+		this.casosdeuso = casosdeuso;
 	}
 
 }

@@ -3,25 +3,67 @@
 		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
 		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-    <session-factory>
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/PRISMA</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-		<property name="hibernate.current_session_context_class">thread</property>      
+	<session-factory>
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/PRISMA</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="hibernate.current_session_context_class">thread</property>
 		<property name="show_sql">true</property>
+
+		<mapping class="mx.prisma.admin.model.Colaborador" />
+		<mapping class="mx.prisma.admin.model.ColaboradorProyecto" />
+		<mapping class="mx.prisma.admin.model.EstadoProyecto" />
+		<mapping class="mx.prisma.admin.model.Proyecto" />
+		<mapping class="mx.prisma.admin.model.Rol" />
+		<mapping class="mx.prisma.admin.model.Telefono" />
+
 		<mapping class="mx.prisma.editor.model.Actor" />
+		<mapping class="mx.prisma.editor.model.Atributo" />
 		<mapping class="mx.prisma.editor.model.Cardinalidad" />
 		<mapping class="mx.prisma.editor.model.Elemento" />
 		<mapping class="mx.prisma.editor.model.ElementoId" />
+		<mapping class="mx.prisma.editor.model.Entidad" />
 		<mapping class="mx.prisma.editor.model.EstadoElemento" />
-		
-		<mapping class="mx.prisma.admin.model.Colaborador" />
-		<mapping class="mx.prisma.admin.model.EstadoProyecto" />	
-		<mapping class="mx.prisma.admin.model.Proyecto" />
-		<mapping class="mx.prisma.admin.model.Telefono" />
-		
-		
-	
-    </session-factory>
+		<mapping class="mx.prisma.editor.model.Extension" />
+		<mapping class="mx.prisma.editor.model.ExtensionId" />
+
+		<mapping class="mx.prisma.editor.model.CasoUso" />
+		<mapping class="mx.prisma.editor.model.CasoUsoActor" />
+		<mapping class="mx.prisma.editor.model.CasoUsoActorId" />
+
+		<mapping class="mx.prisma.editor.model.CasoUsoId" />
+		<mapping class="mx.prisma.editor.model.CasoUsoReglaNegocio" />
+		<mapping class="mx.prisma.editor.model.CasoUsoReglaNegocioId" />
+
+		<mapping class="mx.prisma.editor.model.Entidad" />
+		<mapping class="mx.prisma.editor.model.EntidadId" />
+		<mapping class="mx.prisma.editor.model.Entrada" />
+		<mapping class="mx.prisma.editor.model.EntradaId" />
+		<mapping class="mx.prisma.editor.model.Inclusion" />
+		<mapping class="mx.prisma.editor.model.InclusionId" />
+
+		<mapping class="mx.prisma.editor.model.Mensaje" />
+		<mapping class="mx.prisma.editor.model.MensajeId" />
+		<mapping class="mx.prisma.editor.model.Modulo" />
+		<mapping class="mx.prisma.editor.model.PostPrecondicion" />
+		<mapping class="mx.prisma.editor.model.PostPrecondicionId" />
+		<mapping class="mx.prisma.editor.model.ReglaNegocio" />
+		<mapping class="mx.prisma.editor.model.ReglaNegocioId" />
+
+		<mapping class="mx.prisma.editor.model.Salida" />
+		<mapping class="mx.prisma.editor.model.SalidaId" />
+		<mapping class="mx.prisma.editor.model.TerminoGlosario" />
+		<mapping class="mx.prisma.editor.model.TerminoGlosarioId" />
+		<mapping class="mx.prisma.editor.model.TipoParametro" />
+		<mapping class="mx.prisma.editor.model.Trayectoria" />
+
+		<mapping class="mx.prisma.editor.model.ValorPrePostcondicion" />
+		<mapping class="mx.prisma.editor.model.ValorPrePostcondicionId" />
+
+
+
+
+
+	</session-factory>
 </hibernate-configuration>

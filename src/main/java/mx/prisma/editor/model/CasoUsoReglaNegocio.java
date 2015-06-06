@@ -16,6 +16,10 @@ import javax.persistence.Table;
 @Table(name = "CasoUso_ReglaNegocio", catalog = "PRISMA")
 public class CasoUsoReglaNegocio implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private CasoUsoReglaNegocioId id;
 
 	public CasoUsoReglaNegocio() {

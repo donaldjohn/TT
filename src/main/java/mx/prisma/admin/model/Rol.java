@@ -2,10 +2,17 @@ package mx.prisma.admin.model;
 
 // Generated 29-may-2015 2:01:49 by Hibernate Tools 4.0.0
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.OneToMany;
+
 import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -16,8 +23,13 @@ import javax.persistence.Table;
 @Table(name = "Rol", catalog = "PRISMA")
 public class Rol implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer identificador;
 	private String nombre;
+	private Set<ColaboradorProyecto> colaboradores = new HashSet<ColaboradorProyecto>(0);
 
 	public Rol() {
 	}
@@ -44,6 +56,15 @@ public class Rol implements java.io.Serializable {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "rol")
+	public Set<ColaboradorProyecto> getColaboradores() {
+		return colaboradores;
+	}
+
+	public void setColaboradores(Set<ColaboradorProyecto> colaboradores) {
+		this.colaboradores = colaboradores;
 	}
 
 }

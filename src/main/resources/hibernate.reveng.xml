@@ -2,39 +2,24 @@
 <!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
 
 <hibernate-reverse-engineering>
-  <table-filter match-catalog="PRISMA" match-name="Accion"/>
-  <table-filter match-catalog="PRISMA" match-name="Actor"/>
-  <table-filter match-catalog="PRISMA" match-name="Actualizacion"/>
-  <table-filter match-catalog="PRISMA" match-name="Atributo"/>
-  <table-filter match-catalog="PRISMA" match-name="Cardinalidad"/>
-  <table-filter match-catalog="PRISMA" match-name="CasoUso"/>
-  <table-filter match-catalog="PRISMA" match-name="CasoUso_Actor"/>
-  <table-filter match-catalog="PRISMA" match-name="CasoUso_Pantalla"/>
-  <table-filter match-catalog="PRISMA" match-name="CasoUso_ReglaNegocio"/>
-  <table-filter match-catalog="PRISMA" match-name="Colaborador"/>
-  <table-filter match-catalog="PRISMA" match-name="Colaborador_Proyecto"/>
-  <table-filter match-catalog="PRISMA" match-name="Elemento"/>
-  <table-filter match-catalog="PRISMA" match-name="Entidad"/>
-  <table-filter match-catalog="PRISMA" match-name="Entrada"/>
-  <table-filter match-catalog="PRISMA" match-name="EstadoElemento"/>
-  <table-filter match-catalog="PRISMA" match-name="EstadoProyecto"/>
-  <table-filter match-catalog="PRISMA" match-name="Mensaje"/>
-  <table-filter match-catalog="PRISMA" match-name="Mensaje_TipoParametroMensaje"/>
-  <table-filter match-catalog="PRISMA" match-name="Modulo"/>
-  <table-filter match-catalog="PRISMA" match-name="Pantalla"/>
-  <table-filter match-catalog="PRISMA" match-name="Paso"/>
-  <table-filter match-catalog="PRISMA" match-name="Paso_TipoParametroPaso"/>
-  <table-filter match-catalog="PRISMA" match-name="Proyecto"/>
-  <table-filter match-catalog="PRISMA" match-name="ReglaNegocio"/>
-  <table-filter match-catalog="PRISMA" match-name="ReglaNegocio_TipoParametroReglaNegocio"/>
-  <table-filter match-catalog="PRISMA" match-name="Revision"/>
-  <table-filter match-catalog="PRISMA" match-name="Rol"/>
-  <table-filter match-catalog="PRISMA" match-name="Salida"/>
-  <table-filter match-catalog="PRISMA" match-name="Seccion"/>
-  <table-filter match-catalog="PRISMA" match-name="Telefono"/>
-  <table-filter match-catalog="PRISMA" match-name="TerminoGlosario"/>
-  <table-filter match-catalog="PRISMA" match-name="TipoAccion"/>
-  <table-filter match-catalog="PRISMA" match-name="TipoParametro"/>
-  <table-filter match-catalog="PRISMA" match-name="TipoReglaNegocio"/>
-  <table-filter match-catalog="PRISMA" match-name="Trayectoria"/>
+	<table-filter match-name="Extension" match-catalog="PRISMA"></table-filter>
+	<table-filter match-name="Inclusion" match-catalog="PRISMA"></table-filter>
+	<table-filter match-name="PostPrecondicion"
+		match-catalog="PRISMA">
+	</table-filter>
+	<table-filter match-name="ValorParametroExtension"
+		match-catalog="PRISMA">
+	</table-filter>
+	<table-filter match-name="ValorParametroMensaje"
+		match-catalog="PRISMA">
+	</table-filter>
+	<table-filter match-name="ValorParametroPaso"
+		match-catalog="PRISMA">
+	</table-filter>
+	<table-filter match-name="ValorParametroRN"
+		match-catalog="PRISMA">
+	</table-filter>
+	<table-filter match-name="ValorPrePostcondicion"
+		match-catalog="PRISMA">
+	</table-filter>
 </hibernate-reverse-engineering>
