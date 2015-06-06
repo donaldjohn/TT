@@ -513,19 +513,19 @@ DROP TABLE IF EXISTS `Extension`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Extension` (
-  `CasoUsoclave_origen` varchar(10) NOT NULL,
-  `CasoUsonumero_origen` int(10) NOT NULL,
-  `CasoUsonombre_origen` varchar(45) NOT NULL,
-  `CasoUsoclave_destino` varchar(10) NOT NULL,
-  `CasoUsonumero_destino` int(10) NOT NULL,
-  `CasoUsonombre_destino` varchar(45) NOT NULL,
+  `CasoUsoElementoclave` varchar(10) NOT NULL,
+  `CasoUsoElementonumero` int(10) NOT NULL,
+  `CasoUsoElementonombre` varchar(45) NOT NULL,
+  `CasoUsoElementoclaveDestino` varchar(10) NOT NULL,
+  `CasoUsoElementonumeroDestino` int(10) NOT NULL,
+  `CasoUsoElementonombreDestino` varchar(45) NOT NULL,
   `causa` varchar(999) NOT NULL,
   `region` varchar(500) NOT NULL,
-  PRIMARY KEY (`CasoUsoclave_origen`,`CasoUsonumero_origen`,`CasoUsonombre_origen`,`CasoUsoclave_destino`,`CasoUsonumero_destino`,`CasoUsonombre_destino`),
-  KEY `FKExtension575739` (`CasoUsoclave_destino`,`CasoUsonumero_destino`,`CasoUsonombre_destino`),
-  KEY `FKExtension555985` (`CasoUsoclave_origen`,`CasoUsonumero_origen`,`CasoUsonombre_origen`),
-  CONSTRAINT `FKExtension555985` FOREIGN KEY (`CasoUsoclave_origen`, `CasoUsonumero_origen`, `CasoUsonombre_origen`) REFERENCES `CasoUso` (`Elementoclave`, `Elementonumero`, `Elementonombre`),
-  CONSTRAINT `FKExtension575739` FOREIGN KEY (`CasoUsoclave_destino`, `CasoUsonumero_destino`, `CasoUsonombre_destino`) REFERENCES `CasoUso` (`Elementoclave`, `Elementonumero`, `Elementonombre`)
+  PRIMARY KEY (`CasoUsoElementoclave`,`CasoUsoElementonumero`,`CasoUsoElementonombre`,`CasoUsoElementoclaveDestino`,`CasoUsoElementonumeroDestino`,`CasoUsoElementonombreDestino`),
+  KEY `FKExtension575739` (`CasoUsoElementoclaveDestino`,`CasoUsoElementonumeroDestino`,`CasoUsoElementonombreDestino`),
+  KEY `FKExtension555985` (`CasoUsoElementoclave`,`CasoUsoElementonumero`,`CasoUsoElementonombre`),
+  CONSTRAINT `FKExtension555985` FOREIGN KEY (`CasoUsoElementoclave`, `CasoUsoElementonumero`, `CasoUsoElementonombre`) REFERENCES `CasoUso` (`Elementoclave`, `Elementonumero`, `Elementonombre`),
+  CONSTRAINT `FKExtension575739` FOREIGN KEY (`CasoUsoElementoclaveDestino`, `CasoUsoElementonumeroDestino`, `CasoUsoElementonombreDestino`) REFERENCES `CasoUso` (`Elementoclave`, `Elementonumero`, `Elementonombre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1086,7 +1086,7 @@ CREATE TABLE `ValorParametroExtension` (
   PRIMARY KEY (`ExtensionCasoUsoclave_origen`,`ExtensionCasoUsonumero_origen`,`ExtensionCasoUsonombre_origen`,`ExtensionCasoUsoclave_destino`,`ExtensionCasoUsonumero_destino`,`ExtensionCasoUsonombre_destino`,`Pasonumero`,`PasoTrayectoriaidentificador`,`PasoTrayectoriaCasoUsoElementoclave`,`PasoTrayectoriaCasoUsoElementonumero`,`PasoTrayectoriaCasoUsoElementonombre`),
   KEY `FKValorParam1819` (`ExtensionCasoUsoclave_origen`,`ExtensionCasoUsonumero_origen`,`ExtensionCasoUsonombre_origen`,`ExtensionCasoUsoclave_destino`,`ExtensionCasoUsonumero_destino`,`ExtensionCasoUsonombre_destino`),
   KEY `FKValorParam231725` (`Pasonumero`,`PasoTrayectoriaidentificador`,`PasoTrayectoriaCasoUsoElementoclave`,`PasoTrayectoriaCasoUsoElementonumero`,`PasoTrayectoriaCasoUsoElementonombre`),
-  CONSTRAINT `FKValorParam1819` FOREIGN KEY (`ExtensionCasoUsoclave_origen`, `ExtensionCasoUsonumero_origen`, `ExtensionCasoUsonombre_origen`, `ExtensionCasoUsoclave_destino`, `ExtensionCasoUsonumero_destino`, `ExtensionCasoUsonombre_destino`) REFERENCES `Extension` (`CasoUsoclave_origen`, `CasoUsonumero_origen`, `CasoUsonombre_origen`, `CasoUsoclave_destino`, `CasoUsonumero_destino`, `CasoUsonombre_destino`),
+  CONSTRAINT `FKValorParam1819` FOREIGN KEY (`ExtensionCasoUsoclave_origen`, `ExtensionCasoUsonumero_origen`, `ExtensionCasoUsonombre_origen`, `ExtensionCasoUsoclave_destino`, `ExtensionCasoUsonumero_destino`, `ExtensionCasoUsonombre_destino`) REFERENCES `Extension` (`CasoUsoElementoclave`, `CasoUsoElementonumero`, `CasoUsoElementonombre`, `CasoUsoElementoclaveDestino`, `CasoUsoElementonumeroDestino`, `CasoUsoElementonombreDestino`),
   CONSTRAINT `FKValorParam231725` FOREIGN KEY (`Pasonumero`, `PasoTrayectoriaidentificador`, `PasoTrayectoriaCasoUsoElementoclave`, `PasoTrayectoriaCasoUsoElementonumero`, `PasoTrayectoriaCasoUsoElementonombre`) REFERENCES `Paso` (`numero`, `Trayectoriaidentificador`, `TrayectoriaCasoUsoElementoclave`, `TrayectoriaCasoUsoElementonumero`, `TrayectoriaCasoUsoElementonombre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1264,4 +1264,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-06-06 11:58:40
+-- Dump completed on 2015-06-06 13:13:08
