@@ -2,14 +2,8 @@ package mx.prisma.admin.model;
 
 // Generated 29-may-2015 2:01:49 by Hibernate Tools 4.0.0
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -23,50 +17,19 @@ public class Telefono implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Colaborador colaborador;
-	private String lada;
-	private String numero;
+	private TelefonoId id;
+	
 	public Telefono() {
 	}
-
-	public Telefono(Colaborador colaborador, String lada, String numero) {
-		this.colaborador = colaborador;
-		this.lada = lada;
-		this.numero = numero;
+	public Telefono(TelefonoId id) {
+		this.id = id;
 	}
-
 	@EmbeddedId
-	@AttributeOverrides({
-			@AttributeOverride(name = "colaboradorCurp", column = @Column(name = "ColaboradorCURP", nullable = false, length = 18)),
-			@AttributeOverride(name = "lada", column = @Column(name = "lada", nullable = false, length = 5)),
-			@AttributeOverride(name = "numero", column = @Column(name = "numero", nullable = false, length = 10))
-			 })
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ColaboradorCURP", nullable = false)
-	public Colaborador getColaborador() {
-		return this.colaborador;
+	public TelefonoId getId() {
+		return id;
+	}
+	public void setId(TelefonoId id) {
+		this.id = id;
 	}
 
-	public void setColaborador(Colaborador colaborador) {
-		this.colaborador = colaborador;
-	}
-
-	@Column(name = "lada", nullable = false, length = 5)
-	public String getLada() {
-		return this.lada;
-	}
-
-	public void setLada(String lada) {
-		this.lada = lada;
-	}
-
-	@Column(name = "numero", nullable = false, length = 10)
-	public String getNumero() {
-		return this.numero;
-	}
-
-	public void setNumero(String numero) {
-		this.numero = numero;
-	}	
 }

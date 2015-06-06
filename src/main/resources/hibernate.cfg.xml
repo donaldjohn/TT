@@ -17,6 +17,8 @@
 		<mapping class="mx.prisma.admin.model.Proyecto" />
 		<mapping class="mx.prisma.admin.model.Rol" />
 		<mapping class="mx.prisma.admin.model.Telefono" />
+		<mapping class="mx.prisma.admin.model.TelefonoId" />
+		
 
 		<mapping class="mx.prisma.editor.model.Actor" />
 		<mapping class="mx.prisma.editor.model.Atributo" />
@@ -46,6 +48,9 @@
 		<mapping class="mx.prisma.editor.model.Mensaje" />
 		<mapping class="mx.prisma.editor.model.MensajeId" />
 		<mapping class="mx.prisma.editor.model.Modulo" />
+		<mapping class="mx.prisma.editor.model.Paso" />
+		<mapping class="mx.prisma.editor.model.PasoId" />
+
 		<mapping class="mx.prisma.editor.model.PostPrecondicion" />
 		<mapping class="mx.prisma.editor.model.PostPrecondicionId" />
 		<mapping class="mx.prisma.editor.model.ReglaNegocio" />
@@ -53,6 +58,7 @@
 
 		<mapping class="mx.prisma.editor.model.Salida" />
 		<mapping class="mx.prisma.editor.model.SalidaId" />
+		
 		<mapping class="mx.prisma.editor.model.TerminoGlosario" />
 		<mapping class="mx.prisma.editor.model.TerminoGlosarioId" />
 		<mapping class="mx.prisma.editor.model.TipoParametro" />

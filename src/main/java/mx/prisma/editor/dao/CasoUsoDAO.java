@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.model.CasoUso;
@@ -31,5 +32,19 @@ public class CasoUsoDAO extends ElementoDAO {
 		return casosdeuso;
 
 	}
-    
+	
+	public Integer lastIndexOfCasoUso(Modulo modulo) {
+		List<Integer> results = null;
+		try {
+			session.beginTransaction();
+			SQLQuery sqlQuery = session.createSQLQuery("SELECT MAX(Elementonumero) FROM CasoUso where Moduloclave = '"+modulo.getClave()+"'");
+			results = sqlQuery.list();
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		return results.get(0);
+
+	}
 }
