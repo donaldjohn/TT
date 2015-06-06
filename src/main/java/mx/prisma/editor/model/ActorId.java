@@ -11,6 +11,10 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class ActorId implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String elementoclave;
 	private int elementonumero;
 	private String elementonombre;
@@ -52,40 +56,5 @@ public class ActorId implements java.io.Serializable {
 		this.elementonombre = elementonombre;
 	}
 
-	public boolean equals(Object other) {
-		if ((this == other))
-			return true;
-		if ((other == null))
-			return false;
-		if (!(other instanceof ActorId))
-			return false;
-		ActorId castOther = (ActorId) other;
-
-		return ((this.getElementoclave() == castOther.getElementoclave()) || (this
-				.getElementoclave() != null
-				&& castOther.getElementoclave() != null && this
-				.getElementoclave().equals(castOther.getElementoclave())))
-				&& (this.getElementonumero() == castOther.getElementonumero())
-				&& ((this.getElementonombre() == castOther.getElementonombre()) || (this
-						.getElementonombre() != null
-						&& castOther.getElementonombre() != null && this
-						.getElementonombre().equals(
-								castOther.getElementonombre())));
-	}
-
-	public int hashCode() {
-		int result = 17;
-
-		result = 37
-				* result
-				+ (getElementoclave() == null ? 0 : this.getElementoclave()
-						.hashCode());
-		result = 37 * result + this.getElementonumero();
-		result = 37
-				* result
-				+ (getElementonombre() == null ? 0 : this.getElementonombre()
-						.hashCode());
-		return result;
-	}
 
 }

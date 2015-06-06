@@ -2,11 +2,12 @@ package mx.prisma.editor.model;
 
 // Generated 29-may-2015 2:01:49 by Hibernate Tools 4.0.0
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -18,33 +19,27 @@ import javax.persistence.UniqueConstraint;
 		@UniqueConstraint(columnNames = "AtributoEntidadElementonumero"),
 		@UniqueConstraint(columnNames = "CasoUsoElementonombre"),
 		@UniqueConstraint(columnNames = "MensajeElementoclave"),
-		@UniqueConstraint(columnNames = "AtributoElementoclave"),
 		@UniqueConstraint(columnNames = "MensajeElementonombre"),
 		@UniqueConstraint(columnNames = "TerminoGlosarioElementoclave"),
 		@UniqueConstraint(columnNames = "AtributoEntidadElementoclave"),
 		@UniqueConstraint(columnNames = "AtributoEntidadElementonombre"),
 		@UniqueConstraint(columnNames = "TerminoGlosarioElementonumero"),
 		@UniqueConstraint(columnNames = "MensajeElementonumero"),
-		@UniqueConstraint(columnNames = "AtributoElementonumero"),
 		@UniqueConstraint(columnNames = "TerminoGlosarioElementonombre"),
-		@UniqueConstraint(columnNames = "AtributoElementonombre"),
 		@UniqueConstraint(columnNames = "CasoUsoElementoclave"),
+		@UniqueConstraint(columnNames = "Atributonombre"),
 		@UniqueConstraint(columnNames = "CasoUsoElementonumero") })
 public class Salida implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private SalidaId id;
-	private String mensajeElementoclave;
-	private Integer mensajeElementonumero;
-	private String mensajeElementonombre;
-	private String atributoElementoclave;
-	private Integer atributoElementonumero;
-	private String atributoElementonombre;
-	private String atributoEntidadElementoclave;
-	private Integer atributoEntidadElementonumero;
-	private String atributoEntidadElementonombre;
-	private String terminoGlosarioElementoclave;
-	private Integer terminoGlosarioElementonumero;
-	private String terminoGlosarioElementonombre;
+	private Mensaje mensaje;
+	private Atributo atributo;
+	private TerminoGlosario termino;
+	
 
 	public Salida() {
 	}
@@ -53,38 +48,17 @@ public class Salida implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Salida(SalidaId id, String mensajeElementoclave,
-			Integer mensajeElementonumero, String mensajeElementonombre,
-			String atributoElementoclave, Integer atributoElementonumero,
-			String atributoElementonombre, String atributoEntidadElementoclave,
-			Integer atributoEntidadElementonumero,
-			String atributoEntidadElementonombre,
-			String terminoGlosarioElementoclave,
-			Integer terminoGlosarioElementonumero,
-			String terminoGlosarioElementonombre) {
+	public Salida(SalidaId id, Mensaje mensaje) {
 		this.id = id;
-		this.mensajeElementoclave = mensajeElementoclave;
-		this.mensajeElementonumero = mensajeElementonumero;
-		this.mensajeElementonombre = mensajeElementonombre;
-		this.atributoElementoclave = atributoElementoclave;
-		this.atributoElementonumero = atributoElementonumero;
-		this.atributoElementonombre = atributoElementonombre;
-		this.atributoEntidadElementoclave = atributoEntidadElementoclave;
-		this.atributoEntidadElementonumero = atributoEntidadElementonumero;
-		this.atributoEntidadElementonombre = atributoEntidadElementonombre;
-		this.terminoGlosarioElementoclave = terminoGlosarioElementoclave;
-		this.terminoGlosarioElementonumero = terminoGlosarioElementonumero;
-		this.terminoGlosarioElementonombre = terminoGlosarioElementonombre;
+	}
+	public Salida(SalidaId id, Atributo atributo) {
+		this.id = id;
+	}
+	public Salida(SalidaId id, TerminoGlosario termino) {
+		this.id = id;
 	}
 
 	@EmbeddedId
-	@AttributeOverrides({
-			@AttributeOverride(name = "numero", column = @Column(name = "numero", nullable = false)),
-			@AttributeOverride(name = "casoUsoElementoclave", column = @Column(name = "CasoUsoElementoclave", unique = true, nullable = false, length = 10)),
-			@AttributeOverride(name = "casoUsoElementonumero", column = @Column(name = "CasoUsoElementonumero", unique = true, nullable = false)),
-			@AttributeOverride(name = "casoUsoElementonombre", column = @Column(name = "CasoUsoElementonombre", unique = true, nullable = false, length = 45)),
-			@AttributeOverride(name = "casoUsoModuloclave", column = @Column(name = "CasoUsoModuloclave", nullable = false, length = 10)),
-			@AttributeOverride(name = "tipoParametroidentificador", column = @Column(name = "TipoParametroidentificador", nullable = false)) })
 	public SalidaId getId() {
 		return this.id;
 	}
@@ -93,118 +67,48 @@ public class Salida implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "MensajeElementoclave", unique = true, length = 10)
-	public String getMensajeElementoclave() {
-		return this.mensajeElementoclave;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns( {
+        @JoinColumn(name = "MensajeElementoclave", referencedColumnName = "Elementoclave"),
+        @JoinColumn(name = "MensajeElementonumero", referencedColumnName = "Elementonumero"),
+        @JoinColumn(name = "MensajeElementonombre", referencedColumnName = "Elementonombre")
+})	
+	public Mensaje getMensaje() {
+		return mensaje;
 	}
 
-	public void setMensajeElementoclave(String mensajeElementoclave) {
-		this.mensajeElementoclave = mensajeElementoclave;
+	public void setMensaje(Mensaje mensaje) {
+		this.mensaje = mensaje;
 	}
 
-	@Column(name = "MensajeElementonumero", unique = true)
-	public Integer getMensajeElementonumero() {
-		return this.mensajeElementonumero;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns( {
+        @JoinColumn(name = "AtributoEntidadElementoclave", referencedColumnName = "EntidadElementoclave"),
+        @JoinColumn(name = "AtributoEntidadElementonumero", referencedColumnName = "EntidadElementonumero"),
+        @JoinColumn(name = "AtributoEntidadElementonombre", referencedColumnName = "EntidadElementonombre"),
+        @JoinColumn(name = "Atributonombre", referencedColumnName = "nombre")
+})	
+	public Atributo getAtributo() {
+		return atributo;
 	}
 
-	public void setMensajeElementonumero(Integer mensajeElementonumero) {
-		this.mensajeElementonumero = mensajeElementonumero;
+	public void setAtributo(Atributo atributo) {
+		this.atributo = atributo;
+	}
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns( {
+        @JoinColumn(name = "TerminoGlosarioElementoclave", referencedColumnName = "Elementoclave"),
+        @JoinColumn(name = "TerminoGlosarioElementonumero", referencedColumnName = "Elementonumero"),
+        @JoinColumn(name = "TerminoGlosarioElementonombre", referencedColumnName = "Elementonombre")
+})	
+	public TerminoGlosario getTermino() {
+		return termino;
 	}
 
-	@Column(name = "MensajeElementonombre", unique = true, length = 45)
-	public String getMensajeElementonombre() {
-		return this.mensajeElementonombre;
+	public void setTermino(TerminoGlosario termino) {
+		this.termino = termino;
 	}
 
-	public void setMensajeElementonombre(String mensajeElementonombre) {
-		this.mensajeElementonombre = mensajeElementonombre;
-	}
-
-	@Column(name = "AtributoElementoclave", unique = true, length = 10)
-	public String getAtributoElementoclave() {
-		return this.atributoElementoclave;
-	}
-
-	public void setAtributoElementoclave(String atributoElementoclave) {
-		this.atributoElementoclave = atributoElementoclave;
-	}
-
-	@Column(name = "AtributoElementonumero", unique = true)
-	public Integer getAtributoElementonumero() {
-		return this.atributoElementonumero;
-	}
-
-	public void setAtributoElementonumero(Integer atributoElementonumero) {
-		this.atributoElementonumero = atributoElementonumero;
-	}
-
-	@Column(name = "AtributoElementonombre", unique = true, length = 45)
-	public String getAtributoElementonombre() {
-		return this.atributoElementonombre;
-	}
-
-	public void setAtributoElementonombre(String atributoElementonombre) {
-		this.atributoElementonombre = atributoElementonombre;
-	}
-
-	@Column(name = "AtributoEntidadElementoclave", unique = true, length = 10)
-	public String getAtributoEntidadElementoclave() {
-		return this.atributoEntidadElementoclave;
-	}
-
-	public void setAtributoEntidadElementoclave(
-			String atributoEntidadElementoclave) {
-		this.atributoEntidadElementoclave = atributoEntidadElementoclave;
-	}
-
-	@Column(name = "AtributoEntidadElementonumero", unique = true)
-	public Integer getAtributoEntidadElementonumero() {
-		return this.atributoEntidadElementonumero;
-	}
-
-	public void setAtributoEntidadElementonumero(
-			Integer atributoEntidadElementonumero) {
-		this.atributoEntidadElementonumero = atributoEntidadElementonumero;
-	}
-
-	@Column(name = "AtributoEntidadElementonombre", unique = true, length = 45)
-	public String getAtributoEntidadElementonombre() {
-		return this.atributoEntidadElementonombre;
-	}
-
-	public void setAtributoEntidadElementonombre(
-			String atributoEntidadElementonombre) {
-		this.atributoEntidadElementonombre = atributoEntidadElementonombre;
-	}
-
-	@Column(name = "TerminoGlosarioElementoclave", unique = true, length = 10)
-	public String getTerminoGlosarioElementoclave() {
-		return this.terminoGlosarioElementoclave;
-	}
-
-	public void setTerminoGlosarioElementoclave(
-			String terminoGlosarioElementoclave) {
-		this.terminoGlosarioElementoclave = terminoGlosarioElementoclave;
-	}
-
-	@Column(name = "TerminoGlosarioElementonumero", unique = true)
-	public Integer getTerminoGlosarioElementonumero() {
-		return this.terminoGlosarioElementonumero;
-	}
-
-	public void setTerminoGlosarioElementonumero(
-			Integer terminoGlosarioElementonumero) {
-		this.terminoGlosarioElementonumero = terminoGlosarioElementonumero;
-	}
-
-	@Column(name = "TerminoGlosarioElementonombre", unique = true, length = 45)
-	public String getTerminoGlosarioElementonombre() {
-		return this.terminoGlosarioElementonombre;
-	}
-
-	public void setTerminoGlosarioElementonombre(
-			String terminoGlosarioElementonombre) {
-		this.terminoGlosarioElementonombre = terminoGlosarioElementonombre;
-	}
+	
 
 }

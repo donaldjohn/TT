@@ -2,8 +2,7 @@ package mx.prisma.editor.model;
 
 // Generated 29-may-2015 2:01:49 by Hibernate Tools 4.0.0
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -16,36 +15,25 @@ import javax.persistence.Table;
 @Table(name = "Atributo", catalog = "PRISMA")
 public class Atributo implements java.io.Serializable {
 
-	private AtributoId id;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private AtributoId idAtributo;
 	private String descripcion;
 	private boolean obligatorio;
 	private int longitud;
 
+	
 	public Atributo() {
 	}
 
-	public Atributo(AtributoId id, String descripcion, boolean obligatorio,
+	public Atributo(AtributoId idAtributo, String descripcion, boolean obligatorio,
 			int longitud) {
-		this.id = id;
+		this.idAtributo = idAtributo;
 		this.descripcion = descripcion;
 		this.obligatorio = obligatorio;
 		this.longitud = longitud;
-	}
-
-	@EmbeddedId
-	@AttributeOverrides({
-			@AttributeOverride(name = "elementoclave", column = @Column(name = "Elementoclave", nullable = false, length = 10)),
-			@AttributeOverride(name = "elementonumero", column = @Column(name = "Elementonumero", nullable = false)),
-			@AttributeOverride(name = "elementonombre", column = @Column(name = "Elementonombre", nullable = false, length = 45)),
-			@AttributeOverride(name = "entidadElementoclave", column = @Column(name = "EntidadElementoclave", nullable = false, length = 10)),
-			@AttributeOverride(name = "entidadElementonumero", column = @Column(name = "EntidadElementonumero", nullable = false)),
-			@AttributeOverride(name = "entidadElementonombre", column = @Column(name = "EntidadElementonombre", nullable = false, length = 45)) })
-	public AtributoId getId() {
-		return this.id;
-	}
-
-	public void setId(AtributoId id) {
-		this.id = id;
 	}
 
 	@Column(name = "descripcion", nullable = false, length = 999)
@@ -74,5 +62,14 @@ public class Atributo implements java.io.Serializable {
 	public void setLongitud(int longitud) {
 		this.longitud = longitud;
 	}
+	
+	@EmbeddedId
+	public AtributoId getIdAtributo() {
+		return idAtributo;
+	}
 
+	public void setIdAtributo(AtributoId idAtributo) {
+		this.idAtributo = idAtributo;
+	}
+	
 }

@@ -1,28 +1,25 @@
-package mx.prisma.editor.dao;
+package mx.prisma.admin.dao;
+
+import mx.prisma.admin.model.ColaboradorProyecto;
+import mx.prisma.util.HibernateUtil;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import mx.prisma.editor.model.Elemento;
-import mx.prisma.util.HibernateUtil;
-
-public class ElementoDAO {
+public class ColaboradorProyectoDAO {
 	Session session = null;
 
-	public ElementoDAO() {
+	public ColaboradorProyectoDAO() {
 		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
-	}
-
-	public void registrarElemento(Elemento elemento) {
+	}	
+	public void registrarColaboradorProyecto(ColaboradorProyecto colaborador) {
 		try {
 			session.beginTransaction();
-			session.save(elemento);
+			session.save(colaborador);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
 	}
-	
-	//publiv void registrarActualizacon(Elemento elemento, )
 }

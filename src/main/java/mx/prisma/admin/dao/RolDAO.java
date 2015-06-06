@@ -1,28 +1,30 @@
-package mx.prisma.editor.dao;
+package mx.prisma.admin.dao;
+
+import mx.prisma.admin.model.Rol;
+import mx.prisma.util.HibernateUtil;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import mx.prisma.editor.model.Elemento;
-import mx.prisma.util.HibernateUtil;
-
-public class ElementoDAO {
+public class RolDAO {
 	Session session = null;
 
-	public ElementoDAO() {
+	public RolDAO() {
 		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
 	}
+	public Rol consultarRol(int idRol) {
+		Rol rol = null;
 
-	public void registrarElemento(Elemento elemento) {
 		try {
 			session.beginTransaction();
-			session.save(elemento);
+			rol = (Rol) session.get(Rol.class, idRol);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
+		
+		return rol;
+
 	}
-	
-	//publiv void registrarActualizacon(Elemento elemento, )
 }

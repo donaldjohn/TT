@@ -2,11 +2,13 @@ package mx.prisma.admin.model;
 
 // Generated 29-may-2015 2:01:49 by Hibernate Tools 4.0.0
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
+
+import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -16,21 +18,22 @@ import javax.persistence.Table;
 @Table(name = "Colaborador_Proyecto", catalog = "PRISMA")
 public class ColaboradorProyecto implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ColaboradorProyectoId id;
-	private int rolidentificador;
+	private Rol rol;
 
 	public ColaboradorProyecto() {
 	}
 
-	public ColaboradorProyecto(ColaboradorProyectoId id, int rolidentificador) {
+	public ColaboradorProyecto(ColaboradorProyectoId id, Rol rol) {
 		this.id = id;
-		this.rolidentificador = rolidentificador;
+		this.rol = rol;
 	}
 
 	@EmbeddedId
-	@AttributeOverrides({
-			@AttributeOverride(name = "colaboradorCurp", column = @Column(name = "ColaboradorCURP", nullable = false, length = 18)),
-			@AttributeOverride(name = "proyectoclave", column = @Column(name = "Proyectoclave", nullable = false, length = 10)) })
 	public ColaboradorProyectoId getId() {
 		return this.id;
 	}
@@ -39,13 +42,19 @@ public class ColaboradorProyecto implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "Rolidentificador", nullable = false)
-	public int getRolidentificador() {
-		return this.rolidentificador;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "Rolidentificador", nullable = false)
+	public Rol getRol() {
+		return this.rol;
 	}
 
-	public void setRolidentificador(int rolidentificador) {
-		this.rolidentificador = rolidentificador;
+	public void setRol(Rol rol) {
+		this.rol = rol;
 	}
+	
 
+	
+	
+
+	
 }

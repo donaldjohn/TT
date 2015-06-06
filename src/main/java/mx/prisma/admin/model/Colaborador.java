@@ -33,6 +33,7 @@ public class Colaborador implements java.io.Serializable {
 	private String correoElectronico;
 	private String contrasenia;
 	private Set<Telefono> telefonos = new HashSet<Telefono>(0);
+	private Set<ColaboradorProyecto> proyectos = new HashSet<ColaboradorProyecto>(0);
 
 
 	public Colaborador() {
@@ -121,6 +122,16 @@ public class Colaborador implements java.io.Serializable {
 	public void setTelefonos(Set<Telefono> telefonos) {
 		this.telefonos = telefonos;
 	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "id.colaborador", cascade = CascadeType.ALL)
+	public Set<ColaboradorProyecto> getProyectos() {
+		return proyectos;
+	}
+
+	public void setProyectos(Set<ColaboradorProyecto> proyectos) {
+		this.proyectos = proyectos;
+	}
+
 
 
 }
