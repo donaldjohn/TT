@@ -40,7 +40,10 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 	private Set<PostPrecondicion> postprecondiciones = new HashSet<PostPrecondicion>(0);
 	private Set<Trayectoria> trayectorias = new HashSet<Trayectoria>(0);
 	private Set<Extension> puntosExtension = new HashSet<Extension>(0);
+	private Set<Extension> puntosExtiende = new HashSet<Extension>(0);
 	private Set<Inclusion> incluidos = new HashSet<Inclusion>(0);
+	private Set<Inclusion> incluye = new HashSet<Inclusion>(0);
+
 	private Set<CasoUsoReglaNegocio> reglas = new HashSet<CasoUsoReglaNegocio>(0);
 
 
@@ -163,6 +166,15 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.puntosExtension = puntosExtension;
 	}
 	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "id.casodeuso_destino", cascade = CascadeType.ALL)	
+	public Set<Extension> getPuntosExtiende() {
+		return puntosExtiende;
+	}
+
+	public void setPuntosExtiende(Set<Extension> puntosExtiende) {
+		this.puntosExtiende = puntosExtiende;
+	}
+
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "id.casodeuso", cascade = CascadeType.ALL)
 	public Set<Inclusion> getIncluidos() {
 		return incluidos;
@@ -170,6 +182,15 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 
 	public void setIncluidos(Set<Inclusion> incluidos) {
 		this.incluidos = incluidos;
+	}
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "id.casodeuso_destino", cascade = CascadeType.ALL)
+	public Set<Inclusion> getIncluye() {
+		return incluye;
+	}
+
+	public void setIncluye(Set<Inclusion> incluye) {
+		this.incluye = incluye;
 	}
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "id.casodeuso", cascade = CascadeType.ALL)
