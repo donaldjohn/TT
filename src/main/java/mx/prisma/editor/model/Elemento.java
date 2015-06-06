@@ -47,7 +47,7 @@ public class Elemento implements java.io.Serializable {
 			@AttributeOverride(name = "clave", column = @Column(name = "clave", nullable = false, length = 10)),
 			@AttributeOverride(name = "numero", column = @Column(name = "numero", nullable = false)),
 			@AttributeOverride(name = "nombre", column = @Column(name = "nombre", nullable = false, length = 45)) })
-	protected ElementoId getId() {
+	public ElementoId getId() {
 		return this.id;
 	}
 
@@ -57,22 +57,22 @@ public class Elemento implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "EstadoElementoidentificador", nullable = false)
-	protected EstadoElemento getEstadoElemento() {
+	public EstadoElemento getEstadoElemento() {
 		return this.estadoElemento;
 	}
 
-	protected void setEstadoElemento(EstadoElemento estadoElemento) {
+	public void setEstadoElemento(EstadoElemento estadoElemento) {
 		this.estadoElemento = estadoElemento;
 	}
 
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "Proyectoclave", nullable = false)
-	protected Proyecto getProyecto() {
+	public Proyecto getProyecto() {
 		return this.proyecto;
 	}
 
-	protected void setProyecto(Proyecto proyecto) {
+	public void setProyecto(Proyecto proyecto) {
 		this.proyecto = proyecto;
 	}
 
