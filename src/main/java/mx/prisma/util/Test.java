@@ -66,7 +66,9 @@ public class Test {
 		
 		//pruebaRegistroActor(); // 30/05/2015
 	
-		pruebaRegistroCasoUso(); //05/06/2015
+		//pruebaRegistroCasoUso(); //05/06/2015
+		pruebaConsultaCasoUso(); //05/06/2015
+
 	}
 
 	
@@ -230,13 +232,11 @@ public class Test {
 	}
 	
 	public static void pruebaRegistroCasoUso(){
-			//List<CasoUso> cus = new CasoUsoDAO().consultarCasosUso("SF");
-			//System.out.println(cus.get(0).getActores());
+
 			String clave = "CU";
 			int numero = 1;
 			String nombre = "Iniciar sesión";
 			Modulo modulo = new ModuloDAO().consultarModulo("SF");
-			System.out.println(modulo.getClave());
 			int idEstadoElemento = 1;
 			String claveProyecto = "SIG";
 			String actores = "Maestro, Alumno";
@@ -251,7 +251,7 @@ public class Test {
 			CasoUso cu = new CasoUso(idCU, estadoElemento, proyecto, actores, entradas, salidas, reglas, modulo);
 			
 			try {
-				//new CasoUsoDAO().registrarCasoUso(cu);
+				new CasoUsoDAO().registrarCasoUso(cu);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -259,4 +259,12 @@ public class Test {
 
 	}
 	
+	public static void pruebaConsultaCasoUso(){
+		Modulo modulo = new ModuloDAO().consultarModulo("SF");
+		List<CasoUso> cus = new CasoUsoDAO().consultarCasosUso(modulo);
+		
+		for(CasoUso cu : cus){
+			System.out.println(cu.getRedaccionActores());
+		}
+	}
 }
