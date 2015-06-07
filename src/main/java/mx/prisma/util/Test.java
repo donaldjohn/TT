@@ -30,6 +30,7 @@ import mx.prisma.editor.dao.ElementoDAO;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.ModuloDAO;
+import mx.prisma.editor.dao.PostPrecondicionDAO;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.ActorId;
 import mx.prisma.editor.model.Atributo;
@@ -42,6 +43,8 @@ import mx.prisma.editor.model.EntidadId;
 import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Modulo;
+import mx.prisma.editor.model.PostPrecondicion;
+import mx.prisma.editor.model.PostPrecondicionId;
 
 public class Test {
 	public static void main(String[] args) {
@@ -69,9 +72,9 @@ public class Test {
 		
 		//pruebaRegistroActor(); // 30/05/2015
 	
-		pruebaRegistroCasoUso(); //05/06/2015
-		//pruebaConsultaCasoUso(); //05/06/2015
-		
+		//pruebaRegistroCasoUso(); //05/06/2015
+		pruebaConsultaCasoUso(); //05/06/2015
+
 	}
 
 	
@@ -271,9 +274,17 @@ public class Test {
 
 	}
 	
+	
 	public static void pruebaConsultaCasoUso(){
 		Modulo modulo = new ModuloDAO().consultarModulo("SF");
 		List<CasoUso> cus = new CasoUsoDAO().consultarCasosUso(modulo);
+		PostPrecondicionId postpreId = new PostPrecondicionId(1, cus.get(0));
+		PostPrecondicion postpre = new PostPrecondicion(postpreId, "La entidad ${ENT.1} cambiará a ${GLS.23} En Registro.");
+		postpre.setPrepost(true);
+		new PostPrecondicionDAO().registrarPostPrecondicion(postpre);
+		PostPrecondicionDAO prepost = new PostPrecondicionDAO ();
+		
+		System.out.println(prepost.consultarPostPrecondiciones(cus.get(0), true).get(0).getRedaccion());
 		
 		for(CasoUso cu : cus){
 			System.out.println(cu.getRedaccionActores());
