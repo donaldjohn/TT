@@ -32,8 +32,8 @@ public class Colaborador implements java.io.Serializable {
 	private String apellidoMaterno;
 	private String correoElectronico;
 	private String contrasenia;
-	private Set<Telefono> telefonos = new HashSet<Telefono>(0);
 	private Set<ColaboradorProyecto> proyectos = new HashSet<ColaboradorProyecto>(0);
+	private Set<Telefono> telefonos = new HashSet<Telefono>(0);
 
 
 	public Colaborador() {
@@ -47,7 +47,6 @@ public class Colaborador implements java.io.Serializable {
 		this.apellidoMaterno = apellidoMaterno;
 		this.correoElectronico = correoElectronico;
 		this.contrasenia = contrasenia;
-		this.telefonos = telefonos;
 	}
 	public Colaborador(String curp, String nombre, String apellidoPaterno,
 			String apellidoMaterno, String correoElectronico, String contrasenia) {
@@ -113,15 +112,7 @@ public class Colaborador implements java.io.Serializable {
 	public void setContrasenia(String contrasenia) {
 		this.contrasenia = contrasenia;
 	}
-	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "colaborador", cascade = CascadeType.ALL)
-	public Set<Telefono> getTelefonos() {
-		return telefonos;
-	}
 
-	public void setTelefonos(Set<Telefono> telefonos) {
-		this.telefonos = telefonos;
-	}
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "id.colaborador", cascade = CascadeType.ALL)
 	public Set<ColaboradorProyecto> getProyectos() {
@@ -130,6 +121,15 @@ public class Colaborador implements java.io.Serializable {
 
 	public void setProyectos(Set<ColaboradorProyecto> proyectos) {
 		this.proyectos = proyectos;
+	}
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "id.colaborador", cascade = CascadeType.ALL)
+	public Set<Telefono> getTelefonos() {
+		return telefonos;
+	}
+
+	public void setTelefonos(Set<Telefono> telefonos) {
+		this.telefonos = telefonos;
 	}
 
 

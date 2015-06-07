@@ -21,6 +21,7 @@ import mx.prisma.admin.model.Proyecto;
 import mx.prisma.admin.model.Rol;
 import mx.prisma.admin.model.Telefono;
 import mx.prisma.admin.model.TelefonoId;
+import mx.prisma.editor.bs.Compilador;
 import mx.prisma.editor.dao.ActorDAO;
 import mx.prisma.editor.dao.CardinalidadDAO;
 import mx.prisma.editor.dao.CasoUsoDAO;
@@ -67,8 +68,9 @@ public class Test {
 		//pruebaRegistroActor(); // 30/05/2015
 	
 		//pruebaRegistroCasoUso(); //05/06/2015
-		pruebaConsultaCasoUso(); //05/06/2015
-
+		//pruebaConsultaCasoUso(); //05/06/2015
+		Modulo modulo = new ModuloDAO().consultarModulo("SF");
+		System.out.println(new CasoUsoDAO().lastIndexOfCasoUso(modulo));
 	}
 
 	
@@ -149,7 +151,8 @@ public class Test {
 	public static void pruebaRegistroColaborador() {
 	
 		Colaborador colaborador = new Colaborador("RACS930702HMCMMR05", "Sergio", "Ramírez", "Camacho", "sramirezc@live.com", "holamundo");
-		Telefono telefono = new Telefono(colaborador, "55", "30401439");
+		TelefonoId idTelefono = new TelefonoId(colaborador, "55", "30401439");
+		Telefono telefono = new Telefono(idTelefono);
 		colaborador.getTelefonos().add(telefono);
 		try {
 			new ColaboradorDAO().registrarColaborador(colaborador);
@@ -218,7 +221,7 @@ public class Test {
 		EntidadId elementoId_Entidad = new EntidadId(clave_Entidad, numero_Entidad, nombre_Entidad);
 		Entidad entidad = new Entidad(elementoId_Entidad, estadoElemento, proyecto);
 		
-/*		AtributoId atributoId = new AtributoId(clave_Entidad, numero_Entidad, nombre_Entidad, nombre_Atributo);
+		AtributoId atributoId = new AtributoId(entidad, nombre_Atributo);
 		Atributo atributo = new Atributo(atributoId, "x", true, 10);
 		
 		entidad.getAtributos().add(atributo);
@@ -228,7 +231,7 @@ public class Test {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	*/
+	
 	}
 	
 	public static void pruebaRegistroCasoUso(){
@@ -239,19 +242,27 @@ public class Test {
 			Modulo modulo = new ModuloDAO().consultarModulo("SF");
 			int idEstadoElemento = 1;
 			String claveProyecto = "SIG";
-			String actores = "Maestro, Alumno";
-			String entradas = "Nombre, Boleta";
-			String salidas = "Mensaje Operación Exitosa";
-			String reglas = "Regla 1, Regla 2";
+			String actores = "${ACT.1}, ${ACT.2}";
+			String entradas = "${ENT.2.1} y el ${GLS.1}.";
+			String salidas = "${ENT.1.2} y el mensaje ${MSG.1}";
+			String reglas = "${RN.1} para validar elementos y la ${RN.2} para verificar estados.";
+			
+			Compilador compilador = new Compilador();
+			compilador.procesarTokenIpunt(actores);
+/*			compilador.procesarTokenIpunt(entradas);
+			compilador.procesarTokenIpunt(salidas);
+			compilador.procesarTokenIpunt(reglas);
+	*/
 
+			
 			CasoUsoId idCU = new CasoUsoId(clave, numero, nombre);
 			EstadoElemento estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(idEstadoElemento);
 			Proyecto proyecto = new ProyectoDAO().consultarProyecto(claveProyecto);
 			
-			CasoUso cu = new CasoUso(idCU, estadoElemento, proyecto, actores, entradas, salidas, reglas, modulo);
+			//CasoUso cu = new CasoUso(idCU, estadoElemento, proyecto, actores, entradas, salidas, reglas, modulo);
 			
 			try {
-				new CasoUsoDAO().registrarCasoUso(cu);
+				//new CasoUsoDAO().registrarCasoUso(cu);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

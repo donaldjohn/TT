@@ -2,8 +2,6 @@ package mx.prisma.editor.model;
 
 // Generated 29-may-2015 2:01:49 by Hibernate Tools 4.0.0
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -16,6 +14,10 @@ import javax.persistence.Table;
 @Table(name = "Paso", catalog = "PRISMA")
 public class Paso implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private PasoId id;
 	private boolean realizaActor;
 	private boolean finCasoUso;
@@ -33,13 +35,6 @@ public class Paso implements java.io.Serializable {
 	}
 
 	@EmbeddedId
-	@AttributeOverrides({
-			@AttributeOverride(name = "numero", column = @Column(name = "numero", nullable = false)),
-			@AttributeOverride(name = "trayectoriaidentificador", column = @Column(name = "Trayectoriaidentificador", nullable = false, length = 5)),
-			@AttributeOverride(name = "trayectoriaCasoUsoElementoclave", column = @Column(name = "TrayectoriaCasoUsoElementoclave", nullable = false, length = 10)),
-			@AttributeOverride(name = "trayectoriaCasoUsoElementonumero", column = @Column(name = "TrayectoriaCasoUsoElementonumero", nullable = false)),
-			@AttributeOverride(name = "trayectoriaCasoUsoElementonombre", column = @Column(name = "TrayectoriaCasoUsoElementonombre", nullable = false, length = 45)),
-			@AttributeOverride(name = "trayectoriaCasoUsoModuloclave", column = @Column(name = "TrayectoriaCasoUsoModuloclave", nullable = false, length = 10)) })
 	public PasoId getId() {
 		return this.id;
 	}

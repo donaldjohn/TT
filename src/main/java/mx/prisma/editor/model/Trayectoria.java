@@ -3,9 +3,15 @@ package mx.prisma.editor.model;
 // Generated 29-may-2015 2:01:49 by Hibernate Tools 4.0.0
 
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -22,6 +28,8 @@ public class Trayectoria implements java.io.Serializable {
 	private TrayectoriaId id;
 	private boolean alternativa;
 	private String condicion;
+	private Set<Paso> pasos = new HashSet<Paso>(0);
+
 
 	public Trayectoria() {
 	}
@@ -62,6 +70,15 @@ public class Trayectoria implements java.io.Serializable {
 
 	public void setCondicion(String condicion) {
 		this.condicion = condicion;
+	}
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "id.trayectoria", cascade = CascadeType.ALL)
+	public Set<Paso> getPasos() {
+		return pasos;
+	}
+
+	public void setPasos(Set<Paso> pasos) {
+		this.pasos = pasos;
 	}
 
 }
