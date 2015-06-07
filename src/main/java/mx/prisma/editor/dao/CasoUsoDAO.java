@@ -44,7 +44,10 @@ public class CasoUsoDAO extends ElementoDAO {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
-		return results.get(0);
+		if(results.isEmpty()){
+			return 0;
+		} else
+			return results.get(0);
 
 	}
 }

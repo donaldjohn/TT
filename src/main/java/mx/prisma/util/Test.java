@@ -281,10 +281,10 @@ public class Test {
 		PostPrecondicionId postpreId = new PostPrecondicionId(1, cus.get(0));
 		PostPrecondicion postpre = new PostPrecondicion(postpreId, "La entidad ${ENT.1} cambiará a ${GLS.23} En Registro.");
 		postpre.setPrepost(true);
-		new PostPrecondicionDAO().registrarPostPrecondicion(postpre);
+		//new PostPrecondicionDAO().registrarPostPrecondicion(postpre);
 		PostPrecondicionDAO prepost = new PostPrecondicionDAO ();
 		
-		System.out.println(prepost.consultarPostPrecondiciones(cus.get(0), true).get(0).getRedaccion());
+		System.out.println(prepost.lastIndexOfPostPrecondicion(cus.get(0)));
 		
 		for(CasoUso cu : cus){
 			System.out.println(cu.getRedaccionActores());
