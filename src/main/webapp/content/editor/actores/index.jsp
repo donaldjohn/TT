@@ -1,71 +1,73 @@
-<%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ page contentType="text/html; charset=UTF-8"%>
-<%@ page import="java.util.List, java.util.ArrayList" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
-<%
-//Botones
-String btnEditar = "pencil43.png";
-String btnEliminar = "delete96.png";
-String btnEntrar = "lupa24.png";
-
-%>
-<html>
-
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:s="/struts-tags" xmlns:sj="/struts-jquery-tags">
+	<jsp:directive.page language="java"
+		contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" />
+	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<![CDATA[ 				
+		<script type="text/javascript" src="${pageContext.request.contextPath}/content/editor/actores/js/index.js"></script>
+		 ]]>
 	<title>Actores</title>
+	<script type="text/javascript" language="javascript" class="init">
+
+
+		$(document).ready(function() {
+			$('#gestion').DataTable();
+		} );
+
+
+	</script>
 </head>
 
 <body>
-<div class="pagina">
+
 	<h1>Actores</h1>
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
+	<s:form theme="simple" onsubmit="return false;">
 	<div class="form">
-		<table class="tablaGestion" align="center" style="width: 100%">
+	 
+		<table id="gestion" class="tablaGestion" cellspacing="0" width="100%"> 
 			<thead>
 				<tr>
 					<th>Nombre</th>
 					<th>Descripción</th>
 					<th>Estado</th>
 					<th>Acciones</th>
-					<th style="width: 24px;">
-						<a href="${pageContext.request.contextPath}/editor/actores/new">
-						<img src="${pageContext.request.contextPath}/resources/images/icons/mas.png" align="right"></a>
-					</th>
 				</tr>
 			</thead>
-			
 			<tbody>
 			<s:iterator value="listActores" var="actor">
 				<tr>
-					<td><s:property value="%{#actor.id}" /></td>
-					<td style="width: 30%s;">${actor.descripcion}</td>
-					<td>${actor.estadoElemento.nombre}</td>
-					<td align="center">
-						<a href="${pageContext.request.contextPath}/maquetaAnalista/proyectos/actores/modificarActor.jsp">
-							<img src="${pageContext.request.contextPath}/resources/images/icons/<%out.print(btnEditar);%>"></a>
+					<td><s:property value="id.nombre" /></td>
+					<td style="width: 40%;">${actor.descripcion}</td>
+					<td style="width: 20%;">${actor.estadoElemento.nombre}</td>
+					<td style="width: 20%;" align="center">
+					<s:set name="estado" value="actor.estadoElemento.identificador"/>
+						<a href	="${pageContext.request.contextPath}/maquetaAnalista/proyectos/actores/modificarActor.jsp">
+							<img src="${pageContext.request.contextPath}/resources/images/icons/editar.png"/></a>
 						<a href="${pageContext.request.contextPath}/maquetaAnalista/proyectos/actores/eliminarActor.jsp">
-							<img src="${pageContext.request.contextPath}/resources/images/icons/<%out.print(btnEliminar);%>"></a>
+							<img src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png"/></a>
 					</td>
 				</tr>
 			</s:iterator>
 			</tbody>
 		</table>
-		<br>
-		<table align="right">
-			<tr>
-				<td>
-				<a href="${pageContext.request.contextPath}/maquetaAnalista/proyectos/verProyecto.jsp">
-				<button value="Aceptar">Regresar</button>
-				</a>
-				</td>
-			</tr>
-		</table>
 	</div>
-</div>
+	<br />
+	<br />
+	<div align="center">
+		<button formmethod="post"
+			onclick="location.href='${pageContext.request.contextPath}/actores/new'">
+			<s:text name="Nuevo"></s:text>
+		</button>
+	</div>
+	</s:form>
+	
+
+
 </body>
 </html>
-
+</jsp:root>
 

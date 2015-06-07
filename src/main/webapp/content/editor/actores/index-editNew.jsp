@@ -8,46 +8,50 @@
 <!-- <![CDATA[ 				
 		<script type="text/javascript" src="${pageContext.request.contextPath}/content/editor/actores/js/index-editNew.js"></script>
 		 ]]>-->
+		 <title>Actores</title>
 </head>
 <body>
-
 			<h1>Registrar Actor</h1>
 			<p class="instrucciones">Ingrese la información solicitada.</p>
-			<s:form id="frmInstrumento"
-						action="%{#request.contextPath}/editor/actores"
-						theme="simple" method="post">
+			
 			<div class="formulario">
-			<div class="tituloFormulario">Información del Actor</div>
-				<div class="seccion">
+			<s:form id="frmRegistroIncendio" theme="simple"
+				cssClass="form form-center-middle"
+				action="%{#pageContext.request.contextPath}/actores"
+				method="post" onsubmit="return getSubmitActor();">
+		
+				<div class="tituloFormulario">Información del Actor</div>
+					<div class="seccion">
+							<table>
+								<tr>
+									<td class="label obligatorio">
+										<s:text name="Nombre" /></td>
+									<td><s:textarea id="txNombre" rows="5"
+											name="id.nombre" maxlength="500"
+											cssErrorClass="input-error"></s:textarea> 
+											<s:fielderror
+											fieldName="model.nombre" cssClass="error" theme="jquery" /></td>
+								</tr>
+								<tr>
+									<td class="label obligatorio"><s:text
+											name="Descripción" /></td>
+									<td><s:textarea id="txDescripcion" rows="5"
+											name="model.descripcion" maxlength="500"
+											cssErrorClass="input-error"></s:textarea> <s:fielderror
+											fieldName="model.descripcion" cssClass="error" theme="jquery" /></td>
+								</tr>
+							</table>
+					</div>
+					<br/>
+					<s:submit value="Aceptar" />
 					
-						<table class="tablaGestion>
-							<tr>
-								<td class="label obligatorio"><s:text name="Nombre" /></td>
-								<td><s:textfield id="txNombre" name="model.nombre"
-										maxlength="200" cssErrorClass="input-error" /> <s:fielderror
-										fieldName="model.nombre" cssClass="error" theme="jquery" /></td>
-							</tr>
-							
-						</table>
-				</div>
-
+					<input type="button"
+						onclick="location.href='${pageContext.request.contextPath}/actores'"
+						value="Cancelar" />
+					
+			</s:form>
 			</div>
-			<br>
-			<table align="right">
-				<tr>
-					<td>
-						<a href="${pageContext.request.contextPath}/maquetaAnalista/proyectos/actores/gestionarActores.jsp">
-						<button value="Aceptar">Aceptar</button>
-						</a>					
-					</td>
-					<td>
-						<a href="${pageContext.request.contextPath}/maquetaAnalista/proyectos/actores/gestionarActores.jsp">
-						<button value="Cancelar">Cancelar</button>
-						</a>
-					</td>
-				</tr>
-			</table>
-		</s:form>
+			
 </body>
 	</html>
 </jsp:root>

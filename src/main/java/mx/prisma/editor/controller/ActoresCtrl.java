@@ -6,6 +6,7 @@ import java.util.List;
 
 import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.bs.CatalogoBs;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.dao.ActorDAO;
 import mx.prisma.editor.dao.CardinalidadDAO;
@@ -24,33 +25,33 @@ import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
-@ResultPath("/content/editor/actores")
+@ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 		"actionName", "actores" }) })
 public class ActoresCtrl extends ActionSupportPRISMA {
+	//Modelo
 	private Actor model;
+	//Lista de registros
 	private List<Actor> listActores;
+	//Objeto de negocio
 	private ElementoBs elementoBs;
+	//Catalogos
+	private CatalogoBs catalogoBs;
+	private List<Cardinalidad> listCardinalidad;
+	
 	public HttpHeaders index() throws Exception {
-//		usuario = (Usuario) SessionManager.get(ObjetosSession.USUARIO
-//				.getNombre());
-		//listActores = actorBs.findAll(Actor.class);
-		//Collection<String> errors = (Collection<String>) SessionManager
-			//	.delete(ObjetosSession.ACTION_ERRORS.getNombre());
-		//if (errors != null && !errors.isEmpty()) {
-			//setActionErrors(errors);
-		//}
-		//return new DefaultHttpHeaders(INDEX).disableCaching();
+		//elementoBs.findAll();
+		
 		int idCardinalidad = 3;
-		int idEstadoElemento = 1;
 		String claveProyecto = "SIG";
-		EstadoElemento estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(idEstadoElemento);
+		EstadoElemento estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(1);
+		EstadoElemento estadoElemento2 = new EstadoElementoDAO().consultarEstadoElemento(2);
 		Cardinalidad cardinalidad = new CardinalidadDAO().consultarCardinalidad(idCardinalidad);
 		Proyecto proyecto = new ProyectoDAO().consultarProyecto(claveProyecto);
 				
 		listActores = new ArrayList<Actor>();
 		listActores.add(new Actor(new ElementoId("ACT", 1, "Profesor"), estadoElemento, proyecto, "Encargado de impartir clases en la escuela.", cardinalidad, "4"));
-		listActores.add(new Actor(new ElementoId("ACT", 2, "Profesor"), estadoElemento, proyecto, "Encargado de impartir clases en la escuela.", cardinalidad, "4"));
+		listActores.add(new Actor(new ElementoId("ACT", 2, "Administrador"), estadoElemento2, proyecto, "Encargado de dar de alta a las escuelas.", cardinalidad, "4"));
 		System.out.println("Tamano listActores"+listActores.size());
 		return new DefaultHttpHeaders(INDEX);
 	}
@@ -63,7 +64,7 @@ public class ActoresCtrl extends ActionSupportPRISMA {
 		//ElementoId elementoId = elementoBs.calculaIdentificador(Actor.class);
 		String clave = "ACTOR";
 		int numero = 1;
-		String nombre = "Alumno";
+		String nombre = "A";
 		int idCardinalidad = 3;
 		int idEstadoElemento = 1;
 		String claveProyecto = "SIG";
@@ -77,26 +78,40 @@ public class ActoresCtrl extends ActionSupportPRISMA {
 		try {
 			//error = actorBs.esValido(model);
 			
-			if(error == null) {
-				Actor model = new Actor(elementoId, estadoElemento, proyecto, "Aprendíz de determinada asignatura", cardinalidad, "4");
-				new ActorDAO().registrarActor(model);
-				addActionMessage(getText(
-						"MSG1",
-						new String[] { "El", "actor",
-								"registrado" }));
-				resultado = SUCCESS;
-			} else {
-				
-				addFieldError(
-						error.getNombreCampo(),
-						getText(error.getIdMensaje(), error.getParametrosMensaje()));
-				resultado = EDITNEW;
-			}
+			Actor actor = new Actor(elementoId, estadoElemento, proyecto, this.model.getDescripcion(), cardinalidad, "4");
+			new ActorDAO().registrarActor(actor);
+			addActionMessage(getText(
+					"MSG1",
+					new String[] { "El", "actor",
+							"registrado" }));
+			resultado = SUCCESS;
 		}
 		catch (Exception e) {
 			addActionMessage(getText("MSG10"));
 		}
 		return resultado;
+	}
+	
+	
+	private void buscarCatalogos() {
+		//Buscar los catálogos necesarios para realizar la operación
+		Cardinalidad cardinalidad = new CardinalidadDAO()
+		.consultarCardinalidad(1);
+		listCardinalidad = new ArrayList<Cardinalidad>();
+		listCardinalidad.add(cardinalidad);
+		System.out.println("size " + listCardinalidad.size());
+	}
+	
+	public String editNew() {
+		buscarCatalogos();
+		//Calcular clave 
+		//ElementoId elementoId = new ElementoId(clave, numero, nombre);
+		String result = EDITNEW;
+		if (!(listCardinalidad != null && !listCardinalidad.isEmpty())) {
+			addActionError(getText("CUEI4_MSG2_TIPO_TENENCIA"));
+			result = SUCCESS;
+		}
+		return result;
 	}
 
 	public Actor getModel() {
@@ -121,6 +136,14 @@ public class ActoresCtrl extends ActionSupportPRISMA {
 
 	public void setElementoBs(ElementoBs elementoBs) {
 		this.elementoBs = elementoBs;
+	}
+
+	public List<Cardinalidad> getListCardinalidad() {
+		return listCardinalidad;
+	}
+
+	public void setListCardinalidad(List<Cardinalidad> listCardinalidad) {
+		this.listCardinalidad = listCardinalidad;
 	}
 	
 	

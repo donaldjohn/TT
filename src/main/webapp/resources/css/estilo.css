@@ -16,7 +16,7 @@ and open the template in the editor.
     position: relative;
     width: 100%;
     height: 100%;
-    background-color: #90ee90;
+    /*background-color: #90ee90;*/
 }
 
 /*Banner*/
@@ -41,32 +41,28 @@ and open the template in the editor.
 .areaTrabajo {
 	position: absolute;
 	top: 40px;
-	left: 300px;
+	left: 25%;
 	padding: 30px;
-	width: 300%;
-	heigh: 400%;
-	z-index: 999;
-	background-color: #3f3f3f;	
+	width: 70%;
+	heigth: 100%;
+	z-index: 997;
+	/*background-color: #3f3f3f;*/	
 }
 
-.pantalla {
-	position: relative;
-	top: 60px;
-	left: 300px;
-	padding: 30px;
-	width: 100%;
-	heigh: 100%;
-	z-index: 1000;
-	background-color: #ffc0cb;
+
+.btnMasGestion {
+	top: 90px;
+	right: 0px;
 }
 
 /*Información del proyecto*/
 
 .infoProyecto {
 	position: absolute;
-	top: 0px;
+	top: 40px;
 	right: 0px;
 	font-size: 10px;
+	background-color: #3f3f3f;
 }
 
 /*Títulos*/
@@ -104,8 +100,8 @@ p.main {
 .tablaGestion {
     margin-left: auto;
     margin-right: auto;
-    width: 100%;
-    border-radius: 10px;
+    width: 90%;
+    /*border-radius: 10px;*/
     border-collapse: collapse; 
 }
 
@@ -251,14 +247,14 @@ iframe {
     border-radius: 0 0 4px 4px;
     padding: 5px 5px;
 }
-a#menu{
+a.menu{
     background-color: #5f5f5f;
     padding: 13px 14px;
     text-decoration: none;
     color: white;
 }
 
-a#menu:hover {
+a.menu:hover {
     color: #7f7f7f;
 }
 
@@ -273,10 +269,14 @@ a#menu:hover {
     font-size: 14px;
 }
 
+.opcionesMenu{
+	margin-top: 15px;
+}
+
 .menuSecundario {
 	position: fixed;
 	left: 0px;
-	width: 300px;	
+	width: 25%;	
 	top: 35px;
 	z-index: 998;
 	height: 100%;
@@ -284,10 +284,36 @@ a#menu:hover {
 	background-color: #bfbfbf;
 }
 
-.opcionesMenu {
-	margin-top: 15px;
+.menuSuperiorCU {
+	width: 104.6%;
+	height: 35px;
+	background-color: rgb(0, 73, 144);
+	font-size: 14px;
 }
 
+a.menuCU{
+    background-color: rgb(0, 73, 144);
+    padding: 5px 6px;
+    text-decoration: none;
+    color: white;
+}
+
+a.menuCU:hover {
+    color: #1e90ff;
+}
+
+.opcionesMenuCU {
+	padding: 10px;
+}
+
+a.menuCUSel {
+	color: #79CDEF;
+	background-color: rgb(0, 73, 144);
+}
+a.menuCUSel:hover {
+	color: #1e90ff;
+	background-color: rgb(0, 73, 144);
+}
 /*Posiciones*/
 .derecha {
 	position: absolute;
@@ -302,4 +328,46 @@ a#menu:hover {
 .centro {
 	margin-left: auto;
     margin-right: auto;
+}
+
+/*Formularios*/
+.obligatorio::before {
+	content: "*";
+	color: red;
+}
+
+.input-error {
+	color: #CB4721;
+	border: solid 2pt #CB4721 !important;
+	text-align: left;
+	border-radius: 2px;
+	padding: 1px 0px 1px 0px;
+}
+
+.label::after {
+	content: ":";
+}
+
+.label {
+	font-size:12px;
+	text-align: right; 
+	vertical-align: top; 
+	width: 200px;
+}
+
+.labelDerecho {
+	font-size:12px;
+	text-align: left; 
+	vertical-align: top; 
+	width: 500px;
+}
+
+.inputFormulario {
+	min-width:500px;
+	}
+
+textarea { 
+	resize:none;  
+	min-height:30px; 
+	min-width:500px;
 }

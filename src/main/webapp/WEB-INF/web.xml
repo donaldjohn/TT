@@ -26,5 +26,6 @@
   </filter-mapping>
   <listener>
     <listener-class>org.apache.struts2.dispatcher.ng.listener.StrutsListener</listener-class>
-	</listener> 
+  </listener>
+  
 </web-app>
