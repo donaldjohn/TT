@@ -73,7 +73,8 @@ public class Test {
 		//pruebaRegistroActor(); // 30/05/2015
 	
 		//pruebaRegistroCasoUso(); //05/06/2015
-		pruebaConsultaCasoUso(); //05/06/2015
+		//pruebaConsultaCasoUso(); //05/06/2015
+		System.out.println(new ActorDAO().consultarActor(1).getEstadoElemento().getNombre());
 
 	}
 
@@ -197,6 +198,7 @@ public class Test {
 		String claveProyecto = "SIG";
 
 		ActorId elementoId = new ActorId(clave, numero, nombre);
+		
 		EstadoElemento estadoElemento = new EstadoElementoDAO()
 				.consultarEstadoElemento(idEstadoElemento);
 		Cardinalidad cardinalidad = new CardinalidadDAO()

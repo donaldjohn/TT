@@ -55,7 +55,7 @@ public class Elemento implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "EstadoElementoidentificador", nullable = false)
 	public EstadoElemento getEstadoElemento() {
 		return this.estadoElemento;
