@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Modulo;
 
 public class ActorDAO extends ElementoDAO {
@@ -16,6 +17,19 @@ public class ActorDAO extends ElementoDAO {
     }
     
     public Actor consultarActor(int numero) {
-    	return null;
+		List<Actor> actores  = null;
+
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("from Actor where Elementonumero = :numero");
+			query.setParameter("numero", numero);
+			actores = query.list();
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		
+		return actores.get(0);
 	}
 }

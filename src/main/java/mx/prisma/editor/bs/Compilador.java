@@ -3,6 +3,9 @@ package mx.prisma.editor.bs;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import mx.prisma.editor.dao.ActorDAO;
+import mx.prisma.editor.model.Actor;
+
 public class Compilador {
 	String tokenBegin = "${";
 	String tokenEnd = "}";
@@ -49,7 +52,8 @@ public class Compilador {
 			case ACCION:			
 				break;
 			case ACTOR:
-				//Actor actor = new ActorDAO().
+				Actor actor = new ActorDAO().consultarActor(Integer.parseInt(segmentos.get(1)));
+				System.out.println(actor.getId().getNombre());
 				break;
 			case CASOUSO:
 				break;
