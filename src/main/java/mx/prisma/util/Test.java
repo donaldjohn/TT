@@ -22,9 +22,11 @@ import mx.prisma.admin.model.Rol;
 import mx.prisma.admin.model.Telefono;
 import mx.prisma.admin.model.TelefonoId;
 import mx.prisma.editor.bs.Compilador;
+import mx.prisma.editor.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.dao.ActorDAO;
 import mx.prisma.editor.dao.CardinalidadDAO;
 import mx.prisma.editor.dao.CasoUsoDAO;
+import mx.prisma.editor.dao.ElementoDAO;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.ModuloDAO;
@@ -67,10 +69,9 @@ public class Test {
 		
 		//pruebaRegistroActor(); // 30/05/2015
 	
-		//pruebaRegistroCasoUso(); //05/06/2015
+		pruebaRegistroCasoUso(); //05/06/2015
 		//pruebaConsultaCasoUso(); //05/06/2015
-		Modulo modulo = new ModuloDAO().consultarModulo("SF");
-		System.out.println(new CasoUsoDAO().lastIndexOfCasoUso(modulo));
+		
 	}
 
 	
@@ -239,7 +240,7 @@ public class Test {
 			String clave = "CU";
 			int numero = 1;
 			String nombre = "Iniciar sesión";
-			Modulo modulo = new ModuloDAO().consultarModulo("SF");
+			//Modulo modulo = new ModuloDAO().consultarModulo("SF");
 			int idEstadoElemento = 1;
 			String claveProyecto = "SIG";
 			String actores = "${ACT.1}, ${ACT.2}";
@@ -254,10 +255,10 @@ public class Test {
 			compilador.procesarTokenIpunt(reglas);
 	*/
 
-			
+			System.out.println(new ElementoDAO().lastIndexOfElemento(TipoReferencia.ACTOR));
 			CasoUsoId idCU = new CasoUsoId(clave, numero, nombre);
-			EstadoElemento estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(idEstadoElemento);
-			Proyecto proyecto = new ProyectoDAO().consultarProyecto(claveProyecto);
+			//EstadoElemento estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(idEstadoElemento);
+			//Proyecto proyecto = new ProyectoDAO().consultarProyecto(claveProyecto);
 			
 			//CasoUso cu = new CasoUso(idCU, estadoElemento, proyecto, actores, entradas, salidas, reglas, modulo);
 			
