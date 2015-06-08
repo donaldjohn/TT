@@ -49,8 +49,6 @@
 					value="Cancelar" />
 			</div>
 	</s:form>
-	<script src='../../../resorces/scripts/jquery.mentionsInput.js' type='text/javascript'></script>
-	
 </body>
 	</html>
 </jsp:root>

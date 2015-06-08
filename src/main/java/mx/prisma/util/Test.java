@@ -67,8 +67,8 @@ public class Test {
 		
 		//pruebaRegistroActor(); // 07/06/2015 OK
 	
-		pruebaRegistroCasoUso(); //05/06/2015
-		//pruebaConsultaCasoUso(); //05/06/2015
+		//pruebaRegistroCasoUso(); //05/06/2015
+		pruebaConsultaCasoUso(); //05/06/2015
 
 	}
 
@@ -250,6 +250,8 @@ public class Test {
 //-------------------------------------------------------------------
 	
 	public static void pruebaConsultaCasoUso(){
+		Modulo modulo = new ModuloDAO().consultarModulo("SF");
+		System.out.println(new CasoUsoDAO().lastIndexOfElemento(TipoReferencia.CASOUSO, modulo));
 		/*Modulo modulo = new ModuloDAO().consultarModulo("SF");
 		List<CasoUso> cus = new CasoUsoDAO().consultarCasosUso(modulo);
 		PostPrecondicionId postpreId = new PostPrecondicionId(1, cus.get(0));

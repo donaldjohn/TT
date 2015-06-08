@@ -74,8 +74,10 @@ public class ElementoDAO {
 		if(results.isEmpty())
 			return 0;
 		else
-			return results.get(0);
-
+			if(results.get(0)!=null)
+				return results.get(0);
+			else 
+				return 0;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -113,10 +115,12 @@ public class ElementoDAO {
 			session.getTransaction().rollback();
 		}
 
-		if(!results.isEmpty())
-			return results.get(0);
-		else
+		if(results.isEmpty())
 			return 0;
-
+		else
+			if(results.get(0)!=null)
+				return results.get(0);
+			else 
+				return 0;
 	}
 }
