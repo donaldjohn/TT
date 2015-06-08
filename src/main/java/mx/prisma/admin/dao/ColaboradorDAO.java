@@ -1,7 +1,6 @@
 package mx.prisma.admin.dao;
 
 import mx.prisma.admin.model.Colaborador;
-import mx.prisma.admin.model.Telefono;
 import mx.prisma.util.HibernateUtil;
 
 import org.hibernate.HibernateException;
@@ -18,10 +17,6 @@ public class ColaboradorDAO {
 		try {
 			session.beginTransaction();
 			session.save(colaborador);
-
-			for(Telefono telefono : colaborador.getTelefonos()){
-				session.save(telefono);
-			}
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
@@ -33,7 +28,6 @@ public class ColaboradorDAO {
 		try {
 			session.beginTransaction();
 			session.update(colaborador);
-			
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();

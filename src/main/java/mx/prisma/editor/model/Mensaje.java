@@ -1,11 +1,10 @@
 package mx.prisma.editor.model;
 
-// Generated 29-may-2015 2:01:49 by Hibernate Tools 4.0.0
+// Generated 07-jun-2015 17:10:34 by Hibernate Tools 4.0.0
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.PrimaryKeyJoinColumns;
 import javax.persistence.Table;
 
 import mx.prisma.admin.model.Proyecto;
@@ -15,10 +14,7 @@ import mx.prisma.admin.model.Proyecto;
  */
 @Entity
 @Table(name = "Mensaje", catalog = "PRISMA")
-@PrimaryKeyJoinColumns({
-	@PrimaryKeyJoinColumn(name = "Elementoclave", referencedColumnName = "clave"),
-	@PrimaryKeyJoinColumn(name = "Elementonumero", referencedColumnName = "numero"),
-	@PrimaryKeyJoinColumn(name = "Elementonombre", referencedColumnName = "nombre") })
+@PrimaryKeyJoinColumn(name = "Elementoid", referencedColumnName = "id")
 public class Mensaje extends Elemento implements java.io.Serializable {
 
 	/**
@@ -31,8 +27,9 @@ public class Mensaje extends Elemento implements java.io.Serializable {
 	public Mensaje() {
 	}
 
-	public Mensaje(MensajeId id, EstadoElemento estadoElemento, Proyecto proyecto, String redaccion, boolean parametrizado) {
-		super(new ElementoId(id.getElementoclave(), id.getElementonumero(), id.getElementonombre()), estadoElemento, proyecto);
+	public Mensaje(String clave, int numero, String nombre,
+			Proyecto proyecto, String descripcion, EstadoElemento estadoElemento, String redaccion, boolean parametrizado) {
+		super(clave, numero, nombre, proyecto, descripcion, estadoElemento);
 		this.redaccion = redaccion;
 		this.parametrizado = parametrizado;
 	}

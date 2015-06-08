@@ -1,12 +1,11 @@
 package mx.prisma.editor.model;
 
-// Generated 29-may-2015 2:01:49 by Hibernate Tools 4.0.0
+// Generated 07-jun-2015 17:10:34 by Hibernate Tools 4.0.0
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 
 /**
@@ -15,46 +14,40 @@ import javax.persistence.ManyToOne;
 @Embeddable
 public class CasoUsoReglaNegocioId implements java.io.Serializable {
 
-	private CasoUso casodeuso;
-	private ReglaNegocio regladenegocio;
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private CasoUso casoUso;
+	private ReglaNegocio reglaNegocio;
 
 	public CasoUsoReglaNegocioId() {
 	}
 
-	public CasoUsoReglaNegocioId(CasoUso casodeuso, ReglaNegocio regladenegocio){
-		this.casodeuso = casodeuso;
-		this.regladenegocio = regladenegocio;
+	public CasoUsoReglaNegocioId(CasoUso casoUso, ReglaNegocio reglaNegocio) {
+		this.casoUso = casoUso;
+		this.reglaNegocio = reglaNegocio;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumns( {
-        @JoinColumn(name = "CasoUsoElementoclave", referencedColumnName = "Elementoclave"),
-        @JoinColumn(name = "CasoUsoElementonumero", referencedColumnName = "Elementonumero"),
-        @JoinColumn(name = "CasoUsoElementonombre", referencedColumnName = "Elementonombre")
-})
-	public CasoUso getCasodeuso() {
-		return casodeuso;
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "CasoUsoElementoid", referencedColumnName = "Elementoid")
+	public CasoUso getCasoUso() {
+		return casoUso;
 	}
 
-	public void setCasodeuso(CasoUso casodeuso) {
-		this.casodeuso = casodeuso;
-	}
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumns( {
-        @JoinColumn(name = "ReglaNegocioElementoclave", referencedColumnName = "Elementoclave"),
-        @JoinColumn(name = "ReglaNegocioElementonumero", referencedColumnName = "Elementonumero"),
-        @JoinColumn(name = "ReglaNegocioElementonombre", referencedColumnName = "Elementonombre")
-})
-	public ReglaNegocio getRegladenegocio() {
-		return regladenegocio;
+	public void setCasoUso(CasoUso casoUso) {
+		this.casoUso = casoUso;
 	}
 
-	public void setRegladenegocio(ReglaNegocio regladenegocio) {
-		this.regladenegocio = regladenegocio;
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "ReglaNegocioElementoid", referencedColumnName = "Elementoid")
+	public ReglaNegocio getReglaNegocio() {
+		return reglaNegocio;
 	}
 
+	public void setReglaNegocio(ReglaNegocio reglaNegocio) {
+		this.reglaNegocio = reglaNegocio;
+	}
 	
 
 }

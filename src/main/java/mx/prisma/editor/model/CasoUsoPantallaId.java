@@ -1,6 +1,6 @@
 package mx.prisma.editor.model;
 
-// Generated 29-may-2015 2:01:49 by Hibernate Tools 4.0.0
+// Generated 07-jun-2015 17:10:34 by Hibernate Tools 4.0.0
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -11,91 +11,33 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class CasoUsoPantallaId implements java.io.Serializable {
 
-	private String casoUsoElementoclave;
-	private int casoUsoElementonumero;
-	private String casoUsoElementonombre;
-	private String casoUsoModuloclave;
-	private String pantallaElementoclave;
-	private int pantallaElementonumero;
-	private String pantallaElementonombre;
+	private int pantallaElementoid;
+	private int casoUsoElementoid;
 
 	public CasoUsoPantallaId() {
 	}
 
-	public CasoUsoPantallaId(String casoUsoElementoclave,
-			int casoUsoElementonumero, String casoUsoElementonombre,
-			String casoUsoModuloclave, String pantallaElementoclave,
-			int pantallaElementonumero, String pantallaElementonombre) {
-		this.casoUsoElementoclave = casoUsoElementoclave;
-		this.casoUsoElementonumero = casoUsoElementonumero;
-		this.casoUsoElementonombre = casoUsoElementonombre;
-		this.casoUsoModuloclave = casoUsoModuloclave;
-		this.pantallaElementoclave = pantallaElementoclave;
-		this.pantallaElementonumero = pantallaElementonumero;
-		this.pantallaElementonombre = pantallaElementonombre;
+	public CasoUsoPantallaId(int pantallaElementoid, int casoUsoElementoid) {
+		this.pantallaElementoid = pantallaElementoid;
+		this.casoUsoElementoid = casoUsoElementoid;
 	}
 
-	@Column(name = "CasoUsoElementoclave", nullable = false, length = 10)
-	public String getCasoUsoElementoclave() {
-		return this.casoUsoElementoclave;
+	@Column(name = "PantallaElementoid", nullable = false)
+	public int getPantallaElementoid() {
+		return this.pantallaElementoid;
 	}
 
-	public void setCasoUsoElementoclave(String casoUsoElementoclave) {
-		this.casoUsoElementoclave = casoUsoElementoclave;
+	public void setPantallaElementoid(int pantallaElementoid) {
+		this.pantallaElementoid = pantallaElementoid;
 	}
 
-	@Column(name = "CasoUsoElementonumero", nullable = false)
-	public int getCasoUsoElementonumero() {
-		return this.casoUsoElementonumero;
+	@Column(name = "CasoUsoElementoid", nullable = false)
+	public int getCasoUsoElementoid() {
+		return this.casoUsoElementoid;
 	}
 
-	public void setCasoUsoElementonumero(int casoUsoElementonumero) {
-		this.casoUsoElementonumero = casoUsoElementonumero;
-	}
-
-	@Column(name = "CasoUsoElementonombre", nullable = false, length = 45)
-	public String getCasoUsoElementonombre() {
-		return this.casoUsoElementonombre;
-	}
-
-	public void setCasoUsoElementonombre(String casoUsoElementonombre) {
-		this.casoUsoElementonombre = casoUsoElementonombre;
-	}
-
-	@Column(name = "CasoUsoModuloclave", nullable = false, length = 10)
-	public String getCasoUsoModuloclave() {
-		return this.casoUsoModuloclave;
-	}
-
-	public void setCasoUsoModuloclave(String casoUsoModuloclave) {
-		this.casoUsoModuloclave = casoUsoModuloclave;
-	}
-
-	@Column(name = "PantallaElementoclave", nullable = false, length = 10)
-	public String getPantallaElementoclave() {
-		return this.pantallaElementoclave;
-	}
-
-	public void setPantallaElementoclave(String pantallaElementoclave) {
-		this.pantallaElementoclave = pantallaElementoclave;
-	}
-
-	@Column(name = "PantallaElementonumero", nullable = false)
-	public int getPantallaElementonumero() {
-		return this.pantallaElementonumero;
-	}
-
-	public void setPantallaElementonumero(int pantallaElementonumero) {
-		this.pantallaElementonumero = pantallaElementonumero;
-	}
-
-	@Column(name = "PantallaElementonombre", nullable = false, length = 45)
-	public String getPantallaElementonombre() {
-		return this.pantallaElementonombre;
-	}
-
-	public void setPantallaElementonombre(String pantallaElementonombre) {
-		this.pantallaElementonombre = pantallaElementonombre;
+	public void setCasoUsoElementoid(int casoUsoElementoid) {
+		this.casoUsoElementoid = casoUsoElementoid;
 	}
 
 	public boolean equals(Object other) {
@@ -107,66 +49,17 @@ public class CasoUsoPantallaId implements java.io.Serializable {
 			return false;
 		CasoUsoPantallaId castOther = (CasoUsoPantallaId) other;
 
-		return ((this.getCasoUsoElementoclave() == castOther
-				.getCasoUsoElementoclave()) || (this.getCasoUsoElementoclave() != null
-				&& castOther.getCasoUsoElementoclave() != null && this
-				.getCasoUsoElementoclave().equals(
-						castOther.getCasoUsoElementoclave())))
-				&& (this.getCasoUsoElementonumero() == castOther
-						.getCasoUsoElementonumero())
-				&& ((this.getCasoUsoElementonombre() == castOther
-						.getCasoUsoElementonombre()) || (this
-						.getCasoUsoElementonombre() != null
-						&& castOther.getCasoUsoElementonombre() != null && this
-						.getCasoUsoElementonombre().equals(
-								castOther.getCasoUsoElementonombre())))
-				&& ((this.getCasoUsoModuloclave() == castOther
-						.getCasoUsoModuloclave()) || (this
-						.getCasoUsoModuloclave() != null
-						&& castOther.getCasoUsoModuloclave() != null && this
-						.getCasoUsoModuloclave().equals(
-								castOther.getCasoUsoModuloclave())))
-				&& ((this.getPantallaElementoclave() == castOther
-						.getPantallaElementoclave()) || (this
-						.getPantallaElementoclave() != null
-						&& castOther.getPantallaElementoclave() != null && this
-						.getPantallaElementoclave().equals(
-								castOther.getPantallaElementoclave())))
-				&& (this.getPantallaElementonumero() == castOther
-						.getPantallaElementonumero())
-				&& ((this.getPantallaElementonombre() == castOther
-						.getPantallaElementonombre()) || (this
-						.getPantallaElementonombre() != null
-						&& castOther.getPantallaElementonombre() != null && this
-						.getPantallaElementonombre().equals(
-								castOther.getPantallaElementonombre())));
+		return (this.getPantallaElementoid() == castOther
+				.getPantallaElementoid())
+				&& (this.getCasoUsoElementoid() == castOther
+						.getCasoUsoElementoid());
 	}
 
 	public int hashCode() {
 		int result = 17;
 
-		result = 37
-				* result
-				+ (getCasoUsoElementoclave() == null ? 0 : this
-						.getCasoUsoElementoclave().hashCode());
-		result = 37 * result + this.getCasoUsoElementonumero();
-		result = 37
-				* result
-				+ (getCasoUsoElementonombre() == null ? 0 : this
-						.getCasoUsoElementonombre().hashCode());
-		result = 37
-				* result
-				+ (getCasoUsoModuloclave() == null ? 0 : this
-						.getCasoUsoModuloclave().hashCode());
-		result = 37
-				* result
-				+ (getPantallaElementoclave() == null ? 0 : this
-						.getPantallaElementoclave().hashCode());
-		result = 37 * result + this.getPantallaElementonumero();
-		result = 37
-				* result
-				+ (getPantallaElementonombre() == null ? 0 : this
-						.getPantallaElementonombre().hashCode());
+		result = 37 * result + this.getPantallaElementoid();
+		result = 37 * result + this.getCasoUsoElementoid();
 		return result;
 	}
 

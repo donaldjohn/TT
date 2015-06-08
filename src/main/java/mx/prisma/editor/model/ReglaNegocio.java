@@ -1,11 +1,14 @@
 package mx.prisma.editor.model;
 
-// Generated 29-may-2015 2:01:49 by Hibernate Tools 4.0.0
+// Generated 07-jun-2015 17:10:34 by Hibernate Tools 4.0.0
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.PrimaryKeyJoinColumns;
 import javax.persistence.Table;
 
 import mx.prisma.admin.model.Proyecto;
@@ -15,10 +18,7 @@ import mx.prisma.admin.model.Proyecto;
  */
 @Entity
 @Table(name = "ReglaNegocio", catalog = "PRISMA")
-@PrimaryKeyJoinColumns({
-	@PrimaryKeyJoinColumn(name = "Elementoclave", referencedColumnName = "clave"),
-	@PrimaryKeyJoinColumn(name = "Elementonumero", referencedColumnName = "numero"),
-	@PrimaryKeyJoinColumn(name = "Elementonombre", referencedColumnName = "nombre") })
+@PrimaryKeyJoinColumn(name = "Elementoid", referencedColumnName = "id")
 public class ReglaNegocio extends Elemento implements java.io.Serializable {
 
 	/**
@@ -26,17 +26,18 @@ public class ReglaNegocio extends Elemento implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String redaccion;
-	private int tipoReglaNegocioidentificador;
+	private TipoReglaNegocio tipoReglaNegocio;
 
 	public ReglaNegocio() {
 	}
 
-	public ReglaNegocio(ReglaNegocioId id,  EstadoElemento estadoElemento, Proyecto proyecto, String redaccion,
-			int tipoReglaNegocioidentificador) {
+	public ReglaNegocio(String clave, int numero, String nombre,
+			Proyecto proyecto, String descripcion, EstadoElemento estadoElemento, String redaccion,
+			TipoReglaNegocio tipoReglaNegocio) {
+		super(clave, numero, nombre, proyecto, descripcion, estadoElemento);
 		this.redaccion = redaccion;
-		this.tipoReglaNegocioidentificador = tipoReglaNegocioidentificador;
+		this.tipoReglaNegocio = tipoReglaNegocio;
 	}
-
 
 	@Column(name = "redaccion", nullable = false, length = 999)
 	public String getRedaccion() {
@@ -46,15 +47,17 @@ public class ReglaNegocio extends Elemento implements java.io.Serializable {
 	public void setRedaccion(String redaccion) {
 		this.redaccion = redaccion;
 	}
-
-	@Column(name = "TipoReglaNegocioidentificador", nullable = false)
-	public int getTipoReglaNegocioidentificador() {
-		return this.tipoReglaNegocioidentificador;
+	
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "TipoReglaNegocioid", referencedColumnName = "id")
+	public TipoReglaNegocio getTipoReglaNegocio() {
+		return tipoReglaNegocio;
 	}
 
-	public void setTipoReglaNegocioidentificador(
-			int tipoReglaNegocioidentificador) {
-		this.tipoReglaNegocioidentificador = tipoReglaNegocioidentificador;
+	public void setTipoReglaNegocio(TipoReglaNegocio tipoReglaNegocio) {
+		this.tipoReglaNegocio = tipoReglaNegocio;
 	}
+
+
 
 }

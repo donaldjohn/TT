@@ -12,12 +12,12 @@ public class RolDAO {
 	public RolDAO() {
 		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
 	}
-	public Rol consultarRol(int idRol) {
+	public Rol consultarRol(int id) {
 		Rol rol = null;
 
 		try {
 			session.beginTransaction();
-			rol = (Rol) session.get(Rol.class, idRol);
+			rol = (Rol) session.get(Rol.class, id);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();

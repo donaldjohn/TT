@@ -1,18 +1,11 @@
 package mx.prisma.editor.model;
 
-// Generated 29-may-2015 2:01:49 by Hibernate Tools 4.0.0
-
-import java.util.HashSet;
-import java.util.Set;
+// Generated 07-jun-2015 17:10:34 by Hibernate Tools 4.0.0
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.OneToMany;
-
 import static javax.persistence.GenerationType.IDENTITY;
-
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -27,9 +20,8 @@ public class Cardinalidad implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Integer identificador;
+	private Integer id;
 	private String nombre;
-	private Set<Actor> actores = new HashSet<Actor>(0);
 
 	public Cardinalidad() {
 	}
@@ -37,21 +29,16 @@ public class Cardinalidad implements java.io.Serializable {
 	public Cardinalidad(String nombre) {
 		this.nombre = nombre;
 	}
-	
-	public Cardinalidad(String nombre, Set<Actor> actores) {
-		this.nombre = nombre;
-		this.actores = actores;
-	}
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "identificador", unique = true, nullable = false)
-	public Integer getIdentificador() {
-		return this.identificador;
+	@Column(name = "id", unique = true, nullable = false)
+	public Integer getId() {
+		return this.id;
 	}
 
-	public void setIdentificador(Integer identificador) {
-		this.identificador = identificador;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	@Column(name = "nombre", nullable = false, length = 10)
@@ -61,15 +48,6 @@ public class Cardinalidad implements java.io.Serializable {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cardinalidad")
-	public Set<Actor> getActores() {
-		return this.actores;
-	}
- 
-	public void setActores(Set<Actor> actores) {
-		this.actores = actores;
 	}
 
 }

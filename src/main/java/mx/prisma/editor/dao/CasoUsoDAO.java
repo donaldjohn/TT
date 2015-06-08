@@ -4,18 +4,21 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
-
-import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Modulo;
 
 public class CasoUsoDAO extends ElementoDAO {
-    public void registrarCasoUso(CasoUso casodeuso) throws Exception {
-    	System.out.println(casodeuso.getModulo().getNombre());
+	
+    public void registrarCasoUso(CasoUso casodeuso) {
     	super.registrarElemento(casodeuso);
     }
     
+    public CasoUso consultarCasoUso(int id){
+    	return (CasoUso) super.consultarElemento(id);
+    }
+    
+	@SuppressWarnings("unchecked")
 	public List<CasoUso> consultarCasosUso(Modulo modulo) {
 		List<CasoUso> casosdeuso  = null;
 
@@ -34,20 +37,6 @@ public class CasoUsoDAO extends ElementoDAO {
 	}
 	
 	public Integer lastIndexOfCasoUso(Modulo modulo) {
-		List<Integer> results = null;
-		try {
-			session.beginTransaction();
-			SQLQuery sqlQuery = session.createSQLQuery("SELECT MAX(Elementonumero) FROM CasoUso where Moduloclave = '"+modulo.getClave()+"'");
-			results = sqlQuery.list();
-			session.getTransaction().commit();
-		} catch (HibernateException he) {
-			he.printStackTrace();
-			session.getTransaction().rollback();
-		}
-		if(results.isEmpty()){
-			return 0;
-		} else
-			return results.get(0);
-
+		return super.lastIndexOfElemento(TipoReferencia.CASOUSO, modulo);
 	}
 }

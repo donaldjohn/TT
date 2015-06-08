@@ -1,12 +1,12 @@
 package mx.prisma.editor.model;
 
-// Generated 29-may-2015 2:01:49 by Hibernate Tools 4.0.0
+// Generated 08-jun-2015 0:45:59 by Hibernate Tools 4.0.0
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -16,43 +16,56 @@ import javax.persistence.Table;
 @Table(name = "Revision", catalog = "PRISMA")
 public class Revision implements java.io.Serializable {
 
-	private RevisionId id;
+	private Integer id;
 	private String observaciones;
+	private int casoUsoElementoid;
+	private int seccionid;
 
 	public Revision() {
 	}
 
-	public Revision(RevisionId id) {
-		this.id = id;
-	}
-
-	public Revision(RevisionId id, String observaciones) {
-		this.id = id;
+	public Revision(String observaciones, int casoUsoElementoid, int seccionid) {
 		this.observaciones = observaciones;
+		this.casoUsoElementoid = casoUsoElementoid;
+		this.seccionid = seccionid;
 	}
 
-	@EmbeddedId
-	@AttributeOverrides({
-			@AttributeOverride(name = "casoUsoElementoclave", column = @Column(name = "CasoUsoElementoclave", nullable = false, length = 10)),
-			@AttributeOverride(name = "casoUsoElementonumero", column = @Column(name = "CasoUsoElementonumero", nullable = false)),
-			@AttributeOverride(name = "casoUsoElementonombre", column = @Column(name = "CasoUsoElementonombre", nullable = false, length = 45)),
-			@AttributeOverride(name = "seccionidentififcador", column = @Column(name = "Seccionidentififcador", nullable = false)),
-			@AttributeOverride(name = "casoUsoModuloclave", column = @Column(name = "CasoUsoModuloclave", nullable = false, length = 10)) })
-	public RevisionId getId() {
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(RevisionId id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	@Column(name = "Observaciones", length = 999)
+	@Column(name = "observaciones", nullable = false, length = 999)
 	public String getObservaciones() {
 		return this.observaciones;
 	}
 
 	public void setObservaciones(String observaciones) {
 		this.observaciones = observaciones;
+	}
+
+	@Column(name = "CasoUsoElementoid", nullable = false)
+	public int getCasoUsoElementoid() {
+		return this.casoUsoElementoid;
+	}
+
+	public void setCasoUsoElementoid(int casoUsoElementoid) {
+		this.casoUsoElementoid = casoUsoElementoid;
+	}
+
+	@Column(name = "Seccionid", nullable = false)
+	public int getSeccionid() {
+		return this.seccionid;
+	}
+
+	public void setSeccionid(int seccionid) {
+		this.seccionid = seccionid;
 	}
 
 }

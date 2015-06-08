@@ -7,14 +7,15 @@ import mx.prisma.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-public class EntidadDAO {
+public class EntidadDAO extends ElementoDAO {
 	Session session = null;
 
 	public EntidadDAO() {
 		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
 	}
 	public void registrarEntidad(Entidad entidad) {
-		try {
+		super.registrarElemento(entidad);
+/*		try {
 			session.beginTransaction();
 			for(Atributo atributo : entidad.getAtributos()) {
 				session.save(atributo);
@@ -24,6 +25,6 @@ public class EntidadDAO {
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
-		}
+		}*/
 	}
 }

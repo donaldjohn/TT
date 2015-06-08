@@ -1,6 +1,7 @@
 package mx.prisma.editor.model;
 
-// Generated 05-jun-2015 12:23:22 by Hibernate Tools 4.0.0
+// Generated 07-jun-2015 17:10:34 by Hibernate Tools 4.0.0
+
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;

@@ -1,12 +1,18 @@
-INSERT INTO EstadoProyecto (identificador, nombre) VALUES (1, 'Negociación');
-INSERT INTO EstadoProyecto (identificador, nombre) VALUES (2, 'Iniciado');
-INSERT INTO EstadoProyecto (identificador, nombre) VALUES (3, 'Terminado');
+INSERT INTO EstadoProyecto (nombre) VALUES ('Negociación');
+INSERT INTO EstadoProyecto (nombre) VALUES ('Iniciado');
+INSERT INTO EstadoProyecto (nombre) VALUES ('Terminado');
 
-INSERT INTO EstadoElemento (identificador, nombre) VALUES ('1', 'En Edición');
-INSERT INTO EstadoElemento (identificador, nombre) VALUES ('2', 'En Revisión');
-INSERT INTO EstadoElemento (identificador, nombre) VALUES ('3', 'Terminado');
-INSERT INTO EstadoElemento (identificador, nombre) VALUES ('4', 'Liberado');
+INSERT INTO EstadoElemento (nombre) VALUES ('Pre-registro');
+INSERT INTO EstadoElemento (nombre) VALUES ('Edición');
+INSERT INTO EstadoElemento (nombre) VALUES ('En Revisión');
+INSERT INTO EstadoElemento (nombre) VALUES ('Por liberar');
+INSERT INTO EstadoElemento (nombre) VALUES ('Terminado');
+INSERT INTO EstadoElemento (nombre) VALUES ('Pendiente de corrección');
+INSERT INTO EstadoElemento (nombre) VALUES ('Liberado');
 
-INSERT INTO Cardinalidad (identificador, nombre) VALUES ('1', 'Uno');
-INSERT INTO Cardinalidad (identificador, nombre) VALUES ('2', 'Muchos');
-INSERT INTO Cardinalidad (identificador, nombre) VALUES ('3', 'Otra');
+INSERT INTO Cardinalidad (nombre) VALUES ('Uno');
+INSERT INTO Cardinalidad (nombre) VALUES ('Muchos');
+INSERT INTO Cardinalidad (nombre) VALUES ('Otra');
+
+INSERT INTO Rol (nombre) VALUES ('Líder');
+INSERT INTO Rol (nombre) VALUES ('Analista');

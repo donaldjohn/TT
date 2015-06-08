@@ -3,12 +3,10 @@ package mx.prisma.editor.dao;
 import java.util.List;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import mx.prisma.editor.bs.Referencia.TipoReferencia;
-import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.util.HibernateUtil;
@@ -21,6 +19,7 @@ public class ElementoDAO {
 	}
 
 	public void registrarElemento(Elemento elemento) {
+		
 		try {
 			session.beginTransaction();
 			session.save(elemento);
@@ -30,7 +29,56 @@ public class ElementoDAO {
 			session.getTransaction().rollback();
 		}
 	}
+
+	public Elemento consultarElemento(int id) {
+		Elemento elemento  = null;
+
+		try {
+			session.beginTransaction();
+			elemento = (Elemento) session.get(Elemento.class, id);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		
+		return elemento;
+
+	}
 	
+	@SuppressWarnings("unchecked")
+	public Integer lastIndexOfElemento(TipoReferencia referencia, Modulo modulo) {
+		List<Integer> results = null;
+		String sentencia = "";
+		switch(referencia){
+		case CASOUSO:
+			sentencia = "SELECT MAX(Elementonumero) FROM CasoUso WHERE Moduloid = "+modulo.getId()+"";
+			break;
+		case INTERFAZUSUARIO:
+			sentencia = "SELECT MAX(Elementonumero) FROM Pantalla WHERE Moduloid = "+modulo.getId()+"";
+			break;
+		default:
+			break;
+		
+		}
+		
+		try {
+			session.beginTransaction();
+			SQLQuery sqlQuery = session.createSQLQuery(sentencia);
+			results = sqlQuery.list();
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		if(results.get(0) != null)
+			return results.get(0);
+		else
+			return 1;
+
+	}
+
+	@SuppressWarnings("unchecked")
 	public Integer lastIndexOfElemento(TipoReferencia referencia) {
 		List<Integer> results = null;
 		String sentencia = "";
@@ -74,24 +122,6 @@ public class ElementoDAO {
 			return results.get(0);
 		else
 			return 1;
-
-	}
-	
-	public Elemento consultarElemento(int numero) {
-		List<Elemento> elementos  = null;
-
-		try {
-			session.beginTransaction();
-			Query query = session.createQuery("from Elemento where numero = :numero");
-			query.setParameter("numero", numero);
-			elementos = query.list();
-			session.getTransaction().commit();
-		} catch (HibernateException he) {
-			he.printStackTrace();
-			session.getTransaction().rollback();
-		}
-		
-		return elementos.get(0);
 
 	}
 }

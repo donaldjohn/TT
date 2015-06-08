@@ -1,7 +1,10 @@
 package mx.prisma.editor.model;
 
-// Generated 05-jun-2015 12:23:22 by Hibernate Tools 4.0.0
+// Generated 07-jun-2015 17:10:34 by Hibernate Tools 4.0.0
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -27,6 +30,9 @@ public class Inclusion implements java.io.Serializable {
 	}
 
 	@EmbeddedId
+	@AttributeOverrides({
+			@AttributeOverride(name = "casoUsoElementoidOrigen", column = @Column(name = "CasoUsoElementoid_origen", nullable = false)),
+			@AttributeOverride(name = "casoUsoElementoidDestino", column = @Column(name = "CasoUsoElementoid_destino", nullable = false)) })
 	public InclusionId getId() {
 		return this.id;
 	}

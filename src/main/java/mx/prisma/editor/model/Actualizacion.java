@@ -1,13 +1,13 @@
 package mx.prisma.editor.model;
 
-// Generated 29-may-2015 2:01:49 by Hibernate Tools 4.0.0
+// Generated 07-jun-2015 17:10:34 by Hibernate Tools 4.0.0
 
 import java.util.Date;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,37 +19,36 @@ import javax.persistence.TemporalType;
 @Table(name = "Actualizacion", catalog = "PRISMA")
 public class Actualizacion implements java.io.Serializable {
 
-	private ActualizacionId id;
+	private Integer id;
 	private Date fecha;
 	private String comentario;
-	private int estadoElementoidentificadorPre;
-	private int estadoElementoidentificadorPost;
+	private int estadoElementoidPre;
+	private int estadoElementoidPost;
+	private int elementoid;
+	private int colaboradorProyectoid;
 
 	public Actualizacion() {
 	}
 
-	public Actualizacion(ActualizacionId id, Date fecha, String comentario,
-			int estadoElementoidentificadorPre,
-			int estadoElementoidentificadorPost) {
-		this.id = id;
+	public Actualizacion(Date fecha, String comentario,
+			int estadoElementoidPre, int estadoElementoidPost, int elementoid,
+			int colaboradorProyectoid) {
 		this.fecha = fecha;
 		this.comentario = comentario;
-		this.estadoElementoidentificadorPre = estadoElementoidentificadorPre;
-		this.estadoElementoidentificadorPost = estadoElementoidentificadorPost;
+		this.estadoElementoidPre = estadoElementoidPre;
+		this.estadoElementoidPost = estadoElementoidPost;
+		this.elementoid = elementoid;
+		this.colaboradorProyectoid = colaboradorProyectoid;
 	}
 
-	@EmbeddedId
-	@AttributeOverrides({
-			@AttributeOverride(name = "elementoclave", column = @Column(name = "Elementoclave", nullable = false, length = 10)),
-			@AttributeOverride(name = "elementonumero", column = @Column(name = "Elementonumero", nullable = false)),
-			@AttributeOverride(name = "elementonombre", column = @Column(name = "Elementonombre", nullable = false, length = 45)),
-			@AttributeOverride(name = "colaboradorProyectoColaboradorCurp", column = @Column(name = "Colaborador_ProyectoColaboradorCURP", nullable = false, length = 18)),
-			@AttributeOverride(name = "colaboradorProyectoProyectoclave", column = @Column(name = "Colaborador_ProyectoProyectoclave", nullable = false, length = 10)) })
-	public ActualizacionId getId() {
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(ActualizacionId id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -72,24 +71,40 @@ public class Actualizacion implements java.io.Serializable {
 		this.comentario = comentario;
 	}
 
-	@Column(name = "EstadoElementoidentificadorPre", nullable = false)
-	public int getEstadoElementoidentificadorPre() {
-		return this.estadoElementoidentificadorPre;
+	@Column(name = "EstadoElementoidPre", nullable = false)
+	public int getEstadoElementoidPre() {
+		return this.estadoElementoidPre;
 	}
 
-	public void setEstadoElementoidentificadorPre(
-			int estadoElementoidentificadorPre) {
-		this.estadoElementoidentificadorPre = estadoElementoidentificadorPre;
+	public void setEstadoElementoidPre(int estadoElementoidPre) {
+		this.estadoElementoidPre = estadoElementoidPre;
 	}
 
-	@Column(name = "EstadoElementoidentificadorPost", nullable = false)
-	public int getEstadoElementoidentificadorPost() {
-		return this.estadoElementoidentificadorPost;
+	@Column(name = "EstadoElementoidPost", nullable = false)
+	public int getEstadoElementoidPost() {
+		return this.estadoElementoidPost;
 	}
 
-	public void setEstadoElementoidentificadorPost(
-			int estadoElementoidentificadorPost) {
-		this.estadoElementoidentificadorPost = estadoElementoidentificadorPost;
+	public void setEstadoElementoidPost(int estadoElementoidPost) {
+		this.estadoElementoidPost = estadoElementoidPost;
+	}
+
+	@Column(name = "Elementoid", nullable = false)
+	public int getElementoid() {
+		return this.elementoid;
+	}
+
+	public void setElementoid(int elementoid) {
+		this.elementoid = elementoid;
+	}
+
+	@Column(name = "Colaborador_Proyectoid", nullable = false)
+	public int getColaboradorProyectoid() {
+		return this.colaboradorProyectoid;
+	}
+
+	public void setColaboradorProyectoid(int colaboradorProyectoid) {
+		this.colaboradorProyectoid = colaboradorProyectoid;
 	}
 
 }

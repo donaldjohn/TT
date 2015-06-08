@@ -1,6 +1,6 @@
 package mx.prisma.editor.model;
 
-// Generated 29-may-2015 2:01:49 by Hibernate Tools 4.0.0
+// Generated 07-jun-2015 17:10:34 by Hibernate Tools 4.0.0
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +16,11 @@ import javax.persistence.Table;
 @Table(name = "TipoAccion", catalog = "PRISMA")
 public class TipoAccion implements java.io.Serializable {
 
-	private Integer identificador;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Integer id;
 	private String nombre;
 
 	public TipoAccion() {
@@ -28,13 +32,13 @@ public class TipoAccion implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "identificador", unique = true, nullable = false)
-	public Integer getIdentificador() {
-		return this.identificador;
+	@Column(name = "id", unique = true, nullable = false)
+	public Integer getId() {
+		return this.id;
 	}
 
-	public void setIdentificador(Integer identificador) {
-		this.identificador = identificador;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	@Column(name = "nombre", nullable = false, length = 45)

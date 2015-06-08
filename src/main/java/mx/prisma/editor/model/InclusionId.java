@@ -1,11 +1,11 @@
 package mx.prisma.editor.model;
 
-// Generated 05-jun-2015 12:23:22 by Hibernate Tools 4.0.0
+// Generated 07-jun-2015 17:10:34 by Hibernate Tools 4.0.0
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 
 /**
@@ -18,43 +18,36 @@ public class InclusionId implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private CasoUso casodeuso;
-	private CasoUso casodeuso_destino;
+	private CasoUso casoUsoOrigen;
+	private CasoUso casoUsoDestino;
 
 	public InclusionId() {
 	}
 
-	public InclusionId(CasoUso casodeuso, CasoUso casodeuso_destino) {
-		this.casodeuso = casodeuso;
-		this.casodeuso_destino = casodeuso_destino;
-	}
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumns( {
-        @JoinColumn(name = "CasoUsoclave_origen", referencedColumnName = "Elementoclave"),
-        @JoinColumn(name = "CasoUsonumero_origen", referencedColumnName = "Elementonumero"),
-        @JoinColumn(name = "CasoUsonombre_origen", referencedColumnName = "Elementonombre")
-})
-	public CasoUso getCasodeuso() {
-		return casodeuso;
+	public InclusionId(CasoUso casoUsoOrigen, CasoUso casoUsoDestino) {
+		this.casoUsoOrigen = casoUsoOrigen;
+		this.casoUsoDestino = casoUsoDestino;
 	}
 
-	public void setCasodeuso(CasoUso casodeuso) {
-		this.casodeuso = casodeuso;
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "CasoUsoElementoid_origen", referencedColumnName = "Elementoid")
+	public CasoUso getCasoUsoOrigen() {
+		return casoUsoOrigen;
 	}
 
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumns( {
-        @JoinColumn(name = "CasoUsoclave_destino", referencedColumnName = "Elementoclave"),
-        @JoinColumn(name = "CasoUsonumero_destino", referencedColumnName = "Elementonumero"),
-        @JoinColumn(name = "CasoUsonombre_destino", referencedColumnName = "Elementonombre")
-})	
-	public CasoUso getCasodeuso_destino() {
-		return casodeuso_destino;
+	public void setCasoUsoOrigen(CasoUso casoUsoOrigen) {
+		this.casoUsoOrigen = casoUsoOrigen;
 	}
 
-	public void setCasodeuso_destino(CasoUso casodeuso_destino) {
-		this.casodeuso_destino = casodeuso_destino;
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "CasoUsoElementoid_destino", referencedColumnName = "Elementoid")
+	public CasoUso getCasoUsoDestino() {
+		return casoUsoDestino;
 	}
+
+	public void setCasoUsoDestino(CasoUso casoUsoDestino) {
+		this.casoUsoDestino = casoUsoDestino;
+	}
+
 
 }

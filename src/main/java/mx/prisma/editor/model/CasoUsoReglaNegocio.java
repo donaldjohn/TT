@@ -1,6 +1,6 @@
 package mx.prisma.editor.model;
 
-// Generated 29-may-2015 2:01:49 by Hibernate Tools 4.0.0
+// Generated 07-jun-2015 17:10:34 by Hibernate Tools 4.0.0
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -21,29 +21,35 @@ public class CasoUsoReglaNegocio implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private CasoUsoReglaNegocioId id;
+	private int numeroToken;
 
 	public CasoUsoReglaNegocio() {
 	}
 
-	public CasoUsoReglaNegocio(CasoUsoReglaNegocioId id) {
+	public CasoUsoReglaNegocio(CasoUsoReglaNegocioId id, int numeroToken) {
 		this.id = id;
+		this.numeroToken = numeroToken;
 	}
 
 	@EmbeddedId
 	@AttributeOverrides({
-			@AttributeOverride(name = "casoUsoElementoclave", column = @Column(name = "CasoUsoElementoclave", nullable = false, length = 10)),
-			@AttributeOverride(name = "casoUsoElementonumero", column = @Column(name = "CasoUsoElementonumero", nullable = false)),
-			@AttributeOverride(name = "casoUsoElementonombre", column = @Column(name = "CasoUsoElementonombre", nullable = false, length = 45)),
-			@AttributeOverride(name = "casoUsoModuloclave", column = @Column(name = "CasoUsoModuloclave", nullable = false, length = 10)),
-			@AttributeOverride(name = "reglaNegocioElementoclave", column = @Column(name = "ReglaNegocioElementoclave", nullable = false, length = 10)),
-			@AttributeOverride(name = "reglaNegocioElementonumero", column = @Column(name = "ReglaNegocioElementonumero", nullable = false)),
-			@AttributeOverride(name = "reglaNegocioElementonombre", column = @Column(name = "ReglaNegocioElementonombre", nullable = false, length = 45)) })
+			@AttributeOverride(name = "casoUsoElementoid", column = @Column(name = "CasoUsoElementoid", nullable = false)),
+			@AttributeOverride(name = "reglaNegocioElementoid", column = @Column(name = "ReglaNegocioElementoid", nullable = false)) })
 	public CasoUsoReglaNegocioId getId() {
 		return this.id;
 	}
 
 	public void setId(CasoUsoReglaNegocioId id) {
 		this.id = id;
+	}
+
+	@Column(name = "numeroToken", nullable = false)
+	public int getNumeroToken() {
+		return this.numeroToken;
+	}
+
+	public void setNumeroToken(int numeroToken) {
+		this.numeroToken = numeroToken;
 	}
 
 }

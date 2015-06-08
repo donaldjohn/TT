@@ -1,12 +1,11 @@
 package mx.prisma.editor.model;
 
-// Generated 05-jun-2015 12:23:22 by Hibernate Tools 4.0.0
+// Generated 07-jun-2015 17:10:34 by Hibernate Tools 4.0.0
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 
 /**
@@ -19,37 +18,36 @@ public class PostPrecondicionId implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int numero;
-	private CasoUso casodeuso;
+	private int id;
+	private CasoUso casoUso;
 
 	public PostPrecondicionId() {
 	}
 
-	public PostPrecondicionId(int numero, CasoUso casodeuso) {
-		this.numero = numero;
-		this.casodeuso = casodeuso;
+	public PostPrecondicionId(int id, CasoUso casoUso) {
+		this.id = id;
+		this.casoUso = casoUso;
 	}
 
-	@Column(name = "numero", nullable = false)
-	public int getNumero() {
-		return this.numero;
+	@Column(name = "id", nullable = false)
+	public int getId() {
+		return this.id;
 	}
 
-	public void setNumero(int numero) {
-		this.numero = numero;
+	public void setId(int id) {
+		this.id = id;
 	}
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumns( {
-        @JoinColumn(name = "CasoUsoElementoclave", referencedColumnName = "Elementoclave"),
-        @JoinColumn(name = "CasoUsoElementonumero", referencedColumnName = "Elementonumero"),
-        @JoinColumn(name = "CasoUsoElementonombre", referencedColumnName = "Elementonombre")
-})
-	public CasoUso getCasodeuso() {
-		return casodeuso;
+    @JoinColumn(name = "CasoUsoElementoid", referencedColumnName = "Elementoid")
+	public CasoUso getCasoUso() {
+		return casoUso;
 	}
 
-	public void setCasodeuso(CasoUso casodeuso) {
-		this.casodeuso = casodeuso;
+	public void setCasoUso(CasoUso casoUso) {
+		this.casoUso = casoUso;
 	}
+
 	
+
 }

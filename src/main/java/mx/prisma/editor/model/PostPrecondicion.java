@@ -1,17 +1,12 @@
 package mx.prisma.editor.model;
 
-// Generated 05-jun-2015 12:23:22 by Hibernate Tools 4.0.0
+// Generated 07-jun-2015 17:10:34 by Hibernate Tools 4.0.0
 
-import java.util.HashSet;
-import java.util.Set;
-
-
-import javax.persistence.CascadeType;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -27,19 +22,22 @@ public class PostPrecondicion implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private PostPrecondicionId id;
 	private String redaccion;
-	private boolean prepost;
-	private Set<ValorPrePostcondicion> valores= new HashSet<ValorPrePostcondicion>(0);
+	private boolean precondicion;
 
 	public PostPrecondicion() {
 	}
 
-	public PostPrecondicion(PostPrecondicionId id, String redaccion) {
+	public PostPrecondicion(PostPrecondicionId id, String redaccion,
+			boolean precondicion) {
 		this.id = id;
 		this.redaccion = redaccion;
+		this.precondicion = precondicion;
 	}
 
-
 	@EmbeddedId
+	@AttributeOverrides({
+			@AttributeOverride(name = "id", column = @Column(name = "id", nullable = false)),
+			@AttributeOverride(name = "casoUsoElementoid", column = @Column(name = "CasoUsoElementoid", nullable = false)) })
 	public PostPrecondicionId getId() {
 		return this.id;
 	}
@@ -57,22 +55,13 @@ public class PostPrecondicion implements java.io.Serializable {
 		this.redaccion = redaccion;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "id.postPrecondicion", cascade = CascadeType.ALL)
-	public Set<ValorPrePostcondicion> getValores() {
-		return valores;
-	}
-
-	public void setValores(Set<ValorPrePostcondicion> valores) {
-		this.valores = valores;
-	}
-
-	@Column(name = "prepost", nullable = false)
+	@Column(name = "precondicion", nullable = false)
 	public boolean isPrepost() {
-		return prepost;
+		return this.precondicion;
 	}
 
-	public void setPrepost(boolean prepost) {
-		this.prepost = prepost;
+	public void setPrepost(boolean precondicion) {
+		this.precondicion = precondicion;
 	}
 
 }

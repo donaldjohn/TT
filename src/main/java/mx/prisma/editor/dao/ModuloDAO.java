@@ -22,6 +22,7 @@ public class ModuloDAO {
 			session.beginTransaction();
 			Query query = session.createQuery("from Modulo where clave = :clave");
 			query.setParameter("clave", clave);
+			@SuppressWarnings("unchecked")
 			List<Modulo> list = query.list();
 			modulo = (Modulo)list.get(0);
 			session.getTransaction().commit();

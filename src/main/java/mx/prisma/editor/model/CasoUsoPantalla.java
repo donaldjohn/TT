@@ -1,6 +1,6 @@
 package mx.prisma.editor.model;
 
-// Generated 29-may-2015 2:01:49 by Hibernate Tools 4.0.0
+// Generated 07-jun-2015 17:10:34 by Hibernate Tools 4.0.0
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -17,29 +17,35 @@ import javax.persistence.Table;
 public class CasoUsoPantalla implements java.io.Serializable {
 
 	private CasoUsoPantallaId id;
+	private int numeroToken;
 
 	public CasoUsoPantalla() {
 	}
 
-	public CasoUsoPantalla(CasoUsoPantallaId id) {
+	public CasoUsoPantalla(CasoUsoPantallaId id, int numeroToken) {
 		this.id = id;
+		this.numeroToken = numeroToken;
 	}
 
 	@EmbeddedId
 	@AttributeOverrides({
-			@AttributeOverride(name = "casoUsoElementoclave", column = @Column(name = "CasoUsoElementoclave", nullable = false, length = 10)),
-			@AttributeOverride(name = "casoUsoElementonumero", column = @Column(name = "CasoUsoElementonumero", nullable = false)),
-			@AttributeOverride(name = "casoUsoElementonombre", column = @Column(name = "CasoUsoElementonombre", nullable = false, length = 45)),
-			@AttributeOverride(name = "casoUsoModuloclave", column = @Column(name = "CasoUsoModuloclave", nullable = false, length = 10)),
-			@AttributeOverride(name = "pantallaElementoclave", column = @Column(name = "PantallaElementoclave", nullable = false, length = 10)),
-			@AttributeOverride(name = "pantallaElementonumero", column = @Column(name = "PantallaElementonumero", nullable = false)),
-			@AttributeOverride(name = "pantallaElementonombre", column = @Column(name = "PantallaElementonombre", nullable = false, length = 45)) })
+			@AttributeOverride(name = "pantallaElementoid", column = @Column(name = "PantallaElementoid", nullable = false)),
+			@AttributeOverride(name = "casoUsoElementoid", column = @Column(name = "CasoUsoElementoid", nullable = false)) })
 	public CasoUsoPantallaId getId() {
 		return this.id;
 	}
 
 	public void setId(CasoUsoPantallaId id) {
 		this.id = id;
+	}
+
+	@Column(name = "numeroToken", nullable = false)
+	public int getNumeroToken() {
+		return this.numeroToken;
+	}
+
+	public void setNumeroToken(int numeroToken) {
+		this.numeroToken = numeroToken;
 	}
 
 }

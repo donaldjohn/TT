@@ -99,6 +99,7 @@
 			<artifactId>struts2-sitemesh-plugin</artifactId>
 			<version>${struts.version}</version>
 		</dependency>
+		
 	</dependencies>
 	<build>
 		<finalName>prisma</finalName>
