@@ -3,6 +3,7 @@ package mx.prisma.editor.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
@@ -23,62 +24,65 @@ import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Cardinalidad;
 import mx.prisma.editor.model.CasoUso;
-import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorBs;
+import mx.prisma.util.PRISMAException;
 
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "cu" }) })
+		"actionName", "cu" }),
+		@Result(name = "precondicion", location="index-editNew.jsp")
+})
 public class CuCtrl extends ActionSupportPRISMA {
+	//Pruebas
+	private String nombreModulo = "SF";
+	private String claveProy = "SIG";
+	
 	//Modelo
 		private CasoUso model;
 		private int estado;
 		//Lista de registros
 		private List<CasoUso> listCU;
-		//Objeto de negocio
-		private CuBs cuBs;
 		//Catalogos
 		private CatalogoBs catalogoBs;
 		private Modulo modulo;
 		//Clave
 		private final String clave = "CU";
 		public HttpHeaders index() throws Exception {
-			
-			cuBs = new CuBs();
 			modulo = new ModuloDAO().consultarModulo("SF");
-			
-			listCU = cuBs.consultarCasosUsoModulo(modulo);
-			System.out.println("Tamano de lista "+listCU.size());
+			listCU = CuBs.consultarCasosUsoModulo(modulo);
 			return new DefaultHttpHeaders(INDEX);
 		}
 		
-		private void buscarCatalogos() {
-			//Buscar los catálogos necesarios para realizar la operación
+		private int calcularNumero() throws Exception{
+			int num = 0;
+			modulo = CuBs.consultarModulo(nombreModulo);
+			num = new CuBs().calcularNumero(modulo);
 			
-		}
-		
-		private int calcularNumero() {
-			modulo = new ModuloDAO().consultarModulo("SF");
-			System.out.println("MODULO " + modulo.getNombre());
-			int num = new CuBs().calcularNumero(modulo); 
+			//Pruebas
+			System.out.println("MODULO " + modulo.getNombre()); 
 			System.out.println("NUMERO " + num);
+			
 			return num;
 		}
 		
 		public String editNew() {
+			String result = INDEX;
+			try {
+				
+				//idCU.setElementoclave(clave);
+				//idCU.setElementonumero(calcularNumero());
+				result = EDITNEW;
+			} catch (Exception pe) {
+				addActionMessage(getText("MSG10"));
+				pe.printStackTrace();
+			}
 			
 			
-			estado = 0;
-			buscarCatalogos();	
 			
- 
-			String result = EDITNEW;
-			/*if (!(listCardinalidad != null && !listCardinalidad.isEmpty())) {
-				addActionError(getText("Error XD"));
-				result = SUCCESS;
-			}*/
+			//buscarElementos(); //Pendiente: buscar los elementos disponibles y notificar al usuario en caso de que no haya
+			
 			return result;
 		}
 		
@@ -86,40 +90,44 @@ public class CuCtrl extends ActionSupportPRISMA {
 		 * Método para crear casos de uso, si la operación es exitosa muestra el mensaje MSG1
 		 * en caso contrario redirige a la pantalla de registro.
 		 * */
-		public String create() throws Exception {
+		public String create() {
 			
-			String resultado = null;
-			
-			///////////////////////////
-			Modulo modulo = new ModuloDAO().consultarModulo("SF");
-			String claveProyecto = "SIG";
-			
-			
-			//Generacion de la clave
-			
-			
-			//Consulta del estado
-			EstadoElemento estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(1);
-			//Consulta del proyecto
-			Proyecto proyecto = new ProyectoDAO().consultarProyecto(claveProyecto);
-			
-			//Creacion del objeto
-			/*CasoUso cu = new CasoUso(idCU, estadoElemento, proyecto, model.getRedaccionActores(), 
-					model.getRedaccionEntradas(), model.getRedaccionSalidas(), 
-					model.getRedaccionReglasNegocio(), modulo);*/
-			
-			///////////////////////////
-			System.out.println("Datos del cu");
-			//System.out.println("Nombre " + model.getId().getNombre());
-			//System.out.println("Descripcion " + "PENDIENTE");
-			System.out.println("Actores " + model.getRedaccionActores());
-			System.out.println("Entradas " + model.getRedaccionEntradas());
-			System.out.println("Salidas " + model.getRedaccionSalidas());
-			System.out.println("RN " + model.getRedaccionReglasNegocio());
+			String resultado = INDEX;
 			
 			try {
-				new CasoUsoDAO().registrarCasoUso(model);
+				Modulo modulo = CuBs.consultarModulo(nombreModulo);
+							
+				System.out.println("Info clave " + clave);
+				//this.idCU = new CasoUsoId("CU", calcularNumero(), idCU.getElementonombre());
+				//this.idCU = new CasoUsoId("CU", 1, "Registrar alumno");
+				//Generacion de la clave
+				
+				
+				//Consulta del estado
+				//EstadoElemento estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(1);
+				//Consulta del proyecto
+				Proyecto proyecto = CuBs.consultarProyecto(claveProy);
+				
+				//Creacion del objeto
+				/*CasoUso cu = new CasoUso(idCU, estadoElemento, proyecto, model.getRedaccionActores(), 
+						model.getRedaccionEntradas(), model.getRedaccionSalidas(), 
+						model.getRedaccionReglasNegocio(), modulo);*/
+				
+				///////////////////////////
+				System.out.println("Datos del cu");
+				//System.out.println("Nombre " + model.getId().getNombre());
+				//System.out.println("Descripcion " + "PENDIENTE");
+				System.out.println("Actores " + model.getRedaccionActores());
+				System.out.println("Entradas " + model.getRedaccionEntradas());
+				System.out.println("Salidas " + model.getRedaccionSalidas());
+				System.out.println("RN " + model.getRedaccionReglasNegocio());
+				
+				
+				CuBs.registrarCasoUso(model);
 				resultado = SUCCESS;
+			}
+			catch (PRISMAException pe) {
+				addActionMessage(pe.getMessage());
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -130,6 +138,12 @@ public class CuCtrl extends ActionSupportPRISMA {
 				}
 			}
 			return resultado;
+		}
+		
+		@Action(value="/precondicion")
+		public String editNewPrecondicion() {
+			System.out.println("METODO PRECONDICION");
+			return "editNewPostPre";
 		}
 		
 		public static boolean esEditable(Colaborador colaborador, CasoUso cu){
@@ -170,6 +184,7 @@ public class CuCtrl extends ActionSupportPRISMA {
 		}
 
 		
+
 		
 		
 		
