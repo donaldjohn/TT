@@ -264,7 +264,7 @@ public class Test {
 		
 		for(CasoUso cu : cus){
 			System.out.println(cu.getRedaccionActores());
-		}*/
+		}*/ 
 	}
 
 //-------------------------------------------------------------------
