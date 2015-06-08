@@ -29,7 +29,6 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int elementoid;
 	private String redaccionActores;
 	private String redaccionEntradas;
 	private String redaccionSalidas;
@@ -63,14 +62,6 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.redaccionSalidas = redaccionSalidas;
 		this.redaccionReglasNegocio = redaccionReglasNegocio;
 		this.modulo = modulo;
-	}
-
-	public int getElementoid() {
-		return this.elementoid;
-	}
-
-	public void setElementoid(int elementoid) {
-		this.elementoid = elementoid;
 	}
 
 	@Column(name = "redaccionActores", length = 999)

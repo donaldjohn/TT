@@ -27,7 +27,10 @@ public class Entidad extends Elemento implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Set<Atributo> atributos = new HashSet<Atributo>(0);
-
+	
+	public Entidad(){
+		
+	}
 
 	public Entidad(String clave, int numero, String nombre,
 			Proyecto proyecto, String descripcion, EstadoElemento estadoElemento) {

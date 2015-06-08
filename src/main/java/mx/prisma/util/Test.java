@@ -55,7 +55,7 @@ public class Test {
 		
 		//pruebaactualizarParticipantes(); // 01/06/2015
 		
-		pruebaRegistroEntidad(); // 31/05/2015
+		//pruebaRegistroEntidad(); // 31/05/2015
 		//pruebaModificacionEntidad(); // 31/05/2015
 		//pruebaConsultaEntidad(); // 31/05/2015
 		
@@ -67,7 +67,7 @@ public class Test {
 		
 		//pruebaRegistroActor(); // 07/06/2015 OK
 	
-		//pruebaRegistroCasoUso(); //05/06/2015
+		pruebaRegistroCasoUso(); //05/06/2015
 		//pruebaConsultaCasoUso(); //05/06/2015
 
 	}
@@ -212,10 +212,7 @@ public class Test {
 
 	public static void pruebaRegistroCasoUso(){
 
-			String clave = "CU";
-			int numero = 1;
-			String nombre = "Iniciar sesión";
-			//Modulo modulo = new ModuloDAO().consultarModulo("SF");
+			String nombre = "Cerrar sesión";
 			int idEstadoElemento = 1;
 			String claveProyecto = "SIG";
 			String actores = "${ACT.1}, ${ACT.2}";
@@ -229,16 +226,20 @@ public class Test {
 			compilador.procesarTokenIpunt(salidas);
 			compilador.procesarTokenIpunt(reglas);
 	
+			Modulo modulo = new ModuloDAO().consultarModulo("SF");
+			String clave = "CU"+modulo.getClave();
 
-			System.out.println(new ElementoDAO().lastIndexOfElemento(TipoReferencia.ACTOR));
-			//CasoUsoId idCU = new CasoUsoId(clave, numero, nombre);
-			//EstadoElemento estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(idEstadoElemento);
-			//Proyecto proyecto = new ProyectoDAO().consultarProyecto(claveProyecto);
-			
-			//CasoUso cu = new CasoUso(idCU, estadoElemento, proyecto, actores, entradas, salidas, reglas, modulo);
+			EstadoElemento estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(idEstadoElemento);
+			Proyecto proyecto = new ProyectoDAO().consultarProyecto(claveProyecto);
+			int numero = new CasoUsoDAO().lastIndexOfElemento(TipoReferencia.CASOUSO, modulo);
+
+			/*String clave, int numero, String nombre,
+			Proyecto proyecto, String descripcion, EstadoElemento estadoElemento, Modulo modulo) {
+		super(clave, numero, nombre, proyecto, descripcion, estadoElemento*/
+			CasoUso cu = new CasoUso(clave, numero, nombre, proyecto, "Mi CU", estadoElemento, modulo);
 			
 			try {
-				//new CasoUsoDAO().registrarCasoUso(cu);
+				new CasoUsoDAO().registrarCasoUso(cu);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

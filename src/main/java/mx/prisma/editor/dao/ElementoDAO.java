@@ -52,10 +52,10 @@ public class ElementoDAO {
 		String sentencia = "";
 		switch(referencia){
 		case CASOUSO:
-			sentencia = "SELECT MAX(Elementonumero) FROM CasoUso WHERE Moduloid = "+modulo.getId()+"";
+			sentencia = "SELECT MAX(numero) FROM Elemento WHERE clave = 'CU"+modulo.getClave()+"'";
 			break;
 		case INTERFAZUSUARIO:
-			sentencia = "SELECT MAX(Elementonumero) FROM Pantalla WHERE Moduloid = "+modulo.getId()+"";
+			sentencia = "SELECT MAX(numero) FROM Pantalla WHERE clave = 'CU"+modulo.getClave()+"'";
 			break;
 		default:
 			break;
@@ -71,10 +71,10 @@ public class ElementoDAO {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
-		if(results.get(0) != null)
-			return results.get(0);
+		if(results.isEmpty())
+			return 0;
 		else
-			return 1;
+			return results.get(0);
 
 	}
 
@@ -84,25 +84,19 @@ public class ElementoDAO {
 		String sentencia = "";
 		switch(referencia){
 		case ACTOR:
-			sentencia = "SELECT MAX(Elementonumero) FROM Actor";
+			sentencia = "SELECT MAX(numero) FROM Elemento  WHERE clave = 'ACT'";
 			break;
 		case ENTIDAD:
-			sentencia = "SELECT MAX(Elementonumero) FROM Entidad";
+			sentencia = "SELECT MAX(numero) FROM Elemento  WHERE clave = 'ENT'";
 			break;
 		case GLOSARIO:
-			sentencia = "SELECT MAX(Elementonumero) FROM TemrminoGlosario";
-			break;
-		case INTERFAZUSUARIO:
-			sentencia = "SELECT MAX(Elementonumero) FROM Pantalla";
+			sentencia = "SELECT MAX(numero) FROM Elemento  WHERE clave = 'GLS'";
 			break;
 		case MENSAJE:
-			sentencia = "SELECT MAX(Elementonumero) FROM Mensaje";
+			sentencia = "SELECT MAX(numero) FROM Elemento  WHERE clave = 'MSG'";
 			break;
 		case REGLANEGOCIO:
-			sentencia = "SELECT MAX(Elementonumero) FROM ReglaNegocio";
-			break;
-		case TRAYECTORIA:
-			sentencia = "SELECT MAX(Elementonumero) FROM Trayectoria";
+			sentencia = "SELECT MAX(numero) FROM Elemento  WHERE clave = 'RN'";
 			break;
 		default:
 			break;
@@ -118,10 +112,11 @@ public class ElementoDAO {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
-		if(results.get(0) != null)
+
+		if(!results.isEmpty())
 			return results.get(0);
 		else
-			return 1;
+			return 0;
 
 	}
 }
