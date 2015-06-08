@@ -77,7 +77,7 @@ public class ActoresCtrl extends ActionSupportPRISMA {
 		try {
 			//error = actorBs.esValido(model);
 			
-			Actor actor = new Actor(elementoId, estadoElemento, proyecto, this.model.getDescripcion(), cardinalidad, "4");
+			Actor actor = new Actor();
 			new ActorDAO().registrarActor(actor);
 			addActionMessage(getText(
 					"MSG1",

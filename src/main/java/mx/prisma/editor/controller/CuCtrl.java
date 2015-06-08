@@ -23,8 +23,6 @@ import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Cardinalidad;
 import mx.prisma.editor.model.CasoUso;
-import mx.prisma.editor.model.CasoUsoId;
-import mx.prisma.editor.model.ElementoId;
 import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.util.ActionSupportPRISMA;
@@ -46,7 +44,6 @@ public class CuCtrl extends ActionSupportPRISMA {
 		private CatalogoBs catalogoBs;
 		private Modulo modulo;
 		//Clave
-		private CasoUsoId idCU;
 		private final String clave = "CU";
 		public HttpHeaders index() throws Exception {
 			
@@ -55,7 +52,6 @@ public class CuCtrl extends ActionSupportPRISMA {
 			
 			listCU = cuBs.consultarCasosUsoModulo(modulo);
 			System.out.println("Tamano de lista "+listCU.size());
-			System.out.println("NOMBRE "+listCU.get(0).getId().getNombre());
 			return new DefaultHttpHeaders(INDEX);
 		}
 		
@@ -73,12 +69,7 @@ public class CuCtrl extends ActionSupportPRISMA {
 		}
 		
 		public String editNew() {
-			this.idCU = new CasoUsoId();
 			
-			idCU.setElementoclave(clave);
-			idCU.setElementonumero(calcularNumero());
-			System.out.println("PRUEBA " + idCU.getElementoclave());
-			System.out.println("PRUEBA " + idCU.getElementonumero());
 			
 			estado = 0;
 			buscarCatalogos();	
@@ -104,11 +95,9 @@ public class CuCtrl extends ActionSupportPRISMA {
 			Modulo modulo = new ModuloDAO().consultarModulo("SF");
 			String claveProyecto = "SIG";
 			
-			System.out.println("Info clave " + idCU.getElementoclave());
-			System.out.println(idCU.getElementonumero());
+			
 			//Generacion de la clave
-			idCU.setElementonombre(model.getId().getNombre());
-			System.out.println(idCU.getElementonombre());
+			
 			
 			//Consulta del estado
 			EstadoElemento estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(1);
@@ -116,13 +105,13 @@ public class CuCtrl extends ActionSupportPRISMA {
 			Proyecto proyecto = new ProyectoDAO().consultarProyecto(claveProyecto);
 			
 			//Creacion del objeto
-			CasoUso cu = new CasoUso(idCU, estadoElemento, proyecto, model.getRedaccionActores(), 
+			/*CasoUso cu = new CasoUso(idCU, estadoElemento, proyecto, model.getRedaccionActores(), 
 					model.getRedaccionEntradas(), model.getRedaccionSalidas(), 
-					model.getRedaccionReglasNegocio(), modulo);
+					model.getRedaccionReglasNegocio(), modulo);*/
 			
 			///////////////////////////
 			System.out.println("Datos del cu");
-			System.out.println("Nombre " + model.getId().getNombre());
+			//System.out.println("Nombre " + model.getId().getNombre());
 			//System.out.println("Descripcion " + "PENDIENTE");
 			System.out.println("Actores " + model.getRedaccionActores());
 			System.out.println("Entradas " + model.getRedaccionEntradas());
@@ -130,7 +119,7 @@ public class CuCtrl extends ActionSupportPRISMA {
 			System.out.println("RN " + model.getRedaccionReglasNegocio());
 			
 			try {
-				new CasoUsoDAO().registrarCasoUso(cu);
+				new CasoUsoDAO().registrarCasoUso(model);
 				resultado = SUCCESS;
 			}
 			catch (Exception e) {
@@ -181,14 +170,7 @@ public class CuCtrl extends ActionSupportPRISMA {
 			this.listCU = listCU;
 		}
 
-		public CasoUsoId getIdCU() {
-			return idCU;
-		}
-
-		public void setIdCU(CasoUsoId idCU) {
-			this.idCU = idCU;
-		}
-
+		
 		
 		
 		
