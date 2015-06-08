@@ -5,35 +5,40 @@
 		contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" />
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Casos de uso</title>
+<title>Trayectorias</title>
 </head>
 
 <body>
 	
-	<h1><s:property value="%{modulo.clave}" />&#160;<s:property value="%{modulo.nombre}" /></h1>
+	<div class="menuSuperiorCU"><jsp:include page="/content/editor/menus/menuSuperiorCU.jsp" /></div>
+	<h1>Registrar Caso de uso: Trayectorias</h1>
+	
+	
 
 	<s:actionmessage/>
 	<s:actionerror theme="jquery" />
 	
-	<p class="instrucciones"><s:property value="%{modulo.descripcion}" /></p>
-	
-	<h3>Casos de uso</h3>
+	<br/>
 	<s:form theme="simple" onsubmit="return false;">
 	<div class="form">
+	
 	 
 		<table id="gestion" class="tablaGestion" cellspacing="0" width="100%"> 
 			<thead>
 				<tr>
-					<th>Caso de uso</th>
-					<th style="width: 20%;">Estado</th>
-					<th style="width: 20%;">Acciones</th>
+					<th style="width: 40%;">Trayectoria</th>
+					<th style="width: 30%;">Tipo</th>
+					<th style="width: 30%;">Acciones</th>
 				</tr>
 			</thead>
 			<tbody>
-			<s:iterator value="listCU" var="cu">
+			<s:iterator value="listTrayectorias" var="tray">
 				<tr>
 					<td><s:property value="%{id.clave}" />&#160;<s:property value="%{id.numero}" />&#160;<s:property value="%{id.nombre}"/></td>
-					<td><s:property value="%{cu.estadoElemento.nombre}"/></td>
+					<td>
+					<s:if test="%{tray.alternativa}">Alternativa</s:if>
+					<s:else>Principal</s:else>
+					</td>
 					<td align="center">						
 						<!--<s:if
 							test="%{esEditable}">
@@ -77,7 +82,7 @@
 	<br />
 	<div align="center">
 		<button class="boton" formmethod="post"
-			onclick="location.href='${pageContext.request.contextPath}/cu/new'">
+			onclick="location.href='${pageContext.request.contextPath}/trayectorias/new'">
 			<s:text name="Registrar"></s:text>
 		</button>
 	</div>

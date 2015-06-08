@@ -7,10 +7,10 @@
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 			
-<title>Precondición</title>
+<title>Puntos de extensión</title>
 </head>
 <body>
-	<h1>Registrar Precondición</h1>
+	<h1>Registrar Punto de extensión</h1>
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 
@@ -18,7 +18,7 @@
 		action="%{#pageContext.request.contextPath}/cu/new" method="post"
 		class="center" validate="true">
 		<div class="formulario">
-			<div class="tituloFormulario">Información de la Precondición</div>
+			<div class="tituloFormulario">Información del Punto de extensión</div>
 			<table class="seccion">
 				<tr>
 					<td class="label">Identificador</td>
@@ -26,17 +26,20 @@
 							value="%{#idCU.elementonumero}" /></td>
 				</tr>
 				<tr>
-					<td class="label obligatorio"><s:text name="Nombre" /></td>
-					<td><s:textfield name="model.id.nombre"
-							cssErrorClass="input-error" cssClass="inputFormulario" /> <s:fielderror
-							fieldName="model.id.nombre" cssClass="error" theme="jquery" /></td>
+					<td class="label obligatorio"><s:text name="Causa" /></td>
+					<td><s:textarea rows="5" name="model.causa"
+							maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
+							fieldName="model.causa" cssClass="error"
+							theme="jquery" /></td>
 				</tr>
 				<tr>
-					<td class="label obligatorio"><s:text name="Redacción" /></td>
-					<td><s:textarea rows="5" name="model.redaccion"
-							maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
-							fieldName="model.redaccion" cssClass="error"
-							theme="jquery" /></td>
+					<td class="label obligatorio"><s:text name="Caso de uso al que extiende" /></td>
+					<td><s:select name="model.cu" list="listCU"
+							cssErrorClass="input-error" cssClass="inputFormulario" /> <s:fielderror
+							fieldName="model.cu" cssClass="error" theme="jquery" /></td>
+				</tr>
+				<tr>
+					<td class="label obligatorio"><s:text name=""/></td>
 				</tr>
 			</table>
 		</div>

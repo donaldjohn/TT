@@ -10,10 +10,14 @@
 </head>
 <body>
 			<h1>Registrar Caso de uso</h1>
+			<sj:dialog id="mydialog1" title="Local Dialog">
+		    	Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
+		   	</sj:dialog>		
 			
 			<div class="menuSuperiorCU"><jsp:include page="/content/editor/menus/menuSuperiorCU.jsp" /></div>
 			
 			<p class="instrucciones">Ingrese la información solicitada.</p>
+			 
 			
 			<s:form id="frmCU" theme="simple"
 				action="%{#pageContext.request.contextPath}/cu"
@@ -81,40 +85,108 @@
 				<div class="formulario">
 					<div class="tituloFormulario">Precondiciones</div>
 					<br/>
-					<table class="seccion tablaGestion" id="precondiciones">
+					<table class="tablaGestion" id="precondiciones">
 							<thead>
 								<tr>
-									<th>Número</th>
-									<th>Redacción</th>
-									<th>Acciones</th>
+									<th style="width: 20%;">Número</th>
+									<th style="width: 60%;">Redacción</th>
+									<th style="width: 20%;">Acciones</th>
 								</tr>
 							</thead>
 							<tbody>
+							<s:iterator value="listPrecondiciones" var="precondicion">
 								<tr>
-									<td>ho</td>
-									<td>laa</td>
+									<td></td>
+									<td></td>
 									<td></td>
 								</tr>
+							</s:iterator>
+							</tbody>	
+					</table>
+					
+					<br/>
+					<div align="center">
+						<input class="boton" type="button"
+							onclick="location.href='${pageContext.request.contextPath}/precondiciones/new'"
+							value="Registrar" />
+					</div>
+					<br/>
+				</div>
+				<div class="formulario">
+					<div class="tituloFormulario">Postcondiciones</div>
+					<br/>
+					<table class="tablaGestion" id="postcondiciones">
+							<thead>
+								<tr>
+									<th style="width: 20%;">Número</th>
+									<th style="width: 60%;">Redacción</th>
+									<th style="width: 20%;">Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+							<s:iterator value="listPostcondiciones" var="postcondicion">
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
+							</s:iterator>
 							</tbody>	
 					</table>
 					<br/>
 					<div align="center">
-						<input type="button"
-							onclick="location.href='${pageContext.request.contextPath}/precondiciones/new'"
-							value="Nueva precondición" />
+						<input class="boton" type="button"
+							action="precondicion"
+							value="Registrar" />
+					</div>
+					<br/>
+				</div>
+				<div class="formulario">
+					<div class="tituloFormulario">Puntos de extensión</div>
+					<br/>
+					<table class="tablaGestion" id="puntosExtension">
+							<thead>
+								<tr>
+									<th style="width: 30%;">Causa</th>
+									<th style="width: 30%;">Región</th>
+									<th style="width: 30%;">Caso de uso que extiende</th>
+									<th style="width: 10%;">Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								<s:iterator value="listPtosExtension" var="pExtension">
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
+							</s:iterator>
+							</tbody>	
+					</table>
+					<br/>
+					<div align="center">
+						<input class="boton" type="button"
+							action="precondicion"
+							value="Registrar" />
 					</div>
 					<br/>
 				</div>
 				<br/>
 				<div align="center">		
-				<s:submit value="Aceptar" />
+				<s:submit class="boton" value="Aceptar" />
 						
-						<input type="button"
+						<input class="boton" type="button" 
 							onclick="location.href='${pageContext.request.contextPath}/cu'"
 							value="Cancelar" />
 				</div>
-			</s:form>			
-			<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/index-editNew.js"></script>
+			</s:form>
+			      		 
+			<script type="text/javascript" language="javascript" class="init">
+				$(document).ready(function() {
+					$('table.tablaGestion').DataTable();
+				} );
+			</script>			
 </body>
 	</html>
 </jsp:root>

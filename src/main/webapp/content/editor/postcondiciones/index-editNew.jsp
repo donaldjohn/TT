@@ -7,10 +7,10 @@
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 			
-<title>Precondición</title>
+<title>Postcondición</title>
 </head>
 <body>
-	<h1>Registrar Precondición</h1>
+	<h1>Registrar Postcondición</h1>
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 
@@ -18,7 +18,7 @@
 		action="%{#pageContext.request.contextPath}/cu/new" method="post"
 		class="center" validate="true">
 		<div class="formulario">
-			<div class="tituloFormulario">Información de la Precondición</div>
+			<div class="tituloFormulario">Información de la Postcondición</div>
 			<table class="seccion">
 				<tr>
 					<td class="label">Identificador</td>
