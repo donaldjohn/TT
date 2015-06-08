@@ -10,9 +10,7 @@
 </head>
 <body>
 			<h1>Registrar Caso de uso</h1>
-			<sj:dialog id="mydialog1" title="Local Dialog">
-		    	Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
-		   	</sj:dialog>		
+				
 			
 			<div class="menuSuperiorCU"><jsp:include page="/content/editor/menus/menuSuperiorCU.jsp" /></div>
 			
@@ -181,12 +179,22 @@
 							value="Cancelar" />
 				</div>
 			</s:form>
+			
+			<!-- Pop-up precondiciones -->
+			<s:url var="remoteurl" action="%{#pageContext.request.contextPath}precondiciones/new" method="get"/>
+		    <sj:dialog href="%{remoteurl}" id="dA" title="Precondición"  minHeight="300" minWidth="500" modal="true"
+		    position="center" draggable="true" />
+		   	<sj:a openDialog="dA" button="true">
+		   	Precondiciones
+		   	</sj:a>
+			
 			      		 
 			<script type="text/javascript" language="javascript" class="init">
 				$(document).ready(function() {
 					$('table.tablaGestion').DataTable();
 				} );
-			</script>			
+			</script>
+						
 </body>
 	</html>
 </jsp:root>

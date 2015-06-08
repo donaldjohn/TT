@@ -11152,7 +11152,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": "Mostrando _START_ de _END_ of _TOTAL_ registros.",
+			"sInfo": "Mostrando _START_ hasta _END_ de un total de _TOTAL_ registros.",
 	
 	
 			/**

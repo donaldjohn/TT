@@ -2,12 +2,18 @@
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
 	xmlns:decorator="http://www.opensymphony.com/sitemesh/decorator"
 	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:s="/struts-tags">
+	xmlns:s="/struts-tags"
+	xmlns:sj="/struts-jquery-tags">
 	
 	<jsp:directive.page language="java"
 		contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" />
 	<html>
 <head>
+<s:url id="urlRutaContexto"
+	value="%{pageContext.request.contextPath}/resources/template/themes"
+	includeContext="true" />
+<sj:head jqueryui="true" jquerytheme="aristo-theme"
+	customBasepath="%{urlRutaContexto}" locale="es" />
 <title>PRISMA | <decorator:title default="Bienvenido"/></title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet"
@@ -17,11 +23,12 @@
 
 <decorator:head />
 <![CDATA[
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/DataTables-1.10.7/media/js/jquery.js"></script>
+	<!--<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/DataTables-1.10.7/media/js/jquery.js"></script>-->
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/menu.js"></script>
 	
 ]]>
+
 </head>
 <body>
 	<div class="container">
