@@ -17,19 +17,23 @@ public class ModuloDAO {
 	}
 	public Modulo consultarModulo(String clave) {
 		Modulo modulo = null;
-
 		try {
 			session.beginTransaction();
 			Query query = session.createQuery("from Modulo where clave = :clave");
 			query.setParameter("clave", clave);
 			@SuppressWarnings("unchecked")
-			List<Modulo> list = query.list();
-			modulo = (Modulo)list.get(0);
+			List<Modulo> list  = query.list();
+			if(list.isEmpty()){
+				modulo = null;
+			} else {
+				modulo = list.get(0);
+			}
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
+
 		return modulo;
 
 	}
