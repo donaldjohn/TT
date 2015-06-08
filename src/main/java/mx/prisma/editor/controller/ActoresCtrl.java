@@ -67,7 +67,7 @@ public class ActoresCtrl extends ActionSupportPRISMA {
 		int idCardinalidad = 3;
 		int idEstadoElemento = 1;
 		String claveProyecto = "SIG";
-		
+		 
 		EstadoElemento estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(idEstadoElemento);
 		Cardinalidad cardinalidad = new CardinalidadDAO().consultarCardinalidad(idCardinalidad);
 		Proyecto proyecto = new ProyectoDAO().consultarProyecto(claveProyecto);
