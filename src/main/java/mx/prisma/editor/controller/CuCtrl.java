@@ -34,7 +34,6 @@ import mx.prisma.util.ErrorBs;
 public class CuCtrl extends ActionSupportPRISMA {
 	//Modelo
 		private CasoUso model;
-		
 		private int estado;
 		//Lista de registros
 		private List<CasoUso> listCU;
