@@ -24,7 +24,7 @@ public class CasoUsoDAO extends ElementoDAO {
 
 		try {
 			session.beginTransaction();
-			Query query = session.createQuery("from CasoUso where Moduloclave = :modulo");
+			Query query = session.createQuery("from CasoUso where Moduloid = :modulo");
 			query.setParameter("modulo", modulo.getClave());
 			casosdeuso = query.list();
 			session.getTransaction().commit();
