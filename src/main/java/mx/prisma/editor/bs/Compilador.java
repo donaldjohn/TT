@@ -53,7 +53,6 @@ public class Compilador {
 				break;
 			case ACTOR:
 				Actor actor = new ActorDAO().consultarActor(Integer.parseInt(segmentos.get(1)));
-				System.out.println(actor.getId().getNombre());
 				break;
 			case CASOUSO:
 				break;

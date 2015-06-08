@@ -27,9 +27,9 @@ public class CuBs {
 	public static boolean esEditable(Colaborador colaborador, CasoUso cu) {
 		// TODO Auto-generated method stub
 		//Cualquiera lo edita
-		if(cu.getEstadoElemento().getIdentificador() == 2 || cu.getEstadoElemento().getIdentificador() == 6){
+		/*if(cu.getEstadoElemento().getIdentificador() == 2 || cu.getEstadoElemento().getIdentificador() == 6){
 			return true;
-		}
+		}*/
 		//Solamente quien lo tiene asignado
 		//PENDIENTE
 		//if(cu.getEstadoElemento().getIdentificador() == 3 )

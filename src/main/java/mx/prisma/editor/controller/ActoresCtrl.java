@@ -13,7 +13,6 @@ import mx.prisma.editor.dao.CardinalidadDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Cardinalidad;
-import mx.prisma.editor.model.ElementoId;
 import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.util.ErrorBs;
 import mx.prisma.util.ActionSupportPRISMA;
@@ -49,9 +48,9 @@ public class ActoresCtrl extends ActionSupportPRISMA {
 		Cardinalidad cardinalidad = new CardinalidadDAO().consultarCardinalidad(idCardinalidad);
 		Proyecto proyecto = new ProyectoDAO().consultarProyecto(claveProyecto);
 				
+
 		listActores = new ArrayList<Actor>();
-		listActores.add(new Actor(new ElementoId("ACT", 1, "Profesor"), estadoElemento, proyecto, "Encargado de impartir clases en la escuela.", cardinalidad, "4"));
-		listActores.add(new Actor(new ElementoId("ACT", 2, "Administrador"), estadoElemento2, proyecto, "Encargado de dar de alta a las escuelas.", cardinalidad, "4"));
+		listActores.add(new Actor("ACT", 1, "Profesor", proyecto, "Encargado de impartir clases en la escuela.", estadoElemento, cardinalidad));
 		System.out.println("Tamano listActores"+listActores.size());
 		return new DefaultHttpHeaders(INDEX);
 	}
@@ -68,7 +67,7 @@ public class ActoresCtrl extends ActionSupportPRISMA {
 		int idCardinalidad = 3;
 		int idEstadoElemento = 1;
 		String claveProyecto = "SIG";
-		ElementoId elementoId = new ElementoId(clave, numero, nombre);
+		
 		EstadoElemento estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(idEstadoElemento);
 		Cardinalidad cardinalidad = new CardinalidadDAO().consultarCardinalidad(idCardinalidad);
 		Proyecto proyecto = new ProyectoDAO().consultarProyecto(claveProyecto);
