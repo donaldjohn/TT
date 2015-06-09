@@ -180,6 +180,7 @@
 
 	<s:url var="remoteurl" action="${pageContext.request.contextPath}/precondiciones/new"/>
 	
+	
 	<sj:dialog href="%{remoteurl}"
 		id="precondicionDialog" title="Registrar Precondición" minHeight="400" minWidth="900"
 		modal="true" position="center" draggable="true" autoOpen="false"/>
