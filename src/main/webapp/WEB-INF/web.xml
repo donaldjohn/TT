@@ -12,6 +12,8 @@
     <filter-name>sitemesh</filter-name>
     <filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
   </filter>
+
+	
   <filter-mapping>
     <filter-name>struts2</filter-name>
     <url-pattern>/*</url-pattern>
@@ -24,8 +26,6 @@
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
   </filter-mapping>
-  <listener>
-    <listener-class>org.apache.struts2.dispatcher.ng.listener.StrutsListener</listener-class>
-  </listener>
+  	
   
 </web-app>

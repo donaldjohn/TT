@@ -32,7 +32,7 @@ import mx.prisma.util.PRISMAException;
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 		"actionName", "cu" }),
-		@Result(name = "precondicion", location="index-editNew.jsp")
+		@Result(name = "editNewPrecondicion", location="index-editNew-precondicion.jsp")
 })
 public class CuCtrl extends ActionSupportPRISMA {
 	//Pruebas
@@ -41,6 +41,7 @@ public class CuCtrl extends ActionSupportPRISMA {
 	
 	//Modelo
 		private CasoUso model;
+		
 		private int estado;
 		//Lista de registros
 		private List<CasoUso> listCU;
@@ -48,7 +49,8 @@ public class CuCtrl extends ActionSupportPRISMA {
 		private CatalogoBs catalogoBs;
 		private Modulo modulo;
 		//Clave
-		private final String clave = "CU";
+		private final String claveCU = "CU";
+		private int numeroCU;
 		public HttpHeaders index() throws Exception {
 			modulo = new ModuloDAO().consultarModulo("SF");
 			listCU = CuBs.consultarCasosUsoModulo(modulo);
@@ -70,9 +72,7 @@ public class CuCtrl extends ActionSupportPRISMA {
 		public String editNew() {
 			String result = INDEX;
 			try {
-				
-				//idCU.setElementoclave(clave);
-				//idCU.setElementonumero(calcularNumero());
+				numeroCU = calcularNumero();
 				result = EDITNEW;
 			} catch (Exception pe) {
 				addActionMessage(getText("MSG10"));
@@ -97,7 +97,7 @@ public class CuCtrl extends ActionSupportPRISMA {
 			try {
 				Modulo modulo = CuBs.consultarModulo(nombreModulo);
 							
-				System.out.println("Info clave " + clave);
+				System.out.println("Info clave " + claveCU);
 				//this.idCU = new CasoUsoId("CU", calcularNumero(), idCU.getElementonombre());
 				//this.idCU = new CasoUsoId("CU", 1, "Registrar alumno");
 				//Generacion de la clave
@@ -115,8 +115,8 @@ public class CuCtrl extends ActionSupportPRISMA {
 				
 				///////////////////////////
 				System.out.println("Datos del cu");
-				//System.out.println("Nombre " + model.getId().getNombre());
-				//System.out.println("Descripcion " + "PENDIENTE");
+				System.out.println("Nombre " + model.getNombre());
+				System.out.println("Descripcion " + model.getDescripcion());
 				System.out.println("Actores " + model.getRedaccionActores());
 				System.out.println("Entradas " + model.getRedaccionEntradas());
 				System.out.println("Salidas " + model.getRedaccionSalidas());
@@ -143,7 +143,7 @@ public class CuCtrl extends ActionSupportPRISMA {
 		@Action(value="/precondicion")
 		public String editNewPrecondicion() {
 			System.out.println("METODO PRECONDICION");
-			return "editNewPostPre";
+			return "editNewPrecondicion";
 		}
 		
 		public static boolean esEditable(Colaborador colaborador, CasoUso cu){
@@ -181,6 +181,18 @@ public class CuCtrl extends ActionSupportPRISMA {
 
 		public void setListCU(List<CasoUso> listCU) {
 			this.listCU = listCU;
+		}
+
+		public int getNumeroCU() {
+			return numeroCU;
+		}
+
+		public void setNumeroCU(int numeroCU) {
+			this.numeroCU = numeroCU;
+		}
+
+		public String getClaveCU() {
+			return claveCU;
 		}
 
 		

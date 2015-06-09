@@ -21,6 +21,7 @@ public class PrecondicionesCtrl extends ActionSupportPRISMA{
 	private int numero;
 	private boolean precondicion;
 	public String editNew() {
+		System.out.println("DESPUES DE CALCULAR EL NUMERO");
 		String result = EDITNEW;
 		precondicion = true;
 		try {
@@ -28,7 +29,7 @@ public class PrecondicionesCtrl extends ActionSupportPRISMA{
 		
 		} catch(Exception e) {
 			e.printStackTrace();
-			result = SUCCESS;
+			//result = SUCCESS;
 		}
 			
 		return result;

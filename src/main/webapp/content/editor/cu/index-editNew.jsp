@@ -31,16 +31,24 @@
 				<tr>
 					<td class="label">Identificador</td>
 					<td class="labelDerecho"><s:property
-							value="%{idCU.elementoclave}" />&#160;<s:property
-							value="%{idCU.elementonumero}" /></td>
+							value="claveCU" />&#160;<s:property
+							value="numeroCU" /></td>
+					<s:hidden value="claveCU" name="model.clave"/>
+					<s:hidden value="numeroCU" name="model.numero"/>
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="Nombre" /></td>
-					<td><s:textfield name="model.id.nombre"
+					<td><s:textfield name="model.nombre"
 							cssErrorClass="input-error" cssClass="inputFormulario" /> <s:fielderror
 							fieldName="model.id.nombre" cssClass="error" theme="jquery" /></td>
 				</tr>
-
+				<tr>
+						<td class="label obligatorio"><s:text name="Descripción" /></td>
+						<td><s:textarea rows="5" name="model.descripcion"
+								maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
+								fieldName="model.descripcion" cssClass="error"
+								theme="jquery" /></td>
+					</tr>
 			</table>
 		</div>
 		<div class="formulario">
@@ -178,12 +186,14 @@
 		</div>
 	</s:form>
 
-	<s:url var="remoteurl" action="${pageContext.request.contextPath}/precondiciones/new"/>
-	
-	
+	<s:url var="remoteurl" action="precondicion">
+	<s:property value="%{#remoteurl}"/>
+	</s:url>
 	<sj:dialog href="%{remoteurl}"
 		id="precondicionDialog" title="Registrar Precondición" minHeight="400" minWidth="900"
 		modal="true" position="center" draggable="true" autoOpen="false"/>
+	
+	
 	
 	
 </body>

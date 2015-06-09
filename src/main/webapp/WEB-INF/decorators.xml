@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <decorators defaultdir="/resources/decorators">
 	<excludes>
+		<pattern>/editor/postcondiciones*</pattern>
+		<pattern>/editor/precondiciones*</pattern>
+		<pattern>/editor/ptosExtension*</pattern>
 	</excludes>
 	<decorator name="layout" page="layout.jsp">
 		<pattern>/*</pattern>
