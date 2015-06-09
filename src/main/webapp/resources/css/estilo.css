@@ -371,3 +371,7 @@ textarea {
 	min-height:30px; 
 	min-width:500px;
 }
+
+textfield {
+	vertical-align: top; 
+}

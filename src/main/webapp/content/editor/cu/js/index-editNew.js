@@ -1,4 +1,11 @@
 $(document).ready(function() {
-	console.log("listo!");
-	$('#tablaPrecondicion').DataTable();
-} );
+					$('table.tablaGestion').DataTable();
+				} );
+
+function agregarPrecondicion(){
+	$('#precondicionDialog').dialog('close');
+};
+  
+function cancelarAgregar(){
+	$('#precondicionDialog').dialog('close');
+};
