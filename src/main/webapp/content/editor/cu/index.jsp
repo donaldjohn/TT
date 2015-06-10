@@ -12,7 +12,7 @@
 	
 	<h1><s:property value="%{modulo.clave}" />&#160;<s:property value="%{modulo.nombre}" /></h1>
 
-	<s:actionmessage/>
+	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
 	
 	<p class="instrucciones"><s:property value="%{modulo.descripcion}" /></p>

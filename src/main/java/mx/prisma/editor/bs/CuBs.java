@@ -6,16 +6,23 @@ import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.dao.CasoUsoDAO;
+import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.util.PRISMAException;
 
 public class CuBs {
 	
+	
 	public static List<CasoUso> consultarCasosUsoModulo(Modulo modulo){
-		modulo = new ModuloDAO().consultarModulo("SF");
+		
 		List<CasoUso> cus = new CasoUsoDAO().consultarCasosUso(modulo);
+		if(cus == null) {
+			throw new PRISMAException("No se pueden consultar los casos de uso del modulo", "MSG13");
+		}
+		System.out.println("NUMERO DE CASOS DE USO " + cus.size());
 		return cus;
 	}
 	
@@ -41,13 +48,14 @@ public class CuBs {
 		return false;
 	}
 
-	public int calcularNumero(Modulo modulo) throws Exception{
+	public static int calcularNumero(Modulo modulo) throws Exception{
 		// TODO Auto-generated method stub
 		int numero = -1;
+		System.out.println("NOMBRE MODULO NO NULO " + modulo.getNombre());
 		numero = new CasoUsoDAO().lastIndexOfCasoUso(modulo) + 1;
 		
 		if(numero == -1) {
-			throw new PRISMAException("No se puede calcular el numero de la clave");
+			throw new PRISMAException("No se puede calcular el numero de la clave", "MSG13");
 		}
 			
 		return numero;
@@ -62,7 +70,7 @@ public class CuBs {
 	public static Modulo consultarModulo(String nombreModulo) throws Exception{
 		Modulo modulo = new ModuloDAO().consultarModulo(nombreModulo);
 		if(modulo == null) {
-			throw new PRISMAException("No se puede consultar el modulo");
+			throw new PRISMAException("No se puede consultar el modulo", "MSG13");
 		}
 		return modulo;
 	}
@@ -70,15 +78,32 @@ public class CuBs {
 	public static Proyecto consultarProyecto(String claveProy) throws Exception{
 		Proyecto proyecto = new ProyectoDAO().consultarProyecto(claveProy);
 		if(proyecto == null) {
-			throw new PRISMAException("No se puede consultar el proyecto");
+			throw new PRISMAException("No se puede consultar el proyecto", "MSG13");
 		}
 		
 		return proyecto;
 	}
 
-	public static void registrarCasoUso(CasoUso cu) throws Exception{
+	public static void registrarCasoUso(CasoUso cu){
+		try {
+			new CasoUsoDAO().registrarCasoUso(cu);
 		
-		new CasoUsoDAO().registrarCasoUso(cu);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static EstadoElemento consultarEstadoElemento(int i) throws Exception{
+		EstadoElemento estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(i);
+		if(estadoElemento == null) {
+			throw new PRISMAException("No se puede consultar el estado del elemento", "MSG13");
+		}
+		return estadoElemento;
+	}
+
+	public static String calcularClave(String cModulo) {
+		// TODO Auto-generated method stub
+		return "CU" + cModulo;
 	}
 	
 }

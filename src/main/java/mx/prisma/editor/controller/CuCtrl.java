@@ -1,203 +1,181 @@
 package mx.prisma.editor.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.struts2.convention.annotation.Action;
+import mx.prisma.admin.model.Colaborador;
+import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.bs.CuBs;
+import mx.prisma.editor.dao.EstadoElementoDAO;
+import mx.prisma.editor.dao.ModuloDAO;
+import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.EstadoElemento;
+import mx.prisma.editor.model.Modulo;
+import mx.prisma.util.ActionSupportPRISMA;
+import mx.prisma.util.PRISMAException;
+
+import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
-import mx.prisma.admin.dao.ProyectoDAO;
-import mx.prisma.admin.model.Colaborador;
-import mx.prisma.admin.model.Proyecto;
-import mx.prisma.editor.bs.CatalogoBs;
-import mx.prisma.editor.bs.CuBs;
-import mx.prisma.editor.bs.ElementoBs;
-import mx.prisma.editor.dao.ActorDAO;
-import mx.prisma.editor.dao.CardinalidadDAO;
-import mx.prisma.editor.dao.CasoUsoDAO;
-import mx.prisma.editor.dao.EstadoElementoDAO;
-import mx.prisma.editor.dao.ModuloDAO;
-import mx.prisma.editor.model.Actor;
-import mx.prisma.editor.model.Cardinalidad;
-import mx.prisma.editor.model.CasoUso;
-import mx.prisma.editor.model.Modulo;
-import mx.prisma.util.ActionSupportPRISMA;
-import mx.prisma.util.ErrorBs;
-import mx.prisma.util.PRISMAException;
-
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "cu" }),
-		@Result(name = "editNewPrecondicion", location="index-editNew-precondicion.jsp")
-})
+		"actionName", "cu" }) })
 public class CuCtrl extends ActionSupportPRISMA {
-	//Pruebas
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	// Pruebas
 	private String nombreModulo = "SF";
 	private String claveProy = "SIG";
+
+	// Modelo
+	private CasoUso model;
+
+	private int estado;
+	// Lista de registros
+	private List<CasoUso> listCU;
+
+	private Modulo modulo;
+	// Clave
+	private String claveCU;
+	private int numeroCU;
+
+	public HttpHeaders index() {
+		try {
+		modulo = new ModuloDAO().consultarModulo("SF");
+		listCU = CuBs.consultarCasosUsoModulo(modulo);
+		} catch (PRISMAException pe) {
+			System.err.println(pe.getMessage());
+			addActionError(getText(pe.getIdMensaje()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new DefaultHttpHeaders(INDEX);
+	}
+
 	
-	//Modelo
-		private CasoUso model;
+
+	/**
+	 * Método para crear casos de uso, si la operación es exitosa muestra el
+	 * mensaje MSG1 en caso contrario redirige a la pantalla de registro.
+	 * */
+	public String create() {
+		String resultado = null;
 		
-		private int estado;
-		//Lista de registros
-		private List<CasoUso> listCU;
-		//Catalogos
-		private CatalogoBs catalogoBs;
-		private Modulo modulo;
-		//Clave
-		private final String claveCU = "CU";
-		private int numeroCU;
-		public HttpHeaders index() throws Exception {
-			modulo = new ModuloDAO().consultarModulo("SF");
-			listCU = CuBs.consultarCasosUsoModulo(modulo);
-			return new DefaultHttpHeaders(INDEX);
-		}
-		
-		private int calcularNumero() throws Exception{
-			int num = 0;
+		try {
+					
+			// ///////////////////////// Pruebas
+/*			System.out.println("Datos del cu");
+			System.out.println("Nombre " + model.getNombre());
+			System.out.println("Descripcion " + model.getDescripcion());
+			System.out.println("Actores " + model.getRedaccionActores());
+			System.out.println("Entradas " + model.getRedaccionEntradas());
+			System.out.println("Salidas " + model.getRedaccionSalidas());
+			System.out.println("RN " + model.getRedaccionReglasNegocio());*/
+			// ///////////////////////// Fin Pruebas
+			
+			//Creación del modelo
+			Proyecto proyecto = CuBs.consultarProyecto(claveProy);
 			modulo = CuBs.consultarModulo(nombreModulo);
-			num = new CuBs().calcularNumero(modulo);
+			EstadoElemento estadoElemento = CuBs.consultarEstadoElemento(1);
 			
-			//Pruebas
-			System.out.println("MODULO " + modulo.getNombre()); 
-			System.out.println("NUMERO " + num);
-			
-			return num;
-		}
-		
-		public String editNew() {
-			String result = INDEX;
-			try {
-				numeroCU = calcularNumero();
-				result = EDITNEW;
-			} catch (Exception pe) {
-				addActionMessage(getText("MSG10"));
-				pe.printStackTrace();
-			}
-			
-			
-			
-			//buscarElementos(); //Pendiente: buscar los elementos disponibles y notificar al usuario en caso de que no haya
-			
-			return result;
-		}
-		
-		/**
-		 * Método para crear casos de uso, si la operación es exitosa muestra el mensaje MSG1
-		 * en caso contrario redirige a la pantalla de registro.
-		 * */
-		public String create() {
-			
-			String resultado = INDEX;
-			
-			try {
-				Modulo modulo = CuBs.consultarModulo(nombreModulo);
-							
-				System.out.println("Info clave " + claveCU);
-				//this.idCU = new CasoUsoId("CU", calcularNumero(), idCU.getElementonombre());
-				//this.idCU = new CasoUsoId("CU", 1, "Registrar alumno");
-				//Generacion de la clave
-				
-				
-				//Consulta del estado
-				//EstadoElemento estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(1);
-				//Consulta del proyecto
-				Proyecto proyecto = CuBs.consultarProyecto(claveProy);
-				
-				//Creacion del objeto
-				/*CasoUso cu = new CasoUso(idCU, estadoElemento, proyecto, model.getRedaccionActores(), 
-						model.getRedaccionEntradas(), model.getRedaccionSalidas(), 
-						model.getRedaccionReglasNegocio(), modulo);*/
-				
-				///////////////////////////
-				System.out.println("Datos del cu");
-				System.out.println("Nombre " + model.getNombre());
-				System.out.println("Descripcion " + model.getDescripcion());
-				System.out.println("Actores " + model.getRedaccionActores());
-				System.out.println("Entradas " + model.getRedaccionEntradas());
-				System.out.println("Salidas " + model.getRedaccionSalidas());
-				System.out.println("RN " + model.getRedaccionReglasNegocio());
-				
-				
-				CuBs.registrarCasoUso(model);
-				resultado = SUCCESS;
-			}
-			catch (PRISMAException pe) {
-				addActionMessage(pe.getMessage());
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-				addActionMessage(getText("MSG10"));
-			} finally {
-				if (SUCCESS.equals(resultado)) {
-					addActionMessage("Registro exitoso");
-				}
-			}
-			return resultado;
-		}
-		
-		@Action(value="/precondicion")
-		public String editNewPrecondicion() {
-			System.out.println("METODO PRECONDICION");
-			return "editNewPrecondicion";
-		}
-		
-		public static boolean esEditable(Colaborador colaborador, CasoUso cu){
-			CuBs.esEditable(colaborador, cu);
-			return true;
-		}
+			model.setProyecto(proyecto);
+			model.setModulo(modulo);
+			model.setEstadoElemento(estadoElemento);
 
-		public int getEstado() {
-			return estado;
+			CuBs.registrarCasoUso(model);
+			addActionMessage(getText(
+					"MSG1",
+					new String[] { "El", "caso de uso", "registrado" }));
+			resultado = SUCCESS;
+		} catch (PRISMAException pe) {
+			System.err.println(pe.getMessage());
+			addActionError(pe.getIdMensaje());
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError(getText("MSG10"));
+			resultado = EDITNEW;
+		} 
+		return resultado;
+	}
+	
+	public String editNew() {
+		String result = null;
+		try {
+			modulo = CuBs.consultarModulo(nombreModulo);
+			System.out.println("DESDE EDIT NEW MODULO: " + modulo.getNombre());
+			numeroCU = CuBs.calcularNumero(modulo);
+			claveCU = CuBs.calcularClave(modulo.getClave());
+			System.out.println("CLAVE DEL CU " + claveCU);
+			result = EDITNEW;
+		} catch (PRISMAException pe) {
+			System.err.println(pe.getMessage());
+			addActionError(getText(pe.getIdMensaje()));
+			result = INDEX;
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError(getText("MSG13"));
+			result = INDEX;
 		}
+		// buscarElementos(); //Pendiente: buscar los elementos disponibles y
+		// notificar al usuario en caso de que no haya
 
-		public void setEstado(int estado) {
-			this.estado = estado;
-		}
+		return result;
+	}
 
-		public CasoUso getModel() {
-			return model;
-		}
+	
 
-		public void setModel(CasoUso model) {
-			this.model = model;
-		}
+	public static boolean esEditable(Colaborador colaborador, CasoUso cu) {
+		CuBs.esEditable(colaborador, cu);
+		return true;
+	}
 
-		public Modulo getModulo() {
-			return modulo;
-		}
+	public int getEstado() {
+		return estado;
+	}
 
-		public void setModulo(Modulo modulo) {
-			this.modulo = modulo;
-		}
+	public void setEstado(int estado) {
+		this.estado = estado;
+	}
 
-		public List<CasoUso> getListCU() {
-			return listCU;
-		}
+	public CasoUso getModel() {
+		return model;
+	}
 
-		public void setListCU(List<CasoUso> listCU) {
-			this.listCU = listCU;
-		}
+	public void setModel(CasoUso model) {
+		this.model = model;
+	}
 
-		public int getNumeroCU() {
-			return numeroCU;
-		}
+	public Modulo getModulo() {
+		return modulo;
+	}
 
-		public void setNumeroCU(int numeroCU) {
-			this.numeroCU = numeroCU;
-		}
+	public void setModulo(Modulo modulo) {
+		this.modulo = modulo;
+	}
 
-		public String getClaveCU() {
-			return claveCU;
-		}
+	public List<CasoUso> getListCU() {
+		return listCU;
+	}
 
-		
+	public void setListCU(List<CasoUso> listCU) {
+		this.listCU = listCU;
+	}
 
-		
-		
-		
+	public int getNumeroCU() {
+		return numeroCU;
+	}
+
+	public void setNumeroCU(int numeroCU) {
+		this.numeroCU = numeroCU;
+	}
+
+	public String getClaveCU() {
+		return claveCU;
+	}
+
 }
