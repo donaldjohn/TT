@@ -117,7 +117,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso>{
 				model.setModulo(modulo);
 				model.setEstadoElemento(estadoElemento);
 						
-			
 				model.setNumero(CuBs.calcularNumero(modulo));
 				model.setClave(CuBs.calcularClave(modulo.getClave()));
 				model.setNombre(CuBs.calcularNombre(modulo.getId()));
