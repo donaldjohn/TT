@@ -1,5 +1,7 @@
 package mx.prisma.editor.dao;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -8,7 +10,6 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import mx.prisma.editor.bs.Referencia.TipoReferencia;
-import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.util.HibernateUtil;
@@ -32,6 +33,18 @@ public class ElementoDAO {
 		}
 	}
 
+	public void modificarElemento(Elemento elemento) {
+
+		try {
+			session.beginTransaction();
+			session.update(elemento);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+	}
+	
 	public Elemento consultarElemento(int id) {
 		Elemento elemento = null;
 
@@ -146,6 +159,9 @@ public class ElementoDAO {
 	public int lastIndexCUsinTitulo(int claveModulo) {
 		List<String> results = null;
 		String auxiliar = "";
+		int numero;
+		ArrayList<Integer> numeros = new ArrayList<Integer>();
+		
 		String sentencia = "SELECT nombre FROM Elemento INNER JOIN CasoUso ON  Elemento.id = CasoUso.Elementoid AND Elemento.nombre LIKE 'Caso de uso%' AND CasoUso.Moduloid = "
 				+ claveModulo + ";";
 		try {
@@ -158,19 +174,17 @@ public class ElementoDAO {
 			session.getTransaction().rollback();
 		}
 
-		if (results.isEmpty())
-			return 0;
-		else if (results.get(0) != null) {
-			auxiliar = results.get(0).substring(12);
+		for(String cadena : results){
+			auxiliar = cadena.substring(12);
 			try{
-			Integer i = Integer.parseInt(auxiliar);
-			return i;
-			} catch(NumberFormatException e){
-				return 0;
-			}
-
-		} else
-			return 0;
-
+				numero = Integer.parseInt(auxiliar);
+				numeros.add(numero*-1);
+			} catch (NumberFormatException e){
+				e.printStackTrace();
+			}			
+		}
+		
+		Collections.sort(numeros);
+		return numeros.get(0)*-1;
 	}
 }
