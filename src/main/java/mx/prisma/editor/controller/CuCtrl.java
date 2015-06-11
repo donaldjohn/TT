@@ -13,7 +13,9 @@ import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.PRISMAException;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
+import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
@@ -28,7 +30,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso>{
 	 */
 	private static final long serialVersionUID = 1L;
 	// Pruebas
-	private String nombreModulo = "SF";
+	private String claveModulo = "SF";
 	private String claveProy = "SIG";
 
 	// Modelo
@@ -38,9 +40,9 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso>{
 	// Lista de registros
 	private List<CasoUso> listCU;
 
-	private Modulo modulo;
+	
+	private boolean redireccionAutomatica = false;
 
-	@Action("/redireccionarTrayectorias")
 	public String redireccionarTrayectorias() {
 		String result = null;
 		System.out.println("REDIRECCIONAR TRAYECTORIAS");
@@ -48,10 +50,12 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso>{
 	}
 	
 	public HttpHeaders index() {
+		Modulo modulo;
 		try {
-			modulo = new ModuloDAO().consultarModulo("SF");
-			System.out.println("DESDE INDEX MODULO: " + modulo.getNombre());
-			listCU = CuBs.consultarCasosUsoModulo(modulo);
+			System.out.println("CLAVE DEL MODULO: " + claveModulo);
+			modulo = new ModuloDAO().consultarModulo(claveModulo);
+			System.out.println("DESDE INDEX MODULO " + modulo);
+			//listCU = CuBs.consultarCasosUsoModulo(modulo);
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
 			addActionError(getText(pe.getIdMensaje()));
@@ -81,20 +85,11 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso>{
 			 * model.getRedaccionReglasNegocio());
 			 */
 			// ///////////////////////// Fin Pruebas
-			// Creación del modelo
-			Proyecto proyecto = CuBs.consultarProyecto(claveProy);
-			modulo = CuBs.consultarModulo(nombreModulo);
-			EstadoElemento estadoElemento = CuBs.consultarEstadoElemento(1);
 			
-			model.setProyecto(proyecto);
-			model.setModulo(modulo);
-			model.setEstadoElemento(estadoElemento);
-
+			//Solamente se actualiza el modelo debido a que ya se registr
 			CuBs.registrarCasoUso(model);
-			System.out.println("REGISTRO EXITOSO");
-			addActionMessage(getText("MSG1", new String[] { "El",
-					"caso de uso", "registrado" }));
 			resultado = SUCCESS;
+			
 			
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
@@ -103,18 +98,34 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso>{
 		} catch (Exception e) {
 			e.printStackTrace();
 			addActionError(getText("MSG10"));
-			resultado = SUCCESS;
+			resultado = INDEX;
 		}
 		return resultado;
 	}
+	
 
 	public String editNew() {
 		String result = null;
 		try {
-			modulo = CuBs.consultarModulo(nombreModulo);
-			model.setNumero(CuBs.calcularNumero(modulo));
-			model.setClave(CuBs.calcularClave(modulo.getClave()));
-			result = EDITNEW;
+			// Creación del modelo
+				Proyecto proyecto = CuBs.consultarProyecto(claveProy);
+				Modulo modulo = CuBs.consultarModulo(claveModulo);
+				EstadoElemento estadoElemento = CuBs.consultarEstadoElemento(1);
+				
+				model.setDescripcion("Descripcion");//Pendiente, se tiene que quitar
+				model.setProyecto(proyecto);
+				model.setModulo(modulo);
+				model.setEstadoElemento(estadoElemento);
+						
+			
+				model.setNumero(CuBs.calcularNumero(modulo));
+				model.setClave(CuBs.calcularClave(modulo.getClave()));
+				model.setNombre(CuBs.calcularNombre(modulo.getId()));
+				model.setDescripcion("desc");
+				redireccionAutomatica = true;
+				
+				CuBs.registrarCasoUso(model);
+				result = EDIT;
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
 			addActionError(getText(pe.getIdMensaje()));
@@ -129,6 +140,20 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso>{
 
 		return result;
 	}
+	
+	public String edit() {
+		String resultado = EDIT;
+		System.out.println("DESDE EDIT");
+		return resultado;
+	}
+	
+	public String update()
+	{
+		String result = null;
+		
+		return result;
+	}
+
 
 	public static boolean esEditable(Colaborador colaborador, CasoUso cu) {
 		CuBs.esEditable(colaborador, cu);
@@ -153,14 +178,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso>{
 
 	public void setModel(CasoUso model) {
 		this.model = model;
-	}
-
-	public Modulo getModulo() {
-		return modulo;
-	}
-
-	public void setModulo(Modulo modulo) {
-		this.modulo = modulo;
 	}
 
 	public List<CasoUso> getListCU() {

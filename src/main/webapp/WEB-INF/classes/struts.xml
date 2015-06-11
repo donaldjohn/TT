@@ -6,8 +6,13 @@
 <struts>
 	
 	<constant name="struts.custom.i18n.resources" value="global" />
-	<constant name="struts.devMode" value="false" />
-	<constant name="struts.mapper.class" value="rest" />
+	<constant name="struts.devMode" value="true" />
+	
+	<!-- Permite definir mas de un ActionMapper, si el primero no obtiene una respuesta correcta, se utilizará
+	el siguiente mapper -->
+	<constant name="struts.mapper.class" value="composite" />
+	<constant name="struts.mapper.composite" value="rest,struts" />
+
 	<!-- struts2 busca paquetes que terminen, en su nombre, con las siguientes 
 		cadenas en busca de acciones -->
 	<constant name="struts.convention.package.locators" value="controller" />
@@ -80,7 +85,7 @@
 		</interceptors>
 
 		<default-interceptor-ref name="stack" />
-
+		
 		
 	</package>
 </struts>

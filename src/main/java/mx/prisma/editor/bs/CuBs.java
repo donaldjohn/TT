@@ -6,6 +6,7 @@ import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.dao.CasoUsoDAO;
+import mx.prisma.editor.dao.ElementoDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.model.CasoUso;
@@ -17,6 +18,7 @@ public class CuBs {
 	
 	
 	public static List<CasoUso> consultarCasosUsoModulo(Modulo modulo){
+		System.out.println("DESDE BS MODULO: " + modulo.getNombre());
 		List<CasoUso> cus = new CasoUsoDAO().consultarCasosUso(modulo);
 		if(cus == null) {
 			throw new PRISMAException("No se pueden consultar los casos de uso del modulo", "MSG13");
@@ -102,6 +104,23 @@ public class CuBs {
 	public static String calcularClave(String cModulo) {
 		// TODO Auto-generated method stub
 		return "CU" + cModulo;
+	}
+
+	public static String calcularNombre(Integer id) {
+		int ultimoNum = -1;
+		try {
+			ultimoNum = new ElementoDAO().lastIndexCUsinTitulo(id);
+		} catch (Exception e) {
+			throw new PRISMAException("No se puede consultar el último número de los nombres por default (caso de uso).", "MSG13");
+		}
+		
+		if(ultimoNum == -1) {
+			throw new PRISMAException("No se puede consultar el último número de los nombres por default (caso de uso).", "MSG13");
+		}
+		
+		String nombre = "Caso de uso " + (ultimoNum + 1); 
+		
+		return nombre;
 	}
 	
 }

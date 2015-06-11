@@ -10,12 +10,12 @@
 
 <body>
 	
-	<h1><s:property value="%{#modulo.clave + #modulo.nombre}" /></h1>
+	<h1><s:property value="%{model.modulo.clave + model.modulo.nombre}" /></h1>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
 	
-	<p class="instrucciones"><s:property value="%{#modulo.descripcion}" /></p>
+	<p class="instrucciones"><s:property value="%{modulo.descripcion}" /></p>
 	
 	<h3>Casos de uso</h3>
 	<s:form theme="simple" onsubmit="return false;">
@@ -32,7 +32,7 @@
 			<tbody>
 			<s:iterator value="listCU" var="cu">
 				<tr>
-					<td><s:property value="%{#cu.clave + #cu.numero + ' ' +#cu.nombre}"/></td>
+					<td><s:property value="%{#cu.clave + ' ' + #cu.numero + ' ' +#cu.nombre}"/></td>
 					<td><s:property value="%{#cu.estadoElemento.nombre}"/></td>
 					<td align="center">						
 						<!--<s:if
