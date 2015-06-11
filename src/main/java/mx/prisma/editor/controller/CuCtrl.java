@@ -12,6 +12,7 @@ import mx.prisma.editor.model.Modulo;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.PRISMAException;
 
+import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
@@ -39,6 +40,13 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso>{
 
 	private Modulo modulo;
 
+	@Action("/redireccionarTrayectorias")
+	public String redireccionarTrayectorias() {
+		String result = null;
+		System.out.println("REDIRECCIONAR TRAYECTORIAS");
+		return result;
+	}
+	
 	public HttpHeaders index() {
 		try {
 			modulo = new ModuloDAO().consultarModulo("SF");

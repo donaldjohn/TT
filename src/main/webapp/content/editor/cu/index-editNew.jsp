@@ -7,7 +7,9 @@
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Casos de uso</title>
-
+<![CDATA[
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/index-editNew.js"></script>
+]]>
 </head>
 <body>
 	<h1>Registrar Caso de uso</h1>
@@ -27,7 +29,9 @@
 			<table class="seccion">
 				<tr>
 					<td class="label">Identificador</td>
-					<td class="labelDerecho"><s:property value="model.clave + ' ' + model.numero"/></td>
+					<td class="labelDerecho"><s:property value="model.clave + ' ' + model.numero"/>
+							<s:fielderror fieldName="model.clave" cssClass="error" theme="jquery" />
+							<s:fielderror fieldName="model.numero" cssClass="error" theme="jquery" /></td>
 					<s:hidden value="%{model.clave}" name="model.clave"/>
 					<s:hidden value="%{model.numero}" name="model.numero"/>
 				</tr>
@@ -85,7 +89,94 @@
 
 			</div>
 		</div>
-		
+		<div class="formulario">
+			<div class="tituloFormulario">Precondiciones</div>
+			<br />
+			<table class="tablaGestion" id="precondiciones">
+				<thead>
+					<tr>
+						<th style="width: 20%;">Número</th>
+						<th style="width: 60%;">Redacción</th>
+						<th style="width: 20%;">Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<s:iterator value="listPrecondiciones" var="precondicion">
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</s:iterator>
+				</tbody>
+			</table>
+
+			<br />
+			<div align="center">
+				<sj:a openDialog="precondicionDialog" button="true">
+		   			Registrar
+		   		</sj:a>
+			</div>
+			<br />
+		</div>
+		<div class="formulario">
+			<div class="tituloFormulario">Postcondiciones</div>
+			<br />
+			<table class="tablaGestion" id="postcondiciones">
+				<thead>
+					<tr>
+						<th style="width: 20%;">Número</th>
+						<th style="width: 60%;">Redacción</th>
+						<th style="width: 20%;">Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<s:iterator value="listPostcondiciones" var="postcondicion">
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</s:iterator>
+				</tbody>
+			</table>
+			<br />
+			<div align="center">
+				<input class="boton" type="button" action="precondicion"
+					value="Registrar" />
+			</div>
+			<br />
+		</div>
+		<div class="formulario">
+			<div class="tituloFormulario">Puntos de extensión</div>
+			<br />
+			<table class="tablaGestion" id="puntosExtension">
+				<thead>
+					<tr>
+						<th style="width: 30%;">Causa</th>
+						<th style="width: 30%;">Región</th>
+						<th style="width: 30%;">Caso de uso que extiende</th>
+						<th style="width: 10%;">Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<s:iterator value="listPtosExtension" var="pExtension">
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</s:iterator>
+				</tbody>
+			</table>
+			<br />
+			<div align="center">
+				<input class="boton" type="button" action="precondicion"
+					value="Registrar" />
+			</div>
+			<br />
+		</div>
 		<br />
 		<div align="center">
 			<s:submit class="boton" value="Aceptar" />

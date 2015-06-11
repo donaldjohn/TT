@@ -18,7 +18,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.opensymphony.xwork2.validator.annotations.IntRangeFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 
 import mx.prisma.admin.model.Proyecto;
@@ -54,7 +58,9 @@ public class Elemento implements java.io.Serializable {
 		this.estadoElemento = estadoElemento;
 	}
 
-	
+	@RequiredFieldValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, message = "%{getText('MSG5',{'un', 'número'})}", regex = "[0-9]*", shortCircuit = true)
+	@IntRangeFieldValidator(message = "%{getText('MSG14',{'El', 'identificador', '0', '2147483647'})}", shortCircuit = true, min = "0", max = "2147483647")//Pendiente 4294967295
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
@@ -66,6 +72,8 @@ public class Elemento implements java.io.Serializable {
 		this.id = id;
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}", shortCircuit= true)
+	@StringLengthFieldValidator(message = "%{getText('MSG6',{'10', 'caracteres'})}", trim = true, maxLength = "10", shortCircuit= true)
 	@Column(name = "clave", nullable = false, length = 10)
 	public String getClave() {
 		return this.clave;
@@ -74,8 +82,10 @@ public class Elemento implements java.io.Serializable {
 	public void setClave(String clave) {
 		this.clave = clave;
 	}
-	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}")
+
+	@RequiredFieldValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, message = "%{getText('MSG5',{'un', 'número'})}", regex = "[0-9]*")
+	@IntRangeFieldValidator(message = "%{getText('MSG14',{'El', 'número', '0', '2147483646'})}", shortCircuit = true, min = "0", max = "2147483646")//Pendiente 4294967295
 	@Column(name = "numero", nullable = false)
 	public int getNumero() {
 		return this.numero;
@@ -85,7 +95,8 @@ public class Elemento implements java.io.Serializable {
 		this.numero = numero;
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}")
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}", shortCircuit= true)
+	@StringLengthFieldValidator(message = "%{getText('MSG6',{'45', 'caracteres'})}", trim = true, maxLength = "45", shortCircuit= true)
 	@Column(name = "nombre", nullable = false, length = 45)
 	public String getNombre() {
 		return this.nombre;
@@ -105,6 +116,7 @@ public class Elemento implements java.io.Serializable {
 		this.proyecto = proyecto;
 	}
 
+	@StringLengthFieldValidator(message = "%{getText('MSG6',{'999', 'caracteres'})}", trim = true, maxLength = "999", shortCircuit= true)
 	@Column(name = "descripcion")
 	public String getDescripcion() {
 		return this.descripcion;

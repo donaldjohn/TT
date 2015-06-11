@@ -9,3 +9,4 @@ function agregarPrecondicion(){
 function cancelarAgregar(){
 	$('#precondicionDialog').dialog('close');
 };
+

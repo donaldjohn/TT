@@ -68,7 +68,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.modulo = modulo;
 	}
 	
-	@StringLengthFieldValidator(message = "%{getText('MSG6',{'999', 'letras'})}", trim = true, maxLength = "999")
+	@StringLengthFieldValidator(message = "%{getText('MSG6',{'999', 'caracteres'})}", trim = true, maxLength = "999", shortCircuit= true)
 	@Column(name = "redaccionActores", length = 999)
 	public String getRedaccionActores() {
 		return this.redaccionActores;
@@ -78,7 +78,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.redaccionActores = redaccionActores;
 	}
 
-	@StringLengthFieldValidator(message = "%{getText('MSG6',{'999', 'letras'})}", trim = true, maxLength = "999")
+	@StringLengthFieldValidator(message = "%{getText('MSG6',{'999', 'caracteres'})}", trim = true, maxLength = "999", shortCircuit= true)
 	@Column(name = "redaccionEntradas", length = 999)
 	public String getRedaccionEntradas() {
 		return this.redaccionEntradas;
@@ -88,7 +88,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.redaccionEntradas = redaccionEntradas;
 	}
 
-	@StringLengthFieldValidator(message = "%{getText('MSG6',{'999', 'letras'})}", trim = true, maxLength = "999")
+	@StringLengthFieldValidator(message = "%{getText('MSG6',{'999', 'caracteres'})}", trim = true, maxLength = "999", shortCircuit= true)
 	@Column(name = "redaccionSalidas", length = 999)
 	public String getRedaccionSalidas() {
 		return this.redaccionSalidas;
@@ -98,7 +98,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.redaccionSalidas = redaccionSalidas;
 	}
 
-	@StringLengthFieldValidator(message = "%{getText('MSG6',{'999', 'letras'})}", trim = true, maxLength = "999")
+	@StringLengthFieldValidator(message = "%{getText('MSG6',{'999', 'caracteres'})}", trim = true, maxLength = "999", shortCircuit= true)
 	@Column(name = "redaccionReglasNegocio", length = 999)
 	public String getRedaccionReglasNegocio() {
 		return this.redaccionReglasNegocio;
