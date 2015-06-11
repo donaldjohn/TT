@@ -27,22 +27,21 @@
 			<table class="seccion">
 				<tr>
 					<td class="label">Identificador</td>
-					<td class="labelDerecho"><s:property
-							value="claveCU" />&#160;<s:property
-							value="numeroCU" /></td>
-					<s:hidden value="%{claveCU}" name="model.clave"/>
-					<s:hidden value="%{numeroCU}" name="model.numero"/>
+					<td class="labelDerecho"><s:property value="model.clave + ' ' + model.numero"/></td>
+					<s:hidden value="%{model.clave}" name="model.clave"/>
+					<s:hidden value="%{model.numero}" name="model.numero"/>
 				</tr>
 				<tr>
-					<td class="label obligatorio"><s:text name="Nombre" /></td>
+					<td class="label obligatorio"><s:text name="labelNombre" /></td>
 					<td><s:textfield name="model.nombre"
 							cssErrorClass="input-error" cssClass="inputFormulario" /> <s:fielderror
-							fieldName="model.id.nombre" cssClass="error" theme="jquery" /></td>
+							fieldName="model.nombre" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr>
-						<td class="label obligatorio"><s:text name="Descripción" /></td>
+						<td class="label"><s:text name="labelDescripcion" /></td>
 						<td><s:textarea rows="5" name="model.descripcion"
-								maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
+								maxlength="999" cssErrorClass="input-error"></s:textarea> 
+								<s:fielderror
 								fieldName="model.descripcion" cssClass="error"
 								theme="jquery" /></td>
 					</tr>
@@ -53,29 +52,30 @@
 			<div class="seccion">
 				<table>
 					<tr>
-						<td class="label obligatorio"><s:text name="Actores" /></td>
+						<td class="label"><s:text name="labelActores" /></td>
 						<td><s:textarea rows="5" name="model.redaccionActores"
-								maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
+								maxlength="999" cssErrorClass="input-error"></s:textarea>
+								<s:fielderror
 								fieldName="model.redaccionActores" cssClass="error"
-								theme="jquery" /></td>
+								theme="jquery" /> </td>
 					</tr>
 					<tr>
-						<td class="label obligatorio"><s:text name="Entradas" /></td>
+						<td class="label"><s:text name="labelEntradas" /></td>
 						<td><s:textarea rows="5" name="model.redaccionEntradas"
 								maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
 								fieldName="model.redaccionEntradas" cssClass="error"
 								theme="jquery" /></td>
 					</tr>
 					<tr>
-						<td class="label obligatorio"><s:text name="Salidas" /></td>
+						<td class="label"><s:text name="labelSalidas" /></td>
 						<td><s:textarea rows="5" name="model.redaccionSalidas"
 								maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
 								fieldName="model.redaccionSalidas" cssClass="error"
 								theme="jquery" /></td>
 					</tr>
 					<tr>
-						<td class="label obligatorio"><s:text
-								name="Reglas de negocio" /></td>
+						<td class="label"><s:text
+								name="labelReglasNegocio" /></td>
 						<td><s:textarea rows="5" name="model.redaccionReglasNegocio"
 								maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
 								fieldName="model.redaccionReglasNegocio" cssClass="error"

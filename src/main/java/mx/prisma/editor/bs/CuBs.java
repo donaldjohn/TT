@@ -17,12 +17,11 @@ public class CuBs {
 	
 	
 	public static List<CasoUso> consultarCasosUsoModulo(Modulo modulo){
-		
 		List<CasoUso> cus = new CasoUsoDAO().consultarCasosUso(modulo);
 		if(cus == null) {
 			throw new PRISMAException("No se pueden consultar los casos de uso del modulo", "MSG13");
 		}
-		System.out.println("NUMERO DE CASOS DE USO " + cus.size());
+		
 		return cus;
 	}
 	
@@ -51,7 +50,6 @@ public class CuBs {
 	public static int calcularNumero(Modulo modulo) throws Exception{
 		// TODO Auto-generated method stub
 		int numero = -1;
-		System.out.println("NOMBRE MODULO NO NULO " + modulo.getNombre());
 		numero = new CasoUsoDAO().lastIndexOfCasoUso(modulo) + 1;
 		
 		if(numero == -1) {

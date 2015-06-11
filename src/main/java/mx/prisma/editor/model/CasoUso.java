@@ -15,6 +15,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.ValidatorType;
+
 import mx.prisma.admin.model.Proyecto;
 
 /**
@@ -63,7 +67,8 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.redaccionReglasNegocio = redaccionReglasNegocio;
 		this.modulo = modulo;
 	}
-
+	
+	@StringLengthFieldValidator(message = "%{getText('MSG6',{'999', 'letras'})}", trim = true, maxLength = "999")
 	@Column(name = "redaccionActores", length = 999)
 	public String getRedaccionActores() {
 		return this.redaccionActores;
@@ -73,6 +78,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.redaccionActores = redaccionActores;
 	}
 
+	@StringLengthFieldValidator(message = "%{getText('MSG6',{'999', 'letras'})}", trim = true, maxLength = "999")
 	@Column(name = "redaccionEntradas", length = 999)
 	public String getRedaccionEntradas() {
 		return this.redaccionEntradas;
@@ -82,6 +88,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.redaccionEntradas = redaccionEntradas;
 	}
 
+	@StringLengthFieldValidator(message = "%{getText('MSG6',{'999', 'letras'})}", trim = true, maxLength = "999")
 	@Column(name = "redaccionSalidas", length = 999)
 	public String getRedaccionSalidas() {
 		return this.redaccionSalidas;
@@ -91,6 +98,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.redaccionSalidas = redaccionSalidas;
 	}
 
+	@StringLengthFieldValidator(message = "%{getText('MSG6',{'999', 'letras'})}", trim = true, maxLength = "999")
 	@Column(name = "redaccionReglasNegocio", length = 999)
 	public String getRedaccionReglasNegocio() {
 		return this.redaccionReglasNegocio;

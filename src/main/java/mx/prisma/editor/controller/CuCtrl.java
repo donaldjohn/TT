@@ -5,7 +5,6 @@ import java.util.List;
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.CuBs;
-import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.EstadoElemento;
@@ -13,17 +12,16 @@ import mx.prisma.editor.model.Modulo;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.PRISMAException;
 
-import org.apache.struts2.convention.annotation.Namespace;
-import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
-import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
+
 @ResultPath("/content/editor/")
-@Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "cu" }) })
-public class CuCtrl extends ActionSupportPRISMA {
+
+public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso>{
 	/**
 	 * 
 	 */
@@ -40,14 +38,12 @@ public class CuCtrl extends ActionSupportPRISMA {
 	private List<CasoUso> listCU;
 
 	private Modulo modulo;
-	// Clave
-	private String claveCU;
-	private int numeroCU;
 
 	public HttpHeaders index() {
 		try {
-		modulo = new ModuloDAO().consultarModulo("SF");
-		listCU = CuBs.consultarCasosUsoModulo(modulo);
+			modulo = new ModuloDAO().consultarModulo("SF");
+			System.out.println("DESDE INDEX MODULO: " + modulo.getNombre());
+			listCU = CuBs.consultarCasosUsoModulo(modulo);
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
 			addActionError(getText(pe.getIdMensaje()));
@@ -57,28 +53,27 @@ public class CuCtrl extends ActionSupportPRISMA {
 		return new DefaultHttpHeaders(INDEX);
 	}
 
-	
-
 	/**
 	 * Método para crear casos de uso, si la operación es exitosa muestra el
 	 * mensaje MSG1 en caso contrario redirige a la pantalla de registro.
 	 * */
-	public String create() {
+	public String create() throws Exception{
 		String resultado = null;
-		
+
 		try {
-					
+
 			// ///////////////////////// Pruebas
-/*			System.out.println("Datos del cu");
-			System.out.println("Nombre " + model.getNombre());
-			System.out.println("Descripcion " + model.getDescripcion());
-			System.out.println("Actores " + model.getRedaccionActores());
-			System.out.println("Entradas " + model.getRedaccionEntradas());
-			System.out.println("Salidas " + model.getRedaccionSalidas());
-			System.out.println("RN " + model.getRedaccionReglasNegocio());*/
+			/*
+			 * System.out.println("Datos del cu"); System.out.println("Nombre "
+			 * + model.getNombre()); System.out.println("Descripcion " +
+			 * model.getDescripcion()); System.out.println("Actores " +
+			 * model.getRedaccionActores()); System.out.println("Entradas " +
+			 * model.getRedaccionEntradas()); System.out.println("Salidas " +
+			 * model.getRedaccionSalidas()); System.out.println("RN " +
+			 * model.getRedaccionReglasNegocio());
+			 */
 			// ///////////////////////// Fin Pruebas
-			
-			//Creación del modelo
+			// Creación del modelo
 			Proyecto proyecto = CuBs.consultarProyecto(claveProy);
 			modulo = CuBs.consultarModulo(nombreModulo);
 			EstadoElemento estadoElemento = CuBs.consultarEstadoElemento(1);
@@ -88,29 +83,29 @@ public class CuCtrl extends ActionSupportPRISMA {
 			model.setEstadoElemento(estadoElemento);
 
 			CuBs.registrarCasoUso(model);
-			addActionMessage(getText(
-					"MSG1",
-					new String[] { "El", "caso de uso", "registrado" }));
+			System.out.println("REGISTRO EXITOSO");
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"caso de uso", "registrado" }));
 			resultado = SUCCESS;
+			
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
 			addActionError(pe.getIdMensaje());
+			resultado = EDITNEW;
 		} catch (Exception e) {
 			e.printStackTrace();
 			addActionError(getText("MSG10"));
-			resultado = EDITNEW;
-		} 
+			resultado = SUCCESS;
+		}
 		return resultado;
 	}
-	
+
 	public String editNew() {
 		String result = null;
 		try {
 			modulo = CuBs.consultarModulo(nombreModulo);
-			System.out.println("DESDE EDIT NEW MODULO: " + modulo.getNombre());
-			numeroCU = CuBs.calcularNumero(modulo);
-			claveCU = CuBs.calcularClave(modulo.getClave());
-			System.out.println("CLAVE DEL CU " + claveCU);
+			model.setNumero(CuBs.calcularNumero(modulo));
+			model.setClave(CuBs.calcularClave(modulo.getClave()));
 			result = EDITNEW;
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
@@ -127,8 +122,6 @@ public class CuCtrl extends ActionSupportPRISMA {
 		return result;
 	}
 
-	
-
 	public static boolean esEditable(Colaborador colaborador, CasoUso cu) {
 		CuBs.esEditable(colaborador, cu);
 		return true;
@@ -142,7 +135,11 @@ public class CuCtrl extends ActionSupportPRISMA {
 		this.estado = estado;
 	}
 
+	@VisitorFieldValidator
 	public CasoUso getModel() {
+		if(this.model == null)  {
+			model = new CasoUso();
+		}
 		return model;
 	}
 
@@ -166,16 +163,5 @@ public class CuCtrl extends ActionSupportPRISMA {
 		this.listCU = listCU;
 	}
 
-	public int getNumeroCU() {
-		return numeroCU;
-	}
-
-	public void setNumeroCU(int numeroCU) {
-		this.numeroCU = numeroCU;
-	}
-
-	public String getClaveCU() {
-		return claveCU;
-	}
 
 }

@@ -18,6 +18,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.ValidatorType;
+
 import mx.prisma.admin.model.Proyecto;
 
 @Entity
@@ -51,6 +54,7 @@ public class Elemento implements java.io.Serializable {
 		this.estadoElemento = estadoElemento;
 	}
 
+	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
@@ -70,7 +74,8 @@ public class Elemento implements java.io.Serializable {
 	public void setClave(String clave) {
 		this.clave = clave;
 	}
-
+	
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}")
 	@Column(name = "numero", nullable = false)
 	public int getNumero() {
 		return this.numero;
@@ -80,6 +85,7 @@ public class Elemento implements java.io.Serializable {
 		this.numero = numero;
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}")
 	@Column(name = "nombre", nullable = false, length = 45)
 	public String getNombre() {
 		return this.nombre;
@@ -108,8 +114,8 @@ public class Elemento implements java.io.Serializable {
 		this.descripcion = descripcion;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "EstadoElementoid", nullable = false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "EstadoElementoid",referencedColumnName="id", nullable = false)
 	public EstadoElemento getEstadoElemento() {
 		return estadoElemento;
 	}
