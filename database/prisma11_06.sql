@@ -1,702 +1,92 @@
-CREATE DATABASE  IF NOT EXISTS `PRISMA` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `PRISMA`;
--- MySQL dump 10.13  Distrib 5.6.19, for osx10.7 (i386)
---
--- Host: 127.0.0.1    Database: PRISMA
--- ------------------------------------------------------
--- Server version	5.6.23
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `Accion`
---
-
-DROP TABLE IF EXISTS `Accion`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Accion` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `PantallaElementoid` int(11) NOT NULL,
-  `nombre` varchar(45) NOT NULL,
-  `TipoAccionid` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uniqueAccion` (`PantallaElementoid`,`nombre`),
-  KEY `FKAccion910670` (`TipoAccionid`),
-  KEY `FKAccion918990` (`PantallaElementoid`),
-  CONSTRAINT `FKAccion910670` FOREIGN KEY (`TipoAccionid`) REFERENCES `TipoAccion` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `FKAccion918990` FOREIGN KEY (`PantallaElementoid`) REFERENCES `Pantalla` (`Elementoid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Actor`
---
-
-DROP TABLE IF EXISTS `Actor`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Actor` (
-  `Elementoid` int(11) NOT NULL,
-  `otraCardinalidad` varchar(10) DEFAULT NULL,
-  `Cardinalidadid` int(11) NOT NULL,
-  PRIMARY KEY (`Elementoid`),
-  KEY `FKActor148309` (`Elementoid`),
-  KEY `FKActor872913` (`Cardinalidadid`),
-  CONSTRAINT `FKActor148309` FOREIGN KEY (`Elementoid`) REFERENCES `Elemento` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FKActor872913` FOREIGN KEY (`Cardinalidadid`) REFERENCES `Cardinalidad` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Actualizacion`
---
-
-DROP TABLE IF EXISTS `Actualizacion`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Actualizacion` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `fecha` date NOT NULL,
-  `comentario` varchar(999) NOT NULL,
-  `EstadoElementoidPre` int(11) NOT NULL,
-  `EstadoElementoidPost` int(11) NOT NULL,
-  `Elementoid` int(11) NOT NULL,
-  `Colaborador_Proyectoid` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FKActualizac500406` (`EstadoElementoidPost`),
-  KEY `FKActualizac672777` (`EstadoElementoidPre`),
-  KEY `FKActualizac954409` (`Elementoid`),
-  KEY `FKActualizac741555` (`Colaborador_Proyectoid`),
-  CONSTRAINT `FKActualizac500406` FOREIGN KEY (`EstadoElementoidPost`) REFERENCES `EstadoElemento` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `FKActualizac672777` FOREIGN KEY (`EstadoElementoidPre`) REFERENCES `EstadoElemento` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `FKActualizac741555` FOREIGN KEY (`Colaborador_Proyectoid`) REFERENCES `Colaborador_Proyecto` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FKActualizac954409` FOREIGN KEY (`Elementoid`) REFERENCES `Elemento` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Atributo`
---
-
-DROP TABLE IF EXISTS `Atributo`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Atributo` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) NOT NULL,
-  `EntidadElementoid` int(11) NOT NULL,
-  `descripcion` varchar(999) NOT NULL,
-  `obligatorio` tinyint(1) NOT NULL,
-  `longitud` int(10) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uniqueAtributo` (`nombre`,`EntidadElementoid`),
-  KEY `FKAtributo539266` (`EntidadElementoid`),
-  CONSTRAINT `FKAtributo539266` FOREIGN KEY (`EntidadElementoid`) REFERENCES `Entidad` (`Elementoid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Cardinalidad`
---
-
-DROP TABLE IF EXISTS `Cardinalidad`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Cardinalidad` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(10) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `CasoUso`
---
-
-DROP TABLE IF EXISTS `CasoUso`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `CasoUso` (
-  `Elementoid` int(11) NOT NULL,
-  `redaccionActores` varchar(999) DEFAULT NULL,
-  `redaccionEntradas` varchar(999) DEFAULT NULL,
-  `redaccionSalidas` varchar(999) DEFAULT NULL,
-  `redaccionReglasNegocio` varchar(999) DEFAULT NULL,
-  `Moduloid` int(11) NOT NULL,
-  PRIMARY KEY (`Elementoid`),
-  KEY `FKCasoUso589849` (`Elementoid`),
-  KEY `FKCasoUso686967` (`Moduloid`),
-  CONSTRAINT `FKCasoUso589849` FOREIGN KEY (`Elementoid`) REFERENCES `Elemento` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FKCasoUso686967` FOREIGN KEY (`Moduloid`) REFERENCES `Modulo` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `CasoUso_Actor`
---
-
-DROP TABLE IF EXISTS `CasoUso_Actor`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `CasoUso_Actor` (
-  `numeroToken` int(11) NOT NULL,
-  `CasoUsoElementoid` int(11) NOT NULL,
-  `ActorElementoid` int(11) NOT NULL,
-  PRIMARY KEY (`CasoUsoElementoid`,`ActorElementoid`),
-  KEY `FKCasoUso_Ac644128` (`CasoUsoElementoid`),
-  KEY `FKCasoUso_Ac543005` (`ActorElementoid`),
-  CONSTRAINT `FKCasoUso_Ac543005` FOREIGN KEY (`ActorElementoid`) REFERENCES `Actor` (`Elementoid`) ON UPDATE CASCADE,
-  CONSTRAINT `FKCasoUso_Ac644128` FOREIGN KEY (`CasoUsoElementoid`) REFERENCES `CasoUso` (`Elementoid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `CasoUso_Pantalla`
---
-
-DROP TABLE IF EXISTS `CasoUso_Pantalla`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `CasoUso_Pantalla` (
-  `numeroToken` int(11) NOT NULL,
-  `PantallaElementoid` int(11) NOT NULL,
-  `CasoUsoElementoid` int(11) NOT NULL,
-  PRIMARY KEY (`PantallaElementoid`,`CasoUsoElementoid`),
-  KEY `FKCasoUso_Pa531997` (`CasoUsoElementoid`),
-  KEY `FKCasoUso_Pa280704` (`PantallaElementoid`),
-  CONSTRAINT `FKCasoUso_Pa280704` FOREIGN KEY (`PantallaElementoid`) REFERENCES `Pantalla` (`Elementoid`) ON UPDATE CASCADE,
-  CONSTRAINT `FKCasoUso_Pa531997` FOREIGN KEY (`CasoUsoElementoid`) REFERENCES `CasoUso` (`Elementoid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `CasoUso_ReglaNegocio`
---
-
-DROP TABLE IF EXISTS `CasoUso_ReglaNegocio`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `CasoUso_ReglaNegocio` (
-  `numeroToken` int(10) NOT NULL,
-  `CasoUsoElementoid` int(11) NOT NULL,
-  `ReglaNegocioElementoid` int(11) NOT NULL,
-  PRIMARY KEY (`CasoUsoElementoid`,`ReglaNegocioElementoid`),
-  KEY `FKCasoUso_Re422554` (`CasoUsoElementoid`),
-  KEY `FKCasoUso_Re477864` (`ReglaNegocioElementoid`),
-  CONSTRAINT `FKCasoUso_Re422554` FOREIGN KEY (`CasoUsoElementoid`) REFERENCES `CasoUso` (`Elementoid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FKCasoUso_Re477864` FOREIGN KEY (`ReglaNegocioElementoid`) REFERENCES `ReglaNegocio` (`Elementoid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Colaborador`
---
-
-DROP TABLE IF EXISTS `Colaborador`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Colaborador` (
-  `CURP` varchar(18) NOT NULL,
-  `nombre` varchar(45) NOT NULL,
-  `apellidoPaterno` varchar(45) NOT NULL,
-  `apellidoMaterno` varchar(45) NOT NULL,
-  `correoElectronico` varchar(45) NOT NULL,
-  `contrasenia` varchar(20) NOT NULL,
-  PRIMARY KEY (`CURP`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Colaborador_Proyecto`
---
-
-DROP TABLE IF EXISTS `Colaborador_Proyecto`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Colaborador_Proyecto` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ColaboradorCURP` varchar(18) NOT NULL,
-  `Rolid` int(11) NOT NULL,
-  `Proyectoid` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `ColaboradorCURP` (`ColaboradorCURP`),
-  UNIQUE KEY `Rolid` (`Rolid`),
-  UNIQUE KEY `uniqueColaborador` (`ColaboradorCURP`,`Proyectoid`),
-  KEY `FKColaborado926222` (`Proyectoid`),
-  KEY `FKColaborado523143` (`ColaboradorCURP`),
-  KEY `FKColaborado664150` (`Rolid`),
-  CONSTRAINT `FKColaborado523143` FOREIGN KEY (`ColaboradorCURP`) REFERENCES `Colaborador` (`CURP`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FKColaborado664150` FOREIGN KEY (`Rolid`) REFERENCES `Rol` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FKColaborado926222` FOREIGN KEY (`Proyectoid`) REFERENCES `Proyecto` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Elemento`
---
-
-DROP TABLE IF EXISTS `Elemento`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Elemento` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `clave` varchar(10) NOT NULL,
-  `numero` int(10) NOT NULL,
-  `nombre` varchar(45) NOT NULL,
-  `descripcion` varchar(999) DEFAULT NULL,
-  `EstadoElementoid` int(11) NOT NULL,
-  `Proyectoid` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uniqueElemento` (`clave`,`numero`,`nombre`),
-  KEY `FKElemento728649` (`Proyectoid`),
-  KEY `FKElemento378533` (`EstadoElementoid`),
-  CONSTRAINT `FKElemento378533` FOREIGN KEY (`EstadoElementoid`) REFERENCES `EstadoElemento` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FKElemento728649` FOREIGN KEY (`Proyectoid`) REFERENCES `Proyecto` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5002 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Entidad`
---
-
-DROP TABLE IF EXISTS `Entidad`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Entidad` (
-  `Elementoid` int(11) NOT NULL,
-  PRIMARY KEY (`Elementoid`),
-  KEY `FKEntidad434647` (`Elementoid`),
-  CONSTRAINT `FKEntidad434647` FOREIGN KEY (`Elementoid`) REFERENCES `Elemento` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Entrada`
---
-
-DROP TABLE IF EXISTS `Entrada`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Entrada` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `numeroToken` int(10) NOT NULL,
-  `TipoParametroid` int(11) NOT NULL,
-  `CasoUsoElementoid` int(11) NOT NULL,
-  `Atributoid` int(11) DEFAULT NULL,
-  `TerminoGlosarioElementoid` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uniqueEntrada` (`CasoUsoElementoid`,`Atributoid`,`TerminoGlosarioElementoid`),
-  KEY `FKEntrada429579` (`Atributoid`),
-  KEY `FKEntrada368636` (`TerminoGlosarioElementoid`),
-  KEY `FKEntrada610752` (`TipoParametroid`),
-  KEY `FKEntrada546756` (`CasoUsoElementoid`),
-  CONSTRAINT `FKEntrada368636` FOREIGN KEY (`TerminoGlosarioElementoid`) REFERENCES `TerminoGlosario` (`Elementoid`) ON UPDATE CASCADE,
-  CONSTRAINT `FKEntrada429579` FOREIGN KEY (`Atributoid`) REFERENCES `Atributo` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `FKEntrada546756` FOREIGN KEY (`CasoUsoElementoid`) REFERENCES `CasoUso` (`Elementoid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FKEntrada610752` FOREIGN KEY (`TipoParametroid`) REFERENCES `TipoParametro` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `EstadoElemento`
---
-
-DROP TABLE IF EXISTS `EstadoElemento`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `EstadoElemento` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `EstadoProyecto`
---
-
-DROP TABLE IF EXISTS `EstadoProyecto`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `EstadoProyecto` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Extension`
---
-
-DROP TABLE IF EXISTS `Extension`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Extension` (
-  `CasoUsoElementoid_origen` int(11) NOT NULL,
-  `CasoUsoElementoid_destino` int(11) NOT NULL,
-  `causa` varchar(999) NOT NULL,
-  `region` varchar(500) NOT NULL,
-  PRIMARY KEY (`CasoUsoElementoid_origen`,`CasoUsoElementoid_destino`),
-  KEY `FKExtension742233` (`CasoUsoElementoid_origen`),
-  KEY `FKExtension285262` (`CasoUsoElementoid_destino`),
-  CONSTRAINT `FKExtension285262` FOREIGN KEY (`CasoUsoElementoid_destino`) REFERENCES `CasoUso` (`Elementoid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FKExtension742233` FOREIGN KEY (`CasoUsoElementoid_origen`) REFERENCES `CasoUso` (`Elementoid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Inclusion`
---
-
-DROP TABLE IF EXISTS `Inclusion`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Inclusion` (
-  `CasoUsoElementoid_origen` int(11) NOT NULL,
-  `CasoUsoElementoid_destino` int(11) NOT NULL,
-  PRIMARY KEY (`CasoUsoElementoid_origen`,`CasoUsoElementoid_destino`),
-  KEY `FKInclusion776033` (`CasoUsoElementoid_destino`),
-  KEY `FKInclusion168061` (`CasoUsoElementoid_origen`),
-  CONSTRAINT `FKInclusion168061` FOREIGN KEY (`CasoUsoElementoid_origen`) REFERENCES `CasoUso` (`Elementoid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FKInclusion776033` FOREIGN KEY (`CasoUsoElementoid_destino`) REFERENCES `CasoUso` (`Elementoid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Mensaje`
---
-
-DROP TABLE IF EXISTS `Mensaje`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Mensaje` (
-  `Elementoid` int(11) NOT NULL,
-  `redaccion` varchar(999) NOT NULL,
-  `parametrizado` tinyint(1) NOT NULL,
-  PRIMARY KEY (`Elementoid`),
-  KEY `FKMensaje721868` (`Elementoid`),
-  CONSTRAINT `FKMensaje721868` FOREIGN KEY (`Elementoid`) REFERENCES `Elemento` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Modulo`
---
-
-DROP TABLE IF EXISTS `Modulo`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Modulo` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `clave` varchar(10) NOT NULL,
-  `nombre` varchar(45) NOT NULL,
-  `descripcion` varchar(999) NOT NULL,
-  `Proyectoid` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uniqueModulo` (`clave`,`Proyectoid`),
-  KEY `FKModulo19143` (`Proyectoid`),
-  CONSTRAINT `FKModulo19143` FOREIGN KEY (`Proyectoid`) REFERENCES `Proyecto` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Pantalla`
---
-
-DROP TABLE IF EXISTS `Pantalla`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Pantalla` (
-  `Elementoid` int(11) NOT NULL,
-  `imagen` blob,
-  `Moduloid` int(11) NOT NULL,
-  PRIMARY KEY (`Elementoid`),
-  KEY `FKPantalla768080` (`Moduloid`),
-  KEY `FKPantalla491263` (`Elementoid`),
-  CONSTRAINT `FKPantalla491263` FOREIGN KEY (`Elementoid`) REFERENCES `Elemento` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FKPantalla768080` FOREIGN KEY (`Moduloid`) REFERENCES `Modulo` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Paso`
---
-
-DROP TABLE IF EXISTS `Paso`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Paso` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `numero` int(10) NOT NULL,
-  `realizaActor` tinyint(1) NOT NULL,
-  `redaccion` varchar(999) NOT NULL,
-  `Trayectoriaid` int(10) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uniquePaso` (`numero`,`Trayectoriaid`),
-  KEY `FKPaso747799` (`Trayectoriaid`),
-  CONSTRAINT `FKPaso747799` FOREIGN KEY (`Trayectoriaid`) REFERENCES `Trayectoria` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `PostPrecondicion`
---
-
-DROP TABLE IF EXISTS `PostPrecondicion`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `PostPrecondicion` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `redaccion` varchar(999) NOT NULL,
-  `precondicion` tinyint(1) NOT NULL,
-  `CasoUsoElementoid` int(11) NOT NULL,
-  PRIMARY KEY (`id`,`CasoUsoElementoid`),
-  KEY `FKPostPrecon986728` (`CasoUsoElementoid`),
-  CONSTRAINT `FKPostPrecon986728` FOREIGN KEY (`CasoUsoElementoid`) REFERENCES `CasoUso` (`Elementoid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Proyecto`
---
-
-DROP TABLE IF EXISTS `Proyecto`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Proyecto` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `clave` varchar(10) NOT NULL,
-  `nombre` varchar(50) NOT NULL,
-  `fechaInicioProgramada` date NOT NULL,
-  `fechaTerminoProgramada` date NOT NULL,
-  `fechaInicio` date DEFAULT NULL,
-  `fechaTermino` date DEFAULT NULL,
-  `descripcion` varchar(999) NOT NULL,
-  `presupuesto` double DEFAULT NULL,
-  `contraparte` varchar(45) NOT NULL,
-  `EstadoProyectoid` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `clave` (`clave`),
-  UNIQUE KEY `nombre` (`nombre`),
-  KEY `FKProyecto676367` (`EstadoProyectoid`),
-  CONSTRAINT `FKProyecto676367` FOREIGN KEY (`EstadoProyectoid`) REFERENCES `EstadoProyecto` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `ReglaNegocio`
---
-
-DROP TABLE IF EXISTS `ReglaNegocio`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ReglaNegocio` (
-  `Elementoid` int(11) NOT NULL,
-  `redaccion` varchar(999) NOT NULL,
-  `TipoReglaNegocioid` int(10) NOT NULL,
-  PRIMARY KEY (`Elementoid`),
-  KEY `FKReglaNegoc668056` (`Elementoid`),
-  KEY `FKReglaNegoc564329` (`TipoReglaNegocioid`),
-  CONSTRAINT `FKReglaNegoc564329` FOREIGN KEY (`TipoReglaNegocioid`) REFERENCES `TipoReglaNegocio` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `FKReglaNegoc668056` FOREIGN KEY (`Elementoid`) REFERENCES `Elemento` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Revision`
---
-
-DROP TABLE IF EXISTS `Revision`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Revision` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `observaciones` varchar(999) NOT NULL,
-  `CasoUsoElementoid` int(11) NOT NULL,
-  `Seccionid` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FKRevision761293` (`CasoUsoElementoid`),
-  KEY `FKRevision175605` (`Seccionid`),
-  CONSTRAINT `FKRevision175605` FOREIGN KEY (`Seccionid`) REFERENCES `Seccion` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `FKRevision761293` FOREIGN KEY (`CasoUsoElementoid`) REFERENCES `CasoUso` (`Elementoid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Rol`
---
-
-DROP TABLE IF EXISTS `Rol`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Rol` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Salida`
---
-
-DROP TABLE IF EXISTS `Salida`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Salida` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `numeroToken` int(11) NOT NULL,
-  `TipoParametroid` int(11) NOT NULL,
-  `CasoUsoElementoid` int(11) NOT NULL,
-  `MensajeElementoid` int(11) DEFAULT NULL,
-  `TerminoGlosarioElementoid` int(11) DEFAULT NULL,
-  `Atributoid` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uniqueSalida` (`CasoUsoElementoid`,`MensajeElementoid`,`TerminoGlosarioElementoid`,`Atributoid`),
-  KEY `FKSalida348357` (`Atributoid`),
-  KEY `FKSalida442060` (`TipoParametroid`),
-  KEY `FKSalida684176` (`TerminoGlosarioElementoid`),
-  KEY `FKSalida506056` (`CasoUsoElementoid`),
-  KEY `FKSalida666681` (`MensajeElementoid`),
-  CONSTRAINT `FKSalida348357` FOREIGN KEY (`Atributoid`) REFERENCES `Atributo` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `FKSalida442060` FOREIGN KEY (`TipoParametroid`) REFERENCES `TipoParametro` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `FKSalida506056` FOREIGN KEY (`CasoUsoElementoid`) REFERENCES `CasoUso` (`Elementoid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FKSalida666681` FOREIGN KEY (`MensajeElementoid`) REFERENCES `Mensaje` (`Elementoid`) ON UPDATE CASCADE,
-  CONSTRAINT `FKSalida684176` FOREIGN KEY (`TerminoGlosarioElementoid`) REFERENCES `TerminoGlosario` (`Elementoid`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Seccion`
---
-
-DROP TABLE IF EXISTS `Seccion`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Seccion` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(999) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Telefono`
---
-
-DROP TABLE IF EXISTS `Telefono`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Telefono` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ColaboradorCURP` varchar(18) NOT NULL,
-  `lada` varchar(5) NOT NULL,
-  `numero` varchar(10) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `ColaboradorCURP` (`ColaboradorCURP`),
-  UNIQUE KEY `lada` (`lada`),
-  UNIQUE KEY `numero` (`numero`),
-  KEY `FKTelefono558597` (`ColaboradorCURP`),
-  CONSTRAINT `FKTelefono558597` FOREIGN KEY (`ColaboradorCURP`) REFERENCES `Colaborador` (`CURP`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `TerminoGlosario`
---
-
-DROP TABLE IF EXISTS `TerminoGlosario`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `TerminoGlosario` (
-  `Elementoid` int(11) NOT NULL,
-  PRIMARY KEY (`Elementoid`),
-  KEY `FKTerminoGlo98687` (`Elementoid`),
-  CONSTRAINT `FKTerminoGlo98687` FOREIGN KEY (`Elementoid`) REFERENCES `Elemento` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `TipoAccion`
---
-
-DROP TABLE IF EXISTS `TipoAccion`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `TipoAccion` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `TipoParametro`
---
-
-DROP TABLE IF EXISTS `TipoParametro`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `TipoParametro` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `TipoReglaNegocio`
---
-
-DROP TABLE IF EXISTS `TipoReglaNegocio`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `TipoReglaNegocio` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Trayectoria`
---
-
-DROP TABLE IF EXISTS `Trayectoria`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Trayectoria` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `clave` varchar(5) NOT NULL,
-  `alternativa` tinyint(1) NOT NULL,
-  `condicion` varchar(500) DEFAULT NULL,
-  `CasoUsoElementoid` int(11) NOT NULL,
-  `finCasoUso` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uniqueTrayectoria` (`clave`,`CasoUsoElementoid`),
-  KEY `FKTrayectori243052` (`CasoUsoElementoid`),
-  CONSTRAINT `FKTrayectori243052` FOREIGN KEY (`CasoUsoElementoid`) REFERENCES `CasoUso` (`Elementoid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2015-06-11 13:29:43
+create table CasoUso (Elementoid int(11) not null, redaccionActores varchar(999), redaccionEntradas varchar(999), redaccionSalidas varchar(999), redaccionReglasNegocio varchar(999), Moduloid int(11) not null, primary key (Elementoid));
+create table Seccion (id int(11) not null auto_increment, nombre varchar(999) not null, primary key (id));
+create table Revision (id int(11) not null auto_increment, observaciones varchar(999) not null, CasoUsoElementoid int(11) not null, Seccionid int(11) not null, primary key (id));
+create table EstadoProyecto (id int(11) not null auto_increment, nombre varchar(45) not null, primary key (id));
+create table Telefono (id int(11) not null auto_increment, ColaboradorCURP varchar(18) not null unique, lada varchar(5) not null unique, numero varchar(10) not null unique, primary key (id));
+create table Modulo (id int(11) not null auto_increment, clave varchar(10) not null, nombre varchar(45) not null, descripcion varchar(999) not null, Proyectoid int(11) not null, primary key (id), constraint uniqueModulo unique (clave, Proyectoid));
+create table Actualizacion (id int(11) not null auto_increment, fecha date not null, comentario varchar(999) not null, EstadoElementoidPre int(11) not null, EstadoElementoidPost int(11) not null, Elementoid int(11) not null, Colaborador_Proyectoid int(11) not null, primary key (id));
+create table Colaborador_Proyecto (id int(11) not null auto_increment, ColaboradorCURP varchar(18) not null unique, Rolid int(11) not null unique, Proyectoid int(11) not null, primary key (id), constraint uniqueColaborador unique (ColaboradorCURP, Proyectoid));
+create table Rol (id int(11) not null auto_increment, nombre varchar(45) not null, primary key (id));
+create table Colaborador (CURP varchar(18) not null, nombre varchar(45) not null, apellidoPaterno varchar(45) not null, apellidoMaterno varchar(45) not null, correoElectronico varchar(45) not null, contrasenia varchar(20) not null, primary key (CURP));
+create table EstadoElemento (id int(11) not null auto_increment, nombre varchar(45) not null, primary key (id));
+create table ReglaNegocio (Elementoid int(11) not null, redaccion varchar(999) not null, TipoReglaNegocioid int(10) not null, primary key (Elementoid));
+create table Actor (Elementoid int(11) not null, otraCardinalidad varchar(10), Cardinalidadid int(11) not null, primary key (Elementoid));
+create table Proyecto (id int(11) not null auto_increment, clave varchar(10) not null unique, nombre varchar(50) not null unique, fechaInicioProgramada date not null, fechaTerminoProgramada date not null, fechaInicio date, fechaTermino date, descripcion varchar(999) not null, presupuesto double, contraparte varchar(45) not null, EstadoProyectoid int(11) not null, primary key (id));
+create table Pantalla (Elementoid int(11) not null, imagen blob, Moduloid int(11) not null, primary key (Elementoid));
+create table Atributo (id int(11) not null auto_increment, nombre varchar(45) not null, EntidadElementoid int(11) not null, descripcion varchar(999) not null, obligatorio tinyint(1) not null, longitud int(10) not null, primary key (id), constraint uniqueAtributo unique (nombre, EntidadElementoid));
+create table Entidad (Elementoid int(11) not null, primary key (Elementoid));
+create table TerminoGlosario (Elementoid int(11) not null, primary key (Elementoid));
+create table Mensaje (Elementoid int(11) not null, redaccion varchar(999) not null, parametrizado tinyint(1) not null, primary key (Elementoid));
+create table Elemento (id int(11) not null auto_increment, clave varchar(10) not null, numero int(10) not null, nombre varchar(45) not null, descripcion varchar(999), EstadoElementoid int(11) not null, Proyectoid int(11) not null, primary key (id), constraint uniqueElemento unique (clave, numero, nombre));
+alter table CasoUso add index FKCasoUso589849 (Elementoid), add constraint FKCasoUso589849 foreign key (Elementoid) references Elemento (id) on update Cascade on delete Cascade;
+alter table Revision add index FKRevision761293 (CasoUsoElementoid), add constraint FKRevision761293 foreign key (CasoUsoElementoid) references CasoUso (Elementoid) on update Cascade on delete Cascade;
+alter table Revision add index FKRevision175605 (Seccionid), add constraint FKRevision175605 foreign key (Seccionid) references Seccion (id) on update Cascade on delete Restrict;
+alter table Atributo add index FKAtributo539266 (EntidadElementoid), add constraint FKAtributo539266 foreign key (EntidadElementoid) references Entidad (Elementoid) on update Cascade on delete Cascade;
+alter table Elemento add index FKElemento728649 (Proyectoid), add constraint FKElemento728649 foreign key (Proyectoid) references Proyecto (id);
+alter table Modulo add index FKModulo19143 (Proyectoid), add constraint FKModulo19143 foreign key (Proyectoid) references Proyecto (id) on update Cascade on delete Cascade;
+alter table Colaborador_Proyecto add index FKColaborado926222 (Proyectoid), add constraint FKColaborado926222 foreign key (Proyectoid) references Proyecto (id);
+alter table CasoUso add index FKCasoUso686967 (Moduloid), add constraint FKCasoUso686967 foreign key (Moduloid) references Modulo (id);
+alter table Pantalla add index FKPantalla768080 (Moduloid), add constraint FKPantalla768080 foreign key (Moduloid) references Modulo (id);
+alter table Telefono add index FKTelefono558597 (ColaboradorCURP), add constraint FKTelefono558597 foreign key (ColaboradorCURP) references Colaborador (CURP) on update Cascade on delete Cascade;
+alter table Proyecto add index FKProyecto676367 (EstadoProyectoid), add constraint FKProyecto676367 foreign key (EstadoProyectoid) references EstadoProyecto (id) on update Cascade on delete Restrict;
+alter table Actualizacion add index FKActualizac500406 (EstadoElementoidPost), add constraint FKActualizac500406 foreign key (EstadoElementoidPost) references EstadoElemento (id) on update Cascade on delete Restrict;
+alter table Actualizacion add index FKActualizac672777 (EstadoElementoidPre), add constraint FKActualizac672777 foreign key (EstadoElementoidPre) references EstadoElemento (id) on update Cascade on delete Restrict;
+alter table Colaborador_Proyecto add index FKColaborado523143 (ColaboradorCURP), add constraint FKColaborado523143 foreign key (ColaboradorCURP) references Colaborador (CURP) on update Cascade on delete Cascade;
+alter table Actualizacion add index FKActualizac954409 (Elementoid), add constraint FKActualizac954409 foreign key (Elementoid) references Elemento (id) on update Cascade on delete Cascade;
+alter table Actualizacion add index FKActualizac741555 (Colaborador_Proyectoid), add constraint FKActualizac741555 foreign key (Colaborador_Proyectoid) references Colaborador_Proyecto (id) on update Cascade on delete Cascade;
+alter table Colaborador_Proyecto add index FKColaborado664150 (Rolid), add constraint FKColaborado664150 foreign key (Rolid) references Rol (id) on update Cascade on delete Cascade;
+alter table Elemento add index FKElemento378533 (EstadoElementoid), add constraint FKElemento378533 foreign key (EstadoElementoid) references EstadoElemento (id) on update Cascade on delete Cascade;
+alter table Actor add index FKActor148309 (Elementoid), add constraint FKActor148309 foreign key (Elementoid) references Elemento (id) on update Cascade on delete Cascade;
+alter table ReglaNegocio add index FKReglaNegoc668056 (Elementoid), add constraint FKReglaNegoc668056 foreign key (Elementoid) references Elemento (id) on update Cascade on delete Cascade;
+alter table Pantalla add index FKPantalla491263 (Elementoid), add constraint FKPantalla491263 foreign key (Elementoid) references Elemento (id) on update Cascade on delete Cascade;
+alter table Mensaje add index FKMensaje721868 (Elementoid), add constraint FKMensaje721868 foreign key (Elementoid) references Elemento (id) on update Cascade on delete Cascade;
+alter table TerminoGlosario add index FKTerminoGlo98687 (Elementoid), add constraint FKTerminoGlo98687 foreign key (Elementoid) references Elemento (id) on update Cascade on delete Cascade;
+alter table Entidad add index FKEntidad434647 (Elementoid), add constraint FKEntidad434647 foreign key (Elementoid) references Elemento (id) on update Cascade on delete Cascade;
+create table Trayectoria (id int(10) not null auto_increment, clave varchar(5) not null, alternativa tinyint(1) not null, condicion varchar(10), CasoUsoElementoid int(11) not null, finCasoUso tinyint(1) not null, primary key (id), constraint uniqueTrayectoria unique (clave, CasoUsoElementoid));
+create table Atributo (id int(11) not null auto_increment, nombre varchar(45) not null, EntidadElementoid int(11) not null, descripcion varchar(999) not null, obligatorio tinyint(1) not null, longitud int(10) not null, primary key (id), constraint uniqueAtributo unique (nombre, EntidadElementoid));
+create table TipoParametro (id int(11) not null auto_increment, nombre varchar(45) not null, primary key (id));
+create table CasoUso_ReglaNegocio (numeroToken int(10) not null, CasoUsoElementoid int(11) not null, ReglaNegocioElementoid int(11) not null, primary key (CasoUsoElementoid, ReglaNegocioElementoid));
+create table PostPrecondicion (id int(10) not null auto_increment, redaccion varchar(999) not null, precondicion tinyint(1) not null, CasoUsoElementoid int(11) not null, primary key (id, CasoUsoElementoid));
+create table Inclusion (CasoUsoElementoid_origen int(11) not null, CasoUsoElementoid_destino int(11) not null, primary key (CasoUsoElementoid_origen, CasoUsoElementoid_destino));
+create table Extension (CasoUsoElementoid_origen int(11) not null, CasoUsoElementoid_destino int(11) not null, causa varchar(999) not null, region varchar(500) not null, primary key (CasoUsoElementoid_origen, CasoUsoElementoid_destino));
+create table Paso (id int(10) not null auto_increment, numero int(10) not null, realizaActor tinyint(1) not null, redaccion varchar(999) not null, Trayectoriaid int(10) not null, primary key (id), constraint uniquePaso unique (numero, Trayectoriaid));
+create table Entrada (id int(11) not null auto_increment, numeroToken int(10) not null, TipoParametroid int(11) not null, CasoUsoElementoid int(11) not null, Atributoid int(11), TerminoGlosarioElementoid int(11), primary key (id), constraint uniqueEntrada unique (CasoUsoElementoid, Atributoid, TerminoGlosarioElementoid));
+create table TipoReglaNegocio (id int(10) not null auto_increment, nombre varchar(45) not null, primary key (id));
+create table TipoAccion (id int(11) not null auto_increment, nombre varchar(45) not null, primary key (id));
+create table Cardinalidad (id int(11) not null auto_increment, nombre varchar(10) not null, primary key (id));
+create table Salida (id int(11) not null auto_increment, numeroToken int(11) not null, TipoParametroid int(11) not null, CasoUsoElementoid int(11) not null, MensajeElementoid int(11), TerminoGlosarioElementoid int(11), Atributoid int(11), primary key (id), constraint uniqueSalida unique (CasoUsoElementoid, MensajeElementoid, TerminoGlosarioElementoid, Atributoid));
+create table Accion (id int(11) not null auto_increment, PantallaElementoid int(11) not null, nombre varchar(45) not null, TipoAccionid int(11) not null, primary key (id), constraint uniqueAccion unique (PantallaElementoid, nombre));
+create table CasoUso_Pantalla (numeroToken int(11) not null, PantallaElementoid int(11) not null, CasoUsoElementoid int(11) not null, primary key (PantallaElementoid, CasoUsoElementoid));
+create table CasoUso_Actor (numeroToken int(11) not null, CasoUsoElementoid int(11) not null, ActorElementoid int(11) not null, primary key (CasoUsoElementoid, ActorElementoid));
+create table ReglaNegocio (Elementoid int(11) not null, redaccion varchar(999) not null, TipoReglaNegocioid int(10) not null, primary key (Elementoid));
+create table Actor (Elementoid int(11) not null, otraCardinalidad varchar(10), Cardinalidadid int(11) not null, primary key (Elementoid));
+create table CasoUso (Elementoid int(11) not null, redaccionActores varchar(999), redaccionEntradas varchar(999), redaccionSalidas varchar(999), redaccionReglasNegocio varchar(999), Moduloid int(11) not null, primary key (Elementoid));
+create table Pantalla (Elementoid int(11) not null, imagen blob, Moduloid int(11) not null, primary key (Elementoid));
+create table TerminoGlosario (Elementoid int(11) not null, primary key (Elementoid));
+create table Mensaje (Elementoid int(11) not null, redaccion varchar(999) not null, parametrizado tinyint(1) not null, primary key (Elementoid));
+alter table Salida add index FKSalida348357 (Atributoid), add constraint FKSalida348357 foreign key (Atributoid) references Atributo (id) on update Cascade on delete Restrict;
+alter table Entrada add index FKEntrada429579 (Atributoid), add constraint FKEntrada429579 foreign key (Atributoid) references Atributo (id) on update Cascade on delete Restrict;
+alter table Entrada add index FKEntrada368636 (TerminoGlosarioElementoid), add constraint FKEntrada368636 foreign key (TerminoGlosarioElementoid) references TerminoGlosario (Elementoid) on update Cascade on delete Restrict;
+alter table Trayectoria add index FKTrayectori243052 (CasoUsoElementoid), add constraint FKTrayectori243052 foreign key (CasoUsoElementoid) references CasoUso (Elementoid) on update Cascade on delete Cascade;
+alter table Paso add index FKPaso747799 (Trayectoriaid), add constraint FKPaso747799 foreign key (Trayectoriaid) references Trayectoria (id) on update Cascade on delete Cascade;
+alter table Extension add index FKExtension742233 (CasoUsoElementoid_origen), add constraint FKExtension742233 foreign key (CasoUsoElementoid_origen) references CasoUso (Elementoid) on update Cascade on delete Cascade;
+alter table Extension add index FKExtension285262 (CasoUsoElementoid_destino), add constraint FKExtension285262 foreign key (CasoUsoElementoid_destino) references CasoUso (Elementoid) on update Cascade on delete Cascade;
+alter table Inclusion add index FKInclusion776033 (CasoUsoElementoid_destino), add constraint FKInclusion776033 foreign key (CasoUsoElementoid_destino) references CasoUso (Elementoid) on update Cascade on delete Cascade;
+alter table PostPrecondicion add index FKPostPrecon986728 (CasoUsoElementoid), add constraint FKPostPrecon986728 foreign key (CasoUsoElementoid) references CasoUso (Elementoid) on update Cascade on delete Cascade;
+alter table Salida add index FKSalida442060 (TipoParametroid), add constraint FKSalida442060 foreign key (TipoParametroid) references TipoParametro (id) on update Cascade on delete Restrict;
+alter table Entrada add index FKEntrada610752 (TipoParametroid), add constraint FKEntrada610752 foreign key (TipoParametroid) references TipoParametro (id) on update Cascade on delete Restrict;
+alter table CasoUso_ReglaNegocio add index FKCasoUso_Re422554 (CasoUsoElementoid), add constraint FKCasoUso_Re422554 foreign key (CasoUsoElementoid) references CasoUso (Elementoid) on update Cascade on delete Cascade;
+alter table CasoUso_ReglaNegocio add index FKCasoUso_Re477864 (ReglaNegocioElementoid), add constraint FKCasoUso_Re477864 foreign key (ReglaNegocioElementoid) references ReglaNegocio (Elementoid) on update Cascade on delete Cascade;
+alter table Actor add index FKActor872913 (Cardinalidadid), add constraint FKActor872913 foreign key (Cardinalidadid) references Cardinalidad (id) on update Cascade on delete Restrict;
+alter table Accion add index FKAccion910670 (TipoAccionid), add constraint FKAccion910670 foreign key (TipoAccionid) references TipoAccion (id) on update Cascade on delete Restrict;
+alter table ReglaNegocio add index FKReglaNegoc564329 (TipoReglaNegocioid), add constraint FKReglaNegoc564329 foreign key (TipoReglaNegocioid) references TipoReglaNegocio (id) on update Cascade on delete Restrict;
+alter table Salida add index FKSalida684176 (TerminoGlosarioElementoid), add constraint FKSalida684176 foreign key (TerminoGlosarioElementoid) references TerminoGlosario (Elementoid) on update Cascade on delete Restrict;
+alter table Entrada add index FKEntrada546756 (CasoUsoElementoid), add constraint FKEntrada546756 foreign key (CasoUsoElementoid) references CasoUso (Elementoid) on update Cascade on delete Cascade;
+alter table Inclusion add index FKInclusion168061 (CasoUsoElementoid_origen), add constraint FKInclusion168061 foreign key (CasoUsoElementoid_origen) references CasoUso (Elementoid) on update Cascade on delete Cascade;
+alter table CasoUso_Actor add index FKCasoUso_Ac644128 (CasoUsoElementoid), add constraint FKCasoUso_Ac644128 foreign key (CasoUsoElementoid) references CasoUso (Elementoid) on update Cascade on delete Cascade;
+alter table CasoUso_Actor add index FKCasoUso_Ac543005 (ActorElementoid), add constraint FKCasoUso_Ac543005 foreign key (ActorElementoid) references Actor (Elementoid) on update Cascade on delete Restrict;
+alter table CasoUso_Pantalla add index FKCasoUso_Pa531997 (CasoUsoElementoid), add constraint FKCasoUso_Pa531997 foreign key (CasoUsoElementoid) references CasoUso (Elementoid) on update Cascade on delete Cascade;
+alter table CasoUso_Pantalla add index FKCasoUso_Pa280704 (PantallaElementoid), add constraint FKCasoUso_Pa280704 foreign key (PantallaElementoid) references Pantalla (Elementoid) on update Cascade on delete Restrict;
+alter table Accion add index FKAccion918990 (PantallaElementoid), add constraint FKAccion918990 foreign key (PantallaElementoid) references Pantalla (Elementoid) on update Cascade on delete Cascade;
+alter table Salida add index FKSalida506056 (CasoUsoElementoid), add constraint FKSalida506056 foreign key (CasoUsoElementoid) references CasoUso (Elementoid) on update Cascade on delete Cascade;
+alter table Salida add index FKSalida666681 (MensajeElementoid), add constraint FKSalida666681 foreign key (MensajeElementoid) references Mensaje (Elementoid) on update Cascade on delete Restrict;

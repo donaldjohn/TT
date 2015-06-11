@@ -14,6 +14,10 @@ public class CasoUsoDAO extends ElementoDAO {
     	super.registrarElemento(casodeuso);
     }
     
+    public void modificarCasoUso(CasoUso casodeuso) {
+    	super.modificarElemento(casodeuso);
+    }
+    
     public CasoUso consultarCasoUso(int id){
     	return (CasoUso) super.consultarElemento(id);
     }
