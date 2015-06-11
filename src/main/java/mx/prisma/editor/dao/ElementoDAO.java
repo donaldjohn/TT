@@ -24,7 +24,7 @@ public class ElementoDAO {
 
 		try {
 			session.beginTransaction();
-			session.save(elemento);
+			session.saveOrUpdate(elemento);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
