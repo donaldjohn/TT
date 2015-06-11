@@ -274,7 +274,7 @@ public class Test {
 		// Modulo modulo = new ModuloDAO().consultarModulo("SF");
 		List<Elemento> cus = new ElementoDAO().consultarElementos();
 		System.out.println(cus.get(0).getEstadoElemento().getNombre());
-		System.out.println(cus.size());
+		System.out.println(cus.size()); 
 		/*
 		 * Modulo modulo = new ModuloDAO().consultarModulo("SF"); List<CasoUso>
 		 * cus = new CasoUsoDAO().consultarCasosUso(modulo); PostPrecondicionId
