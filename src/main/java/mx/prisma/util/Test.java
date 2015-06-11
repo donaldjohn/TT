@@ -67,8 +67,8 @@ public class Test {
 		// pruebaRegistroActor(); // 07/06/2015 OK
 
 		// pruebaRegistroCasoUso(); //05/06/2015
-		 pruebaConsultaCasoUso(); //05/06/2015
-		pruebaProcesarCadena();
+		// pruebaConsultaCasoUso(); //05/06/2015
+		 pruebaProcesarCadena();
 
 	}
 
@@ -78,6 +78,7 @@ public class Test {
 		String reglas = "El sistema valida la información con base en la regla de negocio RN.1:Datos_correctos y continúa ENT.Alumno.Apellido_materno";
 		Compilador compilador = new Compilador();
 		compilador.procesarTokenIpunt(reglas);
+		System.out.println(new ElementoDAO().lastIndexCUsinTitulo(3));
 		/*
 		for (Object objeto : objetos) {
 			if (objeto instanceof Elemento)

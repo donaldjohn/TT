@@ -29,16 +29,13 @@ public class Compilador {
 			caracter = cadena.charAt(i);
 			if (almacenar) {
 				if (puntoFinal(longitud, i, caracter)) {
-					System.out.println("A");
 					tokens.add(token);
 				} else if (puntoSeguido(cadena, i, caracter)
 						|| espacio(cadena, i, caracter)) {
-					System.out.println("B");
 					tokens.add(token);
 					pila = "";
 					almacenar = false;
 				} else if (longitud - 1 == i) {
-					System.out.println("C");
 					token += caracter;
 					tokens.add(token);
 				} else {

@@ -21,7 +21,7 @@ public class ElementoDAO {
 	}
 
 	public void registrarElemento(Elemento elemento) {
-		
+
 		try {
 			session.beginTransaction();
 			session.save(elemento);
@@ -33,7 +33,7 @@ public class ElementoDAO {
 	}
 
 	public Elemento consultarElemento(int id) {
-		Elemento elemento  = null;
+		Elemento elemento = null;
 
 		try {
 			session.beginTransaction();
@@ -43,44 +43,46 @@ public class ElementoDAO {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
-		
+
 		return elemento;
 
 	}
-	
+
 	public List<Elemento> consultarElementos() {
 		List<Elemento> elementos = null;
 
 		try {
 			session.beginTransaction();
-			Query query = session.createQuery("from Elemento"); 
+			Query query = session.createQuery("from Elemento");
 			elementos = query.list();
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
-		
+
 		return elementos;
 
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Integer lastIndexOfElemento(TipoReferencia referencia, Modulo modulo) {
 		List<Integer> results = null;
 		String sentencia = "";
-		switch(referencia){
+		switch (referencia) {
 		case CASOUSO:
-			sentencia = "SELECT MAX(numero) FROM Elemento WHERE clave = 'CU"+modulo.getClave()+"'";
+			sentencia = "SELECT MAX(numero) FROM Elemento WHERE clave = 'CU"
+					+ modulo.getClave() + "'";
 			break;
 		case INTERFAZUSUARIO:
-			sentencia = "SELECT MAX(numero) FROM Pantalla WHERE clave = 'CU"+modulo.getClave()+"'";
+			sentencia = "SELECT MAX(numero) FROM Pantalla WHERE clave = 'CU"
+					+ modulo.getClave() + "'";
 			break;
 		default:
 			break;
-		
+
 		}
-		
+
 		try {
 			session.beginTransaction();
 			SQLQuery sqlQuery = session.createSQLQuery(sentencia);
@@ -90,20 +92,19 @@ public class ElementoDAO {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
-		if(results.isEmpty())
+		if (results.isEmpty())
 			return 0;
+		else if (results.get(0) != null)
+			return results.get(0);
 		else
-			if(results.get(0)!=null)
-				return results.get(0);
-			else 
-				return 0;
+			return 0;
 	}
 
 	@SuppressWarnings("unchecked")
 	public Integer lastIndexOfElemento(TipoReferencia referencia) {
 		List<Integer> results = null;
 		String sentencia = "";
-		switch(referencia){
+		switch (referencia) {
 		case ACTOR:
 			sentencia = "SELECT MAX(numero) FROM Elemento  WHERE clave = 'ACT'";
 			break;
@@ -121,9 +122,9 @@ public class ElementoDAO {
 			break;
 		default:
 			break;
-		
+
 		}
-		
+
 		try {
 			session.beginTransaction();
 			SQLQuery sqlQuery = session.createSQLQuery(sentencia);
@@ -134,18 +135,19 @@ public class ElementoDAO {
 			session.getTransaction().rollback();
 		}
 
-		if(results.isEmpty())
+		if (results.isEmpty())
 			return 0;
+		else if (results.get(0) != null)
+			return results.get(0);
 		else
-			if(results.get(0)!=null)
-				return results.get(0);
-			else 
-				return 0;
+			return 0;
 	}
 
-	public int lastIndexCUsinTitulo(int claveModulo){
-		List<Integer> results = null;
-		String sentencia = "SELECT numero FROM Elemento INNER JOIN CasoUso ON  Elemento.id = CasoUso.Elementoid AND Elemento.nombre = 'Caso de uso' AND CasoUso.Moduloid = "+claveModulo+";";		
+	public int lastIndexCUsinTitulo(int claveModulo) {
+		List<String> results = null;
+		String auxiliar = "";
+		String sentencia = "SELECT nombre FROM Elemento INNER JOIN CasoUso ON  Elemento.id = CasoUso.Elementoid AND Elemento.nombre LIKE 'Caso de uso%' AND CasoUso.Moduloid = "
+				+ claveModulo + ";";
 		try {
 			session.beginTransaction();
 			SQLQuery sqlQuery = session.createSQLQuery(sentencia);
@@ -155,15 +157,20 @@ public class ElementoDAO {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
-		
-		if(results.isEmpty())
+
+		if (results.isEmpty())
 			return 0;
-		else
-			if(results.get(0)!=null)
-				return results.get(0);
-			else 
+		else if (results.get(0) != null) {
+			auxiliar = results.get(0).substring(12);
+			try{
+			Integer i = Integer.parseInt(auxiliar);
+			return i;
+			} catch(NumberFormatException e){
 				return 0;
+			}
+
+		} else
+			return 0;
+
 	}
-	
-	
 }
