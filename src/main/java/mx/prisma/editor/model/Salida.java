@@ -77,7 +77,7 @@ public class Salida implements java.io.Serializable {
 	}
 
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TipoParametroid", referencedColumnName = "id")
 	public TipoParametro getTipoParametro() {
 		return tipoParametro;
@@ -87,7 +87,7 @@ public class Salida implements java.io.Serializable {
 		this.tipoParametro = tipoParametro;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CasoUsoElementoid", referencedColumnName = "Elementoid")
 	public CasoUso getCasoUso() {
 		return casoUso;
@@ -97,7 +97,7 @@ public class Salida implements java.io.Serializable {
 		this.casoUso = casoUso;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "MensajeElementoid", referencedColumnName = "Elementoid")
 	public Mensaje getMensaje() {
 		return mensaje;
@@ -107,7 +107,7 @@ public class Salida implements java.io.Serializable {
 		this.mensaje = mensaje;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Atributoid", referencedColumnName = "id")
 	public Atributo getAtributo() {
 		return atributo;
@@ -117,7 +117,7 @@ public class Salida implements java.io.Serializable {
 		this.atributo = atributo;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TerminoGlosarioElementoid", referencedColumnName = "Elementoid")
 	public TerminoGlosario getTerminoGlosario() {
 		return terminoGlosario;

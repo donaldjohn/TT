@@ -19,6 +19,7 @@
 			<s:textfield name="nombreUsuario" label="Nombre de usuario"></s:textfield>
 			<s:password name="contrasena" label="Contraseña"></s:password>
 			<s:submit value="Aceptar"></s:submit>
+			<textarea></textarea>
 		</s:form>
 	</div>
 </body>

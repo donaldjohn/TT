@@ -25,7 +25,7 @@ public class CasoUsoActorId implements java.io.Serializable {
 		this.actor = actor;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "CasoUsoElementoid", nullable = false)
 	public CasoUso getCasouso() {
 		return casouso;
@@ -35,7 +35,7 @@ public class CasoUsoActorId implements java.io.Serializable {
 		this.casouso = casouso;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ActorElementoid", nullable = false)
 	public Actor getActor() {
 		return actor;

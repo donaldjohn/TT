@@ -29,7 +29,7 @@ public class Pantalla extends Elemento implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private int elementoid;
-	private String imagen;
+	private byte[] imagen;
 	private Modulo modulo;
 	private Set<Accion> acciones = new HashSet<Accion>(0);
 
@@ -43,7 +43,7 @@ public class Pantalla extends Elemento implements java.io.Serializable {
 	}
 
 	public Pantalla(String clave, int numero, String nombre,
-			Proyecto proyecto, String descripcion, EstadoElemento estadoElemento,String imagen, Modulo modulo) {
+			Proyecto proyecto, String descripcion, EstadoElemento estadoElemento,byte[] imagen, Modulo modulo) {
 		super(clave, numero, nombre, proyecto, descripcion, estadoElemento);
 		this.imagen = imagen;
 		this.modulo = modulo;
@@ -58,11 +58,11 @@ public class Pantalla extends Elemento implements java.io.Serializable {
 	}
 
 	@Column(name = "imagen", length = 999)
-	public String getImagen() {
+	public byte[] getImagen() {
 		return this.imagen;
 	}
 
-	public void setImagen(String imagen) {
+	public void setImagen(byte[] imagen) {
 		this.imagen = imagen;
 	}
 

@@ -53,7 +53,7 @@ public class Telefono implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "ColaboradorCURP")
 	public Colaborador getColaborador() {
 		return colaborador;

@@ -3,10 +3,12 @@ package mx.prisma.editor.dao;
 import java.util.List;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import mx.prisma.editor.bs.Referencia.TipoReferencia;
+import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.util.HibernateUtil;
@@ -43,6 +45,23 @@ public class ElementoDAO {
 		}
 		
 		return elemento;
+
+	}
+	
+	public List<Elemento> consultarElementos() {
+		List<Elemento> elementos = null;
+
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("from Elemento"); 
+			elementos = query.list();
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		
+		return elementos;
 
 	}
 	
@@ -123,4 +142,28 @@ public class ElementoDAO {
 			else 
 				return 0;
 	}
+
+	public int lastIndexCUsinTitulo(int claveModulo){
+		List<Integer> results = null;
+		String sentencia = "SELECT numero FROM Elemento INNER JOIN CasoUso ON  Elemento.id = CasoUso.Elementoid AND Elemento.nombre = 'Caso de uso' AND CasoUso.Moduloid = "+claveModulo+";";		
+		try {
+			session.beginTransaction();
+			SQLQuery sqlQuery = session.createSQLQuery(sentencia);
+			results = sqlQuery.list();
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		
+		if(results.isEmpty())
+			return 0;
+		else
+			if(results.get(0)!=null)
+				return results.get(0);
+			else 
+				return 0;
+	}
+	
+	
 }

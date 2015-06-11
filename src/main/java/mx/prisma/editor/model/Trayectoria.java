@@ -33,17 +33,18 @@ public class Trayectoria implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer id;
-	private int clave;
-	private int alternativa;
-	private Integer condicion;
+	private String clave;
+	private boolean alternativa;
+	private String condicion;
 	private CasoUso casoUso;
 	private boolean finCasoUso;
 	private Set<Paso> pasos = new HashSet<Paso>(0);
+	
 
 	public Trayectoria() {
 	}
 
-	public Trayectoria(int clave, int alternativa, CasoUso casoUso,
+	public Trayectoria(String clave, boolean alternativa, CasoUso casoUso,
 			boolean finCasoUso) {
 		this.clave = clave;
 		this.alternativa = alternativa;
@@ -51,7 +52,7 @@ public class Trayectoria implements java.io.Serializable {
 		this.finCasoUso = finCasoUso;
 	}
 
-	public Trayectoria(int clave, int alternativa, Integer condicion,
+	public Trayectoria(String clave, boolean alternativa, String condicion,
 			CasoUso casoUso, boolean finCasoUso) {
 		this.clave = clave;
 		this.alternativa = alternativa;
@@ -72,29 +73,29 @@ public class Trayectoria implements java.io.Serializable {
 	}
 
 	@Column(name = "clave", nullable = false)
-	public int getClave() {
+	public String getClave() {
 		return this.clave;
 	}
 
-	public void setClave(int clave) {
+	public void setClave(String clave) {
 		this.clave = clave;
 	}
 
 	@Column(name = "alternativa", nullable = false)
-	public int getAlternativa() {
+	public boolean getAlternativa() {
 		return this.alternativa;
 	}
 
-	public void setAlternativa(int alternativa) {
+	public void setAlternativa(boolean alternativa) {
 		this.alternativa = alternativa;
 	}
 
 	@Column(name = "condicion")
-	public Integer getCondicion() {
+	public String getCondicion() {
 		return this.condicion;
 	}
 
-	public void setCondicion(Integer condicion) {
+	public void setCondicion(String condicion) {
 		this.condicion = condicion;
 	}
 

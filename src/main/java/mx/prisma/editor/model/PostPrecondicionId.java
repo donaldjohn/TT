@@ -38,7 +38,7 @@ public class PostPrecondicionId implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CasoUsoElementoid", referencedColumnName = "Elementoid")
 	public CasoUso getCasoUso() {
 		return casoUso;

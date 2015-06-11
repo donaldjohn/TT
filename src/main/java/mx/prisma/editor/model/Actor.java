@@ -50,7 +50,7 @@ public class Actor extends Elemento implements java.io.Serializable {
 		this.otraCardinalidad = otraCardinalidad;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Cardinalidadid", nullable = false)
 	public Cardinalidad getCardinalidad() {
 		return this.cardinalidad;

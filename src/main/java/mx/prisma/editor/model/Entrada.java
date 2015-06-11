@@ -72,7 +72,7 @@ public class Entrada implements java.io.Serializable {
 		this.numeroToken = numeroToken;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TipoParametroid", referencedColumnName = "id")
 	public TipoParametro getTipoParametro() {
 		return tipoParametro;
@@ -82,7 +82,7 @@ public class Entrada implements java.io.Serializable {
 		this.tipoParametro = tipoParametro;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CasoUsoElementoid", referencedColumnName = "Elementoid")
 	public CasoUso getCasoUso() {
 		return casoUso;
@@ -92,7 +92,7 @@ public class Entrada implements java.io.Serializable {
 		this.casoUso = casoUso;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Atributoid", referencedColumnName = "id")
 	public Atributo getAtributo() {
 		return atributo;
@@ -102,7 +102,7 @@ public class Entrada implements java.io.Serializable {
 		this.atributo = atributo;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TerminoGlosarioElementoid", referencedColumnName = "Elementoid")
 	public TerminoGlosario getTerminoGlosario() {
 		return terminoGlosario;
