@@ -122,5 +122,23 @@ public class CuBs {
 		
 		return nombre;
 	}
+
+	public static CasoUso consultarCasoUso(int id) {
+		CasoUso cu = null;
+		try {
+			cu = new CasoUsoDAO().consultarCasoUso(id);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		if(cu == null) {
+			throw new PRISMAException("No se puede consultar el caso de uso por el id.", "MSG13");
+		}
+		return cu;
+	}
 	
+	public static int getIdEdicion()
+	{
+		return 1;
+	}
 }
+

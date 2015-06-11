@@ -178,7 +178,7 @@ public class Proyecto implements java.io.Serializable {
 		this.contraparte = contraparte;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "EstadoProyectoid", nullable = false)
 	public EstadoProyecto getEstadoProyecto() {
 		return estadoProyecto;

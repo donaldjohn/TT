@@ -23,14 +23,7 @@
 	<div class="form">
 	
 	 
-		<table id="gestion" class="tablaGestion" cellspacing="0" width="100%"> 
-			<thead>
-				<tr>
-					<th style="width: 40%;">Trayectoria</th>
-					<th style="width: 30%;">Tipo</th>
-					<th style="width: 30%;">Acciones</th>
-				</tr>
-			</thead>
+		<table id="gestion" class="tablaGestion" cellspacing="0" width="100%">
 			<tbody>
 			<s:iterator value="listTrayectorias" var="tray">
 				<tr>

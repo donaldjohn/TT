@@ -10,7 +10,7 @@
 
 <body>
 	
-	<h1><s:property value="%{model.modulo.clave + model.modulo.nombre}" /></h1>
+	<h1><s:property value="%{model.modulo.clave + ' ' + model.modulo.nombre}" /></h1>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />

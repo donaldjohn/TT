@@ -14,6 +14,9 @@
 <body>
 	<h1>Registrar Caso de uso</h1>
 	
+	<s:actionmessage theme="jquery" />
+	<s:actionerror theme="jquery" />
+	<br/>
 	<div class="menuSuperiorCU"><jsp:include
 			page="/content/editor/menus/menuSuperiorCU.jsp" /></div>
 
@@ -34,6 +37,7 @@
 							<s:fielderror fieldName="model.numero" cssClass="error" theme="jquery" /></td>
 					<s:hidden value="%{model.clave}" name="model.clave"/>
 					<s:hidden value="%{model.numero}" name="model.numero"/>
+					<s:hidden value="%{model.id}" name="model.id"/>
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelNombre" /></td>
@@ -113,9 +117,9 @@
 
 			<br />
 			<div align="center">
-				<sj:a openDialog="precondicionDialog" button="true">
-		   			Registrar
-		   		</sj:a>
+				<input class="boton" type="button"
+				onclick="location.href='${pageContext.request.contextPath}/precondiciones/new'"
+				value="Registrar" />
 			</div>
 			<br />
 		</div>
