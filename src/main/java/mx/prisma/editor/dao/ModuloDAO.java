@@ -19,7 +19,7 @@ public class ModuloDAO {
 		Modulo modulo = null;
 		try {
 			session.beginTransaction();
-			Query query = session.createQuery("from Modulo where clave = :clave");
+			Query query = session.createSQLQuery("select * from Modulo where clave = :clave").addEntity(Modulo.class) ;
 			query.setParameter("clave", clave);
 			@SuppressWarnings("unchecked")
 			List<Modulo> list  = query.list();
