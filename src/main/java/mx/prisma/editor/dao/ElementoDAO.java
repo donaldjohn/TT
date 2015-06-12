@@ -10,6 +10,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import mx.prisma.editor.bs.Referencia.TipoReferencia;
+import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.util.HibernateUtil;
@@ -183,8 +184,30 @@ public class ElementoDAO {
 				e.printStackTrace();
 			}			
 		}
-		
+		if (numeros.isEmpty()){
+			return 0;
+		}
 		Collections.sort(numeros);
 		return numeros.get(0)*-1;
+	}
+
+	public Elemento consultarElemento(String nombre) {
+		List<Elemento> results  = null;
+
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("from Elemento where nombre = :nombre");
+			query.setParameter("nombre", nombre);
+			results = query.list();
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		if (results.isEmpty()){
+			return null;
+		} else 
+			return results.get(0);
+
 	}
 }

@@ -20,7 +20,9 @@ import mx.prisma.admin.model.Proyecto;
 import mx.prisma.admin.model.Rol;
 import mx.prisma.admin.model.Telefono;
 import mx.prisma.editor.bs.Compilador;
+import mx.prisma.editor.bs.Referencia;
 import mx.prisma.editor.bs.Referencia.TipoReferencia;
+import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.dao.ActorDAO;
 import mx.prisma.editor.dao.CardinalidadDAO;
 import mx.prisma.editor.dao.CasoUsoDAO;
@@ -66,29 +68,56 @@ public class Test {
 
 		// pruebaRegistroActor(); // 07/06/2015 OK
 
-		// pruebaRegistroCasoUso(); //05/06/2015
-		 //pruebaConsultaCasoUso(); //05/06/2015
+		 pruebaRegistroCasoUso(); //05/06/2015
+		// pruebaConsultaCasoUso(); //05/06/2015
 		 pruebaProcesarCadena();
+
 
 	}
 
 	// -------------------------------------------------------------------
 
 	private static void pruebaProcesarCadena() {
-		String reglas = "El sistema valida la información con base en la regla de negocio RN.1:Datos_correctos y continúa ENT.Alumno.Apellido_materno";
-		Compilador compilador = new Compilador();
-		compilador.procesarTokenIpunt(reglas);
-		System.out.println(new ElementoDAO().lastIndexCUsinTitulo(3));
-		/*
-		for (Object objeto : objetos) {
-			if (objeto instanceof Elemento)
-				if (objeto instanceof ReglaNegocio) {
-					System.out.println("Guardar regla de negocio");
-				} else if (objeto instanceof Atributo) {
-					System.out.println("Guardar atributo");
-				}
-		}*/
+		CasoUso casouso = new CasoUsoDAO().consultarCasoUso(1);
+		String actores = "ACT.Cartógrafo_de_incendios, ACT.Cartógrafo_de_reforestanciones";
+		ArrayList <Object> objetos = TokenBs.procesarTokenIpunt(actores);
+		almacenarObjetosToken(objetos, casouso);
+		
 
+
+	}
+
+
+	private static void almacenarObjetosToken(ArrayList<Object> objetos, CasoUso casouso) {
+		for (Object objeto : objetos){
+			switch(Referencia.getTipoReferencia(objeto)){
+			case ACCION:
+				break;
+			case ACTOR:
+				System.out.println("Es un actor");
+				casouso.getActores().clear();
+				new CasoUsoDAO().registrarCasoUso(casouso);
+				break;
+			case CASOUSO:
+				break;
+			case ENTIDAD:
+				break;
+			case GLOSARIO:
+				break;
+			case INTERFAZUSUARIO:
+				break;
+			case MENSAJE:
+				break;
+			case REGLANEGOCIO:
+				break;
+			case TRAYECTORIA:
+				break;
+			default:
+				break;
+			
+			}
+		}
+		
 	}
 
 	public static void pruebaRegistroColaborador() {
@@ -235,20 +264,22 @@ public class Test {
 
 	public static void pruebaRegistroCasoUso() {
 
-		String nombre = "Cerrar sesión";
+		String nombre = "Registrar incendios";
 		int idEstadoElemento = 1;
 		String claveProyecto = "SIG";
-		String actores = "${ACT.1}, ${ACT.2}";
-		String entradas = "${ENT.2.1} y el ${GLS.1}.";
-		String salidas = "${ENT.1.2} y el mensaje ${MSG.1}";
-		String reglas = "${RN.1} para validar elementos y la ${RN.2} para verificar estados.";
+		String claveModulo = "SF";
+		String actores = "";
+		String entradas = "";
+		String salidas = "";
+		String reglas = "";
 
-		Modulo modulo = new ModuloDAO().consultarModulo("SF");
-		String clave = "CU" + modulo.getClave();
 
 		EstadoElemento estadoElemento = new EstadoElementoDAO()
 				.consultarEstadoElemento(idEstadoElemento);
 		Proyecto proyecto = new ProyectoDAO().consultarProyecto(claveProyecto);
+		Modulo modulo = new ModuloDAO().consultarModulo(claveModulo, proyecto);
+		String clave = "CU" + modulo.getClave();
+
 		int numero = new CasoUsoDAO().lastIndexOfElemento(
 				TipoReferencia.CASOUSO, modulo);
 
@@ -257,7 +288,7 @@ public class Test {
 		 * descripcion, EstadoElemento estadoElemento, Modulo modulo) {
 		 * super(clave, numero, nombre, proyecto, descripcion, estadoElemento
 		 */
-		CasoUso cu = new CasoUso(clave, numero, nombre, proyecto, "Mi CU",
+		CasoUso cu = new CasoUso(clave, numero, nombre, proyecto, "Este caso uso permite registrar incendios",
 				estadoElemento, modulo);
 
 		try {
