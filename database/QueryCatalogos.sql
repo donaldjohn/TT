@@ -2,7 +2,6 @@ INSERT INTO EstadoProyecto (nombre) VALUES ('Negociación');
 INSERT INTO EstadoProyecto (nombre) VALUES ('Iniciado');
 INSERT INTO EstadoProyecto (nombre) VALUES ('Terminado');
 
-INSERT INTO EstadoElemento (nombre) VALUES ('Pre-registro');
 INSERT INTO EstadoElemento (nombre) VALUES ('Edición');
 INSERT INTO EstadoElemento (nombre) VALUES ('En Revisión');
 INSERT INTO EstadoElemento (nombre) VALUES ('Por liberar');

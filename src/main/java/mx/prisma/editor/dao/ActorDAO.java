@@ -13,4 +13,8 @@ public class ActorDAO extends ElementoDAO {
 	public Actor consultarActor(int id) {
 		return (Actor)super.consultarElemento(id);
 	}
+	
+	public Actor consultarActor(String nombre) {
+		return (Actor)super.consultarElemento(nombre);
+	}
 }

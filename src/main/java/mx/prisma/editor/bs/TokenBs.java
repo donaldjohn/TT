@@ -6,22 +6,22 @@ import mx.prisma.editor.dao.ActorDAO;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.util.PRISMAException;
 
-public class Compilador {
+public class TokenBs {
 
-	String tokenRN = "RN."; // RN.NUMERO:NOMBRE_RN
-	String tokenENT = "ENT."; // ENT.NOMBRE_ENT
-	String tokenCU = "CU."; // CU.MODULO.NUMERO:NOMBRE_CU
-	String tokenIU = "IU."; // IU.MODULO.NUMERO:NOMBRE_IU
-	String tokenMSG = "MSG."; // MSG.NUMERO:NOMBRE_MSG
-	String tokenACT = "ACT."; // ACT.NOMBRE_ACT
-	String tokenGLS = "GLS."; // GLS.NOMBRE_GLS
-	String tokenATR = "ATR.";// ATR.ENTIDAD_A_B:NOMBRE_ATT
-	String tokenP = "P."; // P.CUMODULO:TRAY.NUMERO.
-	String tokenTray = "TRAY."; // TRAY.CUMODULO:A.;
-	String tokenSeparator1 = ".";
-	String tokenSeparator2 = ":";
+	private static String tokenRN = "RN."; // RN.NUMERO:NOMBRE_RN
+	private static String tokenENT = "ENT."; // ENT.NOMBRE_ENT
+	private static String tokenCU = "CU."; // CU.MODULO.NUMERO:NOMBRE_CU
+	private static String tokenIU = "IU."; // IU.MODULO.NUMERO:NOMBRE_IU
+	private static String tokenMSG = "MSG."; // MSG.NUMERO:NOMBRE_MSG
+	private static String tokenACT = "ACT."; // ACT.NOMBRE_ACT
+	private static String tokenGLS = "GLS."; // GLS.NOMBRE_GLS
+	private static String tokenATR = "ATR.";// ATR.ENTIDAD_A_B:NOMBRE_ATT
+	private static String tokenP = "P."; // P.CUMODULO:TRAY.NUMERO.
+	private static String tokenTray = "TRAY."; // TRAY.CUMODULO:A.;
+	private static String tokenSeparator1 = ".";
+	private static String tokenSeparator2 = ":";
 
-	public ArrayList<Object> procesarTokenIpunt(String cadena) {
+	public static ArrayList<Object> procesarTokenIpunt(String cadena) {
 		ArrayList<String> tokens = new ArrayList<String>();
 		String pila = "";
 		String token = "";
@@ -66,14 +66,14 @@ public class Compilador {
 		return convertirToken_Objeto(tokens);
 	}
 
-	private boolean espacio(String cadena, int i, char caracter) {
+	private static boolean espacio(String cadena, int i, char caracter) {
 		if (caracter == ' ') {
 			return true;
 		}
 		return false;
 	}
 
-	private boolean puntoSeguido(String cadena, int i, char caracter) {
+	private static boolean puntoSeguido(String cadena, int i, char caracter) {
 		if (caracter == '.') {
 			if (cadena.length() - 1 > i) {
 				if (cadena.charAt(i + 1) == ' ') {
@@ -88,14 +88,14 @@ public class Compilador {
 		return false;
 	}
 
-	private boolean puntoFinal(int longitud, int i, char caracter) {
+	private static boolean puntoFinal(int longitud, int i, char caracter) {
 		if (caracter == '.' && longitud - 1 == i) {
 			return true;
 		}
 		return false;
 	}
 
-	private boolean coma(String cadena, int i, char caracter) {
+	private static boolean coma(String cadena, int i, char caracter) {
 		if (caracter == ',') {
 			if (cadena.length() - 1 > i) {
 				if (cadena.charAt(i + 1) == ' ') {
@@ -109,7 +109,7 @@ public class Compilador {
 		return false;
 	}
 
-	private boolean esToken(String pila) {
+	private static boolean esToken(String pila) {
 		if (pila.equals(tokenRN) || pila.equals(tokenENT)
 				|| pila.equals(tokenCU) || pila.equals(tokenIU)
 				|| pila.equals(tokenMSG) || pila.equals(tokenACT)
@@ -120,7 +120,7 @@ public class Compilador {
 		return false;
 	}
 
-	public ArrayList<Object> convertirToken_Objeto(ArrayList<String> tokens) {
+	public static ArrayList<Object> convertirToken_Objeto(ArrayList<String> tokens) {
 		ArrayList<Object> objetos = new ArrayList<Object>();
 		ArrayList<String> segmentos;
 
@@ -170,7 +170,7 @@ public class Compilador {
 		return objetos;
 	}
 
-	public ArrayList<String> segmentarToken(String token) {
+	public static ArrayList<String> segmentarToken(String token) {
 		String segmento = "";
 		ArrayList<String> segmentos = new ArrayList<String>();
 		String caracterAt;
