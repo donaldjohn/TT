@@ -20,6 +20,7 @@ public class PrecondicionesCtrl extends ActionSupportPRISMA{
 	private PostPrecondicion model;
 	private int numero;
 	private boolean precondicion;
+	
 	public String editNew() {
 		System.out.println("DESPUES DE CALCULAR EL NUMERO");
 		String result = EDITNEW;

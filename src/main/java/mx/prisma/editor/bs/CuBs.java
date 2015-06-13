@@ -18,7 +18,6 @@ public class CuBs {
 	
 	
 	public static List<CasoUso> consultarCasosUsoModulo(Modulo modulo){
-		System.out.println("DESDE BS MODULO: " + modulo.getNombre());
 		List<CasoUso> cus = new CasoUsoDAO().consultarCasosUso(modulo);
 		if(cus == null) {
 			throw new PRISMAException("No se pueden consultar los casos de uso del modulo", "MSG13");
@@ -36,15 +35,14 @@ public class CuBs {
 	 * 5.- Revisión (Consultar, revisar <solamente quien lo está revisando>)
 	 * 6.- Liberado (Consulta, editar)
 	 * */
-	public static boolean esEditable(Colaborador colaborador, CasoUso cu) {
-		// TODO Auto-generated method stub
-		//Cualquiera lo edita
-		/*if(cu.getEstadoElemento().getIdentificador() == 2 || cu.getEstadoElemento().getIdentificador() == 6){
+	public static boolean esEditable(String idAutor, CasoUso cu) {
+		idAutor = "NGHS";
+		String idAutorCU = "NGHS";
+		//PENDIENTE AGREGAR TODOS LOS CASOS EN LOS QUE ES POSIBLE EDITAR UN CU
+		System.out.println("DESDE EL BS: HOLA");
+		if(cu.getEstadoElemento().getId() == getIdEdicion() && idAutor.equals(idAutorCU)) {
 			return true;
-		}*/
-		//Solamente quien lo tiene asignado
-		//PENDIENTE
-		//if(cu.getEstadoElemento().getIdentificador() == 3 )
+		}
 		
 		return false;
 	}
@@ -67,8 +65,9 @@ public class CuBs {
 		
 	}
 
-	public static Modulo consultarModulo(String nombreModulo) throws Exception{
-		Modulo modulo = new ModuloDAO().consultarModulo(nombreModulo);
+	public static Modulo consultarModulo(String claveModulo, Proyecto proyecto) throws Exception{
+		
+		Modulo modulo = new ModuloDAO().consultarModulo(claveModulo, proyecto);
 		if(modulo == null) {
 			throw new PRISMAException("No se puede consultar el modulo", "MSG13");
 		}
@@ -111,6 +110,7 @@ public class CuBs {
 		try {
 			ultimoNum = new ElementoDAO().lastIndexCUsinTitulo(id);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new PRISMAException("No se puede consultar el último número de los nombres por default (caso de uso).", "MSG13");
 		}
 		
@@ -134,6 +134,15 @@ public class CuBs {
 			throw new PRISMAException("No se puede consultar el caso de uso por el id.", "MSG13");
 		}
 		return cu;
+	}
+	
+	public static String consultarAutor(CasoUso cu) {
+		return "Autor";
+	}
+	
+	public static boolean esEditable(int idEstado) {
+		System.out.println("Estado " + idEstado + " == idEdicion " + getIdEdicion());
+		return idEstado == getIdEdicion();
 	}
 	
 	public static int getIdEdicion()

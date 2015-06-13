@@ -12,7 +12,7 @@
 ]]>
 </head>
 <body>
-	<h1>Registrar Caso de uso</h1>
+	<h1>Modificar Caso de uso</h1>
 	
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
@@ -24,14 +24,15 @@
 
 
 	<s:form id="frmCU" theme="simple"
-		action="%{#pageContext.request.contextPath}/cu" 
-		method="post" onsubmit="return getSubmitActor();">
+		action="%{#pageContext.request.contextPath}/cu/%{model.id}" 
+		method="post" onsubmit="return getSubmit();">
+		<s:hidden name="_method" value="put" />
 		<div class="formulario">
 			<div class="tituloFormulario">Información general del caso de
 				uso</div>
 			<table class="seccion">
 				<tr>
-					<td class="label"><s:text name="labelIdentificador" /></td>
+					<td class="label">Identificador</td>
 					<td class="labelDerecho"><s:property value="model.clave + ' ' + model.numero"/>
 							<s:fielderror fieldName="model.clave" cssClass="error" theme="jquery" />
 							<s:fielderror fieldName="model.numero" cssClass="error" theme="jquery" /></td>
@@ -117,7 +118,9 @@
 
 			<br />
 			<div align="center">
-				<sj:a openDialog="precondDialog" button="true">Registrar</sj:a>
+				<input class="boton" type="button"
+				onclick="location.href='${pageContext.request.contextPath}/precondiciones/new'"
+				value="Registrar" />
 			</div>
 			<br />
 		</div>
@@ -186,38 +189,8 @@
 			<input class="boton" type="button"
 				onclick="location.href='${pageContext.request.contextPath}/cu'"
 				value="Cancelar" />
-		</div>    	
+		</div>
 	</s:form>
-	
-	
-	<!-- PRECONDICIONES -->	
-   	<sj:dialog id="precondDialog" title="Registrar Precondición" autoOpen="true" 
-   	minHeight="300" minWidth="800" modal="true" draggable="true" >
-	   	<s:form id="frmPrecondiciones" theme="simple" name="frmPrecondicionesName"
-			onSubmit="return registrarPrecondicion()">
-			<div class="formulario">
-				<div class="tituloFormulario">Información de la Precondición</div>
-				<table class="seccion">
-					<tr>
-						<td class="label obligatorio"><s:text name="labelRedaccion" /></td>
-						<td><s:textarea rows="5" name="precondicion.redaccion"
-								maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
-								fieldName="precondicion.redaccion" cssClass="error"
-								theme="jquery" /></td>
-					</tr>
-				</table>
-			</div>
-			<br />
-				<div align="center">
-					<s:submit value="Aceptar" />
-	
-					<input type="button"
-						onclick="cancelarRegistrarPre()"
-						value="Cancelar" />
-				</div>
-		</s:form>
-	</sj:dialog>
-	
 
 	
 	

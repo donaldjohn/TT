@@ -2,11 +2,16 @@ $(document).ready(function() {
 					$('table.tablaGestion').DataTable();
 				} );
 
-function agregarPrecondicion(){
-	$('#precondicionDialog').dialog('close');
+function registrarPrecondicion(){
+	var x = document.forms["frmPrecondicionesName"]["precondicion.redaccion"].value;
+	alert("Name must be filled out");
+    if (x == null || x == "") {
+        alert("Name must be filled out");
+        return false;
+    }
 };
   
-function cancelarAgregar(){
-	$('#precondicionDialog').dialog('close');
+function cancelarRegistrarPre(){
+	$('#precondDialog').dialog('close');
 };
 

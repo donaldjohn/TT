@@ -34,16 +34,17 @@
 				<tr>
 					<td><s:property value="%{#cu.clave + ' ' + #cu.numero + ' ' +#cu.nombre}"/></td>
 					<td><s:property value="%{#cu.estadoElemento.nombre}"/></td>
-					<td align="center">						
+					<td align="center">		
+					<s:property value="%{mx.prisma.editor.controller.CuCtrl()esEditable('NGHS', cu)}"/>				
 						<!--<s:if
-							test="%{esEditable}">
+							test="%{mx.prisma.editor.controller.CuCtrl()esEditable('NGHS', cu)}">-->
 							<a
-									href="${pageContext.request.contextPath}/cu/new?idSel=${cu.id}"><img
+									href="${pageContext.request.contextPath}/cu/${cu.id}/edit"><img
 										id="" class="button" width="20" height="20"
 										title="Georreferenciar incendio"
 										src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></a>
-						</s:if>
-						<s:if
+						<!--</s:if>-->
+						<!--<s:if
 							test="%{esEliminable}">
 							<a
 									href="${pageContext.request.contextPath}/cu/new?idSel=${cu.id}"><img
