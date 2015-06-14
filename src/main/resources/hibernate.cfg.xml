@@ -24,15 +24,12 @@
 		<mapping class="mx.prisma.editor.model.Cardinalidad" />
 		<mapping class="mx.prisma.editor.model.CasoUso" />
 		<mapping class="mx.prisma.editor.model.CasoUsoActor" />
-		<mapping class="mx.prisma.editor.model.CasoUsoActorId" />
 		<mapping class="mx.prisma.editor.model.CasoUsoReglaNegocio" />
-		<mapping class="mx.prisma.editor.model.CasoUsoReglaNegocioId" />
 		<mapping class="mx.prisma.editor.model.Elemento" />
 		<mapping class="mx.prisma.editor.model.Entidad" />
 		<mapping class="mx.prisma.editor.model.Entrada" />
 		<mapping class="mx.prisma.editor.model.EstadoElemento" />
 		<mapping class="mx.prisma.editor.model.Extension" />
-		<mapping class="mx.prisma.editor.model.ExtensionId" />
 		<mapping class="mx.prisma.editor.model.Inclusion" />
 		<mapping class="mx.prisma.editor.model.InclusionId" />
 		<mapping class="mx.prisma.editor.model.Mensaje" />
@@ -40,7 +37,7 @@
 		<mapping class="mx.prisma.editor.model.Paso" />
 		<mapping class="mx.prisma.editor.model.Pantalla" />
 		<mapping class="mx.prisma.editor.model.PostPrecondicion" />
-		<mapping class="mx.prisma.editor.model.PostPrecondicionId" />
+		<mapping class="mx.prisma.editor.model.ReferenciaParametro" />
 		<mapping class="mx.prisma.editor.model.ReglaNegocio" />
 		<mapping class="mx.prisma.editor.model.Salida" />
 		<mapping class="mx.prisma.editor.model.TerminoGlosario" />
@@ -48,6 +45,5 @@
 		<mapping class="mx.prisma.editor.model.TipoParametro" />
 		<mapping class="mx.prisma.editor.model.TipoReglaNegocio" />
 		<mapping class="mx.prisma.editor.model.Trayectoria" />
-
 	</session-factory>
 </hibernate-configuration>

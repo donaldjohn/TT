@@ -27,37 +27,40 @@ public class TokenBs {
 		String token = "";
 		char caracter;
 		boolean almacenar = false;
-		int longitud = cadena.length();
+		if (cadena != null) {
+			int longitud = cadena.length();
 
-		for (int i = 0; i < longitud; i++) {
-			caracter = cadena.charAt(i);
-			if (almacenar) {
-				if (puntoFinal(longitud, i, caracter)) {
-					tokens.add(token);
-				} else if (puntoSeguido(cadena, i, caracter)
-						|| espacio(cadena, i, caracter) || coma(cadena, i, caracter)) {
-					tokens.add(token);
-					pila = "";
-					almacenar = false;
-				} else if (longitud - 1 == i) {
-					token += caracter;
-					tokens.add(token);
-				} else {
-					token += caracter;
-				}
+			for (int i = 0; i < longitud; i++) {
+				caracter = cadena.charAt(i);
+				if (almacenar) {
+					if (puntoFinal(longitud, i, caracter)) {
+						tokens.add(token);
+					} else if (puntoSeguido(cadena, i, caracter)
+							|| espacio(cadena, i, caracter)
+							|| coma(cadena, i, caracter)) {
+						tokens.add(token);
+						pila = "";
+						almacenar = false;
+					} else if (longitud - 1 == i) {
+						token += caracter;
+						tokens.add(token);
+					} else {
+						token += caracter;
+					}
 
-			} else {
-				if (caracter == ' ') {
-					pila = "";
 				} else {
-					pila += cadena.charAt(i);
-					/*
-					 * Si el sistema encuentra un token, el estado de la pila
-					 * será almacenar.
-					 */
-					if (esToken(pila)) {
-						almacenar = true;
-						token = pila;
+					if (caracter == ' ') {
+						pila = "";
+					} else {
+						pila += cadena.charAt(i);
+						/*
+						 * Si el sistema encuentra un token, el estado de la
+						 * pila será almacenar.
+						 */
+						if (esToken(pila)) {
+							almacenar = true;
+							token = pila;
+						}
 					}
 				}
 			}
@@ -120,7 +123,8 @@ public class TokenBs {
 		return false;
 	}
 
-	public static ArrayList<Object> convertirToken_Objeto(ArrayList<String> tokens) {
+	public static ArrayList<Object> convertirToken_Objeto(
+			ArrayList<String> tokens) {
 		ArrayList<Object> objetos = new ArrayList<Object>();
 		ArrayList<String> segmentos;
 
@@ -134,18 +138,21 @@ public class TokenBs {
 			case ACCION:
 				break;
 			case ACTOR: // ACT.NOMBRE_ACT
-				Actor actor = new ActorDAO().consultarActor(segmentos.get(1).replaceAll("_", " "));
-				if (actor == null){
+				Actor actor = new ActorDAO().consultarActor(segmentos.get(1)
+						.replaceAll("_", " "));
+				if (actor == null) {
 					ArrayList<String> parametros = new ArrayList<String>();
-					//Construcción del mensaje de error;
+					// Construcción del mensaje de error;
 					parametros.add("el");
 					parametros.add("actor");
 					parametros.add(segmentos.get(1).replaceAll("_", " "));
 					parametros.add("registrado");
-					throw new PRISMAException("Compilador.convertirToken_Objeto: El actor no está registrado", "MSG15", parametros);
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: El actor no está registrado",
+							"MSG15", parametros);
 				}
 				objetos.add(actor);
-				
+
 				break;
 			case CASOUSO:
 				break;

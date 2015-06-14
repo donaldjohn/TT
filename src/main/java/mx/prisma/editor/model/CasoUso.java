@@ -15,9 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
-import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 
 import mx.prisma.admin.model.Proyecto;
 
@@ -118,7 +116,8 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.modulo = modulo;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "id.casouso")
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "casouso", orphanRemoval = true)
 	public Set<CasoUsoActor> getActores() {
 		return actores;
 	}
@@ -145,7 +144,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.salidas = salidas;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "id.casoUso", cascade = CascadeType.ALL)	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.ALL)	
 	public Set<CasoUsoReglaNegocio> getReglas() {
 		return reglas;
 	}
@@ -155,7 +154,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 	}
 	
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "id.casoUso", cascade = CascadeType.ALL)	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.ALL)	
 	public Set<PostPrecondicion> getPostprecondiciones() {
 		return postprecondiciones;
 	}
@@ -173,7 +172,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.trayectorias = trayectorias;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "id.casoUsoOrigen", cascade = CascadeType.ALL)	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUsoOrigen", cascade = CascadeType.ALL)	
 	public Set<Extension> getExtendidoDe() {
 		return ExtendidoDe;
 	}
@@ -181,7 +180,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 	public void setExtendidoDe(Set<Extension> ExtendidoDe) {
 		this.ExtendidoDe = ExtendidoDe;
 	}
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "id.casoUsoDestino", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUsoDestino", cascade = CascadeType.ALL)
 	public Set<Extension> getExtiende() {
 		return Extiende;
 	}
@@ -190,7 +189,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.Extiende = Extiende;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "id.casoUsoOrigen", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUsoOrigen", cascade = CascadeType.ALL)
 	public Set<Inclusion> getIncluidoEn() {
 		return incluidoEn;
 	}
@@ -199,7 +198,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.incluidoEn = incluidoEn;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "id.casoUsoDestino", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUsoDestino", cascade = CascadeType.ALL)
 	public Set<Inclusion> getIncluye() {
 		return incluye;
 	}

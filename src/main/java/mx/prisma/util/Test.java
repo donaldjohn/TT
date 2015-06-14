@@ -2,14 +2,10 @@ package mx.prisma.util;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import org.hibernate.Hibernate;
 
 import mx.prisma.admin.dao.ColaboradorDAO;
-import mx.prisma.admin.dao.ColaboradorProyectoDAO;
 import mx.prisma.admin.dao.EstadoProyectoDAO;
 import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.dao.RolDAO;
@@ -19,7 +15,6 @@ import mx.prisma.admin.model.EstadoProyecto;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.admin.model.Rol;
 import mx.prisma.admin.model.Telefono;
-import mx.prisma.editor.bs.Compilador;
 import mx.prisma.editor.bs.Referencia;
 import mx.prisma.editor.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.bs.TokenBs;
@@ -30,19 +25,15 @@ import mx.prisma.editor.dao.ElementoDAO;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.ModuloDAO;
-import mx.prisma.editor.dao.PostPrecondicionDAO;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Cardinalidad;
 import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.CasoUsoActor;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Modulo;
-import mx.prisma.editor.model.PostPrecondicion;
-import mx.prisma.editor.model.PostPrecondicionId;
-import mx.prisma.editor.model.ReglaNegocio;
-import mx.prisma.editor.model.TerminoGlosario;
 
 public class Test {
 	public static void main(String[] args) {
@@ -68,57 +59,19 @@ public class Test {
 
 		// pruebaRegistroActor(); // 07/06/2015 OK
 
-		 pruebaRegistroCasoUso(); //05/06/2015
+		// pruebaRegistroCasoUso(); //05/06/2015
+		 pruebaModificacionCasoUso(); 
 		// pruebaConsultaCasoUso(); //05/06/2015
-		 pruebaProcesarCadena();
 
 
 	}
 
-	// -------------------------------------------------------------------
+	
 
-	private static void pruebaProcesarCadena() {
-		CasoUso casouso = new CasoUsoDAO().consultarCasoUso(1);
-		String actores = "ACT.Cartógrafo_de_incendios, ACT.Cartógrafo_de_reforestanciones";
-		ArrayList <Object> objetos = TokenBs.procesarTokenIpunt(actores);
-		almacenarObjetosToken(objetos, casouso);
-		
+	// -----------------------------------------------------------------
 
 
-	}
 
-
-	private static void almacenarObjetosToken(ArrayList<Object> objetos, CasoUso casouso) {
-		for (Object objeto : objetos){
-			switch(Referencia.getTipoReferencia(objeto)){
-			case ACCION:
-				break;
-			case ACTOR:
-				System.out.println("Es un actor");
-				casouso.getActores().clear();
-				new CasoUsoDAO().registrarCasoUso(casouso);
-				break;
-			case CASOUSO:
-				break;
-			case ENTIDAD:
-				break;
-			case GLOSARIO:
-				break;
-			case INTERFAZUSUARIO:
-				break;
-			case MENSAJE:
-				break;
-			case REGLANEGOCIO:
-				break;
-			case TRAYECTORIA:
-				break;
-			default:
-				break;
-			
-			}
-		}
-		
-	}
 
 	public static void pruebaRegistroColaborador() {
 
@@ -268,20 +221,13 @@ public class Test {
 		int idEstadoElemento = 1;
 		String claveProyecto = "SIG";
 		String claveModulo = "SF";
-		String actores = "";
-		String entradas = "";
-		String salidas = "";
-		String reglas = "";
-
-
-		EstadoElemento estadoElemento = new EstadoElementoDAO()
-				.consultarEstadoElemento(idEstadoElemento);
+		
+		EstadoElemento estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(idEstadoElemento);
 		Proyecto proyecto = new ProyectoDAO().consultarProyecto(claveProyecto);
 		Modulo modulo = new ModuloDAO().consultarModulo(claveModulo, proyecto);
 		String clave = "CU" + modulo.getClave();
 
-		int numero = new CasoUsoDAO().lastIndexOfElemento(
-				TipoReferencia.CASOUSO, modulo);
+		int numero = new CasoUsoDAO().lastIndexOfElemento(TipoReferencia.CASOUSO, modulo);
 
 		/*
 		 * String clave, int numero, String nombre, Proyecto proyecto, String
@@ -300,6 +246,35 @@ public class Test {
 
 	}
 
+	// -------------------------------------------------------------------
+	private static void pruebaModificacionCasoUso() {
+		int idCasoUso = 5;
+		String actores = "El actor ACT.Cartógrafo_de_incendios, ACT.Cartógrafo_de_reforestanciones. ACT.Responsable_de_reforestanciones ";
+		String entradas = "";
+		String salidas = "";
+		String reglas = "";
+		
+		/*
+		 * String clave, int numero, String nombre, Proyecto proyecto, String
+		 * descripcion, EstadoElemento estadoElemento, Modulo modulo) {
+		 * super(clave, numero, nombre, proyecto, descripcion, estadoElemento
+		 */
+		
+		CasoUso cu = new CasoUsoDAO().consultarCasoUso(idCasoUso);
+		cu.setRedaccionActores(actores);
+		
+		cu.getActores().clear();
+		
+		
+		try {
+			new CasoUsoDAO().modificarCasoUso(cu);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+				
+	}
+	
 	// -------------------------------------------------------------------
 
 	public static void pruebaConsultaCasoUso() {
