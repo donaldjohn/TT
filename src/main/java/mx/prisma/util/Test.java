@@ -254,11 +254,6 @@ public class Test {
 		String salidas = "";
 		String reglas = "";
 		
-		/*
-		 * String clave, int numero, String nombre, Proyecto proyecto, String
-		 * descripcion, EstadoElemento estadoElemento, Modulo modulo) {
-		 * super(clave, numero, nombre, proyecto, descripcion, estadoElemento
-		 */
 		
 		CasoUso cu = new CasoUsoDAO().consultarCasoUso(idCasoUso);
 		cu.setRedaccionActores(actores);

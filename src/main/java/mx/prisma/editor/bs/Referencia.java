@@ -14,7 +14,7 @@ public class Referencia {
 	
 	public enum TipoReferencia {
 	    ACTOR, ENTIDAD, CASOUSO, PANTALLA, PASO, ATRIBUTO,
-	    MENSAJE, REGLANEGOCIO, GLOSARIO, ACCION, TRAYECTORIA 
+	    MENSAJE, REGLANEGOCIO, TERMINOGLS, ACCION, TRAYECTORIA 
 	}
 	
 	public enum TipoSeccion {
@@ -32,13 +32,13 @@ public class Referencia {
 		CASOUSO_PRECONDICIONES, CASOUSO_POSTCONDICIONES, CASOUSO_PASOS,
 		
 		/* Pantalla */
-		PANTALLA_PASOS, 
+		PANTALLA_PASOS, PANTALLA_PRECONDICIONES, PANTALLA_POSTCONDICIONES,
 		
 		/* Mensajes */
-		MENSAJE_SALIDAS, MENSAJE_PASOS,
+		MENSAJE_SALIDAS, MENSAJES_PRECONDICIONES, MENSAJE_POSTCONDICIONES, MENSAJE_PASOS,
 		
 		/* Reglas de negocio */
-		REGLANEGOCIO_REGLASNEGOCIOS, REGLANEGOCIO_PASOS,
+		REGLANEGOCIO_REGLASNEGOCIOS, REGLANEGOCIO_PRECONDICIONES, REGLANEGOCIO_POSTCONDICIONES, REGLANEGOCIO_PASOS,
 		
 		/* Término del glosario */		
 		TERMINOGLS_ENTRADAS, TERMINOGLS_SALIDAS, TERMINOGLS_PRECONDICIONES, TERMINOGLS_POSTCONDICIONES, TERMINOGLS_PASOS,
@@ -53,7 +53,7 @@ public class Referencia {
 		TRAYECTORIA_PRECONDICIONES, TRAYECTORIA_POSTCONDICIONES, TRAYECTORIA_PASOS,
 		
 		/* Pasos */
-		PASO_PASOS, PASO_EXTENSIONES
+		PASO_PASOS, PASO_PRECONDICIONES, PASO_POSTCONDICIONES, PASO_EXTENSIONES
 	}
 
 	
@@ -78,7 +78,7 @@ public class Referencia {
 			return TipoReferencia.REGLANEGOCIO;
 		}
 		if (tokenReferencia.equals("GLS")){
-			return TipoReferencia.GLOSARIO;
+			return TipoReferencia.TERMINOGLS;
 		}
 		if (tokenReferencia.equals("ACC")){
 			return TipoReferencia.ACCION;
@@ -112,7 +112,7 @@ public class Referencia {
 			return TipoReferencia.REGLANEGOCIO;
 		}
 		if (objeto instanceof TerminoGlosario){
-			return TipoReferencia.GLOSARIO;
+			return TipoReferencia.TERMINOGLS;
 		}
 		if (objeto instanceof Accion){
 			return TipoReferencia.ACCION;
@@ -170,13 +170,27 @@ public class Referencia {
 		if(tipoReferencia == TipoReferencia.PANTALLA) {
 			if (tipoSeccion == TipoSeccion.PASOS) {
 				return TipoRelacion.PANTALLA_PASOS;
-			}			
+			}		
+			if (tipoSeccion == TipoSeccion.PRECONDICIONES) {
+				return TipoRelacion.CASOUSO_PRECONDICIONES;
+				
+			}
+			if (tipoSeccion == TipoSeccion.POSTCONDICIONES) {
+				return TipoRelacion.CASOUSO_POSTCONDICIONES;
+			}
 		}
 		
 		if(tipoReferencia == TipoReferencia.MENSAJE) {
 			if (tipoSeccion == TipoSeccion.SALIDAS) {
 				return TipoRelacion.MENSAJE_SALIDAS;
-			}		
+			}	
+			if (tipoSeccion == TipoSeccion.PRECONDICIONES) {
+				return TipoRelacion.CASOUSO_PRECONDICIONES;
+				
+			}
+			if (tipoSeccion == TipoSeccion.POSTCONDICIONES) {
+				return TipoRelacion.CASOUSO_POSTCONDICIONES;
+			}
 			if (tipoSeccion == TipoSeccion.PASOS) {
 				return TipoRelacion.MENSAJE_PASOS;
 			}	
@@ -186,10 +200,34 @@ public class Referencia {
 			if (tipoSeccion == TipoSeccion.REGLASNEGOCIOS) {
 				return TipoRelacion.REGLANEGOCIO_REGLASNEGOCIOS;
 			}		
+			if (tipoSeccion == TipoSeccion.PRECONDICIONES) {
+				return TipoRelacion.CASOUSO_PRECONDICIONES;
+				
+			}
+			if (tipoSeccion == TipoSeccion.POSTCONDICIONES) {
+				return TipoRelacion.CASOUSO_POSTCONDICIONES;
+			}
 			if (tipoSeccion == TipoSeccion.PASOS) {
 				return TipoRelacion.REGLANEGOCIO_PASOS;
 			}	
 		}	
+		if(tipoReferencia == TipoReferencia.TERMINOGLS) {
+			if (tipoSeccion == TipoSeccion.ENTRADAS) {
+				return TipoRelacion.TERMINOGLS_ENTRADAS;
+			}		
+			if (tipoSeccion == TipoSeccion.SALIDAS) {
+				return TipoRelacion.TERMINOGLS_SALIDAS;
+			}	
+			if (tipoSeccion == TipoSeccion.PRECONDICIONES) {
+				return TipoRelacion.TERMINOGLS_PRECONDICIONES;
+			}
+			if (tipoSeccion == TipoSeccion.POSTCONDICIONES) {
+				return TipoRelacion.TERMINOGLS_POSTCONDICIONES;
+			}
+			if (tipoSeccion == TipoSeccion.PASOS) {
+				return TipoRelacion.TERMINOGLS_PASOS;
+			}	
+		}
 		
 		if(tipoReferencia == TipoReferencia.ATRIBUTO) {
 			if (tipoSeccion == TipoSeccion.ENTRADAS) {
@@ -199,13 +237,52 @@ public class Referencia {
 				return TipoRelacion.ATRIBUTO_SALIDAS;
 			}	
 			if (tipoSeccion == TipoSeccion.PRECONDICIONES) {
-				return TipoRelacion.CASOUSO_PRECONDICIONES;
+				return TipoRelacion.ATRIBUTO_PRECONDICIONES;
 			}
 			if (tipoSeccion == TipoSeccion.POSTCONDICIONES) {
-				return TipoRelacion.CASOUSO_POSTCONDICIONES;
+				return TipoRelacion.ATRIBUTO_POSTCONDICIONES;
 			}
 			if (tipoSeccion == TipoSeccion.PASOS) {
-				return TipoRelacion.CASOUSO_PASOS;
+				return TipoRelacion.ATRIBUTO_PASOS;
+			}	
+		}
+		
+		if(tipoReferencia == TipoReferencia.ACCION) {	
+			if (tipoSeccion == TipoSeccion.PRECONDICIONES) {
+				return TipoRelacion.ACCION_PRECONDICIONES;
+			}
+			if (tipoSeccion == TipoSeccion.POSTCONDICIONES) {
+				return TipoRelacion.ACCION_POSTCONDICIONES;
+			}
+			if (tipoSeccion == TipoSeccion.PASOS) {
+				return TipoRelacion.ACCION_PASOS;
+			}	
+		}
+	
+		if(tipoReferencia == TipoReferencia.TRAYECTORIA) {	
+			if (tipoSeccion == TipoSeccion.PRECONDICIONES) {
+				return TipoRelacion.TRAYECTORIA_PRECONDICIONES;
+			}
+			if (tipoSeccion == TipoSeccion.POSTCONDICIONES) {
+				return TipoRelacion.TRAYECTORIA_POSTCONDICIONES;
+			}
+			if (tipoSeccion == TipoSeccion.PASOS) {
+				return TipoRelacion.TRAYECTORIA_PASOS;
+			}	
+		}
+		
+		if(tipoReferencia == TipoReferencia.PASO) {	
+			if (tipoSeccion == TipoSeccion.PASOS) {
+				return TipoRelacion.PASO_PASOS;
+			}
+			if (tipoSeccion == TipoSeccion.PRECONDICIONES) {
+				return TipoRelacion.PASO_PRECONDICIONES;
+			}
+			if (tipoSeccion == TipoSeccion.POSTCONDICIONES) {
+				return TipoRelacion.PASO_POSTCONDICIONES;
+			}
+			if (tipoSeccion == TipoSeccion.PASOS) {
+				return TipoRelacion.PASO_EXTENSIONES;
 			}	
 		}
 		return null;

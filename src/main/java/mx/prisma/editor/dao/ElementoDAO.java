@@ -125,7 +125,7 @@ public class ElementoDAO {
 		case ENTIDAD:
 			sentencia = "SELECT MAX(numero) FROM Elemento  WHERE clave = 'ENT'";
 			break;
-		case GLOSARIO:
+		case TERMINOGLS:
 			sentencia = "SELECT MAX(numero) FROM Elemento  WHERE clave = 'GLS'";
 			break;
 		case MENSAJE:

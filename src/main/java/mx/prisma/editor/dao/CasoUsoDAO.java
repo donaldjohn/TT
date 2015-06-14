@@ -7,6 +7,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
 import mx.prisma.editor.bs.Referencia;
+import mx.prisma.editor.bs.Referencia.TipoSeccion;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.model.Actor;
@@ -23,7 +24,7 @@ public class CasoUsoDAO extends ElementoDAO {
     public void modificarCasoUso(CasoUso casodeuso) {
     	cleanRelaciones(casodeuso);
 		super.modificarElemento(casodeuso);
-		almacenarObjetosToken(TokenBs.procesarTokenIpunt(casodeuso.getRedaccionActores()), casodeuso, Referencia.TipoRelacion.ACTOR_ACTORES);
+		almacenarObjetosToken(TokenBs.procesarTokenIpunt(casodeuso.getRedaccionActores()), casodeuso, Referencia.TipoSeccion.ACTORES);
 		/*almacenarObjetosToken(TokenBs.procesarTokenIpunt(casodeuso.getRedaccionEntradas()), casodeuso);
 		almacenarObjetosToken(TokenBs.procesarTokenIpunt(casodeuso.getRedaccionSalidas()), casodeuso);
 		almacenarObjetosToken(TokenBs.procesarTokenIpunt(casodeuso.getRedaccionReglasNegocio()), casodeuso);*/
@@ -64,36 +65,99 @@ public class CasoUsoDAO extends ElementoDAO {
 	}
 	
 
-	private static void almacenarObjetosToken(ArrayList<Object> objetos, CasoUso casouso, Referencia.TipoRelacion tipoRelacion) {
-		int numeroTokenActor = 0;
+	private static void almacenarObjetosToken(ArrayList<Object> objetos, CasoUso casouso, TipoSeccion tipoSeccion) {
+		int numeroTokenActor_Actores = 0;
+		Actor actor;
 		for (Object objeto : objetos){
-			switch(Referencia.getTipoReferencia(objeto)){
-			case ACCION:
+			switch(Referencia.getTipoRelacion(Referencia.getTipoReferencia(objeto), tipoSeccion)){
+			case ACCION_PASOS:
 				break;
-			case ACTOR:
-				Actor e = (Actor)objeto;
-				
-				CasoUsoActor casoUsoActor = new CasoUsoActor(numeroTokenActor++, casouso, (Actor)objeto);
+			case ACCION_POSTCONDICIONES:
+				break;
+			case ACCION_PRECONDICIONES:
+				break;
+			case ACTOR_ACTORES:
+				actor = (Actor) objeto;	
+				CasoUsoActor casoUsoActor = new CasoUsoActor(numeroTokenActor_Actores++, casouso, actor);
 				casouso.getActores().add(casoUsoActor);
-				
 				break;
-			case CASOUSO:
+			case ACTOR_PASOS:
 				break;
-			case ENTIDAD:
+			case ACTOR_POSTCONDICIONES:
 				break;
-			case GLOSARIO:
+			case ACTOR_PRECONDICIONES:
 				break;
-			case PANTALLA:
+			case ATRIBUTO_ENTRADAS:
 				break;
-			case MENSAJE:
+			case ATRIBUTO_PASOS:
 				break;
-			case REGLANEGOCIO:
+			case ATRIBUTO_POSTCONDICIONES:
 				break;
-			case TRAYECTORIA:
+			case ATRIBUTO_PRECONDICIONES:
+				break;
+			case ATRIBUTO_SALIDAS:
+				break;
+			case CASOUSO_PASOS:
+				break;
+			case CASOUSO_POSTCONDICIONES:
+				break;
+			case CASOUSO_PRECONDICIONES:
+				break;
+			case ENTIDAD_PASOS:
+				break;
+			case ENTIDAD_POSTCONDICIONES:
+				break;
+			case ENTIDAD_PRECONDICIONES:
+				break;
+			case MENSAJES_PRECONDICIONES:
+				break;
+			case MENSAJE_PASOS:
+				break;
+			case MENSAJE_POSTCONDICIONES:
+				break;
+			case MENSAJE_SALIDAS:
+				break;
+			case PANTALLA_PASOS:
+				break;
+			case PANTALLA_POSTCONDICIONES:
+				break;
+			case PANTALLA_PRECONDICIONES:
+				break;
+			case PASO_EXTENSIONES:
+				break;
+			case PASO_PASOS:
+				break;
+			case PASO_POSTCONDICIONES:
+				break;
+			case PASO_PRECONDICIONES:
+				break;
+			case REGLANEGOCIO_PASOS:
+				break;
+			case REGLANEGOCIO_POSTCONDICIONES:
+				break;
+			case REGLANEGOCIO_PRECONDICIONES:
+				break;
+			case REGLANEGOCIO_REGLASNEGOCIOS:
+				break;
+			case TERMINOGLS_ENTRADAS:
+				break;
+			case TERMINOGLS_PASOS:
+				break;
+			case TERMINOGLS_POSTCONDICIONES:
+				break;
+			case TERMINOGLS_PRECONDICIONES:
+				break;
+			case TERMINOGLS_SALIDAS:
+				break;
+			case TRAYECTORIA_PASOS:
+				break;
+			case TRAYECTORIA_POSTCONDICIONES:
+				break;
+			case TRAYECTORIA_PRECONDICIONES:
 				break;
 			default:
 				break;
-			
+
 			}
 		}
 		

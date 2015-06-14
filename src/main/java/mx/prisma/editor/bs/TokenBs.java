@@ -158,7 +158,7 @@ public class TokenBs {
 				break;
 			case ENTIDAD:
 				break;
-			case GLOSARIO:
+			case TERMINOGLS:
 				break;
 			case PANTALLA:
 				break;
