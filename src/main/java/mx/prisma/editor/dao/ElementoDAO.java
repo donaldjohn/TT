@@ -88,7 +88,7 @@ public class ElementoDAO {
 			sentencia = "SELECT MAX(numero) FROM Elemento WHERE clave = 'CU"
 					+ modulo.getClave() + "'";
 			break;
-		case INTERFAZUSUARIO:
+		case PANTALLA:
 			sentencia = "SELECT MAX(numero) FROM Pantalla WHERE clave = 'CU"
 					+ modulo.getClave() + "'";
 			break;

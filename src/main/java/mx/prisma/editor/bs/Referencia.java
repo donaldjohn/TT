@@ -198,6 +198,15 @@ public class Referencia {
 			if (tipoSeccion == TipoSeccion.SALIDAS) {
 				return TipoRelacion.ATRIBUTO_SALIDAS;
 			}	
+			if (tipoSeccion == TipoSeccion.PRECONDICIONES) {
+				return TipoRelacion.CASOUSO_PRECONDICIONES;
+			}
+			if (tipoSeccion == TipoSeccion.POSTCONDICIONES) {
+				return TipoRelacion.CASOUSO_POSTCONDICIONES;
+			}
+			if (tipoSeccion == TipoSeccion.PASOS) {
+				return TipoRelacion.CASOUSO_PASOS;
+			}	
 		}
 		return null;
 	}
