@@ -23,7 +23,7 @@ public class CasoUsoDAO extends ElementoDAO {
     public void modificarCasoUso(CasoUso casodeuso) {
     	cleanRelaciones(casodeuso);
 		super.modificarElemento(casodeuso);
-		almacenarObjetosToken(TokenBs.procesarTokenIpunt(casodeuso.getRedaccionActores()), casodeuso, Referencia.TipoRelacion.ACTORES);
+		almacenarObjetosToken(TokenBs.procesarTokenIpunt(casodeuso.getRedaccionActores()), casodeuso, Referencia.TipoRelacion.ACTOR_ACTORES);
 		/*almacenarObjetosToken(TokenBs.procesarTokenIpunt(casodeuso.getRedaccionEntradas()), casodeuso);
 		almacenarObjetosToken(TokenBs.procesarTokenIpunt(casodeuso.getRedaccionSalidas()), casodeuso);
 		almacenarObjetosToken(TokenBs.procesarTokenIpunt(casodeuso.getRedaccionReglasNegocio()), casodeuso);*/
@@ -83,7 +83,7 @@ public class CasoUsoDAO extends ElementoDAO {
 				break;
 			case GLOSARIO:
 				break;
-			case INTERFAZUSUARIO:
+			case PANTALLA:
 				break;
 			case MENSAJE:
 				break;

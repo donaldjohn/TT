@@ -13,7 +13,7 @@ import mx.prisma.editor.model.Trayectoria;
 public class Referencia {
 	
 	public enum TipoReferencia {
-	    ACTOR, ENTIDAD, CASOUSO, INTERFAZUSUARIO,
+	    ACTOR, ENTIDAD, CASOUSO, PANTALLA, PASO, ATRIBUTO,
 	    MENSAJE, REGLANEGOCIO, GLOSARIO, ACCION, TRAYECTORIA 
 	}
 	
@@ -42,6 +42,9 @@ public class Referencia {
 		
 		/* Término del glosario */		
 		TERMINOGLS_ENTRADAS, TERMINOGLS_SALIDAS, TERMINOGLS_PRECONDICIONES, TERMINOGLS_POSTCONDICIONES, TERMINOGLS_PASOS,
+
+		/* Atributos */		
+		ATRIBUTO_ENTRADAS, ATRIBUTO_SALIDAS, ATRIBUTO_PRECONDICIONES, ATRIBUTO_POSTCONDICIONES, ATRIBUTO_PASOS,
 		
 		/* Acciones */
 		ACCION_PRECONDICIONES, ACCION_POSTCONDICIONES, ACCION_PASOS,
@@ -66,7 +69,7 @@ public class Referencia {
 			return TipoReferencia.CASOUSO;
 		}
 		if (tokenReferencia.equals("IU")){
-			return TipoReferencia.INTERFAZUSUARIO;
+			return TipoReferencia.PANTALLA;
 		}
 		if (tokenReferencia.equals("MSG")){
 			return TipoReferencia.MENSAJE;
@@ -83,7 +86,9 @@ public class Referencia {
 		if (tokenReferencia.equals("TRAY")){
 			return TipoReferencia.TRAYECTORIA;
 		}
-		
+		if (tokenReferencia.equals("P")){
+			return TipoReferencia.PASO;
+		}
 		return null;
 	}
 	
@@ -98,7 +103,7 @@ public class Referencia {
 			return TipoReferencia.CASOUSO;
 		}
 		if (objeto instanceof Pantalla){
-			return TipoReferencia.INTERFAZUSUARIO;
+			return TipoReferencia.PANTALLA;
 		}
 		if (objeto instanceof Mensaje){
 			return TipoReferencia.MENSAJE;
@@ -149,6 +154,51 @@ public class Referencia {
 			}			
 		}
 		
+		if(tipoReferencia == TipoReferencia.CASOUSO) {
+			if (tipoSeccion == TipoSeccion.PRECONDICIONES) {
+				return TipoRelacion.CASOUSO_PRECONDICIONES;
+				
+			}
+			if (tipoSeccion == TipoSeccion.POSTCONDICIONES) {
+				return TipoRelacion.CASOUSO_POSTCONDICIONES;
+			}
+			if (tipoSeccion == TipoSeccion.PASOS) {
+				return TipoRelacion.CASOUSO_PASOS;
+			}			
+		}		
+		
+		if(tipoReferencia == TipoReferencia.PANTALLA) {
+			if (tipoSeccion == TipoSeccion.PASOS) {
+				return TipoRelacion.PANTALLA_PASOS;
+			}			
+		}
+		
+		if(tipoReferencia == TipoReferencia.MENSAJE) {
+			if (tipoSeccion == TipoSeccion.SALIDAS) {
+				return TipoRelacion.MENSAJE_SALIDAS;
+			}		
+			if (tipoSeccion == TipoSeccion.PASOS) {
+				return TipoRelacion.MENSAJE_PASOS;
+			}	
+		}	
+		
+		if(tipoReferencia == TipoReferencia.REGLANEGOCIO) {
+			if (tipoSeccion == TipoSeccion.REGLASNEGOCIOS) {
+				return TipoRelacion.REGLANEGOCIO_REGLASNEGOCIOS;
+			}		
+			if (tipoSeccion == TipoSeccion.PASOS) {
+				return TipoRelacion.REGLANEGOCIO_PASOS;
+			}	
+		}	
+		
+		if(tipoReferencia == TipoReferencia.ATRIBUTO) {
+			if (tipoSeccion == TipoSeccion.ENTRADAS) {
+				return TipoRelacion.ATRIBUTO_ENTRADAS;
+			}		
+			if (tipoSeccion == TipoSeccion.SALIDAS) {
+				return TipoRelacion.ATRIBUTO_SALIDAS;
+			}	
+		}
 		return null;
 	}
 }

@@ -160,7 +160,7 @@ public class TokenBs {
 				break;
 			case GLOSARIO:
 				break;
-			case INTERFAZUSUARIO:
+			case PANTALLA:
 				break;
 			case MENSAJE:
 				break;
