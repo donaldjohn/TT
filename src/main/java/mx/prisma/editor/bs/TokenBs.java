@@ -227,7 +227,7 @@ public class TokenBs {
 			}
 		}
 		segmentos.add(segmento);
-
+			
 		return segmentos;
 	}
 

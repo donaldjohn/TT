@@ -19,3 +19,10 @@ INSERT INTO Rol (nombre) VALUES ('Analista');
 INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Atributo');
 INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Mensaje');
 INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Termino del glosario');
+
+INSERT INTO PRISMA.TipoDato (nombre) VALUES ('Cadena');
+INSERT INTO PRISMA.TipoDato (nombre) VALUES ('Flotante');
+INSERT INTO PRISMA.TipoDato (nombre) VALUES ('Entero');
+INSERT INTO PRISMA.TipoDato (nombre) VALUES ('Booleano');
+INSERT INTO PRISMA.TipoDato (nombre) VALUES ('Fecha');
+

@@ -21,6 +21,9 @@ public class TerminoGlosario extends Elemento implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	public TerminoGlosario(){
+		
+	}
 	public TerminoGlosario(String clave, int numero, String nombre,
 			Proyecto proyecto, String descripcion, EstadoElemento estadoElemento) {
 		super(clave, numero, nombre, proyecto, descripcion, estadoElemento);

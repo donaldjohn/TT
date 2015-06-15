@@ -42,6 +42,7 @@
 		<mapping class="mx.prisma.editor.model.Salida" />
 		<mapping class="mx.prisma.editor.model.TerminoGlosario" />
 		<mapping class="mx.prisma.editor.model.TipoAccion" />
+		<mapping class="mx.prisma.editor.model.TipoDato" />
 		<mapping class="mx.prisma.editor.model.TipoParametro" />
 		<mapping class="mx.prisma.editor.model.TipoReglaNegocio" />
 		<mapping class="mx.prisma.editor.model.Trayectoria" />

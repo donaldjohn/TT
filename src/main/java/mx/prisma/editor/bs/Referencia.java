@@ -2,6 +2,7 @@ package mx.prisma.editor.bs;
 
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
+import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Mensaje;
@@ -62,6 +63,9 @@ public class Referencia {
 		if (tokenReferencia.equals("ACT")){
 			return TipoReferencia.ACTOR;
 		}
+		if (tokenReferencia.equals("ATR")){
+			return TipoReferencia.ATRIBUTO;
+		}
 		if (tokenReferencia.equals("ENT")){
 			return TipoReferencia.ENTIDAD;
 		}
@@ -95,6 +99,9 @@ public class Referencia {
 	public static TipoReferencia getTipoReferencia(Object objeto){
 		if (objeto instanceof Actor){
 			return TipoReferencia.ACTOR;
+		}
+		if (objeto instanceof Atributo){
+			return TipoReferencia.ATRIBUTO;
 		}
 		if (objeto instanceof Entidad){
 			return TipoReferencia.ENTIDAD;
