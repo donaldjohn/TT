@@ -105,7 +105,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.redaccionReglasNegocio = redaccionReglasNegocio;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Moduloid")
 	public Modulo getModulo() {
 		return this.modulo;
