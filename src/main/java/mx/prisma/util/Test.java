@@ -60,9 +60,10 @@ public class Test {
 		// pruebaRegistroActor(); // 07/06/2015 OK
 
 		// pruebaRegistroCasoUso(); //05/06/2015
-		 pruebaModificacionCasoUso(); 
+	//	 pruebaModificacionCasoUso(); 
 		// pruebaConsultaCasoUso(); //05/06/2015
-
+		Proyecto p = new ProyectoDAO().consultarProyecto("SIG");
+		System.out.println(new CasoUsoDAO().consultarCasosUso(p).size());
 
 	}
 
@@ -250,7 +251,7 @@ public class Test {
 	private static void pruebaModificacionCasoUso() {
 		int idCasoUso = 5;
 		String actores = "El actor ACT.Cartógrafo_de_incendios, ACT.Cartógrafo_de_reforestanciones, ACT.Responsable_de_reforestanciones, ACT.Responsable_de_reforestanciones.";
-		String entradas = "";
+		String entradas = "ATR.";
 		String salidas = "";
 		String reglas = "";
 		

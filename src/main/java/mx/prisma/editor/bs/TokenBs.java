@@ -135,7 +135,6 @@ public class TokenBs {
 		
 		ArrayList<Object> objetos = new ArrayList<Object>();
 		ArrayList<String> segmentos;
-		ArrayList<String> parametros;
 
 		for (String token : tokens) {
 			segmentos = segmentarToken(token);
@@ -146,11 +145,8 @@ public class TokenBs {
 				Entidad entidad = new EntidadDAO().consultarEntidad(segmentos.get(1).replaceAll("_", " "), proyecto);
 				if (entidad == null){
 					// Construcción del mensaje de error;
-					parametros = new ArrayList<String>();
-					parametros.add("la");
-					parametros.add("entidad");
-					parametros.add(segmentos.get(1).replaceAll("_", " "));
-					parametros.add("registrada");
+					String [] parametros = {"la", "entidad", segmentos.get(1).replaceAll("_", " "), "registrada"};
+				
 					throw new PRISMAException(
 							"TokenBs.convertirToken_Objeto: La entidad no está registrada",
 							"MSG15", parametros);
@@ -158,12 +154,7 @@ public class TokenBs {
 				
 				Atributo atributo = new AtributoDAO().consultarAtributo(segmentos.get(2).replaceAll("_", " "), entidad);
 				if (atributo == null) {
-					parametros = new ArrayList<String>();
-					// Construcción del mensaje de error;
-					parametros.add("el");
-					parametros.add("atributo");
-					parametros.add(segmentos.get(2).replaceAll("_", " "));
-					parametros.add("registrado");
+					String [] parametros = {"el", "atributo", segmentos.get(2).replaceAll("_", " "), "registrado"};
 					throw new PRISMAException(
 							"TokenBs.convertirToken_Objeto: El atributo no está registrado",
 							"MSG15", parametros);
@@ -174,11 +165,7 @@ public class TokenBs {
 				Actor actor = new ActorDAO().consultarActor(segmentos.get(1)
 						.replaceAll("_", " "), proyecto);
 				if (actor == null) {
-<<<<<<< HEAD
-					parametros = new ArrayList<String>();
-=======
 					String [] parametros = {
->>>>>>> branch 'master' of https://github.com/sramirezc/AplicacionTTB064.git
 					// Construcción del mensaje de error;
 					"el",
 					"actor",
@@ -199,14 +186,10 @@ public class TokenBs {
 				TerminoGlosario terminoGlosario = new TerminoGlosarioDAO().consultarTerminoGlosario(segmentos.get(1)
 						.replaceAll("_", " "), proyecto);
 				if (terminoGlosario == null) {
-					parametros = new ArrayList<String>();
-					// Construcción del mensaje de error;
-					parametros.add("el");
-					parametros.add("actor");
-					parametros.add(segmentos.get(1).replaceAll("_", " "));
-					parametros.add("registrado");
+					String [] parametros = {"el", "término", segmentos.get(1).replaceAll("_", " "), "registrado"};
+
 					throw new PRISMAException(
-							"TokenBs.convertirToken_Objeto: El actor no está registrado",
+							"TokenBs.convertirToken_Objeto: El término no está registrado",
 							"MSG15", parametros);
 				}
 				objetos.add(terminoGlosario);

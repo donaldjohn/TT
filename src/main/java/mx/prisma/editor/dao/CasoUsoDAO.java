@@ -6,7 +6,9 @@ import java.util.Set;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 
+import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.Referencia;
 import mx.prisma.editor.bs.Referencia.TipoSeccion;
 import mx.prisma.editor.bs.TokenBs;
@@ -27,13 +29,16 @@ public class CasoUsoDAO extends ElementoDAO {
 	public void modificarCasoUso(CasoUso casodeuso) {
 		cleanRelaciones(casodeuso);
 		super.modificarElemento(casodeuso);
-		almacenarObjetosToken(
-				TokenBs.procesarTokenIpunt(casodeuso.getRedaccionActores(), casodeuso.getProyecto()),
+		almacenarObjetosToken(TokenBs.procesarTokenIpunt(
+				casodeuso.getRedaccionActores(), casodeuso.getProyecto()),
 				casodeuso, TipoSeccion.ACTORES);
-		
-		  almacenarObjetosToken(TokenBs.procesarTokenIpunt(casodeuso.
-		  getRedaccionEntradas(), casodeuso.getProyecto()), casodeuso, TipoSeccion.ENTRADAS);
-		  /* almacenarObjetosToken(TokenBs.procesarTokenIpunt
+
+		almacenarObjetosToken(TokenBs.procesarTokenIpunt(
+				casodeuso.getRedaccionEntradas(), casodeuso.getProyecto()),
+				casodeuso, TipoSeccion.ENTRADAS);
+
+		/*
+		 * almacenarObjetosToken(TokenBs.procesarTokenIpunt
 		 * (casodeuso.getRedaccionSalidas()), casodeuso);
 		 * almacenarObjetosToken(TokenBs
 		 * .procesarTokenIpunt(casodeuso.getRedaccionReglasNegocio()),
@@ -65,6 +70,24 @@ public class CasoUsoDAO extends ElementoDAO {
 
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<CasoUso> consultarCasosUso(Proyecto proyecto) {
+		List<CasoUso> casosdeuso = null;
+
+		try {
+			session.beginTransaction();
+			SQLQuery query = session
+					.createSQLQuery("SELECT * FROM Elemento INNER JOIN CasoUso ON Elemento.id = CasoUso.Elementoid WHERE Elemento.Proyectoid = :proyecto");
+			query.setParameter("proyecto", proyecto.getId());
+			casosdeuso = query.list();
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		return casosdeuso;
+
+	}
 	public Integer lastIndexOfCasoUso(Modulo modulo) {
 		return super.lastIndexOfElemento(TipoReferencia.CASOUSO, modulo);
 	}
@@ -87,7 +110,10 @@ public class CasoUsoDAO extends ElementoDAO {
 					Referencia.getTipoReferencia(objeto), tipoSeccion)) {
 			case ATRIBUTO_ENTRADAS:
 				atributo = (Atributo) objeto;
-				Entrada entrada = new Entrada(numeroTokenAtributo_Entradas++, new TipoParametroDAO().consultarTipoParametro("Atributo"), casouso);
+				Entrada entrada = new Entrada(numeroTokenAtributo_Entradas++,
+						new TipoParametroDAO()
+								.consultarTipoParametro("Atributo"), casouso);
+				entrada.setAtributo(atributo);
 				if (!duplicadoAtributo_Entradas(casouso.getEntradas(), entrada)) {
 					casouso.getEntradas().add(entrada);
 				}
@@ -127,7 +153,7 @@ public class CasoUsoDAO extends ElementoDAO {
 				break;
 			case ATRIBUTO_PRECONDICIONES:
 				break;
-		
+
 			case CASOUSO_PASOS:
 				break;
 			case CASOUSO_POSTCONDICIONES:
@@ -199,9 +225,11 @@ public class CasoUsoDAO extends ElementoDAO {
 			CasoUsoActor casoUsoActor) {
 
 		for (CasoUsoActor casoUsoActori : actores) {
-			if (casoUsoActori.getActor().getId() == casoUsoActor.getActor().getId()) {
-				if(casoUsoActori.getCasouso().getId() == casoUsoActor.getCasouso().getId()){
-				return true;
+			if (casoUsoActori.getActor().getId() == casoUsoActor.getActor()
+					.getId()) {
+				if (casoUsoActori.getCasouso().getId() == casoUsoActor
+						.getCasouso().getId()) {
+					return true;
 				}
 			}
 		}
