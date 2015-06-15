@@ -1,9 +1,3 @@
-/**
- * Namespace que permite realizar operaciones con el componente de DataTable
- * 
- * @author Jorge Eduardo Álvarez Hernández
- * @version 1.0 "Apr 22, 2015"
- */
 var dataTableCDT = function() {
 
 	/**

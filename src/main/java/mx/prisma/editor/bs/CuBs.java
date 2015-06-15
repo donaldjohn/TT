@@ -131,7 +131,8 @@ public class CuBs {
 			e.printStackTrace();
 		}
 		if(cu == null) {
-			throw new PRISMAException("No se puede consultar el caso de uso por el id.", "MSG13");
+			throw new PRISMAException("No se puede consultar el caso de uso por el id.", "MSG16", new String[] { "El",
+					"caso de uso"});
 		}
 		return cu;
 	}
@@ -148,6 +149,15 @@ public class CuBs {
 	public static int getIdEdicion()
 	{
 		return 1;
+	}
+
+	public static void modificarCasoUso(CasoUso modelAux) {
+		try {
+			new CasoUsoDAO().modificarCasoUso(modelAux);
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
 

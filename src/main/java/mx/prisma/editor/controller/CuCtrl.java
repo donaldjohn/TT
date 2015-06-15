@@ -1,6 +1,7 @@
 package mx.prisma.editor.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Colaborador;
@@ -10,7 +11,9 @@ import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Modulo;
+import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.util.ActionSupportPRISMA;
+import mx.prisma.util.ManejadorError;
 import mx.prisma.util.PRISMAException;
 
 import org.apache.struts2.convention.annotation.Action;
@@ -22,6 +25,7 @@ import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
+import com.google.gson.Gson;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 
@@ -46,8 +50,9 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	private int estado;
 	// Lista de registros
 	private List<CasoUso> listCU;
-
-	private boolean redireccionAutomatica = false;
+	//Lista de precondiciones
+	private List<String> listPrecondiciones;
+	private List<String> listPostcondiciones;
 
 	public String redireccionarTrayectorias() {
 		String resultado = null;
@@ -83,13 +88,28 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	 * mensaje MSG1 en caso contrario redirige a la pantalla de registro.
 	 * */
 	public String update() throws Exception {
+		System.out.println("DESDE UPDATE: HOLA");
 		String resultado = null;
+		
+		/*Pruebas*/
+		PostPrecondicion pp = new PostPrecondicion("Redaccion", true, model);
+		Gson gson = new Gson();
+		String json = gson.toJson(pp);
+		/*System.out.println("OBJETO JSON:");
+		System.out.println(json);*/
+		System.out.println("NUMERO DE PRECONDICIONES " + this.listPrecondiciones.size());
+		for(String cadenaJson: this.listPrecondiciones) {
+			PostPrecondicion postp = gson.fromJson(cadenaJson, PostPrecondicion.class);
+			System.out.println("OBJETO DE TIPO POSTPRECONDICION " + postp.getRedaccion());
+		}
+		/*Fin pruebas*/
 
 		try {
-			System.out.println("DESDE UPDATE: HOLA");
+			
 			//model = CuBs.consultarCasoUso(model.getId());
 			// ///////////////////////// Pruebas
-
+			
+			
 			System.out.println("Datos del cu");
 			System.out.println("Nombre: " + model.getNombre());
 			System.out.println("Descripcion: " + model.getDescripcion());
@@ -97,6 +117,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			System.out.println("Entradas: " + model.getRedaccionEntradas());
 			System.out.println("Salidas: " + model.getRedaccionSalidas());
 			System.out.println("RN: " + model.getRedaccionReglasNegocio());
+			
 
 			// ///////////////////////// Fin Pruebas
 			
@@ -111,16 +132,18 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			modelAux.setRedaccionSalidas(model.getRedaccionSalidas());
 			modelAux.setRedaccionReglasNegocio(model.getRedaccionReglasNegocio());
 			
+			modelAux.setPostprecondiciones(agregarPostPrecondiciones());
+			//agregarPostPrecondiciones(true, modelAux);
+						
 			// Solamente se actualiza el modelo debido a que ya se registró
-			CuBs.registrarCasoUso(modelAux);
+			CuBs.modificarCasoUso(modelAux);
 			resultado = SUCCESS;
 			System.out.println("ACTUALIZACION EXITOSA");
 			addActionMessage(getText("MSG1", new String[] { "El",
 					"caso de uso", "actualizado" }));
 
 		} catch (PRISMAException pe) {
-			System.err.println(pe.getMessage());
-			addActionError(pe.getIdMensaje());
+			ManejadorError.agregaMensajeError(this, pe);
 			resultado = INDEX;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -130,6 +153,29 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		System.out.println("DESDE UPDATE RESULTADO = " + resultado);
 		return resultado;
 	}
+
+	/*
+	 * Se agregan las postcondiciones y las precondiciones
+	 */
+	private Set<PostPrecondicion> agregarPostPrecondiciones() {
+		Gson gson = new Gson();
+		for(String json: this.listPrecondiciones) {
+			PostPrecondicion pp = gson.fromJson(json, PostPrecondicion.class);
+			System.out.println("OBJETO DE TIPO POSTPRECONDICION " + pp.getRedaccion());
+		}
+		return model.getPostprecondiciones();
+	}
+
+	/*private void agregarPostPrecondiciones(boolean esPrecondicion, CasoUso modelAux) {
+		for(String redaccion: this.listPrecondiciones) {
+			PostPrecondicion pp = new PostPrecondicion(redaccion, esPrecondicion, modelAux);
+			modelAux.getPostprecondiciones().add(pp);
+		}
+		for(String redaccion: this.listPostcondiciones) {
+			PostPrecondicion pp = new PostPrecondicion(redaccion, esPrecondicion, modelAux);
+			modelAux.getPostprecondiciones().add(pp);
+		}
+	}*/
 
 	public String editNew() {
 		String resultado = null;
@@ -148,8 +194,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			model.setNumero(CuBs.calcularNumero(modulo));
 			model.setClave(CuBs.calcularClave(modulo.getClave()));
 			model.setNombre(CuBs.calcularNombre(modulo.getId()));
-			redireccionAutomatica = true;
-
 			//CuBs.registrarCasoUso(model);
 			resultado = EDITNEW;
 			addActionMessage(getText("MSG1", new String[] { "El",
@@ -229,5 +273,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		System.out.println("ES EDITABLE CON ESTADO " + cu.getEstadoElemento().getNombre());
 		return CuBs.esEditable(idAutor, cu);
 	}
+	
 	
 }
