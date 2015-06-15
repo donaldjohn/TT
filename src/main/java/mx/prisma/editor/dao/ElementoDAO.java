@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
+import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
@@ -191,13 +192,15 @@ public class ElementoDAO {
 		return numeros.get(0)*-1;
 	}
 
-	public Elemento consultarElemento(String nombre) {
+	public Elemento consultarElemento(String nombre, Proyecto proyecto) {
 		List<Elemento> results  = null;
 
 		try {
 			session.beginTransaction();
-			Query query = session.createQuery("from Elemento where nombre = :nombre");
+			Query query = session.createQuery("from Elemento where nombre = :nombre AND Proyectoid = :proyecto");
 			query.setParameter("nombre", nombre);
+			query.setParameter("proyecto", proyecto.getId());
+
 			results = query.list();
 			session.getTransaction().commit();
 		} catch (HibernateException he) {

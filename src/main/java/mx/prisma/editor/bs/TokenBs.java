@@ -2,8 +2,15 @@ package mx.prisma.editor.bs;
 
 import java.util.ArrayList;
 
+import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.dao.ActorDAO;
+import mx.prisma.editor.dao.AtributoDAO;
+import mx.prisma.editor.dao.EntidadDAO;
+import mx.prisma.editor.dao.TerminoGlosarioDAO;
 import mx.prisma.editor.model.Actor;
+import mx.prisma.editor.model.Atributo;
+import mx.prisma.editor.model.Entidad;
+import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.util.PRISMAException;
 
 public class TokenBs {
@@ -21,7 +28,7 @@ public class TokenBs {
 	private static String tokenSeparator1 = ".";
 	private static String tokenSeparator2 = ":";
 
-	public static ArrayList<Object> procesarTokenIpunt(String cadena) {
+	public static ArrayList<Object> procesarTokenIpunt(String cadena, Proyecto proyecto) {
 		ArrayList<String> tokens = new ArrayList<String>();
 		String pila = "";
 		String token = "";
@@ -66,7 +73,7 @@ public class TokenBs {
 			}
 		}
 
-		return convertirToken_Objeto(tokens);
+		return convertirToken_Objeto(tokens, proyecto);
 	}
 
 	private static boolean espacio(String cadena, int i, char caracter) {
@@ -124,24 +131,50 @@ public class TokenBs {
 	}
 
 	public static ArrayList<Object> convertirToken_Objeto(
-			ArrayList<String> tokens) {
+			ArrayList<String> tokens, Proyecto proyecto) {
+		
 		ArrayList<Object> objetos = new ArrayList<Object>();
 		ArrayList<String> segmentos;
-
-		for (String token : tokens) {
-			System.out.println(token);
-		}
+		ArrayList<String> parametros;
 
 		for (String token : tokens) {
 			segmentos = segmentarToken(token);
 			switch (Referencia.getTipoReferencia(segmentos.get(0))) {
 			case ACCION:
 				break;
+			case ATRIBUTO: // ATR.ENTIDAD_A_B:NOMBRE_ATT
+				Entidad entidad = new EntidadDAO().consultarEntidad(segmentos.get(1).replaceAll("_", " "), proyecto);
+				if (entidad == null){
+					// Construcción del mensaje de error;
+					parametros = new ArrayList<String>();
+					parametros.add("la");
+					parametros.add("entidad");
+					parametros.add(segmentos.get(1).replaceAll("_", " "));
+					parametros.add("registrada");
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: La entidad no está registrada",
+							"MSG15", parametros);
+				} 
+				
+				Atributo atributo = new AtributoDAO().consultarAtributo(segmentos.get(2).replaceAll("_", " "), entidad);
+				if (atributo == null) {
+					parametros = new ArrayList<String>();
+					// Construcción del mensaje de error;
+					parametros.add("el");
+					parametros.add("atributo");
+					parametros.add(segmentos.get(2).replaceAll("_", " "));
+					parametros.add("registrado");
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: El atributo no está registrado",
+							"MSG15", parametros);
+				}
+				objetos.add(atributo);
+				break;
 			case ACTOR: // ACT.NOMBRE_ACT
 				Actor actor = new ActorDAO().consultarActor(segmentos.get(1)
-						.replaceAll("_", " "));
+						.replaceAll("_", " "), proyecto);
 				if (actor == null) {
-					ArrayList<String> parametros = new ArrayList<String>();
+					parametros = new ArrayList<String>();
 					// Construcción del mensaje de error;
 					parametros.add("el");
 					parametros.add("actor");
@@ -158,7 +191,21 @@ public class TokenBs {
 				break;
 			case ENTIDAD:
 				break;
-			case TERMINOGLS:
+			case TERMINOGLS:  // GLS.NOMBRE_GLS
+				TerminoGlosario terminoGlosario = new TerminoGlosarioDAO().consultarTerminoGlosario(segmentos.get(1)
+						.replaceAll("_", " "), proyecto);
+				if (terminoGlosario == null) {
+					parametros = new ArrayList<String>();
+					// Construcción del mensaje de error;
+					parametros.add("el");
+					parametros.add("actor");
+					parametros.add(segmentos.get(1).replaceAll("_", " "));
+					parametros.add("registrado");
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: El actor no está registrado",
+							"MSG15", parametros);
+				}
+				objetos.add(terminoGlosario);
 				break;
 			case PANTALLA:
 				break;

@@ -1,5 +1,6 @@
 package mx.prisma.editor.dao;
 
+import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.util.HibernateUtil;
@@ -15,16 +16,9 @@ public class EntidadDAO extends ElementoDAO {
 	}
 	public void registrarEntidad(Entidad entidad) {
 		super.registrarElemento(entidad);
-/*		try {
-			session.beginTransaction();
-			for(Atributo atributo : entidad.getAtributos()) {
-				session.save(atributo);
-			}
-			session.save(entidad);
-			session.getTransaction().commit();
-		} catch (HibernateException he) {
-			he.printStackTrace();
-			session.getTransaction().rollback();
-		}*/
+	}
+	
+	public Entidad consultarEntidad(String nombre, Proyecto proyecto) {
+		return (Entidad) super.consultarElemento(nombre, proyecto);
 	}
 }

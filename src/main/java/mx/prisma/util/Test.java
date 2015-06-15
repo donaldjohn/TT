@@ -249,7 +249,7 @@ public class Test {
 	// -------------------------------------------------------------------
 	private static void pruebaModificacionCasoUso() {
 		int idCasoUso = 5;
-		String actores = "El actor ACT.Cartógrafo_de_incendios, ACT.Cartógrafo_de_reforestanciones. ACT.Responsable_de_reforestanciones ";
+		String actores = "El actor ACT.Cartógrafo_de_incendios, ACT.Cartógrafo_de_reforestanciones, ACT.Responsable_de_reforestanciones, ACT.Responsable_de_reforestanciones.";
 		String entradas = "";
 		String salidas = "";
 		String reglas = "";

@@ -2,6 +2,7 @@ package mx.prisma.editor.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -11,37 +12,48 @@ import mx.prisma.editor.bs.Referencia.TipoSeccion;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.model.Actor;
+import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.CasoUsoActor;
+import mx.prisma.editor.model.Entrada;
 import mx.prisma.editor.model.Modulo;
 
 public class CasoUsoDAO extends ElementoDAO {
-	
-    public void registrarCasoUso(CasoUso casodeuso) {
-    	super.registrarElemento(casodeuso);
-    }
-    
-    public void modificarCasoUso(CasoUso casodeuso) {
-    	cleanRelaciones(casodeuso);
+
+	public void registrarCasoUso(CasoUso casodeuso) {
+		super.registrarElemento(casodeuso);
+	}
+
+	public void modificarCasoUso(CasoUso casodeuso) {
+		cleanRelaciones(casodeuso);
 		super.modificarElemento(casodeuso);
-		almacenarObjetosToken(TokenBs.procesarTokenIpunt(casodeuso.getRedaccionActores()), casodeuso, Referencia.TipoSeccion.ACTORES);
-		/*almacenarObjetosToken(TokenBs.procesarTokenIpunt(casodeuso.getRedaccionEntradas()), casodeuso);
-		almacenarObjetosToken(TokenBs.procesarTokenIpunt(casodeuso.getRedaccionSalidas()), casodeuso);
-		almacenarObjetosToken(TokenBs.procesarTokenIpunt(casodeuso.getRedaccionReglasNegocio()), casodeuso);*/
-    	new ElementoDAO().modificarElemento(casodeuso);
-    }
-    
-    public CasoUso consultarCasoUso(int id){
-    	return (CasoUso) super.consultarElemento(id);
-    }
-    
+		almacenarObjetosToken(
+				TokenBs.procesarTokenIpunt(casodeuso.getRedaccionActores(), casodeuso.getProyecto()),
+				casodeuso, TipoSeccion.ACTORES);
+		
+		  almacenarObjetosToken(TokenBs.procesarTokenIpunt(casodeuso.
+		  getRedaccionEntradas(), casodeuso.getProyecto()), casodeuso, TipoSeccion.ENTRADAS);
+		  /* almacenarObjetosToken(TokenBs.procesarTokenIpunt
+		 * (casodeuso.getRedaccionSalidas()), casodeuso);
+		 * almacenarObjetosToken(TokenBs
+		 * .procesarTokenIpunt(casodeuso.getRedaccionReglasNegocio()),
+		 * casodeuso);
+		 */
+		new ElementoDAO().modificarElemento(casodeuso);
+	}
+
+	public CasoUso consultarCasoUso(int id) {
+		return (CasoUso) super.consultarElemento(id);
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<CasoUso> consultarCasosUso(Modulo modulo) {
-		List<CasoUso> casosdeuso  = null;
+		List<CasoUso> casosdeuso = null;
 
 		try {
 			session.beginTransaction();
-			Query query = session.createQuery("from CasoUso where Moduloid = :modulo");
+			Query query = session
+					.createQuery("from CasoUso where Moduloid = :modulo");
 			query.setParameter("modulo", modulo.getId());
 			casosdeuso = query.list();
 			session.getTransaction().commit();
@@ -52,24 +64,42 @@ public class CasoUsoDAO extends ElementoDAO {
 		return casosdeuso;
 
 	}
-	
+
 	public Integer lastIndexOfCasoUso(Modulo modulo) {
 		return super.lastIndexOfElemento(TipoReferencia.CASOUSO, modulo);
 	}
 
-	public void cleanRelaciones(CasoUso casodeuso){
+	public void cleanRelaciones(CasoUso casodeuso) {
 		casodeuso.getActores().clear();
 		casodeuso.getEntradas().clear();
 		casodeuso.getSalidas().clear();
 		casodeuso.getReglas().clear();
 	}
-	
 
-	private static void almacenarObjetosToken(ArrayList<Object> objetos, CasoUso casouso, TipoSeccion tipoSeccion) {
+	private static void almacenarObjetosToken(ArrayList<Object> objetos,
+			CasoUso casouso, TipoSeccion tipoSeccion) {
 		int numeroTokenActor_Actores = 0;
+		int numeroTokenAtributo_Entradas = 0;
 		Actor actor;
-		for (Object objeto : objetos){
-			switch(Referencia.getTipoRelacion(Referencia.getTipoReferencia(objeto), tipoSeccion)){
+		Atributo atributo;
+		for (Object objeto : objetos) {
+			switch (Referencia.getTipoRelacion(
+					Referencia.getTipoReferencia(objeto), tipoSeccion)) {
+			case ATRIBUTO_ENTRADAS:
+				atributo = (Atributo) objeto;
+				Entrada entrada = new Entrada(numeroTokenAtributo_Entradas++, new TipoParametroDAO().consultarTipoParametro("Atributo"), casouso);
+				if (!duplicadoAtributo_Entradas(casouso.getEntradas(), entrada)) {
+					casouso.getEntradas().add(entrada);
+				}
+				break;
+			case TERMINOGLS_ENTRADAS:
+				break;
+			case TERMINOGLS_SALIDAS:
+				break;
+			case MENSAJE_SALIDAS:
+				break;
+			case ATRIBUTO_SALIDAS:
+				break;
 			case ACCION_PASOS:
 				break;
 			case ACCION_POSTCONDICIONES:
@@ -77,9 +107,12 @@ public class CasoUsoDAO extends ElementoDAO {
 			case ACCION_PRECONDICIONES:
 				break;
 			case ACTOR_ACTORES:
-				actor = (Actor) objeto;	
-				CasoUsoActor casoUsoActor = new CasoUsoActor(numeroTokenActor_Actores++, casouso, actor);
-				casouso.getActores().add(casoUsoActor);
+				actor = (Actor) objeto;
+				CasoUsoActor casoUsoActor = new CasoUsoActor(
+						numeroTokenActor_Actores++, casouso, actor);
+				if (!duplicadoActor_Actores(casouso.getActores(), casoUsoActor)) {
+					casouso.getActores().add(casoUsoActor);
+				}
 				break;
 			case ACTOR_PASOS:
 				break;
@@ -87,16 +120,14 @@ public class CasoUsoDAO extends ElementoDAO {
 				break;
 			case ACTOR_PRECONDICIONES:
 				break;
-			case ATRIBUTO_ENTRADAS:
-				break;
+
 			case ATRIBUTO_PASOS:
 				break;
 			case ATRIBUTO_POSTCONDICIONES:
 				break;
 			case ATRIBUTO_PRECONDICIONES:
 				break;
-			case ATRIBUTO_SALIDAS:
-				break;
+		
 			case CASOUSO_PASOS:
 				break;
 			case CASOUSO_POSTCONDICIONES:
@@ -115,8 +146,7 @@ public class CasoUsoDAO extends ElementoDAO {
 				break;
 			case MENSAJE_POSTCONDICIONES:
 				break;
-			case MENSAJE_SALIDAS:
-				break;
+
 			case PANTALLA_PASOS:
 				break;
 			case PANTALLA_POSTCONDICIONES:
@@ -139,15 +169,11 @@ public class CasoUsoDAO extends ElementoDAO {
 				break;
 			case REGLANEGOCIO_REGLASNEGOCIOS:
 				break;
-			case TERMINOGLS_ENTRADAS:
-				break;
 			case TERMINOGLS_PASOS:
 				break;
 			case TERMINOGLS_POSTCONDICIONES:
 				break;
 			case TERMINOGLS_PRECONDICIONES:
-				break;
-			case TERMINOGLS_SALIDAS:
 				break;
 			case TRAYECTORIA_PASOS:
 				break;
@@ -160,6 +186,25 @@ public class CasoUsoDAO extends ElementoDAO {
 
 			}
 		}
-		
+
+	}
+
+	private static boolean duplicadoAtributo_Entradas(Set<Entrada> entradas,
+			Entrada entrada) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private static boolean duplicadoActor_Actores(Set<CasoUsoActor> actores,
+			CasoUsoActor casoUsoActor) {
+
+		for (CasoUsoActor casoUsoActori : actores) {
+			if (casoUsoActori.getActor().getId() == casoUsoActor.getActor().getId()) {
+				if(casoUsoActori.getCasouso().getId() == casoUsoActor.getCasouso().getId()){
+				return true;
+				}
+			}
+		}
+		return false;
 	}
 }

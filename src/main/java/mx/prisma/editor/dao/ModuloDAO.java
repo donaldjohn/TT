@@ -17,7 +17,6 @@ public class ModuloDAO {
 		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
 	}
 	public Modulo consultarModulo(String clave, Proyecto proyecto) {
-		System.out.println("DESDE MODULODAO");
 		Modulo modulo = null;
 		try {
 			session.beginTransaction();
