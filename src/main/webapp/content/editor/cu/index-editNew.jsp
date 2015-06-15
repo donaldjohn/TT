@@ -9,9 +9,11 @@
 <title>Casos de uso</title>
 <![CDATA[
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/index-editNew.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/dataTable.js"></script>
 ]]>
 </head>
 <body>
+
 	<h1>Registrar Caso de uso</h1>
 	
 	<s:actionmessage theme="jquery" />
@@ -25,7 +27,7 @@
 
 	<s:form id="frmCU" theme="simple"
 		action="%{#pageContext.request.contextPath}/cu" 
-		method="post" onsubmit="return getSubmitActor();">
+		method="post" onsubmit="return agregarElementosDeTablas();">
 		<div class="formulario">
 			<div class="tituloFormulario">Información general del caso de
 				uso</div>
@@ -95,89 +97,58 @@
 		</div>
 		<div class="formulario">
 			<div class="tituloFormulario">Precondiciones</div>
-			<br />
-			<table class="tablaGestion" id="precondiciones">
-				<thead>
-					<tr>
-						<th style="width: 20%;">Número</th>
-						<th style="width: 60%;">Redacción</th>
-						<th style="width: 20%;">Acciones</th>
-					</tr>
-				</thead>
-				<tbody>
-					<s:iterator value="listPrecondiciones" var="precondicion">
+			<div class="seccion">
+				<table class="tablaGestion" id="tablaPrecondiciones">
+					<thead>
 						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
+							<th style="width: 60%;">Redacción</th>
+							<th style="width: 20%;">Acciones</th>
 						</tr>
-					</s:iterator>
-				</tbody>
-			</table>
-
-			<br />
-			<div align="center">
-				<sj:a openDialog="precondDialog" button="true">Registrar</sj:a>
+					</thead>
+				</table>
+				<br />
+				<div align="center">
+					<sj:a openDialog="precondDialog" button="true">Registrar</sj:a>
+				</div>
 			</div>
-			<br />
 		</div>
+		
 		<div class="formulario">
 			<div class="tituloFormulario">Postcondiciones</div>
-			<br />
-			<table class="tablaGestion" id="postcondiciones">
-				<thead>
-					<tr>
-						<th style="width: 20%;">Número</th>
-						<th style="width: 60%;">Redacción</th>
-						<th style="width: 20%;">Acciones</th>
-					</tr>
-				</thead>
-				<tbody>
-					<s:iterator value="listPostcondiciones" var="postcondicion">
+			<div class="seccion">
+				<table class="tablaGestion" id="tablaPostcondiciones">
+					<thead>
 						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
+							<th style="width: 60%;">Redacción</th>
+							<th style="width: 20%;">Acciones</th>
 						</tr>
-					</s:iterator>
-				</tbody>
-			</table>
-			<br />
-			<div align="center">
-				<input class="boton" type="button" action="precondicion"
-					value="Registrar" />
+					</thead>
+				</table>
+				<br />
+				<div align="center">
+					<sj:a openDialog="postcondDialog" button="true">Registrar</sj:a>
+				</div>
 			</div>
-			<br />
 		</div>
+		
 		<div class="formulario">
 			<div class="tituloFormulario">Puntos de extensión</div>
-			<br />
-			<table class="tablaGestion" id="puntosExtension">
-				<thead>
-					<tr>
-						<th style="width: 30%;">Causa</th>
-						<th style="width: 30%;">Región</th>
-						<th style="width: 30%;">Caso de uso que extiende</th>
-						<th style="width: 10%;">Acciones</th>
-					</tr>
-				</thead>
-				<tbody>
-					<s:iterator value="listPtosExtension" var="pExtension">
+			<div class="seccion">
+				<table class="tablaGestion" id="tablaPtosExtension">
+					<thead>
 						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<th style="width: 30%;">Causa</th>
+							<th style="width: 30%;">Región</th>
+							<th style="width: 30%;">Caso de uso que extiende</th>
+							<th style="width: 10%;">Acciones</th>
 						</tr>
-					</s:iterator>
-				</tbody>
-			</table>
-			<br />
-			<div align="center">
-				<input class="boton" type="button" action="precondicion"
-					value="Registrar" />
+					</thead>
+				</table>
+				<br />
+				<div align="center">
+					<sj:a openDialog="ptosExtensionDialog" button="true">Registrar</sj:a>
+				</div>
 			</div>
-			<br />
 		</div>
 		<br />
 		<div align="center">
@@ -191,33 +162,55 @@
 	
 	
 	<!-- PRECONDICIONES -->	
-   	<sj:dialog id="precondDialog" title="Registrar Precondición" autoOpen="true" 
+   	<sj:dialog id="precondDialog" title="Registrar Precondición" autoOpen="false" 
    	minHeight="300" minWidth="800" modal="true" draggable="true" >
-	   	<s:form id="frmPrecondiciones" theme="simple" name="frmPrecondicionesName"
-			onSubmit="return registrarPrecondicion()">
+	   	<s:form id="frmPrecondiciones" name="frmPrecondicionesName" theme="simple">
 			<div class="formulario">
 				<div class="tituloFormulario">Información de la Precondición</div>
 				<table class="seccion">
 					<tr>
 						<td class="label obligatorio"><s:text name="labelRedaccion" /></td>
-						<td><s:textarea rows="5" name="precondicion.redaccion"
-								maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
-								fieldName="precondicion.redaccion" cssClass="error"
-								theme="jquery" /></td>
+						<td><s:textarea rows="5" name="precondicion.redaccion" id="precondicion.idRedaccion"
+								maxlength="999" cssErrorClass="input-error"></s:textarea></td>
 					</tr>
 				</table>
 			</div>
 			<br />
 				<div align="center">
-					<s:submit value="Aceptar" />
-	
 					<input type="button"
-						onclick="cancelarRegistrarPre()"
+						onclick="registrarPrecondicion()"
+						value="Aceptar" />
+					<input type="button"
+						onclick="cancelarRegistrarPrecondicion()"
 						value="Cancelar" />
 				</div>
 		</s:form>
 	</sj:dialog>
-	
+	<!-- POSTCONDICIONES -->	
+   	<sj:dialog id="postcondDialog" title="Registrar Postcondición" autoOpen="false" 
+   	minHeight="300" minWidth="800" modal="true" draggable="true" >
+	   	<s:form id="frmPostcondiciones" name="frmPostcondicionesName" theme="simple">
+			<div class="formulario">
+				<div class="tituloFormulario">Información de la Postcondición</div>
+				<table class="seccion">
+					<tr>
+						<td class="label obligatorio"><s:text name="labelRedaccion" /></td>
+						<td><s:textarea rows="5" name="postcondicion.redaccion" id="postcondicion.idRedaccion"
+								maxlength="999" cssErrorClass="input-error"></s:textarea></td>
+					</tr>
+				</table>
+			</div>
+			<br />
+				<div align="center">
+					<input type="button"
+						onclick="registrarPostcondicion()"
+						value="Aceptar" />
+					<input type="button"
+						onclick="cancelarRegistrarPostcondicion()"
+						value="Cancelar" />
+				</div>
+		</s:form>
+	</sj:dialog>
 
 	
 	

@@ -375,3 +375,7 @@ textarea {
 textfield {
 	vertical-align: top; 
 }
+
+.hide {
+	visibility: hidden;
+}

@@ -141,12 +141,12 @@ public class TokenBs {
 				Actor actor = new ActorDAO().consultarActor(segmentos.get(1)
 						.replaceAll("_", " "));
 				if (actor == null) {
-					ArrayList<String> parametros = new ArrayList<String>();
+					String [] parametros = {
 					// Construcción del mensaje de error;
-					parametros.add("el");
-					parametros.add("actor");
-					parametros.add(segmentos.get(1).replaceAll("_", " "));
-					parametros.add("registrado");
+					"el",
+					"actor",
+					segmentos.get(1).replaceAll("_", " "),
+					"registrado"};
 					throw new PRISMAException(
 							"TokenBs.convertirToken_Objeto: El actor no está registrado",
 							"MSG15", parametros);
