@@ -1,6 +1,8 @@
 package mx.prisma.editor.model;
 
-// Generated 07-jun-2015 17:10:34 by Hibernate Tools 4.0.0
+/*
+ * Sergio Ramírez Camacho 07/06/2015
+ */
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,6 +36,7 @@ public class Atributo implements java.io.Serializable {
 	private String descripcion;
 	private boolean obligatorio;
 	private int longitud;
+	private TipoDato tipoDato;
 
 	public Atributo() {
 	}
@@ -104,4 +107,14 @@ public class Atributo implements java.io.Serializable {
 		this.longitud = longitud;
 	}
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "TipoDatoid",referencedColumnName="id", nullable = false)
+	public TipoDato getTipoDato() {
+		return tipoDato;
+	}
+
+	public void setTipoDato(TipoDato tipoDato) {
+		this.tipoDato = tipoDato;
+	}
+	
 }

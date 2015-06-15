@@ -9,7 +9,7 @@
 		<property name="hibernate.connection.username">root</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="hibernate.current_session_context_class">thread</property>
-		<property name="show_sql">false</property>
+		<property name="show_sql">true</property>
 
 		<mapping class="mx.prisma.admin.model.Colaborador" />
 		<mapping class="mx.prisma.admin.model.ColaboradorProyecto" />
@@ -42,6 +42,7 @@
 		<mapping class="mx.prisma.editor.model.Salida" />
 		<mapping class="mx.prisma.editor.model.TerminoGlosario" />
 		<mapping class="mx.prisma.editor.model.TipoAccion" />
+		<mapping class="mx.prisma.editor.model.TipoDato" />
 		<mapping class="mx.prisma.editor.model.TipoParametro" />
 		<mapping class="mx.prisma.editor.model.TipoReglaNegocio" />
 		<mapping class="mx.prisma.editor.model.Trayectoria" />

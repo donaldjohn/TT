@@ -19,6 +19,7 @@ import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.CasoUsoActor;
 import mx.prisma.editor.model.Entrada;
 import mx.prisma.editor.model.Modulo;
+import mx.prisma.editor.model.TerminoGlosario;
 
 public class CasoUsoDAO extends ElementoDAO {
 
@@ -37,13 +38,6 @@ public class CasoUsoDAO extends ElementoDAO {
 				casodeuso.getRedaccionEntradas(), casodeuso.getProyecto()),
 				casodeuso, TipoSeccion.ENTRADAS);
 
-		/*
-		 * almacenarObjetosToken(TokenBs.procesarTokenIpunt
-		 * (casodeuso.getRedaccionSalidas()), casodeuso);
-		 * almacenarObjetosToken(TokenBs
-		 * .procesarTokenIpunt(casodeuso.getRedaccionReglasNegocio()),
-		 * casodeuso);
-		 */
 		new ElementoDAO().modificarElemento(casodeuso);
 	}
 
@@ -103,14 +97,21 @@ public class CasoUsoDAO extends ElementoDAO {
 			CasoUso casouso, TipoSeccion tipoSeccion) {
 		int numeroTokenActor_Actores = 0;
 		int numeroTokenAtributo_Entradas = 0;
+		int numeroTokenTermino_Entradas = 0;
+		//Secciones:
+		Entrada entrada;
+		
+		//Elementos
 		Actor actor;
 		Atributo atributo;
+		TerminoGlosario termino;
+		
 		for (Object objeto : objetos) {
 			switch (Referencia.getTipoRelacion(
 					Referencia.getTipoReferencia(objeto), tipoSeccion)) {
 			case ATRIBUTO_ENTRADAS:
 				atributo = (Atributo) objeto;
-				Entrada entrada = new Entrada(numeroTokenAtributo_Entradas++,
+				entrada = new Entrada(numeroTokenAtributo_Entradas++,
 						new TipoParametroDAO()
 								.consultarTipoParametro("Atributo"), casouso);
 				entrada.setAtributo(atributo);
@@ -119,6 +120,15 @@ public class CasoUsoDAO extends ElementoDAO {
 				}
 				break;
 			case TERMINOGLS_ENTRADAS:
+				termino = (TerminoGlosario) objeto;
+				System.out.println(termino.getNombre());
+				entrada = new Entrada(numeroTokenTermino_Entradas++,
+						new TipoParametroDAO()
+								.consultarTipoParametro("Termino del glosario"), casouso);
+				entrada.setTerminoGlosario(termino);
+				if (!duplicadoTermino_Entradas(casouso.getEntradas(), entrada)) {
+					casouso.getEntradas().add(entrada);
+				}
 				break;
 			case TERMINOGLS_SALIDAS:
 				break;
@@ -215,9 +225,35 @@ public class CasoUsoDAO extends ElementoDAO {
 
 	}
 
+	private static boolean duplicadoTermino_Entradas(Set<Entrada> entradas,
+			Entrada entrada) {
+		for (Entrada entradai : entradas) {
+			if (entradai.getTerminoGlosario() != null)
+			if (entradai.getTerminoGlosario().getId() == entrada.getTerminoGlosario()
+					.getId()) {
+				if (entradai.getCasoUso().getId() == entrada
+						.getCasoUso().getId()) {
+					System.out.println("--");
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	private static boolean duplicadoAtributo_Entradas(Set<Entrada> entradas,
 			Entrada entrada) {
-		// TODO Auto-generated method stub
+		for (Entrada entradai : entradas) {
+			if(entrada.getAtributo()!=null)
+			if (entradai.getAtributo().getId() == entrada.getAtributo()
+					.getId()) {
+				if (entradai.getCasoUso().getId() == entrada
+						.getCasoUso().getId()) {
+					System.out.println("--");
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
