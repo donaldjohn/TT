@@ -26,6 +26,7 @@ public class CuBs {
 		return cus;
 	}
 	
+	
 	/*Verifica las operaciones disponible de acuerdo a la RN9
 	 * Los estados del caso de uso son:
 	 * 1.- Registro (N/A)
@@ -48,7 +49,6 @@ public class CuBs {
 	}
 
 	public static int calcularNumero(Modulo modulo) throws Exception{
-		// TODO Auto-generated method stub
 		int numero = -1;
 		numero = new CasoUsoDAO().lastIndexOfCasoUso(modulo) + 1;
 		
@@ -59,11 +59,7 @@ public class CuBs {
 		return numero;
 	}
 
-	public static void registraPostPrecondicion() {
-		// TODO Auto-generated method stub
-		
-		
-	}
+	
 
 	public static Modulo consultarModulo(String claveModulo, Proyecto proyecto) throws Exception{
 		

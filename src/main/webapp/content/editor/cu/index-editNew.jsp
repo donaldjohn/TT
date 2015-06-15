@@ -8,6 +8,8 @@
 <head>
 <title>Casos de uso</title>
 <![CDATA[
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/validaciones.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/constructores.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/index-editNew.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/dataTable.js"></script>
 ]]>
@@ -137,9 +139,9 @@
 				<table class="tablaGestion" id="tablaPtosExtension">
 					<thead>
 						<tr>
+							<th style="width: 30%;">Caso de uso que extiende</th>
 							<th style="width: 30%;">Causa</th>
 							<th style="width: 30%;">Región</th>
-							<th style="width: 30%;">Caso de uso que extiende</th>
 							<th style="width: 10%;">Acciones</th>
 						</tr>
 					</thead>
@@ -164,7 +166,7 @@
 	<!-- PRECONDICIONES -->	
    	<sj:dialog id="precondDialog" title="Registrar Precondición" autoOpen="false" 
    	minHeight="300" minWidth="800" modal="true" draggable="true" >
-	   	<s:form id="frmPrecondiciones" name="frmPrecondicionesName" theme="simple">
+	   	<s:form id="frmPrecondicion" name="frmPrecondicionName" theme="simple">
 			<div class="formulario">
 				<div class="tituloFormulario">Información de la Precondición</div>
 				<table class="seccion">
@@ -189,7 +191,7 @@
 	<!-- POSTCONDICIONES -->	
    	<sj:dialog id="postcondDialog" title="Registrar Postcondición" autoOpen="false" 
    	minHeight="300" minWidth="800" modal="true" draggable="true" >
-	   	<s:form id="frmPostcondiciones" name="frmPostcondicionesName" theme="simple">
+	   	<s:form id="frmPostcondicion" name="frmPostcondicionName" theme="simple">
 			<div class="formulario">
 				<div class="tituloFormulario">Información de la Postcondición</div>
 				<table class="seccion">
@@ -207,6 +209,41 @@
 						value="Aceptar" />
 					<input type="button"
 						onclick="cancelarRegistrarPostcondicion()"
+						value="Cancelar" />
+				</div>
+		</s:form>
+	</sj:dialog>
+	<!-- PUNTOS DE EXTENSIÓN -->	
+   	<sj:dialog id="ptosExtensionDialog" title="Registrar Punto de extensión" autoOpen="false" 
+   	minHeight="300" minWidth="800" modal="true" draggable="true" >
+	   	<s:form id="frmPtoExtension" name="frmPtoExtensionName" theme="simple">
+			<div class="formulario">
+				<div class="tituloFormulario">Información del Punto de extensión</div>
+				<table class="seccion">
+					<tr>
+						<td class="label obligatorio"><s:text name="labelCasoUsoExtiende" /></td>
+						<td><s:select name="ptoExtension.cu" id="ptoExtension.idCu" list="listCUProyecto" listKey="id"
+       						listValue="nombre" cssErrorClass="input-error" value="0"></s:select></td>
+					</tr>
+					<tr>
+						<td class="label obligatorio"><s:text name="labelCausa" /></td>
+						<td><s:textarea rows="5" name="ptoExtension.causa" id="ptoExtension.idCausa"
+								maxlength="999" cssErrorClass="input-error"></s:textarea></td>
+					</tr>
+					<tr>
+						<td class="label obligatorio"><s:text name="labelRegion" /></td>
+						<td><s:textarea rows="5" name="ptoExtension.region" id="ptoExtension.idRegion"
+								maxlength="500" cssErrorClass="input-error"></s:textarea></td>
+					</tr>
+				</table>
+			</div>
+			<br />
+				<div align="center">
+					<input type="button"
+						onclick="registrarPtoExtension()"
+						value="Aceptar" />
+					<input type="button"
+						onclick="cancelarRegistrarPtoExtension()"
 						value="Cancelar" />
 				</div>
 		</s:form>
