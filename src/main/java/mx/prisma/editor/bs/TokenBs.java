@@ -141,7 +141,7 @@ public class TokenBs {
 			segmentos = segmentarToken(token);
 			switch (Referencia.getTipoReferencia(segmentos.get(0))) {
 			case ACCION:
-				break;
+				break; 
 			case ATRIBUTO: // ATR.ENTIDAD_A_B:NOMBRE_ATT
 				Entidad entidad = new EntidadDAO().consultarEntidad(segmentos.get(1).replaceAll("_", " "), proyecto);
 				if (entidad == null){
