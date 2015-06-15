@@ -210,7 +210,7 @@
 					<input type="button"
 						onclick="cancelarRegistrarPostcondicion()"
 						value="Cancelar" />
-				</div>
+				</div> 
 		</s:form>
 	</sj:dialog>
 	<!-- PUNTOS DE EXTENSIÓN -->	
