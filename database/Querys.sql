@@ -17,6 +17,6 @@ INSERT INTO PRISMA.Entidad (Elementoid) VALUES ('5');
 INSERT INTO PRISMA.Atributo (nombre, descripcion, obligatorio, longitud, EntidadElementoid, TipoDatoid) VALUES ('Fecha', 'Fecha en la que ocurrió el evento.', '1', '50', '5', '5');
 
 INSERT INTO `PRISMA`.`Elemento` (`clave`, `numero`, `nombre`, `descripcion`, `EstadoElementoid`, `Proyectoid`) VALUES ('GLS', '1', 'Tipo de Evento', 'Se refiere a las categorías en las que se dividen los eventos', '1', '1');
-INSERT INTO PRISMA.TerminoGlosario (Elementoid) VALUES ('7');
+INSERT INTO PRISMA.TerminoGlosario (Elementoid) VALUES ('7'); 
 
 

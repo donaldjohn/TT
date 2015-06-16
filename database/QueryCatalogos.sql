@@ -30,3 +30,14 @@ INSERT INTO PRISMA.TipoDato (nombre) VALUES ('Entero');
 INSERT INTO PRISMA.TipoDato (nombre) VALUES ('Booleano');
 INSERT INTO PRISMA.TipoDato (nombre) VALUES ('Fecha');
 
+INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Verificación de catálogos');
+INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Operaciones aritméticas');
+INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Unicidad de parámetros');
+INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Datos obligatorios');
+INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Longitud correcta');
+INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Tipo de dato correcto');
+INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Formato de archivos');
+INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Tamaño de archivos');
+INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Intervalo de fechas correctas');
+INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Formato correcto');
+INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Otro');
