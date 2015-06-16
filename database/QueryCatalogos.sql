@@ -16,6 +16,10 @@ INSERT INTO Cardinalidad (nombre) VALUES ('Otra');
 INSERT INTO Rol (nombre) VALUES ('Líder');
 INSERT INTO Rol (nombre) VALUES ('Analista');
 
+INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Entidad');
+INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Caso de uso');
+INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Regla de negocio');
+INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Actor');
 INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Atributo');
 INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Mensaje');
 INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Termino del glosario');

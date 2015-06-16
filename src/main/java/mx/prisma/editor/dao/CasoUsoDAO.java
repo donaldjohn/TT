@@ -17,8 +17,12 @@ import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.CasoUsoActor;
+import mx.prisma.editor.model.CasoUsoReglaNegocio;
 import mx.prisma.editor.model.Entrada;
+import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Modulo;
+import mx.prisma.editor.model.ReglaNegocio;
+import mx.prisma.editor.model.Salida;
 import mx.prisma.editor.model.TerminoGlosario;
 
 public class CasoUsoDAO extends ElementoDAO {
@@ -30,13 +34,7 @@ public class CasoUsoDAO extends ElementoDAO {
 	public void modificarCasoUso(CasoUso casodeuso) {
 		cleanRelaciones(casodeuso);
 		super.modificarElemento(casodeuso);
-		almacenarObjetosToken(TokenBs.procesarTokenIpunt(
-				casodeuso.getRedaccionActores(), casodeuso.getProyecto()),
-				casodeuso, TipoSeccion.ACTORES);
-
-		almacenarObjetosToken(TokenBs.procesarTokenIpunt(
-				casodeuso.getRedaccionEntradas(), casodeuso.getProyecto()),
-				casodeuso, TipoSeccion.ENTRADAS);
+		procesarObjetos_Token(casodeuso);
 
 		new ElementoDAO().modificarElemento(casodeuso);
 	}
@@ -82,6 +80,7 @@ public class CasoUsoDAO extends ElementoDAO {
 		return casosdeuso;
 
 	}
+
 	public Integer lastIndexOfCasoUso(Modulo modulo) {
 		return super.lastIndexOfElemento(TipoReferencia.CASOUSO, modulo);
 	}
@@ -93,22 +92,58 @@ public class CasoUsoDAO extends ElementoDAO {
 		casodeuso.getReglas().clear();
 	}
 
+	private void procesarObjetos_Token(CasoUso casodeuso) {
+
+		almacenarObjetosToken(TokenBs.procesarTokenIpunt(
+				casodeuso.getRedaccionActores(), casodeuso.getProyecto()),
+				casodeuso, TipoSeccion.ACTORES);
+
+		almacenarObjetosToken(TokenBs.procesarTokenIpunt(
+				casodeuso.getRedaccionEntradas(), casodeuso.getProyecto()),
+				casodeuso, TipoSeccion.ENTRADAS);
+
+		almacenarObjetosToken(TokenBs.procesarTokenIpunt(
+				casodeuso.getRedaccionSalidas(), casodeuso.getProyecto()),
+				casodeuso, TipoSeccion.SALIDAS);
+
+		almacenarObjetosToken(TokenBs.procesarTokenIpunt(
+				casodeuso.getRedaccionReglasNegocio(), casodeuso.getProyecto()),
+				casodeuso, TipoSeccion.REGLASNEGOCIOS);
+	}
+
 	private static void almacenarObjetosToken(ArrayList<Object> objetos,
 			CasoUso casouso, TipoSeccion tipoSeccion) {
 		int numeroTokenActor_Actores = 0;
 		int numeroTokenAtributo_Entradas = 0;
 		int numeroTokenTermino_Entradas = 0;
-		//Secciones:
+		int numeroTokenAtributo_Salidas = 0;
+		int numeroTokenTermino_Salidas = 0;
+		int numeroTokenMensaje_Salidas = 0;
+
+		// Secciones:
+		CasoUsoActor casoUsoActor;
 		Entrada entrada;
-		
-		//Elementos
+		Salida salida;
+		CasoUsoReglaNegocio casoUsoReglas;
+
+		// Elementos
 		Actor actor;
 		Atributo atributo;
 		TerminoGlosario termino;
-		
+		Mensaje mensaje;
+		ReglaNegocio reglaNegocio;
+
 		for (Object objeto : objetos) {
 			switch (Referencia.getTipoRelacion(
 					Referencia.getTipoReferencia(objeto), tipoSeccion)) {
+			case ACTOR_ACTORES:
+				actor = (Actor) objeto;
+				casoUsoActor = new CasoUsoActor(numeroTokenActor_Actores++,
+						casouso, actor);
+				if (!duplicadoActor_Actores(casouso.getActores(), casoUsoActor)) {
+					casouso.getActores().add(casoUsoActor);
+				}
+				break;
 			case ATRIBUTO_ENTRADAS:
 				atributo = (Atributo) objeto;
 				entrada = new Entrada(numeroTokenAtributo_Entradas++,
@@ -122,19 +157,57 @@ public class CasoUsoDAO extends ElementoDAO {
 			case TERMINOGLS_ENTRADAS:
 				termino = (TerminoGlosario) objeto;
 				System.out.println(termino.getNombre());
-				entrada = new Entrada(numeroTokenTermino_Entradas++,
+				entrada = new Entrada(
+						numeroTokenTermino_Entradas++,
 						new TipoParametroDAO()
-								.consultarTipoParametro("Termino del glosario"), casouso);
+								.consultarTipoParametro("Termino del glosario"),
+						casouso);
 				entrada.setTerminoGlosario(termino);
 				if (!duplicadoTermino_Entradas(casouso.getEntradas(), entrada)) {
 					casouso.getEntradas().add(entrada);
 				}
 				break;
 			case TERMINOGLS_SALIDAS:
+				termino = (TerminoGlosario) objeto;
+				System.out.println(termino.getNombre());
+				salida = new Salida(
+						numeroTokenTermino_Salidas++,
+						new TipoParametroDAO()
+								.consultarTipoParametro("Termino del glosario"),
+						casouso);
+				salida.setTerminoGlosario(termino);
+				if (!duplicadoTermino_Salidas(casouso.getSalidas(), salida)) {
+					casouso.getSalidas().add(salida);
+				}
 				break;
 			case MENSAJE_SALIDAS:
+				mensaje = (Mensaje) objeto;
+				salida = new Salida(numeroTokenMensaje_Salidas++,
+						new TipoParametroDAO()
+								.consultarTipoParametro("Mensaje"), casouso);
+				salida.setMensaje(mensaje);
+				if (!duplicadoMensaje_Salidas(casouso.getSalidas(), salida)) {
+					casouso.getSalidas().add(salida);
+				}
 				break;
 			case ATRIBUTO_SALIDAS:
+				atributo = (Atributo) objeto;
+				salida = new Salida(numeroTokenAtributo_Salidas++,
+						new TipoParametroDAO()
+								.consultarTipoParametro("Atributo"), casouso);
+				salida.setAtributo(atributo);
+				if (!duplicadoAtributo_Salidas(casouso.getSalidas(), salida)) {
+					casouso.getSalidas().add(salida);
+				}
+				break;
+			case REGLANEGOCIO_REGLASNEGOCIOS:
+				reglaNegocio = (ReglaNegocio) objeto;
+				casoUsoReglas = new CasoUsoReglaNegocio(
+						numeroTokenAtributo_Salidas++, casouso, reglaNegocio);
+				casoUsoReglas.setReglaNegocio(reglaNegocio);
+				if (!duplicadoRegla_Reglas(casouso.getReglas(), casoUsoReglas)) {
+					casouso.getReglas().add(casoUsoReglas);
+				}
 				break;
 			case ACCION_PASOS:
 				break;
@@ -142,14 +215,7 @@ public class CasoUsoDAO extends ElementoDAO {
 				break;
 			case ACCION_PRECONDICIONES:
 				break;
-			case ACTOR_ACTORES:
-				actor = (Actor) objeto;
-				CasoUsoActor casoUsoActor = new CasoUsoActor(
-						numeroTokenActor_Actores++, casouso, actor);
-				if (!duplicadoActor_Actores(casouso.getActores(), casoUsoActor)) {
-					casouso.getActores().add(casoUsoActor);
-				}
-				break;
+
 			case ACTOR_PASOS:
 				break;
 			case ACTOR_POSTCONDICIONES:
@@ -203,8 +269,6 @@ public class CasoUsoDAO extends ElementoDAO {
 				break;
 			case REGLANEGOCIO_PRECONDICIONES:
 				break;
-			case REGLANEGOCIO_REGLASNEGOCIOS:
-				break;
 			case TERMINOGLS_PASOS:
 				break;
 			case TERMINOGLS_POSTCONDICIONES:
@@ -225,15 +289,13 @@ public class CasoUsoDAO extends ElementoDAO {
 
 	}
 
-	private static boolean duplicadoTermino_Entradas(Set<Entrada> entradas,
-			Entrada entrada) {
-		for (Entrada entradai : entradas) {
-			if (entradai.getTerminoGlosario() != null)
-			if (entradai.getTerminoGlosario().getId() == entrada.getTerminoGlosario()
-					.getId()) {
-				if (entradai.getCasoUso().getId() == entrada
-						.getCasoUso().getId()) {
-					System.out.println("--");
+	private static boolean duplicadoRegla_Reglas(
+			Set<CasoUsoReglaNegocio> reglas, CasoUsoReglaNegocio casoUsoReglas) {
+		for (CasoUsoReglaNegocio reglai : reglas) {
+			if (reglai.getReglaNegocio().getId() == casoUsoReglas
+					.getReglaNegocio().getId()) {
+				if (reglai.getCasoUso().getId() == casoUsoReglas.getCasoUso()
+						.getId()) {
 					return true;
 				}
 			}
@@ -241,18 +303,76 @@ public class CasoUsoDAO extends ElementoDAO {
 		return false;
 	}
 
+	private static boolean duplicadoMensaje_Salidas(Set<Salida> salidas,
+			Salida salida) {
+		for (Salida salidai : salidas) {
+			if (salidai.getMensaje() != null)
+				if (salidai.getMensaje().getId() == salida.getMensaje().getId()) {
+					if (salidai.getCasoUso().getId() == salida.getCasoUso()
+							.getId()) {
+						return true;
+					}
+				}
+		}
+		return false;
+	}
+
+	private static boolean duplicadoTermino_Salidas(Set<Salida> salidas,
+			Salida salida) {
+		for (Salida salidai : salidas) {
+			if (salidai.getTerminoGlosario() != null)
+				if (salidai.getTerminoGlosario().getId() == salida
+						.getTerminoGlosario().getId()) {
+					if (salidai.getCasoUso().getId() == salida.getCasoUso()
+							.getId()) {
+						return true;
+					}
+				}
+		}
+		return false;
+	}
+
+	private static boolean duplicadoAtributo_Salidas(Set<Salida> salidas,
+			Salida salida) {
+		for (Salida salidai : salidas) {
+			if (salidai.getAtributo() != null)
+				if (salidai.getAtributo().getId() == salida.getAtributo()
+						.getId()) {
+					if (salidai.getCasoUso().getId() == salida.getCasoUso()
+							.getId()) {
+						return true;
+					}
+				}
+		}
+		return false;
+	}
+
+	private static boolean duplicadoTermino_Entradas(Set<Entrada> entradas,
+			Entrada entrada) {
+		for (Entrada entradai : entradas) {
+			if (entradai.getTerminoGlosario() != null)
+				if (entradai.getTerminoGlosario().getId() == entrada
+						.getTerminoGlosario().getId()) {
+					if (entradai.getCasoUso().getId() == entrada.getCasoUso()
+							.getId()) {
+						return true;
+					}
+				}
+		}
+		return false;
+	}
+
 	private static boolean duplicadoAtributo_Entradas(Set<Entrada> entradas,
 			Entrada entrada) {
 		for (Entrada entradai : entradas) {
-			if(entrada.getAtributo()!=null)
-			if (entradai.getAtributo().getId() == entrada.getAtributo()
-					.getId()) {
-				if (entradai.getCasoUso().getId() == entrada
-						.getCasoUso().getId()) {
-					System.out.println("--");
-					return true;
+			if (entrada.getAtributo() != null)
+				if (entradai.getAtributo().getId() == entrada.getAtributo()
+						.getId()) {
+					if (entradai.getCasoUso().getId() == entrada.getCasoUso()
+							.getId()) {
+						return true;
+					}
 				}
-			}
 		}
 		return false;
 	}

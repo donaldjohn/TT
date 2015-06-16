@@ -6,10 +6,14 @@ import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.dao.ActorDAO;
 import mx.prisma.editor.dao.AtributoDAO;
 import mx.prisma.editor.dao.EntidadDAO;
+import mx.prisma.editor.dao.MensajeDAO;
+import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.dao.TerminoGlosarioDAO;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Entidad;
+import mx.prisma.editor.model.Mensaje;
+import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.util.PRISMAException;
 
@@ -156,7 +160,7 @@ public class TokenBs {
 				if (atributo == null) {
 					String [] parametros = {"el", "atributo", segmentos.get(2).replaceAll("_", " "), "registrado"};
 					throw new PRISMAException(
-							"TokenBs.convertirToken_Objeto: El atributo no está registrado",
+							"TokenBs.convertirToken_Objeto: El atributo"+segmentos.get(2)+" no está registrado",
 							"MSG15", parametros);
 				}
 				objetos.add(atributo);
@@ -196,9 +200,29 @@ public class TokenBs {
 				break;
 			case PANTALLA:
 				break;
-			case MENSAJE:
+			case MENSAJE: // MSG.NUMERO:NOMBRE_MSG
+				Mensaje mensaje = new MensajeDAO().consultarMensaje(segmentos.get(2)
+						.replaceAll("_", " "), proyecto);
+				if (mensaje == null) {
+					String [] parametros = {"el", "mensaje", segmentos.get(1).replaceAll("_", " "), "registrado"};
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: El mensaje "+segmentos.get(1)+" no está registrado",
+							"MSG15", parametros);
+				}
+				objetos.add(mensaje);
 				break;
-			case REGLANEGOCIO:
+			case REGLANEGOCIO: // RN.NUMERO:NOMBRE_RN
+				ReglaNegocio reglaNegocio = new ReglaNegocioDAO().consultarReglaNegocio(segmentos.get(2)
+						.replaceAll("_", " "), proyecto);
+				if (reglaNegocio == null) {
+					String [] parametros = {"la", "regla de negocio", segmentos.get(2).replaceAll("_", " "), "registrada"};
+					
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: La trayectoria " +segmentos.get(2)+" no está registrada",
+							"MSG15", parametros);
+				}
+				objetos.add(reglaNegocio);
 				break;
 			case TRAYECTORIA:
 				break;
