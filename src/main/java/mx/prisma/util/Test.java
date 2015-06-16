@@ -67,8 +67,6 @@ public class Test {
 
 	}
 
-	
-
 	// -----------------------------------------------------------------
 
 
@@ -252,15 +250,15 @@ public class Test {
 		int idCasoUso = 6;
 		String actores = "El actor ACT.Cartógrafo_de_incendios, ACT.Cartógrafo_de_reforestanciones, ACT.Responsable_de_reforestanciones, ACT.Responsable_de_reforestanciones.";
 		String entradas = "ATR.Incendio:Folio, ATR.Incendio:Fecha, ATR.Incendio:Fecha, ATR.Incendio:Fecha, GLS.Área y el GLS.Tipo_de_Evento. ";
-		String salidas = "";
-		String reglas = "";
+		String salidas = "ATR.Incendio:Folio, ATR.Incendio:Fecha, MSG.1:Operación_exitosa, ATR.Incendio:Fecha, ATR.Incendio:Fecha, GLS.Área y el GLS.Tipo_de_evento.  ";
+		String reglas = "RN.1:Datos_correctos RN.1:Datos_correctos, RN.1:Datos_correctos.";
 		
 		
 		CasoUso cu = new CasoUsoDAO().consultarCasoUso(idCasoUso);
 		cu.setRedaccionActores(actores);
 		cu.setRedaccionEntradas(entradas);
-		
-		cu.getActores().clear();
+		cu.setRedaccionSalidas(salidas);
+		cu.setRedaccionReglasNegocio(reglas);
 		
 		
 		try {
