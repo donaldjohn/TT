@@ -152,7 +152,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			for(Paso p: model.getPasos()) {
 				System.out.println("NUMERO " + p.getNumero());
 				System.out.println("REDACCION " + p.getRedaccion());
-				System.out.println("" + );
+				System.out.println("" + p.g);
 			}
 		}
 	}
