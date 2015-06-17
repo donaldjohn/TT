@@ -1,6 +1,6 @@
 <div class="opcionesMenuCU">
-	<a class="menuCUSel" href="#" onclick="seleccionarOpcion(this)">General</a>
-	<a class="menuCU" href="${pageContext.request.contextPath}/redireccionarTrayectorias" onclick="seleccionarOpcion(this)">Trayectorias</a>
+	<a class="menuCUSel" href="${pageContext.request.contextPath}/trayectorias" onclick="seleccionarOpcion(this)">General</a>
+	<a class="menuCU" href="${pageContext.request.contextPath}/trayectorias" onclick="seleccionarOpcion(this)">Trayectorias</a>
 </div>
 
 <!-- <div class="opcionesMenuCU">

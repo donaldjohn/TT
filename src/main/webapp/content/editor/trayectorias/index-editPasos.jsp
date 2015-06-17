@@ -12,7 +12,7 @@
 </head>
 
 <body>
-	<h1>Registrar Caso de uso: Trayectorias</h1>
+	<h1>Registrar Trayectoria</h1>
 
 	<s:actionmessage/>
 	<s:actionerror theme="jquery" />
@@ -35,13 +35,35 @@
 						<s:else>Sin condición</s:else>
 					</td>
 					<td align="center">
-						<s:url var="urlGestionarTrayectorias" value="%{#pageContext.request.contextPath}/pasos">
-							<s:param name="idTray" value="%{#tray.id}"/>
-						</s:url>
-						<s:a href="%{urlGestionarTrayectorias}"><img
-									id="" class="button" width="20" height="20"
-									title="Gestionar Trayectorias"
-									src="${pageContext.request.contextPath}/resources/images/icons/gestionarPasos.png" /></s:a>
+						<!--<s:if
+							test="%{esEditable}">
+							<a
+									href="${pageContext.request.contextPath}/cu/new?idSel=${cu.id}"><img
+										id="" class="button" width="20" height="20"
+										title="Georreferenciar incendio"
+										src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></a>
+						</s:if>
+						<s:if
+							test="%{esEliminable}">
+							<a
+									href="${pageContext.request.contextPath}/cu/new?idSel=${cu.id}"><img
+										id="" class="button" width="20" height="20"
+										title="Georreferenciar incendio"
+										src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></a>
+						</s:if>
+						<s:if
+							test="%{esRevisable}">
+							<a
+									href="${pageContext.request.contextPath}/cu/new?idSel=${cu.id}"><img
+										id="" class="button" width="20" height="20"
+										title="Georreferenciar incendio"
+										src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></a>
+						</s:if>
+						<a
+							href="${pageContext.request.contextPath}/cu/new?idSel=${cu.id}"><img
+								id="" class="button" width="20" height="20"
+								title="Georreferenciar incendio"
+								src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></a>-->
 					</td>
 					
 					
@@ -55,11 +77,7 @@
 	<br />
 	<div align="center">
 		<button class="boton" formmethod="post"
-			onclick="location.href='${pageContext.request.contextPath}/cu'">
-			<s:text name="Regresar"></s:text>
-		</button>
-		<button class="boton" formmethod="post"
-			onclick="location.href='${pageContext.request.contextPath}/trayectorias/new?idCU=${idCU}'">
+			onclick="location.href='${pageContext.request.contextPath}/trayectorias/new'">
 			<s:text name="Registrar"></s:text>
 		</button>
 	</div>

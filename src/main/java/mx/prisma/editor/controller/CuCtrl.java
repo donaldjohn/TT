@@ -14,7 +14,6 @@ import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.util.ActionSupportPRISMA;
-import mx.prisma.util.ManejadorError;
 import mx.prisma.util.PRISMAException;
 
 import org.apache.struts2.convention.annotation.Action;
@@ -155,7 +154,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 					"caso de uso", "actualizado" }));
 
 		} catch (PRISMAException pe) {
-			ManejadorError.agregaMensajeError(this, pe);
+			agregaMensajeError(pe);
 			resultado = INDEX;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -307,6 +306,16 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		return resultado;
 	}
 
+	public void agregaMensajeError(PRISMAException pe) {
+		if(pe.getParametros() != null){
+			addActionError(getText(pe.getIdMensaje()));
+		} else {
+			addActionError(getText(pe.getIdMensaje(), pe.getParametros()));
+		}
+		System.err.println(pe.getMessage());
+		pe.printStackTrace();
+	}
+	
 	public String create() throws PRISMAException, Exception{
 		return update();
 	}

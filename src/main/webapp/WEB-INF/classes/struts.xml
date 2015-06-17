@@ -4,8 +4,13 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
-	
+	<!-- Permite indicar si se van a incluir los parámetros -->
+	<constant name="struts.url.includeParams" value="all" />
+
+	<!-- Permite utilizar los recursos de global.properties -->
 	<constant name="struts.custom.i18n.resources" value="global" />
+	
+	<!-- Activa el modo desarrollador -->
 	<constant name="struts.devMode" value="true" />
 	
 	<!-- Permite definir mas de un ActionMapper, si el primero no obtiene una respuesta correcta, se utilizará

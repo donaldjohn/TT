@@ -21,8 +21,10 @@
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
 	<br/>
-	<div class="menuSuperiorCU"><jsp:include
+	
+	<!-- <div class="menuSuperiorCU"><jsp:include
 			page="/content/editor/menus/menuSuperiorCU.jsp" /></div>
+	 -->
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 
@@ -103,8 +105,8 @@
 				<table class="tablaGestion" id="tablaPrecondiciones">
 					<thead>
 						<tr>
-							<th style="width: 60%;">Redacción</th>
-							<th style="width: 20%;">Acciones</th>
+							<th style="width: 60%;"><s:text name="colRedaccion"/></th>
+							<th style="width: 20%;"><s:text name="colAcciones"/></th>
 						</tr>
 					</thead>
 				</table>
@@ -121,8 +123,8 @@
 				<table class="tablaGestion" id="tablaPostcondiciones">
 					<thead>
 						<tr>
-							<th style="width: 60%;">Redacción</th>
-							<th style="width: 20%;">Acciones</th>
+							<th style="width: 60%;"><s:text name="colRedaccion"/></th>
+							<th style="width: 20%;"><s:text name="colAcciones"/></th>
 						</tr>
 					</thead>
 				</table>
@@ -139,10 +141,10 @@
 				<table class="tablaGestion" id="tablaPtosExtension">
 					<thead>
 						<tr>
-							<th style="width: 30%;">Caso de uso que extiende</th>
-							<th style="width: 30%;">Causa</th>
-							<th style="width: 30%;">Región</th>
-							<th style="width: 10%;">Acciones</th>
+							<th style="width: 30%;"><s:text name="colCasoUsoExtiende"/></th>
+							<th style="width: 30%;"><s:text name="colCausa"/></th>
+							<th style="width: 30%;"><s:text name="colRegion"/></th>
+							<th style="width: 10%;"><s:text name="colAcciones"/></th>
 						</tr>
 					</thead>
 				</table>

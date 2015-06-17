@@ -20,13 +20,10 @@ function Extension(causa, region, idCUDestino) {
 function CasoUso (id) {
 	this.id = id;
 }
-/*{"id":0,"causa":"causa",
-	"region":"region",
-	"casoUsoOrigen":{"redaccionActores":"","redaccionEntradas":"","redaccionSalidas":"","redaccionReglasNegocio":"",
-	"actores":[],"salidas":[],"entradas":[],"reglas":[],"postprecondiciones":[],"trayectorias":[],"incluidoEn":[],
-	"incluye":[],"Extiende":[],"ExtendidoDe":[],"id":0,"clave":"CUSF","numero":3,"nombre":"Caso de uso 3","descripcion":""},
-	"casoUsoDestino":{"redaccionActores":"","redaccionEntradas":"","redaccionSalidas":"","redaccionReglasNegocio":"",
-	"actores":[],"salidas":[],"entradas":[],"reglas":[],"postprecondiciones":[],"trayectorias":[],"incluidoEn":[],
-	"incluye":[],"Extiende":[],"ExtendidoDe":[],"id":0,"clave":"CUSF","numero":3,"nombre":"Caso de uso 3","descripcion":""},
-	"referencias":[]}
-*/
+
+/*
+ * Constructor del objeto Paso
+ */
+function Paso(redaccion) {
+	this.redaccion = redaccion;
+}

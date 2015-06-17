@@ -83,7 +83,7 @@ public class Trayectoria implements java.io.Serializable {
 	}
 
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}", shortCircuit= true)
-	@StringLengthFieldValidator(message = "%{getText('MSG6',{'10', 'caracteres'})}", trim = true, maxLength = "10", shortCircuit= true)
+	@StringLengthFieldValidator(message = "%{getText('MSG6',{'5', 'caracteres'})}", trim = true, maxLength = "5", shortCircuit= true)
 	@Column(name = "clave", nullable = false)
 	public String getClave() {
 		return this.clave;
@@ -95,7 +95,7 @@ public class Trayectoria implements java.io.Serializable {
 
 	@RequiredFieldValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}", shortCircuit = true)
 	@Column(name = "alternativa", nullable = false)
-	public boolean getAlternativa() {
+	public boolean isAlternativa() {
 		return this.alternativa;
 	}
 

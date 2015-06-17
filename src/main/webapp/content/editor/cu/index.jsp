@@ -6,6 +6,9 @@
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Casos de uso</title>
+<![CDATA[
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/index.js"></script>
+]]>
 </head>
 
 <body>
@@ -24,9 +27,9 @@
 		<table id="gestion" class="tablaGestion" cellspacing="0" width="100%"> 
 			<thead>
 				<tr>
-					<th>Caso de uso</th>
-					<th style="width: 20%;">Estado</th>
-					<th style="width: 20%;">Acciones</th>
+					<th><s:text name="colCasoUso"/></th>
+					<th style="width: 20%;"><s:text name="colEstado"/></th>
+					<th style="width: 20%;"><s:text name="colAcciones"/></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -34,37 +37,20 @@
 				<tr>
 					<td><s:property value="%{#cu.clave + ' ' + #cu.numero + ' ' +#cu.nombre}"/></td>
 					<td><s:property value="%{#cu.estadoElemento.nombre}"/></td>
-					<td align="center">		
-					<s:property value="%{mx.prisma.editor.controller.CuCtrl()esEditable('NGHS', cu)}"/>				
-						<!--<s:if
-							test="%{mx.prisma.editor.controller.CuCtrl()esEditable('NGHS', cu)}">-->
+					<td align="center">				
 							<a
 									href="${pageContext.request.contextPath}/cu/${cu.id}/edit"><img
 										id="" class="button" width="20" height="20"
-										title="Georreferenciar incendio"
+										title="Editar"
 										src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></a>
-						<!--</s:if>-->
-						<!--<s:if
-							test="%{esEliminable}">
-							<a
-									href="${pageContext.request.contextPath}/cu/new?idSel=${cu.id}"><img
+										
+							<s:url var="urlGestionarTrayectorias" value="%{#pageContext.request.contextPath}/trayectorias">
+								<s:param name="idCU" value="%{#cu.id}"/>
+							</s:url>
+							<s:a href="%{urlGestionarTrayectorias}"><img
 										id="" class="button" width="20" height="20"
-										title="Georreferenciar incendio"
-										src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></a>
-						</s:if>
-						<s:if
-							test="%{esRevisable}">
-							<a
-									href="${pageContext.request.contextPath}/cu/new?idSel=${cu.id}"><img
-										id="" class="button" width="20" height="20"
-										title="Georreferenciar incendio"
-										src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></a>
-						</s:if>
-						<a
-							href="${pageContext.request.contextPath}/cu/new?idSel=${cu.id}"><img
-								id="" class="button" width="20" height="20"
-								title="Georreferenciar incendio"
-								src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></a>-->
+										title="Gestionar Trayectorias"
+										src="${pageContext.request.contextPath}/resources/images/icons/gestionarTray.png" /></s:a>						
 					</td>
 					
 					
@@ -82,15 +68,7 @@
 			<s:text name="Registrar"></s:text>
 		</button>
 	</div>
-	</s:form>
-	
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/index.js"></script>	
-	<script type="text/javascript" language="javascript" class="init">
-		$(document).ready(function() {
-			$('#gestion').DataTable();
-		} );
-	</script>
-	
+	</s:form>	
 </body>
 </html>
 </jsp:root>
