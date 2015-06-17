@@ -136,6 +136,7 @@ var dataTableCDT = function() {
 		deleteRow : deleteRow,
 		deleteRows : deleteRows,
 		exist : exist,
-		createDataTable : createDataTable
+		createDataTable : createDataTable,
+		tablaToJson : tablaToJson
 	};
 }();

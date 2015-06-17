@@ -57,9 +57,9 @@ public class Paso implements java.io.Serializable {
 		this.trayectoria = trayectoria;
 	}
 
-	@RequiredFieldValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}", shortCircuit = true)
-	@RegexFieldValidator(type = ValidatorType.FIELD, message = "%{getText('MSG5',{'un', 'número'})}", regex = "[0-9]*", shortCircuit = true)
-	@IntRangeFieldValidator(message = "%{getText('MSG14',{'El', 'identificador', '0', '2147483647'})}", shortCircuit = true, min = "0", max = "2147483647")//Pendiente 4294967295
+	//@RequiredFieldValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}", shortCircuit = true)
+	//@RegexFieldValidator(type = ValidatorType.FIELD, message = "%{getText('MSG5',{'un', 'número'})}", regex = "[0-9]*", shortCircuit = true)
+	//@IntRangeFieldValidator(message = "%{getText('MSG14',{'El', 'identificador', '0', '2147483647'})}", shortCircuit = true, min = "0", max = "2147483647")//Pendiente 4294967295
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
@@ -71,9 +71,9 @@ public class Paso implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@RequiredFieldValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}", shortCircuit = true)
-	@RegexFieldValidator(type = ValidatorType.FIELD, message = "%{getText('MSG5',{'un', 'número'})}", regex = "[0-9]*")
-	@IntRangeFieldValidator(message = "%{getText('MSG14',{'El', 'número', '0', '2147483646'})}", shortCircuit = true, min = "0", max = "2147483646")//Pendiente 4294967295
+	//@RequiredFieldValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}", shortCircuit = true)
+	//@RegexFieldValidator(type = ValidatorType.FIELD, message = "%{getText('MSG5',{'un', 'número'})}", regex = "[0-9]*")
+	//@IntRangeFieldValidator(message = "%{getText('MSG14',{'El', 'número', '0', '2147483646'})}", shortCircuit = true, min = "0", max = "2147483646")//Pendiente 4294967295
 	@Column(name = "numero", nullable = false)
 	public int getNumero() {
 		return this.numero;
@@ -83,7 +83,7 @@ public class Paso implements java.io.Serializable {
 		this.numero = numero;
 	}
 
-	@RequiredFieldValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}", shortCircuit = true)
+	//@RequiredFieldValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}", shortCircuit = true)
 	@Column(name = "realizaActor", nullable = false)
 	public boolean isRealizaActor() {
 		return this.realizaActor;
@@ -94,7 +94,7 @@ public class Paso implements java.io.Serializable {
 		this.realizaActor = realizaActor;
 	}
 
-	@StringLengthFieldValidator(message = "%{getText('MSG6',{'999', 'caracteres'})}", trim = true, maxLength = "999", shortCircuit= true)
+	//@StringLengthFieldValidator(message = "%{getText('MSG6',{'999', 'caracteres'})}", trim = true, maxLength = "999", shortCircuit= true)
 	@Column(name = "redaccion", nullable = false, length = 999)
 	public String getRedaccion() {
 		return this.redaccion;

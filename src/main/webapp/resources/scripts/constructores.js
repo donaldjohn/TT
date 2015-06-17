@@ -24,6 +24,9 @@ function CasoUso (id) {
 /*
  * Constructor del objeto Paso
  */
-function Paso(redaccion) {
+function Paso(numero, realizaActor, verbo, redaccion) {
+	this.numero = numero;
+	this.realizaActor = realizaActor;
+	this.verbo = verbo;
 	this.redaccion = redaccion;
 }

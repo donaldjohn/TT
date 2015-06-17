@@ -13,6 +13,7 @@
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/index-editNew.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/dataTable.js"></script>
 ]]>
+<sj:head locale="de" jqueryui="true" jquerytheme="smoothness"/>
 </head>
 <body>
 
@@ -224,7 +225,7 @@
 				<table class="seccion">
 					<tr>
 						<td class="label obligatorio"><s:text name="labelCasoUsoExtiende" /></td>
-						<td><s:select name="ptoExtension.cu" id="ptoExtension.idCu" list="listCUProyecto" listKey="id"
+						<td><s:select name="ptoExtension.cu" id="ptoExtension.idCu" list="listCUProyecto" listKey="id" cssClass="inputFormulario"
        						listValue="nombre" cssErrorClass="input-error" value="0"></s:select></td>
 					</tr>
 					<tr>

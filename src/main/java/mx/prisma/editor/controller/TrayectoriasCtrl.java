@@ -21,6 +21,7 @@ import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.util.ActionSupportPRISMA;
+import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
 
 
@@ -35,8 +36,10 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	private static final long serialVersionUID = 1L;
 	private Trayectoria model;
 	private List<Trayectoria> listTrayectorias;
-	private List<String> listPasos;
+	private String jsonPasos;
 	private int idCU;
+	private List<String> listRealiza;
+	private List<String> listVerbos;
 
 	public HttpHeaders index() throws Exception{
 		System.out.println("DESDE INDEX IDENTIFICADOR DEL CU " + idCU);
@@ -58,6 +61,21 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		String resultado = null;
 		System.out.println("DESDE EDITNEW IDENTIFICADOR DEL CU " + idCU);
 		try {
+			//Se llena la lista del catálogo de quien realiza
+			listRealiza = new ArrayList<String>();
+			listRealiza.add("Actor");
+			listRealiza.add("Sistema");
+			
+			//Se extraen los verbos de la BD << PENDIENTE
+			listVerbos = new ArrayList<String>();
+			listVerbos.add("Muestra");
+			listVerbos.add("Selecciona");
+			listVerbos.add("Oprime");
+			listVerbos.add("Presiona");
+			listVerbos.add("Verifica");
+			listVerbos.add("Ingresa");
+			
+			this.jsonPasos = "[{\"numero\":0,\"realizaActor\":\"Actor\",\"verbo\":\"Muestra\",\"redaccion\":\"1\"},{\"numero\":0,\"realizaActor\":\"Actor\",\"verbo\":\"Muestra\",\"redaccion\":\"2\"}]";
 			
 			//model = CuBs.consultarCasoUso(model.getId());
 			
@@ -128,17 +146,15 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	}
 	
 	private void agregarPasos() {
-		Gson gson = new Gson();
-		//Se agregan pasos a la trayectoria
-		if(listPasos != null) {
-			for(String json: this.listPasos) {
-				Paso p = gson.fromJson(json, Paso.class);
-				System.out.println("OBJETO DE TIPO PASO ");
+		if(jsonPasos != null && jsonPasos != "") {
+			model.setPasos(JsonUtil.mapJSONToSet(jsonPasos, Paso.class));
+			System.out.println("INFORMACION DEL PASO");
+			for(Paso p: model.getPasos()) {
+				System.out.println("NUMERO " + p.getNumero());
 				System.out.println("REDACCION " + p.getRedaccion());
-				p.setTrayectoria(model);
-				model.getPasos().add(p);
+				System.out.println("" + );
 			}
-		}		
+		}
 	}
 
 	public void agregaMensajeError(PRISMAException pe) {
@@ -150,16 +166,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		System.err.println(pe.getMessage());
 		pe.printStackTrace();
 	}
-	
-	
-	public List<String> getListPasos() {
-		return listPasos;
-	}
-
-	public void setListPasos(List<String> listPasos) {
-		this.listPasos = listPasos;
-	}
-
 	
 	@VisitorFieldValidator
 	public Trayectoria getModel() {
@@ -188,6 +194,31 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	public void setIdCU(int idCU) {
 		this.idCU = idCU;
 	}
+
+	public String getJsonPasos() {
+		return jsonPasos;
+	}
+
+	public void setJsonPasos(String jsonPasos) {
+		this.jsonPasos = jsonPasos;
+	}
+
+	public List<String> getListRealiza() {
+		return listRealiza;
+	}
+
+	public void setListRealiza(List<String> listRealiza) {
+		this.listRealiza = listRealiza;
+	}
+
+	public List<String> getListVerbos() {
+		return listVerbos;
+	}
+
+	public void setListVerbos(List<String> listVerbos) {
+		this.listVerbos = listVerbos;
+	}
+
 	
 	
 }
