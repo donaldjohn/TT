@@ -71,7 +71,7 @@ public class CasoUsoActor implements java.io.Serializable {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "ActorElementoid", nullable = false)
+	@JoinColumn(name = "ActorElementoid", referencedColumnName ="Elementoid", nullable = false)
 	public Actor getActor() {
 		return actor;
 	}

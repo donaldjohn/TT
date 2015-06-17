@@ -11,6 +11,7 @@ import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.dao.TerminoGlosarioDAO;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Atributo;
+import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.ReglaNegocio;
@@ -166,8 +167,7 @@ public class TokenBs {
 				objetos.add(atributo);
 				break;
 			case ACTOR: // ACT.NOMBRE_ACT
-				Actor actor = new ActorDAO().consultarActor(segmentos.get(1)
-						.replaceAll("_", " "), proyecto);
+				Actor actor = new ActorDAO().consultarActor(segmentos.get(1).replaceAll("_", " "), proyecto);
 				if (actor == null) {
 					String [] parametros = {
 					// Construcción del mensaje de error;
@@ -219,7 +219,7 @@ public class TokenBs {
 					String [] parametros = {"la", "regla de negocio", segmentos.get(2).replaceAll("_", " "), "registrada"};
 					
 					throw new PRISMAException(
-							"TokenBs.convertirToken_Objeto: La trayectoria " +segmentos.get(2)+" no está registrada",
+							"TokenBs.convertirToken_Objeto: La regla de negocio " +segmentos.get(2)+" no está registrada",
 							"MSG15", parametros);
 				}
 				objetos.add(reglaNegocio);
@@ -253,6 +253,21 @@ public class TokenBs {
 		segmentos.add(segmento);
 			
 		return segmentos;
+	}
+	
+	
+	/*
+	 * procesarCadenaToken(P1)
+	 * Se encarga de buscar cada elemento y sustituirlo por el id de la base de datos, por ejemplo 
+	 * Para la cadena: 
+	 * 	ACT.Responsable, ACT.Responsable
+	 * 
+	 * La transformación sería la siguiente:
+	 * 	ACT.1, ACT.1
+	 */
+
+	public static void procesarCadenasToken(CasoUso casoUso) {
+		
 	}
 
 }

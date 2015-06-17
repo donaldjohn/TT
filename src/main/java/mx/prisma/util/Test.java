@@ -216,7 +216,7 @@ public class Test {
 
 	public static void pruebaRegistroCasoUso() {
 
-		String nombre = "Registrar incendios";
+		String nombre = "Registrar predio";
 		int idEstadoElemento = 1;
 		String claveProyecto = "SIG";
 		String claveModulo = "SF";
@@ -247,19 +247,26 @@ public class Test {
 
 	// -------------------------------------------------------------------
 	private static void pruebaModificacionCasoUso() {
-		int idCasoUso = 6;
-		String actores = "El actor ACT.Cartógrafo_de_incendios, ACT.Cartógrafo_de_reforestanciones, ACT.Responsable_de_reforestanciones, ACT.Responsable_de_reforestanciones.";
-		String entradas = "ATR.Incendio:Folio, ATR.Incendio:Fecha, ATR.Incendio:Fecha, ATR.Incendio:Fecha, GLS.Área y el GLS.Tipo_de_Evento. ";
-		String salidas = "ATR.Incendio:Folio, ATR.Incendio:Fecha, MSG.1:Operación_exitosa, ATR.Incendio:Fecha, ATR.Incendio:Fecha, GLS.Área y el GLS.Tipo_de_evento.  ";
-		String reglas = "RN.1:Datos_correctos RN.1:Datos_correctos, RN.1:Datos_correctos.";
+		int idCasoUso = 13;
 		
+		String actores = "El actor ACT.Cartógrafo_de_incendios, ACT.Cartógrafo_de_reforestanciones, ACT.Responsable_de_reforestanciones, ACT.Responsable_de_reforestanciones.";
+		String entradas = "ATR.Incendio:Fecha_del_combate, ATR.Incendio:Número_de_participantes, ATR.Predio:Clave_única_del_predio y la GLS.Causa_del_incendio.";
+		String salidas = "ATR.Predio:Clave_única_del_predio, ATR.Predio:Clave_única_del_predio, GLS.Causa_del_incendio y el mensaje MSG.1:Coordenadas_mínimas_requeridas.";
+		String reglas = "RN.1:Datos_correctos, RN.2:Unicidad_de_identificadores";
+		
+		
+		/*
+		String actores = "";
+		String entradas = "";
+		String salidas = "";
+		String reglas = "";
+		*/
 		
 		CasoUso cu = new CasoUsoDAO().consultarCasoUso(idCasoUso);
 		cu.setRedaccionActores(actores);
 		cu.setRedaccionEntradas(entradas);
 		cu.setRedaccionSalidas(salidas);
 		cu.setRedaccionReglasNegocio(reglas);
-		
 		
 		try {
 			new CasoUsoDAO().modificarCasoUso(cu);

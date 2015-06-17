@@ -116,7 +116,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 	}
 	
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "casouso", orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casouso", cascade = CascadeType.PERSIST, orphanRemoval = true)
 	public Set<CasoUsoActor> getActores() {
 		return actores;
 	}
@@ -125,7 +125,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.actores = actores;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.PERSIST)
 	public Set<Entrada> getEntradas() {
 		return entradas;
 	}
@@ -134,7 +134,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.entradas = entradas;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.ALL, orphanRemoval = true)	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.PERSIST)	
 	public Set<Salida> getSalidas() {
 		return salidas;
 	}
@@ -143,7 +143,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.salidas = salidas;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.ALL, orphanRemoval = true)	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.PERSIST)	
 	public Set<CasoUsoReglaNegocio> getReglas() {
 		return reglas;
 	}

@@ -7,6 +7,7 @@ import java.util.Set;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.Referencia;
@@ -24,19 +25,48 @@ import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.Salida;
 import mx.prisma.editor.model.TerminoGlosario;
+import mx.prisma.util.HibernateUtil;
 
 public class CasoUsoDAO extends ElementoDAO {
+	private Session session = null;
+
+	public CasoUsoDAO() {
+		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+	}
 
 	public void registrarCasoUso(CasoUso casodeuso) {
 		super.registrarElemento(casodeuso);
 	}
 
 	public void modificarCasoUso(CasoUso casodeuso) {
-		cleanRelaciones(casodeuso);
-		super.modificarElemento(casodeuso);
+		String deleteActores = "DELETE FROM CasoUso_Actor WHERE CasoUsoElementoid = "
+				+ casodeuso.getId() + ";";
+		String deleteEntradas = "DELETE FROM Entrada WHERE CasoUsoElementoid = "
+				+ casodeuso.getId() + ";";
+		String deleteSalidas = "DELETE FROM Salida WHERE CasoUsoElementoid = "
+				+ casodeuso.getId() + ";";
+		String deleteReglas = "DELETE FROM CasoUso_ReglaNegocio WHERE CasoUsoElementoid = "
+				+ casodeuso.getId() + ";";
 		procesarObjetos_Token(casodeuso);
+		
+		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
 
-		new ElementoDAO().modificarElemento(casodeuso);
+		try {
+			session.beginTransaction();
+			SQLQuery queryActores = session.createSQLQuery(deleteActores);
+			queryActores.executeUpdate();
+			SQLQuery queryEntradas = session.createSQLQuery(deleteEntradas);
+			queryEntradas.executeUpdate();
+			SQLQuery querySalidas = session.createSQLQuery(deleteSalidas);
+			querySalidas.executeUpdate();
+			SQLQuery queryReglas = session.createSQLQuery(deleteReglas);
+			queryReglas.executeUpdate();
+			session.update(casodeuso);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
 	}
 
 	public CasoUso consultarCasoUso(int id) {
@@ -97,7 +127,7 @@ public class CasoUsoDAO extends ElementoDAO {
 		almacenarObjetosToken(TokenBs.procesarTokenIpunt(
 				casodeuso.getRedaccionActores(), casodeuso.getProyecto()),
 				casodeuso, TipoSeccion.ACTORES);
-
+		
 		almacenarObjetosToken(TokenBs.procesarTokenIpunt(
 				casodeuso.getRedaccionEntradas(), casodeuso.getProyecto()),
 				casodeuso, TipoSeccion.ENTRADAS);
@@ -106,9 +136,15 @@ public class CasoUsoDAO extends ElementoDAO {
 				casodeuso.getRedaccionSalidas(), casodeuso.getProyecto()),
 				casodeuso, TipoSeccion.SALIDAS);
 
-		almacenarObjetosToken(TokenBs.procesarTokenIpunt(
-				casodeuso.getRedaccionReglasNegocio(), casodeuso.getProyecto()),
-				casodeuso, TipoSeccion.REGLASNEGOCIOS);
+		almacenarObjetosToken(
+				TokenBs.procesarTokenIpunt(
+						casodeuso.getRedaccionReglasNegocio(),
+						casodeuso.getProyecto()), casodeuso,
+				TipoSeccion.REGLASNEGOCIOS);
+		
+		TokenBs.procesarCadenasToken(casodeuso);
+
+	
 	}
 
 	private static void almacenarObjetosToken(ArrayList<Object> objetos,

@@ -17,7 +17,7 @@ import mx.prisma.editor.model.Modulo;
 import mx.prisma.util.HibernateUtil;
 
 public class ElementoDAO {
-	Session session = null;
+	private Session session = null;
 
 	public ElementoDAO() {
 		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
