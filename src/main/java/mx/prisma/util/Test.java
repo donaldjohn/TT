@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 import mx.prisma.admin.dao.ColaboradorDAO;
 import mx.prisma.admin.dao.EstadoProyectoDAO;
 import mx.prisma.admin.dao.ProyectoDAO;
@@ -25,6 +24,8 @@ import mx.prisma.editor.dao.ElementoDAO;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.ModuloDAO;
+import mx.prisma.editor.dao.TrayectoriaDAO;
+import mx.prisma.editor.dao.VerboDAO;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Cardinalidad;
@@ -34,6 +35,9 @@ import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Modulo;
+import mx.prisma.editor.model.Paso;
+import mx.prisma.editor.model.Trayectoria;
+import mx.prisma.editor.model.Verbo;
 
 public class Test {
 	public static void main(String[] args) {
@@ -216,7 +220,7 @@ public class Test {
 
 	public static void pruebaRegistroCasoUso() {
 
-		String nombre = "Registrar incendios";
+		String nombre = "Registrar predio";
 		int idEstadoElemento = 1;
 		String claveProyecto = "SIG";
 		String claveModulo = "SF";
@@ -247,12 +251,20 @@ public class Test {
 
 	// -------------------------------------------------------------------
 	private static void pruebaModificacionCasoUso() {
-		int idCasoUso = 6;
-		String actores = "El actor ACT.Cartógrafo_de_incendios, ACT.Cartógrafo_de_reforestanciones, ACT.Responsable_de_reforestanciones, ACT.Responsable_de_reforestanciones.";
-		String entradas = "ATR.Incendio:Folio, ATR.Incendio:Fecha, ATR.Incendio:Fecha, ATR.Incendio:Fecha, GLS.Área y el GLS.Tipo_de_Evento. ";
-		String salidas = "ATR.Incendio:Folio, ATR.Incendio:Fecha, MSG.1:Operación_exitosa, ATR.Incendio:Fecha, ATR.Incendio:Fecha, GLS.Área y el GLS.Tipo_de_evento.  ";
-		String reglas = "RN.1:Datos_correctos RN.1:Datos_correctos, RN.1:Datos_correctos.";
+		int idCasoUso = 13;
 		
+		String actores = "El actor ACT.Cartógrafo_de_incendios, ACT.Cartógrafo_de_reforestanciones, ACT.Responsable_de_reforestanciones, ACT.Responsable_de_reforestanciones.";
+		String entradas = "ATR.Incendio:Fecha_del_combate, ATR.Incendio:Número_de_participantes, ATR.Predio:Clave_única_del_predio y la GLS.Causa_del_incendio.";
+		String salidas = "ATR.Predio:Clave_única_del_predio, ATR.Predio:Clave_única_del_predio, GLS.Causa_del_incendio y el mensaje MSG.1:Coordenadas_mínimas_requeridas.";
+		String reglas = "RN.1:Datos_correctos, RN.2:Unicidad_de_identificadores";
+		
+		
+		/*
+		String actores = "";
+		String entradas = "";
+		String salidas = "";
+		String reglas = "";
+		*/
 		
 		CasoUso cu = new CasoUsoDAO().consultarCasoUso(idCasoUso);
 		cu.setRedaccionActores(actores);
@@ -260,9 +272,15 @@ public class Test {
 		cu.setRedaccionSalidas(salidas);
 		cu.setRedaccionReglasNegocio(reglas);
 		
+		Trayectoria t = new Trayectoria("TA", true, cu,
+				false);
+		System.out.println(new VerboDAO().consultarVerbos().get(0));
+		Verbo verbo = new VerboDAO().consultarVerbo(1);
+		t.getPasos().add(new Paso(1, true, "redacciñon", t, verbo));
 		
 		try {
-			new CasoUsoDAO().modificarCasoUso(cu);
+			new TrayectoriaDAO().registrarTrayectoria(t);
+			//new CasoUsoDAO().modificarCasoUso(cu);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -272,28 +290,7 @@ public class Test {
 	
 	// -------------------------------------------------------------------
 
-	public static void pruebaConsultaCasoUso() {
-		// Modulo modulo = new ModuloDAO().consultarModulo("SF");
-		List<Elemento> cus = new ElementoDAO().consultarElementos();
-		System.out.println(cus.get(0).getEstadoElemento().getNombre());
-		System.out.println(cus.size()); 
-		/*
-		 * Modulo modulo = new ModuloDAO().consultarModulo("SF"); List<CasoUso>
-		 * cus = new CasoUsoDAO().consultarCasosUso(modulo); PostPrecondicionId
-		 * postpreId = new PostPrecondicionId(1, cus.get(0)); PostPrecondicion
-		 * postpre = new PostPrecondicion(postpreId,
-		 * "La entidad ${ENT.1} cambiará a ${GLS.23} En Registro.");
-		 * postpre.setPrepost(true); //new
-		 * PostPrecondicionDAO().registrarPostPrecondicion(postpre);
-		 * PostPrecondicionDAO prepost = new PostPrecondicionDAO ();
-		 * 
-		 * System.out.println(prepost.lastIndexOfPostPrecondicion(cus.get(0)));
-		 * 
-		 * for(CasoUso cu : cus){ System.out.println(cu.getRedaccionActores());
-		 * }
-		 */
-	}
+	
 
-	// -------------------------------------------------------------------
 
 }

@@ -35,12 +35,18 @@ public class Atributo implements java.io.Serializable {
 	private Entidad entidad;
 	private String descripcion;
 	private boolean obligatorio;
-	private int longitud;
+	private Integer longitud;
 	private TipoDato tipoDato;
 
 	public Atributo() {
 	}
-
+	public Atributo(String nombre, Entidad entidad, String descripcion,
+			boolean obligatorio) {
+		this.nombre = nombre;
+		this.entidad = entidad;
+		this.descripcion = descripcion;
+		this.obligatorio = obligatorio;
+	}
 	public Atributo(String nombre, Entidad entidad, String descripcion,
 			boolean obligatorio, int longitud) {
 		this.nombre = nombre;
@@ -98,12 +104,12 @@ public class Atributo implements java.io.Serializable {
 		this.obligatorio = obligatorio;
 	}
 
-	@Column(name = "longitud", nullable = false)
-	public int getLongitud() {
+	@Column(name = "longitud", nullable = true)
+	public Integer getLongitud() {
 		return this.longitud;
 	}
 
-	public void setLongitud(int longitud) {
+	public void setLongitud(Integer longitud) {
 		this.longitud = longitud;
 	}
 
