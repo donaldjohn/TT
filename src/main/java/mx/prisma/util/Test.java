@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 import mx.prisma.admin.dao.ColaboradorDAO;
 import mx.prisma.admin.dao.EstadoProyectoDAO;
 import mx.prisma.admin.dao.ProyectoDAO;
@@ -25,6 +24,8 @@ import mx.prisma.editor.dao.ElementoDAO;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.ModuloDAO;
+import mx.prisma.editor.dao.TrayectoriaDAO;
+import mx.prisma.editor.dao.VerboDAO;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Cardinalidad;
@@ -34,6 +35,9 @@ import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Modulo;
+import mx.prisma.editor.model.Paso;
+import mx.prisma.editor.model.Trayectoria;
+import mx.prisma.editor.model.Verbo;
 
 public class Test {
 	public static void main(String[] args) {
@@ -268,8 +272,15 @@ public class Test {
 		cu.setRedaccionSalidas(salidas);
 		cu.setRedaccionReglasNegocio(reglas);
 		
+		Trayectoria t = new Trayectoria("TA", true, cu,
+				false);
+		System.out.println(new VerboDAO().consultarVerbos().get(0));
+		Verbo verbo = new VerboDAO().consultarVerbo(1);
+		t.getPasos().add(new Paso(1, true, "redacciñon", t, verbo));
+		
 		try {
-			new CasoUsoDAO().modificarCasoUso(cu);
+			new TrayectoriaDAO().registrarTrayectoria(t);
+			//new CasoUsoDAO().modificarCasoUso(cu);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -279,28 +290,7 @@ public class Test {
 	
 	// -------------------------------------------------------------------
 
-	public static void pruebaConsultaCasoUso() {
-		// Modulo modulo = new ModuloDAO().consultarModulo("SF");
-		List<Elemento> cus = new ElementoDAO().consultarElementos();
-		System.out.println(cus.get(0).getEstadoElemento().getNombre());
-		System.out.println(cus.size()); 
-		/*
-		 * Modulo modulo = new ModuloDAO().consultarModulo("SF"); List<CasoUso>
-		 * cus = new CasoUsoDAO().consultarCasosUso(modulo); PostPrecondicionId
-		 * postpreId = new PostPrecondicionId(1, cus.get(0)); PostPrecondicion
-		 * postpre = new PostPrecondicion(postpreId,
-		 * "La entidad ${ENT.1} cambiará a ${GLS.23} En Registro.");
-		 * postpre.setPrepost(true); //new
-		 * PostPrecondicionDAO().registrarPostPrecondicion(postpre);
-		 * PostPrecondicionDAO prepost = new PostPrecondicionDAO ();
-		 * 
-		 * System.out.println(prepost.lastIndexOfPostPrecondicion(cus.get(0)));
-		 * 
-		 * for(CasoUso cu : cus){ System.out.println(cu.getRedaccionActores());
-		 * }
-		 */
-	}
+	
 
-	// -------------------------------------------------------------------
 
 }

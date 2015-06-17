@@ -46,5 +46,7 @@
 		<mapping class="mx.prisma.editor.model.TipoParametro" />
 		<mapping class="mx.prisma.editor.model.TipoReglaNegocio" />
 		<mapping class="mx.prisma.editor.model.Trayectoria" />
+		<mapping class="mx.prisma.editor.model.Verbo" />
+		
 	</session-factory>
 </hibernate-configuration>

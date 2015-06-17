@@ -41,3 +41,14 @@ INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Tamaño de archivos');
 INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Intervalo de fechas correctas');
 INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Formato correcto');
 INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Otro');
+
+
+INSERT INTO PRISMA.Verbo (nombre) VALUES ('Solicita');
+INSERT INTO PRISMA.Verbo (nombre) VALUES ('Busca');
+INSERT INTO PRISMA.Verbo (nombre) VALUES ('Muestra');
+INSERT INTO PRISMA.Verbo (nombre) VALUES ('Selecciona');
+INSERT INTO PRISMA.Verbo (nombre) VALUES ('Desactiva');
+INSERT INTO PRISMA.Verbo (nombre) VALUES ('Acerca');
+INSERT INTO PRISMA.Verbo (nombre) VALUES ('Arrastra');
+INSERT INTO PRISMA.Verbo (nombre) VALUES ('Calcula');
+INSERT INTO PRISMA.Verbo (nombre) VALUES ('Revisa');

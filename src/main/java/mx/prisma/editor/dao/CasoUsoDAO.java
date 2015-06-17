@@ -122,28 +122,20 @@ public class CasoUsoDAO extends ElementoDAO {
 		casodeuso.getReglas().clear();
 	}
 
-	private void procesarObjetos_Token(CasoUso casodeuso) {
-
-		almacenarObjetosToken(TokenBs.procesarTokenIpunt(
-				casodeuso.getRedaccionActores(), casodeuso.getProyecto()),
-				casodeuso, TipoSeccion.ACTORES);
+	private void procesarObjetos_Token(CasoUso casoUso) {
 		
-		almacenarObjetosToken(TokenBs.procesarTokenIpunt(
-				casodeuso.getRedaccionEntradas(), casodeuso.getProyecto()),
-				casodeuso, TipoSeccion.ENTRADAS);
-
-		almacenarObjetosToken(TokenBs.procesarTokenIpunt(
-				casodeuso.getRedaccionSalidas(), casodeuso.getProyecto()),
-				casodeuso, TipoSeccion.SALIDAS);
-
-		almacenarObjetosToken(
-				TokenBs.procesarTokenIpunt(
-						casodeuso.getRedaccionReglasNegocio(),
-						casodeuso.getProyecto()), casodeuso,
-				TipoSeccion.REGLASNEGOCIOS);
+		almacenarObjetosToken(TokenBs.convertirToken_Objeto(casoUso.getRedaccionActores(), casoUso.getProyecto()),
+				casoUso, TipoSeccion.ACTORES);
 		
-		TokenBs.procesarCadenasToken(casodeuso);
+		almacenarObjetosToken(TokenBs.convertirToken_Objeto(casoUso.getRedaccionEntradas(), casoUso.getProyecto()),
+				casoUso, TipoSeccion.ENTRADAS);
 
+		almacenarObjetosToken(TokenBs.convertirToken_Objeto(casoUso.getRedaccionSalidas(), casoUso.getProyecto()),
+				casoUso, TipoSeccion.SALIDAS);
+		
+		almacenarObjetosToken(TokenBs.convertirToken_Objeto(casoUso.getRedaccionReglasNegocio(),casoUso.getProyecto()), 
+				casoUso, TipoSeccion.REGLASNEGOCIOS);
+		
 	
 	}
 

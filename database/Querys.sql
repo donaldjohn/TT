@@ -25,22 +25,22 @@ INSERT INTO PRISMA.Atributo (nombre, descripcion, obligatorio, longitud, Entidad
 INSERT INTO PRISMA.Atributo (nombre, descripcion, obligatorio, longitud,  EntidadElementoid, TipoDatoid) VALUES ('Nombre del documento legal', 'Nombre o título que designa el documento que avala jurídicamente el registro del predio.', '1', '25', '6', '1');
 
 --------------------- TerminoGlosario --------------------- 
-INSERT INTO `PRISMA`.`Elemento` (`clave`, `numero`, `nombre`, `descripcion`, `EstadoElementoid`, `Proyectoid`) VALUES ('GLS', '1', 'Causa del incendio', 'Determina el origen de un incendio forestal', '1', '1');
+INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('GLS', '1', 'Causa del incendio', 'Determina el origen de un incendio forestal', '1', '1');
 INSERT INTO PRISMA.TerminoGlosario (Elementoid) VALUES ('7'); 
-INSERT INTO `PRISMA`.`Elemento` (`clave`, `numero`, `nombre`, `descripcion`, `EstadoElementoid`, `Proyectoid`) VALUES ('GLS', '2', 'Evento', 'Cada una de las operaciones y programas realizados', '1', '1');
+INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('GLS', '2', 'Evento', 'Cada una de las operaciones y programas realizados', '1', '1');
 INSERT INTO PRISMA.TerminoGlosario (Elementoid) VALUES ('8'); 
 
 --------------------- ReglaNegocio --------------------- 
-INSERT INTO `PRISMA`.`Elemento` (`clave`, `numero`, `nombre`, `descripcion`, `EstadoElementoid`, `Proyectoid`) VALUES ('RN', '1', 'Datos correctos', 'Esta regla se utilizará para verificar que los datos ingresados sean del tipo correcto.', '1', '1');
-INSERT INTO `PRISMA`.`ReglaNegocio` (`Elementoid`, `redaccion`, `TipoReglaNegocioid`) VALUES ('9', 'Todos los datos proporcionados al sistema deben pertenecer al tipo de dato especificado en el modelo de información', '6');
-INSERT INTO `PRISMA`.`Elemento` (`clave`, `numero`, `nombre`, `descripcion`, `EstadoElementoid`, `Proyectoid`) VALUES ('RN', '2', 'Unicidad de identificadores', 'Esta regla se utilizará para verificar que la longitud de la contraseña ingresada sea correcta.', '1', '1');
-INSERT INTO `PRISMA`.`ReglaNegocio` (`Elementoid`, `redaccion`, `TipoReglaNegocioid`) VALUES ('10', 'En el conjunto de entidades del sistema los atributos que los identifican deben ser únicos', '3');
+INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('RN', '1', 'Datos correctos', 'Esta regla se utilizará para verificar que los datos ingresados sean del tipo correcto.', '1', '1');
+INSERT INTO PRISMA.ReglaNegocio (Elementoid, redaccion, TipoReglaNegocioid) VALUES ('9', 'Todos los datos proporcionados al sistema deben pertenecer al tipo de dato especificado en el modelo de información', '6');
+INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('RN', '2', 'Unicidad de identificadores', 'Esta regla se utilizará para verificar que la longitud de la contraseña ingresada sea correcta.', '1', '1');
+INSERT INTO PRISMA.ReglaNegocio (Elementoid, redaccion, TipoReglaNegocioid) VALUES ('10', 'En el conjunto de entidades del sistema los atributos que los identifican deben ser únicos', '3');
 
 --------------------- Mensaje --------------------- 
-INSERT INTO `PRISMA`.`Elemento` (`clave`, `numero`, `nombre`, `descripcion`, `EstadoElementoid`, `Proyectoid`) VALUES ('MSG', '1', 'Coordenadas mínimas requeridas', 'El objetivo de este mensaje es informar al usuario que debe especificar al menos tres coordenadas para realizar la operación.', '1', '1');
-INSERT INTO `PRISMA`.`Mensaje` (`Elementoid`, `redaccion`, `parametrizado`) VALUES ('11', 'Es requerido que se especifiquen al menos tres coordenadas para realizar la operación', '0');
-INSERT INTO `PRISMA`.`Elemento` (`clave`, `numero`, `nombre`, `descripcion`, `EstadoElementoid`, `Proyectoid`) VALUES ('MSG', '2', 'El archivo no cuenta con el formato solicitado', 'El objetivo de este mensaje es indicar al actor que no se puede ejecutar la acción solicitada debido a que el archivo no está en el formato solicitado.', '1', '1');
-INSERT INTO `PRISMA`.`Mensaje` (`Elementoid`, `redaccion`, `parametrizado`) VALUES ('12', 'No se puede cargar el archivo seleccionado, verifique que el formato del archivo sea PDF.', '0');
+INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('MSG', '1', 'Coordenadas mínimas requeridas', 'El objetivo de este mensaje es informar al usuario que debe especificar al menos tres coordenadas para realizar la operación.', '1', '1');
+INSERT INTO PRISMA.Mensaje (Elementoid, redaccion, parametrizado) VALUES ('11', 'Es requerido que se especifiquen al menos tres coordenadas para realizar la operación', '0');
+INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('MSG', '2', 'El archivo no cuenta con el formato solicitado', 'El objetivo de este mensaje es indicar al actor que no se puede ejecutar la acción solicitada debido a que el archivo no está en el formato solicitado.', '1', '1');
+INSERT INTO PRISMA.Mensaje (Elementoid, redaccion, parametrizado) VALUES ('12', 'No se puede cargar el archivo seleccionado, verifique que el formato del archivo sea PDF.', '0');
 
 
 

@@ -26,7 +26,6 @@ public class CuBs {
 		return cus;
 	}
 	
-	
 	/*Verifica las operaciones disponible de acuerdo a la RN9
 	 * Los estados del caso de uso son:
 	 * 1.- Registro (N/A)
@@ -58,8 +57,6 @@ public class CuBs {
 			
 		return numero;
 	}
-
-	
 
 	public static Modulo consultarModulo(String claveModulo, Proyecto proyecto) throws Exception{
 		

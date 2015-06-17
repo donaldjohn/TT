@@ -2,27 +2,26 @@ package mx.prisma.editor.dao;
 
 import java.util.List;
 
-import mx.prisma.editor.model.EstadoElemento;
-import mx.prisma.editor.model.TipoParametro;
+import mx.prisma.editor.model.Verbo;
 import mx.prisma.util.HibernateUtil;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-public class TipoParametroDAO {
+public class VerboDAO {
 	Session session = null;
 
-	public TipoParametroDAO() {
+	public VerboDAO() {
 		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
 	}
 
-	public TipoParametro consultarTipoParametro(int identificador) {
-		TipoParametro tipoParametro = null;
+	public Verbo consultarVerbo(int identificador) {
+		Verbo tipoParametro = null;
 
 		try {
 			session.beginTransaction();
-			tipoParametro = (TipoParametro) session.get(EstadoElemento.class,
+			tipoParametro = (Verbo) session.get(Verbo.class,
 					identificador);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
@@ -33,13 +32,13 @@ public class TipoParametroDAO {
 
 	}
 	
-	public TipoParametro consultarTipoParametro(String nombre) {
-		List<TipoParametro> results = null;
+	public Verbo consultarVerbo(String nombre) {
+		List<Verbo> results = null;
 
 		try {
 			session.beginTransaction();
 			Query query = session
-					.createQuery("from TipoParametro where nombre = :nombre");
+					.createQuery("from Verbo where nombre = :nombre");
  			query.setParameter("nombre", nombre);
 
 			results = query.list();
@@ -52,6 +51,30 @@ public class TipoParametroDAO {
 		if(results!=null){
 			if (results.get(0) != null){
 				return results.get(0);
+			}
+		}
+		return null;
+
+	}
+	
+	public List<Verbo> consultarVerbos() {
+		List<Verbo> results = null;
+
+		try {
+			session.beginTransaction();
+			Query query = session
+					.createQuery("from Verbo");
+
+			results = query.list();
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		
+		if(results!=null){
+			if (results.size() > 0){
+				return results;
 			}
 		}
 		return null;

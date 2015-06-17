@@ -162,7 +162,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.postprecondiciones = postprecondiciones;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.ALL, orphanRemoval = true)	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso")	
 	public Set<Trayectoria> getTrayectorias() {
 		return trayectorias;
 	}
