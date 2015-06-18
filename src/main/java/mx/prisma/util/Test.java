@@ -253,35 +253,27 @@ public class Test {
 	private static void pruebaModificacionCasoUso() {
 		int idCasoUso = 13;
 		
+		/*
 		String actores = "El actor ACT.Cartógrafo_de_incendios, ACT.Cartógrafo_de_reforestanciones, ACT.Responsable_de_reforestanciones, ACT.Responsable_de_reforestanciones.";
 		String entradas = "ATR.Incendio:Fecha_del_combate, ATR.Incendio:Número_de_participantes, ATR.Predio:Clave_única_del_predio y la GLS.Causa_del_incendio.";
 		String salidas = "ATR.Predio:Clave_única_del_predio, ATR.Predio:Clave_única_del_predio, GLS.Causa_del_incendio y el mensaje MSG.1:Coordenadas_mínimas_requeridas.";
 		String reglas = "RN.1:Datos_correctos, RN.2:Unicidad_de_identificadores";
+		*/
 		
-		
-		/*
 		String actores = "";
 		String entradas = "";
 		String salidas = "";
 		String reglas = "";
-		*/
+		
 		
 		CasoUso cu = new CasoUsoDAO().consultarCasoUso(idCasoUso);
 		cu.setRedaccionActores(actores);
 		cu.setRedaccionEntradas(entradas);
 		cu.setRedaccionSalidas(salidas);
 		cu.setRedaccionReglasNegocio(reglas);
-		
-		Trayectoria t = new Trayectoria("TA", true, cu,
-				false);
-		System.out.println(new VerboDAO().consultarVerbos().get(0));
-		Verbo verbo = new VerboDAO().consultarVerbo(1);
-		t.getPasos().add(new Paso(1, true, "redacciñon", t, verbo));
-		
+
 		try {
-			new TrayectoriaDAO().registrarTrayectoria(t);
-			//new CasoUsoDAO().modificarCasoUso(cu);
-			
+			new CasoUsoDAO().modificarCasoUso(cu);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

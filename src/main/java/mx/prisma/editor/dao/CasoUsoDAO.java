@@ -47,6 +47,7 @@ public class CasoUsoDAO extends ElementoDAO {
 				+ casodeuso.getId() + ";";
 		String deleteReglas = "DELETE FROM CasoUso_ReglaNegocio WHERE CasoUsoElementoid = "
 				+ casodeuso.getId() + ";";
+		
 		procesarObjetos_Token(casodeuso);
 		
 		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -126,15 +127,19 @@ public class CasoUsoDAO extends ElementoDAO {
 		
 		almacenarObjetosToken(TokenBs.convertirToken_Objeto(casoUso.getRedaccionActores(), casoUso.getProyecto()),
 				casoUso, TipoSeccion.ACTORES);
+		casoUso.setRedaccionActores(TokenBs.codificarCadenaToken(casoUso.getRedaccionActores(), casoUso.getProyecto()));
 		
 		almacenarObjetosToken(TokenBs.convertirToken_Objeto(casoUso.getRedaccionEntradas(), casoUso.getProyecto()),
 				casoUso, TipoSeccion.ENTRADAS);
+		casoUso.setRedaccionEntradas(TokenBs.codificarCadenaToken(casoUso.getRedaccionEntradas(), casoUso.getProyecto()));
 
 		almacenarObjetosToken(TokenBs.convertirToken_Objeto(casoUso.getRedaccionSalidas(), casoUso.getProyecto()),
 				casoUso, TipoSeccion.SALIDAS);
+		casoUso.setRedaccionSalidas(TokenBs.codificarCadenaToken(casoUso.getRedaccionSalidas(), casoUso.getProyecto()));
 		
 		almacenarObjetosToken(TokenBs.convertirToken_Objeto(casoUso.getRedaccionReglasNegocio(),casoUso.getProyecto()), 
 				casoUso, TipoSeccion.REGLASNEGOCIOS);
+		casoUso.setRedaccionReglasNegocio(TokenBs.codificarCadenaToken(casoUso.getRedaccionActores(), casoUso.getProyecto()));
 		
 	
 	}
@@ -184,7 +189,6 @@ public class CasoUsoDAO extends ElementoDAO {
 				break;
 			case TERMINOGLS_ENTRADAS:
 				termino = (TerminoGlosario) objeto;
-				System.out.println(termino.getNombre());
 				entrada = new Entrada(
 						numeroTokenTermino_Entradas++,
 						new TipoParametroDAO()
@@ -197,7 +201,6 @@ public class CasoUsoDAO extends ElementoDAO {
 				break;
 			case TERMINOGLS_SALIDAS:
 				termino = (TerminoGlosario) objeto;
-				System.out.println(termino.getNombre());
 				salida = new Salida(
 						numeroTokenTermino_Salidas++,
 						new TipoParametroDAO()

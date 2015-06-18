@@ -33,10 +33,9 @@ public class TokenBs {
 	private static String tokenSeparator1 = ".";
 	private static String tokenSeparator2 = ":";
 
-	public static String codificarCadenaToken(String cadena, Proyecto proyecto) {
-		ArrayList<String> tokens = procesarTokenIpunt(cadena, proyecto);
+	public static String codificarCadenaToken(String redaccion, Proyecto proyecto) {
+		ArrayList<String> tokens = procesarTokenIpunt(redaccion, proyecto);
 		ArrayList<String> segmentos;
-		String cadenaCodificada = null;
 		for (String token : tokens) {
 			segmentos = segmentarToken(token);
 			switch (Referencia.getTipoReferencia(segmentos.get(0))) {
@@ -65,7 +64,7 @@ public class TokenBs {
 									+ segmentos.get(2) + " no está registrado",
 							"MSG15", parametros);
 				}
-				cadena.replace(token, segmentos.get(0) + atributo.getId());
+				redaccion.replace(token, segmentos.get(0) + atributo.getId());
 				break;
 			case ACTOR: // ACT.NOMBRE_ACT
 				Actor actor = new ActorDAO().consultarActor(segmentos.get(1)
@@ -79,7 +78,7 @@ public class TokenBs {
 							"TokenBs.convertirToken_Objeto: El actor no está registrado",
 							"MSG15", parametros);
 				}
-				//objetos.add(actor);
+				redaccion.replace(token, segmentos.get(0) + actor.getId());
 
 				break;
 			case CASOUSO:
@@ -98,7 +97,7 @@ public class TokenBs {
 							"TokenBs.convertirToken_Objeto: El término no está registrado",
 							"MSG15", parametros);
 				}
-				//objetos.add(terminoGlosario);
+				redaccion.replace(token, segmentos.get(0) + terminoGlosario.getId());
 				break;
 			case PANTALLA:
 				break;
@@ -114,7 +113,7 @@ public class TokenBs {
 									+ segmentos.get(1) + " no está registrado",
 							"MSG15", parametros);
 				}
-				//objetos.add(mensaje);
+				redaccion.replace(token, segmentos.get(0) + mensaje.getId());
 				break;
 			case REGLANEGOCIO: // RN.NUMERO:NOMBRE_RN
 				ReglaNegocio reglaNegocio = new ReglaNegocioDAO()
@@ -129,7 +128,7 @@ public class TokenBs {
 									+ segmentos.get(2) + " no está registrada",
 							"MSG15", parametros);
 				}
-				//objetos.add(reglaNegocio);
+				redaccion.replace(token, segmentos.get(0) + reglaNegocio.getId());
 				break;
 			case TRAYECTORIA:
 				break;
@@ -138,7 +137,10 @@ public class TokenBs {
 
 			}
 		}
-		return cadenaCodificada;
+		if (!redaccion.isEmpty())
+			return "$" + redaccion;
+		else
+			return "";
 	}
 
 	private static boolean coma(String cadena, int i, char caracter) {
