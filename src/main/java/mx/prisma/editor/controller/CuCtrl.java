@@ -14,6 +14,7 @@ import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.util.ActionSupportPRISMA;
+import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
 
 import org.apache.struts2.convention.annotation.Action;
@@ -51,9 +52,9 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	// Lista de registros
 	private List<CasoUso> listCU;
 	private List<CasoUso> listCUProyecto;
-	private List<String> listPrecondiciones;
-	private List<String> listPostcondiciones;
-	private List<String> listPtosExtension;
+	private String jsonPrecondiciones;
+	private String jsonPostcondiciones;
+	private String jsonPtosExtension;
 
 	public String redireccionarTrayectorias() {
 		String resultado = null;
@@ -92,46 +93,9 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		System.out.println("DESDE UPDATE: HOLA");
 		String resultado = null;
 		
-		/*Pruebas*/
-		//PostPrecondicion pp = new PostPrecondicion("Redaccion", true, model);
-		Extension ext = new Extension("causa", "region", model, model);
-		Gson gson = new Gson();
-		String json = gson.toJson(ext);
-		//System.out.println("OBJETO JSON:");
-		//System.out.println(json);
-		/*System.out.println("NUMERO DE PRECONDICIONES " + this.listPrecondiciones.size());
-		for(String cadenaJson: this.listPrecondiciones) {
-			PostPrecondicion postp = gson.fromJson(cadenaJson, PostPrecondicion.class);
-			System.out.println("OBJETO DE TIPO POSTPRECONDICION " + postp.getRedaccion());
-		}*/
-		/*for(String cad: this.listPtosExtension) {
-			Extension e = gson.fromJson(cad, Extension.class);
-			System.out.println("OBJETO DE TIPO EXTENSION ");
-			System.out.println("REDACCION " + e.getCausa());
-			e.setCasoUsoDestino(CuBs.consultarCasoUso(e.getCasoUsoDestino().getId()));
-			e.setCasoUsoOrigen(model);
-			System.out.println("CASOUSO DESTINO " + e.getCasoUsoDestino().getNombre());
-			//e.setCasoUsoDestino(casoUsoDestino);
-		}*/
-		/*Fin pruebas*/
 
 		try {
-			
-			//model = CuBs.consultarCasoUso(model.getId());
-			// ///////////////////////// Pruebas
-			
-			
-			System.out.println("Datos del cu");
-			System.out.println("Nombre: " + model.getNombre());
-			System.out.println("Descripcion: " + model.getDescripcion());
-			System.out.println("Actores: " + model.getRedaccionActores());
-			System.out.println("Entradas: " + model.getRedaccionEntradas());
-			System.out.println("Salidas: " + model.getRedaccionSalidas());
-			System.out.println("RN: " + model.getRedaccionReglasNegocio());
-			
-
-			// ///////////////////////// Fin Pruebas
-			
+						
 			System.out.println("ID DESDE UPDATE: " + model.getId());
 			CasoUso modelAux = CuBs.consultarCasoUso(model.getId());
 			System.out.println("ESTADO ELEMENTO: " + modelAux.getEstadoElemento().getNombre());
@@ -169,26 +133,17 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	 * Agrega las postcondiciones y las precondiciones
 	 */
 	private void agregarPostPrecondiciones(CasoUso casoUso) {
-		Gson gson = new Gson();
 		//Se agregan precondiciones al caso de uso
-		if(listPrecondiciones != null) {
-			for(String json: this.listPrecondiciones) {
-				PostPrecondicion pp = gson.fromJson(json, PostPrecondicion.class);
-				System.out.println("OBJETO DE TIPO POSTPRECONDICION ");
-				System.out.println("REDACCION " + pp.getRedaccion());
-				pp.setCasoUso(casoUso);
-				casoUso.getPostprecondiciones().add(pp);
-			}
+		if(jsonPrecondiciones != null && !jsonPrecondiciones.equals("")) {
+			model.setPostprecondiciones(JsonUtil.mapJSONToSet(jsonPrecondiciones, PostPrecondicion.class));
 		}
 		//Se agregan postcondiciones al caso de uso
-		if(listPostcondiciones != null) {
-			for(String json: this.listPostcondiciones) {
-				PostPrecondicion pp = gson.fromJson(json, PostPrecondicion.class);
-				System.out.println("OBJETO DE TIPO POSTPRECONDICION ");
-				System.out.println("REDACCION " + pp.getRedaccion());
-				pp.setCasoUso(casoUso);
-				casoUso.getPostprecondiciones().add(pp);
-			}
+		if(jsonPostcondiciones != null && !jsonPostcondiciones.equals("")) {
+			model.getPostprecondiciones().addAll(JsonUtil.mapJSONToSet(jsonPostcondiciones, PostPrecondicion.class));
+		}
+		//Se agrega a cada elemento el caso de uso
+		for(PostPrecondicion pp: model.getPostprecondiciones()) {
+			pp.setCasoUso(casoUso);
 		}
 	}
 	
@@ -196,55 +151,15 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	 * Agrega los puntos de extensión
 	 */
 	private void agregarPtosExtension(CasoUso casoUso) {
-		Gson gson = new Gson();
 		//Se agregan puntos de extensión al caso de uso
-		if(listPtosExtension != null) {
-			for(String json: this.listPtosExtension) {
-				Extension ex = gson.fromJson(json, Extension.class);
-				
+		if(jsonPtosExtension != null && !jsonPtosExtension.equals("")) {
+			model.setExtiende(JsonUtil.mapJSONToSet(jsonPtosExtension, Extension.class));
+			for(Extension ex: model.getExtiende()) {
 				CasoUso aux = CuBs.consultarCasoUso(ex.getCasoUsoDestino().getId());
-				//aux.setDescripcion("");
-				//CasoUso casoUsoDestino = ex.getCasoUsoDestino();
-				
-				//copiarElemento(ex, aux);
-				
 				ex.setCasoUsoDestino(aux);
 				ex.setCasoUsoOrigen(casoUso);
-				casoUso.getExtiende().add(ex);
-				/*System.out.println("DATOS DEL PTO EXTENSION " + ex.getCasoUsoOrigen().getNombre());
-				System.out.println("CUDESTINO " + casoUso.getClave() + casoUso.getNumero() + casoUso.getNombre() + ">" + casoUso.getId());
-				System.out.println("CUORIGEN " + aux.getClave() + aux.getNumero() + aux.getNombre() + ">" + aux.getId());
-				System.out.println("CAUSA " + ex.getCausa());
-				System.out.println("REGION " + ex.getRegion());
-				System.out.println("ID " + ex.getId());*/
-				
 			}
 		}
-	}
-
-	private void copiarElemento(CasoUso casoUsoDestino, CasoUso aux) {
-		casoUsoDestino.setActores(aux.getActores());
-		casoUsoDestino.setClave(aux.getClave());
-		casoUsoDestino.setDescripcion(aux.getDescripcion());
-		casoUsoDestino.setEntradas(aux.getEntradas());
-		casoUsoDestino.setEstadoElemento(aux.getEstadoElemento());
-		casoUsoDestino.setExtendidoDe(aux.getExtendidoDe());
-		casoUsoDestino.setExtiende(aux.getExtiende());
-		casoUsoDestino.setIncluidoEn(aux.getIncluidoEn());
-		casoUsoDestino.setIncluye(aux.getIncluye());
-		casoUsoDestino.setModulo(aux.getModulo());
-		casoUsoDestino.setNombre(aux.getNombre());
-		casoUsoDestino.setNumero(aux.getNumero());
-		casoUsoDestino.setPostprecondiciones(aux.getPostprecondiciones());
-		casoUsoDestino.setProyecto(aux.getProyecto());
-		casoUsoDestino.setRedaccionActores(aux.getRedaccionActores());
-		casoUsoDestino.setRedaccionEntradas(aux.getRedaccionEntradas());
-		casoUsoDestino.setRedaccionReglasNegocio(aux.getRedaccionReglasNegocio());
-		casoUsoDestino.setRedaccionSalidas(aux.getRedaccionSalidas());
-		casoUsoDestino.setReglas(aux.getReglas());
-		casoUsoDestino.setSalidas(aux.getSalidas());
-		casoUsoDestino.setTrayectorias(aux.getTrayectorias());
-		
 	}
 
 	public String editNew() {
@@ -353,22 +268,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		return CuBs.esEditable(idAutor, cu);
 	}
 
-	public List<String> getListPrecondiciones() {
-		return listPrecondiciones;
-	}
-
-	public void setListPrecondiciones(List<String> listPrecondiciones) {
-		this.listPrecondiciones = listPrecondiciones;
-	}
-
-	public List<String> getListPostcondiciones() {
-		return listPostcondiciones;
-	}
-
-	public void setListPostcondiciones(List<String> listPostcondiciones) {
-		this.listPostcondiciones = listPostcondiciones;
-	}
-
 	public List<CasoUso> getListCUProyecto() {
 		return listCUProyecto;
 	}
@@ -377,13 +276,30 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		this.listCUProyecto = listCUProyecto;
 	}
 
-	public List<String> getListPtosExtension() {
-		return listPtosExtension;
+	public String getJsonPrecondiciones() {
+		return jsonPrecondiciones;
 	}
 
-	public void setListPtosExtension(List<String> listPtosExtension) {
-		this.listPtosExtension = listPtosExtension;
+	public void setJsonPrecondiciones(String jsonPrecondiciones) {
+		this.jsonPrecondiciones = jsonPrecondiciones;
 	}
+
+	public String getJsonPostcondiciones() {
+		return jsonPostcondiciones;
+	}
+
+	public void setJsonPostcondiciones(String jsonPostcondiciones) {
+		this.jsonPostcondiciones = jsonPostcondiciones;
+	}
+
+	public String getJsonPtosExtension() {
+		return jsonPtosExtension;
+	}
+
+	public void setJsonPtosExtension(String jsonPtosExtension) {
+		this.jsonPtosExtension = jsonPtosExtension;
+	}
+
 	
 	
 }

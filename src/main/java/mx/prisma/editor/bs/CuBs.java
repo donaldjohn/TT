@@ -94,7 +94,6 @@ public class CuBs {
 	}
 
 	public static String calcularClave(String cModulo) {
-		// TODO Auto-generated method stub
 		return "CU" + cModulo;
 	}
 

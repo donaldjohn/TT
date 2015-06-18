@@ -28,7 +28,7 @@
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 	<s:form id="frmTrayectoria" theme="simple" action="%{#pageContext.request.contextPath}/trayectorias"
-		method="post">
+		method="post" onsubmit="return preparaEnvio();">
 		<div class="formulario">
 		<s:hidden value="%{idCU}" name="idCU"/>
 			<div class="tituloFormulario">Información general de la Trayectoria</div>
@@ -95,7 +95,7 @@
 				onclick="preparaEnvio()"
 				value="Prueba" />
 			<input class="boton" type="button"
-				onclick="location.href='${pageContext.request.contextPath}/trayectoria'"
+				onclick="location.href='${pageContext.request.contextPath}/trayectoria"
 				value="Cancelar" />
 		</div>
 		<s:hidden id="jsonPasos" name="jsonPasos" value="%{jsonPasos}"/>    	
