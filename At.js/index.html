@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <link rel="stylesheet" href="dist/css/jquery.atwho.css" />
+
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script type="text/javascript" src="http://ichord.github.io/Caret.js/src/jquery.caret.js"></script>
+  <script type="text/javascript" src="dist/js/jquery.atwho.js"></script>
+ <script type="text/javascript">
+ function Regla(numero, nombre) {
+    this.numero = numero;
+    this.nombre = nombre;
+  }
+
+var reglas = [new Regla("1","Datos correctos"), new Regla("7", "Longitud de datos"), new Regla("1","Datos correctos"), new Regla("7", "Longitud de datos"), new Regla("1","Datos correctos"), new Regla("7", "Longitud de datos"), new Regla("1","Datos correctos"), new Regla("7", "Longitud de datos"), new Regla("1","Datos correctos"), new Regla("7", "Longitud de datos"), new Regla("1","Datos correctos"), new Regla("7", "Longitud de datos"), new Regla("1","Datos correctos"), new Regla("7", "Longitud de datos"), new Regla("1","Datos correctos"), new Regla("7", "Longitud de datos")]
+
+
+  $(function(){
+
+    $.fn.atwho.debug = false
+    var names = $.map(reglas,function(value,i) {
+      return {'id':i, "numero" : value.numero, "nombre" : value.nombre, 'name' : value.numero + " " + value.nombre + "."};
+    });
+
+    var at_config = {
+      at: "RN.",
+      data: names,
+      displayTpl: "<li>RN${numero} <small>${nombre}</small></li>",
+
+      limit: 200
+    }
+
+    $inputor = $('#inputor').atwho(at_config);
+    $inputor.caret('pos', 47);
+    $inputor.focus().atwho('run');
+
+    ifr = $('#iframe1')[0]
+    doc = ifr.contentDocument || iframe.contentWindow.document
+    if ((ifrBody = doc.body) == null) {
+      // For IE
+      doc.write("<body></body>")
+      ifrBody = doc.body
+    } 
+    ifrBody.contentEditable = true
+  });
+ </script>
+  <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+
+
+</head>
+<body>
+        <textarea id="inputor" class="inputor">Hola mundo</textarea>
+
+</body>
+</html>
