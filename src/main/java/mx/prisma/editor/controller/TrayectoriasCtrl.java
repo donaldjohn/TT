@@ -15,18 +15,21 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 
 import mx.prisma.editor.bs.CuBs;
+import mx.prisma.editor.bs.TrayectoriaBs;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.Trayectoria;
+import mx.prisma.editor.model.Verbo;
 import mx.prisma.util.ActionSupportPRISMA;
+import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
 
 
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "trayectorias" })
+		"actionName", "trayectorias", "idCU", "1" })
 })
 public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven<Trayectoria>{
 	/**
@@ -35,19 +38,26 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	private static final long serialVersionUID = 1L;
 	private Trayectoria model;
 	private List<Trayectoria> listTrayectorias;
-	private List<String> listPasos;
+	private String jsonPasos;
 	private int idCU;
+	private CasoUso casoUso;
+	private List<String> listRealiza;
+	private List<String> listVerbos;
 
 	public HttpHeaders index() throws Exception{
 		System.out.println("DESDE INDEX IDENTIFICADOR DEL CU " + idCU);
-		CasoUso casoUso = new CasoUso();
-		Trayectoria t = new Trayectoria("TP", false, casoUso, false);
-		Trayectoria tA = new Trayectoria("TA", true, "Condicion de la trayectoria alternativa", casoUso, false);
-		Trayectoria tB = new Trayectoria("TB", true, "Condicion de la trayectoria alternativa B", casoUso, false);
-		listTrayectorias = new ArrayList<Trayectoria>();
-		this.listTrayectorias.add(t);
-		this.listTrayectorias.add(tA);
-		this.listTrayectorias.add(tB);
+		try {
+			casoUso = CuBs.consultarCasoUso(idCU);
+			listTrayectorias = new ArrayList<Trayectoria>();
+			for(Trayectoria t: casoUso.getTrayectorias()) {
+				listTrayectorias.add(t);
+			}
+		} catch (PRISMAException pe) {
+			System.err.println(pe.getMessage());
+			addActionError(getText(pe.getIdMensaje()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return new DefaultHttpHeaders(INDEX);
 	}
 
@@ -58,6 +68,21 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		String resultado = null;
 		System.out.println("DESDE EDITNEW IDENTIFICADOR DEL CU " + idCU);
 		try {
+			//Se llena la lista del catálogo de quien realiza
+			listRealiza = new ArrayList<String>();
+			listRealiza.add("Actor");
+			listRealiza.add("Sistema");
+			
+			//Se extraen los verbos de la BD << PENDIENTE
+			listVerbos = new ArrayList<String>();
+			listVerbos.add("Muestra");
+			listVerbos.add("Selecciona");
+			listVerbos.add("Oprime");
+			listVerbos.add("Presiona");
+			listVerbos.add("Verifica");
+			listVerbos.add("Ingresa");
+			
+			//this.jsonPasos = "[{\"numero\":0,\"realizaActor\":\"Actor\",\"verbo\":{\"nombre\":\"Muestra\"},\"redaccion\":\"1\"},{\"numero\":0,\"realizaActor\":\"Actor\",\"verbo\":{\"nombre\":\"Muestra\"},\"redaccion\":\"2\"},{\"numero\":0,\"realizaActor\":\"Actor\",\"verbo\":{\"nombre\":\"Muestra\"},\"redaccion\":\"hola sergio\"}]";
 			
 			//model = CuBs.consultarCasoUso(model.getId());
 			
@@ -89,11 +114,17 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			System.out.println("ALTERNATIVA " + model.isAlternativa());
 			System.out.println("FIN DEL CU " + model.isFinCasoUso());
 			
+			//Se llama al método que convierte los json a pasos de la trayectoria
+			agregarPasos();
+			
+			
 			if(model.getPasos() != null) {
 				System.out.println("PASOS");
 				for(Paso p: model.getPasos()) {
-					System.out.println("\t NUMERO" + p.getNumero());
-					System.out.println("\t REDACCION" + p.getRedaccion());
+					System.out.println("\t NUMERO " + p.getNumero());
+					System.out.println("\t REDACCION " + p.getRedaccion());
+					System.out.println("\t VERBO " + p.getVerbo().getNombre());
+					System.out.println("\t REALIZA ACTOR " + p.isRealizaActor());
 				}
 			}
 			System.out.println("DESDE CREATE ANTES DE LA CONSULTA, IDCU " + idCU);
@@ -103,13 +134,12 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			//Se agrega el caso de uso a a la trayectoria
 			model.setCasoUso(casoUso);
 			
-			//Se llama al método que convierte los json a pasos de la trayectoria
-			agregarPasos();
-			
 			//Se agrega la trayectoria al caso de uso
 			casoUso.getTrayectorias().add(model);
 									
-			CuBs.modificarCasoUso(casoUso);
+			//CuBs.modificarCasoUso(casoUso);
+			TrayectoriaBs.registrarTrayectoria(model);
+			
 			resultado = SUCCESS;
 			System.out.println("ACTUALIZACION EXITOSA");
 			addActionMessage(getText("MSG1", new String[] { "El",
@@ -123,22 +153,26 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			addActionError(getText("MSG13"));
 			resultado = INDEX;
 		}
-		System.out.println("DESDE UPDATE RESULTADO = " + resultado);
+		System.out.println("DESDE CREATE RESULTADO = " + resultado);
 		return resultado;
 	}
 	
 	private void agregarPasos() {
-		Gson gson = new Gson();
-		//Se agregan pasos a la trayectoria
-		if(listPasos != null) {
-			for(String json: this.listPasos) {
-				Paso p = gson.fromJson(json, Paso.class);
-				System.out.println("OBJETO DE TIPO PASO ");
-				System.out.println("REDACCION " + p.getRedaccion());
+		System.out.println("DESDE AGREGARPASOS");
+		if(jsonPasos != null && !jsonPasos.equals("")) {
+			System.out.println("TAM JSON PASOS " + jsonPasos.length());
+			System.out.println("JSON DE PASOS " + jsonPasos);
+			model.setPasos(JsonUtil.mapJSONToSet(jsonPasos, Paso.class));
+			System.out.println("INFORMACION DEL PASO");
+			for(Paso p: model.getPasos()) {
+				Verbo v = TrayectoriaBs.consultaVerbo(p.getVerbo().getNombre());
+				p.setVerbo(v);
 				p.setTrayectoria(model);
-				model.getPasos().add(p);
+				System.out.println("NUMERO " + p.getNumero());
+				System.out.println("REDACCION " + p.getRedaccion());
+				System.out.println("" + p.getVerbo().getNombre());
 			}
-		}		
+		}
 	}
 
 	public void agregaMensajeError(PRISMAException pe) {
@@ -150,16 +184,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		System.err.println(pe.getMessage());
 		pe.printStackTrace();
 	}
-	
-	
-	public List<String> getListPasos() {
-		return listPasos;
-	}
-
-	public void setListPasos(List<String> listPasos) {
-		this.listPasos = listPasos;
-	}
-
 	
 	@VisitorFieldValidator
 	public Trayectoria getModel() {
@@ -187,6 +211,38 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 
 	public void setIdCU(int idCU) {
 		this.idCU = idCU;
+	}
+
+	public String getJsonPasos() {
+		return jsonPasos;
+	}
+
+	public void setJsonPasos(String jsonPasos) {
+		this.jsonPasos = jsonPasos;
+	}
+
+	public List<String> getListRealiza() {
+		return listRealiza;
+	}
+
+	public void setListRealiza(List<String> listRealiza) {
+		this.listRealiza = listRealiza;
+	}
+
+	public List<String> getListVerbos() {
+		return listVerbos;
+	}
+
+	public void setListVerbos(List<String> listVerbos) {
+		this.listVerbos = listVerbos;
+	}
+
+	public CasoUso getCasoUso() {
+		return casoUso;
+	}
+
+	public void setCasoUso(CasoUso casoUso) {
+		this.casoUso = casoUso;
 	}
 	
 	

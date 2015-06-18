@@ -1,19 +1,63 @@
 $(document).ready(function() {
-					$('table.tablaGestion').DataTable();
-				} );
+	$('table.tablaGestion').DataTable();
+	var json = $("#jsonPrecondiciones").val();
+	if (json !== "") {
+		var parsedJson = JSON.parse(json);
+		$
+				.each(
+						parsedJson,
+						function(i, item) {
+							var paso = [
+									item.redaccion,
+									"<center><a onclick='dataTableCDT.deleteRow(tablaPrecondiciones,this);'><img class='icon' src='"
+											+ window.contextPath
+											+ "/resources/images/icons/eliminar.png' title='Eliminar Precondición'></img></a></center>" ];
+							dataTableCDT.addRow("tablaPrecondiciones",paso);
+						});
+	}
+	json = $("#jsonPostcondiciones").val();
+	if (json !== "") {
+		var parsedJson = JSON.parse(json);
+		$
+				.each(
+						parsedJson,
+						function(i, item) {
+							var paso = [
+									item.redaccion,
+									"<center><a onclick='dataTableCDT.deleteRow(tablaPostcondiciones,this);'><img class='icon' src='"
+											+ window.contextPath
+											+ "/resources/images/icons/eliminar.png' title='Eliminar Postcondición'></img></a></center>" ];
+							dataTableCDT.addRow("tablaPostcondiciones",paso);
+						});
+	}
+	json = $("#jsonPtosExtension").val();
+	if (json !== "") {
+		var parsedJson = JSON.parse(json);
+		$
+				.each(
+						parsedJson,
+						function(i, item) {
+							var nombreCompletoCU = $("#nombreCompletoCU").val(); 
+							var paso = [
+									nombreCompletoCU,
+									item.causa,
+									item.region,
+									"<center><a onclick='dataTableCDT.deleteRow(tablaPtosExtension,this);'><img class='icon' src='"
+											+ window.contextPath
+											+ "/resources/images/icons/eliminar.png' title='Eliminar Puntos de extensión'></img></a></center>" ];
+							dataTableCDT.addRow("tablaPtosExtension",paso);
+						});
+	}
+} );
 
 function registrarPrecondicion(){
 	var varRedaccion = document.forms["frmPrecondicionName"]["precondicion.redaccion"].value;
 	var campoErrorRedaccion = document.getElementById("errorRedaccion");
 	 
     if (esValidaPostPrecondicion("tablaPrecondiciones", varRedaccion)) {
-    	var obj = new PostPrecondicion(varRedaccion, true);
-    	var postprecondicion = JSON.stringify(obj);
     	var row = [
 					varRedaccion,
 					"<center><a onclick='dataTableCDT.deleteRow(tablaPrecondiciones,this);'>" +
-					"<input type='hidden' value='" + postprecondicion +
-					"' name='listPrecondiciones'/>" +
 					"<img class='icon'  id='icon' src='" +
 					$("#varSessionContext").val() + "/resources/images/icons/botonCuadDelete.png'></img></a></center>" ];
     	dataTableCDT.addRow("tablaPrecondiciones", row);
@@ -39,8 +83,6 @@ function registrarPostcondicion(){
     	var row = [
 					varRedaccion,
 					"<center><a onclick='dataTableCDT.deleteRow(tablaPostcondiciones,this);'>" +
-					"<input type='hidden' value='" + postprecondicion +
-					"' name='listPostcondiciones'/>" +
 					"<img class='icon'  id='icon' src='" +
 					$("#varSessionContext").val() + "/resources/images/icons/botonCuadDelete.png'></img></a></center>" ];
     	dataTableCDT.addRow("tablaPostcondiciones", row);
@@ -77,8 +119,6 @@ function registrarPtoExtension(){
     	           	varCausa,
 					varRegion,
 					"<center><a onclick='dataTableCDT.deleteRow(tablaPtosExtension,this);'>" +
-					"<input type='hidden' value='" + extension +
-					"' name='listPtosExtension'/>" +
 					"<img class='icon'  id='icon' src='" +
 					$("#varSessionContext").val() + "/resources/images/icons/botonCuadDelete.png'></img></a></center>" ];
     	dataTableCDT.addRow("tablaPtosExtension", row);
@@ -132,3 +172,48 @@ function esValidoPtoExtension(idTabla, varIdCUDestino, varCausa, varRegion) {
 
 	return true;
 }
+
+function preparaEnvio() {
+	try {
+		tablaPrecondicionesToJson("tablaPrecondiciones");
+		tablaPostcondicionesToJson("tablaPostcondiciones");
+		tablaPtosExtensionToJson("tablaPtosExtension");
+		return true;
+	} catch(err) {
+		alert("Ocurrió un error.");
+		return false;
+	}
+}
+
+function tablaPrecondicionesToJson(idTable) {
+	var table = $("#" + idTable).dataTable();
+	var arreglo = [];
+	for (var i = 0; i < table.fnSettings().fnRecordsTotal(); i++) {
+		arreglo.push(new PostPrecondicion(table.fnGetData(i, 0), "true"));
+	}
+	var json = JSON.stringify(arreglo);
+	document.getElementById("jsonPrecondiciones").value = json;
+}
+
+function tablaPostcondicionesToJson(idTable) {
+	var table = $("#" + idTable).dataTable();
+	var arreglo = [];
+	for (var i = 0; i < table.fnSettings().fnRecordsTotal(); i++) {
+		arreglo.push(new PostPrecondicion(table.fnGetData(i, 0), "false"));
+	}
+	var json = JSON.stringify(arreglo);
+	document.getElementById("jsonPostcondiciones").value = json;
+}
+
+function tablaPtosExtensionToJson(idTable) {
+	var table = $("#" + idTable).dataTable();
+	var varIdCUDestino = document.forms["frmPtoExtensionName"]["ptoExtension.idCu"].value;
+	console.log("id del select de pto de ext " + varIdCUDestino);
+	var arreglo = [];
+	for (var i = 0; i < table.fnSettings().fnRecordsTotal(); i++) {
+		arreglo.push(new Extension(varIdCUDestino, table.fnGetData(i, 1), table.fnGetData(i, 2)));
+	}
+	var json = JSON.stringify(arreglo);
+	document.getElementById("jsonPtosExtension").value = json;
+}
+

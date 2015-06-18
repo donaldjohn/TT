@@ -10,9 +10,10 @@
 <![CDATA[
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/validaciones.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/constructores.js"></script>
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/index-editNew.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/dataTable.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/index-editNew.js"></script>
 ]]>
+<sj:head locale="de" jqueryui="true" jquerytheme="smoothness"/>
 </head>
 <body>
 
@@ -31,7 +32,7 @@
 
 	<s:form id="frmCU" theme="simple"
 		action="%{#pageContext.request.contextPath}/cu" 
-		method="post" onsubmit="return agregarElementosDeTablas();">
+		method="post" onsubmit="return preparaEnvio();">
 		<div class="formulario">
 			<div class="tituloFormulario">Información general del caso de
 				uso</div>
@@ -161,7 +162,10 @@
 			<input class="boton" type="button"
 				onclick="location.href='${pageContext.request.contextPath}/cu'"
 				value="Cancelar" />
-		</div>    	
+		</div>    
+		<s:hidden name="jsonPrecondiciones" id="jsonPrecondiciones" value="%{jsonPrecondiciones}"/>
+		<s:hidden name="jsonPostcondiciones" id="jsonPostcondiciones" value="%{jsonPostcondiciones}"/>
+		<s:hidden name="jsonPtosExtension" id="jsonPtosExtension" value="%{jsonPtosExtension}"/>	
 	</s:form>
 	
 	
@@ -224,7 +228,7 @@
 				<table class="seccion">
 					<tr>
 						<td class="label obligatorio"><s:text name="labelCasoUsoExtiende" /></td>
-						<td><s:select name="ptoExtension.cu" id="ptoExtension.idCu" list="listCUProyecto" listKey="id"
+						<td><s:select name="ptoExtension.cu" id="ptoExtension.idCu" list="listCUProyecto" listKey="id" cssClass="inputFormulario"
        						listValue="nombre" cssErrorClass="input-error" value="0"></s:select></td>
 					</tr>
 					<tr>

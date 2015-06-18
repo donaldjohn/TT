@@ -12,7 +12,7 @@
 </head>
 
 <body>
-	<h1>Registrar Caso de uso: Trayectorias</h1>
+	<h1><s:property value="%{casoUso.clave + ' ' + casoUso.numero + ' ' + casoUso.nombre}"/>: Trayectorias</h1>
 
 	<s:actionmessage/>
 	<s:actionerror theme="jquery" />

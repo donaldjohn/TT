@@ -8,7 +8,7 @@ function PostPrecondicion(redaccion, esPrecondicion) {
 /*
  * Constructor del objeto Extension
  */
-function Extension(causa, region, idCUDestino) {
+function Extension(idCUDestino, causa, region) {
 	this.causa = causa;
 	this.region = region;
 	this.casoUsoDestino = new CasoUso(idCUDestino);
@@ -24,6 +24,16 @@ function CasoUso (id) {
 /*
  * Constructor del objeto Paso
  */
-function Paso(redaccion) {
+function Paso(numero, realizaActor, verbo, redaccion) {
+	this.numero = numero;
+	this.realizaActor = realizaActor;
+	this.verbo = new Verbo(verbo);
 	this.redaccion = redaccion;
+}
+
+/*
+ * Constructor del Verbo
+ */
+function Verbo(nombre) {
+	this.nombre = nombre;
 }
