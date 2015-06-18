@@ -47,7 +47,7 @@ public class CasoUsoDAO extends ElementoDAO {
 				+ casodeuso.getId() + ";";
 		String deleteReglas = "DELETE FROM CasoUso_ReglaNegocio WHERE CasoUsoElementoid = "
 				+ casodeuso.getId() + ";";
-		
+		cleanRelaciones(casodeuso);
 		procesarObjetos_Token(casodeuso);
 		
 		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -62,6 +62,23 @@ public class CasoUsoDAO extends ElementoDAO {
 			querySalidas.executeUpdate();
 			SQLQuery queryReglas = session.createSQLQuery(deleteReglas);
 			queryReglas.executeUpdate();
+			
+			
+			
+			for(CasoUsoActor cua:casodeuso.getActores()){
+				session.save(cua);
+			}
+			for(Entrada entrada:casodeuso.getEntradas()){
+				session.save(entrada);
+			}
+			for(Salida salida:casodeuso.getSalidas()){
+				session.save(salida);
+			}
+			for(CasoUsoReglaNegocio reglas:casodeuso.getReglas()){
+				session.save(reglas);
+			}
+			
+			
 			session.update(casodeuso);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
@@ -139,7 +156,7 @@ public class CasoUsoDAO extends ElementoDAO {
 		
 		almacenarObjetosToken(TokenBs.convertirToken_Objeto(casoUso.getRedaccionReglasNegocio(),casoUso.getProyecto()), 
 				casoUso, TipoSeccion.REGLASNEGOCIOS);
-		casoUso.setRedaccionReglasNegocio(TokenBs.codificarCadenaToken(casoUso.getRedaccionActores(), casoUso.getProyecto()));
+		casoUso.setRedaccionReglasNegocio(TokenBs.codificarCadenaToken(casoUso.getRedaccionReglasNegocio(), casoUso.getProyecto()));
 		
 	
 	}

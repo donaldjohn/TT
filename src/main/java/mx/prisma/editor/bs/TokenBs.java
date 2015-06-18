@@ -64,7 +64,7 @@ public class TokenBs {
 									+ segmentos.get(2) + " no está registrado",
 							"MSG15", parametros);
 				}
-				redaccion.replace(token, segmentos.get(0) + atributo.getId());
+				redaccion = redaccion.replace(token, segmentos.get(0) + "." + atributo.getId());
 				break;
 			case ACTOR: // ACT.NOMBRE_ACT
 				Actor actor = new ActorDAO().consultarActor(segmentos.get(1)
@@ -78,7 +78,7 @@ public class TokenBs {
 							"TokenBs.convertirToken_Objeto: El actor no está registrado",
 							"MSG15", parametros);
 				}
-				redaccion.replace(token, segmentos.get(0) + actor.getId());
+				redaccion = redaccion.replace(token, segmentos.get(0) + "." +  actor.getId());
 
 				break;
 			case CASOUSO:
@@ -97,7 +97,7 @@ public class TokenBs {
 							"TokenBs.convertirToken_Objeto: El término no está registrado",
 							"MSG15", parametros);
 				}
-				redaccion.replace(token, segmentos.get(0) + terminoGlosario.getId());
+				redaccion = redaccion.replace(token, segmentos.get(0) + "." +  terminoGlosario.getId());
 				break;
 			case PANTALLA:
 				break;
@@ -113,7 +113,7 @@ public class TokenBs {
 									+ segmentos.get(1) + " no está registrado",
 							"MSG15", parametros);
 				}
-				redaccion.replace(token, segmentos.get(0) + mensaje.getId());
+				redaccion = redaccion.replace(token, segmentos.get(0) + "." +  mensaje.getId());
 				break;
 			case REGLANEGOCIO: // RN.NUMERO:NOMBRE_RN
 				ReglaNegocio reglaNegocio = new ReglaNegocioDAO()
@@ -128,7 +128,7 @@ public class TokenBs {
 									+ segmentos.get(2) + " no está registrada",
 							"MSG15", parametros);
 				}
-				redaccion.replace(token, segmentos.get(0) + reglaNegocio.getId());
+				redaccion = redaccion.replace(token, segmentos.get(0) + "." +  reglaNegocio.getId());
 				break;
 			case TRAYECTORIA:
 				break;
