@@ -2,6 +2,8 @@ package mx.prisma.editor.dao;
 
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.bs.Referencia;
+import mx.prisma.editor.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.model.Actor;
 
 
@@ -16,6 +18,6 @@ public class ActorDAO extends ElementoDAO {
 	}
 	
 	public Actor consultarActor(String nombre, Proyecto proyecto) {
-		return (Actor)super.consultarElemento(nombre, proyecto);
+		return (Actor)super.consultarElemento(nombre, proyecto, Referencia.getTabla(TipoReferencia.ACTOR));
 	}
 }

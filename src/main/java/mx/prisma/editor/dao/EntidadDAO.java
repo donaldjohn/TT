@@ -1,6 +1,7 @@
 package mx.prisma.editor.dao;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.bs.Referencia;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.util.HibernateUtil;
 
@@ -17,6 +18,10 @@ public class EntidadDAO extends ElementoDAO {
 	}
 	
 	public Entidad consultarEntidad(String nombre, Proyecto proyecto) {
-		return (Entidad) super.consultarElemento(nombre, proyecto);
+		return (Entidad) super.consultarElemento(nombre, proyecto, Referencia.getTabla(Referencia.TipoReferencia.ENTIDAD));
+	}
+	
+	public Entidad consultarEntidad(Integer numero) {
+		return (Entidad) super.consultarElemento(numero);
 	}
 }

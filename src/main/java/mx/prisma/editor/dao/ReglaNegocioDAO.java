@@ -1,6 +1,8 @@
 package mx.prisma.editor.dao;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.bs.Referencia;
+import mx.prisma.editor.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.util.HibernateUtil;
 
@@ -22,6 +24,6 @@ public class ReglaNegocioDAO extends ElementoDAO{
 		}
 		
 		public ReglaNegocio consultarReglaNegocio(String nombre, Proyecto proyecto) {
-			return (ReglaNegocio)super.consultarElemento(nombre, proyecto);
+			return (ReglaNegocio)super.consultarElemento(nombre, proyecto, Referencia.getTabla(TipoReferencia.REGLANEGOCIO));
 		}
 }

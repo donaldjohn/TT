@@ -11,9 +11,9 @@ import org.hibernate.Session;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.Referencia.TipoReferencia;
-import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Modulo;
+import mx.prisma.editor.model.Pantalla;
 import mx.prisma.util.HibernateUtil;
 
 public class ElementoDAO {
@@ -192,12 +192,12 @@ public class ElementoDAO {
 		return numeros.get(0)*-1;
 	}
 
-	public Elemento consultarElemento(String nombre, Proyecto proyecto) {
+	public Elemento consultarElemento(String nombre, Proyecto proyecto, String tabla) {
 		List<Elemento> results  = null;
 
 		try {
 			session.beginTransaction();
-			Query query = session.createQuery("from Elemento where nombre = :nombre AND Proyectoid = :proyecto");
+			Query query = session.createQuery("from "+tabla+" where nombre = :nombre AND Proyectoid = :proyecto");
 			query.setParameter("nombre", nombre);
 			query.setParameter("proyecto", proyecto.getId());
 
@@ -213,4 +213,5 @@ public class ElementoDAO {
 			return results.get(0);
 
 	}
+
 }

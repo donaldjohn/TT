@@ -20,8 +20,11 @@ import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.CasoUsoActor;
 import mx.prisma.editor.model.CasoUsoReglaNegocio;
 import mx.prisma.editor.model.Entrada;
+import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Modulo;
+import mx.prisma.editor.model.Pantalla;
+import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.Salida;
 import mx.prisma.editor.model.TerminoGlosario;
@@ -47,12 +50,17 @@ public class CasoUsoDAO extends ElementoDAO {
 				+ casodeuso.getId() + ";";
 		String deleteReglas = "DELETE FROM CasoUso_ReglaNegocio WHERE CasoUsoElementoid = "
 				+ casodeuso.getId() + ";";
+
+		
 		cleanRelaciones(casodeuso);
 		procesarObjetos_Token(casodeuso);
-		
 		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
 
 		try {
+			
+
+
 			session.beginTransaction();
 			SQLQuery queryActores = session.createSQLQuery(deleteActores);
 			queryActores.executeUpdate();
@@ -68,6 +76,7 @@ public class CasoUsoDAO extends ElementoDAO {
 			for(CasoUsoActor cua:casodeuso.getActores()){
 				session.save(cua);
 			}
+
 			for(Entrada entrada:casodeuso.getEntradas()){
 				session.save(entrada);
 			}
@@ -77,7 +86,13 @@ public class CasoUsoDAO extends ElementoDAO {
 			for(CasoUsoReglaNegocio reglas:casodeuso.getReglas()){
 				session.save(reglas);
 			}
-			
+			/*for(PostPrecondicion postPrecondicion : casodeuso.getPostprecondiciones()){
+				session.save(postPrecondicion);
+			}
+			for(Extension extension : casodeuso.getExtiende()){
+				session.save(extension);
+			}*/
+
 			
 			session.update(casodeuso);
 			session.getTransaction().commit();
@@ -438,5 +453,29 @@ public class CasoUsoDAO extends ElementoDAO {
 			}
 		}
 		return false;
+	}
+
+	
+	public CasoUso consultarCasoUso(Modulo modulo, int numero) {
+		List<CasoUso> results = null;
+
+		try {
+			session.beginTransaction();
+			SQLQuery query = session
+					.createSQLQuery("SELECT * FROM Elemento INNER JOIN CasoUso ON Elemento.id = CasoUso.Elementoid WHERE CasoUso.Moduloid = :modulo AND Elemento.numero = :numero");
+			query.setParameter("modulo", modulo.getId());
+			query.setParameter("numero", numero);
+
+			results = query.list();
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		if (results.isEmpty()){
+			return null;
+		} else 
+			return results.get(0);
+
 	}
 }

@@ -3,17 +3,24 @@ package mx.prisma.editor.bs;
 import java.util.ArrayList;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.dao.AccionDAO;
 import mx.prisma.editor.dao.ActorDAO;
 import mx.prisma.editor.dao.AtributoDAO;
+import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.MensajeDAO;
+import mx.prisma.editor.dao.ModuloDAO;
+import mx.prisma.editor.dao.PantallaDAO;
 import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.dao.TerminoGlosarioDAO;
+import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Mensaje;
+import mx.prisma.editor.model.Modulo;
+import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.util.PRISMAException;
@@ -30,19 +37,50 @@ public class TokenBs {
 	private static String tokenATR = "ATR.";// ATR.ENTIDAD_A_B:NOMBRE_ATT
 	private static String tokenP = "P."; // P.CUMODULO:TRAY.NUMERO.
 	private static String tokenTray = "TRAY."; // TRAY.CUMODULO:A.;
+	private static String tokenACC = "ACC."; //  ACC.IUM.NUM:PANTALLA:NOMBRE_ACC	= ACC.IUSF.7:Registrar_incendio:Aceptar	
 	private static String tokenSeparator1 = ".";
 	private static String tokenSeparator2 = ":";
 
-	public static String codificarCadenaToken(String redaccion, Proyecto proyecto) {
-		ArrayList<String> tokens = procesarTokenIpunt(redaccion, proyecto);
+	public static String codificarCadenaToken(String redaccion,
+			Proyecto proyecto) {
+		
+		ArrayList<String> tokens = procesarTokenIpunt(redaccion);
 		ArrayList<String> segmentos;
+		Pantalla pantalla;
+		Accion accion;
+		Modulo modulo; 
+		CasoUso casoUso;
+		Entidad entidad;
+		Atributo atributo;
+		
 		for (String token : tokens) {
 			segmentos = segmentarToken(token);
 			switch (Referencia.getTipoReferencia(segmentos.get(0))) {
-			case ACCION:
+			case ACCION: //  ACC.IUM.NUM:PANTALLA:NOMBRE_ACC	= ACC.IUSF.7:Registrar_incendio:Aceptar	
+				pantalla = new PantallaDAO().consultarPantalla(segmentos.get(1).replaceAll("_", " "), Integer.parseInt(segmentos.get(2)), proyecto);
+				if (pantalla == null) {
+					// Construcción del mensaje de error;
+					String[] parametros = { "la", "pantalla",
+							segmentos.get(1).replaceAll("_", " "), "registrada" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: La pantalla "+ segmentos.get(1)+" no está registrada",
+							"MSG15", parametros);
+				}
+
+				accion = new AccionDAO().consultarAccion(segmentos.get(2).replaceAll("_", " "), pantalla);
+				if (accion == null) {
+					String[] parametros = { "la", "accion",
+							segmentos.get(2).replaceAll("_", " "), "registrada" };
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: La acción"
+									+ segmentos.get(2) + " no está registrada",
+									"MSG15", parametros);
+				}
+				redaccion = redaccion.replace(token, tokenACC + tokenSeparator1 + accion.getId());
 				break;
 			case ATRIBUTO: // ATR.ENTIDAD_A_B:NOMBRE_ATT
-				Entidad entidad = new EntidadDAO().consultarEntidad(segmentos
+				entidad = new EntidadDAO().consultarEntidad(segmentos
 						.get(1).replaceAll("_", " "), proyecto);
 				if (entidad == null) {
 					// Construcción del mensaje de error;
@@ -54,7 +92,7 @@ public class TokenBs {
 							"MSG15", parametros);
 				}
 
-				Atributo atributo = new AtributoDAO().consultarAtributo(
+				atributo = new AtributoDAO().consultarAtributo(
 						segmentos.get(2).replaceAll("_", " "), entidad);
 				if (atributo == null) {
 					String[] parametros = { "el", "atributo",
@@ -62,9 +100,10 @@ public class TokenBs {
 					throw new PRISMAException(
 							"TokenBs.convertirToken_Objeto: El atributo"
 									+ segmentos.get(2) + " no está registrado",
-							"MSG15", parametros);
+									"MSG15", parametros);
 				}
-				redaccion = redaccion.replace(token, segmentos.get(0) + "." + atributo.getId());
+				redaccion = redaccion.replace(token, tokenATR + tokenSeparator1
+						+ atributo.getId());
 				break;
 			case ACTOR: // ACT.NOMBRE_ACT
 				Actor actor = new ActorDAO().consultarActor(segmentos.get(1)
@@ -78,17 +117,51 @@ public class TokenBs {
 							"TokenBs.convertirToken_Objeto: El actor no está registrado",
 							"MSG15", parametros);
 				}
-				redaccion = redaccion.replace(token, segmentos.get(0) + "." +  actor.getId());
+				redaccion = redaccion.replace(token, tokenACT + tokenSeparator1
+						+ actor.getId());
 
 				break;
 			case CASOUSO:
+				modulo = new ModuloDAO().consultarModulo(segmentos.get(1), proyecto);
+				if (modulo == null) {
+					// Construcción del mensaje de error;
+					String[] parametros = { "el", "modulo",
+							segmentos.get(1).replaceAll("_", " "), "registrado" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: El módulo "+ segmentos.get(1)+" no está registrado",
+							"MSG15", parametros);
+				}
+				
+				casoUso = new CasoUsoDAO().consultarCasoUso(modulo, Integer.parseInt(segmentos.get(2)));
+				if (casoUso == null) {
+					// Construcción del mensaje de error;
+					String[] parametros = { "el", "caso de uso",
+							token, "registrado" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: El caso de uso "+ token +" no está registrado",
+							"MSG15", parametros);
+				}
+				redaccion = redaccion.replace(token, tokenCU + tokenSeparator1 + casoUso.getId());
 				break;
-			case ENTIDAD:
+			case ENTIDAD: // ENT.NOMBRE_ENT
+				entidad = new EntidadDAO().consultarEntidad(segmentos.get(1).replaceAll("_", " "), proyecto);
+				if (entidad == null) {
+					// Construcción del mensaje de error;
+					String[] parametros = { "la", "entidad",
+							segmentos.get(1).replaceAll("_", " "), "registrada" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: La entidad "+ segmentos.get(1) +" no está registrada",
+							"MSG15", parametros);
+				}
+				redaccion = redaccion.replace(token, tokenENT + tokenSeparator1 + entidad.getId());
 				break;
 			case TERMINOGLS: // GLS.NOMBRE_GLS
 				TerminoGlosario terminoGlosario = new TerminoGlosarioDAO()
-						.consultarTerminoGlosario(
-								segmentos.get(1).replaceAll("_", " "), proyecto);
+				.consultarTerminoGlosario(
+						segmentos.get(1).replaceAll("_", " "), proyecto);
 				if (terminoGlosario == null) {
 					String[] parametros = { "el", "término",
 							segmentos.get(1).replaceAll("_", " "), "registrado" };
@@ -97,9 +170,32 @@ public class TokenBs {
 							"TokenBs.convertirToken_Objeto: El término no está registrado",
 							"MSG15", parametros);
 				}
-				redaccion = redaccion.replace(token, segmentos.get(0) + "." +  terminoGlosario.getId());
+				redaccion = redaccion.replace(token, segmentos.get(0) + tokenSeparator1
+						+ terminoGlosario.getId());
 				break;
 			case PANTALLA:
+				modulo = new ModuloDAO().consultarModulo(segmentos.get(1), proyecto);
+				if (modulo == null) {
+					// Construcción del mensaje de error;
+					String[] parametros = { "el", "modulo",
+							segmentos.get(1).replaceAll("_", " "), "registrado" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: El módulo "+ segmentos.get(1)+" no está registrado",
+							"MSG15", parametros);
+				}
+				
+				pantalla = new PantallaDAO().consultarPantalla(modulo, Integer.parseInt(segmentos.get(2)));
+				if (pantalla == null) {
+					// Construcción del mensaje de error;
+					String[] parametros = { "la", "pantalla",
+							token, "registrada" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: La pantalla "+ token +" no está registrada",
+							"MSG15", parametros);
+				}
+				redaccion = redaccion.replace(token, tokenIU + tokenSeparator1 + pantalla.getId());
 				break;
 			case MENSAJE: // MSG.NUMERO:NOMBRE_MSG
 				Mensaje mensaje = new MensajeDAO().consultarMensaje(segmentos
@@ -111,14 +207,15 @@ public class TokenBs {
 					throw new PRISMAException(
 							"TokenBs.convertirToken_Objeto: El mensaje "
 									+ segmentos.get(1) + " no está registrado",
-							"MSG15", parametros);
+									"MSG15", parametros);
 				}
-				redaccion = redaccion.replace(token, segmentos.get(0) + "." +  mensaje.getId());
+				redaccion = redaccion.replace(token, segmentos.get(0) + tokenSeparator1
+						+ mensaje.getId());
 				break;
 			case REGLANEGOCIO: // RN.NUMERO:NOMBRE_RN
 				ReglaNegocio reglaNegocio = new ReglaNegocioDAO()
-						.consultarReglaNegocio(
-								segmentos.get(2).replaceAll("_", " "), proyecto);
+				.consultarReglaNegocio(
+						segmentos.get(2).replaceAll("_", " "), proyecto);
 				if (reglaNegocio == null) {
 					String[] parametros = { "la", "regla de negocio",
 							segmentos.get(2).replaceAll("_", " "), "registrada" };
@@ -126,11 +223,14 @@ public class TokenBs {
 					throw new PRISMAException(
 							"TokenBs.convertirToken_Objeto: La regla de negocio "
 									+ segmentos.get(2) + " no está registrada",
-							"MSG15", parametros);
+									"MSG15", parametros);
 				}
-				redaccion = redaccion.replace(token, segmentos.get(0) + "." +  reglaNegocio.getId());
+				redaccion = redaccion.replace(token, segmentos.get(0) + tokenSeparator1
+						+ reglaNegocio.getId());
 				break;
 			case TRAYECTORIA:
+				break;
+			case PASO:
 				break;
 			default:
 				break;
@@ -157,32 +257,59 @@ public class TokenBs {
 		return false;
 	}
 
-	public static ArrayList<Object> convertirToken_Objeto(
-			String redaccion, Proyecto proyecto) {
-		ArrayList<String> tokens = TokenBs.procesarTokenIpunt(redaccion, proyecto);
-
+	public static ArrayList<Object> convertirToken_Objeto(String redaccion,
+			Proyecto proyecto) {
+		
+		ArrayList<String> tokens = TokenBs.procesarTokenIpunt(redaccion);
 		ArrayList<Object> objetos = new ArrayList<Object>();
 		ArrayList<String> segmentos;
+		
+		Atributo atributo;
+		Actor actor;
+		Pantalla pantalla;
+		Accion accion;
+		Modulo modulo;
+		CasoUso casoUso;
 
 		for (String token : tokens) {
 			segmentos = segmentarToken(token);
 			switch (Referencia.getTipoReferencia(segmentos.get(0))) {
-			case ACCION:
+			case ACCION: // ACC.IUM.NUM:PANTALLA:NOMBRE_ACC	= ACC.IUSF.7:Registrar_incendio:Aceptar		
+				pantalla = new PantallaDAO().consultarPantalla(segmentos.get(1).replaceAll("_", " "), Integer.parseInt(segmentos.get(2)), proyecto);
+				if (pantalla == null) {
+					// Construcción del mensaje de error;
+					String[] parametros = { "la", "pantalla",
+							segmentos.get(1).replaceAll("_", " "), "registrada" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: La pantalla "+ segmentos.get(1)+" no está registrada",
+							"MSG15", parametros);
+				}
+
+				accion = new AccionDAO().consultarAccion(segmentos.get(2).replaceAll("_", " "), pantalla);
+				if (accion == null) {
+					String[] parametros = { "la", "accion",
+							segmentos.get(2).replaceAll("_", " "), "registrada" };
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: La acción"
+									+ segmentos.get(2) + " no está registrada",
+									"MSG15", parametros);
+				}
+				objetos.add(accion);
 				break;
 			case ATRIBUTO: // ATR.ENTIDAD_A_B:NOMBRE_ATT
-				Entidad entidad = new EntidadDAO().consultarEntidad(segmentos
-						.get(1).replaceAll("_", " "), proyecto);
+				Entidad entidad = new EntidadDAO().consultarEntidad(segmentos.get(1).replaceAll("_", " "), proyecto);
 				if (entidad == null) {
 					// Construcción del mensaje de error;
 					String[] parametros = { "la", "entidad",
 							segmentos.get(1).replaceAll("_", " "), "registrada" };
 
 					throw new PRISMAException(
-							"TokenBs.convertirToken_Objeto: La entidad no está registrada",
+							"TokenBs.convertirToken_Objeto: La entidad "+ segmentos.get(1) +" no está registrada",
 							"MSG15", parametros);
 				}
 
-				Atributo atributo = new AtributoDAO().consultarAtributo(
+				atributo = new AtributoDAO().consultarAtributo(
 						segmentos.get(2).replaceAll("_", " "), entidad);
 				if (atributo == null) {
 					String[] parametros = { "el", "atributo",
@@ -190,12 +317,12 @@ public class TokenBs {
 					throw new PRISMAException(
 							"TokenBs.convertirToken_Objeto: El atributo"
 									+ segmentos.get(2) + " no está registrado",
-							"MSG15", parametros);
+									"MSG15", parametros);
 				}
 				objetos.add(atributo);
 				break;
 			case ACTOR: // ACT.NOMBRE_ACT
-				Actor actor = new ActorDAO().consultarActor(segmentos.get(1)
+				actor = new ActorDAO().consultarActor(segmentos.get(1)
 						.replaceAll("_", " "), proyecto);
 				if (actor == null) {
 					String[] parametros = {
@@ -209,14 +336,48 @@ public class TokenBs {
 				objetos.add(actor);
 
 				break;
-			case CASOUSO:
+			case CASOUSO: // CU.MODULO.NUMERO:NOMBRE_CU
+				modulo = new ModuloDAO().consultarModulo(segmentos.get(1), proyecto);
+				if (modulo == null) {
+					// Construcción del mensaje de error;
+					String[] parametros = { "el", "modulo",
+							segmentos.get(1).replaceAll("_", " "), "registrado" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: El módulo "+ segmentos.get(1)+" no está registrado",
+							"MSG15", parametros);
+				}
+				
+				casoUso = new CasoUsoDAO().consultarCasoUso(modulo, Integer.parseInt(segmentos.get(2)));
+				if (casoUso == null) {
+					// Construcción del mensaje de error;
+					String[] parametros = { "el", "caso de uso",
+							token, "registrado" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: El caso de uso "+ token +" no está registrado",
+							"MSG15", parametros);
+				}
+				objetos.add(casoUso);
+
 				break;
-			case ENTIDAD:
+			case ENTIDAD: // ENT.NOMBRE_ENT
+				entidad = new EntidadDAO().consultarEntidad(segmentos.get(1).replaceAll("_", " "), proyecto);
+				if (entidad == null) {
+					// Construcción del mensaje de error;
+					String[] parametros = { "la", "entidad",
+							segmentos.get(1).replaceAll("_", " "), "registrada" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: La entidad "+ segmentos.get(1) +" no está registrada",
+							"MSG15", parametros);
+				}
+				objetos.add(entidad);
 				break;
 			case TERMINOGLS: // GLS.NOMBRE_GLS
 				TerminoGlosario terminoGlosario = new TerminoGlosarioDAO()
-						.consultarTerminoGlosario(
-								segmentos.get(1).replaceAll("_", " "), proyecto);
+				.consultarTerminoGlosario(
+						segmentos.get(1).replaceAll("_", " "), proyecto);
 				if (terminoGlosario == null) {
 					String[] parametros = { "el", "término",
 							segmentos.get(1).replaceAll("_", " "), "registrado" };
@@ -227,7 +388,30 @@ public class TokenBs {
 				}
 				objetos.add(terminoGlosario);
 				break;
-			case PANTALLA:
+			case PANTALLA: // IU.MODULO.NUMERO:NOMBRE_IU
+				modulo = new ModuloDAO().consultarModulo(segmentos.get(1), proyecto);
+				if (modulo == null) {
+					// Construcción del mensaje de error;
+					String[] parametros = { "el", "modulo",
+							segmentos.get(1).replaceAll("_", " "), "registrado" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: El módulo "+ segmentos.get(1)+" no está registrado",
+							"MSG15", parametros);
+				}
+				
+				pantalla = new PantallaDAO().consultarPantalla(modulo, Integer.parseInt(segmentos.get(2)));
+				if (pantalla == null) {
+					// Construcción del mensaje de error;
+					String[] parametros = { "la", "pantalla",
+							token, "registrada" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: La pantalla "+ token +" no está registrada",
+							"MSG15", parametros);
+				}
+				objetos.add(pantalla);
+
 				break;
 			case MENSAJE: // MSG.NUMERO:NOMBRE_MSG
 				Mensaje mensaje = new MensajeDAO().consultarMensaje(segmentos
@@ -239,14 +423,14 @@ public class TokenBs {
 					throw new PRISMAException(
 							"TokenBs.convertirToken_Objeto: El mensaje "
 									+ segmentos.get(1) + " no está registrado",
-							"MSG15", parametros);
+									"MSG15", parametros);
 				}
 				objetos.add(mensaje);
 				break;
 			case REGLANEGOCIO: // RN.NUMERO:NOMBRE_RN
 				ReglaNegocio reglaNegocio = new ReglaNegocioDAO()
-						.consultarReglaNegocio(
-								segmentos.get(2).replaceAll("_", " "), proyecto);
+				.consultarReglaNegocio(
+						segmentos.get(2).replaceAll("_", " "), proyecto);
 				if (reglaNegocio == null) {
 					String[] parametros = { "la", "regla de negocio",
 							segmentos.get(2).replaceAll("_", " "), "registrada" };
@@ -254,11 +438,15 @@ public class TokenBs {
 					throw new PRISMAException(
 							"TokenBs.convertirToken_Objeto: La regla de negocio "
 									+ segmentos.get(2) + " no está registrada",
-							"MSG15", parametros);
+									"MSG15", parametros);
 				}
 				objetos.add(reglaNegocio);
 				break;
 			case TRAYECTORIA:
+				
+				break;
+				
+			case PASO:
 				break;
 			default:
 				break;
@@ -269,9 +457,110 @@ public class TokenBs {
 		return objetos;
 	}
 
-	public static void decodificarCadenasToken(CasoUso casoUso) {
+	public static String decodificarCadenasToken(String cadenaCodificada){
+		
+	String cadenaCodificadaBruta = cadenaCodificada.substring(1);
+	ArrayList<String> tokens = procesarTokenIpunt(cadenaCodificadaBruta);
+	ArrayList<String> segmentos;
+	Modulo modulo;
+	String cadenaDecodificada = cadenaCodificadaBruta;
+	
+	for (String token : tokens) {
+		segmentos = segmentarToken(token);
+		switch (Referencia.getTipoReferencia(segmentos.get(0))) {
+		case ACCION: //  ACC.IUM.NUM:PANTALLA:NOMBRE_ACC	= ACC.IUSF.7:Registrar_incendio:Aceptar	
+			Accion accion = new AccionDAO().consultarAccion(Integer.parseInt(segmentos.get(1)));
+			if (accion == null) {
+				cadenaDecodificada = "";
+				break;
+			} else {
+			Pantalla pantalla = accion.getPantalla();
+			cadenaDecodificada = cadenaDecodificada.replace(token, tokenATR  + pantalla.getClave() + tokenSeparator1 + pantalla.getNumero() + tokenSeparator2 + pantalla.getNombre().replace(" ", "_") + tokenSeparator2 + accion.getNombre().replace(" ", "_"));
+			}
+			break;
+		case ATRIBUTO: // ATR.ID -> ATR.ENTIDAD_A_B:NOMBRE_ATT
+			Atributo atributo = new AtributoDAO().consultarAtributo(Integer.parseInt(segmentos.get(1)));
+			if (atributo == null) {
+				cadenaDecodificada = "";
+				break;
+			} else {
+			Entidad entidad = atributo.getEntidad();
+			cadenaDecodificada = cadenaDecodificada.replace(token, tokenATR  + entidad.getNombre().replace(" ", "_") + tokenSeparator2 + atributo.getNombre().replace(" ", "_"));
+			}
+			break;
+		case ACTOR: // ACT.ID -> ACT.NOMBRE_ACT
+			Actor actor = new ActorDAO().consultarActor(Integer.parseInt(segmentos.get(1)));
+			if (actor == null) {
+				cadenaDecodificada = "";
+				break;
+			}
+			cadenaDecodificada = cadenaDecodificada.replace(token, tokenACT  + actor.getNombre().replace(" ", "_"));
 
+			break;
+		case CASOUSO: // CU.ID -> CU.MODULO.NUMERO:NOMBRE_CU
+			CasoUso casoUso = new CasoUsoDAO().consultarCasoUso(Integer.parseInt(segmentos.get(1)));
+			if (casoUso == null) {
+				cadenaDecodificada = "";
+				break;
+			}
+			modulo = casoUso.getModulo();
+			cadenaDecodificada = cadenaDecodificada.replace(token, tokenCU  + modulo.getClave() + tokenSeparator1 + casoUso.getNumero() + tokenSeparator2 +casoUso.getNombre().replace(" ", "_"));
+
+			break;
+		case ENTIDAD: // ENT.ID -> ENT.NOMBRE_ENT
+			Entidad entidad = new EntidadDAO().consultarEntidad(Integer.parseInt(segmentos.get(1)));
+			if (entidad == null) {
+				cadenaDecodificada = "";
+				break;
+			}
+			cadenaDecodificada = cadenaDecodificada.replace(token, tokenENT + entidad.getNombre().replace(" ", "_"));
+
+			
+			break;
+		case TERMINOGLS: // GLS.ID -> GLS.NOMBRE_GLS
+			TerminoGlosario terminoGlosario = new TerminoGlosarioDAO().consultarTerminoGlosario(Integer.parseInt(segmentos.get(1)));
+			if (terminoGlosario == null) {
+				cadenaDecodificada = "";
+			}
+			cadenaDecodificada = cadenaDecodificada.replace(token, tokenGLS  + terminoGlosario.getNombre().replace(" ", "_"));
+			break;
+		case PANTALLA: // IU.ID -> // IU.MODULO.NUMERO:NOMBRE_IU
+			Pantalla pantalla = new PantallaDAO().consultarPantalla(Integer.parseInt(segmentos.get(1)));
+			if (pantalla == null) {
+				cadenaDecodificada = "";
+				break;
+			}
+			modulo = pantalla.getModulo();
+			cadenaDecodificada = cadenaDecodificada.replace(token, tokenIU  + modulo.getClave() + tokenSeparator1 + pantalla.getNumero() + tokenSeparator2 +pantalla.getNombre().replace(" ", "_"));
+
+			break;
+			
+		case MENSAJE: // GLS.ID -> MSG.NUMERO:NOMBRE_MSG
+			Mensaje mensaje = new MensajeDAO().consultarMensaje(Integer.parseInt(segmentos.get(1)));
+			if (mensaje == null) {
+				cadenaDecodificada = "";
+			}
+			cadenaDecodificada = cadenaDecodificada.replace(token, tokenMSG  + mensaje.getNumero() + tokenSeparator2 +mensaje.getNombre().replace(" ", "_"));
+			break;
+		case REGLANEGOCIO: // RN.ID -> RN.NUMERO:NOMBRE_RN
+			ReglaNegocio reglaNegocio = new ReglaNegocioDAO().consultarReglaNegocio(Integer.parseInt(segmentos.get(1)));
+			if (reglaNegocio == null) {
+				cadenaDecodificada = "";
+			}
+			cadenaDecodificada = cadenaDecodificada.replace(token, tokenRN  + reglaNegocio.getNumero() + tokenSeparator2 + reglaNegocio.getNombre().replace(" ", "_"));
+			break;
+		case TRAYECTORIA:
+			break;
+			
+		case PASO:
+			break;
+		default:
+			break;
+
+		}
 	}
+	return cadenaDecodificada;
+}
 
 	private static boolean espacio(String cadena, int i, char caracter) {
 		if (caracter == ' ') {
@@ -285,14 +574,13 @@ public class TokenBs {
 				|| pila.equals(tokenCU) || pila.equals(tokenIU)
 				|| pila.equals(tokenMSG) || pila.equals(tokenACT)
 				|| pila.equals(tokenGLS) || pila.equals(tokenATR)
-				|| pila.equals(tokenP) || pila.equals(tokenTray)) {
+				|| pila.equals(tokenP) || pila.equals(tokenTray) || pila.equals(tokenACC)) {
 			return true;
 		}
 		return false;
 	}
 
-	public static ArrayList<String> procesarTokenIpunt(String cadena,
-			Proyecto proyecto) {
+	public static ArrayList<String> procesarTokenIpunt(String cadena) {
 		ArrayList<String> tokens = new ArrayList<String>();
 		String pila = "";
 		String token = "";
@@ -346,14 +634,6 @@ public class TokenBs {
 		}
 		return false;
 	}
-
-	/*
-	 * procesarCadenaToken(P1) Se encarga de buscar cada elemento y sustituirlo
-	 * por el id de la base de datos, por ejemplo, para la cadena:
-	 * ACT.Responsable, ACT.Responsable
-	 * 
-	 * La transformación sería la siguiente: ACT.1, ACT.1
-	 */
 
 	private static boolean puntoSeguido(String cadena, int i, char caracter) {
 		if (caracter == '.') {

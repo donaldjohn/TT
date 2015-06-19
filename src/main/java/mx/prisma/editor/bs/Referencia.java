@@ -1,5 +1,6 @@
 package mx.prisma.editor.bs;
 
+import mx.prisma.editor.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Atributo;
@@ -291,6 +292,37 @@ public class Referencia {
 			if (tipoSeccion == TipoSeccion.PASOS) {
 				return TipoRelacion.PASO_EXTENSIONES;
 			}	
+		}
+		return null;
+	}
+
+	public static String getTabla(TipoReferencia referencia) {
+		switch(referencia){
+		case ACCION:
+			return "Accion";
+		case ACTOR:
+			return "Actor";
+		case ATRIBUTO:
+			return "Atributo";
+		case CASOUSO:
+			return "CasoUso";
+		case ENTIDAD:
+			return "Entidad";		
+		case MENSAJE:
+			return "Mensaje";
+		case PANTALLA:
+			return "Pantalla";
+		case PASO:
+			return "Paso";
+		case REGLANEGOCIO:
+			return "ReglaNegocio";
+		case TERMINOGLS:
+			return "TerminoGlosario";
+		case TRAYECTORIA:
+			return "Trayectoria";
+		default:
+			break;
+		
 		}
 		return null;
 	}
