@@ -3,6 +3,7 @@ package mx.prisma.editor.dao;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -199,14 +200,14 @@ public class ElementoDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<Elemento> consultarElementos(Proyecto proyecto){
-		ArrayList<Elemento> results  = null;
+	public Set<Elemento> consultarElementos(Proyecto proyecto){
+		Set<Elemento> results  = null;
 
 		try {
 			session.beginTransaction();
 			Query query = session.createQuery("from Elemento where Proyectoid = :proyecto");
 			query.setParameter("proyecto", proyecto.getId());
-			results = (ArrayList<Elemento>) query.list();
+			results = (Set<Elemento>) query.list();
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
