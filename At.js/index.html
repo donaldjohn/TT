@@ -8,20 +8,26 @@
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script type="text/javascript" src="http://ichord.github.io/Caret.js/src/jquery.caret.js"></script>
   <script type="text/javascript" src="dist/js/jquery.atwho.js"></script>
+  <script type="text/javascript" src="dist/js/actores.js"></script>
  <script type="text/javascript">
  function Regla(numero, nombre) {
     this.numero = numero;
     this.nombre = nombre;
   }
+   function Actor(numero, nombre) {
+    this.numero = numero;
+    this.nombre = nombre;
+  }
 
-var reglas = [new Regla("1","Datos correctos"), new Regla("7", "Longitud de datos"), new Regla("1","Datos correctos"), new Regla("7", "Longitud de datos"), new Regla("1","Datos correctos"), new Regla("7", "Longitud de datos"), new Regla("1","Datos correctos"), new Regla("7", "Longitud de datos"), new Regla("1","Datos correctos"), new Regla("7", "Longitud de datos"), new Regla("1","Datos correctos"), new Regla("7", "Longitud de datos"), new Regla("1","Datos correctos"), new Regla("7", "Longitud de datos"), new Regla("1","Datos correctos"), new Regla("7", "Longitud de datos")]
+var reglas = [new Regla("1","Datos correctos"), new Regla("7", "Longitud de datos")]
+var actores = [new Actor("1","Responsable"), new Actor("2", "Cartografo")]
 
 
   $(function(){
 
     $.fn.atwho.debug = false
     var names = $.map(reglas,function(value,i) {
-      return {'id':i, "numero" : value.numero, "nombre" : value.nombre, 'name' : value.numero + " " + value.nombre + "."};
+      return {'id':i, "numero" : value.numero, "nombre" : value.nombre, 'name' : value.numero + " " + value.nombre + ".hola"};
     });
 
     var at_config = {
@@ -36,22 +42,34 @@ var reglas = [new Regla("1","Datos correctos"), new Regla("7", "Longitud de dato
     $inputor.caret('pos', 47);
     $inputor.focus().atwho('run');
 
-    ifr = $('#iframe1')[0]
-    doc = ifr.contentDocument || iframe.contentWindow.document
-    if ((ifrBody = doc.body) == null) {
-      // For IE
-      doc.write("<body></body>")
-      ifrBody = doc.body
-    } 
-    ifrBody.contentEditable = true
+    //Actores
+    var namesACT = $.map(actores,function(value,i) {
+      return {'id':i, "numero" : value.numero, "nombre" : value.nombre, 'name' : value.numero + " " + value.nombre + "."};
+    });
+
+    var at_config = {
+      at: "ACT.",
+      data: namesACT,
+      displayTpl: "<li>ACT${numero} <small>${nombre}</small></li>",
+
+      limit: 200
+    }
+
+    $inputor = $('#actorInput').atwho(at_config);
+    $inputor.caret('pos', 100);
+    $inputor.focus().atwho('run');
+
+    
   });
+
+  
  </script>
-  <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+  
 
 
 </head>
 <body>
         <textarea id="inputor" class="inputor">Hola mundo</textarea>
-
+        <textarea id="actorInput" class="inputor">Hola mundo</textarea>
 </body>
 </html>

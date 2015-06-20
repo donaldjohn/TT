@@ -1,6 +1,7 @@
-var numeroPaso;
+var contextPath = "prisma";
 
 $(document).ready(function() {
+	contextPath = $("#rutaContexto").val();
 	$('table.tablaGestion').DataTable();
 	mostrarCampoCondicion(document.getElementById("model.idAlternativa"));
 	var realiza = "Actor";
@@ -20,7 +21,7 @@ $(document).ready(function() {
 									item.verbo.nombre,
 									item.redaccion,
 									"<center><a onclick='equipoActividades.eliminarEquipo(this);'><img class='icon' src='"
-											+ window.contextPath
+											+ contextPath
 											+ "/resources/images/icons/eliminar.png' title='Eliminar Equipo'></img></a></center>" ];
 							dataTableCDT.addRow("tablaPaso",paso);
 						});
@@ -39,7 +40,7 @@ function mostrarCampoCondicion(checkbox) {
 }
 
 function registrarPaso(){
-	var numero = 0;
+	var numero = calcularNumeroPaso();
 	var realiza = document.forms["frmPasoName"]["paso.realizaActor"].value;
 	var redaccion = document.forms["frmPasoName"]["paso.redaccion"].value;
 	var verbo = document.forms["frmPasoName"]["paso.verbo"].value;
@@ -55,9 +56,10 @@ function registrarPaso(){
     	            verbo,
 					redaccion,
 					"<center>" +
+					"<input type='hidden' value='" + realizaActor + "' name='realizaActor' id='realizaActor'" +
 						"<a onclick='dataTableCDT.deleteRow(tablaPaso,this);'>" +
-						"<input type='hidden' value='" + realizaActor + "' name='realizaActor' id='realizaActor'" +
-						"<img class='icon'  id='icon' src='" + $("#varSessionContext").val() + "/resources/images/icons/botonCuadDelete.png'></img></a>" +
+						"<img class='icon'  id='icon' src='" + window.contextPath + 
+						"/resources/images/icons/eliminar.png'></img></a>" +
 					"</center>" ];
     	dataTableCDT.addRow("tablaPaso", row);
     	document.getElementById("paso.idRedaccion").value = "";
@@ -115,5 +117,8 @@ function tablaToJson(idTable) {
 	}
 	var jsonPasos = JSON.stringify(arregloPasos);
 	document.getElementById("jsonPasos").value = jsonPasos;
-	alert(jsonPasos);
+}
+
+function calcularNumeroPaso() {
+	return $("#tablaPaso").dataTable().fnSettings().fnRecordsTotal() + 1;
 }

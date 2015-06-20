@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	$('table.tablaGestion').DataTable();
 	var json = $("#jsonPrecondiciones").val();
-	if (json !== "") {
+	if (json !== "" && json != null) {
 		var parsedJson = JSON.parse(json);
 		$
 				.each(

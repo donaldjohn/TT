@@ -37,3 +37,13 @@ function Paso(numero, realizaActor, verbo, redaccion) {
 function Verbo(nombre) {
 	this.nombre = nombre;
 }
+
+function Regla(numero, nombre) {
+    this.numero = numero;
+    this.nombre = nombre;
+}
+   
+function Actor(numero, nombre) {
+    this.numero = numero;
+    this.nombre = nombre;
+}

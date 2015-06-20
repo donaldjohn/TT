@@ -8,12 +8,16 @@
 <head>
 <title>Casos de uso</title>
 <![CDATA[
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/validaciones.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/constructores.js"></script>
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/dataTable.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/validaciones.js"></script>
+	
+	<script type="text/javascript" src="http://ichord.github.io/Caret.js/src/jquery.caret.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.atwho.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/token.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/index-editNew.js"></script>
+	
+	
 ]]>
-<sj:head locale="de" jqueryui="true" jquerytheme="smoothness"/>
 </head>
 <body>
 
@@ -22,10 +26,6 @@
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
 	<br/>
-	
-	<!-- <div class="menuSuperiorCU"><jsp:include
-			page="/content/editor/menus/menuSuperiorCU.jsp" /></div>
-	 -->
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 
@@ -69,7 +69,7 @@
 					<tr>
 						<td class="label"><s:text name="labelActores" /></td>
 						<td><s:textarea rows="5" name="model.redaccionActores"
-								maxlength="999" cssErrorClass="input-error"></s:textarea>
+								maxlength="999" cssErrorClass="input-error" id="actorInput"></s:textarea>
 								<s:fielderror
 								fieldName="model.redaccionActores" cssClass="error"
 								theme="jquery" /> </td>
@@ -91,7 +91,7 @@
 					<tr>
 						<td class="label"><s:text
 								name="labelReglasNegocio" /></td>
-						<td><s:textarea rows="5" name="model.redaccionReglasNegocio"
+						<td><s:textarea rows="5" name="model.redaccionReglasNegocio" id="inputor"
 								maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
 								fieldName="model.redaccionReglasNegocio" cssClass="error"
 								theme="jquery" /></td>
