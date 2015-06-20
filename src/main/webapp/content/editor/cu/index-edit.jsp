@@ -8,8 +8,15 @@
 <head>
 <title>Casos de uso</title>
 <![CDATA[
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/validaciones.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/dataTable.js"></script>
+	<script type="text/javascript" src="http://ichord.github.io/Caret.js/src/jquery.caret.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.atwho.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/constructores.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/token.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/index-editNew.js"></script>
 ]]>
+
 </head>
 <body>
 	<h1>Modificar Caso de uso</h1>
@@ -30,6 +37,8 @@
 		<div class="formulario">
 			<div class="tituloFormulario">Información general del caso de
 				uso</div>
+		<textarea id="inputor" class="inputor">RN.</textarea>
+        <textarea id="actorInput" class="inputor">Hola mundo</textarea>
 			<table class="seccion">
 				<tr>
 					<td class="label">Identificador</td>

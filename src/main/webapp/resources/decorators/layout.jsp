@@ -9,17 +9,15 @@
 		contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" />
 	<html>
 <head>
-<s:url id="urlRutaContexto"
-	value="%{pageContext.request.contextPath}/resources/template/themes"
-	includeContext="true" />
-<sj:head jqueryui="true" jquerytheme="aristo-theme"
-	customBasepath="%{urlRutaContexto}" locale="es" />
-<title>PRISMA | <decorator:title default="Bienvenido"/></title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/estilo.css" />
-<!-- DataTables CSS -->
+
+<title>PRISMA | <decorator:title default="Bienvenido"/></title>
+
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/estilo.css" />
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/DataTables-1.10.7/media/css/jquery.dataTables.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jquery.atwho.css" />
+
+<sj:head locale="es" jqueryui="true" jquerytheme="smoothness"/>
 
 <decorator:head />
 <![CDATA[
@@ -27,6 +25,7 @@
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/menu.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/dataTable.js"></script>
 ]]>
+
 </head>
 <body>
 	<div class="container">
@@ -48,7 +47,8 @@
 			<decorator:body /> 
 		</div>
 	</div>
-	
+	<input type="text" style="display: none;" id="rutaContexto"
+ 		value="${pageContext.request.contextPath}" />	
 </body>
 </html>
 </jsp:root>

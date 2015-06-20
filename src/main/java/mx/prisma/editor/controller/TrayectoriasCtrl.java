@@ -3,14 +3,21 @@ package mx.prisma.editor.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.convention.annotation.InterceptorRef;
+import org.apache.struts2.convention.annotation.InterceptorRefs;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
+import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
 import com.google.gson.Gson;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 
@@ -26,10 +33,9 @@ import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
 
-
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "trayectorias", "idCU", "1" })
+		"actionName", "trayectorias", "idCU", "%{idCU}"})
 })
 public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven<Trayectoria>{
 	/**
@@ -40,14 +46,14 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	private List<Trayectoria> listTrayectorias;
 	private String jsonPasos;
 	private int idCU;
-	private CasoUso casoUso;
 	private List<String> listRealiza;
 	private List<String> listVerbos;
 
 	public HttpHeaders index() throws Exception{
 		System.out.println("DESDE INDEX IDENTIFICADOR DEL CU " + idCU);
 		try {
-			casoUso = CuBs.consultarCasoUso(idCU);
+			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
+			model.setCasoUso(casoUso);
 			listTrayectorias = new ArrayList<Trayectoria>();
 			for(Trayectoria t: casoUso.getTrayectorias()) {
 				listTrayectorias.add(t);
@@ -66,7 +72,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	 * */
 	public String editNew() {
 		String resultado = null;
-		System.out.println("DESDE EDITNEW IDENTIFICADOR DEL CU " + idCU);
 		try {
 			//Se llena la lista del catálogo de quien realiza
 			listRealiza = new ArrayList<String>();
@@ -81,12 +86,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			listVerbos.add("Presiona");
 			listVerbos.add("Verifica");
 			listVerbos.add("Ingresa");
-			
-			//this.jsonPasos = "[{\"numero\":0,\"realizaActor\":\"Actor\",\"verbo\":{\"nombre\":\"Muestra\"},\"redaccion\":\"1\"},{\"numero\":0,\"realizaActor\":\"Actor\",\"verbo\":{\"nombre\":\"Muestra\"},\"redaccion\":\"2\"},{\"numero\":0,\"realizaActor\":\"Actor\",\"verbo\":{\"nombre\":\"Muestra\"},\"redaccion\":\"hola sergio\"}]";
-			
-			//model = CuBs.consultarCasoUso(model.getId());
-			
-			//System.out.println("ESTADO ELEMENTO DESDE EDIT: " + model.getEstadoElemento().getNombre());
 			
 			resultado = EDITNEW;
 		} catch (PRISMAException pe) {
@@ -141,9 +140,9 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			TrayectoriaBs.registrarTrayectoria(model);
 			
 			resultado = SUCCESS;
-			System.out.println("ACTUALIZACION EXITOSA");
-			addActionMessage(getText("MSG1", new String[] { "El",
-					"caso de uso", "actualizado" }));
+			System.out.println("ACTUALIZACION EXITOSA RESULTADO: " + resultado);
+			addActionMessage(getText("MSG1", new String[] { "La",
+					"Trayectoria", "actualizada" }));
 
 		} catch (PRISMAException pe) {
 			agregaMensajeError(pe);
@@ -185,7 +184,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		pe.printStackTrace();
 	}
 	
-	@VisitorFieldValidator
+	//@VisitorFieldValidator
 	public Trayectoria getModel() {
 		if (this.model == null) {
 			model = new Trayectoria();
@@ -235,16 +234,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 
 	public void setListVerbos(List<String> listVerbos) {
 		this.listVerbos = listVerbos;
-	}
-
-	public CasoUso getCasoUso() {
-		return casoUso;
-	}
-
-	public void setCasoUso(CasoUso casoUso) {
-		this.casoUso = casoUso;
-	}
-	
+	}	
 	
 }
 

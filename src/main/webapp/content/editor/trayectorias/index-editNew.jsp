@@ -13,14 +13,15 @@
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/trayectorias/js/index-editNew.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/dataTable.js"></script>
 ]]>
-<s:url id="urlRutaContexto"
-	value="%{pageContext.request.contextPath}/resources/template/themes"
-	includeContext="true" />
-<sj:head locale="de" jqueryui="true" jquerytheme="smoothness"/>
+<sj:head locale="es" jqueryui="true" jquerytheme="smoothness"/>
 
 </head>
 <body>
+	<s:url value="%{#request.method}" var="contextPathVal"/>
+	
+	<s:hidden value="%{#request.getContextPath()}" id="contextPathHid" name="contextPathHid"/>
 	<h1>Registrar Trayectoria</h1>
+	Hola<s:property value="%{#request.request.getContextPath()}" /> mundo
 	
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
@@ -69,14 +70,15 @@
 			<div class="tituloFormulario">Pasos de la Trayectoria</div>
 			<div class="seccion">
 				
-				<table id="tablaPaso" class="tablaGestion" cellspacing="0" width="100%"> 
+				<table id="tablaPaso" class="tablaGestion" cellspacing="0" width="100%">
+				<s:hidden name="numPasos" value="%{listPasos.length}" id="numPasos"/> 
 					<thead>
 						<tr>
 							<th style="width: 10%;"><s:text name="colNumero"/></th>
-							<th style="width: 15%;"><s:text name="colRealiza"/></th>
+							<th style="width: 20%;"><s:text name="colRealiza"/></th>
 							<th style="width: 10%;"><s:text name="colAccion"/></th>
-							<th style="width: 45%;"><s:text name="colRedaccion"/></th>
-							<th style="width: 20%;"><s:text name="colAcciones"/></th>
+							<th style="width: 50%;"><s:text name="colRedaccion"/></th>
+							<th style="width: 10%;"><s:text name="colAcciones"/></th>
 						</tr>
 					</thead>
 					
@@ -91,12 +93,12 @@
 		<div align="center">
 			<s:submit class="boton" value="Aceptar" />
 			
+			<s:url var="urlGestionarTrayectorias" value="%{#pageContext.request.contextPath}/trayectorias">
+				<s:param name="idCU" value="%{idCU}"/>
+			</s:url>
 			<input class="boton" type="button"
-				onclick="preparaEnvio()"
-				value="Prueba" />
-			<input class="boton" type="button"
-				onclick="location.href='${pageContext.request.contextPath}/trayectoria"
-				value="Cancelar" />
+				onclick="location.href='${urlGestionarTrayectorias}'"
+				value="Cancelar" />			
 		</div>
 		<s:hidden id="jsonPasos" name="jsonPasos" value="%{jsonPasos}"/>    	
 	</s:form>

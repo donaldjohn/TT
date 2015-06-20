@@ -12,8 +12,8 @@
 </head>
 
 <body>
-	<h1><s:property value="%{casoUso.clave + ' ' + casoUso.numero + ' ' + casoUso.nombre}"/>: Trayectorias</h1>
-
+	<h1>Gestionar Trayectorias</h1>
+	<h3><s:property value="%{model.casoUso.clave + ' ' + model.casoUso.numero + ' ' + model.casoUso.nombre}"/></h3>
 	<s:actionmessage/>
 	<s:actionerror theme="jquery" />
 	
@@ -40,7 +40,7 @@
 						</s:url>
 						<s:a href="%{urlGestionarTrayectorias}"><img
 									id="" class="button" width="20" height="20"
-									title="Gestionar Trayectorias"
+									title="Gestionar Pasos"
 									src="${pageContext.request.contextPath}/resources/images/icons/gestionarPasos.png" /></s:a>
 					</td>
 					
