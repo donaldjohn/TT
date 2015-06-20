@@ -202,10 +202,8 @@ public class ElementoDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Set<Elemento> consultarElementos(Proyecto proyecto){
+	public ArrayList<Elemento> consultarElementos(Proyecto proyecto){
 		ArrayList<Elemento> results = null;
-		Set<Elemento> elementos = new HashSet<Elemento>(0);
-
 
 		try {
 			session.beginTransaction();
@@ -213,15 +211,13 @@ public class ElementoDAO {
 			query.setParameter("proyecto", proyecto.getId());
 			results = (ArrayList<Elemento>) query.list();
 			session.getTransaction().commit();
-			for (Elemento elemento : results){
-				elementos.add(elemento);
-			}
+
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
 		
-		return elementos;
+		return results;
 	}
 
 }

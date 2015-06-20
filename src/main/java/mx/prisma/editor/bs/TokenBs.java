@@ -83,7 +83,7 @@ public class TokenBs {
 									+ segmentos.get(2) + " no está registrada",
 									"MSG15", parametros);
 				}
-				redaccion = redaccion.replace(token, tokenACC + tokenSeparator1 + accion.getId());
+				redaccion = redaccion.replace(token, tokenACC + accion.getId());
 				break;
 			case ATRIBUTO: // ATR.ENTIDAD_A_B:NOMBRE_ATT
 				entidad = new EntidadDAO().consultarEntidad(segmentos
@@ -108,7 +108,7 @@ public class TokenBs {
 									+ segmentos.get(2) + " no está registrado",
 									"MSG15", parametros);
 				}
-				redaccion = redaccion.replace(token, tokenATR + tokenSeparator1
+				redaccion = redaccion.replace(token, tokenATR
 						+ atributo.getId());
 				break;
 			case ACTOR: // ACT.NOMBRE_ACT
@@ -123,7 +123,7 @@ public class TokenBs {
 							"TokenBs.convertirToken_Objeto: El actor no está registrado",
 							"MSG15", parametros);
 				}
-				redaccion = redaccion.replace(token, tokenACT + tokenSeparator1
+				redaccion = redaccion.replace(token, tokenACT
 						+ actor.getId());
 
 				break;
@@ -149,7 +149,7 @@ public class TokenBs {
 							"TokenBs.convertirToken_Objeto: El caso de uso "+ token +" no está registrado",
 							"MSG15", parametros);
 				}
-				redaccion = redaccion.replace(token, tokenCU + tokenSeparator1 + casoUso.getId());
+				redaccion = redaccion.replace(token, tokenCU + casoUso.getId());
 				break;
 			case ENTIDAD: // ENT.NOMBRE_ENT
 				entidad = new EntidadDAO().consultarEntidad(segmentos.get(1).replaceAll("_", " "), proyecto);
@@ -162,7 +162,7 @@ public class TokenBs {
 							"TokenBs.convertirToken_Objeto: La entidad "+ segmentos.get(1) +" no está registrada",
 							"MSG15", parametros);
 				}
-				redaccion = redaccion.replace(token, tokenENT + tokenSeparator1 + entidad.getId());
+				redaccion = redaccion.replace(token, tokenENT + entidad.getId());
 				break;
 			case TERMINOGLS: // GLS.NOMBRE_GLS
 				TerminoGlosario terminoGlosario = new TerminoGlosarioDAO()
@@ -201,7 +201,7 @@ public class TokenBs {
 							"TokenBs.convertirToken_Objeto: La pantalla "+ token +" no está registrada",
 							"MSG15", parametros);
 				}
-				redaccion = redaccion.replace(token, tokenIU + tokenSeparator1 + pantalla.getId());
+				redaccion = redaccion.replace(token, tokenIU + pantalla.getId());
 				break;
 			case MENSAJE: // MSG.NUMERO:NOMBRE_MSG
 				Mensaje mensaje = new MensajeDAO().consultarMensaje(segmentos
@@ -215,7 +215,7 @@ public class TokenBs {
 									+ segmentos.get(1) + " no está registrado",
 									"MSG15", parametros);
 				}
-				redaccion = redaccion.replace(token, segmentos.get(0) + tokenSeparator1
+				redaccion = redaccion.replace(token, tokenMSG
 						+ mensaje.getId());
 				break;
 			case REGLANEGOCIO: // RN.NUMERO:NOMBRE_RN
@@ -231,7 +231,7 @@ public class TokenBs {
 									+ segmentos.get(2) + " no está registrada",
 									"MSG15", parametros);
 				}
-				redaccion = redaccion.replace(token, segmentos.get(0) + tokenSeparator1
+				redaccion = redaccion.replace(token, tokenRN
 						+ reglaNegocio.getId());
 				break;
 			case TRAYECTORIA:

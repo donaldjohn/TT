@@ -24,6 +24,9 @@ INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Atributo');
 INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Mensaje');
 INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Termino del glosario');
 INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Accion');
+INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Pantalla');
+INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Paso');
+INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Trayectoria');
 
 
 INSERT INTO PRISMA.TipoDato (nombre) VALUES ('Cadena');

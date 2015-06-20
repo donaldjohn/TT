@@ -1,9 +1,7 @@
 package mx.prisma.util;
 
-import java.util.ArrayList;
+
 import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
 import mx.prisma.admin.dao.ColaboradorDAO;
 import mx.prisma.admin.dao.EstadoProyectoDAO;
@@ -15,9 +13,7 @@ import mx.prisma.admin.model.EstadoProyecto;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.admin.model.Rol;
 import mx.prisma.admin.model.Telefono;
-import mx.prisma.editor.bs.Referencia;
 import mx.prisma.editor.bs.Referencia.TipoReferencia;
-import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.dao.ActorDAO;
 import mx.prisma.editor.dao.CardinalidadDAO;
 import mx.prisma.editor.dao.CasoUsoDAO;
@@ -25,21 +21,15 @@ import mx.prisma.editor.dao.ElementoDAO;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.ModuloDAO;
-import mx.prisma.editor.dao.TrayectoriaDAO;
-import mx.prisma.editor.dao.VerboDAO;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Cardinalidad;
 import mx.prisma.editor.model.CasoUso;
-import mx.prisma.editor.model.CasoUsoActor;
-import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Modulo;
-import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
-import mx.prisma.editor.model.Trayectoria;
-import mx.prisma.editor.model.Verbo;
+
 
 public class Test {
 	public static void main(String[] args) {
@@ -66,13 +56,10 @@ public class Test {
 		// pruebaRegistroActor(); // 07/06/2015 OK
 
 		// pruebaRegistroCasoUso(); //05/06/2015
-		// pruebaModificacionCasoUso(); 
+		 pruebaModificacionCasoUso(); 
 		// pruebaConsultaCasoUso(); //05/06/2015
-		Proyecto proyecto = new ProyectoDAO().consultarProyecto(1);
-		Set<Elemento> elementos = new ElementoDAO().consultarElementos(proyecto);
-		for (Elemento elemento : elementos) {
-			System.out.println(elemento.getNombre());
-		}
+		
+		
 
 	}
 
@@ -248,7 +235,6 @@ public class Test {
 		try {
 			new CasoUsoDAO().registrarCasoUso(cu);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -262,15 +248,7 @@ public class Test {
 		String entradas = "ATR.Incendio:Fecha_del_combate, ATR.Incendio:Número_de_participantes, ATR.Predio:Clave_única_del_predio y la GLS.Causa_del_incendio.";
 		String salidas = "ATR.Predio:Clave_única_del_predio, ATR.Predio:Clave_única_del_predio, GLS.Causa_del_incendio y el mensaje MSG.1:Coordenadas_mínimas_requeridas.";
 		String reglas = "RN.1:Datos_correctos, RN.2:Unicidad_de_identificadores";		
-		
-		String precondicion1 = "";
-		
-		/*
-		String actores = "";
-		String entradas = "";
-		String salidas = "";
-		String reglas = "";
-		*/
+
 		
 		CasoUso cu = new CasoUsoDAO().consultarCasoUso(idCasoUso);
 
@@ -281,9 +259,12 @@ public class Test {
 		cu.setRedaccionSalidas(salidas);
 		cu.setRedaccionReglasNegocio(reglas);
 		
+		cu.getPostprecondiciones().clear();
 		cu.getPostprecondiciones().add(new PostPrecondicion("CU.SF.1:Registrar_predio", true, cu));
 		cu.getPostprecondiciones().add(new PostPrecondicion("El CU.SF.1:Registrar_predio", true, cu));
-		cu.getPostprecondiciones().add(new PostPrecondicion("El CU.SF.1:Registrar_predio", true, cu));
+		cu.getPostprecondiciones().add(new PostPrecondicion("El CU.SF.1:Registrar_predio", false, cu));
+		
+		
 		
 
 		try {
