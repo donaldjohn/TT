@@ -56,7 +56,7 @@ public class Test {
 
 		// pruebaRegistroEntidad(); // 31/05/2015
 		// pruebaModificacionEntidad(); // 31/05/2015
-		// pruebaConsultaEntidad(); // 31/05/2015
+		// pruebaConsultaEntidad(); // 31/05/2015 
 
 		// pruebaRegistroAtributo(); // 31/05/2015
 		// pruebaModificacionAtributo(); // 31/05/2015
