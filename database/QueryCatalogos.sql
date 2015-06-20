@@ -23,6 +23,8 @@ INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Actor');
 INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Atributo');
 INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Mensaje');
 INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Termino del glosario');
+INSERT INTO PRISMA.TipoParametro (nombre) VALUES ('Accion');
+
 
 INSERT INTO PRISMA.TipoDato (nombre) VALUES ('Cadena');
 INSERT INTO PRISMA.TipoDato (nombre) VALUES ('Flotante');

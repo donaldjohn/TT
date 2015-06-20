@@ -2,6 +2,7 @@ package mx.prisma.editor.dao;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import org.hibernate.Session;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.model.Elemento;
+import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.util.HibernateUtil;
 
@@ -201,20 +203,25 @@ public class ElementoDAO {
 
 	@SuppressWarnings("unchecked")
 	public Set<Elemento> consultarElementos(Proyecto proyecto){
-		Set<Elemento> results  = null;
+		ArrayList<Elemento> results = null;
+		Set<Elemento> elementos = new HashSet<Elemento>(0);
+
 
 		try {
 			session.beginTransaction();
 			Query query = session.createQuery("from Elemento where Proyectoid = :proyecto");
 			query.setParameter("proyecto", proyecto.getId());
-			results = (Set<Elemento>) query.list();
+			results = (ArrayList<Elemento>) query.list();
 			session.getTransaction().commit();
+			for (Elemento elemento : results){
+				elementos.add(elemento);
+			}
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
 		
-		return results;
+		return elementos;
 	}
 
 }

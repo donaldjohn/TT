@@ -780,10 +780,5 @@ public class TokenBs {
 	}
 
 
-	public static boolean duplicadoAccion_Precondiciones(
-			Set<PostPrecondicion> postprecondiciones, Accion accion) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 }

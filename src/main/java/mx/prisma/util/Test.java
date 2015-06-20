@@ -3,6 +3,7 @@ package mx.prisma.util;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import mx.prisma.admin.dao.ColaboradorDAO;
 import mx.prisma.admin.dao.EstadoProyectoDAO;
@@ -68,7 +69,7 @@ public class Test {
 		// pruebaModificacionCasoUso(); 
 		// pruebaConsultaCasoUso(); //05/06/2015
 		Proyecto proyecto = new ProyectoDAO().consultarProyecto(1);
-		ArrayList<Elemento> elementos = new ElementoDAO().consultarElementos(proyecto);
+		Set<Elemento> elementos = new ElementoDAO().consultarElementos(proyecto);
 		for (Elemento elemento : elementos) {
 			System.out.println(elemento.getNombre());
 		}

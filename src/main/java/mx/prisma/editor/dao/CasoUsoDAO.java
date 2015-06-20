@@ -19,6 +19,7 @@ import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.CasoUsoActor;
 import mx.prisma.editor.model.CasoUsoReglaNegocio;
+import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Entrada;
 import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Mensaje;
@@ -30,6 +31,7 @@ import mx.prisma.editor.model.ReferenciaParametro;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.Salida;
 import mx.prisma.editor.model.TerminoGlosario;
+import mx.prisma.editor.model.TipoParametro;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.util.HibernateUtil;
 
@@ -156,52 +158,112 @@ public class CasoUsoDAO extends ElementoDAO {
 
 			}
 		}
-
 	}
 
 	public void almacenarObjetosToken(ArrayList<Object> objetos,
 			CasoUso casouso, TipoSeccion tipoSeccion, PostPrecondicion postPrecondicion) {
 
-		// Secciones:
-		PostPrecondicion postprecondicion;
-		
+		int numeroTokenAccion = 0;
+		int numeroTokenActor = 0;
+		int numeroTokenAtributo = 0;
+		int numeroTokenCasoUso = 0;
+		int numeroTokenEntidad = 0;
+		int numeroTokenMensaje = 0;
+		int numeroTokenPantalla = 0;
+		int numeroTokenPaso = 0;
+		int numeroTokenReglaNegocio = 0;
 
 		// Elementos
-		ReferenciaParametro referenciaParametro;
+		ReferenciaParametro referenciaParametro = null;
 		Accion accion;
 		Atributo atributo;
 		Actor actor;
-
+		TipoParametro tipoParametro;
+		CasoUso casoUso;
+		Entidad entidad;
+		Mensaje mensaje;
+		Pantalla pantalla;
+		ReglaNegocio reglaNegocio;
+		Paso paso;
+		TerminoGlosario terminoGlosario;
+		
 		for (Object objeto : objetos) {
 			switch (Referencia.getTipoRelacion(
 					Referencia.getTipoReferencia(objeto), tipoSeccion)) {
 			
 			case ACCION_POSTPRECONDICIONES:
 				accion = (Accion) objeto;
-				referenciaParametro = new ReferenciaParametro();
-				if (!TokenBs.duplicadoAccion_Precondiciones(casouso.getPostprecondiciones(), accion)) { 
-					
-				}
+				tipoParametro = new TipoParametroDAO().consultarTipoParametro("Accion");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setAccionDestino(accion);
+				referenciaParametro.setNumerToken(numeroTokenAccion++);
+
 				break;
 			case ACTOR_POSTPRECONDICIONES:
+				actor = (Actor) objeto;
+				tipoParametro = new TipoParametroDAO().consultarTipoParametro("Actor");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setElementoDestino(actor);
+				referenciaParametro.setNumerToken(numeroTokenActor++);
 				break;
 			case ATRIBUTO_POSTPRECONDICIONES:
+				atributo = (Atributo) objeto;
+				tipoParametro = new TipoParametroDAO().consultarTipoParametro("Atributo");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setAtributo(atributo);
+				referenciaParametro.setNumerToken(numeroTokenAtributo++);
+				
 				break;
 			case CASOUSO_POSTPRECONDICIONES:
+				casoUso = (CasoUso) objeto;
+				tipoParametro = new TipoParametroDAO().consultarTipoParametro("Caso de uso");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setElementoDestino(casoUso);
+				referenciaParametro.setNumerToken(numeroTokenCasoUso++);
 				break;
 			case ENTIDAD_POSTPRECONDICIONES:
+				entidad = (Entidad) objeto;
+				tipoParametro = new TipoParametroDAO().consultarTipoParametro("Entidad");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setElementoDestino(entidad);
+				referenciaParametro.setNumerToken(numeroTokenEntidad++);
 				break;
 			case MENSAJES_POSTPRECONDICIONES:
+				mensaje = (Mensaje) objeto;
+				tipoParametro = new TipoParametroDAO().consultarTipoParametro("Mensaje");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setElementoDestino(mensaje);
+				referenciaParametro.setNumerToken(numeroTokenMensaje++);
 				break;
 			case PANTALLA_POSTPRECONDICIONES:
+				pantalla = (Pantalla) objeto;
+				tipoParametro = new TipoParametroDAO().consultarTipoParametro("Pantalla");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setElementoDestino(pantalla);
+				referenciaParametro.setNumerToken(numeroTokenPantalla++);
+				
 				break;
 			case PASO_POSTPRECONDICIONES:
+				paso = (Paso) objeto;
+				tipoParametro = new TipoParametroDAO().consultarTipoParametro("Paso");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setPasoDestino(paso);
+				referenciaParametro.setNumerToken(numeroTokenPaso++);
 				break;
 			case REGLANEGOCIO_POSTPRECONDICIONES:
+				reglaNegocio = (ReglaNegocio) objeto;
+				tipoParametro = new TipoParametroDAO().consultarTipoParametro("Regla de negocio");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setElementoDestino(reglaNegocio);
+				referenciaParametro.setNumerToken(numeroTokenReglaNegocio++);
 				break;
-			case REGLANEGOCIO_REGLASNEGOCIOS:
-				break;
+
 			case TERMINOGLS_POSTPRECONDICIONES:
+				terminoGlosario = (TerminoGlosario) objeto;
+				tipoParametro = new TipoParametroDAO().consultarTipoParametro("Regla de negocio");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setElementoDestino(terminoGlosario);
+				referenciaParametro.setNumerToken(numeroTokenReglaNegocio++);
 				break;
 			case TRAYECTORIA_POSTPRECONDICIONES:
 				break;
@@ -212,6 +274,7 @@ public class CasoUsoDAO extends ElementoDAO {
 
 			}
 		}
+		referenciaParametro.setPostPrecondicion(postPrecondicion);
 
 	}
 

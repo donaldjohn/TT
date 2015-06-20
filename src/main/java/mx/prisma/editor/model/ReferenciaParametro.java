@@ -27,6 +27,7 @@ public class ReferenciaParametro implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private TipoParametro tipoParametro;
+	private int numerToken;
 	
 	// Entidad que hizo la referencia:
 	private PostPrecondicion postPrecondicion;
@@ -136,6 +137,16 @@ public class ReferenciaParametro implements java.io.Serializable {
 
 	public void setTipoParametro(TipoParametro tipoParametro) {
 		this.tipoParametro = tipoParametro;
+	}
+
+	@Column(name = "numeroToken", nullable = false)
+	public int getNumerToken() {
+		return numerToken;
+	}
+
+
+	public void setNumerToken(int numerToken) {
+		this.numerToken = numerToken;
 	}
 	
 	
