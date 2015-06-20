@@ -15,7 +15,7 @@ function Extension(idCUDestino, causa, region) {
 }
 
 /*
- * Constructor del objeto cu
+ * Constructor del objeto CasoUso
  */
 function CasoUso (id) {
 	this.id = id;
@@ -38,12 +38,40 @@ function Verbo(nombre) {
 	this.nombre = nombre;
 }
 
+/*
+ * Constructores del objeto ReglaNegocio
+ * */
 function Regla(numero, nombre) {
     this.numero = numero;
     this.nombre = nombre;
 }
    
-function Actor(numero, nombre) {
-    this.numero = numero;
+/*
+ * Constructor del objeto Actor
+ */
+function Actor(nombre) {
     this.nombre = nombre;
 }
+
+/*
+ * Constructor del objeto Entrada
+ */
+function Entrada(nombre) {
+    this.nombre = nombre;
+}
+
+/*
+ * Constructor del objeto Salida
+ */
+function Entrada(nombre) {
+    this.nombre = nombre;
+}
+
+/*
+ * Constructor del objeto Mensaje
+ */
+function Mensaje(numero, nombre) {
+	this.numero = numero;
+    this.nombre = nombre;
+}
+

@@ -7,17 +7,18 @@
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Casos de uso</title>
+
 <![CDATA[
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/constructores.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/validaciones.js"></script>
-	
-	<script type="text/javascript" src="http://ichord.github.io/Caret.js/src/jquery.caret.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.caret.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.atwho.js"></script>
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/token.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/token.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/index-editNew.js"></script>
 	
 	
 ]]>
+
 </head>
 <body>
 
@@ -76,14 +77,14 @@
 					</tr>
 					<tr>
 						<td class="label"><s:text name="labelEntradas" /></td>
-						<td><s:textarea rows="5" name="model.redaccionEntradas"
+						<td><s:textarea rows="5" name="model.redaccionEntradas" id="entradaInput"
 								maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
 								fieldName="model.redaccionEntradas" cssClass="error"
 								theme="jquery" /></td>
 					</tr>
 					<tr>
 						<td class="label"><s:text name="labelSalidas" /></td>
-						<td><s:textarea rows="5" name="model.redaccionSalidas"
+						<td><s:textarea rows="5" name="model.redaccionSalidas" id="salidaInput"
 								maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
 								fieldName="model.redaccionSalidas" cssClass="error"
 								theme="jquery" /></td>
@@ -165,7 +166,20 @@
 		</div>    
 		<s:hidden name="jsonPrecondiciones" id="jsonPrecondiciones" value="%{jsonPrecondiciones}"/>
 		<s:hidden name="jsonPostcondiciones" id="jsonPostcondiciones" value="%{jsonPostcondiciones}"/>
-		<s:hidden name="jsonPtosExtension" id="jsonPtosExtension" value="%{jsonPtosExtension}"/>	
+		<s:hidden name="jsonPtosExtension" id="jsonPtosExtension" value="%{jsonPtosExtension}"/>
+		
+		<!-- Json de elementos -->
+		<s:hidden name="jsonReglasNegocio" id="jsonReglasNegocio" value="%{jsonReglasNegocio}"/>
+		<s:hidden name="jsonEntidades" id="jsonEntidades" value="%{jsonEntidades}"/>
+		<s:hidden name="jsonCasosUsoProyecto" id="jsonCasosUsoProyecto" value="%{jsonCasosUsoProyecto}"/>
+		<s:hidden name="jsonPantallas" id="jsonPantallas" value="%{jsonPantallas}"/>
+		<s:hidden name="jsonMensajes" id="jsonMensajes" value="%{jsonMensajes}"/>
+		<s:hidden name="jsonActores" id="jsonActores" value="%{jsonActores}"/>
+		<s:hidden name="jsonTerminosGls" id="jsonTerminosGls" value="%{jsonTerminosGls}"/>
+		<s:hidden name="jsonAtributos" id="jsonAtributos" value="%{jsonAtributos}"/>
+		<s:hidden name="jsonPasos" id="jsonPasos" value="%{jsonPasos}"/>
+		<s:hidden name="jsonTrayectorias" id="jsonTrayectorias" value="%{jsonTrayectorias}"/>
+		<s:hidden name="jsonAcciones" id="jsonAcciones" value="%{jsonAcciones}"/>
 	</s:form>
 	
 	

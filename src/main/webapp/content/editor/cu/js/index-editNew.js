@@ -1,5 +1,6 @@
 $(document).ready(function() {
 	$('table.tablaGestion').DataTable();
+	token.cargarListasToken();
 	var json = $("#jsonPrecondiciones").val();
 	if (json !== "" && json != null) {
 		var parsedJson = JSON.parse(json);

@@ -310,3 +310,15 @@ textfield {
 .hide {
 	visibility: hidden;
 }
+
+/*Token*/
+.listaToken {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:12px;
+	font-weight: bold;	
+}
+
+.listaNombre {
+	font-size:10px;
+	font-style: italic;
+}

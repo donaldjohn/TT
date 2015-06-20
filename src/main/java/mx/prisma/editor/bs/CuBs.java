@@ -1,6 +1,7 @@
 package mx.prisma.editor.bs;
 
 import java.util.List;
+import java.util.Set;
 
 import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Colaborador;
@@ -10,8 +11,10 @@ import mx.prisma.editor.dao.ElementoDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Modulo;
+import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.util.PRISMAException;
 
 public class CuBs {
@@ -150,6 +153,11 @@ public class CuBs {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static Set<Elemento> consultarElementos(Proyecto proyecto) {
+		Set<Elemento> listElemento = new ElementoDAO().consultarElementos(proyecto);
+		return listElemento;
 	}
 	
 }

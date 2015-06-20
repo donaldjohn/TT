@@ -127,6 +127,7 @@ public class Referencia {
 		if (objeto instanceof Trayectoria){
 			return TipoReferencia.TRAYECTORIA;
 		}
+		System.out.println("No es instancia de ninguna clase");
 		
 		return null;
 	}
