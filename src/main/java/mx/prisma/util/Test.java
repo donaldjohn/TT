@@ -36,6 +36,7 @@ import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Paso;
+import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.editor.model.Verbo;
 
@@ -64,10 +65,13 @@ public class Test {
 		// pruebaRegistroActor(); // 07/06/2015 OK
 
 		// pruebaRegistroCasoUso(); //05/06/2015
-		 pruebaModificacionCasoUso(); 
+		// pruebaModificacionCasoUso(); 
 		// pruebaConsultaCasoUso(); //05/06/2015
-		
-		 
+		Proyecto proyecto = new ProyectoDAO().consultarProyecto(1);
+		ArrayList<Elemento> elementos = new ElementoDAO().consultarElementos(proyecto);
+		for (Elemento elemento : elementos) {
+			System.out.println(elemento.getNombre());
+		}
 
 	}
 
@@ -258,6 +262,8 @@ public class Test {
 		String salidas = "ATR.Predio:Clave_única_del_predio, ATR.Predio:Clave_única_del_predio, GLS.Causa_del_incendio y el mensaje MSG.1:Coordenadas_mínimas_requeridas.";
 		String reglas = "RN.1:Datos_correctos, RN.2:Unicidad_de_identificadores";		
 		
+		String precondicion1 = "";
+		
 		/*
 		String actores = "";
 		String entradas = "";
@@ -273,6 +279,11 @@ public class Test {
 		cu.setRedaccionEntradas(entradas);
 		cu.setRedaccionSalidas(salidas);
 		cu.setRedaccionReglasNegocio(reglas);
+		
+		cu.getPostprecondiciones().add(new PostPrecondicion("CU.SF.1:Registrar_predio", true, cu));
+		cu.getPostprecondiciones().add(new PostPrecondicion("El CU.SF.1:Registrar_predio", true, cu));
+		cu.getPostprecondiciones().add(new PostPrecondicion("El CU.SF.1:Registrar_predio", true, cu));
+		
 
 		try {
 			new CasoUsoDAO().modificarCasoUso(cu);

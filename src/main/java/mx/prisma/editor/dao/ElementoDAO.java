@@ -13,7 +13,6 @@ import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Modulo;
-import mx.prisma.editor.model.Pantalla;
 import mx.prisma.util.HibernateUtil;
 
 public class ElementoDAO {
@@ -60,23 +59,6 @@ public class ElementoDAO {
 		}
 
 		return elemento;
-
-	}
-
-	public List<Elemento> consultarElementos() {
-		List<Elemento> elementos = null;
-
-		try {
-			session.beginTransaction();
-			Query query = session.createQuery("from Elemento");
-			elementos = query.list();
-			session.getTransaction().commit();
-		} catch (HibernateException he) {
-			he.printStackTrace();
-			session.getTransaction().rollback();
-		}
-
-		return elementos;
 
 	}
 
@@ -158,6 +140,7 @@ public class ElementoDAO {
 			return 0;
 	}
 
+	@SuppressWarnings("unchecked")
 	public int lastIndexCUsinTitulo(int claveModulo) {
 		List<String> results = null;
 		String auxiliar = "";
@@ -192,6 +175,7 @@ public class ElementoDAO {
 		return numeros.get(0)*-1;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Elemento consultarElemento(String nombre, Proyecto proyecto, String tabla) {
 		List<Elemento> results  = null;
 
@@ -212,6 +196,24 @@ public class ElementoDAO {
 		} else 
 			return results.get(0);
 
+	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<Elemento> consultarElementos(Proyecto proyecto){
+		ArrayList<Elemento> results  = null;
+
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("from Elemento where Proyectoid = :proyecto");
+			query.setParameter("proyecto", proyecto.getId());
+			results = (ArrayList<Elemento>) query.list();
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		
+		return results;
 	}
 
 }

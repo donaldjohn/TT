@@ -46,6 +46,7 @@ public class AccionDAO {
 
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Accion consultarAccion(String nombre, Pantalla pantalla) {
 		List<Accion> results  = null;
 

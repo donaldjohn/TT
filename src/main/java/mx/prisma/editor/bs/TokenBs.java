@@ -1,6 +1,7 @@
 package mx.prisma.editor.bs;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.dao.AccionDAO;
@@ -17,11 +18,16 @@ import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.CasoUsoActor;
+import mx.prisma.editor.model.CasoUsoReglaNegocio;
 import mx.prisma.editor.model.Entidad;
+import mx.prisma.editor.model.Entrada;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
+import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.ReglaNegocio;
+import mx.prisma.editor.model.Salida;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.util.PRISMAException;
 
@@ -668,6 +674,116 @@ public class TokenBs {
 		segmentos.add(segmento);
 
 		return segmentos;
+	}
+
+	public static boolean duplicadoActor_Actores(Set<CasoUsoActor> actores,
+			CasoUsoActor casoUsoActor) {
+
+		for (CasoUsoActor casoUsoActori : actores) {
+			if (casoUsoActori.getActor().getId() == casoUsoActor.getActor()
+					.getId()) {
+				if (casoUsoActori.getCasouso().getId() == casoUsoActor
+						.getCasouso().getId()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static boolean duplicadoAtributo_Entradas(Set<Entrada> entradas,
+			Entrada entrada) {
+		for (Entrada entradai : entradas) {
+			if (entrada.getAtributo() != null)
+				if (entradai.getAtributo().getId() == entrada.getAtributo()
+						.getId()) {
+					if (entradai.getCasoUso().getId() == entrada.getCasoUso()
+							.getId()) {
+						return true;
+					}
+				}
+		}
+		return false;
+	}
+
+	public static boolean duplicadoAtributo_Salidas(Set<Salida> salidas,
+			Salida salida) {
+		for (Salida salidai : salidas) {
+			if (salidai.getAtributo() != null)
+				if (salidai.getAtributo().getId() == salida.getAtributo()
+						.getId()) {
+					if (salidai.getCasoUso().getId() == salida.getCasoUso()
+							.getId()) {
+						return true;
+					}
+				}
+		}
+		return false;
+	}
+
+	public static boolean duplicadoMensaje_Salidas(Set<Salida> salidas,
+			Salida salida) {
+		for (Salida salidai : salidas) {
+			if (salidai.getMensaje() != null)
+				if (salidai.getMensaje().getId() == salida.getMensaje().getId()) {
+					if (salidai.getCasoUso().getId() == salida.getCasoUso()
+							.getId()) {
+						return true;
+					}
+				}
+		}
+		return false;
+	}
+
+	public static boolean duplicadoRegla_Reglas(
+			Set<CasoUsoReglaNegocio> reglas, CasoUsoReglaNegocio casoUsoReglas) {
+		for (CasoUsoReglaNegocio reglai : reglas) {
+			if (reglai.getReglaNegocio().getId() == casoUsoReglas
+					.getReglaNegocio().getId()) {
+				if (reglai.getCasoUso().getId() == casoUsoReglas.getCasoUso()
+						.getId()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static boolean duplicadoTermino_Entradas(Set<Entrada> entradas,
+			Entrada entrada) {
+		for (Entrada entradai : entradas) {
+			if (entradai.getTerminoGlosario() != null)
+				if (entradai.getTerminoGlosario().getId() == entrada
+						.getTerminoGlosario().getId()) {
+					if (entradai.getCasoUso().getId() == entrada.getCasoUso()
+							.getId()) {
+						return true;
+					}
+				}
+		}
+		return false;
+	}
+
+	public static boolean duplicadoTermino_Salidas(Set<Salida> salidas,
+			Salida salida) {
+		for (Salida salidai : salidas) {
+			if (salidai.getTerminoGlosario() != null)
+				if (salidai.getTerminoGlosario().getId() == salida
+						.getTerminoGlosario().getId()) {
+					if (salidai.getCasoUso().getId() == salida.getCasoUso()
+							.getId()) {
+						return true;
+					}
+				}
+		}
+		return false;
+	}
+
+
+	public static boolean duplicadoAccion_Precondiciones(
+			Set<PostPrecondicion> postprecondiciones, Accion accion) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

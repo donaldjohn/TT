@@ -26,7 +26,6 @@ public class ReferenciaParametro implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer id;
-	private int numeroToken;
 	private TipoParametro tipoParametro;
 	
 	// Entidad que hizo la referencia:
@@ -38,24 +37,14 @@ public class ReferenciaParametro implements java.io.Serializable {
 	private Paso pasoDestino;
 	private Elemento elementoDestino;
 	private Accion accionDestino;
+	private Atributo atributo;
 
 	public ReferenciaParametro() {
 	}
 
-	public ReferenciaParametro(int numeroToken) {
-		this.numeroToken = numeroToken;
-	}
 
-	public ReferenciaParametro(int numeroToken, PostPrecondicion postPrecondicion,
-			Paso paso, Extension extension, Paso pasoDestino,
-			Elemento elementoDestino, Accion accionDestino) {
-		this.numeroToken = numeroToken;
-		this.postPrecondicion = postPrecondicion;
-		this.paso = paso;
-		this.extension = extension;
-		this.pasoDestino = pasoDestino;
-		this.elementoDestino = elementoDestino;
-		this.accionDestino = accionDestino;
+	public ReferenciaParametro(TipoParametro tipoParametro) {
+		this.tipoParametro = tipoParametro;
 	}
 
 	@Id
@@ -68,18 +57,9 @@ public class ReferenciaParametro implements java.io.Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-	@Column(name = "numeroToken", nullable = false)
-	public int getNumeroToken() {
-		return this.numeroToken;
-	}
-
-	public void setNumeroToken(int numeroToken) {
-		this.numeroToken = numeroToken;
-	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "PostPrecondicionid", referencedColumnName="id", nullable = false)
+	@JoinColumn(name = "PostPrecondicionid", referencedColumnName="id", nullable = true)
 	public PostPrecondicion getPostPrecondicion() {
 		return postPrecondicion;
 	}
@@ -89,7 +69,7 @@ public class ReferenciaParametro implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "Pasoid", referencedColumnName="id", nullable = false)
+	@JoinColumn(name = "Pasoid", referencedColumnName="id", nullable = true)
 	public Paso getPaso() {
 		return paso;
 	}
@@ -99,7 +79,7 @@ public class ReferenciaParametro implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "Extensionid", referencedColumnName="id", nullable = false)
+	@JoinColumn(name = "Extensionid", referencedColumnName="id", nullable = true)
 	public Extension getExtension() {
 		return extension;
 	}
@@ -109,7 +89,7 @@ public class ReferenciaParametro implements java.io.Serializable {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "PasoidDestino", referencedColumnName="id", nullable = false)
+	@JoinColumn(name = "PasoidDestino", referencedColumnName="id", nullable = true)
 	public Paso getPasoDestino() {
 		return pasoDestino;
 	}
@@ -119,7 +99,7 @@ public class ReferenciaParametro implements java.io.Serializable {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "ElementoidDestino", referencedColumnName="id", nullable = false)
+	@JoinColumn(name = "ElementoidDestino", referencedColumnName="id", nullable = true)
 	public Elemento getElementoDestino() {
 		return elementoDestino;
 	}
@@ -129,7 +109,7 @@ public class ReferenciaParametro implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "AccionidDestino", referencedColumnName="id", nullable = false)
+	@JoinColumn(name = "AccionidDestino", referencedColumnName="id", nullable = true)
 	public Accion getAccionDestino() {
 		return accionDestino;
 	}
@@ -137,9 +117,19 @@ public class ReferenciaParametro implements java.io.Serializable {
 	public void setAccionDestino(Accion accionDestino) {
 		this.accionDestino = accionDestino;
 	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "Atributoid", referencedColumnName="id", nullable = true)
+	public Atributo getAtributo() {
+		return atributo;
+	}
+
+	public void setAtributo(Atributo atributo) {
+		this.atributo = atributo;
+	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "TipoParametroid", referencedColumnName="id", nullable = false)
+	@JoinColumn(name = "TipoParametroid", referencedColumnName="id", nullable = true)
 	public TipoParametro getTipoParametro() {
 		return tipoParametro;
 	}
@@ -147,6 +137,8 @@ public class ReferenciaParametro implements java.io.Serializable {
 	public void setTipoParametro(TipoParametro tipoParametro) {
 		this.tipoParametro = tipoParametro;
 	}
+	
+	
 
 	
 }

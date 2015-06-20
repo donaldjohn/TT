@@ -1,6 +1,5 @@
 package mx.prisma.editor.bs;
 
-import mx.prisma.editor.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Atributo;
@@ -20,42 +19,42 @@ public class Referencia {
 	}
 	
 	public enum TipoSeccion {
-		ACTORES, ENTRADAS, SALIDAS, REGLAS, PRECONDICIONES, POSTCONDICIONES, REGLASNEGOCIOS, PASOS, EXTENSIONES
+		ACTORES, ENTRADAS, SALIDAS, REGLAS, POSTPRECONDICIONES, REGLASNEGOCIOS, PASOS, EXTENSIONES
 	}
 	
 	public enum TipoRelacion {
 		/* Actores */
-		ACTOR_ACTORES, ACTOR_PRECONDICIONES, ACTOR_POSTCONDICIONES, ACTOR_PASOS,
+		ACTOR_ACTORES, ACTOR_POSTPRECONDICIONES, ACTOR_PASOS,
 			
 		/* Entidades */
-		ENTIDAD_PRECONDICIONES, ENTIDAD_POSTCONDICIONES, ENTIDAD_PASOS,
+		ENTIDAD_POSTPRECONDICIONES, ENTIDAD_PASOS,
 		
 		/* Casos de uso */
-		CASOUSO_PRECONDICIONES, CASOUSO_POSTCONDICIONES, CASOUSO_PASOS,
+		CASOUSO_POSTPRECONDICIONES, CASOUSO_PASOS,
 		
 		/* Pantalla */
-		PANTALLA_PASOS, PANTALLA_PRECONDICIONES, PANTALLA_POSTCONDICIONES,
+		PANTALLA_PASOS, PANTALLA_POSTPRECONDICIONES,
 		
 		/* Mensajes */
-		MENSAJE_SALIDAS, MENSAJES_PRECONDICIONES, MENSAJE_POSTCONDICIONES, MENSAJE_PASOS,
+		MENSAJE_SALIDAS, MENSAJES_POSTPRECONDICIONES, MENSAJE_PASOS,
 		
 		/* Reglas de negocio */
-		REGLANEGOCIO_REGLASNEGOCIOS, REGLANEGOCIO_PRECONDICIONES, REGLANEGOCIO_POSTCONDICIONES, REGLANEGOCIO_PASOS,
+		REGLANEGOCIO_REGLASNEGOCIOS, REGLANEGOCIO_POSTPRECONDICIONES, REGLANEGOCIO_PASOS,
 		
 		/* Término del glosario */		
-		TERMINOGLS_ENTRADAS, TERMINOGLS_SALIDAS, TERMINOGLS_PRECONDICIONES, TERMINOGLS_POSTCONDICIONES, TERMINOGLS_PASOS,
+		TERMINOGLS_ENTRADAS, TERMINOGLS_SALIDAS, TERMINOGLS_POSTPRECONDICIONES, TERMINOGLS_PASOS,
 
 		/* Atributos */		
-		ATRIBUTO_ENTRADAS, ATRIBUTO_SALIDAS, ATRIBUTO_PRECONDICIONES, ATRIBUTO_POSTCONDICIONES, ATRIBUTO_PASOS,
+		ATRIBUTO_ENTRADAS, ATRIBUTO_SALIDAS, ATRIBUTO_POSTPRECONDICIONES, ATRIBUTO_PASOS,
 		
 		/* Acciones */
-		ACCION_PRECONDICIONES, ACCION_POSTCONDICIONES, ACCION_PASOS,
+		ACCION_POSTPRECONDICIONES, ACCION_PASOS,
 		
 		/* Trayectorias */
-		TRAYECTORIA_PRECONDICIONES, TRAYECTORIA_POSTCONDICIONES, TRAYECTORIA_PASOS,
+		TRAYECTORIA_POSTPRECONDICIONES, TRAYECTORIA_PASOS,
 		
 		/* Pasos */
-		PASO_PASOS, PASO_PRECONDICIONES, PASO_POSTCONDICIONES, PASO_EXTENSIONES
+		PASO_PASOS, PASO_POSTPRECONDICIONES, PASO_EXTENSIONES
 	}
 
 	
@@ -137,12 +136,9 @@ public class Referencia {
 			if (tipoSeccion == TipoSeccion.ACTORES) {
 				return TipoRelacion.ACTOR_ACTORES;
 			}
-			if (tipoSeccion == TipoSeccion.PRECONDICIONES) {
-				return TipoRelacion.ACTOR_PRECONDICIONES;
+			if (tipoSeccion == TipoSeccion.POSTPRECONDICIONES) {
+				return TipoRelacion.ACTOR_POSTPRECONDICIONES;
 				
-			}
-			if (tipoSeccion == TipoSeccion.POSTCONDICIONES) {
-				return TipoRelacion.ACCION_POSTCONDICIONES;
 			}
 			if (tipoSeccion == TipoSeccion.PASOS) {
 				return TipoRelacion.ACTOR_PASOS;
@@ -150,12 +146,9 @@ public class Referencia {
 		}
 		
 		if(tipoReferencia == TipoReferencia.ENTIDAD) {
-			if (tipoSeccion == TipoSeccion.PRECONDICIONES) {
-				return TipoRelacion.ENTIDAD_PRECONDICIONES;
+			if (tipoSeccion == TipoSeccion.POSTPRECONDICIONES) {
+				return TipoRelacion.ENTIDAD_POSTPRECONDICIONES;
 				
-			}
-			if (tipoSeccion == TipoSeccion.POSTCONDICIONES) {
-				return TipoRelacion.ENTIDAD_POSTCONDICIONES;
 			}
 			if (tipoSeccion == TipoSeccion.PASOS) {
 				return TipoRelacion.ENTIDAD_PASOS;
@@ -163,12 +156,9 @@ public class Referencia {
 		}
 		
 		if(tipoReferencia == TipoReferencia.CASOUSO) {
-			if (tipoSeccion == TipoSeccion.PRECONDICIONES) {
-				return TipoRelacion.CASOUSO_PRECONDICIONES;
+			if (tipoSeccion == TipoSeccion.POSTPRECONDICIONES) {
+				return TipoRelacion.CASOUSO_POSTPRECONDICIONES;
 				
-			}
-			if (tipoSeccion == TipoSeccion.POSTCONDICIONES) {
-				return TipoRelacion.CASOUSO_POSTCONDICIONES;
 			}
 			if (tipoSeccion == TipoSeccion.PASOS) {
 				return TipoRelacion.CASOUSO_PASOS;
@@ -179,12 +169,9 @@ public class Referencia {
 			if (tipoSeccion == TipoSeccion.PASOS) {
 				return TipoRelacion.PANTALLA_PASOS;
 			}		
-			if (tipoSeccion == TipoSeccion.PRECONDICIONES) {
-				return TipoRelacion.CASOUSO_PRECONDICIONES;
+			if (tipoSeccion == TipoSeccion.POSTPRECONDICIONES) {
+				return TipoRelacion.CASOUSO_POSTPRECONDICIONES;
 				
-			}
-			if (tipoSeccion == TipoSeccion.POSTCONDICIONES) {
-				return TipoRelacion.CASOUSO_POSTCONDICIONES;
 			}
 		}
 		
@@ -192,12 +179,9 @@ public class Referencia {
 			if (tipoSeccion == TipoSeccion.SALIDAS) {
 				return TipoRelacion.MENSAJE_SALIDAS;
 			}	
-			if (tipoSeccion == TipoSeccion.PRECONDICIONES) {
-				return TipoRelacion.CASOUSO_PRECONDICIONES;
+			if (tipoSeccion == TipoSeccion.POSTPRECONDICIONES) {
+				return TipoRelacion.CASOUSO_POSTPRECONDICIONES;
 				
-			}
-			if (tipoSeccion == TipoSeccion.POSTCONDICIONES) {
-				return TipoRelacion.CASOUSO_POSTCONDICIONES;
 			}
 			if (tipoSeccion == TipoSeccion.PASOS) {
 				return TipoRelacion.MENSAJE_PASOS;
@@ -208,12 +192,9 @@ public class Referencia {
 			if (tipoSeccion == TipoSeccion.REGLASNEGOCIOS) {
 				return TipoRelacion.REGLANEGOCIO_REGLASNEGOCIOS;
 			}		
-			if (tipoSeccion == TipoSeccion.PRECONDICIONES) {
-				return TipoRelacion.CASOUSO_PRECONDICIONES;
+			if (tipoSeccion == TipoSeccion.POSTPRECONDICIONES) {
+				return TipoRelacion.CASOUSO_POSTPRECONDICIONES;
 				
-			}
-			if (tipoSeccion == TipoSeccion.POSTCONDICIONES) {
-				return TipoRelacion.CASOUSO_POSTCONDICIONES;
 			}
 			if (tipoSeccion == TipoSeccion.PASOS) {
 				return TipoRelacion.REGLANEGOCIO_PASOS;
@@ -226,11 +207,8 @@ public class Referencia {
 			if (tipoSeccion == TipoSeccion.SALIDAS) {
 				return TipoRelacion.TERMINOGLS_SALIDAS;
 			}	
-			if (tipoSeccion == TipoSeccion.PRECONDICIONES) {
-				return TipoRelacion.TERMINOGLS_PRECONDICIONES;
-			}
-			if (tipoSeccion == TipoSeccion.POSTCONDICIONES) {
-				return TipoRelacion.TERMINOGLS_POSTCONDICIONES;
+			if (tipoSeccion == TipoSeccion.POSTPRECONDICIONES) {
+				return TipoRelacion.TERMINOGLS_POSTPRECONDICIONES;
 			}
 			if (tipoSeccion == TipoSeccion.PASOS) {
 				return TipoRelacion.TERMINOGLS_PASOS;
@@ -244,11 +222,8 @@ public class Referencia {
 			if (tipoSeccion == TipoSeccion.SALIDAS) {
 				return TipoRelacion.ATRIBUTO_SALIDAS;
 			}	
-			if (tipoSeccion == TipoSeccion.PRECONDICIONES) {
-				return TipoRelacion.ATRIBUTO_PRECONDICIONES;
-			}
-			if (tipoSeccion == TipoSeccion.POSTCONDICIONES) {
-				return TipoRelacion.ATRIBUTO_POSTCONDICIONES;
+			if (tipoSeccion == TipoSeccion.POSTPRECONDICIONES) {
+				return TipoRelacion.ATRIBUTO_POSTPRECONDICIONES;
 			}
 			if (tipoSeccion == TipoSeccion.PASOS) {
 				return TipoRelacion.ATRIBUTO_PASOS;
@@ -256,11 +231,8 @@ public class Referencia {
 		}
 		
 		if(tipoReferencia == TipoReferencia.ACCION) {	
-			if (tipoSeccion == TipoSeccion.PRECONDICIONES) {
-				return TipoRelacion.ACCION_PRECONDICIONES;
-			}
-			if (tipoSeccion == TipoSeccion.POSTCONDICIONES) {
-				return TipoRelacion.ACCION_POSTCONDICIONES;
+			if (tipoSeccion == TipoSeccion.POSTPRECONDICIONES) {
+				return TipoRelacion.ACCION_POSTPRECONDICIONES;
 			}
 			if (tipoSeccion == TipoSeccion.PASOS) {
 				return TipoRelacion.ACCION_PASOS;
@@ -268,11 +240,8 @@ public class Referencia {
 		}
 	
 		if(tipoReferencia == TipoReferencia.TRAYECTORIA) {	
-			if (tipoSeccion == TipoSeccion.PRECONDICIONES) {
-				return TipoRelacion.TRAYECTORIA_PRECONDICIONES;
-			}
-			if (tipoSeccion == TipoSeccion.POSTCONDICIONES) {
-				return TipoRelacion.TRAYECTORIA_POSTCONDICIONES;
+			if (tipoSeccion == TipoSeccion.POSTPRECONDICIONES) {
+				return TipoRelacion.TRAYECTORIA_POSTPRECONDICIONES;
 			}
 			if (tipoSeccion == TipoSeccion.PASOS) {
 				return TipoRelacion.TRAYECTORIA_PASOS;
@@ -283,11 +252,8 @@ public class Referencia {
 			if (tipoSeccion == TipoSeccion.PASOS) {
 				return TipoRelacion.PASO_PASOS;
 			}
-			if (tipoSeccion == TipoSeccion.PRECONDICIONES) {
-				return TipoRelacion.PASO_PRECONDICIONES;
-			}
-			if (tipoSeccion == TipoSeccion.POSTCONDICIONES) {
-				return TipoRelacion.PASO_POSTCONDICIONES;
+			if (tipoSeccion == TipoSeccion.POSTPRECONDICIONES) {
+				return TipoRelacion.PASO_POSTPRECONDICIONES;
 			}
 			if (tipoSeccion == TipoSeccion.PASOS) {
 				return TipoRelacion.PASO_EXTENSIONES;
