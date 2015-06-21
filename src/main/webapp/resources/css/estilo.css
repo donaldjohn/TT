@@ -322,3 +322,10 @@ textfield {
 	font-size:10px;
 	font-style: italic;
 }
+
+.textAreaOculto {
+	position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: -1;
+}

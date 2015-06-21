@@ -4,7 +4,6 @@
 * Licensed MIT
 */
 (function (root, factory) {
-  console.log("hola desde atwho.js");
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module unless amdModuleId is set
     define(["jquery"], function (a0) {
@@ -946,7 +945,7 @@ DEFAULT_CALLBACKS = {
     _a = decodeURI("%C3%80");
     _y = decodeURI("%C3%BF");
     space = acceptSpaceBar ? "\ " : "";
-    regexp = new RegExp(flag + "([A-Za-z" + _a + "-" + _y + "0-9_" + space + "\.\+\-]*)$|" + flag + "([^\\x00-\\xff]*)$", 'gi');
+    regexp = new RegExp(flag + "([A-Za-z" + ":" + _a + "-" + _y + "0-9_" + space + "\.\+\-]*)$|" + flag + "([^\\x00-\\xff]*)$", 'gi');
     match = regexp.exec(subtext);
     if (match) {
       return match[2] || match[1];
@@ -1085,7 +1084,7 @@ $.fn.atwho["default"] = {
   startWithSpace: true,
   highlightFirst: true,
   limit: 5,
-  maxLen: 20,
+  maxLen: 100,
   displayTimeout: 300,
   delay: null,
   spaceSelectsMatch: false,

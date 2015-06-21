@@ -17,8 +17,18 @@ function Extension(idCUDestino, causa, region) {
 /*
  * Constructor del objeto CasoUso
  */
-function CasoUso (id) {
+function CasoUso (id, nombreModulo, numero, nombre) {
 	this.id = id;
+	this.modulo = new Modulo(nombreModulo);
+	this.numero = numero;
+	this.nombre = nombre;
+}
+
+/*
+ * Constructor del objeto Trayectoria
+ */
+function Trayectoria(clave) {
+	this.clave = clave;
 }
 
 /*
@@ -41,7 +51,7 @@ function Verbo(nombre) {
 /*
  * Constructores del objeto ReglaNegocio
  * */
-function Regla(numero, nombre) {
+function ReglaNegocio(numero, nombre) {
     this.numero = numero;
     this.nombre = nombre;
 }
@@ -54,17 +64,11 @@ function Actor(nombre) {
 }
 
 /*
- * Constructor del objeto Entrada
+ * Constructor del objeto Atributo
  */
-function Entrada(nombre) {
+function Atributo(nombre, nombreEntidad) {
     this.nombre = nombre;
-}
-
-/*
- * Constructor del objeto Salida
- */
-function Entrada(nombre) {
-    this.nombre = nombre;
+    this.entidad = new Entidad(nombreEntidad);
 }
 
 /*
@@ -74,4 +78,45 @@ function Mensaje(numero, nombre) {
 	this.numero = numero;
     this.nombre = nombre;
 }
+
+/*
+ * Constructor del objeto Entidad
+ */
+function Entidad(nombre) {
+	this.nombre = nombre;
+}
+
+/*
+ * Constructor del objeto Pantalla
+ */
+function Pantalla(nombreModulo, numero, nombre) {
+	this.modulo = new Modulo(nombreModulo);
+	this.numero = numero;
+	this.nombre = nombre;
+}
+
+/*
+ * Constructor del objeto Módulo 
+ */
+function Modulo(nombre) {
+	this.nombre = nombre;
+}
+
+/*
+ * Constructor del objeto Accion
+ */
+function Accion(nombre) {
+	this.nombre = nombre;
+}
+
+/*
+ * Constructor del objeto TerminoGlosario
+ */
+function TerminoGlosario(nombre) {
+	this.nombre = nombre;
+}
+
+
+
+
 

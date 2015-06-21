@@ -3,9 +3,10 @@ var contextPath = "prisma";
 $(document).ready(function() {
 	contextPath = $("#rutaContexto").val();
 	$('table.tablaGestion').DataTable();
+	token.cargarListasToken();
 	mostrarCampoCondicion(document.getElementById("model.idAlternativa"));
 	var realiza = "Actor";
-	var json = $("#jsonPasos").val();
+	var json = $("#jsonPasosTabla").val();
 	if (json !== "") {
 		var parsedJson = JSON.parse(json);
 		$
@@ -62,7 +63,7 @@ function registrarPaso(){
 						"/resources/images/icons/eliminar.png'></img></a>" +
 					"</center>" ];
     	dataTableCDT.addRow("tablaPaso", row);
-    	document.getElementById("paso.idRedaccion").value = "";
+    	document.getElementById("pasoInput").value = "";
     	$('#pasoDialog').dialog('close');
     } else {
     	return false;
@@ -70,7 +71,7 @@ function registrarPaso(){
 };
   
 function cancelarRegistrarPaso() {
-	document.getElementById("paso.idRedaccion").value = "";
+	document.getElementById("pasoInput").value = "";
 	$('#pasoDialog').dialog('close');
 };
 
@@ -116,7 +117,7 @@ function tablaToJson(idTable) {
 						table.fnGetData(i, 2), table.fnGetData(i, 3)));
 	}
 	var jsonPasos = JSON.stringify(arregloPasos);
-	document.getElementById("jsonPasos").value = jsonPasos;
+	document.getElementById("jsonPasosTabla").value = jsonPasos;
 }
 
 function calcularNumeroPaso() {

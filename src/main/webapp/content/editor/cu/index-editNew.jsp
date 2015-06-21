@@ -14,9 +14,7 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.caret.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.atwho.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/token.js"></script>
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/index-editNew.js"></script>
-	
-	
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/index-editNew.js"></script>	
 ]]>
 
 </head>
@@ -192,7 +190,7 @@
 				<table class="seccion">
 					<tr>
 						<td class="label obligatorio"><s:text name="labelRedaccion" /></td>
-						<td><s:textarea rows="5" name="precondicion.redaccion" id="precondicion.idRedaccion"
+						<td><s:textarea rows="5" name="precondicion.redaccion" id="precondicionInput"
 								maxlength="999" cssErrorClass="input-error"></s:textarea></td>
 					</tr>
 				</table>
@@ -217,7 +215,7 @@
 				<table class="seccion">
 					<tr>
 						<td class="label obligatorio"><s:text name="labelRedaccion" /></td>
-						<td><s:textarea rows="5" name="postcondicion.redaccion" id="postcondicion.idRedaccion"
+						<td><s:textarea rows="5" name="postcondicion.redaccion" id="postcondicionInput"
 								maxlength="999" cssErrorClass="input-error"></s:textarea></td>
 					</tr>
 				</table>
@@ -252,7 +250,7 @@
 					</tr>
 					<tr>
 						<td class="label obligatorio"><s:text name="labelRegion" /></td>
-						<td><s:textarea rows="5" name="ptoExtension.region" id="ptoExtension.idRegion"
+						<td><s:textarea rows="5" name="ptoExtension.region" id="ptosExtensionInput"
 								maxlength="500" cssErrorClass="input-error"></s:textarea></td>
 					</tr>
 				</table>

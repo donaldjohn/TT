@@ -136,19 +136,19 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	}
 
 	private void buscaElementos() {
-		// Sets de los elementos disponibles
-		Set<Elemento> listElementos;
-		Set<ReglaNegocio> setReglasNegocio = new HashSet<ReglaNegocio>();
-		Set<Entidad> setEntidades = new HashSet<Entidad>();
-		Set<CasoUso> setCasosUso = new HashSet<CasoUso>();
-		Set<Pantalla> setPantallas = new HashSet<Pantalla>();
-		Set<Mensaje> setMensajes = new HashSet<Mensaje>();
-		Set<Actor> setActores = new HashSet<Actor>(0);
-		Set<TerminoGlosario> setTerminosGls = new HashSet<TerminoGlosario>();
-		Set<Atributo> setAtributos = new HashSet<Atributo>();
-		Set<Paso> setPasos = new HashSet<Paso>();
-		Set<Trayectoria> setTrayectorias = new HashSet<Trayectoria>();
-		Set<Accion> setAcciones = new HashSet<Accion>(0);
+		// Lists de los elementos disponibles
+		List<Elemento> listElementos;
+		List<ReglaNegocio> listReglasNegocio = new ArrayList<ReglaNegocio>();
+		List<Entidad> listEntidades = new ArrayList<Entidad>();
+		List<CasoUso> listCasosUso = new ArrayList<CasoUso>();
+		List<Pantalla> listPantallas = new ArrayList<Pantalla>();
+		List<Mensaje> listMensajes = new ArrayList<Mensaje>();
+		List<Actor> listActores = new ArrayList<Actor>();
+		List<TerminoGlosario> listTerminosGls = new ArrayList<TerminoGlosario>();
+		List<Atributo> listAtributos = new ArrayList<Atributo>();
+		List<Paso> listPasos = new ArrayList<Paso>();
+		List<Trayectoria> listTrayectorias = new ArrayList<Trayectoria>();
+		List<Accion> listAcciones = new ArrayList<Accion>();
 
 		// Se consulta el proyecto
 		proyecto = new ProyectoDAO().consultarProyecto(claveProy);
@@ -156,107 +156,147 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		// Se consultan los elementos de todo el proyecto
 		listElementos = CuBs.consultarElementos(proyecto);
 		System.out.println("listElementos tamano " + listElementos.size());
+		
+		// Módulo auxiliar para la serialización
+		Modulo moduloAux = new Modulo();
+		System.out.println("Modulo " + modulo.getNombre());
+		moduloAux.setId(modulo.getId());
+		moduloAux.setNombre(modulo.getNombre());
+		
 		if (listElementos != null && !listElementos.isEmpty()) {
 			// Se clasifican los conjuntos
 			for (Elemento el : listElementos) {
-				System.out.println("elemento " + el.getClave() + " " + el.getNumero() + " " + el.getNombre() + " " + el.getId());
-				TipoReferencia tr = Referencia.getTipoReferencia(el);
-				if(tr == null)
-					System.out.println("TIPO DE REFERENCIA NULL");
-				switch (tr) {
+				switch (Referencia.getTipoReferencia(el)) {
+				
 				case ACTOR:
-					setActores.add((Actor) el);
+					Actor auxActor = new Actor();
+					auxActor.setClave(el.getClave());
+					auxActor.setNombre(el.getNombre());
+					listActores.add(auxActor);
 					break;
 				case CASOUSO:
-					setCasosUso.add((CasoUso) el);
+					CasoUso auxCasoUso = new CasoUso();
+					auxCasoUso.setClave(el.getClave());
+					auxCasoUso.setNumero(el.getNumero());
+					auxCasoUso.setNombre(el.getNombre());
+					auxCasoUso.setModulo(moduloAux);
+					listCasosUso.add(auxCasoUso);
+					
+					// Se obtienen las Trayectorias
+					Set<Trayectoria> trayectorias = ((CasoUso)el).getTrayectorias();
+					for (Trayectoria tray : trayectorias) {
+						Trayectoria auxTrayectoria = new Trayectoria();
+						auxTrayectoria.setClave(tray.getClave());
+						auxTrayectoria.setCasoUso(auxCasoUso);
+						listTrayectorias.add(auxTrayectoria);
+						// Se obtienen los Pasos
+						for (Paso paso : tray.getPasos()) {
+							Paso auxPaso = new Paso();
+							auxPaso.setTrayectoria(auxTrayectoria);
+							auxPaso.setNumero(paso.getNumero());
+							listPasos.add(auxPaso);
+						}
+					}
 					break;
 				case ENTIDAD:
-					setEntidades.add((Entidad) el);
+					Entidad auxEntidad = new Entidad();
+					auxEntidad.setNombre(el.getNombre());
+					listEntidades.add(auxEntidad);
+					// Se obtienen los Atributos
+					Set<Atributo> atributos = ((Entidad)el).getAtributos();
+					for(Atributo atributo : atributos) {
+						Atributo auxAtributo = new Atributo();
+						auxAtributo.setEntidad(auxEntidad);
+						auxAtributo.setNombre(atributo.getNombre());
+						listAtributos.add(auxAtributo);
+					}
+					
 					break;
 				case MENSAJE:
-					setMensajes.add((Mensaje) el);
+					Mensaje auxMensaje = new Mensaje();
+					auxMensaje.setNumero(el.getNumero());
+					auxMensaje.setNombre(el.getNombre());
+					listMensajes.add(auxMensaje);
 					break;
 				case PANTALLA:
-					setPantallas.add((Pantalla) el);
+					Pantalla auxPantalla = new Pantalla();
+					auxPantalla.setNumero(el.getNumero());
+					auxPantalla.setNombre(el.getNombre());
+					auxPantalla.setModulo(moduloAux);
+					listPantallas.add(auxPantalla);
+					// Se obtienen las acciones
+					Set<Accion> acciones = ((Pantalla)el).getAcciones();
+					for(Accion accion : acciones) {
+						Accion auxAccion = new Accion();
+						auxAccion.setPantalla(auxPantalla);
+						auxAccion.setNombre(accion.getNombre());
+						listAcciones.add(auxAccion);
+					}
 					break;
 				case REGLANEGOCIO:
-					setReglasNegocio.add((ReglaNegocio) el);
+					ReglaNegocio auxReglaNegocio = new ReglaNegocio();
+					auxReglaNegocio.setNumero(el.getNumero());
+					auxReglaNegocio.setNombre(el.getNombre());
+					listReglasNegocio.add(auxReglaNegocio);
 					break;
 				case TERMINOGLS:
-					setTerminosGls.add((TerminoGlosario) el);
+					TerminoGlosario auxTerminoGlosario = new TerminoGlosario();
+					auxTerminoGlosario.setNombre(el.getNombre());
+					listTerminosGls.add(auxTerminoGlosario);
 					break;
 				default:
 					break;
-	
 				}
 			}
 	
-			// Se obtienen los atributos de las entidades
-			for (Entidad ent : setEntidades) {
-				setAtributos.addAll(ent.getAtributos());
-			}
-	
-			// Se obtienen las trayectorias
-			for (CasoUso cu : setCasosUso) {
-				setTrayectorias.addAll(cu.getTrayectorias());
-			}
-	
-			// Se obtienen los pasos de las trayectorias
-			for (Trayectoria tray : setTrayectorias) {
-				setPasos.addAll(tray.getPasos());
-			}
-	
-			for (Pantalla pan : setPantallas) {
-				setAcciones.addAll(pan.getAcciones());
-			}
-	
 			// Se convierte en json las Reglas de Negocio
-			if (setReglasNegocio != null) {
-				this.jsonReglasNegocio = JsonUtil.mapSetToJSON(setReglasNegocio);
+			if (listReglasNegocio != null) {
+				this.jsonReglasNegocio = JsonUtil.mapListToJSON(listReglasNegocio);
 			}
 			// Se convierte en json las Entidades
-			if (setEntidades != null) {
-				this.jsonEntidades = JsonUtil.mapSetToJSON(setEntidades);
+			if (listEntidades != null) {
+				this.jsonEntidades = JsonUtil.mapListToJSON(listEntidades);
 			}
 			// Se convierte en json los Casos de Uso
-			if (setCasosUso != null) {
-				this.jsonCasosUsoProyecto = JsonUtil.mapSetToJSON(setCasosUso);
+			if (listCasosUso != null) {
+				this.jsonCasosUsoProyecto = JsonUtil.mapListToJSON(listCasosUso);
 			}
 			// Se convierte en json las Pantallas
-			if (setPantallas != null) {
-				this.jsonPantallas = JsonUtil.mapSetToJSON(setPantallas);
+			if (listPantallas != null) {
+				this.jsonPantallas = JsonUtil.mapListToJSON(listPantallas);
 			}
 			// Se convierte en json los Mensajes
-			if (setMensajes != null) {
-				this.jsonMensajes = JsonUtil.mapSetToJSON(setMensajes);
+			if (listMensajes != null) {
+				this.jsonMensajes = JsonUtil.mapListToJSON(listMensajes);
 			}
 			// Se convierte en json los Actores
-			if (setActores != null) {
-				this.jsonActores = JsonUtil.mapSetToJSON(setActores);
+			if (listActores != null) {
+				this.jsonActores = JsonUtil.mapListToJSON(listActores);
 			}
 			// Se convierte en json los Términos del Glosario
-			if (setTerminosGls != null) {
-				this.jsonTerminosGls = JsonUtil.mapSetToJSON(setTerminosGls);
+			if (listTerminosGls != null) {
+				this.jsonTerminosGls = JsonUtil.mapListToJSON(listTerminosGls);
 			}
 			// Se convierte en json los Atributos
-			if (setAtributos != null) {
-				this.jsonAtributos = JsonUtil.mapSetToJSON(setAtributos);
+			if (listAtributos != null) {
+				this.jsonAtributos = JsonUtil.mapListToJSON(listAtributos);
 			}
 			// Se convierte en json los Pasos
-			if (setPasos != null) {
-				this.jsonPasos = JsonUtil.mapSetToJSON(setPasos);
+			if (listPasos != null) {
+				this.jsonPasos = JsonUtil.mapListToJSON(listPasos);
 			}
 			// Se convierte en json las Trayectorias
-			if (setTrayectorias != null) {
-				this.jsonTrayectorias = JsonUtil.mapSetToJSON(setTrayectorias);
+			if (listTrayectorias != null) {
+				this.jsonTrayectorias = JsonUtil.mapListToJSON(listTrayectorias);
 			}
 			// Se convierte en json las Acciones
-			if (setAcciones != null) {
-				this.jsonAcciones = JsonUtil.mapSetToJSON(setAcciones);
+			if (listAcciones != null) {
+				this.jsonAcciones = JsonUtil.mapListToJSON(listAcciones);
 			}
 		}
 
 	}
+
 
 	public String create() throws PRISMAException, Exception {
 		return update();
@@ -289,13 +329,15 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	public String editNew() {
 		String resultado = null;
 		try {
+			
+			// Creación del modelo
+			proyecto = new ProyectoDAO().consultarProyecto(claveProy);
+			modulo = new ModuloDAO().consultarModulo(this.claveModulo,
+					proyecto);
+			
 			// Se buscan los elementos disponibles para referenciar
 			buscaElementos();
-
-			// Creación del modelo
-			Proyecto proyecto = new ProyectoDAO().consultarProyecto(claveProy);
-			Modulo modulo = new ModuloDAO().consultarModulo(this.claveModulo,
-					proyecto);
+			
 			listCUProyecto = CuBs.consultarCasosUsoModulo(modulo);
 
 			model.setProyecto(proyecto);
@@ -306,7 +348,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			model.setNumero(CuBs.calcularNumero(modulo));
 			model.setClave(CuBs.calcularClave(modulo.getClave()));
 			model.setNombre(CuBs.calcularNombre(modulo.getId()));
-			CuBs.registrarCasoUso(model);
+			//CuBs.registrarCasoUso(model);
 			resultado = EDITNEW;
 			addActionMessage(getText("MSG1", new String[] { "El",
 					"caso de uso", "registrado" }));

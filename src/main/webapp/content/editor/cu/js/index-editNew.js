@@ -1,4 +1,6 @@
+var contextPath = "prisma";
 $(document).ready(function() {
+	contextPath = $("#rutaContexto").val();
 	$('table.tablaGestion').DataTable();
 	token.cargarListasToken();
 	var json = $("#jsonPrecondiciones").val();
@@ -62,7 +64,7 @@ function registrarPrecondicion(){
 					"<img class='icon'  id='icon' src='" +
 					$("#varSessionContext").val() + "/resources/images/icons/botonCuadDelete.png'></img></a></center>" ];
     	dataTableCDT.addRow("tablaPrecondiciones", row);
-    	document.getElementById("precondicion.idRedaccion").value = "";
+    	document.getElementById("precondicionInput").value = "";
     	$('#precondDialog').dialog('close');
     } else {
     	return false;
@@ -70,7 +72,7 @@ function registrarPrecondicion(){
 };
   
 function cancelarRegistrarPrecondicion() {
-	document.getElementById("precondicion.idRedaccion").value = "";
+	document.getElementById("precondicionInput").value = "";
 	$('#precondDialog').dialog('close');
 };
 
@@ -87,7 +89,7 @@ function registrarPostcondicion(){
 					"<img class='icon'  id='icon' src='" +
 					$("#varSessionContext").val() + "/resources/images/icons/botonCuadDelete.png'></img></a></center>" ];
     	dataTableCDT.addRow("tablaPostcondiciones", row);
-    	document.getElementById("postcondicion.idRedaccion").value = "";
+    	document.getElementById("postcondicionInput").value = "";
     	$('#postcondDialog').dialog('close');
     } else {
     	return false;
@@ -95,14 +97,14 @@ function registrarPostcondicion(){
 };
   
 function cancelarRegistrarPostcondicion() {
-	document.getElementById("postcondicion.idRedaccion").value = "";
+	document.getElementById("postcondicionInput").value = "";
 	$('#postcondDialog').dialog('close');
 };
 
 function registrarPtoExtension(){
 	var varIdCUDestino = document.forms["frmPtoExtensionName"]["ptoExtension.idCu"].value;
 	var varCausa = document.forms["frmPtoExtensionName"]["ptoExtension.idCausa"].value;
-	var varRegion = document.forms["frmPtoExtensionName"]["ptoExtension.idRegion"].value;
+	var varRegion = document.forms["frmPtoExtensionName"]["ptosExtensionInput"].value;
 	var e = document.getElementById("ptoExtension.idCu");
 	var varNombreCUDestino = e.options[e.selectedIndex].text;
 	
@@ -125,7 +127,7 @@ function registrarPtoExtension(){
     	dataTableCDT.addRow("tablaPtosExtension", row);
     	document.getElementById("ptoExtension.idCu").value = "";
     	document.getElementById("ptoExtension.idCausa").value = "";
-    	document.getElementById("ptoExtension.idRegion").value = "";
+    	document.getElementById("ptosExtensionInput").value = "";
     	$('#ptosExtensionDialog').dialog('close');
     } else {
     	return false;
@@ -135,7 +137,7 @@ function registrarPtoExtension(){
 function cancelarRegistrarPtoExtension() {
 	document.getElementById("ptoExtension.idCu").value = "";
 	document.getElementById("ptoExtension.idCausa").value = "";
-	document.getElementById("ptoExtension.idRegion").value = "";
+	document.getElementById("ptosExtensionInput").value = "";
 	$('#ptosExtensionDialog').dialog('close');
 };
 

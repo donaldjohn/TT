@@ -8,12 +8,13 @@
 <head>
 <title>Trayectoria</title>
 <![CDATA[
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/validaciones.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/constructores.js"></script>
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/trayectorias/js/index-editNew.js"></script>
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/dataTable.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/validaciones.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.caret.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.atwho.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/token.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/trayectorias/js/index-editNew.js"></script>	
 ]]>
-<sj:head locale="es" jqueryui="true" jquerytheme="smoothness"/>
 
 </head>
 <body>
@@ -21,7 +22,6 @@
 	
 	<s:hidden value="%{#request.getContextPath()}" id="contextPathHid" name="contextPathHid"/>
 	<h1>Registrar Trayectoria</h1>
-	Hola<s:property value="%{#request.request.getContextPath()}" /> mundo
 	
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
@@ -100,7 +100,7 @@
 				onclick="location.href='${urlGestionarTrayectorias}'"
 				value="Cancelar" />			
 		</div>
-		<s:hidden id="jsonPasos" name="jsonPasos" value="%{jsonPasos}"/>    	
+		<s:hidden id="jsonPasosTabla" name="jsonPasosTabla" value="%{jsonPasosTabla}"/>    	
 	</s:form>
 	
 	
@@ -123,7 +123,7 @@
 						</tr>
 						<tr>
 							<td class="label obligatorio"><s:text name="labelRedaccion" /></td>
-							<td><s:textarea rows="5" name="paso.redaccion" id="paso.idRedaccion"
+							<td><s:textarea rows="5" name="paso.redaccion" id="inputorRedaccion"
 									maxlength="999" cssErrorClass="input-error"></s:textarea></td>
 						</tr>
 				</table>
@@ -137,6 +137,19 @@
 					onclick="cancelarRegistrarPaso()"
 					value="Cancelar" />
 			</div>
+			<!-- Json de elementos -->
+			<s:hidden name="jsonReglasNegocio" id="jsonReglasNegocio" value="%{jsonReglasNegocio}"/>
+			<s:hidden name="jsonEntidades" id="jsonEntidades" value="%{jsonEntidades}"/>
+			<s:hidden name="jsonCasosUsoProyecto" id="jsonCasosUsoProyecto" value="%{jsonCasosUsoProyecto}"/>
+			<s:hidden name="jsonPantallas" id="jsonPantallas" value="%{jsonPantallas}"/>
+			<s:hidden name="jsonMensajes" id="jsonMensajes" value="%{jsonMensajes}"/>
+			<s:hidden name="jsonActores" id="jsonActores" value="%{jsonActores}"/>
+			<s:hidden name="jsonTerminosGls" id="jsonTerminosGls" value="%{jsonTerminosGls}"/>
+			<s:hidden name="jsonAtributos" id="jsonAtributos" value="%{jsonAtributos}"/>
+			<s:hidden name="jsonPasos" id="jsonPasos" value="%{jsonPasos}"/>
+			<s:hidden name="jsonTrayectorias" id="jsonTrayectorias" value="%{jsonTrayectorias}"/>
+			<s:hidden name="jsonAcciones" id="jsonAcciones" value="%{jsonAcciones}"/>
+			<textarea id="inputor" class="textAreaOculto">hola mundo</textarea>
 		</s:form>
 	</sj:dialog>
 	

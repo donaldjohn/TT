@@ -155,10 +155,11 @@ public class CuBs {
 		}
 	}
 
-	public static Set<Elemento> consultarElementos(Proyecto proyecto) {
-		Set<Elemento> listElemento = new ElementoDAO().consultarElementos(proyecto);
+	public static List<Elemento> consultarElementos(Proyecto proyecto) {
+		List<Elemento> listElemento = new ElementoDAO().consultarElementos(proyecto);
 		return listElemento;
 	}
+	
 	
 }
 
