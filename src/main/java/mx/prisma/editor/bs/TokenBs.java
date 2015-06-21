@@ -14,6 +14,7 @@ import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.dao.PantallaDAO;
 import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.dao.TerminoGlosarioDAO;
+import mx.prisma.editor.dao.TrayectoriaDAO;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Atributo;
@@ -25,10 +26,12 @@ import mx.prisma.editor.model.Entrada;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
+import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.Salida;
 import mx.prisma.editor.model.TerminoGlosario;
+import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.util.PRISMAException;
 
 public class TokenBs {
@@ -41,9 +44,9 @@ public class TokenBs {
 	private static String tokenACT = "ACT."; // ACT.NOMBRE_ACT
 	private static String tokenGLS = "GLS."; // GLS.NOMBRE_GLS
 	private static String tokenATR = "ATR.";// ATR.ENTIDAD_A_B:NOMBRE_ATT
-	private static String tokenP = "P."; // P.CUMODULO:TRAY.NUMERO.
-	private static String tokenTray = "TRAY."; // TRAY.CUMODULO:A.;
-	private static String tokenACC = "ACC."; //  ACC.IUM.NUM:PANTALLA:NOMBRE_ACC	= ACC.IUSF.7:Registrar_incendio:Aceptar	
+	private static String tokenP = "P."; // P.CUMODULO.NUM:NOMBRECU:CLAVETRAY.NUMERO
+	private static String tokenTray = "TRAY."; // TRAY.CUMODULO.NUM:NOMBRECU:CLAVETRAY
+	private static String tokenACC = "ACC."; // ACC.IUMODULO.NUM:NOMBRE_ACC = ACC.IUSF.7:Registrar_incendio:Aceptar	
 	private static String tokenSeparator1 = ".";
 	private static String tokenSeparator2 = ":";
 
@@ -275,7 +278,9 @@ public class TokenBs {
 		Pantalla pantalla;
 		Accion accion;
 		Modulo modulo;
-		CasoUso casoUso;
+		CasoUso casodeuso;
+		Trayectoria trayectoria;
+		Paso paso;
 
 		for (String token : tokens) {
 			segmentos = segmentarToken(token);
@@ -354,8 +359,8 @@ public class TokenBs {
 							"MSG15", parametros);
 				}
 				
-				casoUso = new CasoUsoDAO().consultarCasoUso(modulo, Integer.parseInt(segmentos.get(2)));
-				if (casoUso == null) {
+				casodeuso = new CasoUsoDAO().consultarCasoUso(modulo, Integer.parseInt(segmentos.get(2)));
+				if (casodeuso == null) {
 					// Construcción del mensaje de error;
 					String[] parametros = { "el", "caso de uso",
 							token, "registrado" };
@@ -364,7 +369,7 @@ public class TokenBs {
 							"TokenBs.convertirToken_Objeto: El caso de uso "+ token +" no está registrado",
 							"MSG15", parametros);
 				}
-				objetos.add(casoUso);
+				objetos.add(casodeuso);
 
 				break;
 			case ENTIDAD: // ENT.NOMBRE_ENT
@@ -448,11 +453,83 @@ public class TokenBs {
 				}
 				objetos.add(reglaNegocio);
 				break;
-			case TRAYECTORIA:
+			case TRAYECTORIA: // TRAY.CUMODULO.NUM:NOMBRECU:CLAVETRAY
+				casodeuso = new CasoUsoDAO().consultarCasoUso(segmentos.get(1), Integer.parseInt(segmentos.get(2)), proyecto);
+				if(casodeuso == null) {
+					String[] parametros = { "el", "caso de uso",
+							segmentos.get(1).replaceAll("_", " ") + segmentos.get(2).replaceAll("_", " "), "registrado" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: El caso de uso  "
+									+ segmentos.get(1) + segmentos.get(2)+  " no está registrado",
+									"MSG15", parametros);
+				}
 				
+				trayectoria = null;
+				for (Trayectoria t : casodeuso.getTrayectorias()){
+					if (t.getClave().equals(segmentos.get(4))){
+						trayectoria = t;
+					}
+				}
+
+				if (trayectoria == null) {
+					String[] parametros = { "la", "trayectoria",
+							segmentos.get(4).replaceAll("_", " "), "registrada" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: La trayectoria "
+									+ segmentos.get(4) + " no está registrada",
+									"MSG15", parametros);
+				}
+				objetos.add(trayectoria);
 				break;
 				
-			case PASO:
+			case PASO:  // P.CUMODULO.NUM:NOMBRECU:CLAVETRAY.NUMERO
+				casodeuso = new CasoUsoDAO().consultarCasoUso(segmentos.get(1), Integer.parseInt(segmentos.get(2)), proyecto);
+				if(casodeuso == null) {
+					String[] parametros = { "el", "caso de uso",
+							segmentos.get(1).replaceAll("_", " ") + segmentos.get(2).replaceAll("_", " "), "registrado" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: El caso de uso  "
+									+ segmentos.get(1) + segmentos.get(2)+  " no está registrado",
+									"MSG15", parametros);
+				}
+				
+				trayectoria = null;
+				for (Trayectoria t : casodeuso.getTrayectorias()){
+					if (t.getClave().equals(segmentos.get(4))){
+						trayectoria = t;
+					}
+				}
+
+				if (trayectoria == null) {
+					String[] parametros = { "la", "trayectoria",
+							segmentos.get(4).replaceAll("_", " "), "registrada" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: La trayectoria "
+									+ segmentos.get(4) + " no está registrada",
+									"MSG15", parametros);
+				}
+				paso = null;
+				for (Paso p : trayectoria.getPasos()){
+					if (p.getNumero() == Integer.parseInt(segmentos.get(5))){
+						paso = p;
+					}
+				}
+				
+				if (paso == null) {
+					String[] parametros = { "el", "paso",
+							segmentos.get(5).replaceAll("_", " "), "registrado" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: El paso "
+									+ segmentos.get(5) + " no está registrado",
+									"MSG15", parametros);
+				}
+				
+				objetos.add(paso);
 				break;
 			default:
 				break;

@@ -266,12 +266,11 @@ public class Test {
 		cu.getPostprecondiciones().add(new PostPrecondicion("El CU.SF.1:Registrar_predio", false, cu));
 		
 		cu.getExtiende().clear();
-		//String causa, String region, CasoUso casoUsoOrigen, CasoUso casoUsoDestino
-		Extension ext1 = new Extension();
+		
 		
 
 		try {
-			//new CasoUsoDAO().modificarCasoUso(cu);
+			new CasoUsoDAO().modificarCasoUso(cu);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

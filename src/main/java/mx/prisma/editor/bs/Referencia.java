@@ -36,7 +36,7 @@ public class Referencia {
 		PANTALLA_PASOS, PANTALLA_POSTPRECONDICIONES,
 		
 		/* Mensajes */
-		MENSAJE_SALIDAS, MENSAJES_POSTPRECONDICIONES, MENSAJE_PASOS,
+		MENSAJE_SALIDAS, MENSAJE_POSTPRECONDICIONES, MENSAJE_PASOS,
 		
 		/* Reglas de negocio */
 		REGLANEGOCIO_REGLASNEGOCIOS, REGLANEGOCIO_POSTPRECONDICIONES, REGLANEGOCIO_PASOS,
@@ -181,7 +181,7 @@ public class Referencia {
 				return TipoRelacion.MENSAJE_SALIDAS;
 			}	
 			if (tipoSeccion == TipoSeccion.POSTPRECONDICIONES) {
-				return TipoRelacion.CASOUSO_POSTPRECONDICIONES;
+				return TipoRelacion.MENSAJE_POSTPRECONDICIONES;
 				
 			}
 			if (tipoSeccion == TipoSeccion.PASOS) {

@@ -235,7 +235,7 @@ public class CasoUsoDAO extends ElementoDAO {
 				referenciaParametro.setElementoDestino(entidad);
 				referenciaParametro.setNumerToken(numeroTokenEntidad++);
 				break;
-			case MENSAJES_POSTPRECONDICIONES:
+			case MENSAJE_POSTPRECONDICIONES:
 				mensaje = (Mensaje) objeto;
 				tipoParametro = new TipoParametroDAO()
 						.consultarTipoParametro("Mensaje");
@@ -295,6 +295,173 @@ public class CasoUsoDAO extends ElementoDAO {
 
 	}
 
+	public void almacenarObjetosToken(ArrayList<Object> objetos,
+			CasoUso casouso, TipoSeccion tipoSeccion,
+			Extension extension) {
+
+		int numeroTokenExtension = 0;
+
+		// Elementos
+		ReferenciaParametro referenciaParametro = null;
+		TipoParametro tipoParametro;
+		Paso paso;
+
+		for (Object objeto : objetos) {
+			switch (Referencia.getTipoRelacion(
+					Referencia.getTipoReferencia(objeto), tipoSeccion)) {
+			
+			case PASO_EXTENSIONES:
+				paso = (Paso) objeto;
+				tipoParametro = new TipoParametroDAO()
+						.consultarTipoParametro("Paso");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setPasoDestino(paso);
+				referenciaParametro.setNumerToken(numeroTokenExtension++);
+				break;
+			default:
+				break;
+			}
+		}
+		extension.getReferencias().add(referenciaParametro);
+		referenciaParametro.setExtension(extension);
+
+	}
+
+	public void almacenarObjetosToken(ArrayList<Object> objetos,
+			CasoUso casouso, TipoSeccion tipoSeccion,
+			Paso paso) {
+
+		int numeroTokenAccion = 0;
+		int numeroTokenActor = 0;
+		int numeroTokenAtributo = 0;
+		int numeroTokenCasoUso = 0;
+		int numeroTokenEntidad = 0;
+		int numeroTokenMensaje = 0;
+		int numeroTokenPantalla = 0;
+		int numeroTokenPaso = 0;
+		int numeroTokenReglaNegocio = 0;
+		int numeroTokenTerminoGlosario = 0;
+		int numeroTokenTrayectoria = 0;
+
+		// Elementos
+		ReferenciaParametro referenciaParametro = null;
+		Accion accion;
+		Atributo atributo;
+		Actor actor;
+		TipoParametro tipoParametro;
+		CasoUso casoUso;
+		Entidad entidad;
+		Mensaje mensaje;
+		Pantalla pantalla;
+		ReglaNegocio reglaNegocio;
+		TerminoGlosario terminoGlosario;
+
+		for (Object objeto : objetos) {
+			switch (Referencia.getTipoRelacion(
+					Referencia.getTipoReferencia(objeto), tipoSeccion)) {
+
+			case ACCION_PASOS:
+				accion = (Accion) objeto;
+				tipoParametro = new TipoParametroDAO()
+						.consultarTipoParametro("Accion");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setAccionDestino(accion);
+				referenciaParametro.setNumerToken(numeroTokenAccion++);
+
+				break;
+			case ACTOR_PASOS:
+				actor = (Actor) objeto;
+				tipoParametro = new TipoParametroDAO()
+						.consultarTipoParametro("Actor");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setElementoDestino(actor);
+				referenciaParametro.setNumerToken(numeroTokenActor++);
+				break;
+			case ATRIBUTO_PASOS:
+				atributo = (Atributo) objeto;
+				tipoParametro = new TipoParametroDAO()
+						.consultarTipoParametro("Atributo");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setAtributo(atributo);
+				referenciaParametro.setNumerToken(numeroTokenAtributo++);
+
+				break;
+			case CASOUSO_PASOS:
+				casoUso = (CasoUso) objeto;
+				tipoParametro = new TipoParametroDAO()
+						.consultarTipoParametro("Caso de uso");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setElementoDestino(casoUso);
+				referenciaParametro.setNumerToken(numeroTokenCasoUso++);
+				break;
+			case ENTIDAD_PASOS:
+				entidad = (Entidad) objeto;
+				tipoParametro = new TipoParametroDAO()
+						.consultarTipoParametro("Entidad");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setElementoDestino(entidad);
+				referenciaParametro.setNumerToken(numeroTokenEntidad++);
+				break;
+			case MENSAJE_PASOS:
+				mensaje = (Mensaje) objeto;
+				tipoParametro = new TipoParametroDAO()
+						.consultarTipoParametro("Mensaje");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setElementoDestino(mensaje);
+				referenciaParametro.setNumerToken(numeroTokenMensaje++);
+				break;
+			case PANTALLA_PASOS:
+				pantalla = (Pantalla) objeto;
+				tipoParametro = new TipoParametroDAO()
+						.consultarTipoParametro("Pantalla");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setElementoDestino(pantalla);
+				referenciaParametro.setNumerToken(numeroTokenPantalla++);
+
+				break;
+			case PASO_PASOS:
+				paso = (Paso) objeto;
+				tipoParametro = new TipoParametroDAO()
+						.consultarTipoParametro("Paso");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setPasoDestino(paso);
+				referenciaParametro.setNumerToken(numeroTokenPaso++);
+				break;
+			case REGLANEGOCIO_PASOS:
+				reglaNegocio = (ReglaNegocio) objeto;
+				tipoParametro = new TipoParametroDAO()
+						.consultarTipoParametro("Regla de negocio");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setElementoDestino(reglaNegocio);
+				referenciaParametro.setNumerToken(numeroTokenReglaNegocio++);
+				break;
+
+			case TERMINOGLS_PASOS:
+				terminoGlosario = (TerminoGlosario) objeto;
+				tipoParametro = new TipoParametroDAO()
+						.consultarTipoParametro("Termino del glosario");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setElementoDestino(terminoGlosario);
+				referenciaParametro.setNumerToken(numeroTokenTerminoGlosario++);
+				break;
+			case TRAYECTORIA_PASOS:
+				terminoGlosario = (TerminoGlosario) objeto;
+				tipoParametro = new TipoParametroDAO()
+						.consultarTipoParametro("Trayectoria");
+				referenciaParametro = new ReferenciaParametro(tipoParametro);
+				referenciaParametro.setElementoDestino(terminoGlosario);
+				referenciaParametro.setNumerToken(numeroTokenTrayectoria++);
+				break;
+			default:
+				break;
+
+			}
+		}
+		paso.getReferencias().add(referenciaParametro);
+		referenciaParametro.setPaso(paso);
+
+	}
+	
 	public void cleanRelaciones(CasoUso casodeuso) {
 		casodeuso.getActores().clear();
 		casodeuso.getEntradas().clear();
@@ -321,24 +488,7 @@ public class CasoUsoDAO extends ElementoDAO {
 
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<CasoUso> consultarCasosUso(Proyecto proyecto) {
-		List<CasoUso> casosdeuso = null;
 
-		try {
-			session.beginTransaction();
-			SQLQuery query = session
-					.createSQLQuery("SELECT * FROM Elemento INNER JOIN CasoUso ON Elemento.id = CasoUso.Elementoid WHERE Elemento.Proyectoid = :proyecto");
-			query.setParameter("proyecto", proyecto.getId());
-			casosdeuso = query.list();
-			session.getTransaction().commit();
-		} catch (HibernateException he) {
-			he.printStackTrace();
-			session.getTransaction().rollback();
-		}
-		return casosdeuso;
-
-	}
 
 	public CasoUso consultarCasoUso(int id) {
 		return (CasoUso) super.consultarElemento(id);
@@ -382,6 +532,11 @@ public class CasoUsoDAO extends ElementoDAO {
 				+ casodeuso.getId() + ";";
 		String deletePostPrecondiciones = "DELETE FROM PostPrecondicion WHERE CasoUsoElementoid = "
 				+ casodeuso.getId() + ";";
+		String deleteExtensiones = "DELETE FROM Extension WHERE CasoUsoElementoid_origen = "
+				+ casodeuso.getId() + ";";
+
+		
+		
 
 		cleanRelaciones(casodeuso);
 		preAlmacenarObjetosToken(casodeuso);
@@ -401,6 +556,10 @@ public class CasoUsoDAO extends ElementoDAO {
 			SQLQuery queryPostPrecondiciones = session
 					.createSQLQuery(deletePostPrecondiciones);
 			queryPostPrecondiciones.executeUpdate();
+			SQLQuery queryExtensiones = session
+					.createSQLQuery(deleteExtensiones);
+			queryExtensiones.executeUpdate();	
+			
 
 			for (CasoUsoActor cua : casodeuso.getActores()) {
 				session.save(cua);
@@ -420,11 +579,11 @@ public class CasoUsoDAO extends ElementoDAO {
 					.getPostprecondiciones()) {
 				session.save(postPrecondicion);
 			}
+			for (Extension extension : casodeuso.getExtiende()) {
+				session.save(extension);
+			}
 			
 			
-
-
-
 			session.update(casodeuso);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
@@ -473,10 +632,48 @@ public class CasoUsoDAO extends ElementoDAO {
 			postPrecondicion.setRedaccion(TokenBs.codificarCadenaToken(
 					postPrecondicion.getRedaccion(), casoUso.getProyecto()));
 		}
+		
+		for (Extension extension : casoUso.getExtiende()) {
+
+			almacenarObjetosToken(
+					TokenBs.convertirToken_Objeto(
+							extension.getRegion(),
+							casoUso.getProyecto()), casoUso,
+					TipoSeccion.EXTENSIONES, extension);
+
+			extension.setRegion(TokenBs.codificarCadenaToken(
+					extension.getRegion(), casoUso.getProyecto()));
+		}
 
 	}
 
+
 	public void registrarCasoUso(CasoUso casodeuso) {
 		super.registrarElemento(casodeuso);
+	}
+
+	@SuppressWarnings("unchecked")
+	public CasoUso consultarCasoUso(String clave, int numero, Proyecto proyecto) {
+		List<CasoUso> casosdeuso = null;
+
+		try {
+			session.beginTransaction();
+			SQLQuery query = session
+					.createSQLQuery("SELECT * FROM Elemento INNER JOIN CasoUso ON Elemento.id = CasoUso.Elementoid WHERE Elemento.Proyectoid = :proyecto AND Elemento.numero = :numero AND Elemento.clave = :clave").addEntity(CasoUso.class);
+			query.setParameter("proyecto", proyecto.getId());
+			query.setParameter("numero", numero);
+			query.setParameter("clave", clave);
+			casosdeuso = query.list();
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		if (casosdeuso == null){
+			return null;
+		} else
+			
+			return casosdeuso.get(0);
+
 	}
 }
