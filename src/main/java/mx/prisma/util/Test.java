@@ -27,6 +27,7 @@ import mx.prisma.editor.model.Cardinalidad;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Entidad;
+import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.PostPrecondicion;
 
@@ -264,11 +265,13 @@ public class Test {
 		cu.getPostprecondiciones().add(new PostPrecondicion("El CU.SF.1:Registrar_predio", true, cu));
 		cu.getPostprecondiciones().add(new PostPrecondicion("El CU.SF.1:Registrar_predio", false, cu));
 		
-		
+		cu.getExtiende().clear();
+		//String causa, String region, CasoUso casoUsoOrigen, CasoUso casoUsoDestino
+		Extension ext1 = new Extension();
 		
 
 		try {
-			new CasoUsoDAO().modificarCasoUso(cu);
+			//new CasoUsoDAO().modificarCasoUso(cu);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

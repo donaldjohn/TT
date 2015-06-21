@@ -106,7 +106,7 @@ public class Elemento implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Proyectoid", nullable = false)	
 	public Proyecto getProyecto() {
 		return this.proyecto;

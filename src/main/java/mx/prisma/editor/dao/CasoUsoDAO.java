@@ -420,13 +420,10 @@ public class CasoUsoDAO extends ElementoDAO {
 					.getPostprecondiciones()) {
 				session.save(postPrecondicion);
 			}
+			
+			
 
-			/*
-			 * for(PostPrecondicion postPrecondicion :
-			 * casodeuso.getPostprecondiciones()){
-			 * session.save(postPrecondicion); } for(Extension extension :
-			 * casodeuso.getExtiende()){ session.save(extension); }
-			 */
+
 
 			session.update(casodeuso);
 			session.getTransaction().commit();
