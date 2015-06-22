@@ -262,7 +262,7 @@ var token = function() {
 					"nombreIU": value.pantalla.nombre,
 					"nombre" : value.nombre,
 					'name' : remplazarEspaciosGuion(value.pantalla.clave) 
-					+ "." + remplazarEspaciosGuion(value.pantalla.numero)
+					+ "." + value.pantalla.numero
 					+ ":" + remplazarEspaciosGuion(value.pantalla.nombre) 
 					+ ":" + remplazarEspaciosGuion(value.nombre)
 				};

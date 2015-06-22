@@ -144,13 +144,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		listRealiza.add("Sistema");
 		
 		//Se extraen los verbos de la BD << PENDIENTE
-		listVerbos = new ArrayList<String>();
-		listVerbos.add("Muestra");
-		listVerbos.add("Selecciona");
-		listVerbos.add("Oprime");
-		listVerbos.add("Presiona");
-		listVerbos.add("Verifica");
-		listVerbos.add("Ingresa");
+		listVerbos = CuBs.consultarVerbos();
 		
 	}
 
@@ -312,6 +306,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 					break;
 				case PANTALLA:
 					Pantalla auxPantalla = new Pantalla();
+					auxPantalla.setClave(el.getClave());
 					auxPantalla.setNumero(el.getNumero());
 					auxPantalla.setNombre(el.getNombre());
 					auxPantalla.setModulo(moduloAux);

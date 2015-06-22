@@ -1,5 +1,6 @@
 package mx.prisma.editor.bs;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -10,11 +11,13 @@ import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.ElementoDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.ModuloDAO;
+import mx.prisma.editor.dao.VerboDAO;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.ReglaNegocio;
+import mx.prisma.editor.model.Verbo;
 import mx.prisma.util.PRISMAException;
 
 public class CuBs {
@@ -158,6 +161,19 @@ public class CuBs {
 	public static List<Elemento> consultarElementos(Proyecto proyecto) {
 		List<Elemento> listElemento = new ElementoDAO().consultarElementos(proyecto);
 		return listElemento;
+	}
+
+	public static List<String> consultarVerbos() {
+		List<Verbo> lv = new VerboDAO().consultarVerbos();
+		if(lv == null) {
+			throw new PRISMAException("No se pueden consultar los verbos.", "MSG13");
+		}
+		List<String> verbos = new ArrayList<String>();
+		for (Verbo v : lv) {
+			verbos.add(v.getNombre());
+		}
+		
+		return verbos;
 	}
 	
 	
