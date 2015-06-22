@@ -17,7 +17,11 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/DataTables-1.10.7/media/css/jquery.dataTables.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jquery.atwho.css" />
 
-<sj:head locale="es" jqueryui="true" jquerytheme="smoothness"/>
+<s:url id="urlRutaContexto"
+	value="%{pageContext.request.contextPath}/resources/template/themes"
+	includeContext="true" />
+<sj:head debug="true" jqueryui="true" jquerytheme="smoothness"
+	customBasepath="%{urlRutaContexto}" locale="es" />
 
 <decorator:head />
 <![CDATA[

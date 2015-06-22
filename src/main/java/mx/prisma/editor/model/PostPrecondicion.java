@@ -61,8 +61,6 @@ public class PostPrecondicion implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}", shortCircuit= true)
-	@StringLengthFieldValidator(message = "%{getText('MSG6',{'999', 'caracteres'})}", trim = true, maxLength = "999", shortCircuit= true)
 	@Column(name = "redaccion", nullable = false, length = 999)
 	public String getRedaccion() {
 		return this.redaccion;

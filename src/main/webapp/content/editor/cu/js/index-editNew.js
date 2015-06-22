@@ -47,7 +47,7 @@ $(document).ready(function() {
 									item.region,
 									"<center><a onclick='dataTableCDT.deleteRow(tablaPtosExtension,this);'><img class='icon' src='"
 											+ window.contextPath
-											+ "/resources/images/icons/eliminar.png' title='Eliminar Puntos de extensión'></img></a></center>" ];
+											+ "/resources/images/icons/eliminar.png' title='Eliminar Punto de extensión'></img></a></center>" ];
 							dataTableCDT.addRow("tablaPtosExtension",paso);
 						});
 	}

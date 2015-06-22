@@ -48,12 +48,12 @@
 				<tr>
 					<td class="label obligatorio"><s:text name="labelNombre" /></td>
 					<td><s:textfield name="model.nombre"
-							cssErrorClass="input-error" cssClass="inputFormulario" /> <s:fielderror
+							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" /> <s:fielderror
 							fieldName="model.nombre" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr>
 						<td class="label"><s:text name="labelDescripcion" /></td>
-						<td><s:textarea rows="5" name="model.descripcion"
+						<td><s:textarea rows="5" name="model.descripcion" cssClass="inputFormulario ui-widget"
 								maxlength="999" cssErrorClass="input-error"></s:textarea> 
 								<s:fielderror
 								fieldName="model.descripcion" cssClass="error"
@@ -67,7 +67,7 @@
 				<table>
 					<tr>
 						<td class="label"><s:text name="labelActores" /></td>
-						<td><s:textarea rows="5" name="model.redaccionActores"
+						<td><s:textarea rows="5" name="model.redaccionActores" cssClass="inputFormulario ui-widget"
 								maxlength="999" cssErrorClass="input-error" id="actorInput"></s:textarea>
 								<s:fielderror
 								fieldName="model.redaccionActores" cssClass="error"
@@ -75,14 +75,14 @@
 					</tr>
 					<tr>
 						<td class="label"><s:text name="labelEntradas" /></td>
-						<td><s:textarea rows="5" name="model.redaccionEntradas" id="entradaInput"
+						<td><s:textarea rows="5" name="model.redaccionEntradas" id="entradaInput" cssClass="inputFormulario ui-widget"
 								maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
 								fieldName="model.redaccionEntradas" cssClass="error"
 								theme="jquery" /></td>
 					</tr>
 					<tr>
 						<td class="label"><s:text name="labelSalidas" /></td>
-						<td><s:textarea rows="5" name="model.redaccionSalidas" id="salidaInput"
+						<td><s:textarea rows="5" name="model.redaccionSalidas" id="salidaInput" cssClass="inputFormulario ui-widget"
 								maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
 								fieldName="model.redaccionSalidas" cssClass="error"
 								theme="jquery" /></td>
@@ -90,7 +90,7 @@
 					<tr>
 						<td class="label"><s:text
 								name="labelReglasNegocio" /></td>
-						<td><s:textarea rows="5" name="model.redaccionReglasNegocio" id="inputor"
+						<td><s:textarea rows="5" name="model.redaccionReglasNegocio" id="inputor" cssClass="inputFormulario ui-widget"
 								maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
 								fieldName="model.redaccionReglasNegocio" cssClass="error"
 								theme="jquery" /></td>
@@ -190,7 +190,7 @@
 				<table class="seccion">
 					<tr>
 						<td class="label obligatorio"><s:text name="labelRedaccion" /></td>
-						<td><s:textarea rows="5" name="precondicion.redaccion" id="precondicionInput"
+						<td><s:textarea rows="5" name="precondicion.redaccion" id="precondicionInput" cssClass="inputFormulario ui-widget"
 								maxlength="999" cssErrorClass="input-error"></s:textarea></td>
 					</tr>
 				</table>
@@ -215,7 +215,7 @@
 				<table class="seccion">
 					<tr>
 						<td class="label obligatorio"><s:text name="labelRedaccion" /></td>
-						<td><s:textarea rows="5" name="postcondicion.redaccion" id="postcondicionInput"
+						<td><s:textarea rows="5" name="postcondicion.redaccion" id="postcondicionInput" cssClass="inputFormulario ui-widget"
 								maxlength="999" cssErrorClass="input-error"></s:textarea></td>
 					</tr>
 				</table>
@@ -240,17 +240,17 @@
 				<table class="seccion">
 					<tr>
 						<td class="label obligatorio"><s:text name="labelCasoUsoExtiende" /></td>
-						<td><s:select name="ptoExtension.cu" id="ptoExtension.idCu" list="listCUProyecto" listKey="id" cssClass="inputFormulario"
+						<td><s:select name="ptoExtension.cu" id="ptoExtension.idCu" list="listCUProyecto" listKey="id" cssClass="inputFormulario ui-widget"
        						listValue="nombre" cssErrorClass="input-error" value="0"></s:select></td>
 					</tr>
 					<tr>
 						<td class="label obligatorio"><s:text name="labelCausa" /></td>
-						<td><s:textarea rows="5" name="ptoExtension.causa" id="ptoExtension.idCausa"
+						<td><s:textarea rows="5" name="ptoExtension.causa" id="ptoExtension.idCausa" cssClass="inputFormulario ui-widget"
 								maxlength="999" cssErrorClass="input-error"></s:textarea></td>
 					</tr>
 					<tr>
 						<td class="label obligatorio"><s:text name="labelRegion" /></td>
-						<td><s:textarea rows="5" name="ptoExtension.region" id="ptosExtensionInput"
+						<td><s:textarea rows="5" name="ptoExtension.region" id="ptosExtensionInput" cssClass="inputFormulario ui-widget"
 								maxlength="500" cssErrorClass="input-error"></s:textarea></td>
 					</tr>
 				</table>

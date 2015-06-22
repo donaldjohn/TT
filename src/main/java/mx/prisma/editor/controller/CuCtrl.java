@@ -158,11 +158,9 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 		// Se consultan los elementos de todo el proyecto
 		listElementos = CuBs.consultarElementos(proyecto);
-		System.out.println("listElementos tamano " + listElementos.size());
 		
 		// Módulo auxiliar para la serialización
 		Modulo moduloAux = new Modulo();
-		System.out.println("Modulo " + modulo.getNombre());
 		moduloAux.setId(modulo.getId());
 		moduloAux.setNombre(modulo.getNombre());
 		
@@ -352,7 +350,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			model.setNumero(CuBs.calcularNumero(modulo));
 			model.setClave(CuBs.calcularClave(modulo.getClave()));
 			model.setNombre(CuBs.calcularNombre(modulo.getId()));
-			CuBs.registrarCasoUso(model);
+			//CuBs.registrarCasoUso(model);
 			resultado = EDITNEW;
 			addActionMessage(getText("MSG1", new String[] { "El",
 					"caso de uso", "registrado" }));
@@ -366,7 +364,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			resultado = INDEX;
 		}
 
-		System.out.println("DESDE EDITNEW RESULT: " + resultado);
 		return resultado;
 	}
 
@@ -486,6 +483,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		this.jsonAcciones = jsonAcciones;
 	}
 
+	
 	public void setJsonActores(String jsonActores) {
 		this.jsonActores = jsonActores;
 	}

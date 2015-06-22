@@ -35,7 +35,7 @@
 				<tr>
 					<td class="label obligatorio"><s:text name="labelClave" /></td>
 					<td><s:textfield name="model.clave"
-							cssErrorClass="input-error" cssClass="inputFormulario" /> <s:fielderror
+							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" /> <s:fielderror
 							fieldName="model.clave" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr>
@@ -111,12 +111,12 @@
 				<table class="seccion">
 						<tr>
 							<td class="label obligatorio"><s:text name="labelRealiza"/></td>
-							<td><s:select list="listRealiza" cssClass="inputFormulario" name="paso.realizaActor" 
+							<td><s:select list="listRealiza" cssClass="inputFormulario ui-widget" name="paso.realizaActor" 
        						cssErrorClass="input-error" value="0"></s:select></td>
 						</tr>
 						<tr>
 							<td class="label obligatorio"><s:text name="labelVerbo"/></td>
-							<td><s:select list="listVerbos" cssClass="inputFormulario" name="paso.verbo" 
+							<td><s:select list="listVerbos" cssClass="inputFormulario ui-widget" name="paso.verbo" 
        						cssErrorClass="input-error" value="0"></s:select></td>
 						</tr>
 						<tr>

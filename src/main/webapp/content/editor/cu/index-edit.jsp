@@ -52,7 +52,7 @@
 				<tr>
 					<td class="label obligatorio"><s:text name="labelNombre" /></td>
 					<td><s:textfield name="model.nombre"
-							cssErrorClass="input-error" cssClass="inputFormulario" /> <s:fielderror
+							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" /> <s:fielderror
 							fieldName="model.nombre" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr>

@@ -66,8 +66,6 @@ public class Extension implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}", shortCircuit= true)
-	@StringLengthFieldValidator(message = "%{getText('MSG6',{'999', 'caracteres'})}", trim = true, maxLength = "999", shortCircuit= true)
 	@Column(name = "causa", nullable = false, length = 999)
 	public String getCausa() {
 		return this.causa;
@@ -77,8 +75,6 @@ public class Extension implements java.io.Serializable {
 		this.causa = causa;
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}", shortCircuit= true)
-	@StringLengthFieldValidator(message = "%{getText('MSG6',{'500', 'caracteres'})}", trim = true, maxLength = "500", shortCircuit= true)
 	@Column(name = "region", nullable = false, length = 500)
 	public String getRegion() {
 		return this.region;

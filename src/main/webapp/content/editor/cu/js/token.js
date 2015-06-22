@@ -163,8 +163,8 @@ var token = function() {
 				at : token + ".",
 				data : lista,
 				displayTpl : "<li><span class=\"listaToken\">" + token
-						+ "</span>" + "<font color=\"white\">.</font>"
-						+ "<span class=\"listaNombre\">${nombre}</span></li>",
+						+ "</span>" + "."
+						+ "<span class=\"listaElementoInteres\">${nombre}</span></li>",
 				limit : 200
 			}
 		} else if (tipo == "B") {
@@ -182,8 +182,8 @@ var token = function() {
 				at : token + ".",
 				data : lista,
 				displayTpl : "<li><span class=\"listaToken\">" + token
-						+ "</span>" + "<font color=\"white\">.</font>"
-						+ "<span class=\"listaNombre\">${numero}: ${nombre}</span></li>",
+						+ "</span>" + "."
+						+ "<span class=\"listaNombre\">${numero}:</span><span class=\"listaElementoInteres\"> ${nombre}</span></li>",
 				limit : 200
 			}
 		} else if (tipo == "C") {
@@ -200,9 +200,9 @@ var token = function() {
 				at : token + ".",
 				data : lista,
 				displayTpl : "<li><span class=\"listaToken\">" + token
-						+ "</span>" + "<font color=\"white\">.</font>"
+						+ "</span>" + "."
 						+ "<span class=\"listaNombre\">${nombreEntidad}"
-						+ ": ${nombre}</span></li>",
+						+ ":</span><span class=\"listaElementoInteres\"> ${nombre}</span></li>",
 				limit : 200
 			}
 		} else if (tipo == "D") {
@@ -221,10 +221,10 @@ var token = function() {
 				at : token + ".",
 				data : lista,
 				displayTpl : "<li><span class=\"listaToken\">" + token
-						+ "</span>" + "<font color=\"white\">.</font>"
+						+ "</span>" + "."
 						+ "<span class=\"listaNombre\">${nombreModulo}"
 						+ " ${numero}" 
-						+ ": ${nombre}</span></li>",
+						+ ": </span><span class=\"listaElementoInteres\">${nombre}</span></li>",
 				limit : 200
 			}
 		} else if (tipo == "E") {
@@ -243,9 +243,9 @@ var token = function() {
 				at : token + ".",
 				data : lista,
 				displayTpl : "<li><span class=\"listaToken\">" + token
-						+ "</span>" + "<font color=\"white\">.</font>"
+						+ "</span>" + "."
 						+ "<span class=\"listaNombre\">${claveCU}${numeroCU}"
-						+ ": ${clave}</span></li>",
+						+ ": </span><span class=\"listaElementoInteres\">${clave}</span></li>",
 				limit : 200
 			}
 		} else if (tipo == "F") {
@@ -266,9 +266,9 @@ var token = function() {
 				at : token + ".",
 				data : lista,
 				displayTpl : "<li><span class=\"listaToken\">" + token
-						+ "</span>" + "<font color=\"white\">.</font>"
+						+ "</span>" + "."
 						+ "<span class=\"listaNombre\">${claveCU}${numeroCU}"
-						+ ": ${claveTray}.${numero}</span></li>",
+						+ ": ${claveTray}.</span><span class=\"listaElementoInteres\">${numero}</span></li>",
 				limit : 200
 			}
 		} else if (tipo == "G") {
@@ -289,9 +289,9 @@ var token = function() {
 				at : token + ".",
 				data : lista,
 				displayTpl : "<li><span class=\"listaToken\">" + token
-						+ "</span>" + "<font color=\"white\">.</font>"
+						+ "</span>" + "."
 						+ "<span class=\"listaNombre\">${claveIU}.${numeroIU}"
-						+ ": ${nombreIU}:${nombre}</span></li>",
+						+ ": ${nombreIU}: </span><span class=\"listaElementoInteres\">${nombre}</span></li>",
 				limit : 200
 			}
 		}
