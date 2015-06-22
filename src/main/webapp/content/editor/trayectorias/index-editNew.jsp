@@ -12,15 +12,13 @@
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/validaciones.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.caret.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.atwho.js"></script>
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/token.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/trayectorias/js/token.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/trayectorias/js/index-editNew.js"></script>	
 ]]>
 
 </head>
 <body>
-	<s:url value="%{#request.method}" var="contextPathVal"/>
 	
-	<s:hidden value="%{#request.getContextPath()}" id="contextPathHid" name="contextPathHid"/>
 	<h1>Registrar Trayectoria</h1>
 	
 	<s:actionmessage theme="jquery" />
@@ -41,7 +39,7 @@
 							fieldName="model.clave" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr>
-					<td class="label obligatorio"><s:text name="labelAlternativa" /></td>
+					<td class="label"><s:text name="labelAlternativa" /></td>
 					<td><s:checkbox name="model.alternativa" id="model.idAlternativa"
 							cssErrorClass="input-error" onclick="mostrarCampoCondicion(this);"></s:checkbox> 
 							<s:fielderror
@@ -57,7 +55,7 @@
 							theme="jquery" /></td>
 				</tr>
 				<tr>
-					<td class="label obligatorio"><s:text name="labelFinCasoUso" /></td>
+					<td class="label"><s:text name="labelFinCasoUso" /></td>
 					<td><s:checkbox name="model.finCasoUso"
 							cssErrorClass="input-error"></s:checkbox> 
 							<s:fielderror
@@ -123,7 +121,7 @@
 						</tr>
 						<tr>
 							<td class="label obligatorio"><s:text name="labelRedaccion" /></td>
-							<td><s:textarea rows="5" name="paso.redaccion" id="inputorRedaccion"
+							<td><s:textarea rows="5" name="paso.redaccion" id="inputor"
 									maxlength="999" cssErrorClass="input-error"></s:textarea></td>
 						</tr>
 				</table>
@@ -149,7 +147,6 @@
 			<s:hidden name="jsonPasos" id="jsonPasos" value="%{jsonPasos}"/>
 			<s:hidden name="jsonTrayectorias" id="jsonTrayectorias" value="%{jsonTrayectorias}"/>
 			<s:hidden name="jsonAcciones" id="jsonAcciones" value="%{jsonAcciones}"/>
-			<textarea id="inputor" class="textAreaOculto">hola mundo</textarea>
 		</s:form>
 	</sj:dialog>
 	

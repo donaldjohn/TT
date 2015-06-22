@@ -14,8 +14,8 @@
 <body>
 	<h1>Gestionar Trayectorias</h1>
 	<h3><s:property value="%{model.casoUso.clave + ' ' + model.casoUso.numero + ' ' + model.casoUso.nombre}"/></h3>
-	<s:actionmessage/>
-	<s:actionerror theme="jquery" />
+	<s:actionmessage theme="jquery"/>
+	<s:actionerror theme="jquery"/>
 	
 	<br/>
 	<s:form theme="simple" onsubmit="return false;">

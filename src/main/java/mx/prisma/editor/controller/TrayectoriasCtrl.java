@@ -1,7 +1,9 @@
 package mx.prisma.editor.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +16,7 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.interceptor.SessionAware;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
@@ -47,16 +50,18 @@ import mx.prisma.editor.model.Verbo;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
+import mx.prisma.util.SessionManager;
 
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 		"actionName", "trayectorias", "idCU", "%{idCU}"})
 })
-public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven<Trayectoria>{
+public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven<Trayectoria>, SessionAware{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private Map<String, Object> userSession ;
 	// Pruebas
 	private String claveModulo = "SF";
 	private String claveProy = "SIG";
@@ -86,7 +91,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	private String jsonAcciones;
 
 	public HttpHeaders index() throws Exception{
-		System.out.println("DESDE INDEX IDENTIFICADOR DEL CU " + idCU);
 		try {
 			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
 			model.setCasoUso(casoUso);
@@ -94,6 +98,10 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			for(Trayectoria t: casoUso.getTrayectorias()) {
 				listTrayectorias.add(t);
 			}
+			Collection<String> msjs = (Collection<String>) SessionManager.get("mensajesAccion");
+			this.setActionMessages(msjs);
+			SessionManager.delete("mensajesAccion");
+			
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
 			addActionError(getText(pe.getIdMensaje()));
@@ -152,12 +160,12 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	 * */
 	public String create() throws Exception {
 		String resultado = null;
-		System.out.println("DESDE CREATE");
+		//System.out.println("DESDE CREATE");
 		
 		try {
-			System.out.println("CLAVE TRAYECTORIA: " + model.getClave());
+			/*System.out.println("CLAVE TRAYECTORIA: " + model.getClave());
 			System.out.println("ALTERNATIVA " + model.isAlternativa());
-			System.out.println("FIN DEL CU " + model.isFinCasoUso());
+			System.out.println("FIN DEL CU " + model.isFinCasoUso());*/
 			
 			//Se llama al método que convierte los json a pasos de la trayectoria
 			agregarPasos();
@@ -172,9 +180,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 					System.out.println("\t REALIZA ACTOR " + p.isRealizaActor());
 				}
 			}
-			System.out.println("DESDE CREATE ANTES DE LA CONSULTA, IDCU " + idCU);
 			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
-			System.out.println("MODELO " + casoUso.getNombre());
 			
 			//Se agrega el caso de uso a a la trayectoria
 			model.setCasoUso(casoUso);
@@ -186,10 +192,11 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			TrayectoriaBs.registrarTrayectoria(model);
 			
 			resultado = SUCCESS;
-			System.out.println("ACTUALIZACION EXITOSA RESULTADO: " + resultado);
+			System.out.println("REGISTRO DE PASO EXITOSO RESULTADO: " + resultado);
 			addActionMessage(getText("MSG1", new String[] { "La",
 					"Trayectoria", "actualizada" }));
-
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+			
 		} catch (PRISMAException pe) {
 			agregaMensajeError(pe);
 			resultado = INDEX;
@@ -198,24 +205,16 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			addActionError(getText("MSG13"));
 			resultado = INDEX;
 		}
-		System.out.println("DESDE CREATE RESULTADO = " + resultado);
 		return resultado;
 	}
-	
+
 	private void agregarPasos() {
-		System.out.println("DESDE AGREGARPASOS");
 		if(jsonPasosTabla != null && !jsonPasosTabla.equals("")) {
-			System.out.println("TAM JSON PASOS " + jsonPasosTabla.length());
-			System.out.println("JSON DE PASOS " + jsonPasosTabla);
 			model.setPasos(JsonUtil.mapJSONToSet(jsonPasosTabla, Paso.class));
-			System.out.println("INFORMACION DEL PASO");
 			for(Paso p: model.getPasos()) {
 				Verbo v = TrayectoriaBs.consultaVerbo(p.getVerbo().getNombre());
 				p.setVerbo(v);
 				p.setTrayectoria(model);
-				System.out.println("NUMERO " + p.getNumero());
-				System.out.println("REDACCION " + p.getRedaccion());
-				System.out.println("" + p.getVerbo().getNombre());
 			}
 		}
 	}
@@ -250,11 +249,9 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 
 		// Se consultan los elementos de todo el proyecto
 		listElementos = CuBs.consultarElementos(proyecto);
-		System.out.println("listElementos tamano " + listElementos.size());
 		
 		// Módulo auxiliar para la serialización
 		Modulo moduloAux = new Modulo();
-		System.out.println("Modulo " + modulo.getNombre());
 		moduloAux.setId(modulo.getId());
 		moduloAux.setNombre(modulo.getNombre());
 		
@@ -523,6 +520,19 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 
 	public void setJsonAcciones(String jsonAcciones) {
 		this.jsonAcciones = jsonAcciones;
+	}
+
+	public String getJsonPasos() {
+		return jsonPasos;
+	}
+
+	public void setJsonPasos(String jsonPasos) {
+		this.jsonPasos = jsonPasos;
+	}
+
+	public void setSession(Map<String, Object> session) {
+		userSession = session ;
+		
 	}	
 	
 	

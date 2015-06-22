@@ -11,7 +11,7 @@
 	<constant name="struts.custom.i18n.resources" value="global" />
 	
 	<!-- Activa el modo desarrollador -->
-	<constant name="struts.devMode" value="true" />
+	<constant name="struts.devMode" value="false" />
 	
 	<!-- Permite definir mas de un ActionMapper, si el primero no obtiene una respuesta correcta, se utilizará
 	el siguiente mapper -->
@@ -34,15 +34,22 @@
 	
 	<!-- Ruta donde buscara los resultados -->
 	<constant name="struts.convention.result.path" value="/content" />
-	<package name="prisma" extends="rest-default">
+	<package name="default" extends="rest-default">
 		<interceptors>
+			<interceptor name="messageStoreInterceptor"
+				class="mx.prisma.util.MessageStoreInterceptorCDT">
+				<param name="operationMode">STORE</param>
+			</interceptor>
+			<interceptor name="myinterceptor"
+		            class="mx.prisma.util.MyInterceptor" />
 			
 			<interceptor name="workflow"
 				class="org.apache.struts2.rest.RestWorkflowInterceptor"></interceptor>
 
 			<!-- Define la pila de interceptores a ser aplicada a cada acción invocada -->
 			<interceptor-stack name="stack">
-			
+				<interceptor-ref name="messageStoreInterceptor" />
+				
 				<!-- Permite el mapeo de una excepción hacia un result code, es recomendado 
 					que sea el primer interceptor -->
 				<interceptor-ref name="exception" />
@@ -85,6 +92,10 @@
 					<!-- Se excluyen los métodos -->
 					<param name="excludeMethods">input,back,cancel,browse,show,edit,editNew,index,deleteConfirm</param>
 				</interceptor-ref>
+				
+				<!-- Permite el manejo de checkboxes, estableciendo a false su valor 
+					en caso de ser unchecked -->
+				<interceptor-ref name="checkbox" />
 
 			</interceptor-stack>
 		</interceptors>

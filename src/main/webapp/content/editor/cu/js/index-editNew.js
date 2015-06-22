@@ -13,7 +13,7 @@ $(document).ready(function() {
 							var paso = [
 									item.redaccion,
 									"<center><a onclick='dataTableCDT.deleteRow(tablaPrecondiciones,this);'><img class='icon' src='"
-											+ window.contextPath
+											+ contextPath
 											+ "/resources/images/icons/eliminar.png' title='Eliminar Precondición'></img></a></center>" ];
 							dataTableCDT.addRow("tablaPrecondiciones",paso);
 						});
@@ -60,9 +60,10 @@ function registrarPrecondicion(){
     if (esValidaPostPrecondicion("tablaPrecondiciones", varRedaccion)) {
     	var row = [
 					varRedaccion,
-					"<center><a onclick='dataTableCDT.deleteRow(tablaPrecondiciones,this);'>" +
-					"<img class='icon'  id='icon' src='" +
-					$("#varSessionContext").val() + "/resources/images/icons/botonCuadDelete.png'></img></a></center>" ];
+					"<center>" +
+							"<a onclick='dataTableCDT.deleteRow(tablaPrecondiciones,this);'>" +
+							"<img class='icon'  id='icon' src='" +
+					window.contextPath + "/resources/images/icons/eliminar.png' title='Eliminar Precondición'></img></a></center>" ];
     	dataTableCDT.addRow("tablaPrecondiciones", row);
     	document.getElementById("precondicionInput").value = "";
     	$('#precondDialog').dialog('close');
@@ -85,9 +86,9 @@ function registrarPostcondicion(){
     	var postprecondicion = JSON.stringify(obj);
     	var row = [
 					varRedaccion,
-					"<center><a onclick='dataTableCDT.deleteRow(tablaPostcondiciones,this);'>" +
-					"<img class='icon'  id='icon' src='" +
-					$("#varSessionContext").val() + "/resources/images/icons/botonCuadDelete.png'></img></a></center>" ];
+					"<center><a onclick='dataTableCDT.deleteRow(tablaPostcondiciones,this);'>"
+							+ "<img class='icon'  id='icon' src='" + window.contextPath
+							+ "/resources/images/icons/eliminar.png' title='Eliminar Postcondición'></img></a></center>" ];
     	dataTableCDT.addRow("tablaPostcondiciones", row);
     	document.getElementById("postcondicionInput").value = "";
     	$('#postcondDialog').dialog('close');
@@ -122,8 +123,8 @@ function registrarPtoExtension(){
     	           	varCausa,
 					varRegion,
 					"<center><a onclick='dataTableCDT.deleteRow(tablaPtosExtension,this);'>" +
-					"<img class='icon'  id='icon' src='" +
-					$("#varSessionContext").val() + "/resources/images/icons/botonCuadDelete.png'></img></a></center>" ];
+						"<img class='icon'  id='icon' src='" +
+						window.contextPath + "/resources/images/icons/eliminar.png' title='Eliminar Puntos de extensión'></img></a></center>" ];
     	dataTableCDT.addRow("tablaPtosExtension", row);
     	document.getElementById("ptoExtension.idCu").value = "";
     	document.getElementById("ptoExtension.idCausa").value = "";

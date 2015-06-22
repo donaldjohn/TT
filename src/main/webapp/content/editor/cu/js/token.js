@@ -21,18 +21,20 @@ var token = function() {
 	 * 				Ejemplo: ACC.IUSF.7:Registrar_incendio:Aceptar
 	 * 				Acciones
 	 */
+	var at_configRN;
+	var at_configENT;
+	var at_configCU;
+	var at_configIU;
+	var at_configMSG;
+	var at_configACT;
+	var at_configGLS;
+	var at_configATR;
+	var at_configP;
+	var at_configTRAY;
+	var at_configACC;
+	
 	cargarListasToken = function() {
-		var at_configRN;
-		var at_configENT;
-		var at_configCU;
-		var at_configIU;
-		var at_configMSG;
-		var at_configACT;
-		var at_configGLS;
-		var at_configATR;
-		var at_configP;
-		var at_configTRAY;
-		var at_configACC;
+		
 
 		//Actores
 		var json = $("#jsonActores").val();
@@ -134,13 +136,13 @@ var token = function() {
 		$inputor = $('#precondicionInput').atwho(at_configRN).atwho(at_configENT)
 		.atwho(at_configMSG).atwho(at_configACT).atwho(at_configATR).atwho(at_configGLS)
 		.atwho(at_configCU).atwho(at_configIU).atwho(at_configTRAY).atwho(at_configP).atwho(at_configACC);
-		$inputor.caret('pos', 100);
+		$inputor.caret('pos', 60);
 		$inputor.focus().atwho('run');
 		// textArea de Postcondiciones
 		$inputor = $('#postcondicionInput').atwho(at_configRN).atwho(at_configENT)
 		.atwho(at_configMSG).atwho(at_configACT).atwho(at_configATR).atwho(at_configGLS)
 		.atwho(at_configCU).atwho(at_configIU).atwho(at_configTRAY).atwho(at_configP).atwho(at_configACC);
-		$inputor.caret('pos', 100);
+		$inputor.caret('pos', 60);
 		$inputor.focus().atwho('run');
 		// textArea de región de la trayectoria
 		$inputor = $('#ptosExtensionInput').atwho(at_configP);

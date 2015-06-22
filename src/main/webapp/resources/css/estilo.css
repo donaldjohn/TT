@@ -19,6 +19,10 @@ and open the template in the editor.
     /*background-color: #90ee90;*/
 }
 
+a {
+    cursor: pointer;
+}
+
 /*Banner*/
 .banner {
 	position: fixed;

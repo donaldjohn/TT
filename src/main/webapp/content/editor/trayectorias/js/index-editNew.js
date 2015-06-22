@@ -56,14 +56,14 @@ function registrarPaso(){
     	            realiza,
     	            verbo,
 					redaccion,
+					"<input type='hidden' value='" + realizaActor + "' name='realizaActor' id='realizaActor'/>" +
 					"<center>" +
-					"<input type='hidden' value='" + realizaActor + "' name='realizaActor' id='realizaActor'" +
-						"<a onclick='dataTableCDT.deleteRow(tablaPaso,this);'>" +
+						"<a onclick='dataTableCDT.deleteRow(tablaPaso,this);' button='true'>" +
 						"<img class='icon'  id='icon' src='" + window.contextPath + 
-						"/resources/images/icons/eliminar.png'></img></a>" +
+						"/resources/images/icons/eliminar.png' title='Eliminar Paso'/></a>" +
 					"</center>" ];
     	dataTableCDT.addRow("tablaPaso", row);
-    	document.getElementById("pasoInput").value = "";
+    	document.getElementById("inputor").value = "";
     	$('#pasoDialog').dialog('close');
     } else {
     	return false;
@@ -71,7 +71,7 @@ function registrarPaso(){
 };
   
 function cancelarRegistrarPaso() {
-	document.getElementById("pasoInput").value = "";
+	document.getElementById("inputor").value = "";
 	$('#pasoDialog').dialog('close');
 };
 

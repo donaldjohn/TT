@@ -1,6 +1,7 @@
 package mx.prisma.editor.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,6 +33,7 @@ import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
+import mx.prisma.util.SessionManager;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.InterceptorRef;
@@ -348,7 +350,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			model.setNumero(CuBs.calcularNumero(modulo));
 			model.setClave(CuBs.calcularClave(modulo.getClave()));
 			model.setNombre(CuBs.calcularNombre(modulo.getId()));
-			//CuBs.registrarCasoUso(model);
+			CuBs.registrarCasoUso(model);
 			resultado = EDITNEW;
 			addActionMessage(getText("MSG1", new String[] { "El",
 					"caso de uso", "registrado" }));
@@ -464,6 +466,10 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 			// Se consultan todos los casos de uso para mostrarlos en la gestión
 			listCU = CuBs.consultarCasosUsoModulo(modulo);
+			
+			Collection<String> msjs = (Collection<String>) SessionManager.get("mensajesAccion");
+			this.setActionMessages(msjs);
+			SessionManager.delete("mensajesAccion");
 
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
@@ -571,9 +577,9 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			// Solamente se actualiza el modelo debido a que ya se registró
 			CuBs.modificarCasoUso(modelAux);
 			resultado = SUCCESS;
-			System.out.println("ACTUALIZACION EXITOSA");
 			addActionMessage(getText("MSG1", new String[] { "El",
 					"caso de uso", "actualizado" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 
 		} catch (PRISMAException pe) {
 			agregaMensajeError(pe);
