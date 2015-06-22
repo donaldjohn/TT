@@ -589,7 +589,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			addActionError(getText("MSG13"));
 			resultado = INDEX;
 		}
-		System.out.println("DESDE UPDATE RESULTADO = " + resultado);
+		//System.out.println("DESDE UPDATE RESULTADO = " + resultado);
 		return resultado;
 	}
 
