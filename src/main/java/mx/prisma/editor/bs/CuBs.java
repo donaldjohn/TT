@@ -172,7 +172,6 @@ public class CuBs {
 		for (Verbo v : lv) {
 			verbos.add(v.getNombre());
 		}
-		
 		return verbos;
 	}
 	
