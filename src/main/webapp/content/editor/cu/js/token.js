@@ -146,7 +146,7 @@ var token = function() {
 		$inputor.focus().atwho('run');
 		// textArea de región de la trayectoria
 		$inputor = $('#ptosExtensionInput').atwho(at_configP);
-		
+
 
 	}
 
