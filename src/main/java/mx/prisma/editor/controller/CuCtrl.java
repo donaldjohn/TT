@@ -92,6 +92,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		if (pe.getParametros() != null) {
 			addActionError(getText(pe.getIdMensaje()));
 		} else {
+			System.out.println("Mensaje con parametros");
 			addActionError(getText(pe.getIdMensaje(), pe.getParametros()));
 		}
 		System.err.println(pe.getMessage());
@@ -351,7 +352,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			model.setNumero(CuBs.calcularNumero(modulo));
 			model.setClave(CuBs.calcularClave(modulo.getClave()));
 			model.setNombre(CuBs.calcularNombre(modulo.getId()));
-			//CuBs.registrarCasoUso(model);
+			CuBs.registrarCasoUso(model);
 			resultado = EDITNEW;
 			addActionMessage(getText("MSG1", new String[] { "El",
 					"caso de uso", "registrado" }));
