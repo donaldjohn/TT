@@ -42,5 +42,16 @@ INSERT INTO PRISMA.Mensaje (Elementoid, redaccion, parametrizado) VALUES ('11', 
 INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('MSG', '2', 'El archivo no cuenta con el formato solicitado', 'El objetivo de este mensaje es indicar al actor que no se puede ejecutar la acción solicitada debido a que el archivo no está en el formato solicitado.', '1', '1');
 INSERT INTO PRISMA.Mensaje (Elementoid, redaccion, parametrizado) VALUES ('12', 'No se puede cargar el archivo seleccionado, verifique que el formato del archivo sea PDF.', '0');
 
+--------------------- Pantalla --------------------- 
+INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('IUSF', '1', 'Registrar predio', 'Esta pantalla permite al actor interactuar con los componentes necesarios para registrar un predio', '1', '1');
+INSERT INTO `PRISMA`.`Pantalla` (`Elementoid`, `Moduloid`) VALUES ('13', '1');
+INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('IUSF', '2', 'Gestionar incendios', 'Esta pantalla permite al actor interactuar con los componentes necesarios para gestionar incendios', '1', '1');
+INSERT INTO `PRISMA`.`Pantalla` (`Elementoid`, `Moduloid`) VALUES ('14', '1');
 
+--------------------- Acción --------------------- 
+INSERT INTO `PRISMA`.`Accion` (`PantallaElementoid`, `nombre`, `TipoAccionid`) VALUES ('13', 'Aceptar', '2');
+INSERT INTO `PRISMA`.`Accion` (`PantallaElementoid`, `nombre`, `TipoAccionid`) VALUES ('13', 'Cancelar', '2');
+
+INSERT INTO `PRISMA`.`Accion` (`PantallaElementoid`, `nombre`, `TipoAccionid`) VALUES ('14', 'Nuevo', '2');
+INSERT INTO `PRISMA`.`Accion` (`PantallaElementoid`, `nombre`, `TipoAccionid`) VALUES ('14', 'Ayuda', '1');
 

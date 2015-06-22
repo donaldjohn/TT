@@ -57,3 +57,7 @@ INSERT INTO PRISMA.Verbo (nombre) VALUES ('Acerca');
 INSERT INTO PRISMA.Verbo (nombre) VALUES ('Arrastra');
 INSERT INTO PRISMA.Verbo (nombre) VALUES ('Calcula');
 INSERT INTO PRISMA.Verbo (nombre) VALUES ('Revisa');
+
+INSERT INTO PRISMA.TipoAccion (nombre) VALUES ('Liga');
+INSERT INTO PRISMA.TipoAccion (nombre) VALUES ('Botón');
+INSERT INTO PRISMA.TipoAccion (nombre) VALUES ('Opción del menú');

@@ -12,6 +12,7 @@ import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.MensajeDAO;
 import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.dao.PantallaDAO;
+import mx.prisma.editor.dao.PasoDAO;
 import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.dao.TerminoGlosarioDAO;
 import mx.prisma.editor.dao.TrayectoriaDAO;
@@ -61,7 +62,8 @@ public class TokenBs {
 		CasoUso casoUso;
 		Entidad entidad;
 		Atributo atributo;
-		
+		Trayectoria trayectoria;
+		Paso paso;
 		for (String token : tokens) {
 			segmentos = segmentarToken(token);
 			switch (Referencia.getTipoReferencia(segmentos.get(0))) {
@@ -70,20 +72,20 @@ public class TokenBs {
 				if (pantalla == null) {
 					// Construcción del mensaje de error;
 					String[] parametros = { "la", "pantalla",
-							segmentos.get(1).replaceAll("_", " "), "registrada" };
+							segmentos.get(1)+ segmentos.get(2), "registrada" };
 
 					throw new PRISMAException(
-							"TokenBs.convertirToken_Objeto: La pantalla "+ segmentos.get(1)+" no está registrada",
+							"TokenBs.convertirToken_Objeto: La pantalla "+ segmentos.get(1)+ segmentos.get(2)+" no está registrada",
 							"MSG15", parametros);
 				}
 
 				accion = new AccionDAO().consultarAccion(segmentos.get(2).replaceAll("_", " "), pantalla);
 				if (accion == null) {
 					String[] parametros = { "la", "accion",
-							segmentos.get(2).replaceAll("_", " "), "registrada" };
+							segmentos.get(4).replaceAll("_", " ") + "de la pantalla" + segmentos.get(1) + segmentos.get(2), "registrada" };
 					throw new PRISMAException(
 							"TokenBs.convertirToken_Objeto: La acción"
-									+ segmentos.get(2) + " no está registrada",
+									+ segmentos.get(4).replaceAll("_", " ") + "de la pantalla" + segmentos.get(1) + segmentos.get(2)+" no está registrada",
 									"MSG15", parametros);
 				}
 				redaccion = redaccion.replace(token, tokenACC + accion.getId());
@@ -97,7 +99,7 @@ public class TokenBs {
 							segmentos.get(1).replaceAll("_", " "), "registrada" };
 
 					throw new PRISMAException(
-							"TokenBs.convertirToken_Objeto: La entidad no está registrada",
+							"TokenBs.convertirToken_Objeto: La entidad " +segmentos.get(1).replaceAll("_", " ")+" no está registrada",
 							"MSG15", parametros);
 				}
 
@@ -105,10 +107,10 @@ public class TokenBs {
 						segmentos.get(2).replaceAll("_", " "), entidad);
 				if (atributo == null) {
 					String[] parametros = { "el", "atributo",
-							segmentos.get(2).replaceAll("_", " "), "registrado" };
+							segmentos.get(2).replaceAll("_", " ") + "de la entidad " + segmentos.get(1), "registrado" };
 					throw new PRISMAException(
 							"TokenBs.convertirToken_Objeto: El atributo"
-									+ segmentos.get(2) + " no está registrado",
+									+ segmentos.get(2) + "de la entidad" + segmentos.get(1) + " no está registrado",
 									"MSG15", parametros);
 				}
 				redaccion = redaccion.replace(token, tokenATR
@@ -237,9 +239,82 @@ public class TokenBs {
 				redaccion = redaccion.replace(token, tokenRN
 						+ reglaNegocio.getId());
 				break;
-			case TRAYECTORIA:
+			case TRAYECTORIA: // TRAY.CUMODULO.NUM:NOMBRECU:CLAVETRAY
+				trayectoria = null;
+				casoUso = new CasoUsoDAO().consultarCasoUso(segmentos.get(1), Integer.parseInt(segmentos.get(2)), proyecto);
+				if (casoUso == null) {
+					String[] parametros = { "el", "caso de uso",
+							segmentos.get(1) + segmentos.get(2), "registrado" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: El caso de uso "
+									+ segmentos.get(1) + segmentos.get(2) + " no está registrado",
+									"MSG15", parametros);
+				}
+				for (Trayectoria t : casoUso.getTrayectorias()){
+					if (t.getClave().equals(segmentos.get(4))){
+						trayectoria = t;
+					}
+				}
+				if (trayectoria == null) {
+					String[] parametros = { "la", "trayectoria",
+							segmentos.get(4) +" del caso de uso " + segmentos.get(1) + segmentos.get(2), "registrada" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: La trayectoria "
+									+ segmentos.get(4) + "del caso de uso" + segmentos.get(1) + segmentos.get(2) + " no está registrada",
+									"MSG15", parametros);
+				}
+				redaccion = redaccion.replace(token, tokenTray
+						+ trayectoria.getId());			
 				break;
-			case PASO:
+			case PASO: //P.CUMODULO.NUM:NOMBRECU:CLAVETRAY.NUMERO
+				casoUso = new CasoUsoDAO().consultarCasoUso(segmentos.get(1), Integer.parseInt(segmentos.get(2)), proyecto);
+				if (casoUso == null) {
+					String[] parametros = { "el", "caso de uso",
+							segmentos.get(1) + segmentos.get(2), "registrado" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: El caso de uso "
+									+ segmentos.get(1) + segmentos.get(2) + " no está registrado",
+									"MSG15", parametros);
+				}
+				
+				trayectoria = null;
+				paso = null;
+				for (Trayectoria t : casoUso.getTrayectorias()){
+					if (t.getClave().equals(segmentos.get(4))){
+						trayectoria = t;
+						for (Paso p : trayectoria.getPasos()){
+							if (p.getNumero() == Integer.parseInt(segmentos.get(5))){
+								paso = p;
+								break;
+							}
+						}
+					}
+				}
+				if (trayectoria == null) {
+					String[] parametros = { "la", "trayectoria",
+							segmentos.get(4) +" del caso de uso " + segmentos.get(3) , "registrada" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: La trayectoria "
+									+ segmentos.get(4) + "del caso de uso" + segmentos.get(1) + segmentos.get(2) + " no está registrada",
+									"MSG15", parametros);
+				}
+				
+				if (paso == null) {
+					String[] parametros = { "el", "paso",
+							segmentos.get(5) +" de la trayectoria "  + segmentos.get(4) + "del caso de uso " + segmentos.get(1)+segmentos.get(2), "registrado" };
+
+					throw new PRISMAException(
+							"TokenBs.convertirToken_Objeto: El paso "
+									+ segmentos.get(5) + "de la trayectoria" + segmentos.get(4) + "del caso de uso " + segmentos.get(1)+segmentos.get(2) + " no está registrado",
+									"MSG15", parametros);
+				}
+				
+				redaccion = redaccion.replace(token, tokenP
+						+ paso.getId());
 				break;
 			default:
 				break;
@@ -290,20 +365,20 @@ public class TokenBs {
 				if (pantalla == null) {
 					// Construcción del mensaje de error;
 					String[] parametros = { "la", "pantalla",
-							segmentos.get(1).replaceAll("_", " "), "registrada" };
+							segmentos.get(1)+ segmentos.get(2), "registrada" };
 
 					throw new PRISMAException(
-							"TokenBs.convertirToken_Objeto: La pantalla "+ segmentos.get(1)+" no está registrada",
+							"TokenBs.convertirToken_Objeto: La pantalla "+ segmentos.get(1)+ segmentos.get(2)+" no está registrada",
 							"MSG15", parametros);
 				}
 
 				accion = new AccionDAO().consultarAccion(segmentos.get(2).replaceAll("_", " "), pantalla);
 				if (accion == null) {
 					String[] parametros = { "la", "accion",
-							segmentos.get(2).replaceAll("_", " "), "registrada" };
+							segmentos.get(4).replaceAll("_", " ") + "de la pantalla" + segmentos.get(1) + segmentos.get(2), "registrada" };
 					throw new PRISMAException(
 							"TokenBs.convertirToken_Objeto: La acción"
-									+ segmentos.get(2) + " no está registrada",
+									+ segmentos.get(4).replaceAll("_", " ") + "de la pantalla" + segmentos.get(1) + segmentos.get(2)+" no está registrada",
 									"MSG15", parametros);
 				}
 				objetos.add(accion);
@@ -316,7 +391,7 @@ public class TokenBs {
 							segmentos.get(1).replaceAll("_", " "), "registrada" };
 
 					throw new PRISMAException(
-							"TokenBs.convertirToken_Objeto: La entidad "+ segmentos.get(1) +" no está registrada",
+							"TokenBs.convertirToken_Objeto: La entidad " +segmentos.get(1).replaceAll("_", " ")+" no está registrada",
 							"MSG15", parametros);
 				}
 
@@ -324,10 +399,10 @@ public class TokenBs {
 						segmentos.get(2).replaceAll("_", " "), entidad);
 				if (atributo == null) {
 					String[] parametros = { "el", "atributo",
-							segmentos.get(2).replaceAll("_", " "), "registrado" };
+							segmentos.get(2).replaceAll("_", " ") + "de la entidad " + segmentos.get(1), "registrado" };
 					throw new PRISMAException(
 							"TokenBs.convertirToken_Objeto: El atributo"
-									+ segmentos.get(2) + " no está registrado",
+									+ segmentos.get(2) + "de la entidad" + segmentos.get(1) + " no está registrado",
 									"MSG15", parametros);
 				}
 				objetos.add(atributo);
@@ -457,11 +532,11 @@ public class TokenBs {
 				casodeuso = new CasoUsoDAO().consultarCasoUso(segmentos.get(1), Integer.parseInt(segmentos.get(2)), proyecto);
 				if(casodeuso == null) {
 					String[] parametros = { "el", "caso de uso",
-							segmentos.get(1).replaceAll("_", " ") + segmentos.get(2).replaceAll("_", " "), "registrado" };
+							segmentos.get(1) + segmentos.get(2), "registrado" };
 
 					throw new PRISMAException(
-							"TokenBs.convertirToken_Objeto: El caso de uso  "
-									+ segmentos.get(1) + segmentos.get(2)+  " no está registrado",
+							"TokenBs.convertirToken_Objeto: El caso de uso "
+									+ segmentos.get(1) + segmentos.get(2) + " no está registrado",
 									"MSG15", parametros);
 				}
 				
@@ -474,11 +549,11 @@ public class TokenBs {
 
 				if (trayectoria == null) {
 					String[] parametros = { "la", "trayectoria",
-							segmentos.get(4).replaceAll("_", " "), "registrada" };
+							segmentos.get(4) +" del caso de uso " + segmentos.get(1) + segmentos.get(2), "registrada" };
 
 					throw new PRISMAException(
 							"TokenBs.convertirToken_Objeto: La trayectoria "
-									+ segmentos.get(4) + " no está registrada",
+									+ segmentos.get(4) + "del caso de uso" + segmentos.get(1) + segmentos.get(2) + " no está registrada",
 									"MSG15", parametros);
 				}
 				objetos.add(trayectoria);
@@ -488,11 +563,11 @@ public class TokenBs {
 				casodeuso = new CasoUsoDAO().consultarCasoUso(segmentos.get(1), Integer.parseInt(segmentos.get(2)), proyecto);
 				if(casodeuso == null) {
 					String[] parametros = { "el", "caso de uso",
-							segmentos.get(1).replaceAll("_", " ") + segmentos.get(2).replaceAll("_", " "), "registrado" };
+							segmentos.get(1) + segmentos.get(2), "registrado" };
 
 					throw new PRISMAException(
-							"TokenBs.convertirToken_Objeto: El caso de uso  "
-									+ segmentos.get(1) + segmentos.get(2)+  " no está registrado",
+							"TokenBs.convertirToken_Objeto: El caso de uso "
+									+ segmentos.get(1) + segmentos.get(2) + " no está registrado",
 									"MSG15", parametros);
 				}
 				
@@ -505,11 +580,11 @@ public class TokenBs {
 
 				if (trayectoria == null) {
 					String[] parametros = { "la", "trayectoria",
-							segmentos.get(4).replaceAll("_", " "), "registrada" };
+							segmentos.get(4) +" del caso de uso " + segmentos.get(1) + segmentos.get(2), "registrada" };
 
 					throw new PRISMAException(
 							"TokenBs.convertirToken_Objeto: La trayectoria "
-									+ segmentos.get(4) + " no está registrada",
+									+ segmentos.get(4) + "del caso de uso" + segmentos.get(1) + segmentos.get(2) + " no está registrada",
 									"MSG15", parametros);
 				}
 				paso = null;
@@ -521,11 +596,11 @@ public class TokenBs {
 				
 				if (paso == null) {
 					String[] parametros = { "el", "paso",
-							segmentos.get(5).replaceAll("_", " "), "registrado" };
+							segmentos.get(5) +" de la trayectoria "  + segmentos.get(4) + "del caso de uso " + segmentos.get(1)+segmentos.get(2), "registrado" };
 
 					throw new PRISMAException(
 							"TokenBs.convertirToken_Objeto: El paso "
-									+ segmentos.get(5) + " no está registrado",
+									+ segmentos.get(5) + "de la trayectoria" + segmentos.get(4) + "del caso de uso " + segmentos.get(1)+segmentos.get(2) + " no está registrado",
 									"MSG15", parametros);
 				}
 				
@@ -632,10 +707,24 @@ public class TokenBs {
 			}
 			cadenaDecodificada = cadenaDecodificada.replace(token, tokenRN  + reglaNegocio.getNumero() + tokenSeparator2 + reglaNegocio.getNombre().replace(" ", "_"));
 			break;
-		case TRAYECTORIA:
+		case TRAYECTORIA: // TRAY.ID -> TRAY.CUMODULO.NUM:NOMBRECU:CLAVETRAY
+			Trayectoria trayectoria = new TrayectoriaDAO().consultarTrayectoria(Integer.parseInt(segmentos.get(1)));
+			if (trayectoria == null) {
+				cadenaDecodificada = "";
+			}
+			
+			CasoUso cu = trayectoria.getCasoUso();
+			cadenaDecodificada = cadenaDecodificada.replace(token, tokenTray + cu.getClave() + tokenSeparator1 + cu.getNumero() + tokenSeparator2 + cu.getNombre().replace(" ", "_") + tokenSeparator2 + trayectoria.getClave());
 			break;
 			
-		case PASO:
+		case PASO: // P.CUMODULO.NUM:NOMBRECU:CLAVETRAY.NUMERO
+			Paso paso = new PasoDAO().consultarPaso(Integer.parseInt(segmentos.get(1)));
+			if (paso == null) {
+				cadenaDecodificada = "";
+			}
+			Trayectoria t = paso.getTrayectoria();
+			CasoUso cut = t.getCasoUso();
+			cadenaDecodificada = cadenaDecodificada.replace(token, tokenP + cut.getClave() + tokenSeparator1 + cut.getNumero() + tokenSeparator2 + cut.getNombre().replace(" ", "_") + tokenSeparator2 + t.getClave() + tokenSeparator1 + paso.getNumero());
 			break;
 		default:
 			break;
