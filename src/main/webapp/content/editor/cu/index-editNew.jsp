@@ -240,7 +240,7 @@
 				<table class="seccion">
 					<tr>
 						<td class="label obligatorio"><s:text name="labelCasoUsoExtiende" /></td>
-						<td><s:select name="ptoExtension.cu" id="ptoExtension.idCu" list="listCUProyecto" listKey="id" cssClass="inputFormulario ui-widget"
+						<td><s:select name="ptoExtension.cu" id="ptoExtension.idCu" list="listCUProyecto" listKey="id" cssClass="inputFormulario"
        						listValue="nombre" cssErrorClass="input-error" value="0"></s:select></td>
 					</tr>
 					<tr>

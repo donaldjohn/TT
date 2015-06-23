@@ -16,12 +16,11 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/estilo.css" />
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/DataTables-1.10.7/media/css/jquery.dataTables.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jquery.atwho.css" />
-<!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/estilo.css" /> -->
-<s:url id="urlRutaContexto"
+<s:url id="urlRutaContexto" includeParams="none"
 	value="%{pageContext.request.contextPath}/resources/template/themes"
 	includeContext="true" />
-<sj:head debug="true" jqueryui="true" jquerytheme="smoothness"/>
-	<!-- customBasepath="%{urlRutaContexto}" locale="es" /> -->
+<sj:head debug="true" jqueryui="true" jquerytheme="smoothness-prisma"
+	customBasepath="%{urlRutaContexto}" locale="es" />
 
 <decorator:head />
 <![CDATA[
