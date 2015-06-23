@@ -125,17 +125,20 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	 * Agrega los puntos de extensión
 	 */
 	private void agregarPtosExtension(CasoUso casoUso) {
+		System.out.println("DESDE AGREGARPTOSEXTENSION");
 		// Se agregan puntos de extensión al caso de uso
 		if (jsonPtosExtension != null && !jsonPtosExtension.equals("")) {
 			model.setExtiende(JsonUtil.mapJSONToSet(jsonPtosExtension,
 					Extension.class));
 			for (Extension ex : model.getExtiende()) {
+				System.out.println("cuID a consultar: " + ex.getCasoUsoDestino().getId());
 				CasoUso aux = CuBs.consultarCasoUso(ex.getCasoUsoDestino()
 						.getId());
 				ex.setCasoUsoDestino(aux);
 				ex.setCasoUsoOrigen(casoUso);
 			}
 		}
+		System.out.println("FIN DE AGREGAR PTOS");
 	}
 
 	private void buscaElementos() {
@@ -561,6 +564,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		String resultado = null;
 
 		try {
+			System.out.println("DESDE UPDATE ID DEL CU A CONSULTAR " + model.getId());
 			CasoUso modelAux = CuBs.consultarCasoUso(model.getId());
 
 			modelAux.setNombre(model.getNombre());
@@ -575,6 +579,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			agregarPtosExtension(modelAux);
 
 			// Solamente se actualiza el modelo debido a que ya se registró
+			System.out.println("idCU a modificar " + modelAux.getId());
 			CuBs.modificarCasoUso(modelAux);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",
