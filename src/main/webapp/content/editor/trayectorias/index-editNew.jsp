@@ -72,10 +72,11 @@
 				<s:hidden name="numPasos" value="%{listPasos.length}" id="numPasos"/> 
 					<thead>
 						<tr>
-							<th style="width: 10%;"><s:text name="colNumero"/></th>
-							<th style="width: 20%;"><s:text name="colRealiza"/></th>
-							<th style="width: 10%;"><s:text name="colAccion"/></th>
-							<th style="width: 50%;"><s:text name="colRedaccion"/></th>
+							<th style="width: 5%;"><s:text name="colNumero"/></th>
+							<th style="width: 55%;"><s:text name="colRedaccion"/></th>
+							<th style="width: 0;"><s:text name="labelRealiza"/></th>
+							<th style="width: 0;"><s:text name="labelVerbo"/></th>
+							<th style="width: 0;"><s:text name="labelRedaccion"/></th>
 							<th style="width: 10%;"><s:text name="colAcciones"/></th>
 						</tr>
 					</thead>
@@ -111,12 +112,12 @@
 				<table class="seccion">
 						<tr>
 							<td class="label obligatorio"><s:text name="labelRealiza"/></td>
-							<td><s:select list="listRealiza" cssClass="inputFormulario" name="paso.realizaActor" 
+							<td><s:select list="listRealiza" cssClass="inputFormulario" name="paso.realizaActor" id="realiza" 
        						cssErrorClass="input-error" value="0"></s:select></td>
 						</tr>
 						<tr>
 							<td class="label obligatorio"><s:text name="labelVerbo"/></td>
-							<td><s:select list="listVerbos" cssClass="inputFormulario" name="paso.verbo" 
+							<td><s:select list="listVerbos" cssClass="inputFormulario" name="paso.verbo" id="verbo"
        						cssErrorClass="input-error" value="0"></s:select></td>
 						</tr>
 						<tr>
