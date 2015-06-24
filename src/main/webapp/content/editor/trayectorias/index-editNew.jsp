@@ -147,7 +147,8 @@
 			<s:hidden name="jsonPasos" id="jsonPasos" value="%{jsonPasos}"/>
 			<s:hidden name="jsonTrayectorias" id="jsonTrayectorias" value="%{jsonTrayectorias}"/>
 			<s:hidden name="jsonAcciones" id="jsonAcciones" value="%{jsonAcciones}"/>
-			<s:hidden name="existeTPrincipal" id="existeTPrincipal" value="%{existeTPrincipal}"/>
+			<!-- Booleano que indica si existen trayectorias -->
+			<s:hidden id="existeTPrincipal" value="%{existeTPrincipal}"/>
 		</s:form>
 	</sj:dialog>
 	

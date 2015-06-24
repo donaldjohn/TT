@@ -3,6 +3,7 @@ var contextPath = "prisma";
 $(document).ready(function() {
 	contextPath = $("#rutaContexto").val();
 	$('table.tablaGestion').DataTable();
+	prepararVistaAlternativaPrincipal();
 	ocultarColumnas("tablaPaso");
 	token.cargarListasToken();
 	mostrarCampoCondicion(document.getElementById("model.idAlternativa"));
@@ -181,4 +182,14 @@ function ocultarColumnas(tabla) {
 	dataTable.api().column(2).visible(false);
 	dataTable.api().column(3).visible(false);
 	dataTable.api().column(4).visible(false);
+}
+
+function prepararVistaAlternativaPrincipal() {
+	var existeTPrincipal = document.getElementById("existeTPrincipal");
+	alert(existeTPrincipal);
+	if(existeTPrincipal == "true") {
+		alert("Existe TP");
+	} else {
+		alert("no existe TP");
+	}
 }
