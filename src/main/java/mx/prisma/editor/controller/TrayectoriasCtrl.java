@@ -48,6 +48,7 @@ import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.editor.model.Verbo;
 import mx.prisma.util.ActionSupportPRISMA;
+import mx.prisma.util.ErrorManager;
 import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
@@ -55,7 +56,7 @@ import mx.prisma.util.SessionManager;
 
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "trayectorias", "idCU", "%{idCU}"})
+		"actionName", "trayectorias", "idCU", "%{idCU}"}),
 })
 public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven<Trayectoria>, SessionAware{
 	/**
@@ -94,6 +95,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	public HttpHeaders index() throws Exception{
 		try {
 			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
+			SessionManager.set(idCU, "idCU");
 			model.setCasoUso(casoUso);
 			listTrayectorias = new ArrayList<Trayectoria>();
 			for(Trayectoria t: casoUso.getTrayectorias()) {
@@ -104,8 +106,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			SessionManager.delete("mensajesAccion");
 			
 		} catch (PRISMAException pe) {
-			System.err.println(pe.getMessage());
-			addActionError(getText(pe.getIdMensaje()));
+			ErrorManager.agregaMensajeError(this, pe);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -116,6 +117,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	 * Método para preparar la pantalla de registro de una trayectoria.
 	 * */
 	public String editNew() {
+		
 		String resultado = null;
 		try {
 			// Creación del modelo
@@ -128,11 +130,11 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			resultado = EDITNEW;
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
-			addActionError(getText(pe.getIdMensaje()));
+			ErrorManager.agregaMensajeError(this, pe);
 			resultado = INDEX;
 		} catch (Exception e) {
 			e.printStackTrace();
-			addActionError(getText("MSG13"));
+			ErrorManager.agregaMensajeError(this, e);
 			resultado = INDEX;
 		}
 		return resultado;
@@ -155,7 +157,8 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	 * */
 	public String create() throws Exception {
 		String resultado = null;
-		System.out.println("clave " + model.getClave());
+		idCU = (Integer)SessionManager.get("idCU");
+		System.out.println("ID del modelo " + model.getClave());
 		
 		try {
 			//Se llama al método que convierte los json a pasos de la trayectoria
@@ -183,14 +186,14 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 			
 		} catch (PRISMAValidacionException pve) {
-			agregaMensajeError(pve);
-			resultado = EDITNEW;
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = editNew();
 		} catch (PRISMAException pe) {
-			agregaMensajeError(pe);
+			ErrorManager.agregaMensajeError(this, pe);
 			resultado = INDEX;
 		} catch (Exception e) {
 			e.printStackTrace();
-			addActionError(getText("MSG13"));
+			ErrorManager.agregaMensajeError(this, e);
 			resultado = INDEX;
 		}
 		return resultado;
@@ -207,15 +210,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		}
 	}
 
-	public void agregaMensajeError(PRISMAException pe) {
-		if(pe.getParametros() != null){
-			addActionError(getText(pe.getIdMensaje()));
-		} else {
-			addActionError(getText(pe.getIdMensaje(), pe.getParametros()));
-		}
-		System.err.println(pe.getMessage());
-		pe.printStackTrace();
-	}
+	
 	
 	private void buscaElementos() {
 		// Lists de los elementos disponibles

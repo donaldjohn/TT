@@ -8,8 +8,10 @@ import mx.prisma.editor.bs.Referencia.TipoSeccion;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.util.HibernateUtil;
+import mx.prisma.util.PRISMAValidacionException;
 
 import org.hibernate.HibernateException;
+import org.hibernate.JDBCException;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
@@ -80,36 +82,15 @@ public class TrayectoriaDAO {
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
+			throw he;
 		}
 	}
 	
-	public Trayectoria consultarTrayectoria(int id) {
+	public Trayectoria consultarTrayectoria(int id) throws HibernateException{
 		Trayectoria trayectoria = null;
-
-		try {
 			session.beginTransaction();
 			trayectoria = (Trayectoria) session.get(Trayectoria.class, id);
 			session.getTransaction().commit();
-		} catch (HibernateException he) {
-			he.printStackTrace();
-			session.getTransaction().rollback();
-		}
-
-		return trayectoria;
-
-	}
-	public Trayectoria consultarTrayectoria(String clave) {
-		Trayectoria trayectoria = null;
-
-		try {
-			session.beginTransaction();
-			trayectoria = (Trayectoria) session.get(Trayectoria.class, clave);
-			session.getTransaction().commit();
-		} catch (HibernateException he) {
-			he.printStackTrace();
-			session.getTransaction().rollback();
-		}
-
 		return trayectoria;
 
 	}

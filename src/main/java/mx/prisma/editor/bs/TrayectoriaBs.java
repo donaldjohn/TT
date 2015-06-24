@@ -2,6 +2,10 @@ package mx.prisma.editor.bs;
 
 import java.util.List;
 
+import org.hibernate.HibernateException;
+import org.hibernate.JDBCException;
+import org.hibernate.exception.GenericJDBCException;
+
 import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.TrayectoriaDAO;
 import mx.prisma.editor.dao.VerboDAO;
@@ -15,16 +19,10 @@ import mx.prisma.util.Validador;
 
 public class TrayectoriaBs {
 
-	public static void registrarTrayectoria(Trayectoria model) {
+	public static void registrarTrayectoria(Trayectoria model) throws Exception {
 		try {
-			TrayectoriaDAO td = new TrayectoriaDAO();
-			Trayectoria aux = td.consultarTrayectoria(model.getClave());
 			if(Validador.esNuloOVacio(model.getClave())) {
 				throw new PRISMAValidacionException("El usuario no ingresó la clave de la trayectoria.", "MSG4", null, "model.clave");
-			}
-			if(aux != null) {
-				throw new PRISMAValidacionException("La clave de la trayectoria ya existe.", "MSG7", new String[] { "La",
-				"clave"});
 			}
 			if(model.isAlternativa() && Validador.esNuloOVacio(model.getCondicion())) {
 				throw new PRISMAValidacionException("El usuario no ingresó la condición.", "MSG4", null, "model.condicion");
@@ -38,8 +36,17 @@ public class TrayectoriaBs {
 				}
 			}
 			new TrayectoriaDAO().registrarTrayectoria(model);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (JDBCException je) {
+				if(je.getErrorCode() == 1062)
+				{
+					throw new PRISMAValidacionException("La clave de la trayectoria ya existe.", "MSG7",
+							new String[] { "La","trayectoria", model.getClave()}, "model.clave");
+				}
+				je.printStackTrace();
+		} catch(HibernateException he) {
+			System.out.println("DESDE BS ERROR EN HE");
+			he.printStackTrace();
+			throw new Exception();
 		}
 	}
 

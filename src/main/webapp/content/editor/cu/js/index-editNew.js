@@ -219,6 +219,5 @@ function tablaPtosExtensionToJson(idTable) {
 	}
 	var json = JSON.stringify(arreglo);
 	document.getElementById("jsonPtosExtension").value = json;
-	alert("json: " + json);
 }
 
