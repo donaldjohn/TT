@@ -23,15 +23,17 @@
 		<table id="gestion" class="tablaGestion" cellspacing="0" width="100%">
 			<thead>
 				<th style="width: 15%;"><s:text name="colCausa"/></th>
-				<th style="width: 70%;"><s:text name="colRegion"/></th>
-				<th style="width: 15%;"><s:text name="colExtiende"/></th>
+				<th style="width: 40%;"><s:text name="colRegion"/></th>
+				<th style="width: 25%;"><s:text name="colExtiende"/></th>
+				<th style="width: 15%;"><s:text name="colAcciones"/></th>
+				
 			</thead>
 			<tbody>
 			<s:iterator value="listPtosExtension" var="ext">
 				<tr>
 					<td><s:property value="%{#ext.causa}"/></td>
 					<td><s:property value="%{#ext.region}"/></td>
-					<td><s:property value="%{#ext.casoUsoOrigen.clave + ext.casoUsoOrigen.numero + ' ' + ext.casoUsoOrigen.nombre}"/></td>
+					<td><s:property value="%{#ext.casoUsoOrigen.clave + #ext.casoUsoOrigen.numero + ' ' + #ext.casoUsoOrigen.nombre}"/></td>
 					
 					<td align="center">
 						<s:a href="#">

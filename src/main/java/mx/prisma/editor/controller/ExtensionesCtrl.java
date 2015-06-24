@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
@@ -15,7 +14,6 @@ import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
 import com.opensymphony.xwork2.ModelDriven;
-
 
 import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Proyecto;
@@ -89,6 +87,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 			modulo = new ModuloDAO().consultarModulo(this.claveModulo, proyecto);
 			buscaElementos();
 			buscaCatalogos();
+			
 			resultado = EDITNEW;
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
@@ -102,12 +101,16 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 		return resultado;
 	}
 	
-	private void buscaCatalogos() {
+	private void buscaCatalogos() throws Exception {
 		catalogoCasoUso = new ArrayList<CasoUso>();
 		for (CasoUso casoUso : listCasoUso){
 			if (casoUso.getId() != idCU) {
 				catalogoCasoUso.add(casoUso);
 			}
+		}
+		
+		if (catalogoCasoUso.isEmpty()){
+			throw new Exception();
 		}
 	}
 
@@ -199,13 +202,31 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 	}
 
 	public void setSession(Map<String, Object> arg0) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
 
 	public Extension getModel() {
-		// TODO Auto-generated method stub
-		return null;
+		return (this.model == null) ? model = new Extension() : this.model;
+	}
+
+	public void setModel(Extension model) {
+		this.model = model;
+	}
+
+	public List<Extension> getListPtosExtension() {
+		return listPtosExtension;
+	}
+
+	public void setListPtosExtension(List<Extension> listPtosExtension) {
+		this.listPtosExtension = listPtosExtension;
+	}
+
+	public List<CasoUso> getCatalogoCasoUso() {
+		return catalogoCasoUso;
+	}
+
+	public void setCatalogoCasoUso(List<CasoUso> catalogoCasoUso) {
+		this.catalogoCasoUso = catalogoCasoUso;
 	}
 
 	
