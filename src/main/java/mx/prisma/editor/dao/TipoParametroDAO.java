@@ -33,6 +33,7 @@ public class TipoParametroDAO {
 
 	}
 	
+	@SuppressWarnings("unchecked")
 	public TipoParametro consultarTipoParametro(String nombre) {
 		List<TipoParametro> results = null;
 

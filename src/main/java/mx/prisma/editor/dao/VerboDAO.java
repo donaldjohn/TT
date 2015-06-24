@@ -32,6 +32,7 @@ public class VerboDAO {
 
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Verbo consultarVerbo(String nombre) {
 		List<Verbo> results = null;
 
@@ -49,7 +50,10 @@ public class VerboDAO {
 		}
 		
 		if(results!=null){
-			if (results.get(0) != null){
+			if (results.isEmpty()){
+				return null;
+			} else 
+				if (results.get(0) != null){
 				return results.get(0);
 			}
 		}
@@ -57,6 +61,7 @@ public class VerboDAO {
 
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Verbo> consultarVerbos() {
 		List<Verbo> results = null;
 

@@ -112,7 +112,7 @@ public class Trayectoria implements java.io.Serializable {
 		this.condicion = condicion;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "CasoUsoElementoid", referencedColumnName = "Elementoid")
 	public CasoUso getCasoUso() {
 		return casoUso;
@@ -131,7 +131,7 @@ public class Trayectoria implements java.io.Serializable {
 		this.finCasoUso = finCasoUso;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "trayectoria",  orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "trayectoria", cascade = CascadeType.PERSIST)
 	public Set<Paso> getPasos() {
 		return pasos;
 	}

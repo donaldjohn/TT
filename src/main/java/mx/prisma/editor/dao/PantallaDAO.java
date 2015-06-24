@@ -3,15 +3,11 @@ package mx.prisma.editor.dao;
 import java.util.List;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.editor.bs.Referencia;
-import mx.prisma.editor.model.CasoUso;
-import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
 import mx.prisma.util.HibernateUtil;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
@@ -50,6 +46,7 @@ public class PantallaDAO extends ElementoDAO {
 
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Pantalla consultarPantalla(Modulo modulo, int numero) {
 		List<Pantalla> results = null;
 

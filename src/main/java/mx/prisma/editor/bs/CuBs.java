@@ -162,6 +162,11 @@ public class CuBs {
 		List<Elemento> listElemento = new ElementoDAO().consultarElementos(proyecto);
 		return listElemento;
 	}
+	
+	public static List<CasoUso> consultarCasosUso(Proyecto proyecto) {
+		List<CasoUso> listCasoUso = new CasoUsoDAO().consultarCasosUso(proyecto.getId());
+		return listCasoUso;
+	}
 
 	public static List<String> consultarVerbos() {
 		List<Verbo> lv = new VerboDAO().consultarVerbos();
@@ -174,5 +179,6 @@ public class CuBs {
 		}
 		return verbos;
 	}
+	
 }
 
