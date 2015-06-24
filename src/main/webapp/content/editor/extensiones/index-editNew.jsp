@@ -25,30 +25,27 @@
 	<br />
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
-	<s:form id="frmExtension" theme="simple"
-		action="%{#pageContext.request.contextPath}/extensiones" method="post">
+	<s:form id="frmExtension" theme="simple" action="%{#pageContext.request.contextPath}/extensiones"  method="post">
 		<div class="formulario">
 			<s:hidden value="%{idCU}" name="idCU" />
 			<div class="tituloFormulario">Información general del Punto de
 				extensión</div>
 			<table class="seccion">
 				<tr>
-					<td class="label obligatorio"><s:text
-							name="labelCasoUsoExtiende" /></td>
-					<td><s:select name="model.casoUsoOrigen" id="model.idCu"
-					headerKey="-1" headerValue="Seleccione"
+					<td class="label obligatorio"><s:text name="labelCasoUsoExtiende" /></td>
+					<td><s:select name="model.casoUsoDestino" id="model.idCu" headerValue="Seleccione" headerKey="-1"
 							list="catalogoCasoUso" listKey="id" cssClass="inputFormulario"
-							listValue="%{clave + numero + ' ' +  nombre}" cssErrorClass="input-error" value="0"></s:select></td>
+							listValue="%{clave + numero + ' ' +  nombre}" cssErrorClass="input-error"></s:select></td>
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelCausa" /></td>
-					<td><s:textarea name="model.causa" id="model.idCausa" cssErrorClass="input-error"></s:textarea> <s:fielderror
-							fieldName="model.causa" cssClass="error" theme="jquery" /></td>
+					<td><s:textarea name="causa" id="model.idCausa" cssErrorClass="input-error"></s:textarea> <s:fielderror
+							fieldName="causa" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelRegion" /></td>
-					<td><s:textarea name="model.region" id="inputor" cssErrorClass="input-error"></s:textarea> <s:fielderror
-							fieldName="model.region" cssClass="error" theme="jquery" /></td>
+					<td><s:textarea name="region" id="inputor" cssErrorClass="input-error"></s:textarea> <s:fielderror
+							fieldName="region" cssClass="error" theme="jquery" /></td>
 				</tr>				
 			</table>
 		</div>

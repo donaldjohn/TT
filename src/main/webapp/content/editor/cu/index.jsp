@@ -11,7 +11,7 @@
 ]]>
 </head>
 
-<body>
+<body> 
 	
 	<h1><s:property value="%{model.modulo.clave + ' ' + model.modulo.nombre}" /></h1>
 
