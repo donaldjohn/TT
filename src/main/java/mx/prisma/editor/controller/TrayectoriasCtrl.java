@@ -148,11 +148,14 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	}
 	
 	private boolean existeTrayectoriaPrincipal() {
-		//TrayectoriaBs.consultarTrayectorias();
+		if(idCU == 0) {
+			idCU = (Integer)SessionManager.get("idCU");
+		}
+		CasoUso casoUso = CuBs.consultarCasoUso(idCU);
 		existeTPrincipal = false;
-		for (Trayectoria t: model.getCasoUso().getTrayectorias()) {
+		for (Trayectoria t: casoUso.getTrayectorias()) {
 			if(!t.isAlternativa()) {
-				return true;
+				return true; 
 			}
 		}
 		return existeTPrincipal;
