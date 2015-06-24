@@ -11,7 +11,7 @@
 ]]>
 </head>
 
-<body>
+<body> 
 	
 	<h1><s:property value="%{model.modulo.clave + ' ' + model.modulo.nombre}" /></h1>
 
@@ -38,8 +38,7 @@
 					<td><s:property value="%{#cu.clave + ' ' + #cu.numero + ' ' +#cu.nombre}"/></td>
 					<td><s:property value="%{#cu.estadoElemento.nombre}"/></td>
 					<td align="center">				
-							<a
-									href="${pageContext.request.contextPath}/cu/${cu.id}/edit"><img
+							<a href="${pageContext.request.contextPath}/cu/${cu.id}/edit"><img
 										id="" class="button" width="20" height="20"
 										title="Editar"
 										src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></a>
@@ -50,7 +49,15 @@
 							<s:a href="%{urlGestionarTrayectorias}"><img
 										id="" class="button" width="20" height="20"
 										title="Gestionar Trayectorias"
-										src="${pageContext.request.contextPath}/resources/images/icons/gestionarTray.png" /></s:a>						
+										src="${pageContext.request.contextPath}/resources/images/icons/gestionarTray.png" /></s:a>	
+										
+							<s:url var="urlGestionarPuntosExtension" value="%{#pageContext.request.contextPath}/extensiones">
+								<s:param name="idCU" value="%{#cu.id}"/>
+							</s:url>
+							<s:a href="%{urlGestionarPuntosExtension}"><img
+										id="" class="button" width="20" height="20"
+										title="Gestionar Puntos de extensión"
+										src="${pageContext.request.contextPath}/resources/images/icons/extension.png" /></s:a>						
 					</td>
 					
 					
