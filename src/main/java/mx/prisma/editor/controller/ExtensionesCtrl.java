@@ -19,6 +19,7 @@ import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ExtensionBs;
+import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Extension;
@@ -40,11 +41,9 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String nameAux;
 	// Pruebas
 	private String claveModulo = "SF";
 	private String claveProy = "SIG";
-	String n = "";
 	// Proyecto y módulo
 	private Proyecto proyecto;
 	private Modulo modulo;
@@ -53,7 +52,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 	private List<Extension> listPtosExtension;
 	private int idCU;
 	private  List<CasoUso> catalogoCasoUso;
-	
+	private int claveCasoUsoDestino;
 	// Elementos disponibles
 	private List<CasoUso> listCasoUso;
 	private String jsonPasos;
@@ -110,13 +109,12 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 
 	public String create() throws Exception {
 		String resultado = null;
-		System.out.println("nameAux " + nameAux);
-		System.out.println("--");
+		System.out.println(claveCasoUsoDestino);
+		model.setCasoUsoDestino(new CasoUsoDAO().consultarCasoUso(claveCasoUsoDestino));
 		try {						
 			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
 			model.setCasoUsoOrigen(casoUso);
 			ExtensionBs.registrarExtension(model);						
-			System.out.println("Marca");
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",
 					"Punto de extensión", "registrado" }));
@@ -141,7 +139,6 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 			modulo = new ModuloDAO().consultarModulo(this.claveModulo, proyecto);
 			buscaElementos();
 			buscaCatalogos();
-			n = "Hola mundo";
 			resultado = EDITNEW;
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
@@ -156,7 +153,6 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 	}
 	
 	public List<CasoUso> getCatalogoCasoUso() {
-		System.out.println("get " + catalogoCasoUso);
 		return catalogoCasoUso;
 	}
 
@@ -181,7 +177,8 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
 			model.setCasoUsoOrigen(casoUso);
 			listPtosExtension = new ArrayList<Extension>();
-			for(Extension extension: casoUso.getExtiende()) {
+			Set<Extension> extensiones = casoUso.getExtendidoDe();
+			for(Extension extension: extensiones) {
 				listPtosExtension.add(extension);
 			}
 			@SuppressWarnings("unchecked")
@@ -199,7 +196,6 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 	}
 
 	public void setCatalogoCasoUso(List<CasoUso> catalogoCasoUso) {
-		System.out.println("set " + catalogoCasoUso);
 		this.catalogoCasoUso = catalogoCasoUso;
 	}
 
@@ -223,12 +219,12 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 		// TODO Auto-generated method stub		
 	}
 
-	public String getNameAux() {
-		return nameAux;
+	public int getClaveCasoUsoDestino() {
+		return claveCasoUsoDestino;
 	}
 
-	public void setNameAux(String nameAux) {
-		this.nameAux = nameAux;
+	public void setClaveCasoUsoDestino(int claveCasoUsoDestino) {
+		this.claveCasoUsoDestino = claveCasoUsoDestino;
 	}
 
 	

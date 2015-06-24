@@ -179,7 +179,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 	public void setExtendidoDe(Set<Extension> ExtendidoDe) {
 		this.ExtendidoDe = ExtendidoDe;
 	}
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUsoDestino")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUsoOrigen")
 	public Set<Extension> getExtiende() {
 		return Extiende;
 	}
@@ -188,7 +188,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.Extiende = Extiende;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUsoOrigen")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUsoDestino")
 	public Set<Inclusion> getIncluidoEn() {
 		return incluidoEn;
 	}

@@ -37,11 +37,11 @@
 					
 					<td align="center">
 						<s:a href="#">
-							<img id="" class="button" width="20" height="20" title="Modificar Punto de extensión"
+							<img id="" class="button" title="Modificar Punto de extensión"
 									src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
 						</s:a>
 						<s:a href="#">
-							<img id="" class="button" width="20" height="20" title="Eliminar Punto de extensión"
+							<img id="" class="button" title="Eliminar Punto de extensión"
 									src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" />
 						</s:a>
 					</td>	
