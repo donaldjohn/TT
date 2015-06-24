@@ -111,6 +111,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 	public String create() throws Exception {
 		String resultado = null;
 		System.out.println("nameAux " + nameAux);
+		System.out.println(model.getCasoUsoDestino().getNombre());
 		System.out.println("--");
 		try {						
 			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
