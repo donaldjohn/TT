@@ -1,5 +1,57 @@
 var dataTableCDT = function() {
+	
+	function deleteRowPasos(table, element) {
+		//Se elimina el elemento
+		$("#" + table.id).DataTable().row($(element).parents('tr')).remove()
+				.draw();
+		
+		//Se reaordenan la numeración
+		var dataTable = $("#" + table.id).dataTable();
+		for (var i = 0; i < dataTable.fnSettings().fnRecordsTotal(); i++) {
+			dataTable.api().cell(i, 0).data(i + 1);
+		}
+	}
+	
+	function moveRow(table, row, direction)
+    {
+		var dataTable = $("#" + table.id).dataTable()
+		
+		//Fila seleccionada
+		var rowSel = $("#" + table.id).DataTable().row($(row).parents('tr'))
+		
+		//Se obtiene el índice de la fila que se seleccionó
+		var index = $("#" + table.id).DataTable().row($(row).parents('tr')).index();
+		
+		if(direction == "up") {
+			//Se obtiene el índice de la fila anterior
+			if(index <= 0) {
+				alert("No se puede mover este paso.");
+				return false;
+			}
+			var indexInter = index - 1;
+		} else if (direction == "down"){
+			//Se obtiene el índice de la fila siguiente
+			if(index >= (dataTable.fnSettings().fnRecordsTotal() - 1)) {
+				alert("No se puede mover este paso.");
+				return false;
+			}
+			var indexInter = index + 1;
+		}
+		
+		//Se intercambian los números de las filas
+		dataTable.api().cell(index, 0).data(indexInter + 1); //Se suma 1 porque los índices comienzan en cero
+		dataTable.api().cell(indexInter, 0).data(index + 1); //Se suma 1 porque los índices comienzan en cero
+		
+		//Se obtienen los valores de las filas completas
+		var rowSel = dataTable.api().row(index).data();
+		var rowAnt = dataTable.api().row(indexInter).data();
+		
+		//Se intercambia la información de las columnas
+		dataTable.api().row(index).data(rowAnt);
+		dataTable.api().row(indexInter).data(rowSel);
 
+		
+    }
 	/**
 	* Permite agregar una fila en una Tabla especificada
 	* 
@@ -130,6 +182,8 @@ var dataTableCDT = function() {
 				"<label class='labelSearchDatatable'>Buscar:</label>");
 		return table;
 	}
+	
+	
 
 	return {
 		addRow : addRow,
@@ -137,5 +191,8 @@ var dataTableCDT = function() {
 		deleteRows : deleteRows,
 		exist : exist,
 		createDataTable : createDataTable,
+		moveRow : moveRow,
+		deleteRowPasos : deleteRowPasos,
 	};
 }();
+

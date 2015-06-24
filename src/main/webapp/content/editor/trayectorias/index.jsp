@@ -31,7 +31,7 @@
 				<tr>
 					<td><s:property value="%{#tray.clave}"/></td>
 					<td>
-						<s:if test="%{#tray.alternativa}">Condicion: <s:property value="%{#tray.condicion}"/></s:if>
+						<s:if test="%{#tray.alternativa}"><s:property value="%{#tray.condicion}"/></s:if>
 						<s:else>Sin condición</s:else>
 					</td>
 					<td align="center">
