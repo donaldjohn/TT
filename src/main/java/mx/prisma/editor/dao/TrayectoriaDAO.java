@@ -53,4 +53,19 @@ public class TrayectoriaDAO {
 		return trayectoria;
 
 	}
+	public Trayectoria consultarTrayectoria(String clave) {
+		Trayectoria trayectoria = null;
+
+		try {
+			session.beginTransaction();
+			trayectoria = (Trayectoria) session.get(Trayectoria.class, clave);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+
+		return trayectoria;
+
+	}
 }

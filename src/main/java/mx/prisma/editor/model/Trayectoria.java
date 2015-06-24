@@ -93,7 +93,6 @@ public class Trayectoria implements java.io.Serializable {
 		this.clave = clave;
 	}
 
-	@RequiredFieldValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}", shortCircuit = true)
 	@Column(name = "alternativa", nullable = false)
 	public boolean isAlternativa() {
 		return this.alternativa;

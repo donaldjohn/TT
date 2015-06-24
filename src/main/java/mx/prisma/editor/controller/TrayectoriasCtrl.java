@@ -50,6 +50,7 @@ import mx.prisma.editor.model.Verbo;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
+import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.SessionManager;
 
 @ResultPath("/content/editor/")
@@ -154,43 +155,36 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	 * */
 	public String create() throws Exception {
 		String resultado = null;
-		//System.out.println("DESDE CREATE");
+		System.out.println("clave " + model.getClave());
 		
 		try {
-			/*System.out.println("CLAVE TRAYECTORIA: " + model.getClave());
-			System.out.println("ALTERNATIVA " + model.isAlternativa());
-			System.out.println("FIN DEL CU " + model.isFinCasoUso());*/
-			
 			//Se llama al método que convierte los json a pasos de la trayectoria
 			agregarPasos();
 			
-			
-			if(model.getPasos() != null) {
-				System.out.println("PASOS");
-				for(Paso p: model.getPasos()) {
-					System.out.println("\t NUMERO " + p.getNumero());
-					System.out.println("\t REDACCION " + p.getRedaccion());
-					System.out.println("\t VERBO " + p.getVerbo().getNombre());
-					System.out.println("\t REALIZA ACTOR " + p.isRealizaActor());
-				}
-			}
+			//Se consulta el caso de uso para el que se va a registrar la trayectoria
 			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
 			
 			//Se agrega el caso de uso a a la trayectoria
 			model.setCasoUso(casoUso);
 			
 			//Se agrega la trayectoria al caso de uso
-			casoUso.getTrayectorias().add(model);
+			//casoUso.getTrayectorias().add(model);
 									
-			//CuBs.modificarCasoUso(casoUso);
+			//Se registra la trayectoria
 			TrayectoriaBs.registrarTrayectoria(model);
 			
 			resultado = SUCCESS;
-			System.out.println("REGISTRO DE PASO EXITOSO RESULTADO: " + resultado);
+			
+			//Se agrega mensaje de éxito
 			addActionMessage(getText("MSG1", new String[] { "La",
-					"Trayectoria", "actualizada" }));
+					"Trayectoria", "registrada" }));
+			
+			//Se agrega el mensaje a la sesión
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 			
+		} catch (PRISMAValidacionException pve) {
+			agregaMensajeError(pve);
+			resultado = EDITNEW;
 		} catch (PRISMAException pe) {
 			agregaMensajeError(pe);
 			resultado = INDEX;

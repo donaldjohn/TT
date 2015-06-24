@@ -38,10 +38,10 @@
 						<s:url var="urlGestionarTrayectorias" value="%{#pageContext.request.contextPath}/pasos">
 							<s:param name="idTray" value="%{#tray.id}"/>
 						</s:url>
-						<s:a href="%{urlGestionarTrayectorias}"><img
-									id="" class="button" width="20" height="20"
-									title="Gestionar Pasos"
-									src="${pageContext.request.contextPath}/resources/images/icons/gestionarPasos.png" /></s:a>
+						<s:a>
+							<img id="" class="button" width="20" height="20"
+							title="Gestionar Pasos"
+							src="${pageContext.request.contextPath}/resources/images/icons/gestionarPasos.png" /></s:a>
 					</td>
 					
 					
