@@ -51,7 +51,7 @@
 							id="model.idCondicion" maxlength="999"
 							cssErrorClass="input-error"></s:textarea> <s:fielderror
 							fieldName="model.condicion" cssClass="error" theme="jquery" /></td>
-				</tr>
+				</tr> 
 				<tr>
 					<td class="label"><s:text name="labelFinCasoUso" /></td>
 					<td><s:checkbox name="model.finCasoUso"
