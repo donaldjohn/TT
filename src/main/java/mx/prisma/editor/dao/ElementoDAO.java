@@ -12,7 +12,6 @@ import org.hibernate.Session;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.model.Elemento;
-import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.util.HibernateUtil;
 
@@ -27,7 +26,7 @@ public class ElementoDAO {
 
 		try {
 			session.beginTransaction();
-			session.save(elemento);
+			session.persist(elemento);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
@@ -98,48 +97,6 @@ public class ElementoDAO {
 			return 0;
 	}
 
-	@SuppressWarnings("unchecked")
-	public Integer lastIndexOfElemento(TipoReferencia referencia) {
-		List<Integer> results = null;
-		String sentencia = "";
-		switch (referencia) {
-		case ACTOR:
-			sentencia = "SELECT MAX(numero) FROM Elemento  WHERE clave = 'ACT'";
-			break;
-		case ENTIDAD:
-			sentencia = "SELECT MAX(numero) FROM Elemento  WHERE clave = 'ENT'";
-			break;
-		case TERMINOGLS:
-			sentencia = "SELECT MAX(numero) FROM Elemento  WHERE clave = 'GLS'";
-			break;
-		case MENSAJE:
-			sentencia = "SELECT MAX(numero) FROM Elemento  WHERE clave = 'MSG'";
-			break;
-		case REGLANEGOCIO:
-			sentencia = "SELECT MAX(numero) FROM Elemento  WHERE clave = 'RN'";
-			break;
-		default:
-			break;
-
-		}
-
-		try {
-			session.beginTransaction();
-			SQLQuery sqlQuery = session.createSQLQuery(sentencia);
-			results = sqlQuery.list();
-			session.getTransaction().commit();
-		} catch (HibernateException he) {
-			he.printStackTrace();
-			session.getTransaction().rollback();
-		}
-
-		if (results.isEmpty())
-			return 0;
-		else if (results.get(0) != null)
-			return results.get(0);
-		else
-			return 0;
-	}
 
 	@SuppressWarnings("unchecked")
 	public int lastIndexCUsinTitulo(int claveModulo) {

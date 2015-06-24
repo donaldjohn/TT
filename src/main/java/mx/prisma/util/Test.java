@@ -1,6 +1,7 @@
 package mx.prisma.util;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import mx.prisma.admin.dao.ColaboradorDAO;
@@ -27,7 +28,6 @@ import mx.prisma.editor.model.Cardinalidad;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Entidad;
-import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.PostPrecondicion;
 
@@ -57,9 +57,8 @@ public class Test {
 		// pruebaRegistroActor(); // 07/06/2015 OK
 
 		// pruebaRegistroCasoUso(); //05/06/2015
-		 pruebaModificacionCasoUso(); 
+		// pruebaModificacionCasoUso(); 
 		// pruebaConsultaCasoUso(); //05/06/2015
-		
 		
 
 	}
@@ -243,12 +242,12 @@ public class Test {
 
 	// -------------------------------------------------------------------
 	private static void pruebaModificacionCasoUso() {
-		int idCasoUso = 15;
+		int idCasoUso = 57;
 		
-		String actores = "El actor ACT.Cartógrafo_de_incendios, ACT.Cartógrafo_de_reforestanciones, ACT.Responsable_de_reforestanciones, ACT.Responsable_de_reforestanciones.";
-		String entradas = "ATR.Incendio:Fecha_del_combate, ATR.Incendio:Número_de_participantes, ATR.Predio:Clave_única_del_predio y la GLS.Causa_del_incendio.";
-		String salidas = "ATR.Predio:Clave_única_del_predio, ATR.Predio:Clave_única_del_predio, GLS.Causa_del_incendio y el mensaje MSG.1:Coordenadas_mínimas_requeridas.";
-		String reglas = "RN.1:Datos_correctos, RN.2:Unicidad_de_identificadores";		
+		String actores = "";//"El actor ACT.Cartógrafo_de_incendios, ACT.Cartógrafo_de_reforestanciones, ACT.Responsable_de_reforestanciones, ACT.Responsable_de_reforestanciones.";
+		String entradas = "";//"ATR.Incendio:Fecha_del_combate, ATR.Incendio:Número_de_participantes, ATR.Predio:Clave_única_del_predio y la GLS.Causa_del_incendio.";
+		String salidas = "";//"ATR.Predio:Clave_única_del_predio, ATR.Predio:Clave_única_del_predio, GLS.Causa_del_incendio y el mensaje MSG.1:Coordenadas_mínimas_requeridas.";
+		String reglas = "";//"RN.1:Datos_correctos, RN.2:Unicidad_de_identificadores";		
 
 		
 		CasoUso cu = new CasoUsoDAO().consultarCasoUso(idCasoUso);

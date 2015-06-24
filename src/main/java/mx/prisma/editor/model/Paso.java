@@ -22,11 +22,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.opensymphony.xwork2.validator.annotations.IntRangeFieldValidator;
-import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
-import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
-import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
-import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 
 @Entity
 @Table(name = "Paso", catalog = "PRISMA", uniqueConstraints = @UniqueConstraint(columnNames = {
