@@ -42,7 +42,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 	// Pruebas
 	private String claveModulo = "SF";
 	private String claveProy = "SIG";
-	String n = "instancia nueva";
+	String n = "";
 	// Proyecto y módulo
 	private Proyecto proyecto;
 	private Modulo modulo;
@@ -164,7 +164,6 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 	}
 	
 	public List<CasoUso> getCatalogoCasoUso() {
-		System.out.println(n);
 		return catalogoCasoUso;
 	}
 
@@ -207,7 +206,6 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 	}
 
 	public void setCatalogoCasoUso(List<CasoUso> catalogoCasoUso) {
-		System.out.println("x");
 		this.catalogoCasoUso = catalogoCasoUso;
 	}
 
