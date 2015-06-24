@@ -8,23 +8,44 @@ $(document).ready(function() {
 	mostrarCampoCondicion(document.getElementById("model.idAlternativa"));
 	var realiza = "Actor";
 	var json = $("#jsonPasosTabla").val();
+	
 	if (json !== "") {
 		var parsedJson = JSON.parse(json);
 		$
 				.each(
 						parsedJson,
 						function(i, item) {
-							if(item.realizaActor == "false") {
-								realiza = "Sistema";
-							}
+							var realizaImg;
+					    	//Se agrega la imagen referente a quien realiza el paso
+					    	if(realiza == "Actor") {
+					    		var realizaActor = true;
+					    		realizaImg = "<img src='" + window.contextPath + 
+								"/resources/images/icons/actor.png' title='Actor' style='vertical-align: middle;'/>";
+					    	} else if(realiza == "Sistema") {
+					    		realizaActor = false;
+					    		realizaImg = "<img src='" + window.contextPath + 
+								"/resources/images/icons/uc.png' title='Sistema' style='vertical-align: middle;'/>";
+					    	}
 							var paso = [
-									item.numero,
-									realiza,
-									item.verbo.nombre,
-									item.redaccion,
-									"<center><a onclick='equipoActividades.eliminarEquipo(this);'><img class='icon' src='"
-											+ contextPath
-											+ "/resources/images/icons/eliminar.png' title='Eliminar Paso'></img></a></center>" ];
+								item.numero,
+								realizaImg + " " + item.verbo.nombre + " " + item.redaccion,
+								realizaActor,
+								item.verbo.nombre, 
+								item.redaccion,
+								"<center>" +
+									"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"up\");' button='true'>" +
+									"<img class='icon'  id='icon' src='" + window.contextPath + 
+									"/resources/images/icons/flechaArriba.png' title='Subir Paso'/></a>" +
+									"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"down\");' button='true'>" +
+									"<img class='icon'  id='icon' src='" + window.contextPath + 
+									"/resources/images/icons/flechaAbajo.png' title='Bajar Paso'/></a>" +
+									"<a button='true'>" +
+									"<img class='icon'  id='icon' src='" + window.contextPath + 
+									"/resources/images/icons/editar.png' title='Modificar Paso'/></a>" +
+									"<a onclick='dataTableCDT.deleteRowPasos(tablaPaso, this);' button='true'>" +
+									"<img class='icon'  id='icon' src='" + window.contextPath + 
+									"/resources/images/icons/eliminar.png' title='Eliminar Paso'/></a>" +
+								"</center>" ];
 							dataTableCDT.addRow("tablaPaso",paso);
 						});
 	}
@@ -46,18 +67,17 @@ function registrarPaso(){
 	var realiza = document.forms["frmPasoName"]["paso.realizaActor"].value;
 	var redaccion = document.forms["frmPasoName"]["paso.redaccion"].value;
 	var verbo = document.forms["frmPasoName"]["paso.verbo"].value;
-	var realizaActor = true;
-	if(realiza != "Actor") {
-		realizaActor = "false";
-	}
+	
 	var up = "up";
     if (esValidoPaso("tablaPaso", realiza, verbo, redaccion)) {
     	var realizaImg;
     	//Se agrega la imagen referente a quien realiza el paso
     	if(realiza == "Actor") {
+    		var realizaActor = true;
     		realizaImg = "<img src='" + window.contextPath + 
 			"/resources/images/icons/actor.png' title='Actor' style='vertical-align: middle;'/>";
     	} else if(realiza == "Sistema") {
+    		realizaActor = false;
     		realizaImg = "<img src='" + window.contextPath + 
 			"/resources/images/icons/uc.png' title='Sistema' style='vertical-align: middle;'/>";
     	}
@@ -65,10 +85,9 @@ function registrarPaso(){
     	var row = [
     	            numero,
     	            realizaImg + " " + verbo + " " +redaccion,
-    	            realiza,
+    	            realizaActor,
     	            verbo, 
     	            redaccion,
-					"<input type='hidden' value='" + realizaActor + "' name='realizaActor' id='realizaActor'/>" +
 					"<center>" +
 						"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"up\");' button='true'>" +
 						"<img class='icon'  id='icon' src='" + window.contextPath + 
@@ -123,9 +142,9 @@ function esValidoPaso(idTabla, realiza, verbo, redaccion) {
 		return false;
 	}
 
-	if (dataTableCDT.exist(idTabla, realiza, 1, "", "Mensaje")
-			&& dataTableCDT.exist(idTabla, verbo, 2, "", "Mensaje")
-			&& dataTableCDT.exist(idTabla, verbo, 3, "", "Mensaje")) {
+	if (dataTableCDT.exist(idTabla, realiza, 2, "", "Mensaje")
+			&& dataTableCDT.exist(idTabla, verbo, 3, "", "Mensaje")
+			&& dataTableCDT.exist(idTabla, verbo, 4, "", "Mensaje")) {
     	agregarMensaje("Este paso ya está en la trayectoria.");
     	return false;
     } 
@@ -144,12 +163,12 @@ function preparaEnvio() {
 function tablaToJson(idTable) {
 	var table = $("#" + idTable).dataTable();
 	var arregloPasos = [];
+	
 	for (var i = 0; i < table.fnSettings().fnRecordsTotal(); i++) {
 		arregloPasos.push(new Paso(table.fnGetData(i, 0), table.fnGetData(i, 2), 
 						table.fnGetData(i, 3), table.fnGetData(i, 4)));
 	}
 	var jsonPasos = JSON.stringify(arregloPasos);
-	alert(jsonPasos);
 	document.getElementById("jsonPasosTabla").value = jsonPasos;
 }
 
