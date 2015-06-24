@@ -29,7 +29,6 @@
 	<s:form id="frmTrayectoria" theme="simple" action="%{#pageContext.request.contextPath}/trayectorias"
 		method="post" onsubmit="return preparaEnvio();">
 		<div class="formulario">
-		<s:hidden value="%{idCU}" name="idCU"/>
 			<div class="tituloFormulario">Información general de la Trayectoria</div>
 			<table class="seccion">
 				<tr>
@@ -148,6 +147,7 @@
 			<s:hidden name="jsonPasos" id="jsonPasos" value="%{jsonPasos}"/>
 			<s:hidden name="jsonTrayectorias" id="jsonTrayectorias" value="%{jsonTrayectorias}"/>
 			<s:hidden name="jsonAcciones" id="jsonAcciones" value="%{jsonAcciones}"/>
+			<s:hidden name="existeTPrincipal" id="existeTPrincipal" value="%{existeTPrincipal}"/>
 		</s:form>
 	</sj:dialog>
 	

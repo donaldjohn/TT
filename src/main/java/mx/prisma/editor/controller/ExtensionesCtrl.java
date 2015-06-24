@@ -26,6 +26,7 @@ import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.util.ActionSupportPRISMA;
+import mx.prisma.util.ErrorManager;
 import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.SessionManager;
@@ -39,6 +40,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private String nameAux;
 	// Pruebas
 	private String claveModulo = "SF";
 	private String claveProy = "SIG";
@@ -55,17 +57,6 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 	// Elementos disponibles
 	private List<CasoUso> listCasoUso;
 	private String jsonPasos;
-
-
-	public void agregaMensajeError(PRISMAException pe) {
-		if(pe.getParametros() != null){
-			addActionError(getText(pe.getIdMensaje()));
-		} else {
-			addActionError(getText(pe.getIdMensaje(), pe.getParametros()));
-		}
-		System.err.println(pe.getMessage());
-		pe.printStackTrace();
-	}
 
 	private void buscaCatalogos() throws Exception {
 		catalogoCasoUso = new ArrayList<CasoUso>();
@@ -119,6 +110,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 
 	public String create() throws Exception {
 		String resultado = null;
+		System.out.println("nameAux " + nameAux);
 		System.out.println("--");
 		try {						
 			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
@@ -131,11 +123,11 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 			
 		} catch (PRISMAException pe) {
-			agregaMensajeError(pe);
+			ErrorManager.agregaMensajeError(this, pe);
 			resultado = INDEX;
 		} catch (Exception e) {
 			e.printStackTrace();
-			addActionError(getText("MSG13"));
+			ErrorManager.agregaMensajeError(this, e);
 			resultado = INDEX;
 		}
 		return resultado;
@@ -153,17 +145,18 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 			resultado = EDITNEW;
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
-			addActionError(getText(pe.getIdMensaje()));
+			ErrorManager.agregaMensajeError(this, pe);
 			resultado = INDEX;
 		} catch (Exception e) {
 			e.printStackTrace();
-			addActionError(getText("MSG13"));
+			ErrorManager.agregaMensajeError(this, e);
 			resultado = INDEX;
 		}
 		return resultado;
 	}
 	
 	public List<CasoUso> getCatalogoCasoUso() {
+		System.out.println("get " + catalogoCasoUso);
 		return catalogoCasoUso;
 	}
 
@@ -198,7 +191,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 			
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
-			addActionError(getText(pe.getIdMensaje()));
+			ErrorManager.agregaMensajeError(this, pe);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -206,6 +199,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 	}
 
 	public void setCatalogoCasoUso(List<CasoUso> catalogoCasoUso) {
+		System.out.println("set " + catalogoCasoUso);
 		this.catalogoCasoUso = catalogoCasoUso;
 	}
 
@@ -227,6 +221,14 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 
 	public void setSession(Map<String, Object> arg0) {
 		// TODO Auto-generated method stub		
+	}
+
+	public String getNameAux() {
+		return nameAux;
+	}
+
+	public void setNameAux(String nameAux) {
+		this.nameAux = nameAux;
 	}
 
 	

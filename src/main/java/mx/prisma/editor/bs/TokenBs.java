@@ -1538,8 +1538,10 @@ public class TokenBs {
 
 			}
 		}
-		paso.getReferencias().add(referenciaParametro);
-		referenciaParametro.setPaso(paso);
+		if (referenciaParametro != null) {
+			paso.getReferencias().add(referenciaParametro);
+			referenciaParametro.setPaso(paso);
+		}
 
 	}
 

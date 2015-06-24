@@ -33,7 +33,7 @@
 			<table class="seccion">
 				<tr>
 					<td class="label obligatorio"><s:text name="labelCasoUsoExtiende" /></td>
-					<td><s:select name="model.casoUsoDestino" id="model.idCu" headerValue="Seleccione" headerKey="-1"
+					<td><s:select name="nameAux" id="model.idCu" headerValue="Seleccione" headerKey="-1"
 							list="catalogoCasoUso" listKey="id" cssClass="inputFormulario"
 							listValue="%{clave + numero + ' ' +  nombre}" cssErrorClass="input-error"></s:select></td>
 				</tr>

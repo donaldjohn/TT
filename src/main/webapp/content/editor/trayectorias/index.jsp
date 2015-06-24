@@ -39,7 +39,7 @@
 							<s:param name="idTray" value="%{#tray.id}"/>
 						</s:url>
 						<s:a>
-							<img id="" class="button" width="20" height="20"
+							<img id="" class="button"
 							title="Gestionar Pasos"
 							src="${pageContext.request.contextPath}/resources/images/icons/gestionarPasos.png" /></s:a>
 					</td>

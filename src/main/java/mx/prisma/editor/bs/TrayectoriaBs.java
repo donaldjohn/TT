@@ -21,6 +21,10 @@ public class TrayectoriaBs {
 
 	public static void registrarTrayectoria(Trayectoria model) throws Exception {
 		try {
+			if(model.getClave().length() > 5) {
+				throw new PRISMAValidacionException("El usuario ingreso una clave larga.", "MSG6", new String[] { "5",
+				"caracteres"}, "model.clave");
+			}
 			if(Validador.esNuloOVacio(model.getClave())) {
 				throw new PRISMAValidacionException("El usuario no ingresó la clave de la trayectoria.", "MSG4", null, "model.clave");
 			}
@@ -42,6 +46,7 @@ public class TrayectoriaBs {
 					throw new PRISMAValidacionException("La clave de la trayectoria ya existe.", "MSG7",
 							new String[] { "La","trayectoria", model.getClave()}, "model.clave");
 				}
+				je.getErrorCode();
 				je.printStackTrace();
 		} catch(HibernateException he) {
 			System.out.println("DESDE BS ERROR EN HE");

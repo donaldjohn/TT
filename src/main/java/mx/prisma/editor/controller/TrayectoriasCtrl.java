@@ -56,7 +56,7 @@ import mx.prisma.util.SessionManager;
 
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "trayectorias", "idCU", "%{idCU}"}),
+		"actionName", "trayectorias"}),
 })
 public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven<Trayectoria>, SessionAware{
 	/**
@@ -91,9 +91,14 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	private String jsonPasos;
 	private String jsonTrayectorias;
 	private String jsonAcciones;
+	
+	private boolean existeTPrincipal;
 
 	public HttpHeaders index() throws Exception{
 		try {
+			if(idCU == 0) {
+				idCU = (Integer)SessionManager.get("idCU");
+			}
 			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
 			SessionManager.set(idCU, "idCU");
 			model.setCasoUso(casoUso);
@@ -124,6 +129,8 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			proyecto = new ProyectoDAO().consultarProyecto(claveProy);
 			modulo = new ModuloDAO().consultarModulo(this.claveModulo,
 					proyecto);
+			
+			existeTPrincipal = existeTrayectoriaPrincipal();
 			buscaElementos();
 			buscaCatalogos();
 			
@@ -140,13 +147,24 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		return resultado;
 	}
 	
+	private boolean existeTrayectoriaPrincipal() {
+		//TrayectoriaBs.consultarTrayectorias();
+		existeTPrincipal = false;
+		for (Trayectoria t: model.getCasoUso().getTrayectorias()) {
+			if(!t.isAlternativa()) {
+				return true;
+			}
+		}
+		return existeTPrincipal;
+	}
+
 	private void buscaCatalogos() {
 		//Se llena la lista del catálogo de quien realiza
 		listRealiza = new ArrayList<String>();
 		listRealiza.add("Actor");
 		listRealiza.add("Sistema");
 		
-		//Se extraen los verbos de la BD << PENDIENTE
+		//Se extraen los verbos de la BD
 		listVerbos = CuBs.consultarVerbos();
 		
 	}
@@ -158,7 +176,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	public String create() throws Exception {
 		String resultado = null;
 		idCU = (Integer)SessionManager.get("idCU");
-		System.out.println("ID del modelo " + model.getClave());
+		System.out.println("ID del cu " + idCU);
 		
 		try {
 			//Se llama al método que convierte los json a pasos de la trayectoria
@@ -169,9 +187,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			
 			//Se agrega el caso de uso a a la trayectoria
 			model.setCasoUso(casoUso);
-			
-			//Se agrega la trayectoria al caso de uso
-			//casoUso.getTrayectorias().add(model);
 									
 			//Se registra la trayectoria
 			TrayectoriaBs.registrarTrayectoria(model);
@@ -373,7 +388,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 
 	}
 
-	
 	//@VisitorFieldValidator
 	public Trayectoria getModel() {
 		if (this.model == null) {
@@ -517,6 +531,14 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	public void setSession(Map<String, Object> session) {
 		userSession = session ;
 		
+	}
+
+	public boolean isExisteTPrincipal() {
+		return existeTPrincipal;
+	}
+
+	public void setExisteTPrincipal(boolean existeTPrincipal) {
+		this.existeTPrincipal = existeTPrincipal;
 	}	
 	
 	
