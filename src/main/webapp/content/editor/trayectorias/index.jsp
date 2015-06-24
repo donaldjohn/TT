@@ -59,7 +59,7 @@
 			<s:text name="Regresar"></s:text>
 		</button>
 		<button class="boton" formmethod="post"
-			onclick="location.href='${pageContext.request.contextPath}/trayectorias/new?idCU=${idCU}'">
+			onclick="location.href='${pageContext.request.contextPath}/trayectorias/new'">
 			<s:text name="Registrar"></s:text>
 		</button>
 	</div>

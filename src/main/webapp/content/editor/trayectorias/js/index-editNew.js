@@ -8,23 +8,44 @@ $(document).ready(function() {
 	mostrarCampoCondicion(document.getElementById("model.idAlternativa"));
 	var realiza = "Actor";
 	var json = $("#jsonPasosTabla").val();
+	
 	if (json !== "") {
 		var parsedJson = JSON.parse(json);
 		$
 				.each(
 						parsedJson,
 						function(i, item) {
-							if(item.realizaActor == "false") {
-								realiza = "Sistema";
-							}
+							var realizaImg;
+					    	//Se agrega la imagen referente a quien realiza el paso
+					    	if(realiza == "Actor") {
+					    		var realizaActor = true;
+					    		realizaImg = "<img src='" + window.contextPath + 
+								"/resources/images/icons/actor.png' title='Actor' style='vertical-align: middle;'/>";
+					    	} else if(realiza == "Sistema") {
+					    		realizaActor = false;
+					    		realizaImg = "<img src='" + window.contextPath + 
+								"/resources/images/icons/uc.png' title='Sistema' style='vertical-align: middle;'/>";
+					    	}
 							var paso = [
-									item.numero,
-									realiza,
-									item.verbo.nombre,
-									item.redaccion,
-									"<center><a onclick='equipoActividades.eliminarEquipo(this);'><img class='icon' src='"
-											+ contextPath
-											+ "/resources/images/icons/eliminar.png' title='Eliminar Paso'></img></a></center>" ];
+								item.numero,
+								realizaImg + " " + item.verbo.nombre + " " + item.redaccion,
+								realizaActor,
+								item.verbo.nombre, 
+								item.redaccion,
+								"<center>" +
+									"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"up\");' button='true'>" +
+									"<img class='icon'  id='icon' src='" + window.contextPath + 
+									"/resources/images/icons/flechaArriba.png' title='Subir Paso'/></a>" +
+									"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"down\");' button='true'>" +
+									"<img class='icon'  id='icon' src='" + window.contextPath + 
+									"/resources/images/icons/flechaAbajo.png' title='Bajar Paso'/></a>" +
+									"<a button='true'>" +
+									"<img class='icon'  id='icon' src='" + window.contextPath + 
+									"/resources/images/icons/editar.png' title='Modificar Paso'/></a>" +
+									"<a onclick='dataTableCDT.deleteRowPasos(tablaPaso, this);' button='true'>" +
+									"<img class='icon'  id='icon' src='" + window.contextPath + 
+									"/resources/images/icons/eliminar.png' title='Eliminar Paso'/></a>" +
+								"</center>" ];
 							dataTableCDT.addRow("tablaPaso",paso);
 						});
 	}
