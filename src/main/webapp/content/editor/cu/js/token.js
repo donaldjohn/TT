@@ -1,25 +1,13 @@
 var token = function() {
 
-	/* Tipos de lista
-	 * 		Tipo A: TK.nombre
-	 * 				Actores
-	 * 				Entidades
-	 * 				Términos del glosario
-	 * 		Tipo B: TK.num:nombre
-	 * 				Reglas de negocio
-	 * 				Mensajes
-	 * 		Tipo C: TK.entidad:nombre
-	 * 				Atributo
-	 * 		Tipo D: TK.modulo.numero:nombre
-	 * 				Casos de uso
-	 * 				Pantallas
-	 * 		Tipo E: TK.CUMODULO.numero:clave
-	 * 				Trayectorias
-	 * 		Tipo F: TK.CUMODULO:claveTrayectoria.numero
-	 * 				Pasos
-	 * 		Tipo G: TK.IUM.numero:nombrePantalla:nombreAccion
-	 * 				Ejemplo: ACC.IUSF.7:Registrar_incendio:Aceptar
-	 * 				Acciones
+	/*
+	 * Tipos de lista Tipo A: TK.nombre Actores Entidades Términos del glosario
+	 * Tipo B: TK.num:nombre Reglas de negocio Mensajes Tipo C:
+	 * TK.entidad:nombre Atributo Tipo D: TK.modulo.numero:nombre Casos de uso
+	 * Pantallas Tipo E: TK.CUMODULO.numero:clave Trayectorias Tipo F:
+	 * TK.CUMODULO:claveTrayectoria.numero Pasos Tipo G:
+	 * TK.IUM.numero:nombrePantalla:nombreAccion Ejemplo:
+	 * ACC.IUSF.7:Registrar_incendio:Aceptar Acciones
 	 */
 	var at_configRN;
 	var at_configENT;
@@ -32,89 +20,88 @@ var token = function() {
 	var at_configP;
 	var at_configTRAY;
 	var at_configACC;
-	
-	cargarListasToken = function() {
-		
 
-		//Actores
+	cargarListasToken = function() {
+
+		// Actores
 		var json = $("#jsonActores").val();
 		if (json !== "" && json != null) {
 			var listaElementos = JSON.parse(json);
 			at_configACT = cargaLista("A", "ACT", listaElementos);
 		}
-		
-		//Entidades
+
+		// Entidades
 		json = $("#jsonEntidades").val();
 		if (json !== "" && json != null) {
 			var listaElementos = JSON.parse(json);
 			at_configENT = cargaLista("A", "ENT", listaElementos);
 		}
-		
-		//Términos del glosario
+
+		// Términos del glosario
 		json = $("#jsonTerminosGls").val();
 		if (json !== "" && json != null) {
 			var listaElementos = JSON.parse(json);
 			at_configGLS = cargaLista("A", "GLS", listaElementos);
 		}
 
-		//Mensajes
+		// Mensajes
 		json = $("#jsonMensajes").val();
 		if (json !== "" && json != null) {
 			var listaElementos = JSON.parse(json);
 			at_configMSG = cargaLista("B", "MSG", listaElementos);
 		}
-		
-		//Reglas de negocio
+
+		// Reglas de negocio
 		json = $("#jsonReglasNegocio").val();
 		if (json !== "" && json != null) {
 			var listaElementos = JSON.parse(json);
 			at_configRN = cargaLista("B", "RN", listaElementos);
 		}
 
-		//Atributos
+		// Atributos
 		json = $("#jsonAtributos").val();
 		if (json !== "" && json != null) {
 			var listaElementos = JSON.parse(json);
 			at_configATR = cargaLista("C", "ATR", listaElementos);
 		}
-		
-		//Casos de uso
+
+		// Casos de uso
 		json = $("#jsonCasosUsoProyecto").val();
 		if (json !== "" && json != null) {
 			var listaElementos = JSON.parse(json);
 			at_configCU = cargaLista("D", "CU", listaElementos);
 		}
-		
-		//Pantallas
+
+		// Pantallas
 		json = $("#jsonPantallas").val();
 		if (json !== "" && json != null) {
 			var listaElementos = JSON.parse(json);
 			at_configIU = cargaLista("D", "IU", listaElementos);
 		}
-		
-		//Trayectorias
+
+		// Trayectorias
 		json = $("#jsonTrayectorias").val();
 		if (json !== "" && json != null) {
 			var listaElementos = JSON.parse(json);
 			at_configTRAY = cargaLista("E", "TRAY", listaElementos);
 		}
-		
-		//Pasos
+
+		// Pasos
 		json = $("#jsonPasos").val();
 		if (json !== "" && json != null) {
 			var listaElementos = JSON.parse(json);
 			at_configP = cargaLista("F", "P", listaElementos);
 		}
-		
-		//Acciones
+
+		// Acciones
 		json = $("#jsonAcciones").val();
 		if (json !== "" && json != null) {
 			var listaElementos = JSON.parse(json);
 			at_configACC = cargaLista("G", "ACC", listaElementos);
 		}
 
-		/* Se configuran los tokens que estará disponibles en los
-		 * textAreas.
+		/*
+		 * Se configuran los tokens que estará disponibles en los textAreas.
 		 */
 		// textArea de Actores
 		$inputor = $('#actorInput').atwho(at_configACT);
@@ -125,7 +112,8 @@ var token = function() {
 		$inputor.caret('pos', 60);
 		$inputor.focus().atwho('run');
 		// textArea de Salidas
-		$inputor = $('#salidaInput').atwho(at_configATR).atwho(at_configMSG).atwho(at_configGLS);
+		$inputor = $('#salidaInput').atwho(at_configATR).atwho(at_configMSG)
+				.atwho(at_configGLS);
 		$inputor.caret('pos', 60);
 		$inputor.focus().atwho('run');
 		// textArea de Reglas de negocio
@@ -133,20 +121,23 @@ var token = function() {
 		$inputor.caret('pos', 60);
 		$inputor.focus().atwho('run');
 		// textArea de Precondiciones
-		$inputor = $('#precondicionInput').atwho(at_configRN).atwho(at_configENT)
-		.atwho(at_configMSG).atwho(at_configACT).atwho(at_configATR).atwho(at_configGLS)
-		.atwho(at_configCU).atwho(at_configIU).atwho(at_configTRAY).atwho(at_configP).atwho(at_configACC);
+		$inputor = $('#precondicionInput').atwho(at_configRN).atwho(
+				at_configENT).atwho(at_configMSG).atwho(at_configACT).atwho(
+				at_configATR).atwho(at_configGLS).atwho(at_configCU).atwho(
+				at_configIU).atwho(at_configTRAY).atwho(at_configP).atwho(
+				at_configACC);
 		$inputor.caret('pos', 60);
 		$inputor.focus().atwho('run');
 		// textArea de Postcondiciones
-		$inputor = $('#postcondicionInput').atwho(at_configRN).atwho(at_configENT)
-		.atwho(at_configMSG).atwho(at_configACT).atwho(at_configATR).atwho(at_configGLS)
-		.atwho(at_configCU).atwho(at_configIU).atwho(at_configTRAY).atwho(at_configP).atwho(at_configACC);
+		$inputor = $('#postcondicionInput').atwho(at_configRN).atwho(
+				at_configENT).atwho(at_configMSG).atwho(at_configACT).atwho(
+				at_configATR).atwho(at_configGLS).atwho(at_configCU).atwho(
+				at_configIU).atwho(at_configTRAY).atwho(at_configP).atwho(
+				at_configACC);
 		$inputor.caret('pos', 60);
 		$inputor.focus().atwho('run');
 		// textArea de región de la trayectoria
 		$inputor = $('#ptosExtensionInput').atwho(at_configP);
-
 
 	}
 
@@ -162,8 +153,10 @@ var token = function() {
 			var at_config = {
 				at : token + ".",
 				data : lista,
-				displayTpl : "<li><span class=\"listaToken\">" + token
-						+ "</span>" + "."
+				displayTpl : "<li><span class=\"listaToken\">"
+						+ token
+						+ "</span>"
+						+ "."
 						+ "<span class=\"listaElementoInteres\">${nombre}</span></li>",
 				limit : 200
 			}
@@ -181,17 +174,18 @@ var token = function() {
 			var at_config = {
 				at : token + ".",
 				data : lista,
-				displayTpl : "<li><span class=\"listaToken\">" + token
-						+ "</span>" + "."
-						+ "<span class=\"listaNombre\">${numero}:</span><span class=\"listaElementoInteres\"> ${nombre}</span></li>",
+				displayTpl : "<li><span class=\"listaToken\">"
+						+ token
+						+ ".</span>"
+						+ "<span class=\"listaElementoInteres\">${numero}</span><span class=\"listaToken\">: </span><span class=\"listaElementoInteres\">${nombre}</span></li>",
 				limit : 200
 			}
 		} else if (tipo == "C") {
 			var lista = $.map(listaObjetos, function(value, i) {
 				return {
 					'id' : i,
-					"nombre" : value.nombre,//remplazarEspaciosGuionBlanco(value.nombre),
-					"nombreEntidad" : value.entidad.nombre, //remplazarEspaciosGuionBlanco(value.entidad.nombre),
+					"nombre" : value.nombre,// remplazarEspaciosGuionBlanco(value.nombre),
+					"nombreEntidad" : value.entidad.nombre, // remplazarEspaciosGuionBlanco(value.entidad.nombre),
 					'name' : remplazarEspaciosGuion(value.entidad.nombre) + ":"
 							+ remplazarEspaciosGuion(value.nombre)
 				};
@@ -199,8 +193,10 @@ var token = function() {
 			var at_config = {
 				at : token + ".",
 				data : lista,
-				displayTpl : "<li><span class=\"listaToken\">" + token
-						+ "</span>" + "."
+				displayTpl : "<li><span class=\"listaToken\">"
+						+ token
+						+ "</span>"
+						+ "."
 						+ "<span class=\"listaNombre\">${nombreEntidad}"
 						+ ":</span><span class=\"listaElementoInteres\"> ${nombre}</span></li>",
 				limit : 200
@@ -209,22 +205,23 @@ var token = function() {
 			var lista = $.map(listaObjetos, function(value, i) {
 				return {
 					'id' : i,
-					"nombreModulo" : value.modulo.nombre,//remplazarEspaciosGuionBlanco(value.nombre),
+					"claveModulo" : value.modulo.clave,
 					"numero" : value.numero,
-					"nombre" : value.nombre,//remplazarEspaciosGuionBlanco(value.nombre),
-					'name' : remplazarEspaciosGuion(value.modulo.nombre) 
-					+ "." + value.numero + ":"
-					+ remplazarEspaciosGuion(value.nombre)
+					"nombre" : value.nombre,
+					'name' : value.modulo.clave + "." + value.numero + ":"
+							+ remplazarEspaciosGuion(value.nombre)
 				};
 			});
 			var at_config = {
 				at : token + ".",
 				data : lista,
-				displayTpl : "<li><span class=\"listaToken\">" + token
-						+ "</span>" + "."
-						+ "<span class=\"listaNombre\">${nombreModulo}"
-						+ " ${numero}" 
-						+ ": </span><span class=\"listaElementoInteres\">${nombre}</span></li>",
+				displayTpl : "<li><span class=\"listaToken\">"
+						+ token
+						+ "</span>"
+						+ "."
+						+ "<span class=\"listaNombre\">${claveModulo}."
+						+ "<span class=\"listaElementoInteres\">${numero}</span><span class=\"listaToken\">"
+						+ ":</span> </span><span class=\"listaElementoInteres\">${nombre}</span></li>",
 				limit : 200
 			}
 		} else if (tipo == "E") {
@@ -234,16 +231,18 @@ var token = function() {
 					"claveCU" : value.casoUso.clave,
 					"numeroCU" : value.casoUso.numero,
 					"clave" : value.clave,
-					'name' : remplazarEspaciosGuion(value.casoUso.clave) 
-					+ "." + value.casoUso.numero + ":"
-					+ remplazarEspaciosGuion(value.clave)
+					'name' : remplazarEspaciosGuion(value.casoUso.clave) + "."
+							+ value.casoUso.numero + ":"
+							+ remplazarEspaciosGuion(value.clave)
 				};
 			});
 			var at_config = {
 				at : token + ".",
 				data : lista,
-				displayTpl : "<li><span class=\"listaToken\">" + token
-						+ "</span>" + "."
+				displayTpl : "<li><span class=\"listaToken\">"
+						+ token
+						+ "</span>"
+						+ "."
 						+ "<span class=\"listaNombre\">${claveCU}${numeroCU}"
 						+ ": </span><span class=\"listaElementoInteres\">${clave}</span></li>",
 				limit : 200
@@ -256,9 +255,10 @@ var token = function() {
 					"numeroCU" : value.trayectoria.casoUso.numero,
 					"claveTray": value.trayectoria.clave,
 					"numero" : value.numero,
-					'name' : remplazarEspaciosGuion(value.trayectoria.casoUso.clave) 
+					"nombre" : value.trayectoria.casoUso.nombre,
+					'name' : value.trayectoria.casoUso.clave
 					+ "." + value.trayectoria.casoUso.numero + ":"
-					+ remplazarEspaciosGuion(value.trayectoria.clave) + "."
+					+ remplazarEspaciosGuion(value.trayectoria.casoUso.nombre) + ":" + remplazarEspaciosGuion(value.trayectoria.clave) + "."
 					+ value.numero
 				};
 			});
@@ -266,9 +266,9 @@ var token = function() {
 				at : token + ".",
 				data : lista,
 				displayTpl : "<li><span class=\"listaToken\">" + token
-						+ "</span>" + "."
-						+ "<span class=\"listaNombre\">${claveCU}${numeroCU}"
-						+ ": ${claveTray}.</span><span class=\"listaElementoInteres\">${numero}</span></li>",
+				+ "</span>" + "."
+				+ "<span class=\"listaNombre\">${claveCU}.${numeroCU}"
+				+ ":${nombre}:${claveTray}.</span><span class=\"listaElementoInteres\">${numero}</span></li>",
 				limit : 200
 			}
 		} else if (tipo == "G") {
@@ -277,25 +277,26 @@ var token = function() {
 					'id' : i,
 					"claveIU" : value.pantalla.clave,
 					"numeroIU" : value.pantalla.numero,
-					"nombreIU": value.pantalla.nombre,
+					"nombreIU" : value.pantalla.nombre,
 					"nombre" : value.nombre,
-					'name' : remplazarEspaciosGuion(value.pantalla.clave) 
-					+ "." + value.pantalla.numero
-					+ ":" + remplazarEspaciosGuion(value.pantalla.nombre) 
-					+ ":" + remplazarEspaciosGuion(value.nombre)
+					'name' : remplazarEspaciosGuion(value.pantalla.clave) + "."
+							+ value.pantalla.numero + ":"
+							+ remplazarEspaciosGuion(value.pantalla.nombre)
+							+ ":" + remplazarEspaciosGuion(value.nombre)
 				};
 			});
 			var at_config = {
 				at : token + ".",
 				data : lista,
-				displayTpl : "<li><span class=\"listaToken\">" + token
-						+ "</span>" + "."
+				displayTpl : "<li><span class=\"listaToken\">"
+						+ token
+						+ "</span>"
+						+ "."
 						+ "<span class=\"listaNombre\">${claveIU}.${numeroIU}"
 						+ ": ${nombreIU}: </span><span class=\"listaElementoInteres\">${nombre}</span></li>",
 				limit : 200
 			}
 		}
-
 
 		return at_config;
 	}

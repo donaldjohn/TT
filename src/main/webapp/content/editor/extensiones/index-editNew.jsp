@@ -13,6 +13,8 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.caret.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.atwho.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/extensiones/js/token.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/extensiones/js/index-editNew.js"></script>
+	
 ]]>
 
 </head>
@@ -62,6 +64,8 @@
 				onclick="location.href='${urlGestionarExtensiones}'"
 				value="Cancelar" />
 		</div>
+		<s:hidden name="jsonPasos" id="jsonPasos" value="%{jsonPasos}"/>
+		
 	</s:form>
 
 </body>

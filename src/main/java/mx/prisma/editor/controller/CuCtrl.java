@@ -162,6 +162,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		Modulo moduloAux = new Modulo();
 		moduloAux.setId(modulo.getId());
 		moduloAux.setNombre(modulo.getNombre());
+		moduloAux.setClave( modulo.getClave());
 		
 		if (listElementos != null && !listElementos.isEmpty()) {
 			// Se clasifican los conjuntos

@@ -32,8 +32,7 @@ public class ExtensionDAO {
 
 		try {
 
-			// this.session =
-			// HibernateUtil.getSessionFactory().getCurrentSession();
+			 this.session = HibernateUtil.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
 			session.save(extension);
 			session.getTransaction().commit();
