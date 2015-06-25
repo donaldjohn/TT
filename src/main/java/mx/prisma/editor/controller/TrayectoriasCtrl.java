@@ -177,7 +177,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		
 		//Se extraen los verbos de la BD
 		listVerbos = CuBs.consultarVerbos();
-		
 	}
 
 	/**
