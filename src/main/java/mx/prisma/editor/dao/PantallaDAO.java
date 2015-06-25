@@ -53,7 +53,7 @@ public class PantallaDAO extends ElementoDAO {
 		try {
 			session.beginTransaction();
 			SQLQuery query = session
-					.createSQLQuery("SELECT * FROM Elemento INNER JOIN CasoUso ON Elemento.id = CasoUso.Elementoid WHERE CasoUso.Moduloid = :modulo AND Elemento.numero = :numero");
+					.createSQLQuery("SELECT * FROM Elemento INNER JOIN Pantalla ON Elemento.id = Pantalla.Elementoid WHERE Pantalla.Moduloid = :modulo AND Elemento.numero = :numero").addEntity(Pantalla.class);
 			query.setParameter("modulo", modulo.getId());
 			query.setParameter("numero", numero);
 
@@ -62,6 +62,9 @@ public class PantallaDAO extends ElementoDAO {
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
+		}
+		if(results == null) {
+			return null;
 		}
 		if (results.isEmpty()){
 			return null;

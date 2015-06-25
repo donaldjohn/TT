@@ -135,25 +135,6 @@
 			</div>
 		</div>
 		
-		<div class="formulario">
-			<div class="tituloFormulario">Puntos de extensión</div>
-			<div class="seccion">
-				<table class="tablaGestion" id="tablaPtosExtension">
-					<thead>
-						<tr>
-							<th style="width: 30%;"><s:text name="colCasoUsoExtiende"/></th>
-							<th style="width: 30%;"><s:text name="colCausa"/></th>
-							<th style="width: 30%;"><s:text name="colRegion"/></th>
-							<th style="width: 10%;"><s:text name="colAcciones"/></th>
-						</tr>
-					</thead>
-				</table>
-				<br />
-				<div align="center">
-					<sj:a openDialog="ptosExtensionDialog" button="true">Registrar</sj:a>
-				</div>
-			</div>
-		</div>
 		<br />
 		<div align="center">
 			<s:submit class="boton" value="Aceptar" />
@@ -164,7 +145,6 @@
 		</div>    
 		<s:hidden name="jsonPrecondiciones" id="jsonPrecondiciones" value="%{jsonPrecondiciones}"/>
 		<s:hidden name="jsonPostcondiciones" id="jsonPostcondiciones" value="%{jsonPostcondiciones}"/>
-		<s:hidden name="jsonPtosExtension" id="jsonPtosExtension" value="%{jsonPtosExtension}"/>
 		
 		<!-- Json de elementos -->
 		<s:hidden name="jsonReglasNegocio" id="jsonReglasNegocio" value="%{jsonReglasNegocio}"/>
@@ -231,42 +211,6 @@
 				</div> 
 		</s:form>
 	</sj:dialog>
-	<!-- PUNTOS DE EXTENSIÓN -->	
-   	<sj:dialog id="ptosExtensionDialog" title="Registrar Punto de extensión" autoOpen="false" 
-   	minHeight="300" minWidth="800" modal="true" draggable="true" >
-	   	<s:form id="frmPtoExtension" name="frmPtoExtensionName" theme="simple">
-			<div class="formulario">
-				<div class="tituloFormulario">Información del Punto de extensión</div>
-				<table class="seccion">
-					<tr>
-						<td class="label obligatorio"><s:text name="labelCasoUsoExtiende" /></td>
-						<td><s:select name="ptoExtension.cu" id="ptoExtension.idCu" list="listCUProyecto" listKey="id" cssClass="inputFormulario"
-       						listValue="nombre" cssErrorClass="input-error" value="0"></s:select></td>
-					</tr>
-					<tr>
-						<td class="label obligatorio"><s:text name="labelCausa" /></td>
-						<td><s:textarea rows="5" name="ptoExtension.causa" id="ptoExtension.idCausa" cssClass="inputFormulario ui-widget"
-								maxlength="999" cssErrorClass="input-error"></s:textarea></td>
-					</tr>
-					<tr>
-						<td class="label obligatorio"><s:text name="labelRegion" /></td>
-						<td><s:textarea rows="5" name="ptoExtension.region" id="ptosExtensionInput" cssClass="inputFormulario ui-widget"
-								maxlength="500" cssErrorClass="input-error"></s:textarea></td>
-					</tr>
-				</table>
-			</div>
-			<br />
-				<div align="center">
-					<input type="button"
-						onclick="registrarPtoExtension()"
-						value="Aceptar" />
-					<input type="button"
-						onclick="cancelarRegistrarPtoExtension()"
-						value="Cancelar" />
-				</div>
-		</s:form>
-	</sj:dialog>
-
 	
 	
 	

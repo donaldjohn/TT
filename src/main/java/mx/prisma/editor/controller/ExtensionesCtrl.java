@@ -31,6 +31,7 @@ import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
 import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
+import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.SessionManager;
 
 @ResultPath("/content/editor")
@@ -114,9 +115,14 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 
 	public String create() throws Exception {
 		String resultado = null;
-		System.out.println(claveCasoUsoDestino);
-		model.setCasoUsoDestino(new CasoUsoDAO().consultarCasoUso(claveCasoUsoDestino));
+		System.out.println("clave cu destino" + claveCasoUsoDestino);
+		//Validaciones del caso de uso que extiende a
 		try {						
+			if(claveCasoUsoDestino == -1) {
+				throw new PRISMAValidacionException("El usuario no seleccionó el caso de uso destino.", "MSG4", null, "claveCasoUsoDestino");
+			} else {
+				model.setCasoUsoDestino(new CasoUsoDAO().consultarCasoUso(claveCasoUsoDestino));
+			}
 			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
 			model.setCasoUsoOrigen(casoUso);
 			ExtensionBs.registrarExtension(model);						
@@ -125,18 +131,21 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 					"Punto de extensión", "registrado" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 			
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = editNew();
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
-			resultado = INDEX;
+			resultado = index();
 		} catch (Exception e) {
 			e.printStackTrace();
 			ErrorManager.agregaMensajeError(this, e);
-			resultado = INDEX;
+			resultado = index();
 		}
 		return resultado;
 	}
 
-	public String editNew() {
+	public String editNew() throws Exception {
 		String resultado = null;
 		try {
 			
@@ -148,11 +157,11 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
 			ErrorManager.agregaMensajeError(this, pe);
-			resultado = INDEX;
+			return index();
 		} catch (Exception e) {
 			e.printStackTrace();
 			ErrorManager.agregaMensajeError(this, e);
-			resultado = INDEX;
+			return index();
 		}
 		return resultado;
 	}
@@ -181,7 +190,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 		return (this.model == null) ? model = new Extension() : this.model;
 	}
 
-	public HttpHeaders index() throws Exception{
+	public String index() throws Exception{
 		try {
 			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
 			model.setCasoUsoOrigen(casoUso);
@@ -204,7 +213,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new DefaultHttpHeaders(INDEX);
+		return INDEX;
 	}
 
 	public void setCatalogoCasoUso(List<CasoUso> catalogoCasoUso) {

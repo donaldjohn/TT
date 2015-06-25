@@ -33,7 +33,7 @@
 			<table class="seccion">
 				<tr>
 					<td class="label obligatorio"><s:text name="labelClave" /></td>
-					<td><s:textfield name="model.clave"
+					<td><s:textfield name="model.clave" maxlength="5"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" /> <s:fielderror
 							fieldName="model.clave" cssClass="error" theme="jquery" /></td>
 				</tr>
@@ -41,7 +41,9 @@
 					<td class="label obligatorio"><s:text name="labelTipo" /></td>
 					<td>
 						<s:select list="listAlternativa" headerKey="-1" headerValue="Seleccione" id="idAlternativaPrincipal" name="alternativaPrincipal"
-						onchange="cambiarElementosAlternativaPrincipal();" cssClass="inputFormulario ui-widget"/>
+						cssErrorClass="select-error" onchange="cambiarElementosAlternativaPrincipal();" cssClass="inputFormulario ui-widget" />
+						<s:fielderror fieldName="alternativaPrincipal" cssClass="error"
+							theme="jquery" />
 						<p id = "textoAyudaPA" class="textoAyuda"/>
 					</td>
 				</tr>
