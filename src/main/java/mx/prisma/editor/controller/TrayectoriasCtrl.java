@@ -84,7 +84,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	private List<String> listAlternativa;
 	private String alternativaPrincipal;
 
-	public String index() throws Exception{
+	public DefaultHttpHeaders index() throws Exception{
 		try {
 			if(idCU == 0) {
 				idCU = (Integer)SessionManager.get("idCU");
@@ -105,7 +105,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return INDEX;
+		return new DefaultHttpHeaders(INDEX);
 	}
 
 	/**
