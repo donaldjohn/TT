@@ -6,24 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.convention.annotation.InterceptorRef;
-import org.apache.struts2.convention.annotation.InterceptorRefs;
-import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
-import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
-import com.google.gson.Gson;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 
 import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Proyecto;
@@ -37,12 +27,10 @@ import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entidad;
-import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.Paso;
-import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.editor.model.Trayectoria;
@@ -93,6 +81,8 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	private String jsonAcciones;
 	
 	private boolean existeTPrincipal;
+	private List<String> listAlternativa;
+	private String alternativaPrincipal;
 
 	public HttpHeaders index() throws Exception{
 		try {
@@ -120,8 +110,9 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 
 	/**
 	 * Método para preparar la pantalla de registro de una trayectoria.
+	 * @throws Exception 
 	 * */
-	public String editNew() {
+	public String editNew() throws Exception {
 		
 		String resultado = null;
 		try {
@@ -167,9 +158,13 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		listRealiza.add("Actor");
 		listRealiza.add("Sistema");
 		
+		//Se llena la lista par indicar si es alternativa o no
+		listAlternativa = new ArrayList<String>();
+		listAlternativa.add("Principal");
+		listAlternativa.add("Alternativa");
+		
 		//Se extraen los verbos de la BD
 		listVerbos = CuBs.consultarVerbos();
-		
 	}
 
 	/**
@@ -182,6 +177,15 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		System.out.println("ID del cu " + idCU);
 		
 		try {
+			//Se verifica si es alternativa
+			if(alternativaPrincipal == null || alternativaPrincipal.equals("Alternativa")) {
+				model.setAlternativa(true);
+			} else if(alternativaPrincipal.equals("Principal")) {
+				model.setAlternativa(false);
+			} else {
+				System.out.println("No se reconoce la opcion de alternativa principal");
+			}
+			
 			//Se llama al método que convierte los json a pasos de la trayectoria
 			agregarPasos();
 			
@@ -202,7 +206,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			
 			//Se agrega el mensaje a la sesión
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
-			
+			//throw new Exception();//Quitar
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			resultado = editNew();
@@ -543,7 +547,23 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 
 	public void setExisteTPrincipal(boolean existeTPrincipal) {
 		this.existeTPrincipal = existeTPrincipal;
-	}	
+	}
+
+	public List<String> getListAlternativa() {
+		return listAlternativa;
+	}
+
+	public void setListAlternativa(List<String> listAlternativa) {
+		this.listAlternativa = listAlternativa;
+	}
+
+	public String getAlternativaPrincipal() {
+		return alternativaPrincipal;
+	}
+
+	public void setAlternativaPrincipal(String alternativaPrincipal) {
+		this.alternativaPrincipal = alternativaPrincipal;
+	}
 	
 	
 }

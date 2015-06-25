@@ -38,12 +38,12 @@
 							fieldName="model.clave" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr>
-					<td class="label"><s:text name="labelAlternativa" /></td>
-					<td><s:checkbox name="model.alternativa" id="model.idAlternativa"
-							cssErrorClass="input-error" onclick="mostrarCampoCondicion(this);"></s:checkbox> 
-							<s:fielderror
-							fieldName="model.alternativa" cssClass="error"
-							theme="jquery" /></td>
+					<td class="label obligatorio"><s:text name="labelTipo" /></td>
+					<td>
+						<s:select list="listAlternativa" headerKey="-1" headerValue="Seleccione" id="idAlternativaPrincipal" name="alternativaPrincipal"
+						onchange="cambiarElementosAlternativaPrincipal();" cssClass="inputFormulario ui-widget"/>
+						<p id = "textoAyudaPA" class="textoAyuda"/>
+					</td>
 				</tr>
 				<tr id="filaCondicion" style="display: none;">
 					<td class="label obligatorio"><s:text name="labelCondicion" /></td>
@@ -55,7 +55,7 @@
 				</tr>
 				<tr>
 					<td class="label"><s:text name="labelFinCasoUso" /></td>
-					<td><s:checkbox name="model.finCasoUso"
+					<td><s:checkbox name="model.finCasoUso" id="model.finCasoUso"
 							cssErrorClass="input-error"></s:checkbox> 
 							<s:fielderror
 							fieldName="model.finCasoUso" cssClass="error"
@@ -66,7 +66,7 @@
 		<div class="formulario">
 			<div class="tituloFormulario">Pasos de la Trayectoria</div>
 			<div class="seccion">
-				
+				<s:fielderror fieldName="model.pasos" cssClass="error" theme="jquery" />
 				<table id="tablaPaso" class="tablaGestion" cellspacing="0" width="100%">
 				<s:hidden name="numPasos" value="%{listPasos.length}" id="numPasos"/> 
 					<thead>
@@ -135,23 +135,22 @@
 					onclick="cancelarRegistrarPaso()"
 					value="Cancelar" />
 			</div>
-			<!-- Json de elementos -->
-			<s:hidden name="jsonReglasNegocio" id="jsonReglasNegocio" value="%{jsonReglasNegocio}"/>
-			<s:hidden name="jsonEntidades" id="jsonEntidades" value="%{jsonEntidades}"/>
-			<s:hidden name="jsonCasosUsoProyecto" id="jsonCasosUsoProyecto" value="%{jsonCasosUsoProyecto}"/>
-			<s:hidden name="jsonPantallas" id="jsonPantallas" value="%{jsonPantallas}"/>
-			<s:hidden name="jsonMensajes" id="jsonMensajes" value="%{jsonMensajes}"/>
-			<s:hidden name="jsonActores" id="jsonActores" value="%{jsonActores}"/>
-			<s:hidden name="jsonTerminosGls" id="jsonTerminosGls" value="%{jsonTerminosGls}"/>
-			<s:hidden name="jsonAtributos" id="jsonAtributos" value="%{jsonAtributos}"/>
-			<s:hidden name="jsonPasos" id="jsonPasos" value="%{jsonPasos}"/>
-			<s:hidden name="jsonTrayectorias" id="jsonTrayectorias" value="%{jsonTrayectorias}"/>
-			<s:hidden name="jsonAcciones" id="jsonAcciones" value="%{jsonAcciones}"/>
-			<!-- Booleano que indica si existen trayectorias -->
-			<s:hidden id="existeTPrincipal" value="%{existeTPrincipal}"/>
 		</s:form>
 	</sj:dialog>
-	
+	<!-- Json de elementos -->
+	<s:hidden name="jsonReglasNegocio" id="jsonReglasNegocio" value="%{jsonReglasNegocio}"/>
+	<s:hidden name="jsonEntidades" id="jsonEntidades" value="%{jsonEntidades}"/>
+	<s:hidden name="jsonCasosUsoProyecto" id="jsonCasosUsoProyecto" value="%{jsonCasosUsoProyecto}"/>
+	<s:hidden name="jsonPantallas" id="jsonPantallas" value="%{jsonPantallas}"/>
+	<s:hidden name="jsonMensajes" id="jsonMensajes" value="%{jsonMensajes}"/>
+	<s:hidden name="jsonActores" id="jsonActores" value="%{jsonActores}"/>
+	<s:hidden name="jsonTerminosGls" id="jsonTerminosGls" value="%{jsonTerminosGls}"/>
+	<s:hidden name="jsonAtributos" id="jsonAtributos" value="%{jsonAtributos}"/>
+	<s:hidden name="jsonPasos" id="jsonPasos" value="%{jsonPasos}"/>
+	<s:hidden name="jsonTrayectorias" id="jsonTrayectorias" value="%{jsonTrayectorias}"/>
+	<s:hidden name="jsonAcciones" id="jsonAcciones" value="%{jsonAcciones}"/>
+	<!-- Booleano que indica si existen trayectorias -->
+	<s:hidden id="existeTPrincipal" value="%{existeTPrincipal}"/>
 	
 </body>
 	</html>
