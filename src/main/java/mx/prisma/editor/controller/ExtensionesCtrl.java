@@ -19,6 +19,8 @@ import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ExtensionBs;
+import mx.prisma.editor.bs.TokenBs;
+import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Extension;
@@ -40,11 +42,9 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String nameAux;
 	// Pruebas
 	private String claveModulo = "SF";
 	private String claveProy = "SIG";
-	String n = "";
 	// Proyecto y módulo
 	private Proyecto proyecto;
 	private Modulo modulo;
@@ -53,10 +53,12 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 	private List<Extension> listPtosExtension;
 	private int idCU;
 	private  List<CasoUso> catalogoCasoUso;
-	
+	private int claveCasoUsoDestino;
 	// Elementos disponibles
 	private List<CasoUso> listCasoUso;
 	private String jsonPasos;
+	
+	private char tokenCodificada = '$';
 
 	private void buscaCatalogos() throws Exception {
 		catalogoCasoUso = new ArrayList<CasoUso>();
@@ -92,11 +94,13 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 					Trayectoria trayectoriaAux = new Trayectoria();
 					trayectoriaAux.setClave(trayectoria.getClave());
 					trayectoriaAux.setCasoUso(casoUsoAux);
-					for (Paso paso : trayectoria.getPasos()) {
+					Set<Paso> pasos =trayectoria.getPasos();
+					for (Paso paso : pasos) {
 						Paso pasoAuxiliar = new Paso();
 						pasoAuxiliar.setTrayectoria(trayectoriaAux);
 						pasoAuxiliar.setNumero(paso.getNumero());
 						listPasos.add(pasoAuxiliar);
+						System.out.println(paso.getId());
 					}
 				}
 			}
@@ -110,14 +114,12 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 
 	public String create() throws Exception {
 		String resultado = null;
-		System.out.println("nameAux " + nameAux);
-		System.out.println(model.getCasoUsoDestino().getNombre());
-		System.out.println("--");
+		System.out.println(claveCasoUsoDestino);
+		model.setCasoUsoDestino(new CasoUsoDAO().consultarCasoUso(claveCasoUsoDestino));
 		try {						
 			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
 			model.setCasoUsoOrigen(casoUso);
 			ExtensionBs.registrarExtension(model);						
-			System.out.println("Marca");
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",
 					"Punto de extensión", "registrado" }));
@@ -142,7 +144,6 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 			modulo = new ModuloDAO().consultarModulo(this.claveModulo, proyecto);
 			buscaElementos();
 			buscaCatalogos();
-			n = "Hola mundo";
 			resultado = EDITNEW;
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
@@ -157,8 +158,11 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 	}
 	
 	public List<CasoUso> getCatalogoCasoUso() {
-		System.out.println("get " + catalogoCasoUso);
 		return catalogoCasoUso;
+	}
+
+	public int getClaveCasoUsoDestino() {
+		return claveCasoUsoDestino;
 	}
 
 	public int getIdCU() {
@@ -182,7 +186,11 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
 			model.setCasoUsoOrigen(casoUso);
 			listPtosExtension = new ArrayList<Extension>();
-			for(Extension extension: casoUso.getExtiende()) {
+			Set<Extension> extensiones = casoUso.getExtendidoDe();
+			for(Extension extension: extensiones) {
+				if (extension.getRegion().charAt(0) == tokenCodificada) {
+					extension.setRegion(TokenBs.decodificarCadenasToken(extension.getRegion()));
+				}
 				listPtosExtension.add(extension);
 			}
 			@SuppressWarnings("unchecked")
@@ -200,8 +208,11 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 	}
 
 	public void setCatalogoCasoUso(List<CasoUso> catalogoCasoUso) {
-		System.out.println("set " + catalogoCasoUso);
 		this.catalogoCasoUso = catalogoCasoUso;
+	}
+
+	public void setClaveCasoUsoDestino(int claveCasoUsoDestino) {
+		this.claveCasoUsoDestino = claveCasoUsoDestino;
 	}
 
 	public void setIdCU(int idCU) {
@@ -222,14 +233,6 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 
 	public void setSession(Map<String, Object> arg0) {
 		// TODO Auto-generated method stub		
-	}
-
-	public String getNameAux() {
-		return nameAux;
-	}
-
-	public void setNameAux(String nameAux) {
-		this.nameAux = nameAux;
 	}
 
 	

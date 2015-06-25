@@ -38,7 +38,7 @@ import mx.prisma.editor.model.Salida;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.editor.model.TipoParametro;
 import mx.prisma.editor.model.Trayectoria;
-import mx.prisma.util.PRISMAException;
+import mx.prisma.util.PRISMAValidacionException;
 
 public class TokenBs {
 
@@ -83,7 +83,7 @@ public class TokenBs {
 					String[] parametros = { "la", "pantalla",
 							segmentos.get(1) + segmentos.get(2), "registrada" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: La pantalla "
 									+ segmentos.get(1) + segmentos.get(2)
 									+ " no está registrada", "MSG15",
@@ -99,7 +99,7 @@ public class TokenBs {
 							segmentos.get(4).replaceAll("_", " ")
 									+ "de la pantalla" + segmentos.get(1)
 									+ segmentos.get(2), "registrada" };
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: La acción"
 									+ segmentos.get(4).replaceAll("_", " ")
 									+ "de la pantalla" + segmentos.get(1)
@@ -116,7 +116,7 @@ public class TokenBs {
 					String[] parametros = { "la", "entidad",
 							segmentos.get(1).replaceAll("_", " "), "registrada" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: La entidad "
 									+ segmentos.get(1).replaceAll("_", " ")
 									+ " no está registrada", "MSG15",
@@ -132,7 +132,7 @@ public class TokenBs {
 							segmentos.get(2).replaceAll("_", " ")
 									+ "de la entidad " + segmentos.get(1),
 							"registrado" };
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El atributo"
 									+ segmentos.get(2) + "de la entidad"
 									+ segmentos.get(1) + " no está registrado",
@@ -149,7 +149,7 @@ public class TokenBs {
 							// Construcción del mensaje de error;
 							"el", "actor",
 							segmentos.get(1).replaceAll("_", " "), "registrado" };
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El actor no está registrado",
 							"MSG15", parametros);
 				}
@@ -164,7 +164,7 @@ public class TokenBs {
 					String[] parametros = { "el", "modulo",
 							segmentos.get(1).replaceAll("_", " "), "registrado" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El módulo "
 									+ segmentos.get(1) + " no está registrado",
 							"MSG15", parametros);
@@ -177,7 +177,7 @@ public class TokenBs {
 					String[] parametros = { "el", "caso de uso", token,
 							"registrado" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El caso de uso "
 									+ token + " no está registrado", "MSG15",
 							parametros);
@@ -192,7 +192,7 @@ public class TokenBs {
 					String[] parametros = { "la", "entidad",
 							segmentos.get(1).replaceAll("_", " "), "registrada" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: La entidad "
 									+ segmentos.get(1) + " no está registrada",
 							"MSG15", parametros);
@@ -208,7 +208,7 @@ public class TokenBs {
 					String[] parametros = { "el", "término",
 							segmentos.get(1).replaceAll("_", " "), "registrado" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El término no está registrado",
 							"MSG15", parametros);
 				}
@@ -223,7 +223,7 @@ public class TokenBs {
 					String[] parametros = { "el", "modulo",
 							segmentos.get(1).replaceAll("_", " "), "registrado" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El módulo "
 									+ segmentos.get(1) + " no está registrado",
 							"MSG15", parametros);
@@ -236,7 +236,7 @@ public class TokenBs {
 					String[] parametros = { "la", "pantalla", token,
 							"registrada" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: La pantalla "
 									+ token + " no está registrada", "MSG15",
 							parametros);
@@ -251,7 +251,7 @@ public class TokenBs {
 					String[] parametros = { "el", "mensaje",
 							segmentos.get(1).replaceAll("_", " "), "registrado" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El mensaje "
 									+ segmentos.get(1) + " no está registrado",
 							"MSG15", parametros);
@@ -267,7 +267,7 @@ public class TokenBs {
 					String[] parametros = { "la", "regla de negocio",
 							segmentos.get(2).replaceAll("_", " "), "registrada" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: La regla de negocio "
 									+ segmentos.get(2) + " no está registrada",
 							"MSG15", parametros);
@@ -283,7 +283,7 @@ public class TokenBs {
 					String[] parametros = { "el", "caso de uso",
 							segmentos.get(1) + segmentos.get(2), "registrado" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El caso de uso "
 									+ segmentos.get(1) + segmentos.get(2)
 									+ " no está registrado", "MSG15",
@@ -302,7 +302,7 @@ public class TokenBs {
 									+ segmentos.get(1) + segmentos.get(2),
 							"registrada" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: La trayectoria "
 									+ segmentos.get(4) + "del caso de uso"
 									+ segmentos.get(1) + segmentos.get(2)
@@ -319,7 +319,7 @@ public class TokenBs {
 					String[] parametros = { "el", "caso de uso",
 							segmentos.get(1) + segmentos.get(2), "registrado" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El caso de uso "
 									+ segmentos.get(1) + segmentos.get(2)
 									+ " no está registrado", "MSG15",
@@ -347,7 +347,7 @@ public class TokenBs {
 							segmentos.get(4) + " del caso de uso "
 									+ segmentos.get(3), "registrada" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: La trayectoria "
 									+ segmentos.get(4) + "del caso de uso"
 									+ segmentos.get(1) + segmentos.get(2)
@@ -364,7 +364,7 @@ public class TokenBs {
 									+ segmentos.get(1) + segmentos.get(2),
 							"registrado" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El paso "
 									+ segmentos.get(5) + "de la trayectoria"
 									+ segmentos.get(4) + "del caso de uso "
@@ -426,7 +426,7 @@ public class TokenBs {
 					String[] parametros = { "la", "pantalla",
 							segmentos.get(1) + segmentos.get(2), "registrada" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: La pantalla "
 									+ segmentos.get(1) + segmentos.get(2)
 									+ " no está registrada", "MSG15",
@@ -442,7 +442,7 @@ public class TokenBs {
 							segmentos.get(4).replaceAll("_", " ")
 									+ "de la pantalla" + segmentos.get(1)
 									+ segmentos.get(2), "registrada" };
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: La acción"
 									+ segmentos.get(4).replaceAll("_", " ")
 									+ "de la pantalla" + segmentos.get(1)
@@ -460,7 +460,7 @@ public class TokenBs {
 					String[] parametros = { "la", "entidad",
 							segmentos.get(1).replaceAll("_", " "), "registrada" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: La entidad "
 									+ segmentos.get(1).replaceAll("_", " ")
 									+ " no está registrada", "MSG15",
@@ -476,7 +476,7 @@ public class TokenBs {
 							segmentos.get(2).replaceAll("_", " ")
 									+ "de la entidad " + segmentos.get(1),
 							"registrado" };
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El atributo "
 									+ segmentos.get(2) + "de la entidad "
 									+ segmentos.get(1) + " no está registrado",
@@ -492,7 +492,7 @@ public class TokenBs {
 							// Construcción del mensaje de error;
 							"el", "actor",
 							segmentos.get(1).replaceAll("_", " "), "registrado" };
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El actor "
 									+ segmentos.get(1).replaceAll("_", " ")
 									+ " no está registrado", "MSG15",
@@ -509,7 +509,7 @@ public class TokenBs {
 					String[] parametros = { "el", "modulo",
 							segmentos.get(1).replaceAll("_", " "), "registrado" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El módulo "
 									+ segmentos.get(1) + " no está registrado",
 							"MSG15", parametros);
@@ -522,7 +522,7 @@ public class TokenBs {
 					String[] parametros = { "el", "caso de uso", token,
 							"registrado" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El caso de uso "
 									+ token + " no está registrado", "MSG15",
 							parametros);
@@ -538,7 +538,7 @@ public class TokenBs {
 					String[] parametros = { "la", "entidad",
 							segmentos.get(1).replaceAll("_", " "), "registrada" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: La entidad "
 									+ segmentos.get(1) + " no está registrada",
 							"MSG15", parametros);
@@ -553,7 +553,7 @@ public class TokenBs {
 					String[] parametros = { "el", "término",
 							segmentos.get(1).replaceAll("_", " "), "registrado" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El término no está registrado",
 							"MSG15", parametros);
 				}
@@ -567,7 +567,7 @@ public class TokenBs {
 					String[] parametros = { "el", "modulo",
 							segmentos.get(1).replaceAll("_", " "), "registrado" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El módulo "
 									+ segmentos.get(1) + " no está registrado",
 							"MSG15", parametros);
@@ -580,7 +580,7 @@ public class TokenBs {
 					String[] parametros = { "la", "pantalla", token,
 							"registrada" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: La pantalla "
 									+ token + " no está registrada", "MSG15",
 							parametros);
@@ -595,7 +595,7 @@ public class TokenBs {
 					String[] parametros = { "el", "mensaje",
 							segmentos.get(1).replaceAll("_", " "), "registrado" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El mensaje "
 									+ segmentos.get(1) + " no está registrado",
 							"MSG15", parametros);
@@ -610,7 +610,7 @@ public class TokenBs {
 					String[] parametros = { "la", "regla de negocio",
 							segmentos.get(2).replaceAll("_", " "), "registrada" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: La regla de negocio "
 									+ segmentos.get(2) + " no está registrada",
 							"MSG15", parametros);
@@ -624,7 +624,7 @@ public class TokenBs {
 					String[] parametros = { "el", "caso de uso",
 							segmentos.get(1) + segmentos.get(2), "registrado" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El caso de uso "
 									+ segmentos.get(1) + segmentos.get(2)
 									+ " no está registrado", "MSG15",
@@ -646,7 +646,7 @@ public class TokenBs {
 									+ segmentos.get(1) + segmentos.get(2),
 							"registrada" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: La trayectoria "
 									+ segmentos.get(4) + "del caso de uso"
 									+ segmentos.get(1) + segmentos.get(2)
@@ -663,7 +663,7 @@ public class TokenBs {
 					String[] parametros = { "el", "caso de uso",
 							segmentos.get(1) + segmentos.get(2), "registrado" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El caso de uso "
 									+ segmentos.get(1) + segmentos.get(2)
 									+ " no está registrado", "MSG15",
@@ -685,7 +685,7 @@ public class TokenBs {
 									+ segmentos.get(1) + segmentos.get(2),
 							"registrada" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: La trayectoria "
 									+ segmentos.get(4) + "del caso de uso"
 									+ segmentos.get(1) + segmentos.get(2)
@@ -708,7 +708,7 @@ public class TokenBs {
 									+ segmentos.get(1) + segmentos.get(2),
 							"registrado" };
 
-					throw new PRISMAException(
+					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El paso "
 									+ segmentos.get(5) + "de la trayectoria"
 									+ segmentos.get(4) + "del caso de uso "

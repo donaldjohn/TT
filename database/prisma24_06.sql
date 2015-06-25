@@ -2,7 +2,7 @@ create table Verbo (id int(10) not null auto_increment, nombre varchar(45) not n
 create table TipoDato (id int(10) not null auto_increment, nombre varchar(45) not null, primary key (id));
 create table Entidad (Elementoid int(11) not null, primary key (Elementoid));
 create table Actualizacion (id int(11) not null auto_increment, fecha date not null, comentario varchar(999) not null, EstadoElementoidPre int(11) not null, EstadoElementoidPost int(11) not null, Elementoid int(11) not null, Colaborador_Proyectoid int(11) not null, primary key (id));
-create table ReferenciaParametro (id int(10) not null auto_increment, numeroToken int(10) not null, TipoParametroid int(11) not null, PostPrecondicionid int(10), Pasoid int(10), Extensionid int(10), PasoidDestino int(10), ElementoidDestino int(11), AccionidDestino int(11), primary key (id));
+create table ReferenciaParametro (id int(10) not null auto_increment, numeroToken int(10) not null, TipoParametroid int(11) not null, PostPrecondicionid int(10), Pasoid int(10), Extensionid int(10), PasoidDestino int(10), ElementoidDestino int(11), AccionidDestino int(11), Atributoid int(11), primary key (id));
 create table EstadoProyecto (id int(11) not null auto_increment, nombre varchar(45) not null, primary key (id));
 create table Telefono (id int(11) not null auto_increment, ColaboradorCURP varchar(18) not null unique, lada varchar(5) not null unique, numero varchar(10) not null unique, primary key (id));
 create table Modulo (id int(11) not null auto_increment, clave varchar(10) not null, nombre varchar(45) not null, descripcion varchar(999) not null, Proyectoid int(11) not null, primary key (id), constraint uniqueModulo unique (clave, Proyectoid));
@@ -13,7 +13,7 @@ create table EstadoElemento (id int(11) not null auto_increment, nombre varchar(
 create table Proyecto (id int(11) not null auto_increment, clave varchar(10) not null unique, nombre varchar(50) not null unique, fechaInicioProgramada date not null, fechaTerminoProgramada date not null, fechaInicio date, fechaTermino date, descripcion varchar(999) not null, presupuesto double, contraparte varchar(45) not null, EstadoProyectoid int(11) not null, primary key (id));
 create table Revision (id int(11) not null auto_increment, observaciones varchar(999) not null, CasoUsoElementoid int(11) not null, Seccionid int(11) not null, primary key (id));
 create table Elemento (id int(11) not null auto_increment, clave varchar(10) not null, numero int(10) not null, nombre varchar(200) not null, descripcion varchar(999), EstadoElementoid int(11) not null, Proyectoid int(11) not null, primary key (id), constraint uniqueElemento unique (clave, numero, nombre));
-create table Trayectoria (id int(10) not null auto_increment, clave varchar(5) not null, alternativa tinyint(1) not null, condicion varchar(10), CasoUsoElementoid int(11) not null, finCasoUso tinyint(1) not null, primary key (id), constraint uniqueTrayectoria unique (clave, CasoUsoElementoid));
+create table Trayectoria (id int(10) not null auto_increment, clave varchar(5) not null, alternativa tinyint(1) not null, condicion varchar(500), CasoUsoElementoid int(11) not null, finCasoUso tinyint(1) not null, primary key (id), constraint uniqueTrayectoria unique (clave, CasoUsoElementoid));
 create table Atributo (id int(11) not null auto_increment, nombre varchar(45) not null, descripcion varchar(999) not null, obligatorio tinyint(1) not null, longitud int(10), EntidadElementoid int(11) not null, TipoDatoid int(10) not null, primary key (id), constraint uniqueAtributo unique (nombre, EntidadElementoid));
 create table TipoParametro (id int(11) not null auto_increment, nombre varchar(45) not null, primary key (id));
 create table CasoUso_ReglaNegocio (id int(10) not null auto_increment, numeroToken int(10) not null, CasoUsoElementoid int(11) not null, ReglaNegocioElementoid int(11) not null, primary key (id), constraint uniqueRelacionRN unique (CasoUsoElementoid, ReglaNegocioElementoid));
@@ -35,10 +35,11 @@ create table CasoUso (Elementoid int(11) not null, redaccionActores varchar(999)
 create table Pantalla (Elementoid int(11) not null, imagen blob, Moduloid int(11) not null, primary key (Elementoid));
 create table TerminoGlosario (Elementoid int(11) not null, primary key (Elementoid));
 create table Mensaje (Elementoid int(11) not null, redaccion varchar(999) not null, parametrizado tinyint(1) not null, primary key (Elementoid));
+alter table ReferenciaParametro add index FKReferencia203453 (Atributoid), add constraint FKReferencia203453 foreign key (Atributoid) references Atributo (id) on update Cascade on delete Restrict;
 alter table Paso add index FKPaso790455 (Verboid), add constraint FKPaso790455 foreign key (Verboid) references Verbo (id) on update Cascade on delete Restrict;
 alter table Atributo add index FKAtributo156815 (TipoDatoid), add constraint FKAtributo156815 foreign key (TipoDatoid) references TipoDato (id);
 alter table Atributo add index FKAtributo539266 (EntidadElementoid), add constraint FKAtributo539266 foreign key (EntidadElementoid) references Entidad (Elementoid) on update Cascade on delete Cascade;
-alter table ReferenciaParametro add index FKReferencia384626 (TipoParametroid), add constraint FKReferencia384626 foreign key (TipoParametroid) references TipoParametro (id);
+alter table ReferenciaParametro add index FKReferencia384626 (TipoParametroid), add constraint FKReferencia384626 foreign key (TipoParametroid) references TipoParametro (id) on update Cascade on delete Restrict;
 alter table Entidad add index FKEntidad434647 (Elementoid), add constraint FKEntidad434647 foreign key (Elementoid) references Elemento (id);
 alter table Mensaje add index FKMensaje721868 (Elementoid), add constraint FKMensaje721868 foreign key (Elementoid) references Elemento (id) on update Cascade on delete Cascade;
 alter table Pantalla add index FKPantalla491263 (Elementoid), add constraint FKPantalla491263 foreign key (Elementoid) references Elemento (id) on update Cascade on delete Cascade;
@@ -64,9 +65,9 @@ alter table Actualizacion add index FKActualizac500406 (EstadoElementoidPost), a
 alter table Actualizacion add index FKActualizac672777 (EstadoElementoidPre), add constraint FKActualizac672777 foreign key (EstadoElementoidPre) references EstadoElemento (id) on update Cascade on delete Restrict;
 alter table ReferenciaParametro add index FKReferencia233904 (Pasoid), add constraint FKReferencia233904 foreign key (Pasoid) references Paso (id) on update Cascade on delete Cascade;
 alter table ReferenciaParametro add index FKReferencia97972 (Extensionid), add constraint FKReferencia97972 foreign key (Extensionid) references Extension (id) on update Cascade on delete Cascade;
-alter table ReferenciaParametro add index FKReferencia564326 (PasoidDestino), add constraint FKReferencia564326 foreign key (PasoidDestino) references Paso (id) on update Cascade on delete Cascade;
-alter table ReferenciaParametro add index FKReferencia551912 (ElementoidDestino), add constraint FKReferencia551912 foreign key (ElementoidDestino) references Elemento (id) on update Cascade on delete Cascade;
-alter table ReferenciaParametro add index FKReferencia742226 (AccionidDestino), add constraint FKReferencia742226 foreign key (AccionidDestino) references Accion (id);
+alter table ReferenciaParametro add index FKReferencia564326 (PasoidDestino), add constraint FKReferencia564326 foreign key (PasoidDestino) references Paso (id) on update Cascade on delete Restrict;
+alter table ReferenciaParametro add index FKReferencia551912 (ElementoidDestino), add constraint FKReferencia551912 foreign key (ElementoidDestino) references Elemento (id) on update Cascade on delete Restrict;
+alter table ReferenciaParametro add index FKReferencia742226 (AccionidDestino), add constraint FKReferencia742226 foreign key (AccionidDestino) references Accion (id) on update Cascade on delete Restrict;
 alter table Salida add index FKSalida348357 (Atributoid), add constraint FKSalida348357 foreign key (Atributoid) references Atributo (id) on update Cascade on delete Restrict;
 alter table Entrada add index FKEntrada429579 (Atributoid), add constraint FKEntrada429579 foreign key (Atributoid) references Atributo (id) on update Cascade on delete Restrict;
 alter table Entrada add index FKEntrada368636 (TerminoGlosarioElementoid), add constraint FKEntrada368636 foreign key (TerminoGlosarioElementoid) references TerminoGlosario (Elementoid) on update Cascade on delete Restrict;

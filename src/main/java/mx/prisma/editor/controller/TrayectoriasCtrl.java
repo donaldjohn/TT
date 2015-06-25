@@ -158,7 +158,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		existeTPrincipal = false;
 		for (Trayectoria t: casoUso.getTrayectorias()) {
 			if(!t.isAlternativa()) {
-				return true;
+				return true; 
 			}
 		}
 		return existeTPrincipal;

@@ -39,7 +39,7 @@
 					<td><s:property value="%{#cu.estadoElemento.nombre}"/></td>
 					<td align="center">				
 							<a href="${pageContext.request.contextPath}/cu/${cu.id}/edit"><img
-										id="" class="button" width="20" height="20"
+										id="" class="button"
 										title="Editar"
 										src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></a>
 										
@@ -47,7 +47,7 @@
 								<s:param name="idCU" value="%{#cu.id}"/>
 							</s:url>
 							<s:a href="%{urlGestionarTrayectorias}"><img
-										id="" class="button" width="20" height="20"
+										id="" class="button"
 										title="Gestionar Trayectorias"
 										src="${pageContext.request.contextPath}/resources/images/icons/gestionarTray.png" /></s:a>	
 										
@@ -55,8 +55,8 @@
 								<s:param name="idCU" value="%{#cu.id}"/>
 							</s:url>
 							<s:a href="%{urlGestionarPuntosExtension}"><img
-										id="" class="button" width="20" height="20"
-										title="Gestionar Puntos de extensión"
+										id="" class="button"
+										title="Gestionar Puntos de extensión"  width="16" height="16"
 										src="${pageContext.request.contextPath}/resources/images/icons/extension.png" /></s:a>						
 					</td>
 					
