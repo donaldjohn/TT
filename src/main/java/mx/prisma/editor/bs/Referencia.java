@@ -7,6 +7,7 @@ import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Pantalla;
+import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.editor.model.Trayectoria;
@@ -126,6 +127,9 @@ public class Referencia {
 		}
 		if (objeto instanceof Trayectoria){
 			return TipoReferencia.TRAYECTORIA;
+		}
+		if (objeto instanceof Paso){
+			return TipoReferencia.PASO;
 		}
 		System.out.println("No es instancia de ninguna clase");
 		
@@ -256,7 +260,7 @@ public class Referencia {
 			if (tipoSeccion == TipoSeccion.POSTPRECONDICIONES) {
 				return TipoRelacion.PASO_POSTPRECONDICIONES;
 			}
-			if (tipoSeccion == TipoSeccion.PASOS) {
+			if (tipoSeccion == TipoSeccion.EXTENSIONES) {
 				return TipoRelacion.PASO_EXTENSIONES;
 			}	
 		}

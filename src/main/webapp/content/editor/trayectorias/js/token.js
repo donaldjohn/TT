@@ -164,8 +164,8 @@ var token = function() {
 				at : token + ".",
 				data : lista,
 				displayTpl : "<li><span class=\"listaToken\">" + token
-						+ "</span>" + "."
-						+ "<span class=\"listaNombre\">${numero}:</span><span class=\"listaElementoInteres\"> ${nombre}</span></li>",
+						+ ".</span>"
+						+ "<span class=\"listaElementoInteres\">${numero}</span><span class=\"listaToken\">: </span><span class=\"listaElementoInteres\">${nombre}</span></li>",
 				limit : 200
 			}
 		} else if (tipo == "C") {
@@ -184,17 +184,17 @@ var token = function() {
 				displayTpl : "<li><span class=\"listaToken\">" + token
 						+ "</span>" + "."
 						+ "<span class=\"listaNombre\">${nombreEntidad}"
-						+ ":</span><span class=\"listaElementoInteres\"> ${nombre}</span></li>",
+						+ ":</span><span class=\"listaElementoInteres\">${nombre}</span></li>",
 				limit : 200
 			}
 		} else if (tipo == "D") {
 			var lista = $.map(listaObjetos, function(value, i) {
 				return {
 					'id' : i,
-					"nombreModulo" : value.modulo.nombre,//remplazarEspaciosGuionBlanco(value.nombre),
+					"claveModulo" : value.modulo.clave,
 					"numero" : value.numero,
-					"nombre" : value.nombre,//remplazarEspaciosGuionBlanco(value.nombre),
-					'name' : remplazarEspaciosGuion(value.modulo.nombre) 
+					"nombre" : value.nombre,
+					'name' : value.modulo.clave
 					+ "." + value.numero + ":"
 					+ remplazarEspaciosGuion(value.nombre)
 				};
@@ -204,9 +204,9 @@ var token = function() {
 				data : lista,
 				displayTpl : "<li><span class=\"listaToken\">" + token
 						+ "</span>" + "."
-						+ "<span class=\"listaNombre\">${nombreModulo}"
-						+ " ${numero}" 
-						+ ": </span><span class=\"listaElementoInteres\">${nombre}</span></li>",
+						+ "<span class=\"listaNombre\">${claveModulo}."
+						+ "<span class=\"listaElementoInteres\">${numero}</span><span class=\"listaToken\">" 
+						+ ":</span> </span><span class=\"listaElementoInteres\">${nombre}</span></li>",
 				limit : 200
 			}
 		} else if (tipo == "E") {
@@ -238,9 +238,10 @@ var token = function() {
 					"numeroCU" : value.trayectoria.casoUso.numero,
 					"claveTray": value.trayectoria.clave,
 					"numero" : value.numero,
-					'name' : remplazarEspaciosGuion(value.trayectoria.casoUso.clave) 
+					"nombre" : value.trayectoria.casoUso.nombre,
+					'name' : value.trayectoria.casoUso.clave
 					+ "." + value.trayectoria.casoUso.numero + ":"
-					+ remplazarEspaciosGuion(value.trayectoria.clave) + "."
+					+ remplazarEspaciosGuion(value.trayectoria.casoUso.nombre) + ":" + remplazarEspaciosGuion(value.trayectoria.clave) + "."
 					+ value.numero
 				};
 			});
@@ -248,9 +249,9 @@ var token = function() {
 				at : token + ".",
 				data : lista,
 				displayTpl : "<li><span class=\"listaToken\">" + token
-						+ "</span>" + "."
-						+ "<span class=\"listaNombre\">${claveCU}${numeroCU}"
-						+ ": ${claveTray}.</span><span class=\"listaElementoInteres\">${numero}</span></li>",
+				+ "</span>" + "."
+				+ "<span class=\"listaNombre\">${claveCU}.${numeroCU}"
+				+ ":${nombre}:${claveTray}.</span><span class=\"listaElementoInteres\">${numero}</span></li>",
 				limit : 200
 			}
 		} else if (tipo == "G") {

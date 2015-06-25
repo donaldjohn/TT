@@ -16,12 +16,11 @@ var token = function() {
 			at_configP = cargaLista("F", "P", listaElementos);
 		}
 		
-		/* Se configuran los tokens que estaráN disponibles en los
+		/* Se configuran los tokens que estarán disponibles en los
 		 * textAreas.
 		 */
 
-		// textArea de Reglas de negocio
-		$inputor = $('#inputor').atwho(at_configP)
+		$inputor = $('#inputor').atwho(at_configP);
 		$inputor.caret('pos', 60);
 		$inputor.focus().atwho('run');
 
@@ -29,28 +28,29 @@ var token = function() {
 
 	function cargaLista(tipo, token, listaObjetos) {
 		 if (tipo == "F") {
-			var lista = $.map(listaObjetos, function(value, i) {
-				return {
-					'id' : i,
-					"claveCU" : value.trayectoria.casoUso.clave,
-					"numeroCU" : value.trayectoria.casoUso.numero,
-					"claveTray": value.trayectoria.clave,
-					"numero" : value.numero,
-					'name' : remplazarEspaciosGuion(value.trayectoria.casoUso.clave) 
-					+ "." + value.trayectoria.casoUso.numero + ":"
-					+ remplazarEspaciosGuion(value.trayectoria.clave) + "."
-					+ value.numero
-				};
-			});
-			var at_config = {
-				at : token + ".",
-				data : lista,
-				displayTpl : "<li><span class=\"listaToken\">" + token
-						+ "</span>" + "."
-						+ "<span class=\"listaNombre\">${claveCU}${numeroCU}"
-						+ ": ${claveTray}.</span><span class=\"listaElementoInteres\">${numero}</span></li>",
-				limit : 200
-			}
+			 var lista = $.map(listaObjetos, function(value, i) {
+					return {
+						'id' : i,
+						"claveCU" : value.trayectoria.casoUso.clave,
+						"numeroCU" : value.trayectoria.casoUso.numero,
+						"claveTray": value.trayectoria.clave,
+						"numero" : value.numero,
+						"nombre" : value.trayectoria.casoUso.nombre,
+						'name' : value.trayectoria.casoUso.clave
+						+ "." + value.trayectoria.casoUso.numero + ":"
+						+ remplazarEspaciosGuion(value.trayectoria.casoUso.nombre) + ":" + remplazarEspaciosGuion(value.trayectoria.clave) + "."
+						+ value.numero
+					};
+				});
+				var at_config = {
+					at : token + ".",
+					data : lista,
+					displayTpl : "<li><span class=\"listaToken\">" + token
+					+ "</span>" + "."
+					+ "<span class=\"listaNombre\">${claveCU}.${numeroCU}"
+					+ ":${nombre}:${claveTray}.</span><span class=\"listaElementoInteres\">${numero}</span></li>",
+					limit : 200
+				}
 		
 		}
 
