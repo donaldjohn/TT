@@ -145,7 +145,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		} catch (Exception e) {
 			e.printStackTrace();
 			ErrorManager.agregaMensajeError(this, e);
-			index();
+			resultado = INDEX;
 		}
 		return resultado;
 	}
@@ -219,7 +219,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			
 			//Se agrega el mensaje a la sesión
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
-			throw new Exception();//Quitar
+			//throw new Exception();//Quitar
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			resultado = editNew();
