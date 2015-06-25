@@ -152,7 +152,12 @@ function esValidoPaso(idTabla, realiza, verbo, redaccion) {
 	if(vaciaONula(redaccion) && realiza != -1 && verbo != -1) {
 		agregarMensaje("Agregue todos los campos obligatorios.");
 		return false;
-	}
+	} 
+	console.log("longitud de redaccione " + redaccion.length);
+	if(redaccion.length > 999) {
+		agregarMensaje("Ingrese menos de 999 caracteres.");
+		return false;
+	} 
 
 	if (dataTableCDT.exist(idTabla, realiza, 2, "", "Mensaje")
 			&& dataTableCDT.exist(idTabla, verbo, 3, "", "Mensaje")

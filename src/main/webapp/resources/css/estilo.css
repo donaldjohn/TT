@@ -275,11 +275,14 @@ a.menuCUSel:hover {
 }
 
 .input-error {
-	color: #CB4721;
 	border: solid 2pt #CB4721 !important;
 	text-align: left;
 	border-radius: 2px;
 	padding: 1px 0px 1px 0px;
+}
+
+.select-error {
+	color: #CB4721;
 }
 
 .label::after {

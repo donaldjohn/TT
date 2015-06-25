@@ -2,10 +2,11 @@ package mx.prisma.editor.bs;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
+import org.hibernate.HibernateException;
+import org.hibernate.JDBCException;
 
 import mx.prisma.admin.dao.ProyectoDAO;
-import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.ElementoDAO;
@@ -16,9 +17,11 @@ import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Modulo;
-import mx.prisma.editor.model.ReglaNegocio;
+import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.Verbo;
 import mx.prisma.util.PRISMAException;
+import mx.prisma.util.PRISMAValidacionException;
+import mx.prisma.util.Validador;
 
 public class CuBs {
 	
@@ -45,7 +48,6 @@ public class CuBs {
 		idAutor = "NGHS";
 		String idAutorCU = "NGHS";
 		//PENDIENTE AGREGAR TODOS LOS CASOS EN LOS QUE ES POSIBLE EDITAR UN CU
-		System.out.println("DESDE EL BS: HOLA");
 		if(cu.getEstadoElemento().getId() == getIdEdicion() && idAutor.equals(idAutorCU)) {
 			return true;
 		}
@@ -82,13 +84,87 @@ public class CuBs {
 		return proyecto;
 	}
 
-	public static void registrarCasoUso(CasoUso cu){
+	public static void registrarCasoUso(CasoUso cu) throws Exception{
 		try {
-			new CasoUsoDAO().registrarCasoUso(cu);
+			if(esValido(cu)) {
+				new CasoUsoDAO().registrarCasoUso(cu);
+			} else {
+				throw new PRISMAValidacionException("El caso de uso no es valido.", "MSG21");
+			}
 		
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (JDBCException je) {
+			System.out.println("ERROR CODE " + je.getErrorCode());
+			je.printStackTrace();
+			throw new Exception();
+		} catch(HibernateException he) {
+			he.printStackTrace();
+			throw new Exception();
 		}
+	}
+
+	private static boolean esValido(CasoUso cu) throws PRISMAValidacionException{
+		//Se asegura la unicidad del nombre
+		for(CasoUso c : consultarCasosUsoModulo(cu.getModulo())) {
+			System.out.println("nombre del c " + c.getNombre() + " = " + cu.getNombre());
+			if(c.getNombre().equals(cu.getNombre())) {
+				throw new PRISMAValidacionException("El nombre del caso de uso ya existe.", "MSG7",
+						new String[] { "El","Caso de uso", cu.getNombre()}, "model.nombre");
+			}
+		}
+		
+		// Validaciones del nombre
+		if(Validador.esNuloOVacio(cu.getNombre())) {
+			throw new PRISMAValidacionException("El usuario no ingresó el nombre del cu.", "MSG4", null, "model.nombre");
+		}
+		if(Validador.validaLongitudMaxima(cu.getNombre(), 200)) {
+			throw new PRISMAValidacionException("El usuario ingreso un nombre muy largo.", "MSG6", new String[] { "200",
+			"caracteres"}, "model.nombre");
+		}
+		//Validaciones de la Descripción
+		if(cu.getDescripcion() != null && Validador.validaLongitudMaxima(cu.getDescripcion(), 999)) {
+			throw new PRISMAValidacionException("El usuario ingreso una descripcion muy larga.", "MSG6", new String[] { "999",
+			"caracteres"}, "model.descripcion");
+		}
+		//Validaciones de los actores
+		if(cu.getRedaccionActores() != null && Validador.validaLongitudMaxima(cu.getRedaccionActores(), 999)) {
+			throw new PRISMAValidacionException("El usuario ingreso muchos caracteres en actores.", "MSG6", new String[] { "999",
+			"caracteres"}, "model.redaccionActores");
+		}
+		//Validaciones de las entradas
+		if(cu.getRedaccionEntradas() != null && Validador.validaLongitudMaxima(cu.getRedaccionEntradas(), 999)) {
+			throw new PRISMAValidacionException("El usuario ingreso muchos caracteres en entradas.", "MSG6", new String[] { "999",
+			"caracteres"}, "model.redaccionEntradas");
+		}
+		//Validaciones de las entradas
+		if(cu.getRedaccionSalidas() != null && Validador.validaLongitudMaxima(cu.getRedaccionSalidas(), 999)) {
+			throw new PRISMAValidacionException("El usuario ingreso muchos caracteres en salidas.", "MSG6", new String[] { "999",
+			"caracteres"}, "model.redaccionSalidas");
+		}
+		//Validaciones de las reglas de negocio
+		if(cu.getRedaccionReglasNegocio() != null && Validador.validaLongitudMaxima(cu.getRedaccionReglasNegocio(), 999)) {
+			throw new PRISMAValidacionException("El usuario ingreso muchos caracteres en rn.", "MSG6", new String[] { "999",
+			"caracteres"}, "model.redaccionReglasNegocio");
+		}
+		//Validaciones de las precondiciones
+		if(cu.getPostprecondiciones() != null || cu.getPostprecondiciones().size() != 0) {
+			//Si existen pre o postoncidiones
+			for(PostPrecondicion pp : cu.getPostprecondiciones()) {
+				if(Validador.esNuloOVacio(pp.getRedaccion())) {
+					throw new PRISMAValidacionException("El usuario no ingresó la redacción de una precondicion o postcondicion.", "MSG4");
+				}
+				if(Validador.validaLongitudMaxima(pp.getRedaccion(), 999)) {
+					if(pp.isPrecondicion()) {
+						throw new PRISMAValidacionException("El usuario rebaso la longitud de alguna de las precondiciones.", "MSG17", new String[] { "las",
+								"precondiciones", "a"}, "model.pasos");
+					} else {
+						throw new PRISMAValidacionException("El usuario rebaso la longitud de alguna de las postcondiciones.", "MSG17", new String[] { "las",
+								"postcondiciones", "a"}, "model.pasos");
+					}
+				}
+			}
+		}
+		
+		return true;
 	}
 
 	public static EstadoElemento consultarEstadoElemento(int i) throws Exception{
@@ -149,12 +225,21 @@ public class CuBs {
 		return 1;
 	}
 
-	public static void modificarCasoUso(CasoUso modelAux) {
+	public static void modificarCasoUso(CasoUso modelAux) throws Exception {
 		try {
-			new CasoUsoDAO().modificarCasoUso(modelAux);
-		
-		} catch (Exception e) {
-			e.printStackTrace();
+			if(esValido(modelAux)) {
+				new CasoUsoDAO().modificarCasoUso(modelAux);
+			} else {
+				throw new PRISMAValidacionException("El caso de uso no es valido.", "MSG21");
+			}
+		} catch (JDBCException je) {
+			System.out.println("ERROR CODE " + je.getErrorCode());
+			je.printStackTrace();
+			throw new Exception();
+		} catch(HibernateException he) {
+			System.out.println("Se cacha en modificar cu en hibernateException");
+			he.printStackTrace();
+			throw new Exception();
 		}
 	}
 

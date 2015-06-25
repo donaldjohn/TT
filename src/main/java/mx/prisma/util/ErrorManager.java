@@ -2,11 +2,9 @@ package mx.prisma.util;
 
 public class ErrorManager {
 	public static void agregaMensajeError(ActionSupportPRISMA ap, Exception ex) {
-		System.out.println("Entrando a agregarMensajeError()");
 		if(ex instanceof PRISMAException) {
 		PRISMAException pe = (PRISMAException) ex;
 			if(pe instanceof PRISMAValidacionException) {
-				System.out.println("Error de validacion");
 				PRISMAValidacionException pve = (PRISMAValidacionException) pe;
 				if(pve.getCampo() != null) {
 					if(pe.getParametros() != null){

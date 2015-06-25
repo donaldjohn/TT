@@ -33,24 +33,6 @@ $(document).ready(function() {
 							dataTableCDT.addRow("tablaPostcondiciones",paso);
 						});
 	}
-	json = $("#jsonPtosExtension").val();
-	if (json !== "") {
-		var parsedJson = JSON.parse(json);
-		$
-				.each(
-						parsedJson,
-						function(i, item) {
-							var nombreCompletoCU = $("#nombreCompletoCU").val(); 
-							var paso = [
-									nombreCompletoCU,
-									item.causa,
-									item.region,
-									"<center><a onclick='dataTableCDT.deleteRow(tablaPtosExtension,this);'><img class='icon' src='"
-											+ window.contextPath
-											+ "/resources/images/icons/eliminar.png' title='Eliminar Punto de extensión'></img></a></center>" ];
-							dataTableCDT.addRow("tablaPtosExtension",paso);
-						});
-	}
 } );
 
 function registrarPrecondicion(){
@@ -102,46 +84,6 @@ function cancelarRegistrarPostcondicion() {
 	$('#postcondDialog').dialog('close');
 };
 
-function registrarPtoExtension(){
-	var varIdCUDestino = document.forms["frmPtoExtensionName"]["ptoExtension.idCu"].value;
-	var varCausa = document.forms["frmPtoExtensionName"]["ptoExtension.idCausa"].value;
-	var varRegion = document.forms["frmPtoExtensionName"]["ptosExtensionInput"].value;
-	var e = document.getElementById("ptoExtension.idCu");
-	var varNombreCUDestino = e.options[e.selectedIndex].text;
-	
-	var campoErrorRedaccion = document.getElementById("errorRedaccion");
-	 
-    if (esValidoPtoExtension("tablaPtosExtension", varIdCUDestino, varCausa, varRegion)) {
-    	var obj = new Extension(varCausa, varRegion, varIdCUDestino);
-    	/*var obj = {"causa":varCausa,
-    			"region":varRegion,
-    			"casoUsoDestino":{"id":varIdCUDestino}};*/
-    	//(casoUsoDestino, causa, region, idCUDestino)
-    	var extension = JSON.stringify(obj, " ");
-    	var row = [
-    	           	varNombreCUDestino,
-    	           	varCausa,
-					varRegion,
-					"<center><a onclick='dataTableCDT.deleteRow(tablaPtosExtension,this);'>" +
-						"<img class='icon'  id='icon' src='" +
-						window.contextPath + "/resources/images/icons/eliminar.png' title='Eliminar Puntos de extensión'></img></a></center>" ];
-    	dataTableCDT.addRow("tablaPtosExtension", row);
-    	document.getElementById("ptoExtension.idCu").value = "";
-    	document.getElementById("ptoExtension.idCausa").value = "";
-    	document.getElementById("ptosExtensionInput").value = "";
-    	$('#ptosExtensionDialog').dialog('close');
-    } else {
-    	return false;
-    }
-};
-  
-function cancelarRegistrarPtoExtension() {
-	document.getElementById("ptoExtension.idCu").value = "";
-	document.getElementById("ptoExtension.idCausa").value = "";
-	document.getElementById("ptosExtensionInput").value = "";
-	$('#ptosExtensionDialog').dialog('close');
-};
-
 /*
  * Agrega un mensaje en la pantalla
  */
@@ -181,7 +123,6 @@ function preparaEnvio() {
 	try {
 		tablaPrecondicionesToJson("tablaPrecondiciones");
 		tablaPostcondicionesToJson("tablaPostcondiciones");
-		tablaPtosExtensionToJson("tablaPtosExtension");
 		return true;
 	} catch(err) {
 		alert("Ocurrió un error.");
@@ -209,15 +150,5 @@ function tablaPostcondicionesToJson(idTable) {
 	document.getElementById("jsonPostcondiciones").value = json;
 }
 
-function tablaPtosExtensionToJson(idTable) {
-	var table = $("#" + idTable).dataTable();
-	var varIdCUDestino = document.forms["frmPtoExtensionName"]["ptoExtension.idCu"].value;
-	console.log("id del select de pto de ext " + varIdCUDestino);
-	var arreglo = [];
-	for (var i = 0; i < table.fnSettings().fnRecordsTotal(); i++) {
-		arreglo.push(new Extension(varIdCUDestino, table.fnGetData(i, 1), table.fnGetData(i, 2)));
-	}
-	var json = JSON.stringify(arreglo);
-	document.getElementById("jsonPtosExtension").value = json;
-}
+
 

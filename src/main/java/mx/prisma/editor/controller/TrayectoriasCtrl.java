@@ -183,7 +183,9 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			} else if(alternativaPrincipal.equals("Principal")) {
 				model.setAlternativa(false);
 			} else {
-				System.out.println("No se reconoce la opcion de alternativa principal");
+				//Validaciones del tipo de trayectoria
+				System.out.println("alternativaPrincipal " + alternativaPrincipal);
+				throw new PRISMAValidacionException("El usuario no seleccionó el tipo de la trayectoria.", "MSG4", null, "alternativaPrincipal");
 			}
 			
 			//Se llama al método que convierte los json a pasos de la trayectoria
@@ -206,7 +208,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			
 			//Se agrega el mensaje a la sesión
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
-			throw new Exception();//Quitar
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			resultado = editNew();

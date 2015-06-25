@@ -77,7 +77,7 @@ public class TrayectoriaDAO {
 		try {
 			this.session = HibernateUtil.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
-			session.persist(trayectoria);
+			session.save(trayectoria);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();

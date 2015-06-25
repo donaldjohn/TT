@@ -38,7 +38,7 @@
 					<td><s:property value="%{#cu.clave + ' ' + #cu.numero + ' ' +#cu.nombre}"/></td>
 					<td><s:property value="%{#cu.estadoElemento.nombre}"/></td>
 					<td align="center">				
-							<a href="${pageContext.request.contextPath}/cu/${cu.id}/edit"><img
+							<a><img
 										id="" class="button"
 										title="Editar"
 										src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></a>

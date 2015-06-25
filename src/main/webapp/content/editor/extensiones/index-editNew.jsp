@@ -35,18 +35,21 @@
 			<table class="seccion">
 				<tr>
 					<td class="label obligatorio"><s:text name="labelCasoUsoExtiende" /></td>
-					<td><s:select name="claveCasoUsoDestino" id="model.idCu" headerValue="Seleccione" headerKey="-1"
-							list="catalogoCasoUso" listKey="id"
-							listValue="%{clave + numero + ' ' +  nombre}" cssErrorClass="input-error" cssClass="inputFormulario ui-widget"></s:select></td>
+					<td><s:select name="claveCasoUsoDestino" id="model.idCu" headerValue="Seleccione" headerKey="-1" 
+							list="catalogoCasoUso" listKey="id" 
+							listValue="%{clave + numero + ' ' +  nombre}" cssErrorClass="select-error" cssClass="inputFormulario ui-widget"></s:select>
+							<s:fielderror fieldName="claveCasoUsoDestino" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelCausa" /></td>
-					<td><s:textarea name="causa" id="model.idCausa" cssErrorClass="input-error" cssClass="inputFormulario ui-widget"></s:textarea> <s:fielderror
+					<td><s:textarea name="causa" id="model.idCausa" cssErrorClass="input-error" maxlength="999" 
+					cssClass="inputFormulario ui-widget"></s:textarea> <s:fielderror
 							fieldName="causa" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelRegion" /></td>
-					<td><s:textarea name="region" id="inputor" cssErrorClass="input-error" cssClass="inputFormulario ui-widget"></s:textarea> <s:fielderror
+					<td><s:textarea name="region" id="inputor" cssErrorClass="input-error" maxlength="500" 
+					cssClass="inputFormulario ui-widget"></s:textarea> <s:fielderror
 							fieldName="region" cssClass="error" theme="jquery" /></td>
 				</tr>				
 			</table>

@@ -96,7 +96,7 @@ public class Elemento implements java.io.Serializable {
 	}
 
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}", shortCircuit= true)
-	@StringLengthFieldValidator(message = "%{getText('MSG6',{'45', 'caracteres'})}", trim = true, maxLength = "45", shortCircuit= true)
+	@StringLengthFieldValidator(message = "%{getText('MSG6',{'200', 'caracteres'})}", trim = true, maxLength = "200", shortCircuit= true)
 	@Column(name = "nombre", nullable = false, length = 45)
 	public String getNombre() {
 		return this.nombre;
