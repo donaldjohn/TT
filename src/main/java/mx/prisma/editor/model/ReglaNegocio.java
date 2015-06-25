@@ -37,7 +37,7 @@ public class ReglaNegocio extends Elemento implements java.io.Serializable {
 	public ReglaNegocio() {
 	}
 
-	public ReglaNegocio(String clave, int numero, String nombre,
+	public ReglaNegocio(String clave, String numero, String nombre,
 			Proyecto proyecto, String descripcion, EstadoElemento estadoElemento, String redaccion,
 			TipoReglaNegocio tipoReglaNegocio) {
 		super(clave, numero, nombre, proyecto, descripcion, estadoElemento);

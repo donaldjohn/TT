@@ -167,7 +167,7 @@ public class Test {
 				.consultarEstadoElemento(idEstadoElemento);
 		Proyecto proyecto = new ProyectoDAO().consultarProyecto(claveProyecto);
 
-		Actor actor = new Actor(clave, numero, nombre, proyecto, descripcion,
+		Actor actor = new Actor(clave, numero + "", nombre, proyecto, descripcion,
 				estadoElemento, cardinalidad);
 
 		try {
@@ -191,7 +191,7 @@ public class Test {
 				.consultarEstadoElemento(idEstadoElemento);
 		Proyecto proyecto = new ProyectoDAO().consultarProyecto(claveProyecto);
 
-		Entidad entidad = new Entidad(clave_Entidad, numero_Entidad,
+		Entidad entidad = new Entidad(clave_Entidad, numero_Entidad + "",
 				nombre_Entidad, proyecto, "Descripción de mi entidad.",
 				estadoElemento);
 
@@ -229,7 +229,7 @@ public class Test {
 		 * descripcion, EstadoElemento estadoElemento, Modulo modulo) {
 		 * super(clave, numero, nombre, proyecto, descripcion, estadoElemento
 		 */
-		CasoUso cu = new CasoUso(clave, numero, nombre, proyecto, "Este caso uso permite registrar incendios",
+		CasoUso cu = new CasoUso(clave, numero + "", nombre, proyecto, "Este caso uso permite registrar incendios",
 				estadoElemento, modulo);
 
 		try {

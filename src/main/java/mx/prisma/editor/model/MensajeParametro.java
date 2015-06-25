@@ -46,29 +46,19 @@ public class MensajeParametro implements java.io.Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
-
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "ActorElementoid", referencedColumnName ="Elementoid", nullable = false)
-	public Actor getActor() {
-		return actor;
-	}
-
-	public void setActor(Actor actor) {
-		this.actor = actor;
-	}
-
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "ActorElementoid", referencedColumnName ="Elementoid", nullable = false)
+	@JoinColumn(name = "MensajeElementoid", referencedColumnName ="Elementoid", nullable = false)
 	public Mensaje getMensaje() {
 		return mensaje;
 	}
-
+	
 	public void setMensaje(Mensaje mensaje) {
 		this.mensaje = mensaje;
 	}
-
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "Parametroid", referencedColumnName ="id", nullable = false)
 	public Parametro getParametro() {
 		return parametro;
 	}

@@ -64,7 +64,7 @@ public class ElementoDAO {
 
 	@SuppressWarnings("unchecked")
 	public Integer lastIndexOfElemento(TipoReferencia referencia, Modulo modulo) {
-		List<Integer> results = null;
+		List<String> results = null;
 		String sentencia = "";
 		switch (referencia) {
 		case CASOUSO:
@@ -92,7 +92,7 @@ public class ElementoDAO {
 		if (results.isEmpty())
 			return 0;
 		else if (results.get(0) != null)
-			return results.get(0);
+			return Integer.parseInt(results.get(0));
 		else
 			return 0;
 	}

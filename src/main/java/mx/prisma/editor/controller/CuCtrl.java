@@ -16,7 +16,6 @@ import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entidad;
-import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;

@@ -33,10 +33,12 @@
 		<mapping class="mx.prisma.editor.model.Inclusion" />
 		<mapping class="mx.prisma.editor.model.InclusionId" />
 		<mapping class="mx.prisma.editor.model.Mensaje" />
+		<mapping class="mx.prisma.editor.model.MensajeParametro" />
 		<mapping class="mx.prisma.editor.model.Modulo" />
 		<mapping class="mx.prisma.editor.model.Operador" />
 		<mapping class="mx.prisma.editor.model.Paso" />
 		<mapping class="mx.prisma.editor.model.Pantalla" />
+		<mapping class="mx.prisma.editor.model.Parametro" />
 		<mapping class="mx.prisma.editor.model.PostPrecondicion" />
 		<mapping class="mx.prisma.editor.model.ReferenciaParametro" />
 		<mapping class="mx.prisma.editor.model.ReglaNegocio" />
@@ -49,6 +51,6 @@
 		<mapping class="mx.prisma.editor.model.TipoReglaNegocio" />
 		<mapping class="mx.prisma.editor.model.Trayectoria" />
 		<mapping class="mx.prisma.editor.model.Verbo" />
-		
+
 	</session-factory>
 </hibernate-configuration>

@@ -27,7 +27,7 @@ public class Mensaje extends Elemento implements java.io.Serializable {
 	public Mensaje() {
 	}
 
-	public Mensaje(String clave, int numero, String nombre,
+	public Mensaje(String clave, String numero, String nombre,
 			Proyecto proyecto, String descripcion, EstadoElemento estadoElemento, String redaccion, boolean parametrizado) {
 		super(clave, numero, nombre, proyecto, descripcion, estadoElemento);
 		this.redaccion = redaccion;

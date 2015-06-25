@@ -44,14 +44,14 @@ INSERT INTO PRISMA.Mensaje (Elementoid, redaccion, parametrizado) VALUES ('12', 
 
 --------------------- Pantalla --------------------- 
 INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('IUSF', '1', 'Registrar predio', 'Esta pantalla permite al actor interactuar con los componentes necesarios para registrar un predio', '1', '1');
-INSERT INTO `PRISMA`.`Pantalla` (`Elementoid`, `Moduloid`) VALUES ('13', '1');
+INSERT INTO PRISMA.Pantalla (Elementoid, Moduloid) VALUES ('13', '1');
 INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('IUSF', '2', 'Gestionar incendios', 'Esta pantalla permite al actor interactuar con los componentes necesarios para gestionar incendios', '1', '1');
-INSERT INTO `PRISMA`.`Pantalla` (`Elementoid`, `Moduloid`) VALUES ('14', '1');
+INSERT INTO PRISMA.Pantalla (Elementoid, Moduloid) VALUES ('14', '1');
 
 --------------------- Acción --------------------- 
-INSERT INTO `PRISMA`.`Accion` (`PantallaElementoid`, `nombre`, `TipoAccionid`) VALUES ('13', 'Aceptar', '2');
-INSERT INTO `PRISMA`.`Accion` (`PantallaElementoid`, `nombre`, `TipoAccionid`) VALUES ('13', 'Cancelar', '2');
+INSERT INTO PRISMA.Accion (PantallaElementoid, nombre, TipoAccionid) VALUES ('13', 'Aceptar', '2');
+INSERT INTO PRISMA.Accion (PantallaElementoid, nombre, TipoAccionid) VALUES ('13', 'Cancelar', '2');
 
-INSERT INTO `PRISMA`.`Accion` (`PantallaElementoid`, `nombre`, `TipoAccionid`) VALUES ('14', 'Nuevo', '2');
-INSERT INTO `PRISMA`.`Accion` (`PantallaElementoid`, `nombre`, `TipoAccionid`) VALUES ('14', 'Ayuda', '1');
+INSERT INTO PRISMA.Accion (PantallaElementoid, nombre, TipoAccionid) VALUES ('14', 'Nuevo', '2');
+INSERT INTO PRISMA.Accion (PantallaElementoid, nombre, TipoAccionid) VALUES ('14', 'Ayuda', '1');
 

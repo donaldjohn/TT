@@ -84,8 +84,6 @@ public class Elemento implements java.io.Serializable {
 	}
 
 	@RequiredFieldValidator(type = ValidatorType.FIELD, message = "%{getText('MSG4')}", shortCircuit = true)
-	@RegexFieldValidator(type = ValidatorType.FIELD, message = "%{getText('MSG5',{'un', 'número'})}", regex = "[0-9]*")
-	@IntRangeFieldValidator(message = "%{getText('MSG14',{'El', 'número', '0', '2147483646'})}", shortCircuit = true, min = "0", max = "2147483646")//Pendiente 4294967295
 	@Column(name = "numero", nullable = false)
 	public String getNumero() {
 		return this.numero;

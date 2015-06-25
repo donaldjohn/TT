@@ -177,7 +177,7 @@ public class CasoUsoDAO extends ElementoDAO {
 
 		for (PostPrecondicion postPrecondicion : casoUso
 				.getPostprecondiciones()) {
-
+			System.out.println("postPre");
 			TokenBs.almacenarObjetosToken(
 					TokenBs.convertirToken_Objeto(
 							postPrecondicion.getRedaccion(),

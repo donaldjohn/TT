@@ -55,7 +55,7 @@ public class CuBs {
 		return false;
 	}
 
-	public static int calcularNumero(Modulo modulo) throws Exception{
+	public static String calcularNumero(Modulo modulo) throws Exception{
 		int numero = -1;
 		numero = new CasoUsoDAO().lastIndexOfCasoUso(modulo) + 1;
 		
@@ -63,7 +63,7 @@ public class CuBs {
 			throw new PRISMAException("No se puede calcular el numero de la clave", "MSG13");
 		}
 			
-		return numero;
+		return numero + "";
 	}
 
 	public static Modulo consultarModulo(String claveModulo, Proyecto proyecto) throws Exception{
@@ -106,7 +106,7 @@ public class CuBs {
 		//Se asegura la unicidad del nombre
 		for(CasoUso c : consultarCasosUsoModulo(cu.getModulo())) {
 			System.out.println("nombre del c " + c.getNombre() + " = " + cu.getNombre());
-			if(c.getNombre().equals(cu.getNombre())) {
+			if(c.getNombre().equals(cu.getNombre()) && c.getId() != cu.getId()) {
 				throw new PRISMAValidacionException("El nombre del caso de uso ya existe.", "MSG7",
 						new String[] { "El","Caso de uso", cu.getNombre()}, "model.nombre");
 			}

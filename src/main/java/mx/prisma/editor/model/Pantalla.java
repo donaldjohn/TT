@@ -36,13 +36,13 @@ public class Pantalla extends Elemento implements java.io.Serializable {
 	public Pantalla() {
 	}
 
-	public Pantalla(String clave, int numero, String nombre,
+	public Pantalla(String clave, String numero, String nombre,
 			Proyecto proyecto, String descripcion, EstadoElemento estadoElemento, Modulo modulo) {
 		super(clave, numero, nombre, proyecto, descripcion, estadoElemento);
 		this.modulo = modulo;
 	}
 
-	public Pantalla(String clave, int numero, String nombre,
+	public Pantalla(String clave, String numero, String nombre,
 			Proyecto proyecto, String descripcion, EstadoElemento estadoElemento,byte[] imagen, Modulo modulo) {
 		super(clave, numero, nombre, proyecto, descripcion, estadoElemento);
 		this.imagen = imagen;
