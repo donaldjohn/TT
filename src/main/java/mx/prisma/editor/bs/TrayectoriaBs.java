@@ -6,6 +6,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 import org.hibernate.exception.GenericJDBCException;
 
+import com.sun.media.sound.ModelOscillator;
+
 import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.TrayectoriaDAO;
 import mx.prisma.editor.dao.VerboDAO;
@@ -21,19 +23,26 @@ public class TrayectoriaBs {
 
 	public static void registrarTrayectoria(Trayectoria model) throws Exception {
 		try {
-			if(model.getClave().length() > 5) {
-				throw new PRISMAValidacionException("El usuario ingreso una clave larga.", "MSG6", new String[] { "5",
-				"caracteres"}, "model.clave");
-			}
 			if(Validador.esNuloOVacio(model.getClave())) {
 				throw new PRISMAValidacionException("El usuario no ingresó la clave de la trayectoria.", "MSG4", null, "model.clave");
+			}
+			if(Validador.validaLongitudMaxima(model.getClave(), 500)) {
+				throw new PRISMAValidacionException("El usuario ingreso una clave larga.", "MSG6", new String[] { "5",
+				"caracteres"}, "model.clave");
 			}
 			if(model.isAlternativa() && Validador.esNuloOVacio(model.getCondicion())) {
 				throw new PRISMAValidacionException("El usuario no ingresó la condición.", "MSG4", null, "model.condicion");
 			}
-			//Si hay pasos registrados, se valida cada uno de ellos
-			if(model.getPasos() != null || model.getPasos().size() != 0) {
+			
+			if(Validador.esNuloOVacio(model.getPasos())) {
+				throw new PRISMAValidacionException("El usuario no ingresó ningún paso.", "MSG18", new String[] { "un",
+				"paso"}, "model.pasos");
+			} else { 
+				//Si hay pasos registrados, se valida cada uno de ellos
 				for(Paso p : model.getPasos()) {
+					if(Validador.validaLongitudMaxima(p.getRedaccion(), 999)) {
+						throw new PRISMAValidacionException("El usuario rebaso la longitud de alguno de los pasos.", "MSG17");
+					}
 					if(Validador.esNuloOVacio(p.getRedaccion())) {
 						throw new PRISMAValidacionException("El usuario no ingresó la redacción de un paso.", "MSG4");
 					}

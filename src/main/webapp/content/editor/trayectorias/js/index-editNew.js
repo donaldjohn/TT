@@ -3,10 +3,10 @@ var contextPath = "prisma";
 $(document).ready(function() {
 	contextPath = $("#rutaContexto").val();
 	$('table.tablaGestion').DataTable();
-	prepararVistaAlternativaPrincipal();
+	verificarAlternativaPrincipal();
 	ocultarColumnas("tablaPaso");
 	token.cargarListasToken();
-	mostrarCampoCondicion(document.getElementById("model.idAlternativa"));
+	cambiarElementosAlternativaPrincipal();
 	var realiza = "Actor";
 	var json = $("#jsonPasosTabla").val();
 	
@@ -52,14 +52,25 @@ $(document).ready(function() {
 	}
 } );
 
-function mostrarCampoCondicion(checkbox) {
-	if(checkbox != null) {
-		if (checkbox.checked) {
-			document.getElementById("filaCondicion").style.display = '';
-		} else {
-		    document.getElementById("filaCondicion").style.display = 'none';
-		    document.getElementById("model.idCondicion").value = "";
-		}
+function cambiarElementosAlternativaPrincipal() {
+	var select = document.getElementById("idAlternativaPrincipal");
+	var varAlternativaPrincipal = select.options[select.selectedIndex].text;
+	
+	if(varAlternativaPrincipal == "Principal"){
+		//Si es una trayectoria principal
+		document.getElementById("filaCondicion").style.display = 'none';
+	    document.getElementById("model.idCondicion").value = "";
+	    document.getElementById("model.finCasoUso").checked = true;
+	    document.getElementById("model.finCasoUso").disabled = true;
+	} else if(varAlternativaPrincipal == "Alternativa") {
+		//Si es una trayectoria alternativa
+		document.getElementById("filaCondicion").style.display = '';
+		document.getElementById("model.finCasoUso").checked = false;
+		document.getElementById("model.finCasoUso").disabled = false;
+	} else if(varAlternativaPrincipal == "Seleccione"){
+		document.getElementById("filaCondicion").style.display = 'none';
+		document.getElementById("model.finCasoUso").checked = false;
+		document.getElementById("model.finCasoUso").disabled = false;
 	}
 }
 
@@ -184,12 +195,12 @@ function ocultarColumnas(tabla) {
 	dataTable.api().column(4).visible(false);
 }
 
-function prepararVistaAlternativaPrincipal() {
-	var existeTPrincipal = document.getElementById("existeTPrincipal");
-	alert(existeTPrincipal);
+function verificarAlternativaPrincipal() {
+	var existeTPrincipal = document.getElementById("existeTPrincipal").value;
+	var select = document.getElementById("idAlternativaPrincipal");
 	if(existeTPrincipal == "true") {
-		alert("Existe TP");
-	} else {
-		alert("no existe TP");
-	}
+		select.selectedIndex = 2;
+		select.disabled = true;
+		document.getElementById("textoAyudaPA").innerHTML = "Solamente puede registrar Trayectorias alternativas, debido a que ya existe una Trayectoria principal.";
+	} 
 }

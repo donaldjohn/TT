@@ -334,3 +334,9 @@ textfield {
 	font-style: italic;
 	font-weight: bold;
 }
+
+.textoAyuda {
+	font-size:12px;
+	font-style: italic;
+	color: #7f7f7f;
+}

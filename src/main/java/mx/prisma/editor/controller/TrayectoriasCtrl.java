@@ -93,6 +93,8 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	private String jsonAcciones;
 	
 	private boolean existeTPrincipal;
+	private List<String> listAlternativa;
+	private String alternativaPrincipal;
 
 	public HttpHeaders index() throws Exception{
 		try {
@@ -120,8 +122,9 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 
 	/**
 	 * Método para preparar la pantalla de registro de una trayectoria.
+	 * @throws Exception 
 	 * */
-	public String editNew() {
+	public String editNew() throws Exception {
 		
 		String resultado = null;
 		try {
@@ -142,7 +145,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		} catch (Exception e) {
 			e.printStackTrace();
 			ErrorManager.agregaMensajeError(this, e);
-			resultado = INDEX;
+			index();
 		}
 		return resultado;
 	}
@@ -167,6 +170,11 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		listRealiza.add("Actor");
 		listRealiza.add("Sistema");
 		
+		//Se llena la lista par indicar si es alternativa o no
+		listAlternativa = new ArrayList<String>();
+		listAlternativa.add("Principal");
+		listAlternativa.add("Alternativa");
+		
 		//Se extraen los verbos de la BD
 		listVerbos = CuBs.consultarVerbos();
 		
@@ -182,6 +190,15 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		System.out.println("ID del cu " + idCU);
 		
 		try {
+			//Se verifica si es alternativa
+			if(alternativaPrincipal == null || alternativaPrincipal.equals("Alternativa")) {
+				model.setAlternativa(true);
+			} else if(alternativaPrincipal.equals("Principal")) {
+				model.setAlternativa(false);
+			} else {
+				System.out.println("No se reconoce la opcion de alternativa principal");
+			}
+			
 			//Se llama al método que convierte los json a pasos de la trayectoria
 			agregarPasos();
 			
@@ -202,7 +219,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			
 			//Se agrega el mensaje a la sesión
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
-			
+			throw new Exception();//Quitar
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			resultado = editNew();
@@ -542,7 +559,23 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 
 	public void setExisteTPrincipal(boolean existeTPrincipal) {
 		this.existeTPrincipal = existeTPrincipal;
-	}	
+	}
+
+	public List<String> getListAlternativa() {
+		return listAlternativa;
+	}
+
+	public void setListAlternativa(List<String> listAlternativa) {
+		this.listAlternativa = listAlternativa;
+	}
+
+	public String getAlternativaPrincipal() {
+		return alternativaPrincipal;
+	}
+
+	public void setAlternativaPrincipal(String alternativaPrincipal) {
+		this.alternativaPrincipal = alternativaPrincipal;
+	}
 	
 	
 }
