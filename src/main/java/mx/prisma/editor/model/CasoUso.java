@@ -49,7 +49,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 	public CasoUso() {
 	}
 
-	public CasoUso(String clave, int numero, String nombre,
+	public CasoUso(String clave, String numero, String nombre,
 			Proyecto proyecto, String descripcion, EstadoElemento estadoElemento, Modulo modulo) {
 		super(clave, numero, nombre, proyecto, descripcion, estadoElemento);
 		this.modulo = modulo;

@@ -39,7 +39,7 @@ public class Elemento implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private String clave;
-	private int numero;
+	private String numero;
 	private String nombre;
 	private Proyecto proyecto;
 	private String descripcion;
@@ -48,7 +48,7 @@ public class Elemento implements java.io.Serializable {
 	public Elemento() {
 	}
 
-	public Elemento(String clave, int numero, String nombre,
+	public Elemento(String clave, String numero, String nombre,
 			Proyecto proyecto, String descripcion, EstadoElemento estadoElemento) {
 		this.clave = clave;
 		this.numero = numero;
@@ -87,11 +87,11 @@ public class Elemento implements java.io.Serializable {
 	@RegexFieldValidator(type = ValidatorType.FIELD, message = "%{getText('MSG5',{'un', 'número'})}", regex = "[0-9]*")
 	@IntRangeFieldValidator(message = "%{getText('MSG14',{'El', 'número', '0', '2147483646'})}", shortCircuit = true, min = "0", max = "2147483646")//Pendiente 4294967295
 	@Column(name = "numero", nullable = false)
-	public int getNumero() {
+	public String getNumero() {
 		return this.numero;
 	}
 
-	public void setNumero(int numero) {
+	public void setNumero(String numero) {
 		this.numero = numero;
 	}
 

@@ -288,7 +288,8 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 						auxTrayectoria.setCasoUso(auxCasoUso);
 						listTrayectorias.add(auxTrayectoria);
 						// Se obtienen los Pasos
-						for (Paso paso : tray.getPasos()) {
+						Set<Paso> pasos = tray.getPasos();
+						for (Paso paso : pasos) {
 							Paso auxPaso = new Paso();
 							auxPaso.setTrayectoria(auxTrayectoria);
 							auxPaso.setNumero(paso.getNumero());

@@ -1,13 +1,25 @@
 var token = function() {
 
-	/*
-	 * Tipos de lista Tipo A: TK.nombre Actores Entidades Términos del glosario
-	 * Tipo B: TK.num:nombre Reglas de negocio Mensajes Tipo C:
-	 * TK.entidad:nombre Atributo Tipo D: TK.modulo.numero:nombre Casos de uso
-	 * Pantallas Tipo E: TK.CUMODULO.numero:clave Trayectorias Tipo F:
-	 * TK.CUMODULO:claveTrayectoria.numero Pasos Tipo G:
-	 * TK.IUM.numero:nombrePantalla:nombreAccion Ejemplo:
-	 * ACC.IUSF.7:Registrar_incendio:Aceptar Acciones
+	/* Tipos de lista
+	 * 		Tipo A: TK.nombre
+	 * 				Actores
+	 * 				Entidades
+	 * 				Términos del glosario
+	 * 		Tipo B: TK.num:nombre
+	 * 				Reglas de negocio
+	 * 				Mensajes
+	 * 		Tipo C: TK.entidad:nombre
+	 * 				Atributo
+	 * 		Tipo D: TK.modulo.numero:nombre
+	 * 				Casos de uso
+	 * 				Pantallas
+	 * 		Tipo E: TK.CUMODULO.numero:clave
+	 * 				Trayectorias
+	 * 		Tipo F: TK.CUMODULO:claveTrayectoria.numero
+	 * 				Pasos
+	 * 		Tipo G: TK.IUM.numero:nombrePantalla:nombreAccion
+	 * 				Ejemplo: ACC.IUSF.7:Registrar_incendio:Aceptar
+	 * 				Acciones
 	 */
 	var at_configRN;
 	var at_configENT;

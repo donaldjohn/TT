@@ -34,6 +34,7 @@
 		<mapping class="mx.prisma.editor.model.InclusionId" />
 		<mapping class="mx.prisma.editor.model.Mensaje" />
 		<mapping class="mx.prisma.editor.model.Modulo" />
+		<mapping class="mx.prisma.editor.model.Operador" />
 		<mapping class="mx.prisma.editor.model.Paso" />
 		<mapping class="mx.prisma.editor.model.Pantalla" />
 		<mapping class="mx.prisma.editor.model.PostPrecondicion" />
@@ -42,6 +43,7 @@
 		<mapping class="mx.prisma.editor.model.Salida" />
 		<mapping class="mx.prisma.editor.model.TerminoGlosario" />
 		<mapping class="mx.prisma.editor.model.TipoAccion" />
+		<mapping class="mx.prisma.editor.model.TipoComparacion" />
 		<mapping class="mx.prisma.editor.model.TipoDato" />
 		<mapping class="mx.prisma.editor.model.TipoParametro" />
 		<mapping class="mx.prisma.editor.model.TipoReglaNegocio" />

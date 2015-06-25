@@ -28,13 +28,13 @@ public class Actor extends Elemento implements java.io.Serializable {
 	public Actor() {
 	}
 
-	public Actor(String clave, int numero, String nombre,
+	public Actor(String clave, String numero, String nombre,
 			Proyecto proyecto, String descripcion, EstadoElemento estadoElemento, Cardinalidad cardinalidad) {
 		super(clave, numero, nombre, proyecto, descripcion, estadoElemento);
 		this.cardinalidad = cardinalidad;
 	}
 
-	public Actor(String clave, int numero, String nombre,
+	public Actor(String clave, String numero, String nombre,
 			Proyecto proyecto, String descripcion, EstadoElemento estadoElemento, String otraCardinalidad, Cardinalidad cardinalidad) {
 		super(clave, numero, nombre, proyecto, descripcion, estadoElemento);
 		this.otraCardinalidad = otraCardinalidad;

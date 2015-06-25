@@ -215,11 +215,13 @@ var token = function() {
 					'id' : i,
 					"claveCU" : value.casoUso.clave,
 					"numeroCU" : value.casoUso.numero,
+					"nombreCU" : value.casoUso.nombre,
 					"clave" : value.clave,
 					'name' : remplazarEspaciosGuion(value.casoUso.clave) 
 					+ "." + value.casoUso.numero + ":"
 					+ remplazarEspaciosGuion(value.clave)
 				};
+				 // TRAY.CUMODULO.NUM:NOMBRECU:CLAVETRAY
 			});
 			var at_config = {
 				at : token + ".",
@@ -227,7 +229,7 @@ var token = function() {
 				displayTpl : "<li><span class=\"listaToken\">" + token
 						+ "</span>" + "."
 						+ "<span class=\"listaNombre\">${claveCU}${numeroCU}"
-						+ ": </span><span class=\"listaElementoInteres\">${clave}</span></li>",
+						+ ": ${nombreCU}: </span><span class=\"listaElementoInteres\">${clave}</span></li>",
 				limit : 200
 			}
 		} else if (tipo == "F") {

@@ -32,7 +32,7 @@ public class Entidad extends Elemento implements java.io.Serializable {
 		
 	}
 
-	public Entidad(String clave, int numero, String nombre,
+	public Entidad(String clave, String numero, String nombre,
 			Proyecto proyecto, String descripcion, EstadoElemento estadoElemento) {
 		super(clave, numero, nombre, proyecto, descripcion, estadoElemento);
 
