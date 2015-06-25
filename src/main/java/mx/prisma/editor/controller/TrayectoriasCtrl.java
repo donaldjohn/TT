@@ -84,7 +84,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	private List<String> listAlternativa;
 	private String alternativaPrincipal;
 
-	public DefaultHttpHeaders index() throws Exception{
+	public String index() throws Exception{
 		try {
 			if(idCU == 0) {
 				idCU = (Integer)SessionManager.get("idCU");
@@ -105,7 +105,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new DefaultHttpHeaders(INDEX);
+		return INDEX;
 	}
 
 	/**
@@ -129,11 +129,11 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
 			ErrorManager.agregaMensajeError(this, pe);
-			resultado = INDEX;
+			resultado = index();
 		} catch (Exception e) {
 			e.printStackTrace();
 			ErrorManager.agregaMensajeError(this, e);
-			resultado = INDEX;
+			resultado = index();
 		}
 		return resultado;
 	}
@@ -206,17 +206,17 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			
 			//Se agrega el mensaje a la sesión
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
-			//throw new Exception();//Quitar
+			throw new Exception();//Quitar
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			resultado = editNew();
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
-			resultado = INDEX;
+			resultado = index();
 		} catch (Exception e) {
 			e.printStackTrace();
 			ErrorManager.agregaMensajeError(this, e);
-			resultado = INDEX;
+			resultado = index();
 		}
 		return resultado;
 	}

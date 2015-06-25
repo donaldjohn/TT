@@ -127,16 +127,16 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 			
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
-			resultado = INDEX;
+			resultado = index();
 		} catch (Exception e) {
 			e.printStackTrace();
 			ErrorManager.agregaMensajeError(this, e);
-			resultado = INDEX;
+			resultado = index();
 		}
 		return resultado;
 	}
 
-	public String editNew() {
+	public String editNew() throws Exception {
 		String resultado = null;
 		try {
 			
@@ -148,11 +148,11 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
 			ErrorManager.agregaMensajeError(this, pe);
-			resultado = INDEX;
+			return index();
 		} catch (Exception e) {
 			e.printStackTrace();
 			ErrorManager.agregaMensajeError(this, e);
-			resultado = INDEX;
+			return index();
 		}
 		return resultado;
 	}
@@ -181,7 +181,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 		return (this.model == null) ? model = new Extension() : this.model;
 	}
 
-	public HttpHeaders index() throws Exception{
+	public String index() throws Exception{
 		try {
 			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
 			model.setCasoUsoOrigen(casoUso);
@@ -204,7 +204,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new DefaultHttpHeaders(INDEX);
+		return INDEX;
 	}
 
 	public void setCatalogoCasoUso(List<CasoUso> catalogoCasoUso) {
