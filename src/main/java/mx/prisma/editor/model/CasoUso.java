@@ -116,7 +116,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 	}
 	
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casouso", cascade = CascadeType.PERSIST)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casouso")
 	public Set<CasoUsoActor> getActores() {
 		return actores;
 	}
