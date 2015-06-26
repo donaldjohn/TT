@@ -148,7 +148,7 @@ public class CasoUsoDAO extends ElementoDAO {
 	}
 
 	public void preAlmacenarObjetosToken(CasoUso casoUso) {
-
+		System.out.println("--");
 		TokenBs.almacenarObjetosToken(TokenBs.convertirToken_Objeto(
 				casoUso.getRedaccionActores(), casoUso.getProyecto()), casoUso,
 				TipoSeccion.ACTORES);
@@ -190,7 +190,41 @@ public class CasoUsoDAO extends ElementoDAO {
 	}
 
 	public void registrarCasoUso(CasoUso casodeuso) {
-		super.registrarElemento(casodeuso);
+
+		//cleanRelaciones(casodeuso);
+		preAlmacenarObjetosToken(casodeuso);
+		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+
+		try {
+
+			session.beginTransaction();
+			session.save(casodeuso);
+
+			for (CasoUsoActor cua : casodeuso.getActores()) {
+				session.save(cua);
+			}
+
+			for (Entrada entrada : casodeuso.getEntradas()) {
+				session.save(entrada);
+			}
+			for (Salida salida : casodeuso.getSalidas()) {
+				session.save(salida);
+			}
+			for (CasoUsoReglaNegocio reglas : casodeuso.getReglas()) {
+				session.save(reglas);
+			}
+
+			for (PostPrecondicion postPrecondicion : casodeuso
+					.getPostprecondiciones()) {
+				session.save(postPrecondicion);
+			}
+			
+			
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
 	}
 
 	@SuppressWarnings("unchecked")

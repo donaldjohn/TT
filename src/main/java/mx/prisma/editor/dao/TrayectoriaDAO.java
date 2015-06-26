@@ -78,6 +78,9 @@ public class TrayectoriaDAO {
 			this.session = HibernateUtil.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
 			session.save(trayectoria);
+			for (Paso paso : pasos){
+				session.save(paso);
+			}
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();

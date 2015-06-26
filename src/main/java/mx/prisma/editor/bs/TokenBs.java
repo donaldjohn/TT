@@ -90,20 +90,20 @@ public class TokenBs {
 							parametros);
 				}
 
-				accion = new AccionDAO().consultarAccion(segmentos.get(2)
+				accion = new AccionDAO().consultarAccion(segmentos.get(4)
 						.replaceAll("_", " "), pantalla);
 				if (accion == null) {
 					String[] parametros = {
 							"la",
 							"accion",
 							segmentos.get(4).replaceAll("_", " ")
-									+ "de la pantalla" + segmentos.get(1)
+									+ " de la pantalla " + segmentos.get(1)
 									+ segmentos.get(2), "registrada" };
 					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: La acción"
 									+ segmentos.get(4).replaceAll("_", " ")
 									+ "de la pantalla" + segmentos.get(1)
-									+ segmentos.get(2) + " no está registrada",
+									+ segmentos.get(2) + "no está registrada",
 							"MSG15", parametros);
 				}
 				redaccion = redaccion.replace(token, tokenACC + accion.getId());
@@ -130,7 +130,7 @@ public class TokenBs {
 							"el",
 							"atributo",
 							segmentos.get(2).replaceAll("_", " ")
-									+ "de la entidad " + segmentos.get(1),
+									+ " de la entidad " + segmentos.get(1),
 							"registrado" };
 					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El atributo"
@@ -174,7 +174,7 @@ public class TokenBs {
 						Integer.parseInt(segmentos.get(2)));
 				if (casoUso == null) {
 					// Construcción del mensaje de error;
-					String[] parametros = { "el", "caso de uso", token,
+					String[] parametros = { "el", "caso de uso", segmentos.get(1) + segmentos.get(2),
 							"registrado" };
 
 					throw new PRISMAValidacionException(
@@ -360,14 +360,14 @@ public class TokenBs {
 							"el",
 							"paso",
 							segmentos.get(5) + " de la trayectoria "
-									+ segmentos.get(4) + "del caso de uso "
+									+ segmentos.get(4) + " del caso de uso "
 									+ segmentos.get(1) + segmentos.get(2),
 							"registrado" };
 
 					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El paso "
-									+ segmentos.get(5) + "de la trayectoria"
-									+ segmentos.get(4) + "del caso de uso "
+									+ segmentos.get(5) + " de la trayectoria "
+									+ segmentos.get(4) + " del caso de uso "
 									+ segmentos.get(1) + segmentos.get(2)
 									+ " no está registrado", "MSG15",
 							parametros);
@@ -391,9 +391,7 @@ public class TokenBs {
 			if (cadena.length() - 1 > i) {
 				return true;
 			}
-
 		}
-
 		return false;
 	}
 
@@ -415,6 +413,7 @@ public class TokenBs {
 
 		for (String token : tokens) {
 			segmentos = segmentarToken(token);
+			
 			switch (Referencia.getTipoReferencia(segmentos.get(0))) {
 			case ACCION: // ACC.IUM.NUM:PANTALLA:NOMBRE_ACC =
 							// ACC.IUSF.7:Registrar_incendio:Aceptar
@@ -433,19 +432,19 @@ public class TokenBs {
 							parametros);
 				}
 
-				accion = new AccionDAO().consultarAccion(segmentos.get(2)
+				accion = new AccionDAO().consultarAccion(segmentos.get(4)
 						.replaceAll("_", " "), pantalla);
 				if (accion == null) {
 					String[] parametros = {
 							"la",
 							"accion",
 							segmentos.get(4).replaceAll("_", " ")
-									+ "de la pantalla" + segmentos.get(1)
+									+ " de la pantalla " + segmentos.get(1)
 									+ segmentos.get(2), "registrada" };
 					throw new PRISMAValidacionException(
-							"TokenBs.convertirToken_Objeto: La acción"
+							"TokenBs.convertirToken_Objeto: La acción "
 									+ segmentos.get(4).replaceAll("_", " ")
-									+ "de la pantalla" + segmentos.get(1)
+									+ " de la pantalla " + segmentos.get(1)
 									+ segmentos.get(2) + " no está registrada",
 							"MSG15", parametros);
 				}
@@ -474,11 +473,11 @@ public class TokenBs {
 							"el",
 							"atributo",
 							segmentos.get(2).replaceAll("_", " ")
-									+ "de la entidad " + segmentos.get(1),
+									+ " de la entidad " + segmentos.get(1),
 							"registrado" };
 					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: El atributo "
-									+ segmentos.get(2) + "de la entidad "
+									+ segmentos.get(2) + " de la entidad "
 									+ segmentos.get(1) + " no está registrado",
 							"MSG15", parametros);
 				}
@@ -519,7 +518,7 @@ public class TokenBs {
 						Integer.parseInt(segmentos.get(2)));
 				if (casodeuso == null) {
 					// Construcción del mensaje de error;
-					String[] parametros = { "el", "caso de uso", token,
+					String[] parametros = { "el", "caso de uso", tokenCU + segmentos.get(1) + segmentos.get(2),
 							"registrado" };
 
 					throw new PRISMAValidacionException(
@@ -577,7 +576,7 @@ public class TokenBs {
 						Integer.parseInt(segmentos.get(2)));
 				if (pantalla == null) {
 					// Construcción del mensaje de error;
-					String[] parametros = { "la", "pantalla", token,
+					String[] parametros = { "la", "pantalla", tokenIU + segmentos.get(1) + segmentos.get(2),
 							"registrada" };
 
 					throw new PRISMAValidacionException(
@@ -704,7 +703,7 @@ public class TokenBs {
 							"el",
 							"paso",
 							segmentos.get(5) + " de la trayectoria "
-									+ segmentos.get(4) + "del caso de uso "
+									+ segmentos.get(4) + " del caso de uso "
 									+ segmentos.get(1) + segmentos.get(2),
 							"registrado" };
 
@@ -927,7 +926,7 @@ public class TokenBs {
 	public static boolean ignorarSignos(String cadena, int i, char caracter) {
 		if (puntoSeguido(cadena, i, caracter) || espacio(cadena, i, caracter)
 				|| coma(cadena, i, caracter)
-				|| puntoComa(cadena, i, caracter)) {
+				|| puntoComa(cadena, i, caracter) || caracter == '\n' || caracter == '\t') {
 			return true;
 		}
 
@@ -1366,10 +1365,11 @@ public class TokenBs {
 				break;
 
 			}
-		}
-		if (referenciaParametro != null){
-			postPrecondicion.getReferencias().add(referenciaParametro);
-			referenciaParametro.setPostPrecondicion(postPrecondicion);
+			if (referenciaParametro != null){
+				postPrecondicion.getReferencias().add(referenciaParametro);
+				referenciaParametro.setPostPrecondicion(postPrecondicion);
+			}
+
 		}
 
 	}
@@ -1400,13 +1400,11 @@ public class TokenBs {
 			default:
 				break;
 			}
+			if (referenciaParametro != null) {
+				extension.getReferencias().add(referenciaParametro);
+				referenciaParametro.setExtension(extension);
+			}
 		}
-		
-		if (referenciaParametro != null) {
-			extension.getReferencias().add(referenciaParametro);
-			referenciaParametro.setExtension(extension);
-		}
-
 	}
 
 	public static void almacenarObjetosToken(ArrayList<Object> objetos,
@@ -1537,11 +1535,12 @@ public class TokenBs {
 				break;
 
 			}
+			if (referenciaParametro != null) {
+				paso.getReferencias().add(referenciaParametro);
+				referenciaParametro.setPaso(paso);
+			}
 		}
-		if (referenciaParametro != null) {
-			paso.getReferencias().add(referenciaParametro);
-			referenciaParametro.setPaso(paso);
-		}
+
 
 	}
 
