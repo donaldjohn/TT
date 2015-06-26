@@ -1,7 +1,6 @@
 $(document).ready(function() {
 	$('#gestion').DataTable();
 	ocultarColumnas("gestion");
-	
 } );
 
 function ocultarColumnas(tabla) {
