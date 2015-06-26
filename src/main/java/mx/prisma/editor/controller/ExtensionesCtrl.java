@@ -70,7 +70,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 		}
 		
 		if (catalogoCasoUso.isEmpty()){
-			throw new Exception();
+			throw new PRISMAException("No hay casos de uso para seleccionar como punto de extensión.", "MSG22");
 		}
 	}
 	

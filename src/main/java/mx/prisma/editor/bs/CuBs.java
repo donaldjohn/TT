@@ -24,8 +24,6 @@ import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
 
 public class CuBs {
-	
-	
 	public static List<CasoUso> consultarCasosUsoModulo(Modulo modulo){
 		List<CasoUso> cus = new CasoUsoDAO().consultarCasosUso(modulo);
 		if(cus == null) {
@@ -51,7 +49,6 @@ public class CuBs {
 		if(cu.getEstadoElemento().getId() == getIdEdicion() && idAutor.equals(idAutorCU)) {
 			return true;
 		}
-		
 		return false;
 	}
 
@@ -85,6 +82,7 @@ public class CuBs {
 	}
 
 	public static void registrarCasoUso(CasoUso cu) throws Exception{
+		System.out.println("Postprecondicion " + cu.getPostprecondiciones());
 		try {
 				validar(cu);
 				new CasoUsoDAO().registrarCasoUso(cu);
@@ -100,7 +98,6 @@ public class CuBs {
 	}
 
 	private static void validar(CasoUso cu) throws PRISMAValidacionException{
-		System.out.println("numero de cu " + cu.getNumero());
 		//Validaciones del número
 		if(Validador.esNuloOVacio(cu.getNumero())) {
 			throw new PRISMAValidacionException("El usuario no ingresó el número del cu.", "MSG4", null, "model.numero");
@@ -109,12 +106,12 @@ public class CuBs {
 			System.out.println("El numero del cu es " + cu.getNumero());
 			Double.parseDouble(cu.getNumero());
 		} catch (NumberFormatException nfe) {
-			nfe.printStackTrace();
 			throw new PRISMAValidacionException("El número no puede ser convertido.", "MSG5",
 					new String[] { "un","número"}, "model.numero");
 		}
 		//Se asegura la unicidad del nombre y del numero
-		for(CasoUso c : consultarCasosUsoModulo(cu.getModulo())) {
+		List<CasoUso> casosUso = consultarCasosUsoModulo(cu.getModulo());
+		for(CasoUso c : casosUso) {
 			if(c.getId() != cu.getId()) {
 				if(c.getNombre().equals(cu.getNombre())) {
 					throw new PRISMAValidacionException("El nombre del caso de uso ya existe.", "MSG7",

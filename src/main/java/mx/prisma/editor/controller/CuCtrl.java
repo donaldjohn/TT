@@ -81,7 +81,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	 * Agrega las postcondiciones y las precondiciones
 	 */
 	private void agregarPostPrecondiciones(CasoUso casoUso) {
-
 		// Se agregan precondiciones al caso de uso
 		if (jsonPrecondiciones != null && !jsonPrecondiciones.equals("")) {
 			casoUso.setPostprecondiciones(JsonUtil.mapJSONToSet(
@@ -97,6 +96,9 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		for (PostPrecondicion pp : casoUso.getPostprecondiciones()) {
 			pp.setCasoUso(casoUso);
 		}
+		System.out.println("jsonPrecondiciones " + jsonPrecondiciones);
+		System.out.println("jsonPostcondiciones " + jsonPostcondiciones);
+		System.out.println("desde ctrl postprecondiciones " + casoUso.getPostprecondiciones());
 	}
 
 	private void buscaElementos() {
@@ -270,11 +272,13 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			modulo = new ModuloDAO().consultarModulo(this.claveModulo,
 					proyecto);
 						
-			System.out.println("Numero del cu " + model.getNumero());
 			model.setProyecto(proyecto);
 			model.setModulo(modulo);
 			model.setEstadoElemento(CuBs.consultarEstadoElemento(CuBs
 					.getIdEdicion()));
+			
+			//Se agregan las postcondiciones y precondiciones
+			agregarPostPrecondiciones(model);
 
 			CuBs.registrarCasoUso(model);
 			resultado = SUCCESS;
@@ -543,7 +547,9 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			modelAux.setRedaccionSalidas(model.getRedaccionSalidas());
 			modelAux.setRedaccionReglasNegocio(model.getRedaccionReglasNegocio());
 
+			//Se agregan las postcondiciones y precondiciones
 			agregarPostPrecondiciones(modelAux);
+			
 
 			// Solamente se actualiza el modelo debido a que ya se registró
 			CuBs.modificarCasoUso(modelAux);
