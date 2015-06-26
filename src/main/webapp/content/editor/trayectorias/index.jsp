@@ -32,7 +32,7 @@
 					<td><s:property value="%{#tray.clave}"/></td>
 					<td>
 						<s:if test="%{#tray.alternativa}"><s:property value="%{#tray.condicion}"/></s:if>
-						<s:else>Sin condición</s:else>
+						<s:else><center>Trayectoria principal</center></s:else>
 					</td>
 					<td align="center">
 						<s:url var="urlGestionarTrayectorias" value="%{#pageContext.request.contextPath}/pasos">

@@ -16,11 +16,9 @@ public class TrayectoriaBs {
 
 	public static void registrarTrayectoria(Trayectoria model) throws Exception {
 		try {
-			if(esValida(model)) {
+				System.out.println("pasos en registrar trayectoria" + model.getPasos());
+				validar(model);
 				new TrayectoriaDAO().registrarTrayectoria(model);
-			} else {
-				throw new PRISMAValidacionException("El caso de uso no es valido.", "MSG21");
-			}
 		} catch (JDBCException je) {
 				if(je.getErrorCode() == 1062)
 				{
@@ -35,7 +33,7 @@ public class TrayectoriaBs {
 		}
 	}
 
-	private static boolean esValida(Trayectoria model) {
+	private static void validar(Trayectoria model) {
 		//Validaciones de la clave
 		if(Validador.esNuloOVacio(model.getClave())) {
 			throw new PRISMAValidacionException("El usuario no ingresó la clave de la trayectoria.", "MSG4", null, "model.clave");
@@ -82,7 +80,6 @@ public class TrayectoriaBs {
 				}
 			}
 		}
-		return true;
 	}
 
 	public static Verbo consultaVerbo(String nombre) {

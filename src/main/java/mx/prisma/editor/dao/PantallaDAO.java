@@ -28,7 +28,7 @@ public class PantallaDAO extends ElementoDAO {
 		try {
 			session.beginTransaction();
 			SQLQuery query = session
-					.createSQLQuery("SELECT * FROM Elemento INNER JOIN Pantalla ON Elemento.id = Pantalla.Elementoid WHERE Elemento.Proyectoid = :proyecto AND Elemento.clave = :clave AND numero = :numero");
+					.createSQLQuery("SELECT * FROM Elemento INNER JOIN Pantalla ON Elemento.id = Pantalla.Elementoid WHERE Elemento.Proyectoid = :proyecto AND Elemento.clave = :clave AND numero = :numero").addEntity(Pantalla.class);
 			query.setParameter("proyecto", proyecto.getId());
 			query.setParameter("clave", clave);
 			query.setParameter("numero", numero);

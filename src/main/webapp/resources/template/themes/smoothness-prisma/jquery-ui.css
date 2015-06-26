@@ -834,7 +834,7 @@ body .ui-tooltip {
 	font-size: 14px;
 }
 .ui-widget .ui-widget {
-	font-size: 1em;
+	font-size: 1em !important;
 }
 .ui-widget input,
 .ui-widget select,

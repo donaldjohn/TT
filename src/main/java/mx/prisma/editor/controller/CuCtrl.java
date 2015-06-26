@@ -84,17 +84,17 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 		// Se agregan precondiciones al caso de uso
 		if (jsonPrecondiciones != null && !jsonPrecondiciones.equals("")) {
-			model.setPostprecondiciones(JsonUtil.mapJSONToSet(
+			casoUso.setPostprecondiciones(JsonUtil.mapJSONToSet(
 					jsonPrecondiciones, PostPrecondicion.class));
 		}
 		// Se agregan postcondiciones al caso de uso
 		if (jsonPostcondiciones != null && !jsonPostcondiciones.equals("")) {
-			model.getPostprecondiciones().addAll(
+			casoUso.getPostprecondiciones().addAll(
 					JsonUtil.mapJSONToSet(jsonPostcondiciones,
 							PostPrecondicion.class));
 		}
 		// Se agrega a cada elemento el caso de uso
-		for (PostPrecondicion pp : model.getPostprecondiciones()) {
+		for (PostPrecondicion pp : casoUso.getPostprecondiciones()) {
 			pp.setCasoUso(casoUso);
 		}
 	}
@@ -262,7 +262,36 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 
 	public String create() throws PRISMAException, Exception {
-		return update();
+		String resultado = null;
+		System.out.println("Numero del cu " + model.getNumero());
+		try {
+			// Creación del modelo
+			proyecto = new ProyectoDAO().consultarProyecto(claveProy);
+			modulo = new ModuloDAO().consultarModulo(this.claveModulo,
+					proyecto);
+						
+			System.out.println("Numero del cu " + model.getNumero());
+			model.setProyecto(proyecto);
+			model.setModulo(modulo);
+			model.setEstadoElemento(CuBs.consultarEstadoElemento(CuBs
+					.getIdEdicion()));
+
+			CuBs.registrarCasoUso(model);
+			resultado = SUCCESS;
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"caso de uso", "registrado" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = editNew();
+		}catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
 	}
 
 	public String edit() {
@@ -298,19 +327,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			buscaElementos();
 			
 			listCUProyecto = CuBs.consultarCasosUsoModulo(modulo);
-
-			model.setProyecto(proyecto);
-			model.setModulo(modulo);
-			model.setEstadoElemento(CuBs.consultarEstadoElemento(CuBs
-					.getIdEdicion()));
-
-			model.setNumero(CuBs.calcularNumero(modulo));
 			model.setClave(CuBs.calcularClave(modulo.getClave()));
-			model.setNombre(CuBs.calcularNombre(modulo.getId()));
-			CuBs.registrarCasoUso(model);
 			resultado = EDITNEW;
-			addActionMessage(getText("MSG1", new String[] { "El",
-					"caso de uso", "registrado" }));
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			resultado = editNew();
@@ -535,12 +553,15 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 
 		} catch (PRISMAValidacionException pve) {
+			System.out.println("1");
 			ErrorManager.agregaMensajeError(this, pve);
 			resultado = editNew();
 		}catch (PRISMAException pe) {
+			System.out.println("2");
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
 		} catch (Exception e) {
+			System.out.println("3");
 			ErrorManager.agregaMensajeError(this, e);
 			resultado = index();
 		}

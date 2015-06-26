@@ -174,7 +174,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	public String create() throws Exception {
 		String resultado = null;
 		idCU = (Integer)SessionManager.get("idCU");
-		System.out.println("ID del cu " + idCU);
 		
 		try {
 			//Se verifica si es alternativa
@@ -198,6 +197,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			model.setCasoUso(casoUso);
 									
 			//Se registra la trayectoria
+			System.out.println("pasos antes de llamar registro " + model.getPasos());
 			TrayectoriaBs.registrarTrayectoria(model);
 			
 			resultado = SUCCESS;
@@ -223,6 +223,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	}
 
 	private void agregarPasos() {
+		System.out.println("jsonPasosTabla " + jsonPasosTabla);
 		if(jsonPasosTabla != null && !jsonPasosTabla.equals("")) {
 			model.setPasos(JsonUtil.mapJSONToSet(jsonPasosTabla, Paso.class));
 			for(Paso p: model.getPasos()) {

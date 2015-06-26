@@ -86,11 +86,8 @@ public class CuBs {
 
 	public static void registrarCasoUso(CasoUso cu) throws Exception{
 		try {
-			if(esValido(cu)) {
+				validar(cu);
 				new CasoUsoDAO().registrarCasoUso(cu);
-			} else {
-				throw new PRISMAValidacionException("El caso de uso no es valido.", "MSG21");
-			}
 		
 		} catch (JDBCException je) {
 			System.out.println("ERROR CODE " + je.getErrorCode());
@@ -102,13 +99,31 @@ public class CuBs {
 		}
 	}
 
-	private static boolean esValido(CasoUso cu) throws PRISMAValidacionException{
-		//Se asegura la unicidad del nombre
+	private static void validar(CasoUso cu) throws PRISMAValidacionException{
+		System.out.println("numero de cu " + cu.getNumero());
+		//Validaciones del número
+		if(Validador.esNuloOVacio(cu.getNumero())) {
+			throw new PRISMAValidacionException("El usuario no ingresó el número del cu.", "MSG4", null, "model.numero");
+		}
+		try {
+			System.out.println("El numero del cu es " + cu.getNumero());
+			Double.parseDouble(cu.getNumero());
+		} catch (NumberFormatException nfe) {
+			nfe.printStackTrace();
+			throw new PRISMAValidacionException("El número no puede ser convertido.", "MSG5",
+					new String[] { "un","número"}, "model.numero");
+		}
+		//Se asegura la unicidad del nombre y del numero
 		for(CasoUso c : consultarCasosUsoModulo(cu.getModulo())) {
-			System.out.println("nombre del c " + c.getNombre() + " = " + cu.getNombre());
-			if(c.getNombre().equals(cu.getNombre()) && c.getId() != cu.getId()) {
-				throw new PRISMAValidacionException("El nombre del caso de uso ya existe.", "MSG7",
-						new String[] { "El","Caso de uso", cu.getNombre()}, "model.nombre");
+			if(c.getId() != cu.getId()) {
+				if(c.getNombre().equals(cu.getNombre())) {
+					throw new PRISMAValidacionException("El nombre del caso de uso ya existe.", "MSG7",
+							new String[] { "El","Caso de uso", cu.getNombre()}, "model.nombre");
+				}
+				if(c.getNumero().equals(cu.getNumero())) {
+					throw new PRISMAValidacionException("El numero del caso de uso ya existe.", "MSG7",
+							new String[] { "El","Caso de uso", cu.getNumero()}, "model.numero");
+				}
 			}
 		}
 		
@@ -163,8 +178,6 @@ public class CuBs {
 				}
 			}
 		}
-		
-		return true;
 	}
 
 	public static EstadoElemento consultarEstadoElemento(int i) throws Exception{
@@ -227,16 +240,16 @@ public class CuBs {
 
 	public static void modificarCasoUso(CasoUso modelAux) throws Exception {
 		try {
-			if(esValido(modelAux)) {
+				validar(modelAux);
 				new CasoUsoDAO().modificarCasoUso(modelAux);
-			} else {
-				throw new PRISMAValidacionException("El caso de uso no es valido.", "MSG21");
-			}
+				System.out.println("Registra el caso de uso");
 		} catch (JDBCException je) {
+			System.out.println("Entra a jdbcexception");
 			System.out.println("ERROR CODE " + je.getErrorCode());
 			je.printStackTrace();
 			throw new Exception();
 		} catch(HibernateException he) {
+			System.out.println("Entra a HException");
 			System.out.println("Se cacha en modificar cu en hibernateException");
 			he.printStackTrace();
 			throw new Exception();

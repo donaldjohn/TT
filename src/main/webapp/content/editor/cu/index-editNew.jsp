@@ -37,17 +37,20 @@
 				uso</div>
 			<table class="seccion">
 				<tr>
-					<td class="label"><s:text name="labelIdentificador" /></td>
-					<td class="labelDerecho"><s:property value="model.clave + ' ' + model.numero"/>
-							<s:fielderror fieldName="model.clave" cssClass="error" theme="jquery" />
-							<s:fielderror fieldName="model.numero" cssClass="error" theme="jquery" /></td>
+					<td class="label"><s:text name="labelClave" /></td>
+					<td class="labelDerecho"><s:property value="model.clave"/>
+							<s:fielderror fieldName="model.clave" cssClass="error" theme="jquery" /></td>
 					<s:hidden value="%{model.clave}" name="model.clave"/>
-					<s:hidden value="%{model.numero}" name="model.numero"/>
-					<s:hidden value="%{model.id}" name="model.id"/>
+				</tr>
+				<tr>
+					<td class="label obligatorio"><s:text name="labelNumero" /></td>
+					<td><s:textfield name="model.numero" maxlength="20"
+							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" /> <s:fielderror
+							fieldName="model.numero" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelNombre" /></td>
-					<td><s:textfield name="model.nombre"
+					<td><s:textfield name="model.nombre" maxlength="200"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" /> <s:fielderror
 							fieldName="model.nombre" cssClass="error" theme="jquery" /></td>
 				</tr>
