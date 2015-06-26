@@ -24,8 +24,6 @@ import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
 
 public class CuBs {
-	
-	
 	public static List<CasoUso> consultarCasosUsoModulo(Modulo modulo){
 		List<CasoUso> cus = new CasoUsoDAO().consultarCasosUso(modulo);
 		if(cus == null) {
