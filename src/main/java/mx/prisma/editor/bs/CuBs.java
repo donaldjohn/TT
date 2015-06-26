@@ -100,7 +100,6 @@ public class CuBs {
 	}
 
 	private static void validar(CasoUso cu) throws PRISMAValidacionException{
-		System.out.println("numero de cu " + cu.getNumero());
 		//Validaciones del número
 		if(Validador.esNuloOVacio(cu.getNumero())) {
 			throw new PRISMAValidacionException("El usuario no ingresó el número del cu.", "MSG4", null, "model.numero");
@@ -109,7 +108,6 @@ public class CuBs {
 			System.out.println("El numero del cu es " + cu.getNumero());
 			Double.parseDouble(cu.getNumero());
 		} catch (NumberFormatException nfe) {
-			nfe.printStackTrace();
 			throw new PRISMAValidacionException("El número no puede ser convertido.", "MSG5",
 					new String[] { "un","número"}, "model.numero");
 		}
