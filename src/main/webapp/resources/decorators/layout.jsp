@@ -19,7 +19,7 @@
 <s:url id="urlRutaContexto" includeParams="none"
 	value="%{pageContext.request.contextPath}/resources/template/themes"
 	includeContext="true" />
-<sj:head debug="true" jqueryui="true" jquerytheme="smoothness-prisma"
+<sj:head debug="false" jqueryui="true" jquerytheme="smoothness-prisma"
 	customBasepath="%{urlRutaContexto}" locale="es" />
 
 <decorator:head />
@@ -46,7 +46,7 @@
 				</table>
 			</div>
 		 -->
-		<div class="areaTrabajo">
+		<div class="areaTrabajo" id ="idAreaTrabajo">
 			<decorator:body /> 
 		</div>
 	</div>

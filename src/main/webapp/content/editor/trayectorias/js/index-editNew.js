@@ -1,6 +1,7 @@
 var contextPath = "prisma";
 
 $(document).ready(function() {
+	window.scrollTo(0,0);
 	contextPath = $("#rutaContexto").val();
 	$('table.tablaGestion').DataTable();
 	verificarAlternativaPrincipal();

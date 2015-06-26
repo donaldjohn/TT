@@ -1,5 +1,12 @@
 package mx.prisma.util;
 
+import mx.prisma.admin.dao.ProyectoDAO;
+import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.bs.CuBs;
+import mx.prisma.editor.dao.ModuloDAO;
+import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.Modulo;
+
 import com.opensymphony.xwork2.ActionContext;
 
 public class SessionManager {
@@ -55,5 +62,32 @@ public class SessionManager {
 	 */
 	public boolean isEmpty() {
 		return ActionContext.getContext().getSession().isEmpty();
+	}
+
+	public static Modulo consultarModuloActivo() throws Exception{
+		String claveModulo = "SF"; //Se debe obtener de sesión
+		String claveProy = "SIG";//Se debe obtener de sesión
+		Modulo modulo = null;
+		Proyecto proyecto = new ProyectoDAO().consultarProyecto(claveProy);
+		if(proyecto == null) {
+			throw new PRISMAException("No se puede consultar el proyecto", "MSG13");
+		}
+		modulo = new ModuloDAO().consultarModulo(claveModulo, proyecto);
+		if(modulo == null) {
+			throw new PRISMAException("No se puede consultar el módulo", "MSG13");
+		}
+		return modulo;
+	}
+
+	public static CasoUso consultarCasoUsoActivo(int idCU) {
+		if(idCU == 0) {
+			idCU = (Integer)SessionManager.get("idCU");
+		}
+		set(idCU, "idCU");
+		CasoUso cu = CuBs.consultarCasoUso(idCU);
+		if(cu == null) {
+			throw new PRISMAException("No se puede consultar el caso de uso", "MSG13");
+		}
+		return cu;
 	}
 }

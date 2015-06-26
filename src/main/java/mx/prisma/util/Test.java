@@ -3,6 +3,7 @@ package mx.prisma.util;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import mx.prisma.admin.dao.ColaboradorDAO;
 import mx.prisma.admin.dao.EstadoProyectoDAO;
@@ -60,7 +61,6 @@ public class Test {
 		// pruebaModificacionCasoUso(); 
 		// pruebaConsultaCasoUso(); //05/06/2015
 		
-
 	}
 
 	// -----------------------------------------------------------------

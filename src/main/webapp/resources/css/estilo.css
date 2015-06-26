@@ -52,6 +52,7 @@ a {
 	width: 70%;
 	heigth: 100%;
 	z-index: 96;
+	visibility: hidden;
 	/*background-color: #3f3f3f;*/	
 }
 
@@ -342,4 +343,8 @@ textfield {
 	font-size:12px;
 	font-style: italic;
 	color: #7f7f7f;
+}
+
+.trayectoriaPrincipal {
+	background: #e8f2fe;
 }

@@ -60,6 +60,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	private Proyecto proyecto;
 	private Modulo modulo;
 		
+	private CasoUso casoUso;
 	private Trayectoria model;
 	private List<Trayectoria> listTrayectorias;
 	private String jsonPasosTabla;
@@ -86,11 +87,8 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 
 	public String index() throws Exception{
 		try {
-			if(idCU == 0) {
-				idCU = (Integer)SessionManager.get("idCU");
-			}
-			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
-			SessionManager.set(idCU, "idCU");
+			modulo = SessionManager.consultarModuloActivo();
+			casoUso = SessionManager.consultarCasoUsoActivo(idCU);
 			model.setCasoUso(casoUso);
 			listTrayectorias = new ArrayList<Trayectoria>();
 			for(Trayectoria t: casoUso.getTrayectorias()) {
@@ -108,6 +106,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		return INDEX;
 	}
 
+
 	/**
 	 * Método para preparar la pantalla de registro de una trayectoria.
 	 * @throws Exception 
@@ -116,10 +115,9 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		
 		String resultado = null;
 		try {
-			// Creación del modelo
-			proyecto = new ProyectoDAO().consultarProyecto(claveProy);
-			modulo = new ModuloDAO().consultarModulo(this.claveModulo,
-					proyecto);
+			//Se consulta el caso de uso para mostrar la informacion en pantalla
+			casoUso = SessionManager.consultarCasoUsoActivo(idCU);
+			model.setCasoUso(casoUso);
 			
 			existeTPrincipal = existeTrayectoriaPrincipal();
 			buscaElementos();
@@ -236,7 +234,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 
 	
 	
-	private void buscaElementos() {
+	private void buscaElementos() throws Exception{
 		// Lists de los elementos disponibles
 		List<Elemento> listElementos;
 		List<ReglaNegocio> listReglasNegocio = new ArrayList<ReglaNegocio>();
@@ -250,9 +248,9 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		List<Paso> listPasos = new ArrayList<Paso>();
 		List<Trayectoria> listTrayectorias = new ArrayList<Trayectoria>();
 		List<Accion> listAcciones = new ArrayList<Accion>();
-
-		// Se consulta el proyecto
-		proyecto = new ProyectoDAO().consultarProyecto(claveProy);
+		// Se consulta el modulo y el proyecto activos 
+		modulo = SessionManager.consultarModuloActivo();
+		proyecto = modulo.getProyecto();
 
 		// Se consultan los elementos de todo el proyecto
 		listElementos = CuBs.consultarElementos(proyecto);

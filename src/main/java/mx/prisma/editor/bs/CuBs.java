@@ -2,6 +2,7 @@ package mx.prisma.editor.bs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
@@ -102,13 +103,10 @@ public class CuBs {
 		if(Validador.esNuloOVacio(cu.getNumero())) {
 			throw new PRISMAValidacionException("El usuario no ingresó el número del cu.", "MSG4", null, "model.numero");
 		}
-		try {
-			System.out.println("El numero del cu es " + cu.getNumero());
-			Double.parseDouble(cu.getNumero());
-		} catch (NumberFormatException nfe) {
-			throw new PRISMAValidacionException("El número no puede ser convertido.", "MSG5",
-					new String[] { "un","número"}, "model.numero");
+		if(!Pattern.matches("[0-9]+(\\.[0-9]+)*", cu.getNumero())) {
+			throw new PRISMAValidacionException("El usuario no ingresó el número del cu.", "MSG5", new String[]{"un", "número"}, "model.numero");
 		}
+		
 		//Se asegura la unicidad del nombre y del numero
 		List<CasoUso> casosUso = consultarCasosUsoModulo(cu.getModulo());
 		for(CasoUso c : casosUso) {

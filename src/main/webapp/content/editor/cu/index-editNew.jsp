@@ -19,7 +19,6 @@
 
 </head>
 <body>
-
 	<h1>Registrar Caso de uso</h1>
 	
 	<s:actionmessage theme="jquery" />

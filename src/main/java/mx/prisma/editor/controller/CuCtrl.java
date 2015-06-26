@@ -46,9 +46,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	// Pruebas
-	private String claveModulo = "SF";
-	private String claveProy = "SIG";
 
 	// Proyecto y módulo
 	private Proyecto proyecto;
@@ -115,9 +112,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		List<Paso> listPasos = new ArrayList<Paso>();
 		List<Trayectoria> listTrayectorias = new ArrayList<Trayectoria>();
 		List<Accion> listAcciones = new ArrayList<Accion>();
-
-		// Se consulta el proyecto
-		proyecto = new ProyectoDAO().consultarProyecto(claveProy);
 
 		// Se consultan los elementos de todo el proyecto
 		listElementos = CuBs.consultarElementos(proyecto);
@@ -268,9 +262,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		System.out.println("Numero del cu " + model.getNumero());
 		try {
 			// Creación del modelo
-			proyecto = new ProyectoDAO().consultarProyecto(claveProy);
-			modulo = new ModuloDAO().consultarModulo(this.claveModulo,
-					proyecto);
+			modulo = SessionManager.consultarModuloActivo();
+			proyecto = modulo.getProyecto();
 						
 			model.setProyecto(proyecto);
 			model.setModulo(modulo);
@@ -323,9 +316,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		try {
 			
 			// Creación del modelo
-			proyecto = new ProyectoDAO().consultarProyecto(claveProy);
-			modulo = new ModuloDAO().consultarModulo(this.claveModulo,
-					proyecto);
+			modulo = SessionManager.consultarModuloActivo();
+			proyecto = modulo.getProyecto();
 			
 			// Se buscan los elementos disponibles para referenciar
 			buscaElementos();
@@ -431,12 +423,13 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 	public String index() {
 		try {
-			// Se consulta el proyecto
-			proyecto = new ProyectoDAO().consultarProyecto(claveProy);
-
+					
 			// Se consulta el módulo
-			modulo = new ModuloDAO()
-					.consultarModulo(this.claveModulo, proyecto);
+			modulo = SessionManager.consultarModuloActivo();
+			
+			//Se consulta el proyecto
+			proyecto = modulo.getProyecto();
+
 
 			// Se agrega el módulo al caso de uso
 			model.setModulo(modulo);
