@@ -1,6 +1,7 @@
 package mx.prisma.editor.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -148,7 +149,6 @@ public class CasoUsoDAO extends ElementoDAO {
 	}
 
 	public void preAlmacenarObjetosToken(CasoUso casoUso) {
-		System.out.println("--");
 		TokenBs.almacenarObjetosToken(TokenBs.convertirToken_Objeto(
 				casoUso.getRedaccionActores(), casoUso.getProyecto()), casoUso,
 				TipoSeccion.ACTORES);
@@ -175,9 +175,8 @@ public class CasoUsoDAO extends ElementoDAO {
 		casoUso.setRedaccionReglasNegocio(TokenBs.codificarCadenaToken(
 				casoUso.getRedaccionReglasNegocio(), casoUso.getProyecto()));
 
-		for (PostPrecondicion postPrecondicion : casoUso
-				.getPostprecondiciones()) {
-			System.out.println("postPre");
+		Set<PostPrecondicion> postPrecondiciones = casoUso.getPostprecondiciones();
+		for (PostPrecondicion postPrecondicion : postPrecondiciones) {
 			TokenBs.almacenarObjetosToken(
 					TokenBs.convertirToken_Objeto(
 							postPrecondicion.getRedaccion(),
@@ -190,7 +189,7 @@ public class CasoUsoDAO extends ElementoDAO {
 	}
 
 	public void registrarCasoUso(CasoUso casodeuso) {
-
+		System.out.println(casodeuso.getPostprecondiciones().size());
 		//cleanRelaciones(casodeuso);
 		preAlmacenarObjetosToken(casodeuso);
 		this.session = HibernateUtil.getSessionFactory().getCurrentSession();

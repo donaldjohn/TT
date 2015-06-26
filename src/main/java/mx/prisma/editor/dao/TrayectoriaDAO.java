@@ -8,10 +8,8 @@ import mx.prisma.editor.bs.Referencia.TipoSeccion;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.util.HibernateUtil;
-import mx.prisma.util.PRISMAValidacionException;
 
 import org.hibernate.HibernateException;
-import org.hibernate.JDBCException;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 

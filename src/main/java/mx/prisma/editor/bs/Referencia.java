@@ -175,7 +175,7 @@ public class Referencia {
 				return TipoRelacion.PANTALLA_PASOS;
 			}		
 			if (tipoSeccion == TipoSeccion.POSTPRECONDICIONES) {
-				return TipoRelacion.CASOUSO_POSTPRECONDICIONES;
+				return TipoRelacion.PANTALLA_POSTPRECONDICIONES;
 				
 			}
 		}
@@ -198,7 +198,7 @@ public class Referencia {
 				return TipoRelacion.REGLANEGOCIO_REGLASNEGOCIOS;
 			}		
 			if (tipoSeccion == TipoSeccion.POSTPRECONDICIONES) {
-				return TipoRelacion.CASOUSO_POSTPRECONDICIONES;
+				return TipoRelacion.REGLANEGOCIO_POSTPRECONDICIONES;
 				
 			}
 			if (tipoSeccion == TipoSeccion.PASOS) {
