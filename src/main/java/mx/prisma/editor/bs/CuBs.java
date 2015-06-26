@@ -49,7 +49,6 @@ public class CuBs {
 		if(cu.getEstadoElemento().getId() == getIdEdicion() && idAutor.equals(idAutorCU)) {
 			return true;
 		}
-		
 		return false;
 	}
 
@@ -83,6 +82,7 @@ public class CuBs {
 	}
 
 	public static void registrarCasoUso(CasoUso cu) throws Exception{
+		System.out.println("Postprecondicion " + cu.getPostprecondiciones());
 		try {
 				validar(cu);
 				new CasoUsoDAO().registrarCasoUso(cu);
@@ -110,7 +110,8 @@ public class CuBs {
 					new String[] { "un","número"}, "model.numero");
 		}
 		//Se asegura la unicidad del nombre y del numero
-		for(CasoUso c : consultarCasosUsoModulo(cu.getModulo())) {
+		List<CasoUso> casosUso = consultarCasosUsoModulo(cu.getModulo());
+		for(CasoUso c : casosUso) {
 			if(c.getId() != cu.getId()) {
 				if(c.getNombre().equals(cu.getNombre())) {
 					throw new PRISMAValidacionException("El nombre del caso de uso ya existe.", "MSG7",

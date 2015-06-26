@@ -1,5 +1,7 @@
 package mx.prisma.editor.bs;
 
+import java.util.Set;
+
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
@@ -27,6 +29,7 @@ public class TrayectoriaBs {
 				}
 				System.out.println("ERROR CODE " + je.getErrorCode());
 				je.printStackTrace();
+				throw new Exception();
 		} catch(HibernateException he) {
 			he.printStackTrace();
 			throw new Exception();
@@ -49,7 +52,8 @@ public class TrayectoriaBs {
 
 		if(!model.isAlternativa()) {
 			//Si es una trayectoria principal, entonces se debe verificar que no haya una registrada previamente
-			for(Trayectoria t : model.getCasoUso().getTrayectorias()) {
+			Set<Trayectoria> trayectorias = model.getCasoUso().getTrayectorias(); 
+			for(Trayectoria t : trayectorias) {
 				if(!t.isAlternativa()) {
 					throw new PRISMAValidacionException("Ya existe una trayectoria principal registrada.", "MSG20", null, "alternativaPrincipal");
 				}
