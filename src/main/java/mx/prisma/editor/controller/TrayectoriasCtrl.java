@@ -10,17 +10,13 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
-import org.apache.struts2.rest.DefaultHttpHeaders;
-import org.apache.struts2.rest.HttpHeaders;
 
 import com.opensymphony.xwork2.ModelDriven;
 
-import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.Referencia;
 import mx.prisma.editor.bs.TrayectoriaBs;
-import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Atributo;
@@ -52,9 +48,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	 */
 	private static final long serialVersionUID = 1L;
 	private Map<String, Object> userSession ;
-	// Pruebas
-	private String claveModulo = "SF";
-	private String claveProy = "SIG";
 
 	// Proyecto y módulo
 	private Proyecto proyecto;
@@ -102,6 +95,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			for(Trayectoria t: casoUso.getTrayectorias()) {
 				listTrayectorias.add(t);
 			}
+			@SuppressWarnings("unchecked")
 			Collection<String> msjs = (Collection<String>) SessionManager.get("mensajesAccion");
 			this.setActionMessages(msjs);
 			SessionManager.delete("mensajesAccion");
@@ -109,7 +103,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 		} catch (Exception e) {
-			e.printStackTrace();
+			ErrorManager.agregaMensajeError(this, e);
 		}
 		return INDEX;
 	}
@@ -572,6 +566,16 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 
 	public void setAlternativaPrincipal(String alternativaPrincipal) {
 		this.alternativaPrincipal = alternativaPrincipal;
+	}
+
+
+	public Map<String, Object> getUserSession() {
+		return userSession;
+	}
+
+
+	public void setUserSession(Map<String, Object> userSession) {
+		this.userSession = userSession;
 	}
 	
 	

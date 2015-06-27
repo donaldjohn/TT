@@ -10,18 +10,14 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
-import org.apache.struts2.rest.DefaultHttpHeaders;
-import org.apache.struts2.rest.HttpHeaders;
 
 import com.opensymphony.xwork2.ModelDriven;
 
-import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ExtensionBs;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.dao.CasoUsoDAO;
-import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Modulo;
@@ -43,12 +39,10 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	// Pruebas
-	private String claveModulo = "SF";
-	private String claveProy = "SIG";
 	// Proyecto y módulo
 	private Proyecto proyecto;
 	private Modulo modulo;
+	private CasoUso casoUso;
 		
 	private Extension model;
 	private List<Extension> listPtosExtension;
@@ -115,7 +109,6 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 
 	public String create() throws Exception {
 		String resultado = null;
-		System.out.println("clave cu destino" + claveCasoUsoDestino);
 		//Validaciones del caso de uso que extiende a
 		try {						
 			if(claveCasoUsoDestino == -1) {
@@ -123,7 +116,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 			} else {
 				model.setCasoUsoDestino(new CasoUsoDAO().consultarCasoUso(claveCasoUsoDestino));
 			}
-			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
+			casoUso = SessionManager.consultarCasoUsoActivo();
 			model.setCasoUsoOrigen(casoUso);
 			ExtensionBs.registrarExtension(model);						
 			resultado = SUCCESS;
@@ -138,7 +131,6 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
 		} catch (Exception e) {
-			e.printStackTrace();
 			ErrorManager.agregaMensajeError(this, e);
 			resultado = index();
 		}
@@ -148,18 +140,15 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 	public String editNew() throws Exception {
 		String resultado = null;
 		try {
-			
-			proyecto = new ProyectoDAO().consultarProyecto(claveProy);
-			modulo = new ModuloDAO().consultarModulo(this.claveModulo, proyecto);
+			modulo = SessionManager.consultarModuloActivo();
+			proyecto = modulo.getProyecto();
 			buscaElementos();
 			buscaCatalogos();
 			resultado = EDITNEW;
 		} catch (PRISMAException pe) {
-			System.err.println(pe.getMessage());
 			ErrorManager.agregaMensajeError(this, pe);
 			return index();
 		} catch (Exception e) {
-			e.printStackTrace();
 			ErrorManager.agregaMensajeError(this, e);
 			return index();
 		}
@@ -192,7 +181,17 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 
 	public String index() throws Exception{
 		try {
-			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
+			//Se consulta el módulo en sesión
+			modulo = SessionManager.consultarModuloActivo();
+			
+			//Se agrega a la sesión el caso de uso con base en el identificador del caso de uso
+			if(idCU != 0) {
+				SessionManager.agregarIDCasoUso(idCU);
+			}
+			
+			//Se consulta el caso de uso activo
+			casoUso = SessionManager.consultarCasoUsoActivo();
+			
 			model.setCasoUsoOrigen(casoUso);
 			listPtosExtension = new ArrayList<Extension>();
 			Set<Extension> extensiones = casoUso.getExtendidoDe();
@@ -208,10 +207,9 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 			SessionManager.delete("mensajesAccion");
 			
 		} catch (PRISMAException pe) {
-			System.err.println(pe.getMessage());
 			ErrorManager.agregaMensajeError(this, pe);
 		} catch (Exception e) {
-			e.printStackTrace();
+			ErrorManager.agregaMensajeError(this, e);
 		}
 		return INDEX;
 	}
@@ -241,7 +239,6 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 	}
 
 	public void setSession(Map<String, Object> arg0) {
-		// TODO Auto-generated method stub		
 	}
 
 	

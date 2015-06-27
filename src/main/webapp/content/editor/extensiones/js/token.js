@@ -26,6 +26,8 @@ var token = function() {
 	}
 
 	function cargaLista(tipo, token, listaObjetos) {
+		var separador1 = "·";
+		var separador2 = ":";
 		if (tipo == "F") {
 			var lista = $.map(listaObjetos, function(value, i) {
 				return {

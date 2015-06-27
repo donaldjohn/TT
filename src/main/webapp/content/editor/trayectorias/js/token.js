@@ -223,7 +223,8 @@ var token = function() {
 					"clave" : value.clave,
 					'name' : remplazarEspaciosGuion(value.casoUso.clave) 
 					+ separador1 + value.casoUso.numero + separador2
-					+ remplazarEspaciosGuion(value.clave)
+					+ remplazarEspaciosGuion(value.casoUso.nombre)
+					+ separador2 + remplazarEspaciosGuion(value.clave)
 				};
 				 // TRAY.CUMODULO.NUM:NOMBRECU:CLAVETRAY
 			});
@@ -232,7 +233,7 @@ var token = function() {
 				data : lista,
 				displayTpl : "<li><span class=\"listaToken\">" + token
 						+ separador1 + "</span>"
-						+ "<span class=\"listaNombre\">${claveCU}${numeroCU}"
+						+ "<span class=\"listaNombre\">${claveCU}" + separador1 +"${numeroCU}"
 						+ separador2 + " ${nombreCU}" + separador2 
 						+ " </span><span class=\"listaElementoInteres\">${clave}</span></li>",
 				limit : 200
