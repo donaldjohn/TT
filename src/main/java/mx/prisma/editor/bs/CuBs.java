@@ -53,16 +53,6 @@ public class CuBs {
 		return false;
 	}
 
-	public static String calcularNumero(Modulo modulo) throws Exception{
-		int numero = -1;
-		numero = new CasoUsoDAO().lastIndexOfCasoUso(modulo) + 1;
-		
-		if(numero == -1) {
-			throw new PRISMAException("No se puede calcular el numero de la clave", "MSG13");
-		}
-			
-		return numero + "";
-	}
 
 	public static Modulo consultarModulo(String claveModulo, Proyecto proyecto) throws Exception{
 		
@@ -186,23 +176,6 @@ public class CuBs {
 		return "CU" + cModulo;
 	}
 
-	public static String calcularNombre(Integer id) {
-		int ultimoNum = -1;
-		try {
-			ultimoNum = new ElementoDAO().lastIndexCUsinTitulo(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PRISMAException("No se puede consultar el último número de los nombres por default (caso de uso).", "MSG13");
-		}
-		
-		if(ultimoNum == -1) {
-			throw new PRISMAException("No se puede consultar el último número de los nombres por default (caso de uso).", "MSG13");
-		}
-		
-		String nombre = "Caso de uso " + (ultimoNum + 1); 
-		
-		return nombre;
-	}
 
 	public static CasoUso consultarCasoUso(int id) {
 		CasoUso cu = null;

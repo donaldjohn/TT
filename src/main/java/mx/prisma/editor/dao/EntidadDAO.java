@@ -30,8 +30,12 @@ public class EntidadDAO extends ElementoDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Entidad> consultarEntidades(String claveProyecto) {
+	public List<Entidad> consultarEntidades(Referencia.TipoReferencia tipoReferencia, String claveProyecto) {
 		List<Entidad> entidades = null;
+		
+		
+		
+		
 		try {
 			session.beginTransaction();
 			SQLQuery query = session

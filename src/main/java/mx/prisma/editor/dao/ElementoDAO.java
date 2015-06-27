@@ -1,7 +1,6 @@
 package mx.prisma.editor.dao;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -10,9 +9,10 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.bs.Referencia;
 import mx.prisma.editor.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.model.Elemento;
-import mx.prisma.editor.model.Modulo;
+import mx.prisma.editor.model.Entidad;
 import mx.prisma.util.HibernateUtil;
 
 public class ElementoDAO {
@@ -63,17 +63,32 @@ public class ElementoDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Integer lastIndexOfElemento(TipoReferencia referencia, Modulo modulo) {
+	public String siguienteNumero(TipoReferencia referencia, String claveProyecto) {
 		List<String> results = null;
 		String sentencia = "";
 		switch (referencia) {
-		case CASOUSO:
-			sentencia = "SELECT MAX(numero) FROM Elemento WHERE clave = 'CU"
-					+ modulo.getClave() + "'";
+			case ACTOR:
+				sentencia = "SELECT MAX(CAST(numero AS SIGNED)) FROM Elemento INNER JOIN Actor ON Elemento.id = Actor.Elementoid WHERE Elemento.Proyectoid = "+claveProyecto+";";
 			break;
-		case PANTALLA:
-			sentencia = "SELECT MAX(numero) FROM Pantalla WHERE clave = 'CU"
-					+ modulo.getClave() + "'";
+
+			case ENTIDAD:
+				sentencia = "SELECT MAX(CAST(numero AS SIGNED)) FROM Elemento INNER JOIN Entidad ON Elemento.id = Entidad.Elementoid WHERE Elemento.Proyectoid = "+claveProyecto+";";
+
+			break;
+
+			case MENSAJE:
+				sentencia = "SELECT MAX(CAST(numero AS SIGNED)) FROM Elemento INNER JOIN Mensaje ON Elemento.id = Mensaje.Elementoid WHERE Elemento.Proyectoid = "+claveProyecto+";";
+
+			break;
+
+			case REGLANEGOCIO:
+				sentencia = "SELECT MAX(CAST(numero AS SIGNED)) FROM Elemento INNER JOIN ReglaNegocio ON Elemento.id = ReglaNegocio.Elementoid WHERE Elemento.Proyectoid = "+claveProyecto+";";
+
+			break;
+
+			case TERMINOGLS:
+				sentencia = "SELECT MAX(CAST(numero AS SIGNED)) FROM Elemento INNER JOIN TerminoGlosario ON Elemento.id = TerminoGlosario.Elementoid WHERE Elemento.Proyectoid = "+claveProyecto+";";
+
 			break;
 		default:
 			break;
@@ -89,48 +104,14 @@ public class ElementoDAO {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
-		if (results.isEmpty())
-			return 0;
-		else if (results.get(0) != null)
-			return Integer.parseInt(results.get(0));
-		else
-			return 0;
-	}
-
-
-	@SuppressWarnings("unchecked")
-	public int lastIndexCUsinTitulo(int claveModulo) {
-		List<String> results = null;
-		String auxiliar = "";
-		int numero;
-		ArrayList<Integer> numeros = new ArrayList<Integer>();
 		
-		String sentencia = "SELECT nombre FROM Elemento INNER JOIN CasoUso ON  Elemento.id = CasoUso.Elementoid AND Elemento.nombre LIKE 'Caso de uso%' AND CasoUso.Moduloid = "
-				+ claveModulo + ";";
-		try {
-			session.beginTransaction();
-			SQLQuery sqlQuery = session.createSQLQuery(sentencia);
-			results = sqlQuery.list();
-			session.getTransaction().commit();
-		} catch (HibernateException he) {
-			he.printStackTrace();
-			session.getTransaction().rollback();
-		}
-
-		for(String cadena : results){
-			auxiliar = cadena.substring(12);
-			try{
-				numero = Integer.parseInt(auxiliar);
-				numeros.add(numero*-1);
-			} catch (NumberFormatException e){
-				e.printStackTrace();
-			}			
-		}
-		if (numeros.isEmpty()){
-			return 0;
-		}
-		Collections.sort(numeros);
-		return numeros.get(0)*-1;
+		if (results == null) {
+			return null;
+		} else 
+			if (results.isEmpty()) {
+				return 1 + "";
+			} else
+				return results.get(0);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -173,6 +154,30 @@ public class ElementoDAO {
 		}
 		
 		return results;
+	}
+	public List<Entidad> consultarEntidades(Referencia.TipoReferencia tipoReferencia, String claveProyecto) {
+		List<Entidad> entidades = null;
+		
+		
+		
+		
+		try {
+			session.beginTransaction();
+			SQLQuery query = session
+					.createSQLQuery("SELECT * FROM Elemento INNER JOIN Entidad ON Elemento.id = Entidad.Elementoid WHERE Elemento.Proyectoid = :proyecto").addEntity(Entidad.class);
+			query.setParameter("proyecto", claveProyecto);
+			entidades = query.list();
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		if (entidades == null){
+			return null;
+		} else  if (entidades.isEmpty()){
+			return null;
+		} else
+			return entidades;
 	}
 
 }
