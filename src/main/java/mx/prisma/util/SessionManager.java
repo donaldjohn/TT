@@ -79,15 +79,18 @@ public class SessionManager {
 		return modulo;
 	}
 
-	public static CasoUso consultarCasoUsoActivo(int idCU) {
-		if(idCU == 0) {
-			idCU = (Integer)SessionManager.get("idCU");
-		}
-		set(idCU, "idCU");
+	public static CasoUso consultarCasoUsoActivo() {
+		int idCU = (Integer)SessionManager.get("idCU");
+		
+		//set(idCU, "idCU");
 		CasoUso cu = CuBs.consultarCasoUso(idCU);
 		if(cu == null) {
 			throw new PRISMAException("No se puede consultar el caso de uso", "MSG13");
 		}
 		return cu;
+	}
+
+	public static void agregarIDCasoUso(int idCU) {
+		SessionManager.set(idCU, "idCU");
 	}
 }

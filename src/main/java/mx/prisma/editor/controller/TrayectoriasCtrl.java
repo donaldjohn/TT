@@ -87,8 +87,16 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 
 	public String index() throws Exception{
 		try {
+			//Se consulta el módulo en sesión
 			modulo = SessionManager.consultarModuloActivo();
-			casoUso = SessionManager.consultarCasoUsoActivo(idCU);
+			
+			//Se agrega a la sesión el caso de uso con base en el identificador del caso de uso
+			if(idCU != 0) {
+				SessionManager.agregarIDCasoUso(idCU);
+			}
+			
+			//Se consulta el caso de uso activo
+			casoUso = SessionManager.consultarCasoUsoActivo();
 			model.setCasoUso(casoUso);
 			listTrayectorias = new ArrayList<Trayectoria>();
 			for(Trayectoria t: casoUso.getTrayectorias()) {
@@ -116,7 +124,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		String resultado = null;
 		try {
 			//Se consulta el caso de uso para mostrar la informacion en pantalla
-			casoUso = SessionManager.consultarCasoUsoActivo(idCU);
+			casoUso = SessionManager.consultarCasoUsoActivo();
 			model.setCasoUso(casoUso);
 			
 			existeTPrincipal = existeTrayectoriaPrincipal();
