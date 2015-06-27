@@ -23,7 +23,6 @@ var token = function() {
 		$inputor = $('#inputor').atwho(at_configP);
 		$inputor.caret('pos', 60);
 		$inputor.focus().atwho('run');
-
 	}
 
 	function cargaLista(tipo, token, listaObjetos) {
