@@ -172,7 +172,7 @@ public class TokenBs {
 				}
 
 				casoUso = new CasoUsoDAO().consultarCasoUso(modulo,
-						Integer.parseInt(segmentos.get(2)));
+						segmentos.get(2));
 				if (casoUso == null) {
 					// Construcción del mensaje de error;
 					String[] parametros = { "el", "caso de uso", segmentos.get(1) + segmentos.get(2),
@@ -515,8 +515,7 @@ public class TokenBs {
 							"MSG15", parametros);
 				}
 
-				casodeuso = new CasoUsoDAO().consultarCasoUso(modulo,
-						Integer.parseInt(segmentos.get(2)));
+				casodeuso = new CasoUsoDAO().consultarCasoUso(modulo, segmentos.get(2));
 				if (casodeuso == null) {
 					// Construcción del mensaje de error;
 					String[] parametros = { "el", "caso de uso", tokenCU + segmentos.get(1) + segmentos.get(2),

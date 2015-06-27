@@ -11,7 +11,6 @@ import org.hibernate.Session;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.Referencia.TipoSeccion;
 import mx.prisma.editor.bs.TokenBs;
-import mx.prisma.editor.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.CasoUsoActor;
 import mx.prisma.editor.model.CasoUsoReglaNegocio;
@@ -28,8 +27,6 @@ public class CasoUsoDAO extends ElementoDAO {
 		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
 	}
 
-	
-	
 	public void cleanRelaciones(CasoUso casodeuso) {
 		casodeuso.getActores().clear();
 		casodeuso.getEntradas().clear();
@@ -61,7 +58,7 @@ public class CasoUsoDAO extends ElementoDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public CasoUso consultarCasoUso(Modulo modulo, int numero) {
+	public CasoUso consultarCasoUso(Modulo modulo, String numero) {
 		List<CasoUso> results = null;
 
 		try {
@@ -82,10 +79,6 @@ public class CasoUsoDAO extends ElementoDAO {
 			
 			return results.get(0);
 
-	}
-
-	public Integer lastIndexOfCasoUso(Modulo modulo) {
-		return super.lastIndexOfElemento(TipoReferencia.CASOUSO, modulo);
 	}
 
 	public void modificarCasoUso(CasoUso casodeuso) {
@@ -250,8 +243,6 @@ public class CasoUsoDAO extends ElementoDAO {
 			return casosdeuso.get(0);
 
 	}
-
-
 
 	@SuppressWarnings("unchecked")
 	public List<CasoUso> consultarCasosUso(Integer id) {
