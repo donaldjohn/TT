@@ -63,6 +63,16 @@ public class SessionManager {
 	public boolean isEmpty() {
 		return ActionContext.getContext().getSession().isEmpty();
 	}
+	
+	public static Proyecto consultarProyectoActivo() throws Exception{
+		String claveProy = "SIG";//Se debe obtener de sesión
+		Proyecto proyecto = null;
+		proyecto = new ProyectoDAO().consultarProyecto(claveProy);
+		if(proyecto == null) {
+			throw new PRISMAException("No se puede consultar el proyecto", "MSG13");
+		}
+		return proyecto;
+	}
 
 	public static Modulo consultarModuloActivo() throws Exception{
 		String claveModulo = "SF"; //Se debe obtener de sesión

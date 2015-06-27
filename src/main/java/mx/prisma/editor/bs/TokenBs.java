@@ -48,7 +48,7 @@ public class TokenBs {
 	private static String tokenENT = "ENT" + tokenSeparator1; // ENT.NOMBRE_ENT
 	private static String tokenCU = "CU" + tokenSeparator1; // CU.MODULO.NUMERO:NOMBRE_CU
 	private static String tokenIU = "IU" + tokenSeparator1; // IU.MODULO.NUMERO:NOMBRE_IU
-	private static String tokenMSG = "MSG " + tokenSeparator1; // MSG.NUMERO:NOMBRE_MSG
+	private static String tokenMSG = "MSG" + tokenSeparator1; // MSG.NUMERO:NOMBRE_MSG
 	private static String tokenACT = "ACT" + tokenSeparator1; // ACT.NOMBRE_ACT
 	private static String tokenGLS = "GLS" + tokenSeparator1; // GLS.NOMBRE_GLS
 	private static String tokenATR = "ATR" + tokenSeparator1;// ATR.ENTIDAD_A_B:NOMBRE_ATT
