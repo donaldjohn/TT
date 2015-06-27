@@ -6,9 +6,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Atributo;
-import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.util.HibernateUtil;
 
@@ -48,6 +46,7 @@ public class AtributoDAO {
 
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Atributo consultarAtributo(String nombre, Entidad entidad) {
 		List<Atributo> results  = null;
 
