@@ -42,20 +42,21 @@ import mx.prisma.util.PRISMAValidacionException;
 
 public class TokenBs {
 
-	private static String tokenRN = "RN."; // RN.NUMERO:NOMBRE_RN
-	private static String tokenENT = "ENT."; // ENT.NOMBRE_ENT
-	private static String tokenCU = "CU."; // CU.MODULO.NUMERO:NOMBRE_CU
-	private static String tokenIU = "IU."; // IU.MODULO.NUMERO:NOMBRE_IU
-	private static String tokenMSG = "MSG."; // MSG.NUMERO:NOMBRE_MSG
-	private static String tokenACT = "ACT."; // ACT.NOMBRE_ACT
-	private static String tokenGLS = "GLS."; // GLS.NOMBRE_GLS
-	private static String tokenATR = "ATR.";// ATR.ENTIDAD_A_B:NOMBRE_ATT
-	private static String tokenP = "P."; // P.CUMODULO.NUM:NOMBRECU:CLAVETRAY.NUMERO
-	private static String tokenTray = "TRAY."; // TRAY.CUMODULO.NUM:NOMBRECU:CLAVETRAY
-	private static String tokenACC = "ACC."; // ACC.IUMODULO.NUM:NOMBRE_ACC =
-												// ACC.IUSF.7:Registrar_incendio:Aceptar
 	private static String tokenSeparator1 = "·";
 	private static String tokenSeparator2 = ":";
+	private static String tokenRN = "RN" + tokenSeparator1; // RN.NUMERO:NOMBRE_RN
+	private static String tokenENT = "ENT" + tokenSeparator1; // ENT.NOMBRE_ENT
+	private static String tokenCU = "CU" + tokenSeparator1; // CU.MODULO.NUMERO:NOMBRE_CU
+	private static String tokenIU = "IU" + tokenSeparator1; // IU.MODULO.NUMERO:NOMBRE_IU
+	private static String tokenMSG = "MSG " + tokenSeparator1; // MSG.NUMERO:NOMBRE_MSG
+	private static String tokenACT = "ACT" + tokenSeparator1; // ACT.NOMBRE_ACT
+	private static String tokenGLS = "GLS" + tokenSeparator1; // GLS.NOMBRE_GLS
+	private static String tokenATR = "ATR" + tokenSeparator1;// ATR.ENTIDAD_A_B:NOMBRE_ATT
+	private static String tokenP = "P" + tokenSeparator1; // P.CUMODULO.NUM:NOMBRECU:CLAVETRAY.NUMERO
+	private static String tokenTray = "TRAY" + tokenSeparator1 ; // TRAY.CUMODULO.NUM:NOMBRECU:CLAVETRAY
+	private static String tokenACC = "ACC" + tokenSeparator1; // ACC.IUMODULO.NUM:NOMBRE_ACC =
+												// ACC.IUSF.7:Registrar_incendio:Aceptar
+
 
 	public static String codificarCadenaToken(String redaccion,
 			Proyecto proyecto) {
