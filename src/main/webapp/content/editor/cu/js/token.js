@@ -154,6 +154,8 @@ var token = function() {
 	}
 
 	function cargaLista(tipo, token, listaObjetos) {
+		var separador1 = "·";
+		var separador2 = ":";
 		if (tipo == "A") {
 			var lista = $.map(listaObjetos, function(value, i) {
 				return {
@@ -163,12 +165,10 @@ var token = function() {
 				};
 			});
 			var at_config = {
-				at : token + ".",
+				at : token + separador1,
 				data : lista,
-				displayTpl : "<li tittle =\"Tooltip\"><span class=\"listaToken\">"
-						+ token
-						+ "</span>"
-						+ "."
+				displayTpl : "<li><span class=\"listaToken\">" + token
+						+ separador1 + "</span>"
 						+ "<span class=\"listaElementoInteres\">${nombre}</span></li>",
 				limit : 200
 			}
@@ -178,39 +178,37 @@ var token = function() {
 					'id' : i,
 					"numero" : value.numero,
 					"nombre" : value.nombre,
-					'name' : value.numero + ":"
+					'name' : value.numero + separador2 + ""
 							+ remplazarEspaciosGuion(value.nombre)
 				};
 			});
 
 			var at_config = {
-				at : token + ".",
+				at : token + separador1,
 				data : lista,
-				displayTpl : "<li><span class=\"listaToken\">"
-						+ token
-						+ ".</span>"
-						+ "<span class=\"listaElementoInteres\">${numero}</span><span class=\"listaToken\">: </span><span class=\"listaElementoInteres\">${nombre}</span></li>",
+				displayTpl : "<li><span class=\"listaToken\">" + token
+						+ separador1 + "</span>"
+						+ "<span class=\"listaElementoInteres\">${numero}</span><span class=\"listaToken\">"  
+						+ separador2 + " </span><span class=\"listaElementoInteres\">${nombre}</span></li>",
 				limit : 200
 			}
 		} else if (tipo == "C") {
 			var lista = $.map(listaObjetos, function(value, i) {
 				return {
 					'id' : i,
-					"nombre" : value.nombre,// remplazarEspaciosGuionBlanco(value.nombre),
-					"nombreEntidad" : value.entidad.nombre, // remplazarEspaciosGuionBlanco(value.entidad.nombre),
-					'name' : remplazarEspaciosGuion(value.entidad.nombre) + ":"
+					"nombre" : value.nombre,//remplazarEspaciosGuionBlanco(value.nombre),
+					"nombreEntidad" : value.entidad.nombre, //remplazarEspaciosGuionBlanco(value.entidad.nombre),
+					'name' : remplazarEspaciosGuion(value.entidad.nombre) + separador2
 							+ remplazarEspaciosGuion(value.nombre)
 				};
 			});
 			var at_config = {
-				at : token + ".",
+				at : token + separador1,
 				data : lista,
-				displayTpl : "<li><span class=\"listaToken\">"
-						+ token
-						+ "</span>"
-						+ "."
+				displayTpl : "<li><span class=\"listaToken\">" + token
+						+ separador1 + "</span>"
 						+ "<span class=\"listaNombre\">${nombreEntidad}"
-						+ ":</span><span class=\"listaElementoInteres\"> ${nombre}</span></li>",
+						+ separador2 + "</span><span class=\"listaElementoInteres\">${nombre}</span></li>",
 				limit : 200
 			}
 		} else if (tipo == "D") {
@@ -220,20 +218,19 @@ var token = function() {
 					"claveModulo" : value.modulo.clave,
 					"numero" : value.numero,
 					"nombre" : value.nombre,
-					'name' : value.modulo.clave + "." + value.numero + ":"
-							+ remplazarEspaciosGuion(value.nombre)
+					'name' : value.modulo.clave
+					+ separador1 + value.numero + separador2
+					+ remplazarEspaciosGuion(value.nombre)
 				};
 			});
 			var at_config = {
-				at : token + ".",
+				at : token + separador1,
 				data : lista,
-				displayTpl : "<li><span class=\"listaToken\">"
-						+ token
-						+ "</span>"
-						+ "."
-						+ "<span class=\"listaNombre\">${claveModulo}."
-						+ "<span class=\"listaElementoInteres\">${numero}</span><span class=\"listaToken\">"
-						+ ":</span> </span><span class=\"listaElementoInteres\">${nombre}</span></li>",
+				displayTpl : "<li><span class=\"listaToken\">" + token
+						+ separador1 + "</span>"
+						+ "<span class=\"listaNombre\">${claveModulo}" + separador1
+						+ "<span class=\"listaElementoInteres\">${numero}</span><span class=\"listaToken\">" 
+						+ separador2 + "</span> </span><span class=\"listaElementoInteres\">${nombre}</span></li>",
 				limit : 200
 			}
 		} else if (tipo == "E") {
@@ -242,21 +239,22 @@ var token = function() {
 					'id' : i,
 					"claveCU" : value.casoUso.clave,
 					"numeroCU" : value.casoUso.numero,
+					"nombreCU" : value.casoUso.nombre,
 					"clave" : value.clave,
-					'name' : remplazarEspaciosGuion(value.casoUso.clave) + "."
-							+ value.casoUso.numero + ":"
-							+ remplazarEspaciosGuion(value.clave)
+					'name' : remplazarEspaciosGuion(value.casoUso.clave) 
+					+ separador1 + value.casoUso.numero + separador2
+					+ remplazarEspaciosGuion(value.clave)
 				};
+				 // TRAY.CUMODULO.NUM:NOMBRECU:CLAVETRAY
 			});
 			var at_config = {
-				at : token + ".",
+				at : token + separador1,
 				data : lista,
-				displayTpl : "<li><span class=\"listaToken\">"
-						+ token
-						+ "</span>"
-						+ "."
+				displayTpl : "<li><span class=\"listaToken\">" + token
+						+ separador1 + "</span>"
 						+ "<span class=\"listaNombre\">${claveCU}${numeroCU}"
-						+ ": </span><span class=\"listaElementoInteres\">${clave}</span></li>",
+						+ separador2 + " ${nombreCU}" + separador2 
+						+ " </span><span class=\"listaElementoInteres\">${clave}</span></li>",
 				limit : 200
 			}
 		} else if (tipo == "F") {
@@ -269,18 +267,19 @@ var token = function() {
 					"numero" : value.numero,
 					"nombre" : value.trayectoria.casoUso.nombre,
 					'name' : value.trayectoria.casoUso.clave
-					+ "." + value.trayectoria.casoUso.numero + ":"
-					+ remplazarEspaciosGuion(value.trayectoria.casoUso.nombre) + ":" + remplazarEspaciosGuion(value.trayectoria.clave) + "."
+					+ separador1 + value.trayectoria.casoUso.numero + separador2
+					+ remplazarEspaciosGuion(value.trayectoria.casoUso.nombre) + separador2 + remplazarEspaciosGuion(value.trayectoria.clave) + separador1
 					+ value.numero
 				};
 			});
 			var at_config = {
-				at : token + ".",
+				at : token + separador1,
 				data : lista,
 				displayTpl : "<li><span class=\"listaToken\">" + token
-				+ "</span>" + "."
-				+ "<span class=\"listaNombre\">${claveCU}.${numeroCU}"
-				+ ":${nombre}:${claveTray}.</span><span class=\"listaElementoInteres\">${numero}</span></li>",
+				+ separador1 + "</span>" 
+				+ "<span class=\"listaNombre\">${claveCU}" + separador1 + "${numeroCU}"
+				+ separador2 + "${nombre}" + separador2 + "${claveTray}" 
+				+ separador1 +"</span><span class=\"listaElementoInteres\">${numero}</span></li>",
 				limit : 200
 			}
 		} else if (tipo == "G") {
@@ -289,26 +288,26 @@ var token = function() {
 					'id' : i,
 					"claveIU" : value.pantalla.clave,
 					"numeroIU" : value.pantalla.numero,
-					"nombreIU" : value.pantalla.nombre,
+					"nombreIU": value.pantalla.nombre,
 					"nombre" : value.nombre,
-					'name' : remplazarEspaciosGuion(value.pantalla.clave) + "."
-							+ value.pantalla.numero + ":"
-							+ remplazarEspaciosGuion(value.pantalla.nombre)
-							+ ":" + remplazarEspaciosGuion(value.nombre)
+					'name' : remplazarEspaciosGuion(value.pantalla.clave) 
+					+ separador1 + value.pantalla.numero
+					+ separador2 + remplazarEspaciosGuion(value.pantalla.nombre) 
+					+ separador2 + remplazarEspaciosGuion(value.nombre)
 				};
 			});
 			var at_config = {
-				at : token + ".",
+				at : token + separador1,
 				data : lista,
-				displayTpl : "<li><span class=\"listaToken\">"
-						+ token
-						+ "</span>"
-						+ "."
-						+ "<span class=\"listaNombre\">${claveIU}.${numeroIU}"
-						+ ": ${nombreIU}: </span><span class=\"listaElementoInteres\">${nombre}</span></li>",
+				displayTpl : "<li><span class=\"listaToken\">" + token
+						+ separador1 + "</span>" 
+						+ "<span class=\"listaNombre\">${claveIU}" + separador1 + "${numeroIU}"
+						+ separador2 + " ${nombreIU}" + separador2 
+						+ " </span><span class=\"listaElementoInteres\">${nombre}</span></li>",
 				limit : 200
 			}
 		}
+
 
 		return at_config;
 	}

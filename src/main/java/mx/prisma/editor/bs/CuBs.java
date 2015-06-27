@@ -83,7 +83,6 @@ public class CuBs {
 	}
 
 	public static void registrarCasoUso(CasoUso cu) throws Exception{
-		System.out.println("Postprecondicion " + cu.getPostprecondiciones());
 		try {
 				validar(cu);
 				new CasoUsoDAO().registrarCasoUso(cu);

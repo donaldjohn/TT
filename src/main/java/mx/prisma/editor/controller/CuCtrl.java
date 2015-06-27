@@ -93,9 +93,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		for (PostPrecondicion pp : casoUso.getPostprecondiciones()) {
 			pp.setCasoUso(casoUso);
 		}
-		System.out.println("jsonPrecondiciones " + jsonPrecondiciones);
-		System.out.println("jsonPostcondiciones " + jsonPostcondiciones);
-		System.out.println("desde ctrl postprecondiciones " + casoUso.getPostprecondiciones());
 	}
 
 	private void buscaElementos() {
@@ -259,7 +256,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 	public String create() throws PRISMAException, Exception {
 		String resultado = null;
-		System.out.println("Numero del cu " + model.getNumero());
 		try {
 			// Creación del modelo
 			modulo = SessionManager.consultarModuloActivo();
@@ -552,15 +548,12 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 
 		} catch (PRISMAValidacionException pve) {
-			System.out.println("1");
 			ErrorManager.agregaMensajeError(this, pve);
 			resultado = editNew();
 		}catch (PRISMAException pe) {
-			System.out.println("2");
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
 		} catch (Exception e) {
-			System.out.println("3");
 			ErrorManager.agregaMensajeError(this, e);
 			resultado = index();
 		}
