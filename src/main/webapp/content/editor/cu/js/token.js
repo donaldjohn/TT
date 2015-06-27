@@ -165,7 +165,7 @@ var token = function() {
 			var at_config = {
 				at : token + ".",
 				data : lista,
-				displayTpl : "<li><span class=\"listaToken\">"
+				displayTpl : "<li tittle =\"Tooltip\"><span class=\"listaToken\">"
 						+ token
 						+ "</span>"
 						+ "."

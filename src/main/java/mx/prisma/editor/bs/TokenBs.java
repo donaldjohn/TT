@@ -54,7 +54,7 @@ public class TokenBs {
 	private static String tokenTray = "TRAY."; // TRAY.CUMODULO.NUM:NOMBRECU:CLAVETRAY
 	private static String tokenACC = "ACC."; // ACC.IUMODULO.NUM:NOMBRE_ACC =
 												// ACC.IUSF.7:Registrar_incendio:Aceptar
-	private static String tokenSeparator1 = ".";
+	private static String tokenSeparator1 = "·";
 	private static String tokenSeparator2 = ":";
 
 	public static String codificarCadenaToken(String redaccion,
