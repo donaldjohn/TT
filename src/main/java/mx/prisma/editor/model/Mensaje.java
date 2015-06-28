@@ -2,8 +2,14 @@ package mx.prisma.editor.model;
 
 // Generated 07-jun-2015 17:10:34 by Hibernate Tools 4.0.0
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
@@ -23,6 +29,7 @@ public class Mensaje extends Elemento implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private String redaccion;
 	private boolean parametrizado;
+	private Set<MensajeParametro> parametros = new HashSet<MensajeParametro>(0);
 
 	public Mensaje() {
 	}
@@ -50,6 +57,15 @@ public class Mensaje extends Elemento implements java.io.Serializable {
 
 	public void setParametrizado(boolean parametrizado) {
 		this.parametrizado = parametrizado;
+	}
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "mensaje", cascade = CascadeType.ALL )	
+	public Set<MensajeParametro> getParametros() {
+		return parametros;
+	}
+
+	public void setParametros(Set<MensajeParametro> parametros) {
+		this.parametros = parametros;
 	}
 
 }

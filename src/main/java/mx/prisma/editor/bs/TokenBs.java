@@ -1264,6 +1264,7 @@ public class TokenBs {
 		ReglaNegocio reglaNegocio;
 		Paso paso;
 		TerminoGlosario terminoGlosario;
+		Trayectoria trayectoria;
 
 		for (Object objeto : objetos) {
 			switch (Referencia.getTipoRelacion(
@@ -1354,11 +1355,11 @@ public class TokenBs {
 				referenciaParametro.setNumerToken(numeroTokenTerminoGlosario++);
 				break;
 			case TRAYECTORIA_POSTPRECONDICIONES:
-				terminoGlosario = (TerminoGlosario) objeto;
+				trayectoria = (Trayectoria) objeto;
 				tipoParametro = new TipoParametroDAO()
 						.consultarTipoParametro("Trayectoria");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
-				referenciaParametro.setElementoDestino(terminoGlosario);
+				referenciaParametro.setTrayectoria(trayectoria);
 				referenciaParametro.setNumerToken(numeroTokenTrayectoria++);
 				break;
 			default:

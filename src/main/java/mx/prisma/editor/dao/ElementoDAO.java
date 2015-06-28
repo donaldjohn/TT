@@ -46,19 +46,28 @@ public class ElementoDAO {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Elemento consultarElemento(int id) {
-		Elemento elemento = null;
+		List<Elemento> elementos = null;
 
 		try {
 			session.beginTransaction();
-			elemento = (Elemento) session.get(Elemento.class, id);
+			Query query = session
+					.createQuery("from Elemento where id = :id");
+			query.setParameter("id", id);
+			elementos = query.list();
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
-
-		return elemento;
+		if (elementos == null) {
+			return null;
+		} else 
+			if (elementos.isEmpty()){
+				return null;
+			} else 
+				return elementos.get(0);
 
 	}
 
@@ -155,12 +164,10 @@ public class ElementoDAO {
 		
 		return results;
 	}
+
+	@SuppressWarnings("unchecked")
 	public List<Entidad> consultarEntidades(Referencia.TipoReferencia tipoReferencia, String claveProyecto) {
-		List<Entidad> entidades = null;
-		
-		
-		
-		
+		List<Entidad> entidades = null;	
 		try {
 			session.beginTransaction();
 			SQLQuery query = session

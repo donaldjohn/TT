@@ -36,6 +36,7 @@ public class ReferenciaParametro implements java.io.Serializable {
 	
 	// Entidad a la que se hizo referencia
 	private Paso pasoDestino;
+	private Trayectoria trayectoria;
 	private Elemento elementoDestino;
 	private Accion accionDestino;
 	private Atributo atributo;
@@ -147,6 +148,16 @@ public class ReferenciaParametro implements java.io.Serializable {
 
 	public void setNumerToken(int numerToken) {
 		this.numerToken = numerToken;
+	}
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "Trayectoriaid", referencedColumnName="id", nullable = true)
+	public Trayectoria getTrayectoria() {
+		return trayectoria;
+	}
+
+	public void setTrayectoria(Trayectoria trayectoria) {
+		this.trayectoria = trayectoria;
 	}
 	
 	
