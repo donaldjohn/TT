@@ -18,4 +18,8 @@ public class Validador {
 		return set == null || set.size() == 0;
 	}
 
+	public static boolean contieneCaracterInvalido(String cadena) {
+		return  cadena.contains("_") || cadena.contains(":") || cadena.contains("·");
+	}
+
 }

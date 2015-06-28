@@ -18,7 +18,6 @@ public class TrayectoriaBs {
 
 	public static void registrarTrayectoria(Trayectoria model) throws Exception {
 		try {
-				System.out.println("pasos en registrar trayectoria" + model.getPasos());
 				validar(model);
 				new TrayectoriaDAO().registrarTrayectoria(model);
 		} catch (JDBCException je) {
@@ -48,6 +47,10 @@ public class TrayectoriaBs {
 		if(model.getClave().contains(" ")) {
 			throw new PRISMAValidacionException("La clave contiene espacios.", "MSG19", new String[] { "La",
 			"clave"}, "model.clave");
+		}
+		if(Validador.contieneCaracterInvalido(model.getClave())) {
+			throw new PRISMAValidacionException("El usuario ingreso una clave con caracter inválido.", "MSG23", new String[] { "El",
+			"nombre"}, "model.clave");
 		}
 
 		if(!model.isAlternativa()) {

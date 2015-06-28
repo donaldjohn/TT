@@ -119,6 +119,10 @@ public class CuBs {
 			throw new PRISMAValidacionException("El usuario ingreso un nombre muy largo.", "MSG6", new String[] { "200",
 			"caracteres"}, "model.nombre");
 		}
+		if(Validador.contieneCaracterInvalido(cu.getNombre())) {
+			throw new PRISMAValidacionException("El usuario ingreso un nombre con caracter inválido.", "MSG23", new String[] { "El",
+			"nombre"}, "model.nombre");
+		}
 		//Validaciones de la Descripción
 		if(cu.getDescripcion() != null && Validador.validaLongitudMaxima(cu.getDescripcion(), 999)) {
 			throw new PRISMAValidacionException("El usuario ingreso una descripcion muy larga.", "MSG6", new String[] { "999",
