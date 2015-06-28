@@ -182,7 +182,6 @@ public class CasoUsoDAO extends ElementoDAO {
 	}
 
 	public void registrarCasoUso(CasoUso casodeuso) {
-		System.out.println(casodeuso.getPostprecondiciones().size());
 		//cleanRelaciones(casodeuso);
 		preAlmacenarObjetosToken(casodeuso);
 		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -220,7 +219,7 @@ public class CasoUsoDAO extends ElementoDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public CasoUso consultarCasoUso(String clave, int numero, Proyecto proyecto) {
+	public CasoUso consultarCasoUso(String clave, String numero, Proyecto proyecto) {
 		List<CasoUso> casosdeuso = null;
 
 		try {

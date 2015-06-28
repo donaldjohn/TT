@@ -279,7 +279,7 @@ public class TokenBs {
 			case TRAYECTORIA: // TRAY.CUMODULO.NUM:NOMBRECU:CLAVETRAY
 				trayectoria = null;
 				casoUso = new CasoUsoDAO().consultarCasoUso(segmentos.get(1),
-						Integer.parseInt(segmentos.get(2)), proyecto);
+						segmentos.get(2), proyecto);
 				if (casoUso == null) {
 					String[] parametros = { "el", "caso de uso",
 							segmentos.get(1) + segmentos.get(2), "registrado" };
@@ -315,7 +315,7 @@ public class TokenBs {
 				break;
 			case PASO: // P.CUMODULO.NUM:NOMBRECU:CLAVETRAY.NUMERO
 				casoUso = new CasoUsoDAO().consultarCasoUso(segmentos.get(1),
-						Integer.parseInt(segmentos.get(2)), proyecto);
+						segmentos.get(2), proyecto);
 				if (casoUso == null) {
 					String[] parametros = { "el", "caso de uso",
 							segmentos.get(1) + segmentos.get(2), "registrado" };
@@ -616,9 +616,10 @@ public class TokenBs {
 				}
 				objetos.add(reglaNegocio);
 				break;
+							  // TRAY·CUSF·001:s:A 
 			case TRAYECTORIA: // TRAY.CUMODULO.NUM:NOMBRECU:CLAVETRAY
 				casodeuso = new CasoUsoDAO().consultarCasoUso(segmentos.get(1),
-						Integer.parseInt(segmentos.get(2)), proyecto);
+						segmentos.get(2), proyecto);
 				if (casodeuso == null) {
 					String[] parametros = { "el", "caso de uso",
 							segmentos.get(1) + segmentos.get(2), "registrado" };
@@ -647,7 +648,7 @@ public class TokenBs {
 
 					throw new PRISMAValidacionException(
 							"TokenBs.convertirToken_Objeto: La trayectoria "
-									+ segmentos.get(4) + "del caso de uso"
+									+ segmentos.get(4) + " del caso de uso "
 									+ segmentos.get(1) + segmentos.get(2)
 									+ " no está registrada", "MSG15",
 							parametros);
@@ -657,7 +658,7 @@ public class TokenBs {
 
 			case PASO: // P.CUMODULO.NUM:NOMBRECU:CLAVETRAY.NUMERO
 				casodeuso = new CasoUsoDAO().consultarCasoUso(segmentos.get(1),
-						Integer.parseInt(segmentos.get(2)), proyecto);
+						segmentos.get(2), proyecto);
 				if (casodeuso == null) {
 					String[] parametros = { "el", "caso de uso",
 							segmentos.get(1) + segmentos.get(2), "registrado" };
