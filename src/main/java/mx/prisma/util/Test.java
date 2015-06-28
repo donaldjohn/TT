@@ -1,9 +1,7 @@
 package mx.prisma.util;
 
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.regex.Pattern;
 
 import mx.prisma.admin.dao.ColaboradorDAO;
 import mx.prisma.admin.dao.EstadoProyectoDAO;
@@ -15,7 +13,6 @@ import mx.prisma.admin.model.EstadoProyecto;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.admin.model.Rol;
 import mx.prisma.admin.model.Telefono;
-import mx.prisma.editor.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.dao.ActorDAO;
 import mx.prisma.editor.dao.CardinalidadDAO;
 import mx.prisma.editor.dao.CasoUsoDAO;
@@ -222,14 +219,13 @@ public class Test {
 		Modulo modulo = new ModuloDAO().consultarModulo(claveModulo, proyecto);
 		String clave = "CU" + modulo.getClave();
 
-		int numero = new CasoUsoDAO().lastIndexOfElemento(TipoReferencia.CASOUSO, modulo);
 
 		/*
 		 * String clave, int numero, String nombre, Proyecto proyecto, String
 		 * descripcion, EstadoElemento estadoElemento, Modulo modulo) {
 		 * super(clave, numero, nombre, proyecto, descripcion, estadoElemento
 		 */
-		CasoUso cu = new CasoUso(clave, numero + "", nombre, proyecto, "Este caso uso permite registrar incendios",
+		CasoUso cu = new CasoUso(clave, 1 + "", nombre, proyecto, "Este caso uso permite registrar incendios",
 				estadoElemento, modulo);
 
 		try {

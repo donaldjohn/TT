@@ -166,25 +166,25 @@ public class ElementoDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Entidad> consultarEntidades(Referencia.TipoReferencia tipoReferencia, String claveProyecto) {
-		List<Entidad> entidades = null;	
+	public List<Elemento> consultarElementos(TipoReferencia tipoReferencia, String claveProyecto) {
+		List<Elemento> elementos = null;	
 		try {
 			session.beginTransaction();
 			SQLQuery query = session
-					.createSQLQuery("SELECT * FROM Elemento INNER JOIN Entidad ON Elemento.id = Entidad.Elementoid WHERE Elemento.Proyectoid = :proyecto").addEntity(Entidad.class);
+					.createSQLQuery("SELECT * FROM Elemento INNER JOIN "+ Referencia.getTabla(tipoReferencia) +" ON Elemento.id = Referencia.getTabla(tipoReferencia).Elementoid WHERE Elemento.Proyectoid = :proyecto").addEntity(Entidad.class);
 			query.setParameter("proyecto", claveProyecto);
-			entidades = query.list();
+			elementos = query.list();
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
-		if (entidades == null){
+		if (elementos == null){
 			return null;
-		} else  if (entidades.isEmpty()){
+		} else  if (elementos.isEmpty()){
 			return null;
 		} else
-			return entidades;
+			return elementos;
 	}
 
 }

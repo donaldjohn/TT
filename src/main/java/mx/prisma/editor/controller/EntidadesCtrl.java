@@ -18,6 +18,7 @@ import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.Referencia;
 import mx.prisma.editor.bs.TrayectoriaBs;
 import mx.prisma.editor.dao.EntidadDAO;
+import mx.prisma.editor.dao.TipoDatoDAO;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Atributo;
@@ -85,13 +86,8 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 		String resultado = null;
 		try {
 			//Se consulta el proyecto para mostrar la informacion en pantalla
-			proyecto = SessionManager.consultarProyectoActivo();
-			model.setCasoUso(casoUso);
-			
-			existeTPrincipal = existeTrayectoriaPrincipal();
-			buscaElementos();
+			proyecto = SessionManager.consultarProyectoActivo();			
 			buscaCatalogos();
-			
 			resultado = EDITNEW;
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
@@ -120,18 +116,7 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 	}
 
 	private void buscaCatalogos() {
-		//Se llena la lista del catálogo de quien realiza
-		listRealiza = new ArrayList<String>();
-		listRealiza.add("Actor");
-		listRealiza.add("Sistema");
-		
-		//Se llena la lista par indicar si es alternativa o no
-		listAlternativa = new ArrayList<String>();
-		listAlternativa.add("Principal");
-		listAlternativa.add("Alternativa");
-		
-		//Se extraen los verbos de la BD
-		listVerbos = CuBs.consultarVerbos();
+		listTipoDato = new TipoDatoDAO().
 	}
 
 	/**
