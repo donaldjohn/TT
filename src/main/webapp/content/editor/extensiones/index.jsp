@@ -7,13 +7,13 @@
 <head>
 <title>Puntos de extensión</title>
 <![CDATA[
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/trayectorias/js/index.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/extensiones/js/index.js"></script>
 ]]>
 </head>
 
 <body>
-	<h1>Gestionar Puntos de extensión</h1>
-	<h3><s:property value="%{model.casoUsoOrigen.clave + ' ' + model.casoUsoOrigen.numero + ' ' + model.casoUsoOrigen.nombre}"/></h3>
+	<h3>Gestionar Puntos de extensión</h3>
+	<h1><s:property value="%{model.casoUsoOrigen.clave + model.casoUsoOrigen.numero + ' ' + model.casoUsoOrigen.nombre}"/></h1>
 	<s:actionmessage theme="jquery"/>
 	<s:actionerror theme="jquery"/>
 	
@@ -22,10 +22,10 @@
 	<div class="form">
 		<table id="gestion" class="tablaGestion" cellspacing="0" width="100%">
 			<thead>
-				<th style="width: 15%;"><s:text name="colCausa"/></th>
-				<th style="width: 40%;"><s:text name="colRegion"/></th>
+				<th style="width: 35%;"><s:text name="colCausa"/></th>
+				<th style="width: 30%;"><s:text name="colRegion"/></th>
 				<th style="width: 25%;"><s:text name="colExtiende"/></th>
-				<th style="width: 15%;"><s:text name="colAcciones"/></th>
+				<th style="width: 10%;"><s:text name="colAcciones"/></th>
 				
 			</thead>
 			<tbody>
@@ -33,7 +33,7 @@
 				<tr>
 					<td><s:property value="%{#ext.causa}"/></td>
 					<td><s:property value="%{#ext.region}"/></td>
-					<td><s:property value="%{#ext.casoUsoOrigen.clave + #ext.casoUsoOrigen.numero + ' ' + #ext.casoUsoOrigen.nombre}"/></td>
+					<td><s:property value="%{#ext.casoUsoDestino.clave + #ext.casoUsoDestino.numero + ' ' + #ext.casoUsoDestino.nombre}"/></td>
 					
 					<td align="center">
 						<s:a href="#">
