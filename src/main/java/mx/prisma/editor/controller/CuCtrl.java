@@ -8,6 +8,7 @@ import java.util.Set;
 import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.CuBs;
+import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.Referencia;
 import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.model.Accion;
@@ -263,8 +264,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 						
 			model.setProyecto(proyecto);
 			model.setModulo(modulo);
-			model.setEstadoElemento(CuBs.consultarEstadoElemento(CuBs
-					.getIdEdicion()));
+			model.setEstadoElemento(ElementoBs.consultarEstadoElemento(ElementoBs.getIDEstadoEdicion()));
 			
 			//Se agregan las postcondiciones y precondiciones
 			agregarPostPrecondiciones(model);

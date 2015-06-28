@@ -24,7 +24,7 @@ public class TrayectoriaBs {
 				if(je.getErrorCode() == 1062)
 				{
 					throw new PRISMAValidacionException("La clave de la trayectoria ya existe.", "MSG7",
-							new String[] { "La","trayectoria", model.getClave()}, "model.clave");
+							new String[] { "La","Trayectoria", model.getClave()}, "model.clave");
 				}
 				System.out.println("ERROR CODE " + je.getErrorCode());
 				je.printStackTrace();

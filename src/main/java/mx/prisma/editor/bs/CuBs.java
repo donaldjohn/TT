@@ -47,7 +47,8 @@ public class CuBs {
 		idAutor = "NGHS";
 		String idAutorCU = "NGHS";
 		//PENDIENTE AGREGAR TODOS LOS CASOS EN LOS QUE ES POSIBLE EDITAR UN CU
-		if(cu.getEstadoElemento().getId() == getIdEdicion() && idAutor.equals(idAutorCU)) {
+		int idEdicion = ElementoBs.getIDEstadoEdicion();
+		if(cu.getEstadoElemento().getId() == idEdicion && idAutor.equals(idAutorCU)) {
 			return true;
 		}
 		return false;
@@ -168,14 +169,6 @@ public class CuBs {
 		}
 	}
 
-	public static EstadoElemento consultarEstadoElemento(int i) throws Exception{
-		EstadoElemento estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(i);
-		if(estadoElemento == null) {
-			throw new PRISMAException("No se puede consultar el estado del elemento", "MSG13");
-		}
-		return estadoElemento;
-	}
-
 	public static String calcularClave(String cModulo) {
 		return "CU" + cModulo;
 	}
@@ -199,16 +192,6 @@ public class CuBs {
 		return "Autor";
 	}
 	
-	public static boolean esEditable(int idEstado) {
-		System.out.println("Estado " + idEstado + " == idEdicion " + getIdEdicion());
-		return idEstado == getIdEdicion();
-	}
-	
-	public static int getIdEdicion()
-	{
-		return 1;
-	}
-
 	public static void modificarCasoUso(CasoUso modelAux) throws Exception {
 		try {
 				validar(modelAux);

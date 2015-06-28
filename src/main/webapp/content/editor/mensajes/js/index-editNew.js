@@ -12,11 +12,10 @@ function cambiarParametrizado(checkbox) {
 }
 
 function mostrarCamposParametros() {
+	console.log("desde mostrarcampos");
 	var seccionParametros = document.getElementById("seccionParametros");
 	var parametrizado = document.getElementById("idParametrizado");
-	
-	if(parametrizado.checked == true) {
-		console.log("Desde onchange");
-		seccionParametros.style.display = '';
-	}
+	var form = document.getElementById("frmCU");
+    //PENDIENTE verificar si contiene "PARAM." para no enviar la peticion siempre
+    form.submit();
 }

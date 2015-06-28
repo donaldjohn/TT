@@ -215,7 +215,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
 		} catch (Exception e) {
-			e.printStackTrace();
 			ErrorManager.agregaMensajeError(this, e);
 			resultado = index();
 		}

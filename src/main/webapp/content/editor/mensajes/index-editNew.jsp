@@ -26,7 +26,7 @@
 
 
 	<s:form id="frmCU" theme="simple"
-		action="%{#pageContext.request.contextPath}/mensaje" 
+		action="%{#pageContext.request.contextPath}/mensajes" 
 		method="post">
 		<div class="formulario">
 			<div class="tituloFormulario">Información general del mensaje</div>
@@ -57,17 +57,21 @@
 								fieldName="model.descripcion" cssClass="error"
 								theme="jquery" /></td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<td class="label"><s:text name="labelParametrizado" /></td>
 					<td><s:checkbox name="model.parametrizado" id="idParametrizado" onclick="cambiarParametrizado(this);"
 							cssErrorClass="input-error"></s:checkbox> 
 							<s:fielderror
 							fieldName="model.parametrizado" cssClass="error"
 							theme="jquery" /></td>
+				</tr> -->
+				<tr>
+					<td> </td>
+					<td><span class="textoAyuda">Para utilizar un parámetro escriba el token PARAM. más el nombre del parámetro.</span></td>
 				</tr>
 				<tr>
-						<td class="label"><s:text name="labelRedaccion" /></td>
-						<td><s:textarea rows="5" name="model.redaccion" cssClass="inputFormulario ui-widget"
+						<td class="label obligatorio"><s:text name="labelRedaccion" /></td>
+						<td><s:textarea rows="5" name="model.redaccion" cssClass="inputFormulario ui-widget" id="inputor"
 								maxlength="999" cssErrorClass="input-error" onchange="mostrarCamposParametros();"></s:textarea> 
 								<s:fielderror
 								fieldName="model.redaccion" cssClass="error"
@@ -83,7 +87,6 @@
 		</div>
 		<div class="formulario" style="display: none;" id = "seccionParametros">
 			<div class="tituloFormulario">Parámetros del mensaje</div>
-			<s:hidden value="%{@mx.prisma.editor.controller.MensajesCtrl@obtenerAlgo()}" id="jsonParametros"/>
 			<table class="seccion">
 				<tr>
 					
@@ -93,13 +96,15 @@
 		</div>
 		<br />
 		<div align="center">
+			
 		
 			<s:submit class="boton" value="Aceptar" />
 
 			<input class="boton" type="button"
-				onclick="location.href='${pageContext.request.contextPath}/cu'"
+				onclick="location.href='${pageContext.request.contextPath}/mensajes'"
 				value="Cancelar" />
 		</div>
+		<s:hidden value="%{seccionParamVisible}" name="seccionParamVisible" id="idSeccionParamVisible"/>
 	</s:form>
 </body>
 	</html>

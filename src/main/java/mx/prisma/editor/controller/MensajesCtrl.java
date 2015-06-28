@@ -9,12 +9,14 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import com.opensymphony.xwork2.ModelDriven;
 
 import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.CuBs;
+import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.MensajeBs;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Mensaje;
@@ -39,8 +41,10 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 	private Mensaje model;
 	private List<Mensaje> listMensajes;
 	
-	private List<String> campos;
-	
+	private List<String> listLabelParametros;
+	private List<String> listParametros;
+
+	private boolean seccionParamVisible;
 	public String index() {
 		try {
 			//Se consulta el proyecto activo
@@ -49,7 +53,6 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 			
 			model.setProyecto(proyecto);
 			listMensajes = MensajeBs.consultarMensajesProyecto(proyecto);
-			System.out.println("size listMensajes " + listMensajes.size());
 			
 			@SuppressWarnings("unchecked")
 			Collection<String> msjs = (Collection<String>) SessionManager.get("mensajesAccion");
@@ -86,6 +89,62 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 
 		return resultado;
 	}
+	
+	public String create() {
+		String resultado = null;
+		System.out.println("desde create redaccion " + model.getRedaccion());
+		/*if(esParametrizado() && !seccionParamVisible) {
+			cargarListaParametros();
+			return editNew();
+		}*/
+		try {
+			//Se prepara el modelo para el registro 
+			proyecto = SessionManager.consultarProyectoActivo();
+			model.setProyecto(proyecto);
+			model.setEstadoElemento(ElementoBs.consultarEstadoElemento(ElementoBs.getIDEstadoEdicion()));
+			
+			//Se registra el mensaje
+			MensajeBs.registrarMensaje(model);
+			resultado = SUCCESS;
+			
+			//Se agrega mensaje de éxito
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"Mensaje", "registrado" }));
+			
+			//Se agrega el mensaje a la sesión
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+			
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = editNew();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+
+	private boolean esParametrizado() {
+		//if(model.getRedaccion().contains(""))
+		return true;
+	}
+
+	private void cargarListaParametros() {
+		if(model.getRedaccion() != null) {
+			listLabelParametros = new ArrayList<String>();
+			listLabelParametros.add("Param1");
+			listLabelParametros.add("Param2");
+			listLabelParametros.add("Param3");
+			listLabelParametros.add("Param4");
+			listLabelParametros.add("Param5");
+			
+			listParametros = new ArrayList<String>();
+			listParametros.add("");
+		}
+	}
 
 	public void setSession(Map<String, Object> session) {
 		// TODO Auto-generated method stub
@@ -110,20 +169,31 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 	public void setModel(Mensaje model) {
 		this.model = model;
 	}
-	
-	public static String obtenerAlgo() {
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!XD!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		return "Hola mundo :(";
+
+	public boolean isSeccionParamVisible() {
+		return seccionParamVisible;
 	}
 
-	public List<String> getCampos() {
-		System.out.println("");
-		return campos;
+	public void setSeccionParamVisible(boolean seccionParamVisible) {
+		this.seccionParamVisible = seccionParamVisible;
 	}
 
-	public void setCampos(List<String> campos) {
-		this.campos = campos;
+	public List<String> getListParametros() {
+		return listLabelParametros;
 	}
+
+	public void setListParametros(List<String> listParametros) {
+		this.listLabelParametros = listParametros;
+	}
+
+	public List<String> getListLabelParametros() {
+		return listLabelParametros;
+	}
+
+	public void setListLabelParametros(List<String> listLabelParametros) {
+		this.listLabelParametros = listLabelParametros;
+	}
+
 	
 	
 }
