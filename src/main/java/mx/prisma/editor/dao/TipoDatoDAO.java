@@ -59,7 +59,7 @@ public class TipoDatoDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TipoDato> consultarTipoDato() {
+	public List<TipoDato> consultarTiposDato() {
 		List<TipoDato> results = null;
 
 		try {

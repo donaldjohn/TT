@@ -21,6 +21,7 @@ public class Parametro implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String nombre;
+	private String descripcion;
 
 	public Parametro() {
 	}
@@ -49,4 +50,12 @@ public class Parametro implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
+	@Column(name = "descripcion", nullable = false, length = 45)
+	public String getDescripcion() {
+		return this.descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
 }
