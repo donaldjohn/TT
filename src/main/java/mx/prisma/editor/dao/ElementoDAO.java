@@ -45,15 +45,14 @@ public class ElementoDAO {
 			session.getTransaction().rollback();
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Elemento consultarElemento(int id) {
 		List<Elemento> elementos = null;
 
 		try {
 			session.beginTransaction();
-			Query query = session
-					.createQuery("from Elemento where id = :id");
+			Query query = session.createQuery("from Elemento where id = :id");
 			query.setParameter("id", id);
 			elementos = query.list();
 			session.getTransaction().commit();
@@ -63,40 +62,45 @@ public class ElementoDAO {
 		}
 		if (elementos == null) {
 			return null;
-		} else 
-			if (elementos.isEmpty()){
-				return null;
-			} else 
-				return elementos.get(0);
+		} else if (elementos.isEmpty()) {
+			return null;
+		} else
+			return elementos.get(0);
 
 	}
 
 	@SuppressWarnings("unchecked")
-	public String siguienteNumero(TipoReferencia referencia, String claveProyecto) {
+	public String siguienteNumero(TipoReferencia referencia,
+			String claveProyecto) {
 		List<String> results = null;
 		String sentencia = "";
 		switch (referencia) {
-			case ACTOR:
-				sentencia = "SELECT MAX(CAST(numero AS SIGNED)) FROM Elemento INNER JOIN Actor ON Elemento.id = Actor.Elementoid WHERE Elemento.Proyectoid = "+claveProyecto+";";
+		case ACTOR:
+			sentencia = "SELECT MAX(CAST(numero AS SIGNED)) FROM Elemento INNER JOIN Actor ON Elemento.id = Actor.Elementoid WHERE Elemento.Proyectoid = "
+					+ claveProyecto + ";";
 			break;
 
-			case ENTIDAD:
-				sentencia = "SELECT MAX(CAST(numero AS SIGNED)) FROM Elemento INNER JOIN Entidad ON Elemento.id = Entidad.Elementoid WHERE Elemento.Proyectoid = "+claveProyecto+";";
-
-			break;
-
-			case MENSAJE:
-				sentencia = "SELECT MAX(CAST(numero AS SIGNED)) FROM Elemento INNER JOIN Mensaje ON Elemento.id = Mensaje.Elementoid WHERE Elemento.Proyectoid = "+claveProyecto+";";
+		case ENTIDAD:
+			sentencia = "SELECT MAX(CAST(numero AS SIGNED)) FROM Elemento INNER JOIN Entidad ON Elemento.id = Entidad.Elementoid WHERE Elemento.Proyectoid = "
+					+ claveProyecto + ";";
 
 			break;
 
-			case REGLANEGOCIO:
-				sentencia = "SELECT MAX(CAST(numero AS SIGNED)) FROM Elemento INNER JOIN ReglaNegocio ON Elemento.id = ReglaNegocio.Elementoid WHERE Elemento.Proyectoid = "+claveProyecto+";";
+		case MENSAJE:
+			sentencia = "SELECT MAX(CAST(numero AS SIGNED)) FROM Elemento INNER JOIN Mensaje ON Elemento.id = Mensaje.Elementoid WHERE Elemento.Proyectoid = "
+					+ claveProyecto + ";";
 
 			break;
 
-			case TERMINOGLS:
-				sentencia = "SELECT MAX(CAST(numero AS SIGNED)) FROM Elemento INNER JOIN TerminoGlosario ON Elemento.id = TerminoGlosario.Elementoid WHERE Elemento.Proyectoid = "+claveProyecto+";";
+		case REGLANEGOCIO:
+			sentencia = "SELECT MAX(CAST(numero AS SIGNED)) FROM Elemento INNER JOIN ReglaNegocio ON Elemento.id = ReglaNegocio.Elementoid WHERE Elemento.Proyectoid = "
+					+ claveProyecto + ";";
+
+			break;
+
+		case TERMINOGLS:
+			sentencia = "SELECT MAX(CAST(numero AS SIGNED)) FROM Elemento INNER JOIN TerminoGlosario ON Elemento.id = TerminoGlosario.Elementoid WHERE Elemento.Proyectoid = "
+					+ claveProyecto + ";";
 
 			break;
 		default:
@@ -113,23 +117,24 @@ public class ElementoDAO {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
-		
+
 		if (results == null) {
 			return null;
-		} else 
-			if (results.isEmpty()) {
-				return 1 + "";
-			} else
-				return results.get(0);
+		} else if (results.isEmpty()) {
+			return 1 + "";
+		} else
+			return results.get(0);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Elemento consultarElemento(String nombre, Proyecto proyecto, String tabla) {
-		List<Elemento> results  = null;
+	public Elemento consultarElemento(String nombre, Proyecto proyecto,
+			String tabla) {
+		List<Elemento> results = null;
 
 		try {
 			session.beginTransaction();
-			Query query = session.createQuery("from "+tabla+" where nombre = :nombre AND Proyectoid = :proyecto");
+			Query query = session.createQuery("from " + tabla
+					+ " where nombre = :nombre AND Proyectoid = :proyecto");
 			query.setParameter("nombre", nombre);
 			query.setParameter("proyecto", proyecto.getId());
 
@@ -139,20 +144,21 @@ public class ElementoDAO {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
-		if (results.isEmpty()){
+		if (results.isEmpty()) {
 			return null;
-		} else 
+		} else
 			return results.get(0);
 
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<Elemento> consultarElementos(Proyecto proyecto){
+	public ArrayList<Elemento> consultarElementos(Proyecto proyecto) {
 		ArrayList<Elemento> results = null;
 
 		try {
 			session.beginTransaction();
-			Query query = session.createQuery("from Elemento where Proyectoid = :proyecto");
+			Query query = session
+					.createQuery("from Elemento where Proyectoid = :proyecto");
 			query.setParameter("proyecto", proyecto.getId());
 			results = (ArrayList<Elemento>) query.list();
 			session.getTransaction().commit();
@@ -161,17 +167,24 @@ public class ElementoDAO {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
-		
+
 		return results;
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Elemento> consultarElementos(TipoReferencia tipoReferencia, int idProyecto) {
-		List<Elemento> elementos = null;	
+	public List<Elemento> consultarElementos(TipoReferencia tipoReferencia,
+			int idProyecto) {
+		List<Elemento> elementos = null;
 		try {
 			session.beginTransaction();
 			SQLQuery query = session
-					.createSQLQuery("SELECT * FROM Elemento INNER JOIN "+ Referencia.getTabla(tipoReferencia) +" ON Elemento.id = Referencia.getTabla(tipoReferencia).Elementoid WHERE Elemento.Proyectoid = :proyecto").addEntity(Entidad.class);
+					.createSQLQuery(
+							"SELECT * FROM Elemento INNER JOIN "
+									+ Referencia.getTabla(tipoReferencia)
+									+ " ON Elemento.id = "
+									+ Referencia.getTabla(tipoReferencia)
+									+ ".Elementoid WHERE Elemento.Proyectoid = :proyecto")
+					.addEntity(Referencia.getClase(tipoReferencia));
 			query.setParameter("proyecto", idProyecto);
 			elementos = query.list();
 			session.getTransaction().commit();
@@ -179,9 +192,9 @@ public class ElementoDAO {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
-		if (elementos == null){
+		if (elementos == null) {
 			return null;
-		} else  if (elementos.isEmpty()){
+		} else if (elementos.isEmpty()) {
 			return null;
 		} else
 			return elementos;

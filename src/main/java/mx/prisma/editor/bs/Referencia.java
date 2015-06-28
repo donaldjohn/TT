@@ -297,4 +297,35 @@ public class Referencia {
 		}
 		return null;
 	}
+	
+	public static Class getClase(TipoReferencia referencia) {
+		switch(referencia){
+		case ACCION:
+			return Accion.class;
+		case ACTOR:
+			return Actor.class;
+		case ATRIBUTO:
+			return Atributo.class;
+		case CASOUSO:
+			return CasoUso.class;
+		case ENTIDAD:
+			return Entidad.class;		
+		case MENSAJE:
+			return Mensaje.class;
+		case PANTALLA:
+			return Pantalla.class;
+		case PASO:
+			return Paso.class;
+		case REGLANEGOCIO:
+			return ReglaNegocio.class;
+		case TERMINOGLS:
+			return TerminoGlosario.class;
+		case TRAYECTORIA:
+			return Trayectoria.class;
+		default:
+			break;
+		
+		}
+		return null;
+	}
 }
