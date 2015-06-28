@@ -53,7 +53,7 @@ public class MensajeParametro implements java.io.Serializable {
 		return mensaje;
 	}
 	
-	public void setMensaje(Mensaje mensaje) {
+	public void setMensaje(Mensaje mensaje) { 
 		this.mensaje = mensaje;
 	}
 	
