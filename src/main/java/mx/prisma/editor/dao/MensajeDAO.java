@@ -34,9 +34,9 @@ public class MensajeDAO extends ElementoDAO {
 				Referencia.getTabla(TipoReferencia.MENSAJE));
 	}
 
-	public List<Mensaje> consultarMensajes(String claveProyecto) {
+	public List<Mensaje> consultarMensajes(int idProyecto) {
 		List<Mensaje> mensajes = new ArrayList<Mensaje>();
-		List<Elemento> elementos = super.consultarElementos(TipoReferencia.MENSAJE, claveProyecto);
+		List<Elemento> elementos = super.consultarElementos(TipoReferencia.MENSAJE, idProyecto);
 		for (Elemento elemento : elementos) {
 			mensajes.add((Mensaje)elemento);
 		}

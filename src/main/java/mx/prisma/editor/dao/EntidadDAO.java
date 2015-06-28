@@ -32,9 +32,9 @@ public class EntidadDAO extends ElementoDAO {
 		return (Entidad) super.consultarElemento(numero);
 	}
 	
-	public List<Entidad> consultarEntidades(String claveProyecto) {
+	public List<Entidad> consultarEntidades(int idProyecto) {
 		List<Entidad> entidades = new ArrayList<Entidad>();
-		List<Elemento> elementos = super.consultarElementos(TipoReferencia.ENTIDAD, claveProyecto);
+		List<Elemento> elementos = super.consultarElementos(TipoReferencia.ENTIDAD,  idProyecto);
 		for (Elemento elemento : elementos) {
 			entidades.add((Entidad) elemento);
 		}

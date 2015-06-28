@@ -166,13 +166,13 @@ public class ElementoDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Elemento> consultarElementos(TipoReferencia tipoReferencia, String claveProyecto) {
+	public List<Elemento> consultarElementos(TipoReferencia tipoReferencia, int idProyecto) {
 		List<Elemento> elementos = null;	
 		try {
 			session.beginTransaction();
 			SQLQuery query = session
 					.createSQLQuery("SELECT * FROM Elemento INNER JOIN "+ Referencia.getTabla(tipoReferencia) +" ON Elemento.id = Referencia.getTabla(tipoReferencia).Elementoid WHERE Elemento.Proyectoid = :proyecto").addEntity(Entidad.class);
-			query.setParameter("proyecto", claveProyecto);
+			query.setParameter("proyecto", idProyecto);
 			elementos = query.list();
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
