@@ -20,9 +20,6 @@ import mx.prisma.util.Validador;
 public class MensajeBs {
 
 	public static List<Mensaje> consultarMensajesProyecto(Proyecto proyecto) {
-		//String clave, String numero, String nombre,
-		//Proyecto proyecto, String descripcion, EstadoElemento estadoElemento, String redaccion,
-		//boolean parametrizado
 		List<Mensaje> listMensajes = new MensajeDAO().consultarMensajes(proyecto.getId());
 		if(listMensajes == null) {
 			throw new PRISMAException("No se pueden consultar los mensajes.", "MSG13");
@@ -56,7 +53,7 @@ public class MensajeBs {
 			throw new PRISMAValidacionException("El usuario no ingresó el número del mensaje.", "MSG4", null, "model.numero");
 		}
 		if(!Pattern.matches("[0-9]+", model.getNumero())) {
-			throw new PRISMAValidacionException("El usuario no ingresó el número del cu.", "MSG5", new String[]{"un", "número"}, "model.numero");
+			throw new PRISMAValidacionException("El usuario no ingresó el número del mensaje.", "MSG5", new String[]{"un", "número entero"}, "model.numero");
 		}
 		
 		//Se asegura la unicidad del nombre y del numero
@@ -68,7 +65,7 @@ public class MensajeBs {
 							new String[] { "El","Mensaje", msj.getNombre()}, "model.nombre");
 				}
 				if(msj.getNumero().equals(model.getNumero())) {
-					throw new PRISMAValidacionException("El numero del caso de uso ya existe.", "MSG7",
+					throw new PRISMAValidacionException("El numero del mensaje ya existe.", "MSG7",
 							new String[] { "El","Mensaje", msj.getNumero()}, "model.numero");
 				}
 			}
@@ -96,7 +93,7 @@ public class MensajeBs {
 			throw new PRISMAValidacionException("El usuario no ingresó la redaccion del mensaje.", "MSG4", null, "model.redaccion");
 		}
 		if(model.getRedaccion() != null && Validador.validaLongitudMaxima(model.getRedaccion(), 999)) {
-			throw new PRISMAValidacionException("El usuario ingreso una descripcion muy larga.", "MSG6", new String[] { "999",
+			throw new PRISMAValidacionException("El usuario ingreso una redaccion muy larga.", "MSG6", new String[] { "999",
 			"caracteres"}, "model.redaccion");
 		}
 		

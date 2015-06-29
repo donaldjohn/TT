@@ -82,7 +82,7 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			resultado = editNew();
-		}catch (PRISMAException pe) {
+		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
 		} catch (Exception e) {

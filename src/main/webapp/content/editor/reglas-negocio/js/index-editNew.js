@@ -3,74 +3,71 @@ var contextPath = "prisma";
 
 $(document).ready(function() {
 	contextPath = $("#rutaContexto").val();
-	$('table.tablaGestion').DataTable();
-	verificarAlternativaPrincipal();
-	ocultarColumnas("tablaPaso");
-	token.cargarListasToken();
-	cambiarElementosAlternativaPrincipal();
-	var json = $("#jsonPasosTabla").val();
-	
+	//Agregar Elementos a la lista desplegable
+	var json = $("#jsonAtributos").val();
 	if (json !== "") {
+		var entidades = document.getElementById("entidades");
 		var parsedJson = JSON.parse(json);
-		alert("parsedJson: " + parsedJson);
 		$
 				.each(
 						parsedJson,
 						function(i, item) {
-							var realizaImg;
-					    	//Se agrega la imagen referente a quien realiza el paso
-					    	if(item.realizaActor == true) {
-					    		realizaImg = "<img src='" + window.contextPath + 
-								"/resources/images/icons/actor.png' title='Actor' style='vertical-align: middle;'/>";
-					    	} else if(item.realizaActor == false) {
-					    		realizaImg = "<img src='" + window.contextPath + 
-								"/resources/images/icons/uc.png' title='Sistema' style='vertical-align: middle;'/>";
-					    	}
-							var paso = [
-								item.numero,
-								realizaImg + " " + item.verbo.nombre + " " + item.redaccion,
-								item.realizaActor,
-								item.verbo.nombre, 
-								item.redaccion,
-								"<center>" +
-									"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"up\");' button='true'>" +
-									"<img class='icon'  id='icon' src='" + window.contextPath + 
-									"/resources/images/icons/flechaArriba.png' title='Subir Paso'/></a>" +
-									"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"down\");' button='true'>" +
-									"<img class='icon'  id='icon' src='" + window.contextPath + 
-									"/resources/images/icons/flechaAbajo.png' title='Bajar Paso'/></a>" +
-									"<a button='true'>" +
-									"<img class='icon'  id='icon' src='" + window.contextPath + 
-									"/resources/images/icons/editar.png' title='Modificar Paso'/></a>" +
-									"<a onclick='dataTableCDT.deleteRowPasos(tablaPaso, this);' button='true'>" +
-									"<img class='icon'  id='icon' src='" + window.contextPath + 
-									"/resources/images/icons/eliminar.png' title='Eliminar Paso'/></a>" +
-								"</center>" ];
-							dataTableCDT.addRow("tablaPaso",paso);
+							var option = document.createElement("option");
+							option.text = item.nombre;
+							option.index = i;
+							entidades.add(option);
 						});
 	}
 } );
 
-function cambiarElementosAlternativaPrincipal() {
-	var select = document.getElementById("idAlternativaPrincipal");
-	var varAlternativaPrincipal = select.options[select.selectedIndex].text;
+function mostrarCamposTipoRN() {
+	var select = document.getElementById("idTipoRN");
+	var tipoRN = select.options[select.selectedIndex].text;
 	
-	if(varAlternativaPrincipal == "Principal"){
-		//Si es una trayectoria principal
-		document.getElementById("filaCondicion").style.display = 'none';
-	    document.getElementById("model.idCondicion").value = "";
-	    document.getElementById("model.finCasoUso").checked = true;
-	    document.getElementById("model.finCasoUso").disabled = true;
-	} else if(varAlternativaPrincipal == "Alternativa") {
-		//Si es una trayectoria alternativa
-		document.getElementById("filaCondicion").style.display = '';
-		document.getElementById("model.finCasoUso").checked = false;
-		document.getElementById("model.finCasoUso").disabled = false;
-	} else if(varAlternativaPrincipal == "Seleccione"){
-		document.getElementById("filaCondicion").style.display = 'none';
-		document.getElementById("model.finCasoUso").checked = false;
-		document.getElementById("model.finCasoUso").disabled = false;
-	}
+	if(tipoRN == "Verificación de catálogos"){
+		console.log("1");
+	} else if(tipoRN == "Operaciones aritméticas") {
+		console.log("2");
+	} else if(tipoRN == "Unicidad de parámetros"){
+		console.log("3");
+	} else if(tipoRN == "Datos obligatorios"){
+		console.log("4");
+	} else if(tipoRN == "Longitud correcta"){
+		console.log("5");
+	} else if(tipoRN == "Tipo de dato correcto"){
+		console.log("6");
+	} else if(tipoRN == "Formato de archivos"){
+		console.log("7");
+	} else if(tipoRN == "Tamaño de archivos"){
+		console.log("8");
+	} else if(tipoRN == "Intervalo de fechas correctas"){
+		console.log("9");
+	} else if(tipoRN == "Formato correcto"){
+		console.log("10");
+	} else if(tipoRN == "Otro"){
+		console.log("11");
+	} 
+}
+
+function mostrarAtributos() {
+	var select = document.getElementById("idEntidad");
+	console.log("idEntidad desde mostrarAtributos " + select);
+	rutaCargarAtributos = contextPath + '/reglas-negocio!cargarAtributos';
+	console.log("rutaCargarAtributos: " + rutaCargarAtributos);
+	$.ajax({
+		url : rutaCargarAtributos,
+		data : {
+			idEntidad : idEntidad
+		},
+		cache : false,
+		dataType : 'json',
+		success : function(data) {
+			mostrarListaAtributos(data);
+		},
+		error : function(data) {
+			console.log("Error en la petición");
+		}
+	});
 }
 
 function registrarPaso(){
