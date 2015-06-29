@@ -37,7 +37,7 @@ public class Atributo implements java.io.Serializable {
 	private boolean obligatorio;
 	private Integer longitud;
 	private String formatoArchivo;
-	private Float tamañoArchivo;
+	private Float tamanioArchivo;
 	private UnidadTamanio unidadTamanio;
 	private TipoDato tipoDato;
 
@@ -118,11 +118,11 @@ public class Atributo implements java.io.Serializable {
 	
 	@Column(name = "tamanioArchivo", nullable = true, length = 10)
 	public Float getTamañoArchivo() {
-		return tamañoArchivo;
+		return tamanioArchivo;
 	}
 	
-	public void setTamañoArchivo(Float tamañoArchivo) {
-		this.tamañoArchivo = tamañoArchivo;
+	public void setTamañoArchivo(Float tamanioArchivo) {
+		this.tamanioArchivo = tamanioArchivo;
 	}
 	
 	@Column(name = "formatoArchivo", nullable = true, length = 10)
