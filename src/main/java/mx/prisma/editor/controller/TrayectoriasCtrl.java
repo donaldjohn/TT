@@ -399,7 +399,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 	}
 
 	//@VisitorFieldValidator
-	public Trayectoria getModel() {
+	public Trayectoria getModel() { 
 		if (this.model == null) {
 			model = new Trayectoria();
 		}
