@@ -25,7 +25,7 @@
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 
 
-	<s:form id="frmCU" theme="simple"
+	<s:form id="frmParametros" theme="simple"
 		action="%{#pageContext.request.contextPath}/mensajes" 
 		method="post" onsubmit="return prepararEnvio();">
 		<div class="formulario">
@@ -85,19 +85,17 @@
 				
 			</table>
 		</div>
+		
+		<s:fielderror fieldName="model.parametros" cssClass="error errorFormulario" theme="jquery" />
 		<div class="formulario" style="display: none;" id = "seccionParametros">
 			<div class="tituloFormulario">Parámetros del mensaje</div>
-			<s:fielderror fieldName="model.parametros" cssClass="error" theme="jquery" />
-			<div class="seccion">
-				<table class="tablaGestion" id="parametros">
+			<div class="instrucciones">Ingrese la descripción de los parámetros.</div>
+			<table class="seccion" id="parametros">
 				<thead>
-					<tr>
-						<th style="width: 40%;"><s:text name="colParametro"/></th>
-						<th><s:text name="colDescripcion"/></th>
-					</tr>
+					<th></th>
+					<th></th>
 				</thead>
-				</table>
-			</div>
+			</table>
 		</div>
 		<br />
 		<div align="center">

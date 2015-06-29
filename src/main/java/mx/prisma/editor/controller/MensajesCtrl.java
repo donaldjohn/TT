@@ -2,8 +2,10 @@ package mx.prisma.editor.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
@@ -16,8 +18,12 @@ import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.MensajeBs;
 import mx.prisma.editor.bs.TokenBs;
+import mx.prisma.editor.bs.TrayectoriaBs;
 import mx.prisma.editor.model.Mensaje;
+import mx.prisma.editor.model.MensajeParametro;
 import mx.prisma.editor.model.Parametro;
+import mx.prisma.editor.model.Paso;
+import mx.prisma.editor.model.Verbo;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
 import mx.prisma.util.JsonUtil;
@@ -90,12 +96,15 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 	public String create() {
 		String resultado = null;
 		System.out.println("cambioRedaccion: " + this.cambioRedaccion);
-		if(esParametrizado() && this.cambioRedaccion.equals("true")) {
+		if(MensajeBs.esParametrizado(model.getRedaccion()) && this.cambioRedaccion.equals("true")) {
+			listParametros = MensajeBs.obtenerParametros(model.getRedaccion());			
+			this.jsonParametros = JsonUtil.mapListToJSON(listParametros);
 			this.cambioRedaccion = "false";
 			System.out.println("Es parametrizado y cambio la redaccion");
 			return editNew();
 		}
 		try {
+			agregarParametros();
 			//Se prepara el modelo para el registro 
 			proyecto = SessionManager.consultarProyectoActivo();
 			model.setProyecto(proyecto);
@@ -124,27 +133,22 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 		}
 		return resultado;
 	}
-
-	private boolean esParametrizado() {
-		ArrayList<String> tokens = TokenBs.procesarTokenIpunt(model.getRedaccion());
-		//Se convierte la lista de parametros en json para enviarlos a la vista
-		this.listParametros = new ArrayList<Parametro>();
-		ArrayList<String> segmentos;
-		for(String token : tokens) {
-			segmentos = TokenBs.segmentarToken(token);
-			System.out.println("Segmentos " + segmentos.get(0) + " " + segmentos.get(1));
-			listParametros.add(new Parametro(segmentos.get(1), "descripcion"));
-		}
-		
-		this.jsonParametros = JsonUtil.mapListToJSON(listParametros);
-		
-		if(tokens.size() == 0) {
-			return false;
-		} else {
-			return true;
+	
+	private void agregarParametros() {
+		System.out.println("jsonParametros " + jsonParametros);
+		model.setParametrizado(true);
+		if(jsonParametros != null && !jsonParametros.equals("")) {
+			Set<Parametro> parametros = JsonUtil.mapJSONToSet(jsonParametros, Parametro.class);
+			Set<MensajeParametro> mensajeParametros = model.getParametros();
+			mensajeParametros.clear();
+			for(Parametro p : parametros) {
+				mensajeParametros.add(new MensajeParametro(model, p));
+			}
+			model.setParametros(mensajeParametros);
+			System.out.println("tamano de mensajeParam del model: " + model.getParametros().size());
 		}
 	}
-	
+
 	public void setSession(Map<String, Object> session) {
 	}
 
