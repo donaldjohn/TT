@@ -158,13 +158,7 @@ function esValidoPaso(idTabla, realiza, verbo, redaccion) {
 		agregarMensaje("Ingrese menos de 999 caracteres.");
 		return false;
 	} 
-
-	if (dataTableCDT.exist(idTabla, realiza, 2, "", "Mensaje")
-			&& dataTableCDT.exist(idTabla, verbo, 3, "", "Mensaje")
-			&& dataTableCDT.exist(idTabla, verbo, 4, "", "Mensaje")) {
-    	agregarMensaje("Este paso ya está en la trayectoria.");
-    	return false;
-    } 
+ 
 	return true;
 }
 
@@ -174,6 +168,7 @@ function prepararEnvio() {
 		return true;
 	} catch(err) {
 		alert("Ocurrió un error.");
+		return false;
 	}
 }
 

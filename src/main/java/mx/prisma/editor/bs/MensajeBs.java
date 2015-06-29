@@ -10,6 +10,9 @@ import org.hibernate.JDBCException;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.dao.MensajeDAO;
 import mx.prisma.editor.model.Mensaje;
+import mx.prisma.editor.model.MensajeParametro;
+import mx.prisma.editor.model.Parametro;
+import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
@@ -97,7 +100,39 @@ public class MensajeBs {
 			"caracteres"}, "model.redaccion");
 		}
 		
+		//Validaciones de mensaje parametrizado
+		if(model.isParametrizado()) {
+			//Validacion de las descripciones de los parámetros
+			for(MensajeParametro mp : model.getParametros()) {
+				if(Validador.esNuloOVacio(mp.getParametro().getDescripcion())) {
+					throw new PRISMAValidacionException("El usuario no ingresó la descripcion de algun parametros del mensaje.", "MSG24", null, "model.parametros");
+				}
+			}
+		}
 		
+	}
+	
+	public static boolean esParametrizado(String redaccion) {
+		ArrayList<String> tokens = TokenBs.procesarTokenIpunt(redaccion);
+				
+		if(tokens.size() == 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public static List<Parametro> obtenerParametros(String redaccion) {
+		//Se convierte la lista de parametros en json para enviarlos a la vista
+		ArrayList<String> tokens = TokenBs.procesarTokenIpunt(redaccion);
+		ArrayList<Parametro>listParametros = new ArrayList<Parametro>();
+		ArrayList<String> segmentos;
+		for(String token : tokens) {
+			segmentos = TokenBs.segmentarToken(token);
+			System.out.println("Segmentos " + segmentos.get(0) + " " + segmentos.get(1));
+			listParametros.add(new Parametro(segmentos.get(1), "descripcion"));
+		}
+		return listParametros;
 	}
 	
 }

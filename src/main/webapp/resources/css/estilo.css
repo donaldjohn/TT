@@ -348,3 +348,10 @@ textfield {
 .trayectoriaPrincipal {
 	background: #e8f2fe;
 }
+
+.errorformulario {
+	position: relative;
+	border-radius: 5px;
+	margin: 15px;
+	
+}
