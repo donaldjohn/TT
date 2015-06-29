@@ -1,11 +1,19 @@
 package mx.prisma.editor.bs;
 
 
+import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
+import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.dao.EntidadDAO;
+import mx.prisma.editor.dao.TipoDatoDAO;
+import mx.prisma.editor.dao.UnidadTamanioDAO;
 import mx.prisma.editor.model.Entidad;
+import mx.prisma.editor.model.TipoDato;
+import mx.prisma.editor.model.UnidadTamanio;
+import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 
 public class EntidadBs {
@@ -28,7 +36,31 @@ public class EntidadBs {
 			throw new Exception();
 		}
 	}
+	
+	public static List<Entidad> consultarEntidadesProyecto(Proyecto proyecto) {
+		List<Entidad> listEntidades = new EntidadDAO().consultarEntidades(proyecto.getId());
+		if(listEntidades == null) {
+			throw new PRISMAException("No se pueden consultar las entidades.", "MSG13");
+		}
+		return listEntidades;
+	}
 
+	public static List<TipoDato> consultarTiposDato() {
+		List<TipoDato> listTiposDato = new TipoDatoDAO().consultarTiposDato();
+		if(listTiposDato == null) {
+			throw new PRISMAException("No se pueden consultar los tipos de dato.", "MSG13");
+		}
+		return listTiposDato;
+	}
+
+	public static List<UnidadTamanio> consultarUnidadTamanio() {
+		List<UnidadTamanio> listUnidadTamanio = new UnidadTamanioDAO().consultarUnidadesTamanio();
+		if(listUnidadTamanio == null) {
+			throw new PRISMAException("No se pueden consultar las unidades.", "MSG13");
+		}
+		return listUnidadTamanio;
+	}
+	
 	private static void validar(Entidad model) {
 		/*
 		if(Validador.esNuloOVacio(model.getClave())) {

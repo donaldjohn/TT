@@ -1,6 +1,5 @@
 package mx.prisma.editor.controller;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -16,9 +15,11 @@ import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.EntidadBs;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.TipoDatoDAO;
+import mx.prisma.editor.dao.UnidadTamanioDAO;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.TipoDato;
+import mx.prisma.editor.model.UnidadTamanio;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
 import mx.prisma.util.JsonUtil;
@@ -40,13 +41,14 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 	private Entidad model;
 	private List<Entidad> listEntidades;
 	private String jsonAtributosTabla;
-	private List<String> catalogoTipoDato;
-	private List<TipoDato> listTipoDato;
+	
+	private List<TipoDato> listTipoDato;	
+	private List<UnidadTamanio> listUnidadTamanio;
 
 	public String index() throws Exception {
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
-			listEntidades = new EntidadDAO().consultarEntidades(proyecto.getId());
+			listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
 			
 			@SuppressWarnings("unchecked")
 			Collection<String> msjs = (Collection<String>) SessionManager.get("mensajesAccion");
@@ -81,10 +83,13 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 	}
 	
 	private void buscaCatalogos() {
-		catalogoTipoDato = new ArrayList<String>();
-		listTipoDato = new TipoDatoDAO().consultarTiposDato();
-		for (TipoDato tipoDato : listTipoDato) {
-			catalogoTipoDato.add(tipoDato.getNombre());
+		listTipoDato = EntidadBs.consultarTiposDato();
+		listUnidadTamanio = EntidadBs.consultarUnidadesTamanio();
+		if (listUnidadTamanio == null || listUnidadTamanio.isEmpty()){
+			throw new PRISMAException("No hay unidades para registrar el atributo.", "MSG25");
+		}
+		if (listTipoDato == null || listTipoDato.isEmpty()){
+			throw new PRISMAException("No hay tipos de dato para registrar el atributo.", "MSG25");
 		}
 	}
 
@@ -185,13 +190,14 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 		this.proyecto = proyecto;
 	}
 
-
-	public List<String> getCatalogoTipoDato() {
-		return catalogoTipoDato;
+	
+	public List<UnidadTamanio> getListUnidadTamanio() {
+		return listUnidadTamanio;
 	}
 
-	public void setCatalogoTipoDato(List<String> catalogoTipoDato) {
-		this.catalogoTipoDato = catalogoTipoDato;
+	
+	public void setListUnidadTamanio(List<UnidadTamanio> listUnidadTamanio) {
+		this.listUnidadTamanio = listUnidadTamanio;
 	}
 
 

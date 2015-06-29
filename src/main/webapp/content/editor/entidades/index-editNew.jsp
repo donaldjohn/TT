@@ -59,12 +59,20 @@
 					width="100%">
 					<thead>
 						<tr>
-							<th style="width: 45%;"><s:text name="colAtributo" /></th>
-							<th style="width: 0%;"><s:text name="colDescripcion" /></th>
-							<th style="width: 25%;"><s:text name="colTipoDato" /></th>
-							<th style="width: 10%;"><s:text name="colLongitud" /></th>
+							<th style="width: 40%;"><s:text name="colAtributo" /></th>
+							<th style="width: 30%;"><s:text name="colTipoDato" /></th>
 							<th style="width: 10%;"><s:text name="colObligatorio" /></th>
-							<th style="width: 10%;"><s:text name="colAcciones" /></th>
+							
+							<!--  Columnas ocultas -->
+							<th style="width: 0%;"><s:text name="colDescripcion" /></th>
+							<th style="width: 0%;"><s:text name="colLongitud" /></th>
+							<th style="width: 0%;"><s:text name="colFormatoArchivo" /></th>
+							<th style="width: 0%;"><s:text name="colTamanioArchivo" /></th>
+							<th style="width: 0%;"><s:text name="colUnidadTamanio" /></th>
+							
+							
+							
+							<th style="width: 20%;"><s:text name="colAcciones" /></th>
 							
 						</tr>
 					</thead>
@@ -113,15 +121,30 @@
 					<tr>
 							<td class="label obligatorio"><s:text name="labelTipoDato"/></td>
 							<td><s:select list="listTipoDato" cssClass="inputFormulario" name="atributo.tipoDato" id="atributo.tipoDato"
-       						cssErrorClass="input-error" headerValue="Seleccione" headerKey="0" listValue="nombre" onchange="disableLongitud();"></s:select></td>
+       						cssErrorClass="input-error" headerValue="Seleccione" headerKey="0" listValue="nombre" onchange="disablefromTipoDato();"></s:select></td>
 					</tr>
 					<tr id = 'trLongitud' style="display: none;">
 						<td class="label obligatorio"><s:text name="labelLongitud" /></td>
 						<td><s:textfield name="atributo.longitud" id="atributo.longitud"
 								cssErrorClass="input-error"></s:textfield></td>
 					</tr>
+					
+					<tr id = 'trFormatoArchivo' style="display: none;">
+						<td class="label obligatorio"><s:text name="labelFormatoArchivo" /></td>
+						<td><s:textfield name="atributo.formatoArchivo" id="atributo.formatoArchivo"
+								cssErrorClass="input-error"></s:textfield></td>
+					</tr>
+					
+					<tr id = 'trTamanioArchivo' style="display: none;">
+						<td class="label obligatorio"><s:text name="labelTamanioArchivo" /></td>
+						<td><s:textfield name="atributo.tamanioArchivo" id="atributo.tamanioArchivo"
+								cssErrorClass="input-error"></s:textfield></td>
+						<td><s:select list="listUnidadTamanio" cssClass="inputFormulario" name="atributo.unidadTamanio" id="atributo.unidadTamanio"
+       						cssErrorClass="input-error" headerValue="Seleccione" headerKey="0" listValue="abreviatura"></s:select></td>
+					</tr>
+					
 					<tr>
-						<td class="label obligatorio"><s:text name="labelObligatorio" /></td>
+						<td class = "label"><s:text name="labelObligatorio" /></td>
 						<td><s:checkbox 
 								name="atributo.obligatorio" id="atributo.obligatorio" cssErrorClass="input-error"></s:checkbox></td>
 					</tr>
