@@ -21,26 +21,33 @@ $(document).ready(function() {
 									"<a button='true'>" +
 									"<img class='icon'  id='icon' src='" + window.contextPath + 
 									"/resources/images/icons/editar.png' title='Modificar Atributo'/></a>" +
-									"<a onclick='dataTableCDT.deleteRowPasos(tablaAtributo, this);' button='true'>" +
+									"<a onclick='dataTableCDT.deleteRow(tablaAtributo, this);' button='true'>" +
 									"<img class='icon'  id='icon' src='" + window.contextPath + 
 									"/resources/images/icons/eliminar.png' title='Eliminar Atributo'/></a>" +
 								"</center>" ];
-							dataTableCDT.addRow("tablaAtributo",paso);
+							dataTableCDT.addRow("tablaAtributo",atributo);
 						});
 	}
 } );
 
 
-function registrarPaso(){
+function registrarAtributo(){
 
 	var nombre = document.forms["frmAtributo"]["atributo.nombre"].value;
-	var descripcion = document.forms["frmAtributo"]["atributo.descripcion"].value;
-	var tipoDato = document.forms["frmAtributo"]["listTipoDato"].value;
+	var descripcion = document.forms["frmAtributo"]["atributo.descripcion"].value;	
+	var tipoDato = document.getElementById("atributo.tipoDato");
+	var tipoDato = tipoDato.options[tipoDato.selectedIndex].text;
 	var longitud = document.forms["frmAtributo"]["atributo.longitud"].value;
 	var obligatorio = document.forms["frmAtributo"]["atributo.obligatorio"].value;
+	
+	if (obligatorio == true) {
+		obligatorio = "Sí";
+	} else {
+		obligatorio = "No";
+	}
+		
 
-    if (esValidoPaso("tablaAtributo", nombre, descripcion, tipoDato, longitud)) {
-    	var realizaImg;
+    if (esValidoAtributo("tablaAtributo", nombre, descripcion, tipoDato, longitud)) {
     	//Se construye la fila 
     	var row = [
     	            nombre,
@@ -52,7 +59,7 @@ function registrarPaso(){
 						"<a button='true'>" +
 						"<img class='icon'  id='icon' src='" + window.contextPath + 
 						"/resources/images/icons/editar.png' title='Modificar Atributo'/></a>" +
-						"<a onclick='dataTableCDT.deleteRowPasos(tablaPaso, this);' button='true'>" +
+						"<a onclick='dataTableCDT.deleteRow(tablaAtributo, this);' button='true'>" +
 						"<img class='icon'  id='icon' src='" + window.contextPath + 
 						"/resources/images/icons/eliminar.png' title='Eliminar Atributo'/></a>" +
 					"</center>" ];
@@ -61,7 +68,7 @@ function registrarPaso(){
     	//Se limpian los campos
     	document.getElementById("atributo.nombre").value = "";
     	document.getElementById("atributo.descripcion").value = "";
-    	document.getElementById("listTipoDato").selectedIndex = -1;
+    	document.getElementById("atributo.tipoDato").selectedIndex = -1;
     	document.getElementById("atributo.longitud").value = "";
     	document.getElementById("atributo.obligatorio").value = false;
     	
@@ -72,11 +79,11 @@ function registrarPaso(){
     }
 };
  
-function cancelarRegistrarPaso() {
+function cancelarRegistrarAtributo() {
 	//Se limpian los campos
 	document.getElementById("atributo.nombre").value = "";
 	document.getElementById("atributo.descripcion").value = "";
-	document.getElementById("listTipoDato").selectedIndex = -1;
+	document.getElementById("atributo.tipoDato").selectedIndex = -1;
 	document.getElementById("atributo.longitud").value = "";
 	document.getElementById("atributo.obligatorio").value = false;
 	
@@ -91,12 +98,12 @@ function agregarMensaje(mensaje) {
 /*
  * Verifica que la redacción sea válida
  */
-function esValidoPaso(idTabla, nombre, descripcion, tipoDato, longitud) {
+function esValidoAtributo(idTabla, nombre, descripcion, tipoDato, longitud) {
 	if(vaciaONula(nombre) && vaciaONula(descripcion) && vaciaONula(longitud) && tipoDato != -1) {
 		agregarMensaje("Agregue todos los campos obligatorios.");
 		return false;
 	} 
-	console.log("longitud de redaccione " + redaccion.length);
+	
 	if(nombre.length > 45) {
 		agregarMensaje("Ingrese menos de 45 caracteres.");
 		return false;
@@ -131,12 +138,12 @@ function preparaEnvio() {
 
 function tablaToJson(idTable) {
 	var table = $("#" + idTable).dataTable();
-	var arregloAtributo = [];
+	var arregloAtributos = [];
 	
 	for (var i = 0; i < table.fnSettings().fnRecordsTotal(); i++) {
-		arregloAtributo.push(new Entidad(table.fnGetData(i, 0), table.fnGetData(i, 2), 
+		arregloAtributos.push(new Entidad(table.fnGetData(i, 0), table.fnGetData(i, 2), 
 						table.fnGetData(i, 3), table.fnGetData(i, 4)));
 	}
-	var jsonPasos = JSON.stringify(arregloPasos);
-	document.getElementById("jsonAtributosTabla").value = jsonPasos;
+	var jsonAtributos = JSON.stringify(arregloAtributos);
+	document.getElementById("jsonAtributosTabla").value = jsonAtributos;
 }

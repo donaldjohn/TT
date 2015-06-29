@@ -1,5 +1,6 @@
 package mx.prisma.editor.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +40,8 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 	private Entidad model;
 	private List<Entidad> listEntidades;
 	private String jsonAtributosTabla;
+	private List<String> catalogoTipoDato;
 	private List<TipoDato> listTipoDato;
-	private int idTipoDato;
 
 	public String index() throws Exception {
 		try {
@@ -80,7 +81,11 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 	}
 	
 	private void buscaCatalogos() {
+		catalogoTipoDato = new ArrayList<String>();
 		listTipoDato = new TipoDatoDAO().consultarTiposDato();
+		for (TipoDato tipoDato : listTipoDato) {
+			catalogoTipoDato.add(tipoDato.getNombre());
+		}
 	}
 
 	public String create() throws Exception {
@@ -179,12 +184,13 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 		this.proyecto = proyecto;
 	}
 
-	public int getIdTipoDato() {
-		return idTipoDato;
+
+	public List<String> getCatalogoTipoDato() {
+		return catalogoTipoDato;
 	}
 
-	public void setIdTipoDato(int idTipoDato) {
-		this.idTipoDato = idTipoDato;
+	public void setCatalogoTipoDato(List<String> catalogoTipoDato) {
+		this.catalogoTipoDato = catalogoTipoDato;
 	}
 
 

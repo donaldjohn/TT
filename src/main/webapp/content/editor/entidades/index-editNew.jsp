@@ -112,9 +112,9 @@
 					</tr>
 					<tr>
 							<td class="label obligatorio"><s:text name="labelTipoDato"/></td>
-							<td><s:select list="listTipoDato" listKey = "id" cssClass="inputFormulario" name="idTipoDato" id="listTipoDato" 
-       						cssErrorClass="input-error" headerValue="Seleccione" headerKey="-1" ></s:select></td>
-						</tr>
+							<td><s:select list="listTipoDato" cssClass="inputFormulario" name="atributo.tipoDato" id="atributo.tipoDato"
+       						cssErrorClass="input-error" headerValue="Seleccione" headerKey="-1" listValue="nombre"></s:select></td>
+					</tr>
 					<tr>
 						<td class="label obligatorio"><s:text name="labelLongitud" /></td>
 						<td><s:textfield name="atributo.longitud" id="atributo.longitud"

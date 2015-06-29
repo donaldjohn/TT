@@ -22,7 +22,7 @@ public class TipoParametroDAO {
 
 		try {
 			session.beginTransaction();
-			tipoParametro = (TipoParametro) session.get(EstadoElemento.class,
+			tipoParametro = (TipoParametro) session.get(TipoParametro.class,
 					identificador);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
