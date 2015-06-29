@@ -124,6 +124,13 @@ function TerminoGlosario(nombre) {
 	this.nombre = nombre;
 }
 
+/*
+ * Constructor del objeto Parametro
+ */
+function Parametro(nombre, descripcion) {
+	this.nombre = nombre;
+	this.descripcion = descripcion;
+}
 
 
 
