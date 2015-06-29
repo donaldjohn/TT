@@ -52,7 +52,7 @@ public class UnidadTamanio implements java.io.Serializable {
 	}
 
 	@Column(name = "abreviatura", nullable = false, length = 10)
-	public String getAbreviatura() {
+	public String getAbreviatura() { 
 		return abreviatura;
 	}
 
