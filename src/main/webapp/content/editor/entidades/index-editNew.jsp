@@ -119,8 +119,8 @@
 								maxlength="999" cssErrorClass="input-error"></s:textarea></td>
 					</tr>
 					<tr>
-							<td class="label obligatorio"><s:text name="labelTipoDato"/></td>
-							<td><s:select list="listTipoDato" cssClass="inputFormulario" name="atributo.tipoDato" id="atributo.tipoDato"
+						<td class="label obligatorio"><s:text name="labelTipoDato"/></td>
+						<td><s:select list="listTipoDato" cssClass="inputFormulario" name="atributo.tipoDato" id="atributo.tipoDato"
        						cssErrorClass="input-error" headerValue="Seleccione" headerKey="0" listValue="nombre" onchange="disablefromTipoDato();"></s:select></td>
 					</tr>
 					<tr id = 'trLongitud' style="display: none;">

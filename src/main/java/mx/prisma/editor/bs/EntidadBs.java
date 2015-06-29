@@ -53,7 +53,7 @@ public class EntidadBs {
 		return listTiposDato;
 	}
 
-	public static List<UnidadTamanio> consultarUnidadTamanio() {
+	public static List<UnidadTamanio> consultarUnidadesTamanio() {
 		List<UnidadTamanio> listUnidadTamanio = new UnidadTamanioDAO().consultarUnidadesTamanio();
 		if(listUnidadTamanio == null) {
 			throw new PRISMAException("No se pueden consultar las unidades.", "MSG13");
@@ -114,4 +114,16 @@ public class EntidadBs {
 			}
 		}*/
 	}		
+
+	public static Entidad consultarEntidad(int idEntidad) {
+		Entidad entidad = null;
+		entidad = new EntidadDAO().consultarEntidad(idEntidad);
+		if(entidad == null) {
+			throw new PRISMAException("No se pueden consultar las entidades.", "MSG13");
+		} else {
+			
+		}
+		return entidad;
+	}
+
 }
