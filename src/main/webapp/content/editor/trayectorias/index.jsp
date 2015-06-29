@@ -35,9 +35,6 @@
 					<td><s:property value="%{#tray.clave}"/></td>
 					<td><s:property value="%{#tray.condicion}"/></td>
 					<td align="center">
-						<s:url var="urlGestionarTrayectorias" value="%{#pageContext.request.contextPath}/pasos">
-							<s:param name="idTray" value="%{#tray.id}"/>
-						</s:url>
 						<s:a>
 							<img id="" class="button"
 							title="Gestionar Pasos"
@@ -50,9 +47,6 @@
 					<td class="trayectoriaPrincipal"><s:property value="%{#tray.clave}"/></td>
 					<td class="trayectoriaPrincipal">Trayectoria principal</td>
 					<td align="center" class="trayectoriaPrincipal">
-						<s:url var="urlGestionarTrayectorias" value="%{#pageContext.request.contextPath}/pasos">
-							<s:param name="idTray" value="%{#tray.id}"/>
-						</s:url>
 						<s:a>
 							<img id="" class="button"
 							title="Gestionar Pasos"

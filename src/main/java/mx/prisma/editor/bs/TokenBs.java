@@ -56,7 +56,8 @@ public class TokenBs {
 	private static String tokenTray = "TRAY" + tokenSeparator1 ; // TRAY.CUMODULO.NUM:NOMBRECU:CLAVETRAY
 	private static String tokenACC = "ACC" + tokenSeparator1; // ACC.IUMODULO.NUM:NOMBRE_ACC =
 												// ACC.IUSF.7:Registrar_incendio:Aceptar
-
+	
+	private static String tokenPARAM = "PARAM" + tokenSeparator1;
 
 	public static String codificarCadenaToken(String redaccion,
 			Proyecto proyecto) {
@@ -918,7 +919,7 @@ public class TokenBs {
 				|| pila.equals(tokenMSG) || pila.equals(tokenACT)
 				|| pila.equals(tokenGLS) || pila.equals(tokenATR)
 				|| pila.equals(tokenP) || pila.equals(tokenTray)
-				|| pila.equals(tokenACC)) {
+				|| pila.equals(tokenACC) || pila.equals(tokenPARAM)) {
 			return true;
 		}
 		return false;

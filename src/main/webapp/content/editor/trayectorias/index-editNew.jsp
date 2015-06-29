@@ -28,7 +28,7 @@
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 	<s:form id="frmTrayectoria" theme="simple" action="%{#pageContext.request.contextPath}/trayectorias"
-		method="post" onsubmit="return preparaEnvio();">
+		method="post" onsubmit="return prepararEnvio();">
 		<div class="formulario">
 			<div class="tituloFormulario">Información general de la Trayectoria</div>
 			<table class="seccion">
@@ -76,9 +76,9 @@
 						<tr>
 							<th style="width: 5%;"><s:text name="colNumero"/></th>
 							<th style="width: 55%;"><s:text name="colRedaccion"/></th>
-							<th style="width: 0;"><s:text name="labelRealiza"/></th>
-							<th style="width: 0;"><s:text name="labelVerbo"/></th>
-							<th style="width: 0;"><s:text name="labelRedaccion"/></th>
+							<th style="width: 0;"><s:text name=""/></th>
+							<th style="width: 0;"><s:text name=""/></th>
+							<th style="width: 0;"><s:text name=""/></th>
 							<th style="width: 10%;"><s:text name="colAcciones"/></th>
 						</tr>
 					</thead>

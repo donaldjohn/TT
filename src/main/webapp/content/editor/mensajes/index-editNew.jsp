@@ -6,7 +6,7 @@
 		contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" />
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Casos de uso</title>
+<title>Mensaje</title>
 
 <![CDATA[
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/constructores.js"></script>
@@ -27,7 +27,7 @@
 
 	<s:form id="frmCU" theme="simple"
 		action="%{#pageContext.request.contextPath}/mensajes" 
-		method="post">
+		method="post" onsubmit="return prepararEnvio();">
 		<div class="formulario">
 			<div class="tituloFormulario">Información general del mensaje</div>
 			<table class="seccion">
@@ -87,12 +87,17 @@
 		</div>
 		<div class="formulario" style="display: none;" id = "seccionParametros">
 			<div class="tituloFormulario">Parámetros del mensaje</div>
-			<table class="seccion">
-				<tr>
-					
-					<!-- <td><s:property value="mx.prisma.editor.controller.MensajesCtrl().obtenerAlgo()" /></td> -->
-				</tr>
-			</table>
+			<s:fielderror fieldName="model.parametros" cssClass="error" theme="jquery" />
+			<div class="seccion">
+				<table class="tablaGestion" id="parametros">
+				<thead>
+					<tr>
+						<th style="width: 40%;"><s:text name="colParametro"/></th>
+						<th><s:text name="colDescripcion"/></th>
+					</tr>
+				</thead>
+				</table>
+			</div>
 		</div>
 		<br />
 		<div align="center">
@@ -104,7 +109,8 @@
 				onclick="location.href='${pageContext.request.contextPath}/mensajes'"
 				value="Cancelar" />
 		</div>
-		<s:hidden value="%{seccionParamVisible}" name="seccionParamVisible" id="idSeccionParamVisible"/>
+		<s:hidden value="%{cambioRedaccion}" name="cambioRedaccion" id="cambioRedaccion"/>
+		<s:hidden value="%{jsonParametros}" name="jsonParametros" id="jsonParametros"/>
 	</s:form>
 </body>
 	</html>

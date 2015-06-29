@@ -25,6 +25,11 @@ public class Parametro implements java.io.Serializable {
 
 	public Parametro() {
 	}
+	
+	public Parametro(String nombre, String descripcion) {
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+	}
 
 	public Parametro(String nombre) {
 		this.nombre = nombre;

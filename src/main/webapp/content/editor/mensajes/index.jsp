@@ -24,7 +24,7 @@
 		<table id="gestion" class="tablaGestion" cellspacing="0" width="100%"> 
 			<thead>
 				<tr>
-					<th><s:text name="colMensaje"/></th>
+					<th style="width: 80%;"><s:text name="colMensaje"/></th>
 					<th style="width: 20%;"><s:text name="colAcciones"/></th>
 				</tr>
 			</thead>
@@ -38,8 +38,6 @@
 										title="Editar"
 										src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></a>						
 					</td>
-					
-					
 				</tr>
 			</s:iterator>
 			</tbody>

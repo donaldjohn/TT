@@ -8,30 +8,28 @@ $(document).ready(function() {
 	ocultarColumnas("tablaPaso");
 	token.cargarListasToken();
 	cambiarElementosAlternativaPrincipal();
-	var realiza = "Actor";
 	var json = $("#jsonPasosTabla").val();
 	
 	if (json !== "") {
 		var parsedJson = JSON.parse(json);
+		alert("parsedJson: " + parsedJson);
 		$
 				.each(
 						parsedJson,
 						function(i, item) {
 							var realizaImg;
 					    	//Se agrega la imagen referente a quien realiza el paso
-					    	if(realiza == "Actor") {
-					    		var realizaActor = true;
+					    	if(item.realizaActor == true) {
 					    		realizaImg = "<img src='" + window.contextPath + 
 								"/resources/images/icons/actor.png' title='Actor' style='vertical-align: middle;'/>";
-					    	} else if(realiza == "Sistema") {
-					    		realizaActor = false;
+					    	} else if(item.realizaActor == false) {
 					    		realizaImg = "<img src='" + window.contextPath + 
 								"/resources/images/icons/uc.png' title='Sistema' style='vertical-align: middle;'/>";
 					    	}
 							var paso = [
 								item.numero,
 								realizaImg + " " + item.verbo.nombre + " " + item.redaccion,
-								realizaActor,
+								item.realizaActor,
 								item.verbo.nombre, 
 								item.redaccion,
 								"<center>" +
@@ -169,7 +167,7 @@ function esValidoPaso(idTabla, realiza, verbo, redaccion) {
 	return true;
 }
 
-function preparaEnvio() {
+function prepararEnvio() {
 	try {
 		tablaToJson("tablaPaso");
 		return true;
