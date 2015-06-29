@@ -4,34 +4,17 @@ $(document).ready(function() {
 	window.scrollTo(0,0);
 	contextPath = $("#rutaContexto").val();
 	$('table.tablaGestion').DataTable();
-	verificarAlternativaPrincipal();
-	ocultarColumnas("tablaPaso");
-	token.cargarListasToken();
-	cambiarElementosAlternativaPrincipal();
-	var realiza = "Actor";
-	var json = $("#jsonPasosTabla").val();
-	
+	var json = $("#jsonAtributosTabla").val();
 	if (json !== "") {
 		var parsedJson = JSON.parse(json);
 		$
 				.each(
 						parsedJson,
 						function(i, item) {
-							var realizaImg;
-					    	//Se agrega la imagen referente a quien realiza el paso
-					    	if(realiza == "Actor") {
-					    		var realizaActor = true;
-					    		realizaImg = "<img src='" + window.contextPath + 
-								"/resources/images/icons/actor.png' title='Actor' style='vertical-align: middle;'/>";
-					    	} else if(realiza == "Sistema") {
-					    		realizaActor = false;
-					    		realizaImg = "<img src='" + window.contextPath + 
-								"/resources/images/icons/uc.png' title='Sistema' style='vertical-align: middle;'/>";
-					    	}
-							var paso = [
-								item.numero,
-								realizaImg + " " + item.verbo.nombre + " " + item.redaccion,
-								realizaActor,
+							var atributo = [
+								item.nombre,
+								item.descripcion,
+								item.tipoDato,
 								item.verbo.nombre, 
 								item.redaccion,
 								"<center>" +
@@ -53,29 +36,9 @@ $(document).ready(function() {
 	}
 } );
 
-function cambiarElementosAlternativaPrincipal() {
-	var select = document.getElementById("idAlternativaPrincipal");
-	var varAlternativaPrincipal = select.options[select.selectedIndex].text;
-	
-	if(varAlternativaPrincipal == "Principal"){
-		//Si es una trayectoria principal
-		document.getElementById("filaCondicion").style.display = 'none';
-	    document.getElementById("model.idCondicion").value = "";
-	    document.getElementById("model.finCasoUso").checked = true;
-	    document.getElementById("model.finCasoUso").disabled = true;
-	} else if(varAlternativaPrincipal == "Alternativa") {
-		//Si es una trayectoria alternativa
-		document.getElementById("filaCondicion").style.display = '';
-		document.getElementById("model.finCasoUso").checked = false;
-		document.getElementById("model.finCasoUso").disabled = false;
-	} else if(varAlternativaPrincipal == "Seleccione"){
-		document.getElementById("filaCondicion").style.display = 'none';
-		document.getElementById("model.finCasoUso").checked = false;
-		document.getElementById("model.finCasoUso").disabled = false;
-	}
-}
 
 function registrarPaso(){
+
 	var numero = calcularNumeroPaso();
 	var realiza = document.forms["frmPasoName"]["paso.realizaActor"].value;
 	var redaccion = document.forms["frmPasoName"]["paso.redaccion"].value;
@@ -128,7 +91,7 @@ function registrarPaso(){
     	return false;
     }
 };
-  
+ 
 function cancelarRegistrarPaso() {
 	//Se limpian los campos
 	document.getElementById("inputor").value = "";
@@ -139,9 +102,6 @@ function cancelarRegistrarPaso() {
 	$('#pasoDialog').dialog('close');
 };
 
-/*
- * Agrega un mensaje en la pantalla
- */
 function agregarMensaje(mensaje) {
 	alert(mensaje);
 };
@@ -171,7 +131,7 @@ function esValidoPaso(idTabla, realiza, verbo, redaccion) {
 
 function preparaEnvio() {
 	try {
-		tablaToJson("tablaPaso");
+		tablaToJson("tablaAtributo");
 		return true;
 	} catch(err) {
 		alert("Ocurrió un error.");
@@ -180,33 +140,12 @@ function preparaEnvio() {
 
 function tablaToJson(idTable) {
 	var table = $("#" + idTable).dataTable();
-	var arregloPasos = [];
+	var arregloAtributo = [];
 	
 	for (var i = 0; i < table.fnSettings().fnRecordsTotal(); i++) {
-		arregloPasos.push(new Paso(table.fnGetData(i, 0), table.fnGetData(i, 2), 
+		arregloAtributo.push(new Entidad(table.fnGetData(i, 0), table.fnGetData(i, 2), 
 						table.fnGetData(i, 3), table.fnGetData(i, 4)));
 	}
 	var jsonPasos = JSON.stringify(arregloPasos);
 	document.getElementById("jsonPasosTabla").value = jsonPasos;
-}
-
-function calcularNumeroPaso() {
-	return $("#tablaPaso").dataTable().fnSettings().fnRecordsTotal() + 1;
-}
-
-function ocultarColumnas(tabla) {
-	var dataTable = $("#" + tabla).dataTable();
-	dataTable.api().column(2).visible(false);
-	dataTable.api().column(3).visible(false);
-	dataTable.api().column(4).visible(false);
-}
-
-function verificarAlternativaPrincipal() {
-	var existeTPrincipal = document.getElementById("existeTPrincipal").value;
-	var select = document.getElementById("idAlternativaPrincipal");
-	if(existeTPrincipal == "true") {
-		select.selectedIndex = 2;
-		select.disabled = true;
-		document.getElementById("textoAyudaPA").innerHTML = "Solamente puede registrar Trayectorias alternativas, debido a que ya existe una Trayectoria principal.";
-	} 
 }

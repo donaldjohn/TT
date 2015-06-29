@@ -6,155 +6,136 @@
 		contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" />
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Trayectoria</title>
+<title>Entidad</title>
 <![CDATA[
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/constructores.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/validaciones.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.caret.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.atwho.js"></script>
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/entidades/js/token.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/entidades/js/index-editNew.js"></script>	
 ]]>
 
 </head>
 <body>
-	
-	<h1><s:property value="%{model.casoUso.clave + ' ' + model.casoUso.numero + ' ' + model.casoUso.nombre}"/></h1>
+
+	<h1>
+		<s:property value="%{proyecto.clave + ' - ' + proyecto.nombre}" />
+	</h1>
 	<h3>Registrar Trayectoria</h3>
-	
+
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
-	<br/>
+	<br />
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
-	<s:form id="frmTrayectoria" theme="simple" action="%{#pageContext.request.contextPath}/trayectorias"
-		method="post" onsubmit="return preparaEnvio();">
+	<s:form id="frmTrayectoria" theme="simple"
+		action="%{#pageContext.request.contextPath}/entidades" method="post"
+		onsubmit="return preparaEnvio();">
 		<div class="formulario">
-			<div class="tituloFormulario">Información general de la Trayectoria</div>
+			<div class="tituloFormulario">Información general de la Entidad</div>
 			<table class="seccion">
 				<tr>
-					<td class="label obligatorio"><s:text name="labelClave" /></td>
-					<td><s:textfield name="model.clave" maxlength="5"
-							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" /> <s:fielderror
-							fieldName="model.clave" cssClass="error" theme="jquery" /></td>
-				</tr>
-				<tr>
-					<td class="label obligatorio"><s:text name="labelTipo" /></td>
-					<td>
-						<s:select list="listAlternativa" headerKey="-1" headerValue="Seleccione" id="idAlternativaPrincipal" name="alternativaPrincipal"
-						cssErrorClass="select-error" onchange="cambiarElementosAlternativaPrincipal();" cssClass="inputFormulario ui-widget" />
-						<s:fielderror fieldName="alternativaPrincipal" cssClass="error"
-							theme="jquery" />
-						<p id = "textoAyudaPA" class="textoAyuda"/>
-					</td>
-				</tr>
-				<tr id="filaCondicion" style="display: none;">
-					<td class="label obligatorio"><s:text name="labelCondicion" /></td>
-					<td><s:textarea rows="5" name="model.condicion" id="model.idCondicion"
-							maxlength="999" cssErrorClass="input-error"></s:textarea> 
-							<s:fielderror
-							fieldName="model.condicion" cssClass="error"
+					<td class="label obligatorio"><s:text name="labelNombre" /></td>
+					<td><s:textfield name="model.nombre" maxlength="200"
+							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
+						<s:fielderror fieldName ="model.nombre" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
 				<tr>
-					<td class="label"><s:text name="labelFinCasoUso" /></td>
-					<td><s:checkbox name="model.finCasoUso" id="model.finCasoUso"
-							cssErrorClass="input-error"></s:checkbox> 
-							<s:fielderror
-							fieldName="model.finCasoUso" cssClass="error"
+					<td class="label obligatorio"><s:text name="labelDescripcion" /></td>
+					<td><s:textfield name="model.descripcion" maxlength="200"
+							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
+						<s:fielderror fieldName ="model.descripcion" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
 			</table>
 		</div>
 		<div class="formulario">
-			<div class="tituloFormulario">Pasos de la Trayectoria</div>
+			<div class="tituloFormulario">Atributos de la Entidad</div>
 			<div class="seccion">
-				<s:fielderror fieldName="model.pasos" cssClass="error" theme="jquery" />
-				<table id="tablaPaso" class="tablaGestion" cellspacing="0" width="100%">
-				<s:hidden name="numPasos" value="%{listPasos.length}" id="numPasos"/> 
+				<s:fielderror fieldName="model.pasos" cssClass="error"
+					theme="jquery" />
+				<table id="tablaAtributo" class="tablaGestion" cellspacing="0"
+					width="100%">
 					<thead>
 						<tr>
-							<th style="width: 5%;"><s:text name="colNumero"/></th>
-							<th style="width: 55%;"><s:text name="colRedaccion"/></th>
-							<th style="width: 0;"><s:text name="labelRealiza"/></th>
-							<th style="width: 0;"><s:text name="labelVerbo"/></th>
-							<th style="width: 0;"><s:text name="labelRedaccion"/></th>
-							<th style="width: 10%;"><s:text name="colAcciones"/></th>
+							<th style="width: 45%;"><s:text name="colAtributo" /></th>
+							<th style="width: 0%;"><s:text name="colDescripcion" /></th>
+							<th style="width: 25%;"><s:text name="colTipoDato" /></th>
+							<th style="width: 10%;"><s:text name="colLongitud" /></th>
+							<th style="width: 10%;"><s:text name="colObligatorio" /></th>
+							<th style="width: 10%;"><s:text name="colAcciones" /></th>
+							
 						</tr>
 					</thead>
-					
+
 				</table>
 				<div align="center">
-					<sj:a openDialog="pasoDialog" button="true">Registrar</sj:a>
+					<sj:a openDialog="atributoDialog" button="true">Registrar</sj:a>
 				</div>
 			</div>
 		</div>
-		
+
 		<br />
 		<div align="center">
 			<s:submit class="boton" value="Aceptar" />
-			
-			<s:url var="urlGestionarTrayectorias" value="%{#pageContext.request.contextPath}/trayectorias">
-				<s:param name="idCU" value="%{idCU}"/>
+
+			<s:url var="urlGestionarEntidades"
+				value="%{#pageContext.request.contextPath}/entidades">
 			</s:url>
 			<input class="boton" type="button"
-				onclick="location.href='${urlGestionarTrayectorias}'"
-				value="Cancelar" />			
+				onclick="location.href='${urlGestionarEntidades}'"
+				value="Cancelar" />
 		</div>
-		<s:hidden id="jsonPasosTabla" name="jsonPasosTabla" value="%{jsonPasosTabla}"/>    	
+		
+		<s:hidden id="jsonAtributosTabla" name="jsonAtributosTabla"
+			value="%{jsonAtributosTabla}" />
 	</s:form>
-	
-	
-	<!-- EMERGENTE REGISTRAR PASO -->	
-   	<sj:dialog id="pasoDialog" title="Registrar Paso" autoOpen="false" 
-   	minHeight="300" minWidth="800" modal="true" draggable="true" >
-	   	<s:form id="frmPaso" name="frmPasoName" theme="simple">
+
+
+	<!-- EMERGENTE REGISTRAR PASO -->
+	<sj:dialog id="atributoDialog" title="Registrar Atributo" autoOpen="false"
+		minHeight="300" minWidth="800" modal="true" draggable="true">
+		<s:form id="frmAtributo" name="frmAtributoName" theme="simple">
 			<div class="formulario">
-				<div class="tituloFormulario">Información del Paso</div>
+				<div class="tituloFormulario">Información del Atributo</div>
 				<table class="seccion">
-						<tr>
-							<td class="label obligatorio"><s:text name="labelRealiza"/></td>
-							<td><s:select list="listRealiza" cssClass="inputFormulario" name="paso.realizaActor" id="realiza" 
-       						cssErrorClass="input-error" value="0"></s:select></td>
+					<tr>
+						<td class="label obligatorio"><s:text name="labelNombre" /></td>
+						<td><s:textfield name="atributo.nombre" id="atributo.nombre"
+								maxlength="45" cssErrorClass="input-error"></s:textfield></td>
+					</tr>
+					<tr>
+						<td class="label obligatorio"><s:text name="labelDescripcion" /></td>
+						<td><s:textarea rows="5" name="atributo.descripcion" id="atributo.descripcion"
+								maxlength="999" cssErrorClass="input-error"></s:textarea></td>
+					</tr>
+					<tr>
+							<td class="label obligatorio"><s:text name="labelTipoDato"/></td>
+							<td><s:select list="listTipoDato" cssClass="inputFormulario" name="idTipoDato" id="id" 
+       						cssErrorClass="input-error" headerValue="Seleccione" headerKey="-1" ></s:select></td>
 						</tr>
-						<tr>
-							<td class="label obligatorio"><s:text name="labelVerbo"/></td>
-							<td><s:select list="listVerbos" cssClass="inputFormulario" name="paso.verbo" id="verbo"
-       						cssErrorClass="input-error" value="0"></s:select></td>
-						</tr>
-						<tr>
-							<td class="label obligatorio"><s:text name="labelRedaccion" /></td>
-							<td><s:textarea rows="5" name="paso.redaccion" id="inputor"
-									maxlength="999" cssErrorClass="input-error"></s:textarea></td>
-						</tr>
+					<tr>
+						<td class="label obligatorio"><s:text name="labelLongitud" /></td>
+						<td><s:textfield name="atributo.longitud" id="atributo.longitud"
+								cssErrorClass="input-error"></s:textfield></td>
+					</tr>
+					<tr>
+						<td class="label obligatorio"><s:text name="labelObligatorio" /></td>
+						<td><s:checkbox cssClass="inputFormulario"
+								name="atributo.obligatorio" id="atributo.obligatorio" cssErrorClass="input-error"></s:checkbox></td>
+					</tr>
+
 				</table>
 			</div>
 			<br />
 			<div align="center">
-				<input type="button"
-					onclick="registrarPaso()"
-					value="Aceptar" />
-				<input type="button"
-					onclick="cancelarRegistrarPaso()"
-					value="Cancelar" />
+				<input type="button" onclick="registrarAtributo()" value="Aceptar" /> <input
+					type="button" onclick="cancelarRegistrarAtributo()" value="Cancelar" />
 			</div>
 		</s:form>
 	</sj:dialog>
-	<!-- Json de elementos -->
-	<s:hidden name="jsonReglasNegocio" id="jsonReglasNegocio" value="%{jsonReglasNegocio}"/>
-	<s:hidden name="jsonEntidades" id="jsonEntidades" value="%{jsonEntidades}"/>
-	<s:hidden name="jsonCasosUsoProyecto" id="jsonCasosUsoProyecto" value="%{jsonCasosUsoProyecto}"/>
-	<s:hidden name="jsonPantallas" id="jsonPantallas" value="%{jsonPantallas}"/>
-	<s:hidden name="jsonMensajes" id="jsonMensajes" value="%{jsonMensajes}"/>
-	<s:hidden name="jsonActores" id="jsonActores" value="%{jsonActores}"/>
-	<s:hidden name="jsonTerminosGls" id="jsonTerminosGls" value="%{jsonTerminosGls}"/>
-	<s:hidden name="jsonAtributos" id="jsonAtributos" value="%{jsonAtributos}"/>
-	<s:hidden name="jsonPasos" id="jsonPasos" value="%{jsonPasos}"/>
-	<s:hidden name="jsonTrayectorias" id="jsonTrayectorias" value="%{jsonTrayectorias}"/>
-	<s:hidden name="jsonAcciones" id="jsonAcciones" value="%{jsonAcciones}"/>
-	<!-- Booleano que indica si existen trayectorias -->
-	<s:hidden id="existeTPrincipal" value="%{existeTPrincipal}"/>
-	
+
 </body>
 	</html>
 </jsp:root>

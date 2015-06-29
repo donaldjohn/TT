@@ -66,9 +66,16 @@ function Actor(nombre) {
 /*
  * Constructor del objeto Atributo
  */
-function Atributo(nombre, nombreEntidad) {
+function Atributo(nombre, descripicion, obligatorio, longitud, tipoDato) {
     this.nombre = nombre;
-    this.entidad = new Entidad(nombreEntidad);
+    this.descripicion = descripicion;
+    this.obligatorio = obligatorio;
+    this.longitud = longitud;
+    this tipoDato = new TipoDato(tipoDato);
+}
+
+function TipoDato(nombre) {
+    this.nombre = nombre;
 }
 
 /*
@@ -82,8 +89,9 @@ function Mensaje(numero, nombre) {
 /*
  * Constructor del objeto Entidad
  */
-function Entidad(nombre) {
+function Entidad(nombre, descripcion) {
 	this.nombre = nombre;
+	this.descripcion = descripcion;
 }
 
 /*

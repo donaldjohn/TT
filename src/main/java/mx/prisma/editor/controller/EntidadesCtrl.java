@@ -40,7 +40,7 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 	private List<Entidad> listEntidades;
 	private String jsonAtributosTabla;
 	private List<TipoDato> listTipoDato;
-	
+	private int idTipoDato;
 
 	public String index() throws Exception {
 		try {
@@ -64,7 +64,6 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 		
 		String resultado = null;
 		try {
-			//Se consulta el proyecto para mostrar la informacion en pantalla
 			proyecto = SessionManager.consultarProyectoActivo();			
 			buscaCatalogos();
 			resultado = EDITNEW;
@@ -178,6 +177,14 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 
 	public void setProyecto(Proyecto proyecto) {
 		this.proyecto = proyecto;
+	}
+
+	public int getIdTipoDato() {
+		return idTipoDato;
+	}
+
+	public void setIdTipoDato(int idTipoDato) {
+		this.idTipoDato = idTipoDato;
 	}
 
 
