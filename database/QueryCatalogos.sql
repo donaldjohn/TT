@@ -36,9 +36,11 @@ INSERT INTO PRISMA.TipoDato (nombre) VALUES ('Booleano');
 INSERT INTO PRISMA.TipoDato (nombre) VALUES ('Fecha');
 INSERT INTO PRISMA.TipoDato (nombre) VALUES ('Archivo');
 
-INSERT INTO PRISMA.UnidadTamanio (nombre, ) VALUES ('Archivo');
-
-
+INSERT INTO PRISMA.UnidadTamanio (nombre, abreviatura) VALUES ('Kilobyte', 'KB');
+INSERT INTO PRISMA.UnidadTamanio (nombre, abreviatura) VALUES ('Megabyte', 'MB');
+INSERT INTO PRISMA.UnidadTamanio (nombre, abreviatura) VALUES ('Gigabyte', 'GB');
+INSERT INTO PRISMA.UnidadTamanio (nombre, abreviatura) VALUES ('Terabyte', 'TB',);
+INSERT INTO PRISMA.UnidadTamanio (nombre, abreviatura) VALUES ('Petabyte', 'PT');
 
 INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Verificación de catálogos');
 INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Comparación de atributos');

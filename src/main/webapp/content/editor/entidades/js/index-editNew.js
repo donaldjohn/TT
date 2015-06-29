@@ -6,6 +6,7 @@ $(document)
 					window.scrollTo(0, 0);
 					contextPath = $("#rutaContexto").val();
 					$('table.tablaGestion').DataTable();
+					ocultarColumnas("tablaAtributo");
 					var json = $("#jsonAtributosTabla").val();
 					if (json !== "") {
 						var parsedJson = JSON.parse(json);
@@ -13,14 +14,7 @@ $(document)
 								.each(
 										parsedJson,
 										function(i, item) {
-											var longitud;
 											var obligatorio;
-											if (item.tipoDato.nombre == 'Booleano'
-													|| item.tipoDato.nombre == 'Fecha') {
-												longitud = 'Ninguna';
-											} else {
-												longitud = item.longitud;
-											}
 
 											if (item.obligatorio == true) {
 												obligatorio = 'Sí';
@@ -31,7 +25,7 @@ $(document)
 													item.nombre,
 													item.descripcion,
 													item.tipoDato.nombre,
-													longitud,
+													item.longitud,
 													obligatorio,
 													"<center>"
 															+ "<a button='true'>"
@@ -153,6 +147,21 @@ function esValidoAtributo(idTabla, nombre, descripcion, tipoDato, longitud) {
 		agregarMensaje("Ingrese menos de 45 caracteres.");
 		return false;
 	}
+	
+	if (nombre.indexOf("_") > -1) {
+		agregarMensaje("El nombre no puede contener guiones bajos.");
+		return false;
+	}
+	
+	if (nombre.indexOf(":") > -1) {
+		agregarMensaje("El nombre no puede contener dos puntos.");
+		return false;
+	}
+	
+	if (nombre.indexOf("·") > -1) {
+		agregarMensaje("El nombre no puede punto medio.");
+		return false;
+	}
 
 	if (descripcion.length > 999) {
 		agregarMensaje("Ingrese menos de 999 caracteres.");
@@ -166,12 +175,23 @@ function esValidoAtributo(idTabla, nombre, descripcion, tipoDato, longitud) {
 	return true;
 }
 
+function ocultarColumnas(tabla) {
+	var dataTable = $("#" + tabla).dataTable();
+	dataTable.api().column(3).visible(false);
+	dataTable.api().column(4).visible(false);
+	dataTable.api().column(5).visible(false);
+	dataTable.api().column(6).visible(false);
+	dataTable.api().column(7).visible(false);
+
+}
+
 function isNormalInteger(str) {
 	return /^\+?([1-9]\d*)$/.test(str);
 }
 
-function disableLongitud() {
-	document.getElementById("atributo.longitud").value = "";
+function disablefromTipoDato() {
+	document.getElementById("atributo.longitud").value = null;
+	document.getElementById("atributo.longitud").value = null;
 	var tipoDato = document.getElementById("atributo.tipoDato");
 	var tipoDatoTexto = tipoDato.options[tipoDato.selectedIndex].text;
 	if (tipoDatoTexto == 'Booleano' || tipoDatoTexto == 'Fecha'
