@@ -28,13 +28,14 @@ public class EntidadDAO extends ElementoDAO {
 		return (Entidad) super.consultarElemento(nombre, proyecto, Referencia.getTabla(Referencia.TipoReferencia.ENTIDAD));
 	}
 	
-	public Entidad consultarEntidad(Integer numero) {
-		return (Entidad) super.consultarElemento(numero);
+	public Entidad consultarEntidad(int idEntidad) {
+		return (Entidad) super.consultarElemento(idEntidad);
 	}
 	
 	public List<Entidad> consultarEntidades(int idProyecto) {
 		List<Entidad> entidades = new ArrayList<Entidad>();
 		List<Elemento> elementos = super.consultarElementos(TipoReferencia.ENTIDAD,  idProyecto);
+		if (elementos != null)
 		for (Elemento elemento : elementos) {
 			entidades.add((Entidad) elemento);
 		}

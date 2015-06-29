@@ -190,7 +190,10 @@ function isNormalInteger(str) {
 }
 
 function disablefromTipoDato() {
-	document.getElementById("atributo.longitud").value = null;
+	document.getElementById("atributo.longitud").value = "";
+	document.getElementById("atributo.longitud").value = "";
+	
+	atributo.formatoArchivo
 	document.getElementById("atributo.longitud").value = null;
 	var tipoDato = document.getElementById("atributo.tipoDato");
 	var tipoDatoTexto = tipoDato.options[tipoDato.selectedIndex].text;
