@@ -36,7 +36,7 @@
 	
 	<!-- Ruta donde buscara los resultados -->
 	<constant name="struts.convention.result.path" value="/content" />
-	<package name="prisma" extends="rest-default">
+	<package name="prisma" extends="rest-default, json-default">
 		<interceptors>
 			<interceptor name="messageStoreInterceptor"
 				class="mx.prisma.util.MessageStoreInterceptorCDT">

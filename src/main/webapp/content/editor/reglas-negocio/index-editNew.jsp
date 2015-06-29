@@ -75,11 +75,11 @@
 						<td><s:select list="listEntidades" cssClass="inputFormulario ui-widget" name="idEntidad" id="entidades"
        						cssErrorClass="select-error" headerValue="Seleccione" headerKey="-1" listValue="nombre" onchange="mostrarAtributos();"></s:select></td>
 				</tr>
-				<tr>
+				<!-- <tr>
 						<td class="label obligatorio"><s:text name="labelAtributo" /></td>
 						<td><s:select list="listAtributos" cssClass="inputFormulario ui-widget" name="model.tipoReglaNegocio" id="model.tipoReglaNegocio"
        						cssErrorClass="select-error" headerValue="Seleccione" headerKey="-1" listValue="nombre" onchange="mostrarCamposTipoRN();"></s:select></td>
-				</tr>
+				</tr> -->
 								
 			</table>
 		</div>
