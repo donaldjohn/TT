@@ -60,6 +60,6 @@ public class UnidadTamanio implements java.io.Serializable {
 		this.abreviatura = abreviatura;
 	}
 	
-	
+	 
 
 }
