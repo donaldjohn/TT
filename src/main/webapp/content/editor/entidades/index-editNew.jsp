@@ -113,16 +113,16 @@
 					<tr>
 							<td class="label obligatorio"><s:text name="labelTipoDato"/></td>
 							<td><s:select list="listTipoDato" cssClass="inputFormulario" name="atributo.tipoDato" id="atributo.tipoDato"
-       						cssErrorClass="input-error" headerValue="Seleccione" headerKey="-1" listValue="nombre"></s:select></td>
+       						cssErrorClass="input-error" headerValue="Seleccione" headerKey="0" listValue="nombre" onchange="disableLongitud();"></s:select></td>
 					</tr>
-					<tr>
+					<tr id = 'trLongitud' style="display: none;">
 						<td class="label obligatorio"><s:text name="labelLongitud" /></td>
 						<td><s:textfield name="atributo.longitud" id="atributo.longitud"
 								cssErrorClass="input-error"></s:textfield></td>
 					</tr>
 					<tr>
 						<td class="label obligatorio"><s:text name="labelObligatorio" /></td>
-						<td><s:checkbox cssClass="inputFormulario"
+						<td><s:checkbox 
 								name="atributo.obligatorio" id="atributo.obligatorio" cssErrorClass="input-error"></s:checkbox></td>
 					</tr>
 

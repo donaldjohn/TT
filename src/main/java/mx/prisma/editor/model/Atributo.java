@@ -36,6 +36,9 @@ public class Atributo implements java.io.Serializable {
 	private String descripcion;
 	private boolean obligatorio;
 	private Integer longitud;
+	private String formatoArchivo;
+	private Float tamañoArchivo;
+	private UnidadTamanio unidadTamanio;
 	private TipoDato tipoDato;
 
 	public Atributo() {
@@ -112,6 +115,24 @@ public class Atributo implements java.io.Serializable {
 	public void setLongitud(Integer longitud) {
 		this.longitud = longitud;
 	}
+	
+	@Column(name = "tamanioArchivo", nullable = true, length = 10)
+	public Float getTamañoArchivo() {
+		return tamañoArchivo;
+	}
+	
+	public void setTamañoArchivo(Float tamañoArchivo) {
+		this.tamañoArchivo = tamañoArchivo;
+	}
+	
+	@Column(name = "formatoArchivo", nullable = true, length = 10)
+	public String getFormatoArchivo() {
+		return this.formatoArchivo;
+	}
+
+	public void setFormatoArchivo(String formatoArchivo) {
+		this.formatoArchivo = formatoArchivo;
+	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "TipoDatoid",referencedColumnName="id", nullable = false)
@@ -122,5 +143,16 @@ public class Atributo implements java.io.Serializable {
 	public void setTipoDato(TipoDato tipoDato) {
 		this.tipoDato = tipoDato;
 	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "UnidadTamanioid",referencedColumnName="id", nullable = true)
+	public UnidadTamanio getUnidadTamanio() {
+		return unidadTamanio;
+	}
+	public void setUnidadTamanio(UnidadTamanio unidadTamanio) {
+		this.unidadTamanio = unidadTamanio;
+	}
+
+	
 	
 }

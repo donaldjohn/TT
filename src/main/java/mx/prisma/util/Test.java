@@ -40,7 +40,7 @@ public class Test {
 
 		// pruebaRegistroProyecto(); // 31/05/2015
 		// pruebaModificacionProyecto(); //31/05/2015
-		// pruebaConsultaProyecto(); //31/05/2015
+		 pruebaConsultaProyecto(); //31/05/2015
 
 		// pruebaactualizarParticipantes(); // 01/06/2015
 
@@ -56,7 +56,6 @@ public class Test {
 
 		// pruebaRegistroCasoUso(); //05/06/2015
 		// pruebaModificacionCasoUso(); 
-		// pruebaConsultaCasoUso(); //05/06/2015
 		
 	}
 

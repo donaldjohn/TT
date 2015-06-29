@@ -95,6 +95,7 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 			agregarAtributos();			
 			Proyecto proyecto = SessionManager.consultarProyectoActivo();			
 			model.setProyecto(proyecto);
+			
 			EntidadBs.registrarEntidad(model);
 			
 			resultado = SUCCESS;

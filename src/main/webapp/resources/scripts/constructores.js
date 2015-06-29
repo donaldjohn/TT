@@ -66,9 +66,9 @@ function Actor(nombre) {
 /*
  * Constructor del objeto Atributo
  */
-function Atributo(nombre, descripicion, obligatorio, longitud, tipoDato) {
+function Atributo(nombre, descripcion, obligatorio, longitud, tipoDato) {
     this.nombre = nombre;
-    this.descripicion = descripicion;
+    this.descripcion = descripcion;
     this.obligatorio = obligatorio;
     this.longitud = longitud;
     this.tipoDato = new TipoDato(tipoDato);
