@@ -14,24 +14,18 @@ $(document).ready(function() {
 							var atributo = [
 								item.nombre,
 								item.descripcion,
-								item.tipoDato,
-								item.verbo.nombre, 
-								item.redaccion,
+								item.tipoDato.nombre,
+								item.longitud,
+								item.obligatorio,
 								"<center>" +
-									"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"up\");' button='true'>" +
-									"<img class='icon'  id='icon' src='" + window.contextPath + 
-									"/resources/images/icons/flechaArriba.png' title='Subir Paso'/></a>" +
-									"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"down\");' button='true'>" +
-									"<img class='icon'  id='icon' src='" + window.contextPath + 
-									"/resources/images/icons/flechaAbajo.png' title='Bajar Paso'/></a>" +
 									"<a button='true'>" +
 									"<img class='icon'  id='icon' src='" + window.contextPath + 
-									"/resources/images/icons/editar.png' title='Modificar Paso'/></a>" +
-									"<a onclick='dataTableCDT.deleteRowPasos(tablaPaso, this);' button='true'>" +
+									"/resources/images/icons/editar.png' title='Modificar Atributo'/></a>" +
+									"<a onclick='dataTableCDT.deleteRowPasos(tablaAtributo, this);' button='true'>" +
 									"<img class='icon'  id='icon' src='" + window.contextPath + 
-									"/resources/images/icons/eliminar.png' title='Eliminar Paso'/></a>" +
+									"/resources/images/icons/eliminar.png' title='Eliminar Atributo'/></a>" +
 								"</center>" ];
-							dataTableCDT.addRow("tablaPaso",paso);
+							dataTableCDT.addRow("tablaAtributo",paso);
 						});
 	}
 } );
@@ -39,54 +33,40 @@ $(document).ready(function() {
 
 function registrarPaso(){
 
-	var numero = calcularNumeroPaso();
-	var realiza = document.forms["frmPasoName"]["paso.realizaActor"].value;
-	var redaccion = document.forms["frmPasoName"]["paso.redaccion"].value;
-	var verbo = document.forms["frmPasoName"]["paso.verbo"].value;
-	
-	var up = "up";
-    if (esValidoPaso("tablaPaso", realiza, verbo, redaccion)) {
+	var nombre = document.forms["frmAtributo"]["atributo.nombre"].value;
+	var descripcion = document.forms["frmAtributo"]["atributo.descripcion"].value;
+	var tipoDato = document.forms["frmAtributo"]["listTipoDato"].value;
+	var longitud = document.forms["frmAtributo"]["atributo.longitud"].value;
+	var obligatorio = document.forms["frmAtributo"]["atributo.obligatorio"].value;
+
+    if (esValidoPaso("tablaAtributo", nombre, descripcion, tipoDato, longitud)) {
     	var realizaImg;
-    	//Se agrega la imagen referente a quien realiza el paso
-    	if(realiza == "Actor") {
-    		var realizaActor = true;
-    		realizaImg = "<img src='" + window.contextPath + 
-			"/resources/images/icons/actor.png' title='Actor' style='vertical-align: middle;'/>";
-    	} else if(realiza == "Sistema") {
-    		realizaActor = false;
-    		realizaImg = "<img src='" + window.contextPath + 
-			"/resources/images/icons/uc.png' title='Sistema' style='vertical-align: middle;'/>";
-    	}
     	//Se construye la fila 
     	var row = [
-    	            numero,
-    	            realizaImg + " " + verbo + " " +redaccion,
-    	            realizaActor,
-    	            verbo, 
-    	            redaccion,
+    	            nombre,
+    	            descripcion,
+    	            tipoDato,
+    	            longitud, 
+    	            obligatorio,
 					"<center>" +
-						"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"up\");' button='true'>" +
-						"<img class='icon'  id='icon' src='" + window.contextPath + 
-						"/resources/images/icons/flechaArriba.png' title='Subir Paso'/></a>" +
-						"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"down\");' button='true'>" +
-						"<img class='icon'  id='icon' src='" + window.contextPath + 
-						"/resources/images/icons/flechaAbajo.png' title='Bajar Paso'/></a>" +
 						"<a button='true'>" +
 						"<img class='icon'  id='icon' src='" + window.contextPath + 
-						"/resources/images/icons/editar.png' title='Modificar Paso'/></a>" +
+						"/resources/images/icons/editar.png' title='Modificar Atributo'/></a>" +
 						"<a onclick='dataTableCDT.deleteRowPasos(tablaPaso, this);' button='true'>" +
 						"<img class='icon'  id='icon' src='" + window.contextPath + 
-						"/resources/images/icons/eliminar.png' title='Eliminar Paso'/></a>" +
+						"/resources/images/icons/eliminar.png' title='Eliminar Atributo'/></a>" +
 					"</center>" ];
-    	dataTableCDT.addRow("tablaPaso", row);
+    	dataTableCDT.addRow("tablaAtributo", row);
     	
     	//Se limpian los campos
-    	document.getElementById("inputor").value = "";
-    	document.getElementById("realiza").selectedIndex = 0;
-    	document.getElementById("verbo").selectedIndex = 0;
+    	document.getElementById("atributo.nombre").value = "";
+    	document.getElementById("atributo.descripcion").value = "";
+    	document.getElementById("listTipoDato").selectedIndex = -1;
+    	document.getElementById("atributo.longitud").value = "";
+    	document.getElementById("atributo.obligatorio").value = false;
     	
     	//Se cierra la emergente
-    	$('#pasoDialog').dialog('close');
+    	$('#atributoDialog').dialog('close');
     } else {
     	return false;
     }
@@ -94,12 +74,14 @@ function registrarPaso(){
  
 function cancelarRegistrarPaso() {
 	//Se limpian los campos
-	document.getElementById("inputor").value = "";
-	document.getElementById("realiza").selectedIndex = 0;
-	document.getElementById("verbo").selectedIndex = 0;
+	document.getElementById("atributo.nombre").value = "";
+	document.getElementById("atributo.descripcion").value = "";
+	document.getElementById("listTipoDato").selectedIndex = -1;
+	document.getElementById("atributo.longitud").value = "";
+	document.getElementById("atributo.obligatorio").value = false;
 	
 	//Se cierra la emergente
-	$('#pasoDialog').dialog('close');
+	$('#atributoDialog').dialog('close');
 };
 
 function agregarMensaje(mensaje) {
@@ -109,21 +91,30 @@ function agregarMensaje(mensaje) {
 /*
  * Verifica que la redacción sea válida
  */
-function esValidoPaso(idTabla, realiza, verbo, redaccion) {
-	if(vaciaONula(redaccion) && realiza != -1 && verbo != -1) {
+function esValidoPaso(idTabla, nombre, descripcion, tipoDato, longitud) {
+	if(vaciaONula(nombre) && vaciaONula(descripcion) && vaciaONula(longitud) && tipoDato != -1) {
 		agregarMensaje("Agregue todos los campos obligatorios.");
 		return false;
 	} 
 	console.log("longitud de redaccione " + redaccion.length);
-	if(redaccion.length > 999) {
+	if(nombre.length > 45) {
+		agregarMensaje("Ingrese menos de 45 caracteres.");
+		return false;
+	} 
+	
+	if(descripcion.length > 999) {
 		agregarMensaje("Ingrese menos de 999 caracteres.");
 		return false;
 	} 
+	
+	if(longitud.length > 10) {
+		agregarMensaje("Ingrese menos de 10 dígitos.");
+		return false;
+	} 
 
-	if (dataTableCDT.exist(idTabla, realiza, 2, "", "Mensaje")
-			&& dataTableCDT.exist(idTabla, verbo, 3, "", "Mensaje")
-			&& dataTableCDT.exist(idTabla, verbo, 4, "", "Mensaje")) {
-    	agregarMensaje("Este paso ya está en la trayectoria.");
+
+	if (dataTableCDT.exist(idTabla, nombre, 0, "", "Mensaje")) {
+    	agregarMensaje("Este atributo ya está en la entidad.");
     	return false;
     } 
 	return true;
@@ -147,5 +138,5 @@ function tablaToJson(idTable) {
 						table.fnGetData(i, 3), table.fnGetData(i, 4)));
 	}
 	var jsonPasos = JSON.stringify(arregloPasos);
-	document.getElementById("jsonPasosTabla").value = jsonPasos;
+	document.getElementById("jsonAtributosTabla").value = jsonPasos;
 }

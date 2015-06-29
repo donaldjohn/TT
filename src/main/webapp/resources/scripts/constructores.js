@@ -71,7 +71,7 @@ function Atributo(nombre, descripicion, obligatorio, longitud, tipoDato) {
     this.descripicion = descripicion;
     this.obligatorio = obligatorio;
     this.longitud = longitud;
-    this tipoDato = new TipoDato(tipoDato);
+    this.tipoDato = new TipoDato(tipoDato);
 }
 
 function TipoDato(nombre) {

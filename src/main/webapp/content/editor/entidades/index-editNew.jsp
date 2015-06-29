@@ -112,7 +112,7 @@
 					</tr>
 					<tr>
 							<td class="label obligatorio"><s:text name="labelTipoDato"/></td>
-							<td><s:select list="listTipoDato" cssClass="inputFormulario" name="idTipoDato" id="id" 
+							<td><s:select list="listTipoDato" listKey = "id" cssClass="inputFormulario" name="idTipoDato" id="listTipoDato" 
        						cssErrorClass="input-error" headerValue="Seleccione" headerKey="-1" ></s:select></td>
 						</tr>
 					<tr>
