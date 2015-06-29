@@ -3,8 +3,6 @@ package mx.prisma.editor.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.HibernateException;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import mx.prisma.admin.model.Proyecto;
@@ -43,8 +41,8 @@ public class MensajeDAO extends ElementoDAO {
 		return mensajes;
 	}
 
-	public String siguienteNumero(TipoReferencia referencia, String claveProyecto) {
-		return super.siguienteNumero(referencia, claveProyecto);
+	public String siguienteNumero(String claveProyecto) {
+		return super.siguienteNumero(TipoReferencia.MENSAJE, claveProyecto);
 	}
 
 }
