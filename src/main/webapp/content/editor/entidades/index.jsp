@@ -7,12 +7,12 @@
 <head>
 <title>Trayectorias</title>
 <![CDATA[
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/trayectorias/js/index.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/entidades/js/index.js"></script>
 ]]>
 </head>
 
 <body>
-	<h1><s:property value="%{model.proyecto.clave} + %{model.proyecto.nombre}"/></h1>
+	<h1><s:property value="%{proyecto.clave + ' - ' + proyecto.nombre}"/></h1>
 	<h3>Gestionar Entidades</h3>
 	<s:actionmessage theme="jquery"/>
 	<s:actionerror theme="jquery"/>
@@ -22,15 +22,23 @@
 	<div class="form">
 		<table id="gestion" class="tablaGestion" cellspacing="0" width="100%">
 			<thead>
-				<th style="width: 15%;"><s:text name="colEntidad"/></th>
-				<th style="width: 15%;"><s:text name="colAcciones"/></th>
+				<th style="width: 80%;"><s:text name="colEntidad"/></th>
+				<th style="width: 20%;"><s:text name="colAcciones"/></th>
 			</thead>
 			<tbody>
 			<s:iterator value="listEntidades" var="entidad">
 				<tr>
-					<td>op</td>
-					<td>op</td>
-					
+					<td><s:property value="%{#entidad.nombre}"/></td>
+					<td align="center">
+						<s:a href="#">
+							<img id="" class="button" title="Modificar Punto de extensión"
+									src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
+						</s:a>
+						<s:a href="#">
+							<img id="" class="button" title="Eliminar Punto de extensión"
+									src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" />
+						</s:a>
+					</td>
 				</tr>
 			</s:iterator>
 			</tbody>

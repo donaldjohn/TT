@@ -42,10 +42,9 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 	private List<TipoDato> listTipoDato;
 	
 
-	public String index() throws Exception{
+	public String index() throws Exception {
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
-			model.setProyecto(proyecto);
 			listEntidades = new EntidadDAO().consultarEntidades(proyecto.getId());
 			
 			@SuppressWarnings("unchecked")
@@ -61,11 +60,6 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 		return INDEX;
 	}
 
-
-	/**
-	 * Método para preparar la pantalla de registro de una entidad.
-	 * @throws Exception 
-	 * */
 	public String editNew() throws Exception {
 		
 		String resultado = null;
@@ -90,10 +84,6 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 		listTipoDato = new TipoDatoDAO().consultarTiposDato();
 	}
 
-	/**
-	 * Método para registrar una trayectoria, si la operación es exitosa muestra el
-	 * mensaje MSG1 en caso contrario redirige a la pantalla de registro.
-	 * */
 	public String create() throws Exception {
 		String resultado = null;
 		
@@ -137,62 +127,57 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 		}
 	}
 
-	
 	public Entidad getModel() {
-		if (this.model == null) {
-			model = new Entidad();
-		}
-		return model;
+		return this.model;
 	}
 
 	public void setModel(Entidad model) {
 		this.model = model;
 	}
 
-
 	public Map<String, Object> getUserSession() {
 		return userSession;
 	}
-
 
 	public void setUserSession(Map<String, Object> userSession) {
 		this.userSession = userSession;
 	}
 
-
 	public List<Entidad> getListEntidades() {
 		return listEntidades;
 	}
-
 
 	public void setListEntidades(List<Entidad> listEntidades) {
 		this.listEntidades = listEntidades;
 	}
 
-
 	public String getJsonAtributosTabla() {
 		return jsonAtributosTabla;
 	}
-
 
 	public void setJsonAtributosTabla(String jsonAtributosTabla) {
 		this.jsonAtributosTabla = jsonAtributosTabla;
 	}
 
-
 	public List<TipoDato> getListTipoDato() {
 		return listTipoDato;
 	}
-
 
 	public void setListTipoDato(List<TipoDato> listTipoDato) {
 		this.listTipoDato = listTipoDato;
 	}
 
-
 	public void setSession(Map<String, Object> arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public Proyecto getProyecto() {
+		return proyecto;
+	}
+
+	public void setProyecto(Proyecto proyecto) {
+		this.proyecto = proyecto;
 	}
 
 

@@ -95,7 +95,6 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 						pasoAuxiliar.setTrayectoria(trayectoriaAux);
 						pasoAuxiliar.setNumero(paso.getNumero());
 						listPasos.add(pasoAuxiliar);
-						System.out.println(paso.getId());
 					}
 				}
 			}
@@ -140,6 +139,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 	public String editNew() throws Exception {
 		String resultado = null;
 		try {
+			casoUso = SessionManager.consultarCasoUsoActivo();
 			modulo = SessionManager.consultarModuloActivo();
 			proyecto = modulo.getProyecto();
 			buscaElementos();
@@ -241,9 +241,12 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 	public void setSession(Map<String, Object> arg0) {
 	}
 
-	
+	public CasoUso getCasoUso() {
+		return casoUso;
+	}
 
-	
-	
+	public void setCasoUso(CasoUso casoUso) {
+		this.casoUso = casoUso;
+	}
 }
 
