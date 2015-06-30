@@ -33,6 +33,8 @@ import com.opensymphony.xwork2.ModelDriven;
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 		"actionName", "reglas-negocio"}),
 		@Result(name = "direccion", type = "json", params = {
+				"root",
+				"action",
 				"includeProperties",
 				"^codigos\\[\\d+\\]\\.asentamiento\\.id, ^codigos\\[\\d+\\]\\.asentamiento\\.nombre,^codigos\\[\\d+\\]\\.ciudad\\.nombre,^codigos\\[\\d+\\]\\.asentamiento\\.municipio\\.nombre,^codigos\\[\\d+\\]\\.asentamiento\\.municipio\\.entidadFederativa\\.nombre" })
 })
