@@ -231,6 +231,9 @@ function disablefromTipoDato() {
 		}
 	} else {
 		document.getElementById("trLongitud").style.display = '';
+		document.getElementById("trLongitud").style.display = 'none';
+		document.getElementById("trFormatoArchivo").style.display = 'none';
+		document.getElementById("trTamanioArchivo").style.display = 'none';
 	}
 }
 
