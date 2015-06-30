@@ -62,16 +62,13 @@
 							<th style="width: 40%;"><s:text name="colAtributo" /></th>
 							<th style="width: 30%;"><s:text name="colTipoDato" /></th>
 							<th style="width: 10%;"><s:text name="colObligatorio" /></th>
-							
+						
 							<!--  Columnas ocultas -->
 							<th style="width: 0%;"><s:text name="colDescripcion" /></th>
 							<th style="width: 0%;"><s:text name="colLongitud" /></th>
 							<th style="width: 0%;"><s:text name="colFormatoArchivo" /></th>
 							<th style="width: 0%;"><s:text name="colTamanioArchivo" /></th>
-							<th style="width: 0%;"><s:text name="colUnidadTamanio" /></th>
-							
-							
-							
+							<th style="width: 0%;"><s:text name="colUnidadTamanio" /></th>	
 							<th style="width: 20%;"><s:text name="colAcciones" /></th>
 							
 						</tr>
@@ -133,13 +130,13 @@
 						<td class="label obligatorio"><s:text name="labelFormatoArchivo" /></td>
 						<td><s:textfield name="atributo.formatoArchivo" id="atributo.formatoArchivo"
 								cssErrorClass="input-error"></s:textfield></td>
-					</tr>
+					</tr> 
 					
 					<tr id = 'trTamanioArchivo' style="display: none;">
 						<td class="label obligatorio"><s:text name="labelTamanioArchivo" /></td>
 						<td><s:textfield name="atributo.tamanioArchivo" id="atributo.tamanioArchivo"
-								cssErrorClass="input-error"></s:textfield></td>
-						<td><s:select list="listUnidadTamanio" cssClass="inputFormulario" name="atributo.unidadTamanio" id="atributo.unidadTamanio"
+								cssErrorClass="input-error"></s:textfield>
+						<s:select list="listUnidadTamanio"  name="atributo.unidadTamanio" id="atributo.unidadTamanio"
        						cssErrorClass="input-error" headerValue="Seleccione" headerKey="0" listValue="abreviatura"></s:select></td>
 					</tr>
 					

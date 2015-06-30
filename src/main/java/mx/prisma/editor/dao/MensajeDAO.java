@@ -41,8 +41,8 @@ public class MensajeDAO extends ElementoDAO {
 		return mensajes;
 	}
 
-	public String siguienteNumero(String claveProyecto) {
-		return super.siguienteNumero(TipoReferencia.MENSAJE, claveProyecto);
+	public String siguienteNumero(int idProyecto) {
+		return super.siguienteNumero(TipoReferencia.MENSAJE, idProyecto);
 	}
 
 }

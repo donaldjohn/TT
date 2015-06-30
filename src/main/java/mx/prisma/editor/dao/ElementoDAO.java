@@ -71,36 +71,36 @@ public class ElementoDAO {
 
 	@SuppressWarnings("unchecked")
 	public String siguienteNumero(TipoReferencia referencia,
-			String claveProyecto) {
-		List<String> results = null;
+			int idProyecto) {
+		List<Integer> results = null;
 		String sentencia = "";
 		switch (referencia) {
 		case ACTOR:
 			sentencia = "SELECT MAX(CAST(numero AS SIGNED)) FROM Elemento INNER JOIN Actor ON Elemento.id = Actor.Elementoid WHERE Elemento.Proyectoid = "
-					+ claveProyecto + ";";
+					+ idProyecto + ";";
 			break;
 
 		case ENTIDAD:
 			sentencia = "SELECT MAX(CAST(numero AS SIGNED)) FROM Elemento INNER JOIN Entidad ON Elemento.id = Entidad.Elementoid WHERE Elemento.Proyectoid = "
-					+ claveProyecto + ";";
+					+ idProyecto + ";";
 
 			break;
 
 		case MENSAJE:
 			sentencia = "SELECT MAX(CAST(numero AS SIGNED)) FROM Elemento INNER JOIN Mensaje ON Elemento.id = Mensaje.Elementoid WHERE Elemento.Proyectoid = "
-					+ claveProyecto + ";";
+					+ idProyecto + ";";
 
 			break;
 
 		case REGLANEGOCIO:
 			sentencia = "SELECT MAX(CAST(numero AS SIGNED)) FROM Elemento INNER JOIN ReglaNegocio ON Elemento.id = ReglaNegocio.Elementoid WHERE Elemento.Proyectoid = "
-					+ claveProyecto + ";";
+					+ idProyecto + ";";
 
 			break;
 
 		case TERMINOGLS:
 			sentencia = "SELECT MAX(CAST(numero AS SIGNED)) FROM Elemento INNER JOIN TerminoGlosario ON Elemento.id = TerminoGlosario.Elementoid WHERE Elemento.Proyectoid = "
-					+ claveProyecto + ";";
+					+ idProyecto + ";";
 
 			break;
 		default:
@@ -123,7 +123,7 @@ public class ElementoDAO {
 		} else if (results.isEmpty()) {
 			return 1 + "";
 		} else
-			return results.get(0);
+			return results.get(0) + "";
 	}
 
 	@SuppressWarnings("unchecked")

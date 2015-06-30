@@ -42,8 +42,8 @@ public class ReglaNegocioDAO extends ElementoDAO {
 		return reglasNegocio;
 	}
 
-	public String siguienteNumero(String claveProyecto) {
-		return super.siguienteNumero(TipoReferencia.REGLANEGOCIO, claveProyecto);
+	public String siguienteNumero(int idProyecto) {
+		return super.siguienteNumero(TipoReferencia.REGLANEGOCIO, idProyecto);
 	}
 
 }

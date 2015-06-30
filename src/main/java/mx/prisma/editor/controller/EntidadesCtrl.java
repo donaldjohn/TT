@@ -8,6 +8,7 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
+import org.hibernate.exception.ConstraintViolationException;
 
 import com.opensymphony.xwork2.ModelDriven;
 
@@ -29,32 +30,33 @@ import mx.prisma.util.SessionManager;
 
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "entidades"}),
-}) 
-public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<Entidad>, SessionAware{
-	/**
+		"actionName", "entidades" }), })
+public class EntidadesCtrl extends ActionSupportPRISMA implements
+		ModelDriven<Entidad>, SessionAware {
+	/** 
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Map<String, Object> userSession ;
+	private Map<String, Object> userSession;
 	private Proyecto proyecto;
 	private Entidad model;
 	private List<Entidad> listEntidades;
 	private String jsonAtributosTabla;
-	
-	private List<TipoDato> listTipoDato;	
+
+	private List<TipoDato> listTipoDato;
 	private List<UnidadTamanio> listUnidadTamanio;
 
 	public String index() throws Exception {
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
 			listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
-			
+
 			@SuppressWarnings("unchecked")
-			Collection<String> msjs = (Collection<String>) SessionManager.get("mensajesAccion");
+			Collection<String> msjs = (Collection<String>) SessionManager
+					.get("mensajesAccion");
 			this.setActionMessages(msjs);
 			SessionManager.delete("mensajesAccion");
-			
+
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 		} catch (Exception e) {
@@ -64,10 +66,10 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 	}
 
 	public String editNew() throws Exception {
-		
+
 		String resultado = null;
 		try {
-			proyecto = SessionManager.consultarProyectoActivo();			
+			proyecto = SessionManager.consultarProyectoActivo();
 			buscaCatalogos();
 			resultado = EDITNEW;
 		} catch (PRISMAException pe) {
@@ -81,35 +83,33 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 		}
 		return resultado;
 	}
-	
+
 	private void buscaCatalogos() {
 		listTipoDato = EntidadBs.consultarTiposDato();
 		listUnidadTamanio = EntidadBs.consultarUnidadesTamanio();
-		if (listUnidadTamanio == null || listUnidadTamanio.isEmpty()){
-			throw new PRISMAException("No hay unidades para registrar el atributo.", "MSG25");
+		if (listUnidadTamanio == null || listUnidadTamanio.isEmpty()) {
+			throw new PRISMAException(
+					"No hay unidades para registrar el atributo.", "MSG25");
 		}
-		if (listTipoDato == null || listTipoDato.isEmpty()){
-			throw new PRISMAException("No hay tipos de dato para registrar el atributo.", "MSG25");
+		if (listTipoDato == null || listTipoDato.isEmpty()) {
+			throw new PRISMAException(
+					"No hay tipos de dato para registrar el atributo.", "MSG25");
 		}
 	}
 
 	public String create() throws Exception {
 		String resultado = null;
-		
-		try {			
-			agregarAtributos();			
-			Proyecto proyecto = SessionManager.consultarProyectoActivo();			
+
+		try {
+			agregarAtributos();
+			Proyecto proyecto = SessionManager.consultarProyectoActivo();
 			model.setProyecto(proyecto);
-			
 			EntidadBs.registrarEntidad(model);
-			
+
 			resultado = SUCCESS;
-			
-			//Se agrega mensaje de éxito
 			addActionMessage(getText("MSG1", new String[] { "La",
-					"Trayectoria", "registrada" }));
-			
-			//Se agrega el mensaje a la sesión
+					"Entidad", "registrada" }));
+
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
@@ -117,7 +117,12 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
-		} catch (Exception e) {
+		} catch (ConstraintViolationException e) {
+			e.printStackTrace();
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 			ErrorManager.agregaMensajeError(this, e);
 			resultado = index();
@@ -127,12 +132,24 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 
 	private void agregarAtributos() {
 		System.out.println("jsonAtributosTabla " + jsonAtributosTabla);
-		if(jsonAtributosTabla != null && !jsonAtributosTabla.equals("")) {
-			model.setAtributos(JsonUtil.mapJSONToSet(jsonAtributosTabla, Atributo.class));
-			for(Atributo atributo: model.getAtributos()) {
-				TipoDato tipoDato = new TipoDatoDAO().consultarTipoDato(atributo.getTipoDato().getNombre());
+		if (jsonAtributosTabla != null && !jsonAtributosTabla.equals("")) {
+			model.setAtributos(JsonUtil.mapJSONToSet(jsonAtributosTabla,
+					Atributo.class));
+			for (Atributo atributo : model.getAtributos()) {
+				TipoDato tipoDato = new TipoDatoDAO()
+						.consultarTipoDato(atributo.getTipoDato().getNombre());
+				
+				if (tipoDato.getNombre().equals("Archivo")) {
+					UnidadTamanio unidadTamanio = new UnidadTamanioDAO()
+						.consultarUnidadTamanioAbreviatura(atributo
+								.getUnidadTamanio().getAbreviatura());
+					atributo.setUnidadTamanio(unidadTamanio);
+				} else {
+					atributo.setUnidadTamanio(null);
+				}
 				atributo.setTipoDato(tipoDato);
 				atributo.setEntidad(model);
+				model.getAtributos().add(atributo);
 			}
 		}
 	}
@@ -179,7 +196,7 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 
 	public void setSession(Map<String, Object> arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public Proyecto getProyecto() {
@@ -190,20 +207,11 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<En
 		this.proyecto = proyecto;
 	}
 
-	
 	public List<UnidadTamanio> getListUnidadTamanio() {
 		return listUnidadTamanio;
 	}
 
-	
 	public void setListUnidadTamanio(List<UnidadTamanio> listUnidadTamanio) {
 		this.listUnidadTamanio = listUnidadTamanio;
 	}
-
-
-
-	
-	
-	
 }
-

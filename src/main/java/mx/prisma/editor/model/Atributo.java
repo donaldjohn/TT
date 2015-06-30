@@ -116,15 +116,6 @@ public class Atributo implements java.io.Serializable {
 		this.longitud = longitud;
 	}
 	
-	@Column(name = "tamanioArchivo", nullable = true, length = 10)
-	public Float getTamañoArchivo() {
-		return tamanioArchivo;
-	}
-	
-	public void setTamañoArchivo(Float tamanioArchivo) {
-		this.tamanioArchivo = tamanioArchivo;
-	}
-	
 	@Column(name = "formatoArchivo", nullable = true, length = 10)
 	public String getFormatoArchivo() {
 		return this.formatoArchivo;
@@ -151,6 +142,15 @@ public class Atributo implements java.io.Serializable {
 	}
 	public void setUnidadTamanio(UnidadTamanio unidadTamanio) {
 		this.unidadTamanio = unidadTamanio;
+	}
+	
+	
+	@Column(name = "tamanioArchivo", nullable = true, length = 10)
+	public Float getTamanioArchivo() {
+		return tamanioArchivo;
+	}
+	public void setTamanioArchivo(Float tamanioArchivo) {
+		this.tamanioArchivo = tamanioArchivo;
 	}
 
 	

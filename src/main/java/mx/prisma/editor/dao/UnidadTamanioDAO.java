@@ -75,12 +75,13 @@ public class UnidadTamanioDAO {
 			session.getTransaction().rollback();
 		}
 		
-		if(results!=null){
-			if (results.get(0) != null){
+		if(results == null) {
+			return null;
+		} else 
+			if (results.isEmpty()) {
+				return null;
+			} else
 				return results.get(0);
-			}
-		}
-		return null;
 
 	}
 

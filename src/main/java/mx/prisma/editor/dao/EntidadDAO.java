@@ -41,4 +41,8 @@ public class EntidadDAO extends ElementoDAO {
 		}
 		return entidades;
 	}
+	
+	public String siguienteNumeroEntidad(int idProyecto) {
+		return super.siguienteNumero(TipoReferencia.ENTIDAD, idProyecto);
+	}
 }
