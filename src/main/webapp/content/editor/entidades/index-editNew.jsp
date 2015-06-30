@@ -130,7 +130,7 @@
 						<td class="label obligatorio"><s:text name="labelFormatoArchivo" /></td>
 						<td><s:textfield name="atributo.formatoArchivo" id="atributo.formatoArchivo"
 								cssErrorClass="input-error"></s:textfield></td>
-					</tr>
+					</tr> 
 					
 					<tr id = 'trTamanioArchivo' style="display: none;">
 						<td class="label obligatorio"><s:text name="labelTamanioArchivo" /></td>
