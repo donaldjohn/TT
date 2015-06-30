@@ -51,8 +51,7 @@ function mostrarCamposTipoRN() {
 
 function mostrarAtributos() {
 	var select = document.getElementById("idEntidad");
-	var idEntidad = 5;
-	console.log("idEntidad desde mostrarAtributos " + idEntidad);
+	console.log("idEntidad desde mostrarAtributos " + select);
 	rutaCargarAtributos = contextPath + '/reglas-negocio!cargarAtributos';
 	console.log("rutaCargarAtributos: " + rutaCargarAtributos);
 	$.ajax({

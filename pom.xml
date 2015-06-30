@@ -16,11 +16,19 @@
 			<artifactId>struts2-core</artifactId>
 			<version>2.3.24</version>
 		</dependency>
+<<<<<<< HEAD
 		<dependency>
 	       <groupId>org.apache.struts</groupId>
 	       <artifactId>struts2-json-plugin</artifactId>
 	       <version>2.3.24</version>
 	   </dependency>
+=======
+		<!-- <dependency>
+			<groupId>opensymphony</groupId>
+			<artifactId>sitemesh</artifactId>
+			<version>2.4.2</version>
+		</dependency> -->
+>>>>>>> branch 'master' of https://github.com/sramirezc/AplicacionTTB064.git
 		
 		<dependency>
 			<groupId>org.hibernate</groupId>

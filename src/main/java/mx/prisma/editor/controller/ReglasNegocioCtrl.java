@@ -8,7 +8,6 @@ import java.util.Set;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.ElementoBs;
-import mx.prisma.editor.bs.EntidadBs;
 import mx.prisma.editor.bs.ReglaNegocioBs;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.model.Atributo;
@@ -32,11 +31,14 @@ import com.opensymphony.xwork2.ModelDriven;
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 		"actionName", "reglas-negocio"}),
+<<<<<<< HEAD
 		@Result(name = "direccion", type = "json", params = {
 				"root",
 				"action",
 				"includeProperties",
 				"^codigos\\[\\d+\\]\\.asentamiento\\.id, ^codigos\\[\\d+\\]\\.asentamiento\\.nombre,^codigos\\[\\d+\\]\\.ciudad\\.nombre,^codigos\\[\\d+\\]\\.asentamiento\\.municipio\\.nombre,^codigos\\[\\d+\\]\\.asentamiento\\.municipio\\.entidadFederativa\\.nombre" })
+=======
+>>>>>>> branch 'master' of https://github.com/sramirezc/AplicacionTTB064.git
 })
 public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDriven<ReglaNegocio>, SessionAware{
 	/**
@@ -83,7 +85,6 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 			proyecto = SessionManager.consultarProyectoActivo();
 			buscaCatalogos();
 			buscarElementos();
-			System.out.println(this.listEntidades);
 			model.setClave("RN");
 			resultado = EDITNEW;
 		} catch (PRISMAValidacionException pve) {
@@ -101,15 +102,8 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	}
 	
 	private void buscarElementos() throws Exception{
-		listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
-		List<Entidad> auxEntidades = new ArrayList<Entidad>(); 
-		for(Entidad en : listEntidades) {
-			Entidad entidadAux = new Entidad();
-			entidadAux.setClave(en.getClave());
-			entidadAux.setNombre(en.getNombre());
-			auxEntidades.add(entidadAux);
-		}
-		this.jsonEntidades = JsonUtil.mapListToJSON(auxEntidades);
+		listEntidades = new EntidadDAO().consultarEntidades(proyecto.getId());
+		this.jsonEntidades = JsonUtil.	
 	}
 
 	public String create() {
@@ -256,23 +250,6 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 
 	public void setJsonEntidades(String jsonEntidades) {
 		this.jsonEntidades = jsonEntidades;
-	}
-
-	public List<Entidad> getListEntidades() {
-		System.out.println("size listEntidades " + listEntidades.size());
-		return listEntidades;
-	}
-
-	public void setListEntidades(List<Entidad> listEntidades) {
-		this.listEntidades = listEntidades;
-	}
-
-	public List<Atributo> getListAtributos() {
-		return listAtributos;
-	}
-
-	public void setListAtributos(List<Atributo> listAtributos) {
-		this.listAtributos = listAtributos;
 	}
 
 	
