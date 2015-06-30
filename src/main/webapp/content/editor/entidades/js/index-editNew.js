@@ -45,14 +45,12 @@ $(document)
 
 function registrarAtributo() {
 
-	var nombre = document.getElementById("atributo.nombre").value;
-	var descripcion = document.getElementById("atributo.descripcion").value;
+	var nombre = document.forms["frmAtributo"]["atributo.nombre"].value;
+	var descripcion = document.forms["frmAtributo"]["atributo.descripcion"].value;
 	var tipoDato = document.getElementById("atributo.tipoDato");
-	var longitud = document.getElementById("atributo.longitud").value;
-	var formatoArchivo = document.getElementById("atributo.formatoArchivo").value;
-	var tamanioArchivo = document.getElementById("atributo.tamanioArchivo").value;
-	var unidadTamanio = document.getElementById("atributo.unidadTamanio");
-	var obligatorio = document.getElementById("atributo.obligatorio").value;
+
+	var longitud = document.forms["frmAtributo"]["atributo.longitud"].value;
+	var obligatorio = document.forms["frmAtributo"]["atributo.obligatorio"].value;
 
 	if (obligatorio == true) {
 		obligatorio = "Sí";
@@ -61,16 +59,18 @@ function registrarAtributo() {
 	}
 
 	if (esValidoAtributo("tablaAtributo", nombre, descripcion, tipoDato,
-			longitud, formatoArchivo, tamanioArchivo, unidadTamanio)) {
+			longitud)) {
+		if (tipoDato.options[tipoDato.selectedIndex].text == 'Booleano'
+				|| tipoDato.options[tipoDato.selectedIndex].text == 'Fecha') {
+			longitud = 'Ninguna';
+		}
+
 		// Se construye la fila
 		var row = [
 				nombre,
 				descripcion,
 				tipoDato.options[tipoDato.selectedIndex].text,
 				longitud,
-				formatoArchivo,
-				tamanioArchivo,
-				unidadTamanio,
 				obligatorio,
 				"<center>"
 						+ "<a button='true'>"
@@ -84,18 +84,14 @@ function registrarAtributo() {
 						+ "</center>" ];
 		dataTableCDT.addRow("tablaAtributo", row);
 
+		// Se limpian los campos
 		document.getElementById("atributo.nombre").value = "";
 		document.getElementById("atributo.descripcion").value = "";
 		document.getElementById("atributo.tipoDato").selectedIndex = 0;
 		document.getElementById("atributo.longitud").value = "";
-		document.getElementById("atributo.formatoArchivo").value = "";
-		document.getElementById("atributo.tamanioArchivo").value = "";
-		document.getElementById("atributo.unidadTamanio").selectedIndex = 0;
 		document.getElementById("atributo.obligatorio").value = false;
-		
 		document.getElementById("trLongitud").style.display = 'none';
-		document.getElementById("trFormatoArchivo").style.display = 'none';
-		document.getElementById("trTamanioArchivo").style.display = 'none';
+		// Se cierra la emergente
 		$('#atributoDialog').dialog('close');
 	} else {
 		return false;
@@ -108,14 +104,8 @@ function cancelarRegistrarAtributo() {
 	document.getElementById("atributo.descripcion").value = "";
 	document.getElementById("atributo.tipoDato").selectedIndex = 0;
 	document.getElementById("atributo.longitud").value = "";
-	document.getElementById("atributo.formatoArchivo").value = "";
-	document.getElementById("atributo.tamanioArchivo").value = "";
-	document.getElementById("atributo.unidadTamanio").selectedIndex = 0;
 	document.getElementById("atributo.obligatorio").value = false;
-	
 	document.getElementById("trLongitud").style.display = 'none';
-	document.getElementById("trFormatoArchivo").style.display = 'none';
-	document.getElementById("trTamanioArchivo").style.display = 'none';
 
 
 	// Se cierra la emergente
@@ -126,20 +116,33 @@ function agregarMensaje(mensaje) {
 	alert(mensaje);
 };
 
-function esValidoAtributo(idTabla, nombre, descripcion, tipoDato,
-		longitud, formatoArchivo, tamanioArchivo, unidadTamanio) {
-	
-	var tipoDatoTexto = options[tipoDato.selectedIndex].text;
-	
-	/*
-	 * Inicia la validación del nombre y descripción, los cuales se deben validar independientemente del tipo de dato seleccionado.
-	 */
-	
-	if (vaciaONula(nombre) || vaciaONula(descripcion) || tipoDato.selectedIndex == 0) {
-		agregarMensaje("Agregue todos los campos obligatorios.");
-		return false;
+function esValidoAtributo(idTabla, nombre, descripcion, tipoDato, longitud) {
+	if (tipoDato.options[tipoDato.selectedIndex].text != 'Booleano'
+			&& tipoDato.options[tipoDato.selectedIndex].text != 'Fecha') {
+		if (vaciaONula(nombre) || vaciaONula(descripcion)
+				|| vaciaONula(longitud) || tipoDato.selectedIndex == 0) {
+			agregarMensaje("Agregue todos los campos obligatorios.");
+			return false;
+		}
+
+		if (!isNormalInteger(longitud)) {
+			agregarMensaje("Ingrese una longitud válida.");
+			return false;
+		}
+
+		if (longitud.length > 10) {
+			agregarMensaje("Ingrese menos de 10 dígitos.");
+			return false;
+		}
+
+	} else {
+		if (vaciaONula(nombre) || vaciaONula(descripcion)
+				|| tipoDato.selectedIndex == 0) {
+			agregarMensaje("Agregue todos los campos obligatorios.");
+			return false;
+		}
+
 	}
-	
 	if (nombre.length > 45) {
 		agregarMensaje("Ingrese menos de 45 caracteres.");
 		return false;
@@ -164,34 +167,11 @@ function esValidoAtributo(idTabla, nombre, descripcion, tipoDato,
 		agregarMensaje("Ingrese menos de 999 caracteres.");
 		return false;
 	}
-		
-	/*
-	 * Finaliza la validación del nombre y descripción
-	 */
-	
-	if (tipoDatoTexto == 'Booleano' || tipoDatoTexto == 'Fecha' || tipoDatoTexto == 'Archivo') {
-		
-	} else {
-		if (vaciaONula(longitud)) {
-			agregarMensaje("Agregue todos los campos obligatorios.");
-			return false;
-		}
-		if (!isNormalInteger(longitud)) {
-			agregarMensaje("Ingrese una longitud válida.");
-			return false;
-		}
 
-		if (longitud.length > 10) {
-			agregarMensaje("Ingrese menos de 10 dígitos.");
-			return false;
-		}
-	}
-	
-	if (dataTableCDT.exist(idTabla, nombre, 0, "", "Atributo")) {
+	if (dataTableCDT.exist(idTabla, nombre, 0, "", "Mensaje")) {
 		agregarMensaje("Este atributo ya está en la entidad.");
 		return false;
 	}
-	
 	return true;
 }
 
@@ -211,29 +191,17 @@ function isNormalInteger(str) {
 
 function disablefromTipoDato() {
 	document.getElementById("atributo.longitud").value = "";
-	document.getElementById("atributo.formatoArchivo").value = "";
-	document.getElementById("atributo.tamanioArchivo").value = "";
-	document.getElementById("atributo.unidadTamanio").selectedIndex = 0;
-
+	document.getElementById("atributo.longitud").value = "";
 	
+	atributo.formatoArchivo
+	document.getElementById("atributo.longitud").value = null;
 	var tipoDato = document.getElementById("atributo.tipoDato");
 	var tipoDatoTexto = tipoDato.options[tipoDato.selectedIndex].text;
-	
 	if (tipoDatoTexto == 'Booleano' || tipoDatoTexto == 'Fecha'
-			|| tipoDatoTexto == 'Archivo'  || tipoDatoTexto == 'Seleccione') {
+			|| tipoDatoTexto == 'Seleccione') {
 		document.getElementById("trLongitud").style.display = 'none';
-		if (tipoDatoTexto == 'Archivo') {
-			document.getElementById("trFormatoArchivo").style.display = '';
-			document.getElementById("trTamanioArchivo").style.display = '';
-		} else {
-			document.getElementById("trFormatoArchivo").style.display = 'none';
-			document.getElementById("trTamanioArchivo").style.display = 'none';
-		}
 	} else {
 		document.getElementById("trLongitud").style.display = '';
-		document.getElementById("trLongitud").style.display = 'none';
-		document.getElementById("trFormatoArchivo").style.display = 'none';
-		document.getElementById("trTamanioArchivo").style.display = 'none';
 	}
 }
 
@@ -252,20 +220,20 @@ function tablaToJson(idTable) {
 
 	for (var i = 0; i < table.fnSettings().fnRecordsTotal(); i++) {
 		var nombre = table.fnGetData(i, 0);
-		var tipoDato = table.fnGetData(i, 1);
-		var obligatorio = table.fnGetData(i, 2);		
-		var descripcion = table.fnGetData(i, 3);		
-		var longitud = table.fnGetData(i, 4);
-		var formatoArchivo = table.fnGetData(i, 5);		
-		var tamanioArchivo = table.fnGetData(i, 6);		
-		var tamanioArchivo = table.fnGetData(i, 7);
-		
+		var descripcion = table.fnGetData(i, 1);
+		var tipoDato = table.fnGetData(i, 2);
+		var longitud = table.fnGetData(i, 3);
+		if (longitud == 'Ninguna') {
+			longitud = null;
+		}
+		var obligatorio = table.fnGetData(i, 4);
 		if (obligatorio == 'Sí') {
 			obligatorio = true;
 		} else {
 			obligatorio = false;
 		}
-		arregloAtributos.push(new Atributo(nombre, descripcion, obligatorio, longitud, tipoDato, formatoArchivo, tamanioArchivo, unidadTamanio));
+		arregloAtributos.push(new Atributo(nombre, descripcion, obligatorio,
+				longitud, tipoDato));
 	}
 	var jsonAtributos = JSON.stringify(arregloAtributos);
 	document.getElementById("jsonAtributosTabla").value = jsonAtributos;

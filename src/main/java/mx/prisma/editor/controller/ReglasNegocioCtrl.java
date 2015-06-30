@@ -31,14 +31,6 @@ import com.opensymphony.xwork2.ModelDriven;
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 		"actionName", "reglas-negocio"}),
-<<<<<<< HEAD
-		@Result(name = "direccion", type = "json", params = {
-				"root",
-				"action",
-				"includeProperties",
-				"^codigos\\[\\d+\\]\\.asentamiento\\.id, ^codigos\\[\\d+\\]\\.asentamiento\\.nombre,^codigos\\[\\d+\\]\\.ciudad\\.nombre,^codigos\\[\\d+\\]\\.asentamiento\\.municipio\\.nombre,^codigos\\[\\d+\\]\\.asentamiento\\.municipio\\.entidadFederativa\\.nombre" })
-=======
->>>>>>> branch 'master' of https://github.com/sramirezc/AplicacionTTB064.git
 })
 public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDriven<ReglaNegocio>, SessionAware{
 	/**

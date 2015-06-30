@@ -30,7 +30,7 @@ import mx.prisma.util.SessionManager;
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 		"actionName", "entidades"}),
-})
+}) 
 public class EntidadesCtrl extends ActionSupportPRISMA implements ModelDriven<Entidad>, SessionAware{
 	/**
 	 * 
