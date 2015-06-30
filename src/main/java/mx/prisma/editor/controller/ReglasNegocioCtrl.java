@@ -95,7 +95,6 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	
 	private void buscarElementos() throws Exception{
 		listEntidades = new EntidadDAO().consultarEntidades(proyecto.getId());
-		this.jsonEntidades = JsonUtil.	
 	}
 
 	public String create() {
