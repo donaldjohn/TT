@@ -355,3 +355,8 @@ textfield {
 	margin: 15px;
 	
 }
+
+.botonEditar {
+	text-align: left; 
+	vertical-align: top;	
+}
