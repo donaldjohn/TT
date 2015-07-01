@@ -54,7 +54,7 @@ $(document).ready(function() {
 function cambiarElementosAlternativaPrincipal() {
 	var select = document.getElementById("idAlternativaPrincipal");
 	var varAlternativaPrincipal = select.options[select.selectedIndex].text;
-	
+	 
 	if(varAlternativaPrincipal == "Principal"){
 		//Si es una trayectoria principal
 		document.getElementById("filaCondicion").style.display = 'none';
