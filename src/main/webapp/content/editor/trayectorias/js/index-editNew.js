@@ -47,7 +47,7 @@ $(document).ready(function() {
 									"/resources/images/icons/eliminar.png' title='Eliminar Paso'/></a>" +
 								"</center>" ];
 							dataTableCDT.addRow("tablaPaso",paso); 
-						});
+						}); 
 	}
 } );
 
