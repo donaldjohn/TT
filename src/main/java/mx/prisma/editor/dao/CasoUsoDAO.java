@@ -12,12 +12,8 @@ import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.Referencia.TipoSeccion;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.model.CasoUso;
-import mx.prisma.editor.model.CasoUsoActor;
-import mx.prisma.editor.model.CasoUsoReglaNegocio;
-import mx.prisma.editor.model.Entrada;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.PostPrecondicion;
-import mx.prisma.editor.model.Salida;
 import mx.prisma.util.HibernateUtil;
 
 public class CasoUsoDAO extends ElementoDAO {
@@ -82,63 +78,7 @@ public class CasoUsoDAO extends ElementoDAO {
 	}
 
 	public void modificarCasoUso(CasoUso casodeuso) {
-		String deleteActores = "DELETE FROM CasoUso_Actor WHERE CasoUsoElementoid = "
-				+ casodeuso.getId() + ";";
-		String deleteEntradas = "DELETE FROM Entrada WHERE CasoUsoElementoid = "
-				+ casodeuso.getId() + ";";
-		String deleteSalidas = "DELETE FROM Salida WHERE CasoUsoElementoid = "
-				+ casodeuso.getId() + ";";
-		String deleteReglas = "DELETE FROM CasoUso_ReglaNegocio WHERE CasoUsoElementoid = "
-				+ casodeuso.getId() + ";";
-		String deletePostPrecondiciones = "DELETE FROM PostPrecondicion WHERE CasoUsoElementoid = "
-				+ casodeuso.getId() + ";";
-
-		//cleanRelaciones(casodeuso);
-		preAlmacenarObjetosToken(casodeuso);
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
-
-		try {
-
-			session.beginTransaction();
-			SQLQuery queryActores = session.createSQLQuery(deleteActores);
-			queryActores.executeUpdate();
-			SQLQuery queryEntradas = session.createSQLQuery(deleteEntradas);
-			queryEntradas.executeUpdate();
-			SQLQuery querySalidas = session.createSQLQuery(deleteSalidas);
-			querySalidas.executeUpdate();
-			SQLQuery queryReglas = session.createSQLQuery(deleteReglas);
-			queryReglas.executeUpdate();
-			SQLQuery queryPostPrecondiciones = session
-					.createSQLQuery(deletePostPrecondiciones);
-			queryPostPrecondiciones.executeUpdate();
-			
-
-			for (CasoUsoActor cua : casodeuso.getActores()) {
-				session.save(cua);
-			}
-
-			for (Entrada entrada : casodeuso.getEntradas()) {
-				session.save(entrada);
-			}
-			for (Salida salida : casodeuso.getSalidas()) {
-				session.save(salida);
-			}
-			for (CasoUsoReglaNegocio reglas : casodeuso.getReglas()) {
-				session.save(reglas);
-			}
-
-			for (PostPrecondicion postPrecondicion : casodeuso
-					.getPostprecondiciones()) {
-				session.save(postPrecondicion);
-			}
-			
-			
-			session.update(casodeuso);
-			session.getTransaction().commit();
-		} catch (HibernateException he) {
-			he.printStackTrace();
-			session.getTransaction().rollback();
-		}
+		
 	}
 
 	public void preAlmacenarObjetosToken(CasoUso casoUso) {
@@ -175,47 +115,15 @@ public class CasoUsoDAO extends ElementoDAO {
 							postPrecondicion.getRedaccion(),
 							casoUso.getProyecto()), casoUso,
 					TipoSeccion.POSTPRECONDICIONES, postPrecondicion);
-
 			postPrecondicion.setRedaccion(TokenBs.codificarCadenaToken(
 					postPrecondicion.getRedaccion(), casoUso.getProyecto()));
 		}
 	}
 
 	public void registrarCasoUso(CasoUso casodeuso) {
-		//cleanRelaciones(casodeuso);
 		preAlmacenarObjetosToken(casodeuso);
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		super.registrarElemento(casodeuso);
 
-		try {
-
-			session.beginTransaction();
-			session.save(casodeuso);
-
-			for (CasoUsoActor cua : casodeuso.getActores()) {
-				session.save(cua);
-			}
-
-			for (Entrada entrada : casodeuso.getEntradas()) {
-				session.save(entrada);
-			}
-			for (Salida salida : casodeuso.getSalidas()) {
-				session.save(salida);
-			}
-			for (CasoUsoReglaNegocio reglas : casodeuso.getReglas()) {
-				session.save(reglas);
-			}
-
-			for (PostPrecondicion postPrecondicion : casodeuso
-					.getPostprecondiciones()) {
-				session.save(postPrecondicion);
-			}
-			
-			
-			session.getTransaction().commit();
-		} catch (HibernateException he) {
-			he.printStackTrace();
-			session.getTransaction().rollback();
-		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -234,6 +142,7 @@ public class CasoUsoDAO extends ElementoDAO {
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
+			throw he;
 		}
 		if (casosdeuso == null){
 			return null;
@@ -257,6 +166,7 @@ public class CasoUsoDAO extends ElementoDAO {
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
+			throw he;
 		}
 		if (casosdeuso == null) {
 			return null;

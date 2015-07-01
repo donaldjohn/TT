@@ -5,12 +5,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.Referencia;
-import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Atributo;

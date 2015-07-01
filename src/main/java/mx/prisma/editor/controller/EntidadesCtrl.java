@@ -8,13 +8,11 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
-import org.hibernate.exception.ConstraintViolationException;
 
 import com.opensymphony.xwork2.ModelDriven;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.EntidadBs;
-import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.TipoDatoDAO;
 import mx.prisma.editor.dao.UnidadTamanioDAO;
 import mx.prisma.editor.model.Atributo;
@@ -117,12 +115,7 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
-		} catch (ConstraintViolationException e) {
-			e.printStackTrace();
-			ErrorManager.agregaMensajeError(this, e);
-			resultado = index();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			ErrorManager.agregaMensajeError(this, e);
 			resultado = index();
@@ -131,7 +124,6 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 	}
 
 	private void agregarAtributos() {
-		System.out.println("jsonAtributosTabla " + jsonAtributosTabla);
 		if (jsonAtributosTabla != null && !jsonAtributosTabla.equals("")) {
 			model.setAtributos(JsonUtil.mapJSONToSet(jsonAtributosTabla,
 					Atributo.class));
@@ -144,9 +136,16 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 						.consultarUnidadTamanioAbreviatura(atributo
 								.getUnidadTamanio().getAbreviatura());
 					atributo.setUnidadTamanio(unidadTamanio);
+					atributo.setLongitud(null);
 				} else {
 					atributo.setUnidadTamanio(null);
-				}
+					atributo.setFormatoArchivo(null);
+				} 
+				
+				if (tipoDato.getNombre().equals("Fecha") || tipoDato.getNombre().equals("Booleano")) {
+					atributo.setLongitud(null);
+				}	
+				
 				atributo.setTipoDato(tipoDato);
 				atributo.setEntidad(model);
 				model.getAtributos().add(atributo);

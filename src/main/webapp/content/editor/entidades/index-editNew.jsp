@@ -53,7 +53,7 @@
 		<div class="formulario">
 			<div class="tituloFormulario">Atributos de la Entidad</div>
 			<div class="seccion">
-				<s:fielderror fieldName="model.pasos" cssClass="error"
+				<s:fielderror fieldName="model.atributos" cssClass="error"
 					theme="jquery" />
 				<table id="tablaAtributo" class="tablaGestion" cellspacing="0"
 					width="100%">

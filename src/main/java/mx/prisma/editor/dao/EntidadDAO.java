@@ -10,8 +10,6 @@ import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.util.HibernateUtil;
 
-import org.hibernate.HibernateException;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 public class EntidadDAO extends ElementoDAO {

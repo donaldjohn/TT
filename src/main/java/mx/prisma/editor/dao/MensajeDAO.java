@@ -3,20 +3,15 @@ package mx.prisma.editor.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.Referencia;
 import mx.prisma.editor.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Mensaje;
-import mx.prisma.util.HibernateUtil;
 
 public class MensajeDAO extends ElementoDAO {
-	private Session session = null;
-
 	public MensajeDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
 	}
 
 	public void registrarMensaje(Mensaje mensaje) throws Exception {

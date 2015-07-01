@@ -298,6 +298,7 @@ public class Referencia {
 		return null;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public static Class getClase(TipoReferencia referencia) {
 		switch(referencia){
 		case ACCION:

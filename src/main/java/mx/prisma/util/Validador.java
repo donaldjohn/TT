@@ -9,6 +9,10 @@ public class Validador {
 	public static boolean esNuloOVacio(String cadena) {
 		return cadena == null || cadena.equals("");
 	}
+	
+	public static boolean esNulo(Object objeto) {
+		return objeto == null;
+	}
 
 	public static boolean validaLongitudMaxima(String clave, int i) {
 		return clave.length() > i;
