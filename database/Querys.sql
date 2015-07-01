@@ -55,3 +55,12 @@ INSERT INTO PRISMA.Accion (PantallaElementoid, nombre, TipoAccionid) VALUES ('13
 INSERT INTO PRISMA.Accion (PantallaElementoid, nombre, TipoAccionid) VALUES ('14', 'Nuevo', '2');
 INSERT INTO PRISMA.Accion (PantallaElementoid, nombre, TipoAccionid) VALUES ('14', 'Ayuda', '1');
 
+--------------------- Parámetro --------------------- 
+INSERT INTO PRISMA.Parametro (Proyectoid, nombre, descripcion) VALUES ('1', 'DETERMINADO', 'Artículo determinado.');
+INSERT INTO PRISMA.Parametro (Proyectoid, nombre, descripcion) VALUES ('1', 'INDETERMINADO', 'Artículo indeterminado.');
+INSERT INTO PRISMA.Parametro (Proyectoid, nombre, descripcion) VALUES ('1', 'ENTIDAD', 'Es una entidad del modelo conceptual.');
+INSERT INTO PRISMA.Parametro (Proyectoid, nombre, descripcion) VALUES ('1', 'VALOR', 'Es el valor que toma algún atributo de una entidad.');
+
+
+
+

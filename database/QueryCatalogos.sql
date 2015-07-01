@@ -68,3 +68,11 @@ INSERT INTO PRISMA.Verbo (nombre) VALUES ('Revisa');
 INSERT INTO PRISMA.TipoAccion (nombre) VALUES ('Liga');
 INSERT INTO PRISMA.TipoAccion (nombre) VALUES ('Botón');
 INSERT INTO PRISMA.TipoAccion (nombre) VALUES ('Opción del menú');
+
+--------------------- Operadores --------------------- 
+INSERT INTO PRISMA.Operador (nombre, simbolo) VALUES ('Igual', '=');
+INSERT INTO PRISMA.Operador (nombre, simbolo) VALUES ('Menor que', '<');
+INSERT INTO PRISMA.Operador (nombre, simbolo) VALUES ('Mayor que', '>');
+INSERT INTO PRISMA.Operador (nombre, simbolo) VALUES ('Menor igual que', '<=');
+INSERT INTO PRISMA.Operador (nombre, simbolo) VALUES ('Mayor igual que', '>=');
+INSERT INTO PRISMA.Operador (nombre, simbolo) VALUES ('Diferente', '!=');
