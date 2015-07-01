@@ -23,13 +23,33 @@ $(document).ready(function() {
 function mostrarCamposTipoRN() {
 	var select = document.getElementById("idTipoRN");
 	var tipoRN = select.options[select.selectedIndex].text;
+	//Se ocultan los todos los campos
+	document.getElementById("filaEntidad1").className = "oculto";
+	document.getElementById("filaAtributo1").className = "oculto";
+	document.getElementById("filaEntidad2").className = "oculto";
+	document.getElementById("filaAtributo2").className = "oculto";
+	document.getElementById("filaOperador").className = "oculto";
+	document.getElementById("textoAyudaInterF").className = "oculto";
+	//Se selecciona la primer opción de los elementos
+	document.getElementById("entidad1").selectedIndex = 0;
+	document.getElementById("atributo1").selectedIndex = 0;
+	document.getElementById("entidad2").selectedIndex = 0;
+	document.getElementById("atributo2").selectedIndex = 0;
+	document.getElementById("operador").selectedIndex = 0;
 	
 	if(tipoRN == "Verificación de catálogos"){
 		console.log("1");
-	} else if(tipoRN == "Operaciones aritméticas") {
+	} else if(tipoRN == "Comparación de atributos") {		
 		console.log("2");
+		document.getElementById("filaEntidad1").className = "";
+		document.getElementById("filaAtributo1").className = "";
+		document.getElementById("filaOperador").className = "";
+		document.getElementById("filaEntidad2").className = "";
+		document.getElementById("filaAtributo2").className = "";
 	} else if(tipoRN == "Unicidad de parámetros"){
 		console.log("3");
+		document.getElementById("filaEntidad1").className = "";
+		document.getElementById("filaAtributo1").className = "";
 	} else if(tipoRN == "Datos obligatorios"){
 		console.log("4");
 	} else if(tipoRN == "Longitud correcta"){
@@ -40,8 +60,13 @@ function mostrarCamposTipoRN() {
 		console.log("7");
 	} else if(tipoRN == "Tamaño de archivos"){
 		console.log("8");
-	} else if(tipoRN == "Intervalo de fechas correctas"){
+	} else if(tipoRN == "Intervalo de fechas correcto"){
 		console.log("9");
+		document.getElementById("textoAyudaInterF").className = "";
+		document.getElementById("filaEntidad1").className = "";
+		document.getElementById("filaAtributo1").className = "";
+		document.getElementById("filaEntidad2").className = "";
+		document.getElementById("filaAtributo2").className = "";
 	} else if(tipoRN == "Formato correcto"){
 		console.log("10");
 	} else if(tipoRN == "Otro"){

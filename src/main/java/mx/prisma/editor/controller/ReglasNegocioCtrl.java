@@ -12,6 +12,7 @@ import mx.prisma.editor.bs.ReglaNegocioBs;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Entidad;
+import mx.prisma.editor.model.Operador;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TipoReglaNegocio;
 import mx.prisma.util.ActionSupportPRISMA;
@@ -47,12 +48,11 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	private String jsonEntidades;
 	private List<Entidad> listEntidades;
 	private List<Atributo> listAtributos;
+	private List<Operador> listOperadores;
 	public String index() {
 		try {
 			//Se consulta el proyecto activo
 			proyecto = SessionManager.consultarProyectoActivo();
-			
-			
 			model.setProyecto(proyecto);
 			listReglasNegocio = ReglaNegocioBs.consultarReglasNegocioProyecto(proyecto);
 			
@@ -103,37 +103,49 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		System.out.println("desde create");
 		String resultado = null;
 		try {
+			if(idTipoRN == -1) {
+				throw new PRISMAValidacionException("El usuario no seleccionó el tipo de regla de negocio.", "MSG4", null, "idTipoRN");
+			}
 			System.out.println("idTipo " + idTipoRN);
 			model.setTipoReglaNegocio(ReglaNegocioBs.consultaReglaNegocio(idTipoRN));
-			System.out.println("."+model.getTipoReglaNegocio().getNombre());
-			System.out.println(".."+model.getTipoReglaNegocio().getId());
-			/*
-			if(tipoRN == "Verificación de catálogos"){
+			
+			System.out.println("Tipo de regla de negocio");
+			System.out.println("---"+model.getTipoReglaNegocio().getNombre());
+			System.out.println("---"+model.getTipoReglaNegocio().getId());
+			
+			System.out.println("Regla de negocio");
+			System.out.println("---"+model.getNumero());
+			System.out.println("---"+model.getNombre());
+			System.out.println("---"+model.getDescripcion());
+			System.out.println("---"+model.getRedaccion());
+			
+			String tipoRN = model.getTipoReglaNegocio().getNombre();
+			if(tipoRN.equals("Verificación de catálogos")) {
 				System.out.println("1");
-			} else if(tipoRN == "Operaciones aritméticas") {
+			} else if(tipoRN.equals("Operaciones aritméticas")) {
 				System.out.println("2");
-			} else if(tipoRN == "Unicidad de parámetros"){
+			} else if(tipoRN.equals("Unicidad de parámetros")) {
 				System.out.println("3");
-			} else if(tipoRN == "Datos obligatorios"){
+			} else if(tipoRN.equals("Datos obligatorios")) {
 				System.out.println("4");
-			} else if(tipoRN == "Longitud correcta"){
+			} else if(tipoRN.equals("Longitud correcta")) {
 				System.out.println("5");
-			} else if(tipoRN == "Tipo de dato correcto"){
+			} else if(tipoRN.equals("Tipo de dato correcto")) {
 				System.out.println("6");
-			} else if(tipoRN == "Formato de archivos"){
+			} else if(tipoRN.equals("Formato de archivos")) {
 				System.out.println("7");
-			} else if(tipoRN == "Tamaño de archivos"){
+			} else if(tipoRN.equals("Tamaño de archivos")) { 
 				System.out.println("8");
-			} else if(tipoRN == "Intervalo de fechas correctas"){
+			} else if(tipoRN.equals("Intervalo de fechas correctas")) {
 				System.out.println("9");
-			} else if(tipoRN == "Formato correcto"){
+			} else if(tipoRN.equals("Formato correcto")) {
 				System.out.println("10");
-			} else if(tipoRN == "Otro"){
+			} else if(tipoRN.equals("Otro")) {
 				System.out.println("11");
 			} else {
 				//Validaciones del tipo de RN
-				throw new PRISMAValidacionException("El usuario no seleccionó el tipo de regla de negocio.", "MSG4", null, "model.tipoReglaNegocio");
-			}*/
+				throw new PRISMAValidacionException("El usuario no seleccionó el tipo de regla de negocio.", "MSG13");
+			}
 			//Se prepara el modelo para el registro 
 			proyecto = SessionManager.consultarProyectoActivo();
 			model.setProyecto(proyecto);
@@ -177,13 +189,12 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		return "direccion";
 	}
 		
-	private void buscaCatalogos() {
+	private void buscaCatalogos() { 
 		listTipoRN = ReglaNegocioBs.consultarTipoRN();
+		listOperadores = ReglaNegocioBs.consultarOperadores();
 	}
 
-	public void setSession(Map<String, Object> session) {
-		// TODO Auto-generated method stub
-		
+	public void setSession(Map<String, Object> session) {		
 	}
 
 	public ReglaNegocio getModel() {
@@ -261,6 +272,15 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		this.listAtributos = listAtributos;
 	}
 
+	public List<Operador> getListOperadores() {
+		return listOperadores;
+	}
+
+	public void setListOperadores(List<Operador> listOperadores) {
+		this.listOperadores = listOperadores;
+	}
+
+	
 	
 
 }

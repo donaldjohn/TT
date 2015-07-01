@@ -360,3 +360,7 @@ textfield {
 	text-align: left; 
 	vertical-align: top;	
 }
+
+.oculto {
+	display: none;
+}
