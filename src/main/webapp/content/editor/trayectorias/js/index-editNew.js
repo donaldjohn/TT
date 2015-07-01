@@ -46,7 +46,7 @@ $(document).ready(function() {
 									"<img class='icon'  id='icon' src='" + window.contextPath + 
 									"/resources/images/icons/eliminar.png' title='Eliminar Paso'/></a>" +
 								"</center>" ];
-							dataTableCDT.addRow("tablaPaso",paso);
+							dataTableCDT.addRow("tablaPaso",paso); 
 						});
 	}
 } );
