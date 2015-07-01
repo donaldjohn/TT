@@ -110,16 +110,12 @@
 	</s:form>
 	
 	<!-- MENSAJE DE ALERTA -->	
-   	<sj:dialog id="mensajeConfirmacion" title="Descripción de los parámetros" autoOpen="false" 
-   	minHeight="300" minWidth="800" modal="true" draggable="true" >
+   	<sj:dialog id="mensajeConfirmacion" title="Confirmación" autoOpen="false" 
+   	minHeight="200" minWidth="400" modal="true" draggable="true" >
 	   	
-			<table class="seccion">
-				<tr>
-					<td class="instruciones">
-					Escriba la redacción de cada uno de los parámetros utilizados en el mensaje.
-					</td>
-				</tr>
-			</table>
+			<div class="seccion">
+				<p class="instrucciones">Escriba la redacción de cada uno de los parámetros utilizados en el mensaje.</p>
+			</div>
 		
 			<br />
 			<div align="center">

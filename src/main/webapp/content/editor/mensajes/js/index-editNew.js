@@ -24,11 +24,10 @@ $(document).ready(function() {
 						});
 		//Se hace visible la sección de parámetros
 		document.getElementById("seccionParametros").style.display = '';
-		//$('#mensajeConfirmacion').dialog('close');
 		document.getElementById("inputor").readOnly = true;
 		document.getElementById("inputor").id = "inputorreadOnly";
 		document.getElementById("botonEditar").style.display = '';
-		//$('#mensajeConfirmacion').dialog('open');
+		//abrirEmergente();
 	} else {
 		document.getElementById("seccionParametros").style.display = 'none';
 	}
@@ -106,4 +105,8 @@ function agregarFila(fila) {
 
 function cerrarEmergente() {
 	$('#mensajeConfirmacion').dialog('close');
+}
+
+function abrirEmergente() {
+	$('#mensajeConfirmacion').dialog('open');
 }
