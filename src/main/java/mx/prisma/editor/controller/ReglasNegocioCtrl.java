@@ -95,6 +95,8 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	
 	private void buscarElementos() throws Exception{
 		listEntidades = new EntidadDAO().consultarEntidades(proyecto.getId());
+		listAtributos = new ArrayList<Atributo>();
+		listAtributos.addAll(listEntidades.get(0).getAtributos());
 	}
 
 	public String create() {
@@ -241,6 +243,22 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 
 	public void setJsonEntidades(String jsonEntidades) {
 		this.jsonEntidades = jsonEntidades;
+	}
+
+	public List<Entidad> getListEntidades() {
+		return listEntidades;
+	}
+
+	public void setListEntidades(List<Entidad> listEntidades) {
+		this.listEntidades = listEntidades;
+	}
+
+	public List<Atributo> getListAtributos() {
+		return listAtributos;
+	}
+
+	public void setListAtributos(List<Atributo> listAtributos) {
+		this.listAtributos = listAtributos;
 	}
 
 	

@@ -63,24 +63,24 @@
        						cssErrorClass="select-error" headerValue="Seleccione" headerKey="-1" listValue="nombre" onchange="mostrarCamposTipoRN();"></s:select></td>
 				</tr>
 				<tr>
-						<td class="label obligatorio"><s:text name="labelRedaccion"></s:text></td>
-						<td><s:textarea rows="5" name="model.redaccion" cssClass="inputFormulario ui-widget"
+						<td class="label obligatorio"><s:text name="labelRedaccion" /></td>
+						<td><s:textarea rows="5" name="model.redaccion" cssClass="inputFormulario ui-widget" id="model.redaccion"
 								maxlength="999" cssErrorClass="input-error"></s:textarea> 
 								<s:fielderror
 								fieldName="model.redaccion" cssClass="error"
-								theme="jquery" /></td>
+								theme="jquery" /></td>	
 				</tr>
-				<tr>
+				<tr id="entidad1" style="display: 'none';">
 						<td class="label obligatorio"><s:text name="labelEntidad" /></td>
 						<td><s:select list="listEntidades" cssClass="inputFormulario ui-widget" name="idEntidad" id="entidades"
        						cssErrorClass="select-error" headerValue="Seleccione" headerKey="-1" listValue="nombre" onchange="mostrarAtributos();"></s:select></td>
 				</tr>
-				<tr>
+				<tr id="entidad2">
 						<td class="label obligatorio"><s:text name="labelAtributo" /></td>
 						<td><s:select list="listAtributos" cssClass="inputFormulario ui-widget" name="model.tipoReglaNegocio" id="model.tipoReglaNegocio"
        						cssErrorClass="select-error" headerValue="Seleccione" headerKey="-1" listValue="nombre" onchange="mostrarCamposTipoRN();"></s:select></td>
 				</tr>
-								
+							
 			</table>
 		</div>
 		<br />
