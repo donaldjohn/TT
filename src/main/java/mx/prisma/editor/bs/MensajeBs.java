@@ -8,7 +8,10 @@ import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.dao.ElementoDAO;
 import mx.prisma.editor.dao.MensajeDAO;
+import mx.prisma.editor.dao.ParametroDAO;
+import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.MensajeParametro;
 import mx.prisma.editor.model.Parametro;
@@ -99,6 +102,10 @@ public class MensajeBs {
 		
 		//Validaciones de mensaje parametrizado
 		if(model.isParametrizado()) {
+			List<Parametro> parametros = obtenerParametros(model.getRedaccion());
+			if(parametros.size() != model.getParametros().size()) {
+				throw new PRISMAValidacionException("El usuario no ingresó la descripcion de algun parametros del mensaje.", "MSG24", null, "model.parametros");
+			}
 			//Validacion de las descripciones de los parámetros
 			for(MensajeParametro mp : model.getParametros()) {
 				if(Validador.esNuloOVacio(mp.getParametro().getDescripcion())) {
@@ -122,13 +129,38 @@ public class MensajeBs {
 	public static List<Parametro> obtenerParametros(String redaccion) {
 		//Se convierte la lista de parametros en json para enviarlos a la vista
 		ArrayList<String> tokens = TokenBs.procesarTokenIpunt(redaccion);
-		ArrayList<Parametro>listParametros = new ArrayList<Parametro>();
+		ArrayList<Parametro> listParametros = new ArrayList<Parametro>();
+		List<Parametro> listParametrosGuardados = consultarParametros();
+		if(listParametros.size() > 10) {
+			throw new PRISMAValidacionException("El usuario no ingresó la descripcion de algun parametros del mensaje.", "MSG6", new String[]{"10", "parámetros"}, 
+					"model.parametros");
+		}
 		ArrayList<String> segmentos;
 		for(String token : tokens) {
 			segmentos = TokenBs.segmentarToken(token);
 			System.out.println("Segmentos " + segmentos.get(0) + " " + segmentos.get(1));
-			listParametros.add(new Parametro(segmentos.get(1), "descripcion"));
+			//Se hace la consulta con base en el nombre
+			Parametro parametro = consultarParametro(segmentos.get(1));
+			if(parametro != null) {
+				System.out.println("Existe param");
+				//Si el parámetro existe en la bd
+				listParametros.add(parametro);
+			} else {
+				System.out.println("No existe param");
+				//Si no existe en la bd
+				listParametros.add(new Parametro(segmentos.get(1), ""));
+			}
 		}
+		return listParametros;
+	}
+
+	public static Parametro consultarParametro(String nombre) {
+		Parametro parametro = new ParametroDAO().consultarParametro(nombre);
+		return parametro;
+	}
+
+	public static List<Parametro> consultarParametros() {
+		List<Parametro> listParametros = new ParametroDAO().consultarParametros();
 		return listParametros;
 	}
 	

@@ -2,7 +2,8 @@ var contextPath = "prisma";
 
 $(document).ready(function() {
 	contextPath = $("#rutaContexto").val();
-	
+	//Se oculta el botón de editar de la redacción 
+	document.getElementById("botonEditar").style.display = 'none';
 	//Se construye la tabla de los parámetros
 	var json = $("#jsonParametros").val();
 	console.log("json: " + json);
@@ -12,28 +13,41 @@ $(document).ready(function() {
 				.each(
 						parsedJson,
 						function(i, item) {
+							console.log("for-each nombre " + item.nombre);
+							console.log("for-each descripcion " + item.descripcion);
 							var parametro = [
 								item.nombre,
-								"<textarea rows='5' class='inputFormulario ui-widget' id='idDescripcionParametro" + 
+								"<textarea rows='2' class='inputFormulario ui-widget' id='idDescripcionParametro" + 
 								i + "'" +
-								"value='" + item.descripcion + "' " +
-								"maxlength='500'></textarea> "];
+								"maxlength='500'>" + item.descripcion +"</textarea> "];
 							agregarFila(parametro);
 						});
 		//Se hace visible la sección de parámetros
 		document.getElementById("seccionParametros").style.display = '';
+		//$('#mensajeConfirmacion').dialog('close');
+		document.getElementById("inputor").readOnly = true;
+		document.getElementById("inputor").id = "inputorreadOnly";
+		document.getElementById("botonEditar").style.display = '';
+		//$('#mensajeConfirmacion').dialog('open');
 	} else {
 		document.getElementById("seccionParametros").style.display = 'none';
+	}
+	try {
+		token.cargarListasToken();
+	} catch (err) {
+		console.log("No se puede cargar el token");
 	}
 	
 	//Fin de la creación de la tabla de parámetros 
 } );
 
-function cambiarParametrizado(checkbox) {
-	var seccionParametros = document.getElementById("seccionParametros");
-	if(checkbox.checked == false) {
-		seccionParametros.style.display = 'none';
-	}
+function habilitarEdicionRedaccion() {
+	document.getElementById("inputorreadOnly").readOnly = false;
+	document.getElementById("inputorreadOnly").id = "inputor";
+	document.getElementById("cambioRedaccion").value = true;
+	seccionParametros.style.display = 'none';
+	document.getElementById("botonEditar").style.display = 'none';
+	token.cargarListasToken();
 }
 
 function mostrarCamposParametros() {
@@ -61,17 +75,13 @@ function tablaToJson(idTable) {
 	var tabla = document.getElementById("parametros");
 	var arregloParametros = [];
     var tam = tabla.rows.length - 1;
-	console.log("uno");
 	for (var i = 0; i < tam; i++) {
-		console.log("dos");
 		var nombre = tabla.rows[i].cells[0].innerHTML;
-		var descripcion = document.getElementById("idDescripcionParametro" + i).value; 
-		console.log("dos y medio: " + nombre + " " + descripcion);
+		var descripcion = document.getElementById("idDescripcionParametro" + i).value;
 		arregloParametros.push(new Parametro(nombre, descripcion));
 	}
 	
 	var jsonParametros = JSON.stringify(arregloParametros);
-	console.log("tres");
 	document.getElementById("jsonParametros").value = jsonParametros;
 }
 
@@ -92,4 +102,8 @@ function agregarFila(fila) {
 	
 	cell1.innerHTML = fila[0];
 	cell2.innerHTML = fila[1];
+}
+
+function cerrarEmergente() {
+	$('#mensajeConfirmacion').dialog('close');
 }

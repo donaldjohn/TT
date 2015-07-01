@@ -11,6 +11,9 @@
 <![CDATA[
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/constructores.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/validaciones.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.caret.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.atwho.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/mensajes/js/token.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/mensajes/js/index-editNew.js"></script>	
 ]]>
 
@@ -57,30 +60,23 @@
 								fieldName="model.descripcion" cssClass="error"
 								theme="jquery" /></td>
 				</tr>
-				<!-- <tr>
-					<td class="label"><s:text name="labelParametrizado" /></td>
-					<td><s:checkbox name="model.parametrizado" id="idParametrizado" onclick="cambiarParametrizado(this);"
-							cssErrorClass="input-error"></s:checkbox> 
-							<s:fielderror
-							fieldName="model.parametrizado" cssClass="error"
-							theme="jquery" /></td>
-				</tr> -->
 				<tr>
 					<td> </td>
-					<td><span class="textoAyuda">Para utilizar un parámetro escriba el token PARAM. más el nombre del parámetro.</span></td>
+					<td><span class="textoAyuda">Para utilizar un parámetro escriba el token PARAM· más el nombre del parámetro.</span></td>
 				</tr>
 				<tr>
 						<td class="label obligatorio"><s:text name="labelRedaccion" /></td>
 						<td><s:textarea rows="5" name="model.redaccion" cssClass="inputFormulario ui-widget" id="inputor"
-								maxlength="999" cssErrorClass="input-error" onchange="mostrarCamposParametros();"></s:textarea> 
+								maxlength="999" cssErrorClass="input-error"></s:textarea> 
 								<s:fielderror
 								fieldName="model.redaccion" cssClass="error"
 								theme="jquery" /></td>
-				</tr>
-				<tr>
-						<!--  <td colspan="2"><center>
-							<sj:a button="true" onclick="mostrarFormularioParametros">Definir parámetros</sj:a>
-						</center></td> -->
+						<td class="botonEditar" id="botonEditar">
+							<sj:a onclick="habiliarEdicionRedaccion();">
+							<img class="button"
+							title="Redefinir Mensaje"
+							src="${pageContext.request.contextPath}/resources/images/icons/editar.png" onclick="habilitarEdicionRedaccion();"/>
+							</sj:a></td>
 				</tr>
 				
 			</table>
@@ -109,7 +105,30 @@
 		</div>
 		<s:hidden value="%{cambioRedaccion}" name="cambioRedaccion" id="cambioRedaccion"/>
 		<s:hidden value="%{jsonParametros}" name="jsonParametros" id="jsonParametros"/>
+		<!-- Json de parametros guardados-->
+		<s:hidden name="jsonParametrosGuardados" id="jsonParametrosGuardados" value="%{jsonParametrosGuardados}"/>
 	</s:form>
+	
+	<!-- MENSAJE DE ALERTA -->	
+   	<sj:dialog id="mensajeConfirmacion" title="Descripción de los parámetros" autoOpen="false" 
+   	minHeight="300" minWidth="800" modal="true" draggable="true" >
+	   	
+			<table class="seccion">
+				<tr>
+					<td class="instruciones">
+					Escriba la redacción de cada uno de los parámetros utilizados en el mensaje.
+					</td>
+				</tr>
+			</table>
+		
+			<br />
+			<div align="center">
+				<input type="button"
+					onclick="cerrarEmergente()"
+					value="Aceptar" />
+			</div>
+	</sj:dialog>
+	
 </body>
 	</html>
 </jsp:root>
