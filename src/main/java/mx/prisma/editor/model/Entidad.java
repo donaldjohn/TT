@@ -5,6 +5,7 @@ package mx.prisma.editor.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
@@ -38,7 +39,7 @@ public class Entidad extends Elemento implements java.io.Serializable {
 
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "entidad")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "entidad", cascade = CascadeType.ALL)
 	public Set<Atributo> getAtributos() {
 		return atributos;
 	}

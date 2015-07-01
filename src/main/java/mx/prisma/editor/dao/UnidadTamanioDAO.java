@@ -49,7 +49,7 @@ public class UnidadTamanioDAO {
 			session.getTransaction().rollback();
 		}
 		
-		if(results!=null){
+		if(results!=null && !results.isEmpty()){
 			if (results.get(0) != null){
 				return results.get(0);
 			}

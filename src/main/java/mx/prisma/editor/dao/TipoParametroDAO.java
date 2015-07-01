@@ -2,7 +2,6 @@ package mx.prisma.editor.dao;
 
 import java.util.List;
 
-import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.TipoParametro;
 import mx.prisma.util.HibernateUtil;
 

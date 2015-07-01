@@ -173,13 +173,22 @@ function esValidoAtributo(idTabla, nombre, descripcion, tipoDato,
 	 */
 	
 	if (tipoDatoTexto == 'Booleano' || tipoDatoTexto == 'Fecha' || tipoDatoTexto == 'Archivo') {
-		
+		if (tipoDatoTexto == 'Archivo') {
+			if(vaciaONula(tamanioArchivo) || vaciaONula(formatoArchivo) || unidadTamanio.selectedIndex == 0) {
+				agregarMensaje("Agregue todos los campos obligatorios.");
+				return false;
+			}
+			if (!esFloat(tamanioArchivo) && !esEntero(tamanioArchivo)) {
+				agregarMensaje("Ingrese un tamaño válido.");
+				return false;
+			}	
+		}
 	} else {
 		if (vaciaONula(longitud)) {
 			agregarMensaje("Agregue todos los campos obligatorios.");
 			return false;
 		}
-		if (!isNormalInteger(longitud)) {
+		if (!esEntero(longitud)) {
 			agregarMensaje("Ingrese una longitud válida.");
 			return false;
 		}
@@ -208,8 +217,12 @@ function ocultarColumnas(tabla) {
 
 }
 
-function isNormalInteger(str) {
-	return /^\+?([1-9]\d*)$/.test(str);
+function esEntero(str) {
+	return /^([1-9]\d*)$/.test(str);
+}
+
+function esFloat(str) {
+	return /^(\.(\d+)([1-9]))|(\d+)(\.)(\d+)([1-9])$/.test(str);
 }
 
 function disablefromTipoDato() {

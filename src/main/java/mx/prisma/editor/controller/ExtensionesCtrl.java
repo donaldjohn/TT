@@ -108,7 +108,6 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 
 	public String create() throws Exception {
 		String resultado = null;
-		//Validaciones del caso de uso que extiende a
 		try {						
 			if(claveCasoUsoDestino == -1) {
 				throw new PRISMAValidacionException("El usuario no seleccionó el caso de uso destino.", "MSG4", null, "claveCasoUsoDestino");

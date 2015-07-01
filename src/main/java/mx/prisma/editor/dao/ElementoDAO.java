@@ -12,7 +12,6 @@ import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.Referencia;
 import mx.prisma.editor.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.model.Elemento;
-import mx.prisma.editor.model.Entidad;
 import mx.prisma.util.HibernateUtil;
 
 public class ElementoDAO {
@@ -23,7 +22,7 @@ public class ElementoDAO {
 	}
 
 	public void registrarElemento(Elemento elemento) {
-
+		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
 			session.save(elemento);
@@ -31,6 +30,7 @@ public class ElementoDAO {
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
+			throw he;
 		}
 	}
 
@@ -43,6 +43,7 @@ public class ElementoDAO {
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
+			throw he;
 		}
 	}
 
@@ -59,6 +60,7 @@ public class ElementoDAO {
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
+			throw he;
 		}
 		if (elementos == null) {
 			return null;
@@ -116,6 +118,7 @@ public class ElementoDAO {
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
+			throw he;
 		}
 
 		if (results == null) {
@@ -143,6 +146,7 @@ public class ElementoDAO {
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
+			throw he;
 		}
 		if (results.isEmpty()) {
 			return null;
@@ -166,6 +170,7 @@ public class ElementoDAO {
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
+			throw he;
 		}
 
 		return results;
@@ -191,6 +196,7 @@ public class ElementoDAO {
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
+			throw he;
 		}
 		if (elementos == null) {
 			return null;
