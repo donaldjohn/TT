@@ -20,7 +20,7 @@ import mx.prisma.util.Validador;
 
 public class EntidadBs {
 	private static final String CLAVE = "ENT";
-
+ 
 	public static void registrarEntidad(Entidad model) throws Exception {
 		try {
 			validar(model);
