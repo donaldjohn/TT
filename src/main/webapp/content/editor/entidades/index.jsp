@@ -31,11 +31,11 @@
 					<td><s:property value="%{#entidad.nombre}"/></td>
 					<td align="center">
 						<s:a href="#">
-							<img id="" class="button" title="Modificar Punto de extensión"
+							<img id="" class="button" title="Modificar Entidad"
 									src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
 						</s:a>
 						<s:a href="#">
-							<img id="" class="button" title="Eliminar Punto de extensión"
+							<img id="" class="button" title="Eliminar Entidad"
 									src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" />
 						</s:a>
 					</td>

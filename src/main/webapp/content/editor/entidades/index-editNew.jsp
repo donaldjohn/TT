@@ -21,7 +21,7 @@
 	<h1>
 		<s:property value="%{proyecto.clave + ' - ' + proyecto.nombre}" />
 	</h1>
-	<h3>Registrar Trayectoria</h3>
+	<h3>Registrar Entidad</h3>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
@@ -43,7 +43,7 @@
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelDescripcion" /></td>
-					<td><s:textfield name="model.descripcion" maxlength="200"
+					<td><s:textarea name="model.descripcion" maxlength="200"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
 						<s:fielderror fieldName ="model.descripcion" cssClass="error"
 							theme="jquery" /></td>
