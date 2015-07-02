@@ -8,14 +8,11 @@ import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.editor.dao.ElementoDAO;
 import mx.prisma.editor.dao.MensajeDAO;
 import mx.prisma.editor.dao.ParametroDAO;
-import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.MensajeParametro;
 import mx.prisma.editor.model.Parametro;
-import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
@@ -55,8 +52,8 @@ public class MensajeBs {
 		if(Validador.esNuloOVacio(model.getNumero())) {
 			throw new PRISMAValidacionException("El usuario no ingresó el número del mensaje.", "MSG4", null, "model.numero");
 		}
-		if(!Pattern.matches("[0-9]+", model.getNumero())) {
-			throw new PRISMAValidacionException("El usuario no ingresó el número del mensaje.", "MSG5", new String[]{"un", "número entero"}, "model.numero");
+		if(!Pattern.matches("[1-9]+[0-9]*", model.getNumero())) {
+			throw new PRISMAValidacionException("El usuario no ingresó un número válido", "MSG5", new String[]{"un", "número entero"}, "model.numero");
 		}
 		
 		//Se asegura la unicidad del nombre y del numero
@@ -102,7 +99,7 @@ public class MensajeBs {
 		
 		//Validaciones de mensaje parametrizado
 		if(model.isParametrizado()) {
-			List<Parametro> parametros = obtenerParametros(model.getRedaccion());
+			List<Parametro> parametros = obtenerParametros(model.getRedaccion(), model.getProyecto().getId());
 			if(parametros.size() != model.getParametros().size()) {
 				throw new PRISMAValidacionException("El usuario no ingresó la descripcion de algun parametros del mensaje.", "MSG24", null, "model.parametros");
 			}
@@ -126,11 +123,10 @@ public class MensajeBs {
 		}
 	}
 
-	public static List<Parametro> obtenerParametros(String redaccion) {
+	public static List<Parametro> obtenerParametros(String redaccion, int idProyecto) {
 		//Se convierte la lista de parametros en json para enviarlos a la vista
 		ArrayList<String> tokens = TokenBs.procesarTokenIpunt(redaccion);
 		ArrayList<Parametro> listParametros = new ArrayList<Parametro>();
-		List<Parametro> listParametrosGuardados = consultarParametros();
 		if(listParametros.size() > 10) {
 			throw new PRISMAValidacionException("El usuario no ingresó la descripcion de algun parametros del mensaje.", "MSG6", new String[]{"10", "parámetros"}, 
 					"model.parametros");
@@ -140,27 +136,39 @@ public class MensajeBs {
 			segmentos = TokenBs.segmentarToken(token);
 			System.out.println("Segmentos " + segmentos.get(0) + " " + segmentos.get(1));
 			//Se hace la consulta con base en el nombre
-			Parametro parametro = consultarParametro(segmentos.get(1));
+			Parametro parametro = consultarParametro(segmentos.get(1), idProyecto);
 			if(parametro != null) {
 				System.out.println("Existe param");
 				//Si el parámetro existe en la bd
-				listParametros.add(parametro);
 			} else {
 				System.out.println("No existe param");
 				//Si no existe en la bd
-				listParametros.add(new Parametro(segmentos.get(1), ""));
+				parametro = new Parametro(segmentos.get(1),"");
+			}
+			if (!pertecene(parametro, listParametros)) {
+				listParametros.add(parametro);
 			}
 		}
 		return listParametros;
 	}
 
-	public static Parametro consultarParametro(String nombre) {
-		Parametro parametro = new ParametroDAO().consultarParametro(nombre);
+	private static boolean pertecene(Parametro parametro,
+			ArrayList<Parametro> listParametros) {
+		for (Parametro parametroi : listParametros) {
+			if (parametroi.getNombre().equals(parametro.getNombre())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static Parametro consultarParametro(String nombre, int idProyecto) {
+		Parametro parametro = new ParametroDAO().consultarParametro(nombre, idProyecto);
 		return parametro;
 	}
 
-	public static List<Parametro> consultarParametros() {
-		List<Parametro> listParametros = new ParametroDAO().consultarParametros();
+	public static List<Parametro> consultarParametros(int idProyecto) {
+		List<Parametro> listParametros = new ParametroDAO().consultarParametros(idProyecto);
 		return listParametros;
 	}
 	

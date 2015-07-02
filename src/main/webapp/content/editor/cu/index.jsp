@@ -42,22 +42,24 @@
 										id="" class="button"
 										title="Editar"
 										src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></a>
-										
+							${blanks}			
+							<!-- Gestionar trayectorias -->			
 							<s:url var="urlGestionarTrayectorias" value="%{#pageContext.request.contextPath}/trayectorias">
 								<s:param name="idCU" value="%{#cu.id}"/>
 							</s:url>
 							<s:a href="%{urlGestionarTrayectorias}"><img
 										id="" class="button"
 										title="Gestionar Trayectorias"
-										src="${pageContext.request.contextPath}/resources/images/icons/gestionarTray.png" /></s:a>	
-										
+										src="${pageContext.request.contextPath}/resources/images/icons/T.png" /></s:a>	
+							${blanks}		
+							<!-- Gestionar puntos de extensión -->				
 							<s:url var="urlGestionarPuntosExtension" value="%{#pageContext.request.contextPath}/extensiones">
 								<s:param name="idCU" value="%{#cu.id}"/>
 							</s:url>
 							<s:a href="%{urlGestionarPuntosExtension}"><img
 										id="" class="button"
-										title="Gestionar Puntos de extensión"  width="16" height="16"
-										src="${pageContext.request.contextPath}/resources/images/icons/extension.png" /></s:a>						
+										title="Gestionar Puntos de extensión" 
+										src="${pageContext.request.contextPath}/resources/images/icons/P.png" /></s:a>						
 					</td>
 					
 					

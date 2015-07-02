@@ -32,14 +32,15 @@ public class ParametroDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Parametro consultarParametro(String nombre) {
+	public Parametro consultarParametro(String nombre, int idProyecto) {
 		List<Parametro> results = null;
 
 		try {
 			session.beginTransaction();
 			Query query = session
-					.createQuery("from Parametro where nombre = :nombre");
+					.createQuery("from Parametro where nombre = :nombre AND Proyectoid = :idProyecto");
  			query.setParameter("nombre", nombre);
+ 			query.setParameter("idProyecto", idProyecto);
 
 			results = query.list();
 			session.getTransaction().commit();
@@ -58,14 +59,14 @@ public class ParametroDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Parametro> consultarParametros() {
+	public List<Parametro> consultarParametros(int idProyecto) {
 		List<Parametro> results = null;
 
 		try {
 			session.beginTransaction();
 			Query query = session
-					.createQuery("from Parametro");
-
+					.createQuery("from Parametro where Proyectoid = :idProyecto");
+ 			query.setParameter("idProyecto", idProyecto);
 			results = query.list();
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
@@ -75,11 +76,8 @@ public class ParametroDAO {
 		
 		if(results == null) {
 			return null;
-		} else 
-			if (results.isEmpty()) {
-				return null;
-			} else
-				return results;
+		} else
+			return results;
 
 	}
 }

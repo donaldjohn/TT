@@ -1,44 +1,53 @@
 var contextPath = "prisma";
 
-$(document).ready(function() {
-	contextPath = $("#rutaContexto").val();
-	//Se oculta el botón de editar de la redacción 
-	document.getElementById("botonEditar").style.display = 'none';
-	//Se construye la tabla de los parámetros
-	var json = $("#jsonParametros").val();
-	console.log("json: " + json);
-	if (json !== "") {
-		var parsedJson = JSON.parse(json);
-		$
-				.each(
-						parsedJson,
-						function(i, item) {
-							console.log("for-each nombre " + item.nombre);
-							console.log("for-each descripcion " + item.descripcion);
-							var parametro = [
-								item.nombre,
-								"<textarea rows='2' class='inputFormulario ui-widget' id='idDescripcionParametro" + 
-								i + "'" +
-								"maxlength='500'>" + item.descripcion +"</textarea> "];
-							agregarFila(parametro);
-						});
-		//Se hace visible la sección de parámetros
-		document.getElementById("seccionParametros").style.display = '';
-		document.getElementById("inputor").readOnly = true;
-		document.getElementById("inputor").id = "inputorreadOnly";
-		document.getElementById("botonEditar").style.display = '';
-		//abrirEmergente();
-	} else {
-		document.getElementById("seccionParametros").style.display = 'none';
-	}
-	try {
-		token.cargarListasToken();
-	} catch (err) {
-		console.log("No se puede cargar el token");
-	}
-	
-	//Fin de la creación de la tabla de parámetros 
-} );
+$(document)
+		.ready(
+				function() {
+					contextPath = $("#rutaContexto").val();
+					// Se oculta el botón de editar de la redacción
+					document.getElementById("botonEditar").style.display = 'none';
+
+					// Se construye la tabla de los parámetros
+					var json = $("#jsonParametros").val();
+					console.log("json: " + json);
+					if (json !== "" && json !== "[]") {
+						var parsedJson = JSON.parse(json);
+
+						$
+								.each(
+										parsedJson,
+										function(i, item) {
+											console.log("for-each nombre "
+													+ item.nombre);
+											console.log("for-each descripcion "
+													+ item.descripcion);
+											var parametro = [
+													item.nombre,
+													"<textarea rows='2' class='inputFormulario ui-widget' id='idDescripcionParametro"
+															+ i
+															+ "'"
+															+ "maxlength='500'>"
+															+ item.descripcion
+															+ "</textarea> " ];
+											agregarFila(parametro);
+										});
+						// Se hace visible la sección de parámetros
+						document.getElementById("seccionParametros").style.display = '';
+						document.getElementById("inputor").readOnly = true;
+						document.getElementById("inputor").id = "inputorreadOnly";
+						document.getElementById("botonEditar").style.display = '';
+						// abrirEmergente();
+					} else {
+						document.getElementById("seccionParametros").style.display = 'none';
+					}
+					try {
+						token.cargarListasToken();
+					} catch (err) {
+						console.log("No se puede cargar el token");
+					}
+
+					// Fin de la creación de la tabla de parámetros
+				});
 
 function habilitarEdicionRedaccion() {
 	document.getElementById("inputorreadOnly").readOnly = false;
@@ -54,18 +63,19 @@ function mostrarCamposParametros() {
 	var seccionParametros = document.getElementById("seccionParametros");
 	var parametrizado = document.getElementById("idParametrizado");
 	var form = document.getElementById("frmParametros");
-	
-	//Se indica que la redacción ha cambiado
+
+	// Se indica que la redacción ha cambiado
 	document.getElementById("cambioRedaccion").value = true;
-    //PENDIENTE verificar si contiene "PARAM." para no enviar la peticion siempre
-    form.submit();
+	// PENDIENTE verificar si contiene "PARAM." para no enviar la peticion
+	// siempre
+	form.submit();
 }
 
 function prepararEnvio() {
 	try {
 		tablaToJson("parametros");
 		return true;
-	} catch(err) {
+	} catch (err) {
 		alert("Ocurrió un error.");
 		return false;
 	}
@@ -73,16 +83,19 @@ function prepararEnvio() {
 function tablaToJson(idTable) {
 	var tabla = document.getElementById("parametros");
 	var arregloParametros = [];
-    var tam = tabla.rows.length - 1;
+	var tam = tabla.rows.length - 1;
 	for (var i = 0; i < tam; i++) {
 		var nombre = tabla.rows[i].cells[0].innerHTML;
 		var descripcion = document.getElementById("idDescripcionParametro" + i).value;
 		arregloParametros.push(new Parametro(nombre, descripcion));
 	}
+
+		var jsonParametros = JSON.stringify(arregloParametros);
+		document.getElementById("jsonParametros").value = jsonParametros;
 	
-	var jsonParametros = JSON.stringify(arregloParametros);
-	document.getElementById("jsonParametros").value = jsonParametros;
 }
+
+
 
 function agregarFila(fila) {
 	var tabla = document.getElementById("parametros");
@@ -98,7 +111,7 @@ function agregarFila(fila) {
 
 	// Add some text to the new cells:
 	cell1.className = "label obligatorio";
-	
+
 	cell1.innerHTML = fila[0];
 	cell2.innerHTML = fila[1];
 }

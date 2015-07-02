@@ -12,6 +12,7 @@ and open the template in the editor.
 /*Iconos por http://dryicons.com*/
 /*Estilo general*/
 
+
 .container {
     position: relative;
     width: 100%;
@@ -359,4 +360,14 @@ textfield {
 .botonEditar {
 	text-align: left; 
 	vertical-align: top;	
+}
+
+textarea[readonly=""] {
+    background-color:#E6E6E6;
+    color: #848484;
+    
+}
+
+.ui-dialog-titlebar-close {
+  visibility: hidden;
 }

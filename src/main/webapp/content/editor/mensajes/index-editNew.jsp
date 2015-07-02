@@ -83,7 +83,7 @@
 		</div>
 		
 		<s:fielderror fieldName="model.parametros" cssClass="error errorFormulario" theme="jquery" />
-		<div class="formulario" style="display: none;" id = "seccionParametros">
+		<div  class="formulario" style="display: none;" id = "seccionParametros">
 			<div class="tituloFormulario">Parámetros del mensaje</div>
 			<div class="instrucciones">Ingrese la descripción de los parámetros.</div>
 			<table class="seccion" id="parametros">
@@ -104,7 +104,9 @@
 				value="Cancelar" />
 		</div>
 		<s:hidden value="%{cambioRedaccion}" name="cambioRedaccion" id="cambioRedaccion"/>
+		<s:hidden value="%{parametrizado}" name="parametrizado" id="parametrizado"/>
 		<s:hidden value="%{jsonParametros}" name="jsonParametros" id="jsonParametros"/>
+		
 		<!-- Json de parametros guardados-->
 		<s:hidden name="jsonParametrosGuardados" id="jsonParametrosGuardados" value="%{jsonParametrosGuardados}"/>
 	</s:form>

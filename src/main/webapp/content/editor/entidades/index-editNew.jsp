@@ -107,7 +107,7 @@
 				<table class="seccion">
 					<tr>
 						<td class="label obligatorio"><s:text name="labelNombre" /></td>
-						<td><s:textfield name="atributo.nombre" id="atributo.nombre"
+						<td><s:textfield name="atributo.nombre" id="atributo.nombre" cssClass="inputFormulario ui-widget"
 								maxlength="45" cssErrorClass="input-error"></s:textfield></td>
 					</tr>
 					<tr>
@@ -122,20 +122,20 @@
 					</tr>
 					<tr id = 'trLongitud' style="display: none;">
 						<td class="label obligatorio"><s:text name="labelLongitud" /></td>
-						<td><s:textfield name="atributo.longitud" id="atributo.longitud"
+						<td><s:textfield name="atributo.longitud" id="atributo.longitud" cssClass="inputFormulario ui-widget"
 								cssErrorClass="input-error"></s:textfield></td>
 					</tr>
 					
 					<tr id = 'trFormatoArchivo' style="display: none;">
 						<td class="label obligatorio"><s:text name="labelFormatoArchivo" /></td>
-						<td><s:textfield name="atributo.formatoArchivo" id="atributo.formatoArchivo"
+						<td><s:textfield name="atributo.formatoArchivo" id="atributo.formatoArchivo" cssClass="inputFormulario ui-widget"
 								cssErrorClass="input-error"></s:textfield></td>
 					</tr> 
 					
 					<tr id = 'trTamanioArchivo' style="display: none;">
 						<td class="label obligatorio"><s:text name="labelTamanioArchivo" /></td>
 						<td><s:textfield name="atributo.tamanioArchivo" id="atributo.tamanioArchivo"
-								cssErrorClass="input-error"></s:textfield>
+								cssErrorClass="input-error" ></s:textfield>${blanks}
 						<s:select list="listUnidadTamanio"  name="atributo.unidadTamanio" id="atributo.unidadTamanio"
        						cssErrorClass="input-error" headerValue="Seleccione" headerKey="0" listValue="abreviatura"></s:select></td>
 					</tr>
