@@ -9,10 +9,12 @@ import org.hibernate.JDBCException;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.dao.MensajeDAO;
+import mx.prisma.editor.dao.OperadorDAO;
 import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.dao.TipoDatoDAO;
 import mx.prisma.editor.dao.TipoReglaNegocioDAO;
 import mx.prisma.editor.model.Mensaje;
+import mx.prisma.editor.model.Operador;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TipoReglaNegocio;
 import mx.prisma.util.PRISMAException;
@@ -32,6 +34,9 @@ public class ReglaNegocioBs {
 
 	public static List<TipoReglaNegocio> consultarTipoRN() {
 		List<TipoReglaNegocio> listTipoRN = new TipoReglaNegocioDAO().consultarTiposReglaNegocio();
+		if(listTipoRN == null) {
+			throw new PRISMAException("No se pueden consultar los tipos de regla de negocio.", "MSG25");
+		}
 		return listTipoRN;
 	}
 
@@ -60,7 +65,7 @@ public class ReglaNegocioBs {
 		if(Validador.esNuloOVacio(model.getNumero())) {
 			throw new PRISMAValidacionException("El usuario no ingresó el número de la regla de negocio.", "MSG4", null, "model.numero");
 		}
-		if(!Pattern.matches("[0-9]+", model.getNumero())) {
+		if(!Pattern.matches("[1-9]+[0-9]*", model.getNumero())) {
 			throw new PRISMAValidacionException("El usuario no ingresó el número de la regla de negocio.", "MSG5", new String[]{"un", "número entero"}, "model.numero");
 		}
 		
@@ -113,6 +118,14 @@ public class ReglaNegocioBs {
 			throw new PRISMAException("No se puede consulta la regla de negocio.", "MSG13");
 		}
 		return tipoRN;
+	}
+
+	public static List<Operador> consultarOperadores() {
+		List<Operador> listOperadores = new OperadorDAO().consultarOperadores();
+		if(listOperadores == null) {
+			throw new PRISMAException("No se pueden consultar los operadores.", "MSG25");
+		}
+		return listOperadores;
 	}
 
 }

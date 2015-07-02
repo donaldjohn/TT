@@ -60,7 +60,9 @@
 				<tr>
 						<td class="label obligatorio"><s:text name="labelTipo" /></td>
 						<td><s:select list="listTipoRN" cssClass="inputFormulario ui-widget" name="idTipoRN" id="idTipoRN" listKey="id" 
-       						cssErrorClass="select-error" headerValue="Seleccione" headerKey="-1" listValue="nombre" onchange="mostrarCamposTipoRN();"></s:select></td>
+       						cssErrorClass="select-error" headerValue="Seleccione" headerKey="-1" listValue="nombre" onchange="mostrarCamposTipoRN();"></s:select>
+       						<s:fielderror fieldName="idTipoRN" cssClass="error"
+							theme="jquery" /></td>
 				</tr>
 				<tr>
 						<td class="label obligatorio"><s:text name="labelRedaccion" /></td>
@@ -70,15 +72,38 @@
 								fieldName="model.redaccion" cssClass="error"
 								theme="jquery" /></td>	
 				</tr>
-				<tr id="entidad1" style="display: 'none';">
-						<td class="label obligatorio"><s:text name="labelEntidad" /></td>
-						<td><s:select list="listEntidades" cssClass="inputFormulario ui-widget" name="idEntidad" id="entidades"
-       						cssErrorClass="select-error" headerValue="Seleccione" headerKey="-1" listValue="nombre" onchange="mostrarAtributos();"></s:select></td>
+				<tr id="textoAyudaInterF" class="oculto">
+						<td></td>
+						<td class="textoAyuda">A continuación se muestran las entidades que poseen atributos de tipo fecha.</td>
 				</tr>
-				<tr id="entidad2">
+				<tr id="filaEntidad1" class="oculto">
+						<td class="label obligatorio"><s:text name="labelEntidad" /></td>
+						<td><s:select list="listEntidades" cssClass="inputFormulario ui-widget" name="entidad1" id="entidad1"
+       						cssErrorClass="select-error" headerValue="Seleccione" headerKey="-1" listValue="nombre" onchange="mostrarAtributos(this);"></s:select></td>
+				</tr>
+				<tr id="filaAtributo1" class="oculto">
 						<td class="label obligatorio"><s:text name="labelAtributo" /></td>
-						<td><s:select list="listAtributos" cssClass="inputFormulario ui-widget" name="model.tipoReglaNegocio" id="model.tipoReglaNegocio"
-       						cssErrorClass="select-error" headerValue="Seleccione" headerKey="-1" listValue="nombre" onchange="mostrarCamposTipoRN();"></s:select></td>
+						<td><s:select list="listAtributos" cssClass="inputFormulario ui-widget" name="atributo1" id="atributo1"
+       						cssErrorClass="select-error" headerValue="Seleccione" headerKey="-1" listValue="nombre"></s:select></td>
+				</tr>
+				<tr id="filaOperador" class="oculto">
+						<td class="label obligatorio"><s:text name="labelTipoComparacion" /></td>
+						<td><s:select list="listOperadores" cssClass="inputFormulario ui-widget" name="operador" id="operador"
+       						cssErrorClass="select-error" headerValue="Seleccione" headerKey="-1" listValue="simbolo"></s:select></td>
+				</tr>
+				<tr id="filaEntidad2" class="oculto">
+						<td class="label obligatorio"><s:text name="labelEntidad2" /></td>
+						<td><s:select list="listEntidades" cssClass="inputFormulario ui-widget" name="entidad2" id="entidad2"
+       						cssErrorClass="select-error" headerValue="Seleccione" headerKey="-1" listValue="nombre" onchange="mostrarAtributos(this);"></s:select></td>
+				</tr>
+				<tr id="filaAtributo2" class="oculto">
+						<td class="label obligatorio"><s:text name="labelAtributo2" /></td>
+						<td><s:select list="listAtributos" cssClass="inputFormulario ui-widget" name="atributo2" id="atributo2"
+       						cssErrorClass="select-error" headerValue="Seleccione" headerKey="-1" listValue="nombre"></s:select></td>
+				</tr>
+				<tr id="filaResultado" class="oculto">
+						<td class="label"><s:text name="labelResultado"/></td>
+						<td class="textoAyuda"><span id="resultado"></span></td>
 				</tr>
 							
 			</table>
