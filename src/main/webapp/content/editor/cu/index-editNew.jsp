@@ -70,7 +70,7 @@
 					<tr>
 						<td class="label"><s:text name="labelActores" /></td>
 						<td><s:textarea rows="5" name="model.redaccionActores" cssClass="inputFormulario ui-widget"
-								maxlength="999" cssErrorClass="input-error" id="actorInput"></s:textarea>
+								maxlength="999" cssErrorClass="input-error" id="actorInput" ></s:textarea>
 								<s:fielderror
 								fieldName="model.redaccionActores" cssClass="error"
 								theme="jquery" /> </td>

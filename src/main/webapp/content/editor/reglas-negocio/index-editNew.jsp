@@ -79,7 +79,7 @@
 				<tr id="filaEntidad1" class="oculto">
 						<td class="label obligatorio"><s:text name="labelEntidad" /></td>
 						<td><s:select list="listEntidades" cssClass="inputFormulario ui-widget" name="entidad1" id="entidad1"
-       						cssErrorClass="select-error" headerValue="Seleccione" headerKey="-1" listValue="nombre" onchange="mostrarAtributos(this);"></s:select></td>
+       						cssErrorClass="select-error" headerValue="Seleccione" headerKey="-1" listValue="nombre" listKey="id" onchange="mostrarAtributos(this);"></s:select></td>
 				</tr>
 				<tr id="filaAtributo1" class="oculto">
 						<td class="label obligatorio"><s:text name="labelAtributo" /></td>
