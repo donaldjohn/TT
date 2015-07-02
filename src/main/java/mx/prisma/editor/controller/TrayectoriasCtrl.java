@@ -41,6 +41,7 @@ import mx.prisma.util.SessionManager;
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 		"actionName", "trayectorias"}),
+		//@Result(name = "direccion", type = "json")
 })
 public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven<Trayectoria>, SessionAware{
 	/**
