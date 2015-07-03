@@ -18,6 +18,10 @@ $(document).ready(function() {
 							entidades.add(option);
 						});
 	}
+	//Pruebas
+	document.getElementById("idTipoRN").selectedIndex = 10;
+	//Fin pruebas
+	mostrarCamposTipoRN();
 } );
 
 function mostrarCamposTipoRN() {
@@ -74,23 +78,23 @@ function mostrarCamposTipoRN() {
 	} 
 }
 
-function mostrarAtributos() {
-	var select = document.getElementById("idEntidad");
-	console.log("idEntidad desde mostrarAtributos " + select);
-	rutaCargarAtributos = contextPath + '/reglas-negocio!cargarAtributos';
+function mostrarAtributos(select) {
+	var idEntidad = select.value;
+	console.log("idEntidad desde mostrarAtributos " + select.value);
+	rutaCargarAtributos = contextPath + '/reglas-negocio/cargarAtributos';
 	console.log("rutaCargarAtributos: " + rutaCargarAtributos);
 	$.ajax({
 		url : rutaCargarAtributos,
+		type: "POST",
 		data : {
 			idEntidad : idEntidad
 		},
-		cache : false,
 		dataType : 'json',
 		success : function(data) {
 			mostrarListaAtributos(data);
 		},
-		error : function(data) {
-			console.log("Error en la petición");
+		error : function(err) {
+			console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
 		}
 	});
 }

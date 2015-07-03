@@ -32,6 +32,7 @@ import com.opensymphony.xwork2.ModelDriven;
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 		"actionName", "reglas-negocio"}),
+		 
 })
 public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDriven<ReglaNegocio>, SessionAware{
 	/**
@@ -177,7 +178,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	
 	public String cargarAtributos() {
 		try {
-			System.out.println("idEntidad " + this.idEntidad);
+			System.out.println("idEntidad desde ctrl: " + this.idEntidad);
 			Entidad entidad = new EntidadDAO().consultarEntidad(this.idEntidad);
 			Set<Atributo> atributos = entidad.getAtributos();
 			if(atributos != null && atributos.size() != 0) {
@@ -186,7 +187,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		return "direccion";
+		return "atributos";
 	}
 		
 	private void buscaCatalogos() { 
@@ -237,6 +238,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	}
 
 	public void setIdEntidad(int idEntidad) {
+		System.out.println("Desde ctrl");
 		this.idEntidad = idEntidad;
 	}
 
