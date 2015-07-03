@@ -5,68 +5,60 @@
 		contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" />
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<![CDATA[ 				
-		<script type="text/javascript" src="${pageContext.request.contextPath}/content/editor/actores/js/index.js"></script>
-		 ]]>
-	<title>Actores</title>
-	<script type="text/javascript" language="javascript" class="init">
-
-
-		$(document).ready(function() {
-			$('#gestion').DataTable();
-		} );
-
-
-	</script>
+<title>Actores</title>
+<![CDATA[
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/actores/js/index.js"></script>
+]]>
 </head>
 
 <body>
-
-	<h1>Actores</h1>
-	<s:actionmessage theme="jquery" />
-	<s:actionerror theme="jquery" />
+	<h1><s:property value="%{proyecto.clave + ' - ' + proyecto.nombre}"/></h1>
+	<h3>Gestionar Actores</h3>
+	<s:actionmessage theme="jquery"/>
+	<s:actionerror theme="jquery"/>
+	
+	<br/>
 	<s:form theme="simple" onsubmit="return false;">
 	<div class="form">
-	 
-		<table id="gestion" class="tablaGestion" cellspacing="0" width="100%"> 
+		<table id="gestion" class="tablaGestion" cellspacing="0" width="100%">
 			<thead>
-				<tr>
-					<th>Nombre</th>
-					<th>Descripción</th>
-					<th>Estado</th>
-					<th>Acciones</th>
-				</tr>
+				<th style="width: 80%;"><s:text name="colActor"/></th>
+				<th style="width: 80%;"><s:text name="colCardinalidad"/></th>
+				<th style="width: 20%;"><s:text name="colAcciones"/></th>
 			</thead>
 			<tbody>
-			<s:iterator value="listActores" var="actor">
+			<s:iterator value="listActores" var="entidad">
 				<tr>
-					<td><s:property value="id.nombre" /></td>
-					<td style="width: 40%;">${actor.descripcion}</td>
-					<td style="width: 20%;">${actor.estadoElemento.nombre}</td>
-					<td style="width: 20%;" align="center">
-					<s:set name="estado" value="actor.estadoElemento.identificador"/>
-						<a href	="${pageContext.request.contextPath}/maquetaAnalista/proyectos/actores/modificarActor.jsp">
-							<img src="${pageContext.request.contextPath}/resources/images/icons/editar.png"/></a>
-						<a href="${pageContext.request.contextPath}/maquetaAnalista/proyectos/actores/eliminarActor.jsp">
-							<img src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png"/></a>
+					<td><s:property value="%{#actor.nombre}"/></td>
+					<td><s:if test="%{#otraCardinalidad != null}"><s:property value="%{#otraCardinalidad}"/></s:if>
+					<s:else><s:property value="%{#cardinalidad.nombre}"/></s:else>
+					</td>
+					
+					<td align="center">
+						<s:a href="#">
+							<img id="" class="button" title="Modificar Actor"
+									src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
+						</s:a>
+						<s:a href="#">
+							<img id="" class="button" title="Eliminar Actor"
+									src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" />
+						</s:a>
 					</td>
 				</tr>
 			</s:iterator>
 			</tbody>
 		</table>
+		
 	</div>
 	<br />
 	<br />
 	<div align="center">
-		<button formmethod="post"
-			onclick="location.href='${pageContext.request.contextPath}/actores/new'">
-			<s:text name="Nuevo"></s:text>
+		<button class="boton" formmethod="post"
+			onclick="location.href='${pageContext.request.contextPath}/entidades/new'">
+			<s:text name="Registrar"></s:text>
 		</button>
 	</div>
 	</s:form>
-	
-
-
 </body>
 </html>
 </jsp:root>
