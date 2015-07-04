@@ -1,10 +1,14 @@
 package mx.prisma.editor.dao;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.Referencia;
 import mx.prisma.editor.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.model.Actor;
+import mx.prisma.editor.model.Elemento;
 
 
 public class ActorDAO extends ElementoDAO {
@@ -19,5 +23,19 @@ public class ActorDAO extends ElementoDAO {
 	
 	public Actor consultarActor(String nombre, Proyecto proyecto) {
 		return (Actor)super.consultarElemento(nombre, proyecto, Referencia.getTabla(TipoReferencia.ACTOR));
+	}
+	
+	public List<Actor> consultarActores(int idProyecto) {
+		List<Actor> actores = new ArrayList<Actor>();
+		List<Elemento> elementos = super.consultarElementos(TipoReferencia.ACTOR,  idProyecto);
+		if (elementos != null)
+		for (Elemento elemento : elementos) {
+			actores.add((Actor) elemento);
+		}
+		return actores;
+	}
+	
+	public String siguienteNumeroActor(int idProyecto) {
+		return super.siguienteNumero(TipoReferencia.ACTOR, idProyecto);
 	}
 }

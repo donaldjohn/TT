@@ -12,9 +12,8 @@ import org.apache.struts2.interceptor.SessionAware;
 import com.opensymphony.xwork2.ModelDriven;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.editor.bs.EntidadBs;
+import mx.prisma.editor.bs.ActorBs;
 import mx.prisma.editor.model.Actor;
-import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.TipoDato;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
@@ -34,7 +33,7 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	private Map<String, Object> userSession;
 	private Proyecto proyecto;
 	private Actor model;
-	private List<Entidad> listActores;
+	private List<Actor> listActores;
 	private List<TipoDato> listCardinalidad;
 
 	public String index() throws Exception {
@@ -137,6 +136,24 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	public void setProyecto(Proyecto proyecto) {
 		this.proyecto = proyecto;
 	}
+
+	public List<Actor> getListActores() {
+		return listActores;
+	}
+
+	public void setListActores(List<Actor> listActores) {
+		this.listActores = listActores;
+	}
+
+	public List<TipoDato> getListCardinalidad() {
+		return listCardinalidad;
+	}
+
+	public void setListCardinalidad(List<TipoDato> listCardinalidad) {
+		this.listCardinalidad = listCardinalidad;
+	}
+	
+	
 
 	
 }
