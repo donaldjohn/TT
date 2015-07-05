@@ -6,37 +6,37 @@ import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.dao.ActorDAO;
+import mx.prisma.editor.dao.CardinalidadDAO;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
-import mx.prisma.editor.dao.TipoDatoDAO;
 import mx.prisma.editor.dao.UnidadTamanioDAO;
 import mx.prisma.editor.model.Actor;
-import mx.prisma.editor.model.Atributo;
+import mx.prisma.editor.model.Cardinalidad;
 import mx.prisma.editor.model.Entidad;
-import mx.prisma.editor.model.TipoDato;
 import mx.prisma.editor.model.UnidadTamanio;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
 
 public class ActorBs {
-	private static final String CLAVE = "ENT";
+	private static final String CLAVE = "ACT";
  
 	public static void registrarActor(Actor model) throws Exception {
 		try {
 			validar(model);
 			model.setClave(CLAVE);
-			model.setNumero(new EntidadDAO().siguienteNumeroEntidad(model
+			model.setNumero(new ActorDAO().siguienteNumeroActor(model
 					.getProyecto().getId()));
 			model.setEstadoElemento(new EstadoElementoDAO()
 					.consultarEstadoElemento(ElementoBs.getIDEstadoEdicion()));
 
-			new EntidadDAO().registrarEntidad(model);
+			new ActorDAO().registrarActor(model);
 		} catch (JDBCException je) {
 			if (je.getErrorCode() == 1062) {
-				throw new PRISMAValidacionException("La la entidad "
+				throw new PRISMAValidacionException("El actor "
 						+ model.getNombre() + " ya existe.", "MSG7",
-						new String[] { "La", "entidad", model.getNombre() },
+						new String[] { "El", "actor", model.getNombre() },
 						"model.nombre");
 			}
 			System.out.println("ERROR CODE " + je.getErrorCode());
@@ -48,33 +48,23 @@ public class ActorBs {
 		}
 	}
 
-	public static List<Entidad> consultarEntidadesProyecto(Proyecto proyecto) {
-		List<Entidad> listEntidades = new EntidadDAO()
-				.consultarEntidades(proyecto.getId());
-		if (listEntidades == null) {
-			throw new PRISMAException("No se pueden consultar las entidades.",
+	public static List<Actor> consultarActoresProyecto(Proyecto proyecto) {
+		List<Actor> listActores = new ActorDAO()
+				.consultarActores(proyecto.getId());
+		if (listActores == null) {
+			throw new PRISMAException("No se pueden consultar los actores.",
 					"MSG13");
 		}
-		return listEntidades;
+		return listActores;
 	}
 
-	public static List<TipoDato> consultarTiposDato() {
-		List<TipoDato> listTiposDato = new TipoDatoDAO().consultarTiposDato();
-		if (listTiposDato == null) {
+	public static List<Cardinalidad> consultarCardinalidades() {
+		List<Cardinalidad> listCardinalidad = new CardinalidadDAO().consultarCardinalidades();
+		if (listCardinalidad == null) {
 			throw new PRISMAException(
-					"No se pueden consultar los tipos de dato.", "MSG13");
+					"No se pueden consultar las cardinalidades.", "MSG13");
 		}
-		return listTiposDato;
-	}
-
-	public static List<UnidadTamanio> consultarUnidadesTamanio() {
-		List<UnidadTamanio> listUnidadTamanio = new UnidadTamanioDAO()
-				.consultarUnidadesTamanio();
-		if (listUnidadTamanio == null) {
-			throw new PRISMAException("No se pueden consultar las unidades.",
-					"MSG13");
-		}
-		return listUnidadTamanio;
+		return listCardinalidad;
 	}
 
 	private static void validar(Actor model) {
@@ -106,70 +96,26 @@ public class ActorBs {
 			throw new PRISMAValidacionException(
 					"El usuario ingreso una descripcion muy larga.", "MSG6",
 					new String[] { "999", "caracteres" }, "model.descripcion");
-		}
-
-		// Validaciones de los atributos
-		if (Validador.esNuloOVacio(model.getAtributos())) {
-			throw new PRISMAValidacionException(
-					"El usuario no ingresó ningún atributo.", "MSG18",
-					new String[] { "un", "atributo" }, "model.atributos");
-		} else {
-			for (Atributo atributo : model.getAtributos()) {
-				if (Validador.esNuloOVacio(atributo.getNombre())) {
-					throw new PRISMAValidacionException(
-							"El usuario no ingresó el nombre del atributo.",
-							"MSG4", null, "model.atributos");
-				}
-				if (Validador.esNuloOVacio(atributo.getDescripcion())) {
-					throw new PRISMAValidacionException(
-							"El usuario no ingresó la descripción.", "MSG4",
-							null, "model.atributos");
-				}
-				if (Validador.esNulo(atributo.getTipoDato())) {
-					throw new PRISMAValidacionException(
-							"El usuario no ingresó el tipo de dato.", "MSG4",
-							null, "model.atributos");
-				}
-
-				if (atributo.getTipoDato().getNombre().equals("Archivo")) {
-					if (Validador.esNulo(atributo.getUnidadTamanio())) {
-						throw new PRISMAValidacionException(
-								"El usuario no ingresó la unidad.", "MSG4",
-								null, "model.atributos");
-					}
-					if (Validador.esNuloOVacio(atributo.getFormatoArchivo())) {
-						throw new PRISMAValidacionException(
-								"El usuario no ingresó el formato del archivo.",
-								"MSG4", null, "model.atributos");
-					}
-					if (Validador.esNulo(atributo.getTamanioArchivo())) {
-						throw new PRISMAValidacionException(
-								"El usuario no ingresó el tamaño del archivo.",
-								"MSG4", null, "model.atributos");
-					}
-				} else if (!atributo.getTipoDato().getNombre()
-						.equals("Booleano")
-						&& !atributo.getTipoDato().getNombre().equals("Fecha")) {
-					if (Validador.esNulo(atributo.getLongitud())) {
-						throw new PRISMAValidacionException(
-								"El usuario no ingresó la longitud.", "MSG4",
-								null, "model.atributos");
-					}
-				}
-			}
-		}
+		}		
+		
+		if (!Validador.esNulo(model.getCardinalidad()) && Validador.esNuloOVacio(model.getOtraCardinalidad())) {
+ 
+				throw new PRISMAValidacionException(
+						"El usuario no ingresó la descripción de la entidad.",
+						"MSG4", null, "model.descripcion");
+		}		
 	}
 
-	public static Entidad consultarEntidad(int idEntidad) {
-		Entidad entidad = null;
-		entidad = new EntidadDAO().consultarEntidad(idEntidad);
-		if (entidad == null) {
-			throw new PRISMAException("No se pueden consultar las entidades.",
+	public static Actor consultarActor(int idActor) {
+		Actor actor = null;
+		actor = new ActorDAO().consultarActor(idActor);
+		if (actor == null) {
+			throw new PRISMAException("No se pueden consultar los actores.",
 					"MSG13");
 		} else {
 
 		}
-		return entidad;
+		return actor;
 	}
 
 }

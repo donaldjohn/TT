@@ -28,7 +28,7 @@
 	<br />
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
-	<s:form id="frmTrayectoria" theme="simple"
+	<s:form id="frmEntidad" theme="simple"
 		action="%{#pageContext.request.contextPath}/entidades" method="post"
 		onsubmit="return preparaEnvio();">
 		<div class="formulario">

@@ -27,11 +27,11 @@
 				<th style="width: 20%;"><s:text name="colAcciones"/></th>
 			</thead>
 			<tbody>
-			<s:iterator value="listActores" var="entidad">
+			<s:iterator value="listActores" var="actor">
 				<tr>
 					<td><s:property value="%{#actor.nombre}"/></td>
-					<td><s:if test="%{#otraCardinalidad != null}"><s:property value="%{#otraCardinalidad}"/></s:if>
-					<s:else><s:property value="%{#cardinalidad.nombre}"/></s:else>
+					<td><s:if test="%{#actor.otraCardinalidad != null}"><s:property value="%{#actor.otraCardinalidad}"/></s:if>
+					<s:else><s:property value="%{#actor.cardinalidad.nombre}"/></s:else>
 					</td>
 					
 					<td align="center">
