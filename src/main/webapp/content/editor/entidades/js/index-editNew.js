@@ -230,6 +230,7 @@ function disablefromTipoDato() {
 	document.getElementById("atributo.formatoArchivo").value = null;
 	document.getElementById("atributo.tamanioArchivo").value = null;
 	document.getElementById("atributo.unidadTamanio").selectedIndex = 0;
+	document.getElementById("trTextoAyudaFormato").style.display = 'none';
 
 	
 	var tipoDato = document.getElementById("atributo.tipoDato");
@@ -241,9 +242,11 @@ function disablefromTipoDato() {
 		if (tipoDatoTexto == 'Archivo') {
 			document.getElementById("trFormatoArchivo").style.display = '';
 			document.getElementById("trTamanioArchivo").style.display = '';
+			document.getElementById("trTextoAyudaFormato").style.display = '';
 		} else {
 			document.getElementById("trFormatoArchivo").style.display = 'none';
 			document.getElementById("trTamanioArchivo").style.display = 'none';
+			document.getElementById("trTextoAyudaFormato").style.display = 'none';
 		}
 	} else {
 		document.getElementById("trLongitud").style.display = '';

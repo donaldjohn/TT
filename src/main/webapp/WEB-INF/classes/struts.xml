@@ -36,8 +36,21 @@
 	
 	<!-- Ruta donde buscara los resultados -->
 	<constant name="struts.convention.result.path" value="/content" />
-	<package name="prisma" extends="rest-default, json-default">
+	
+	<!-- Se habilita el DMI -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	
+	<package name="json-default" extends="struts-default">
+	    <result-types>
+	        <result-type name="json" class="org.apache.struts2.json.JSONResult"/>
+	    </result-types>
+	    <interceptors>
+	        <interceptor name="json" class="org.apache.struts2.json.JSONInterceptor"/>
+	    </interceptors>
+	</package>
+	<package name="prisma" extends="rest-default,json-default" namespace="/">
 		<interceptors>
+		
 			<interceptor name="messageStoreInterceptor"
 				class="mx.prisma.util.MessageStoreInterceptorCDT">
 				<param name="operationMode">STORE</param>
@@ -97,7 +110,6 @@
 		</interceptors>
 
 		<default-interceptor-ref name="stack" />
-		
 		
 	</package>
 </struts>

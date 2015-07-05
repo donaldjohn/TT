@@ -32,7 +32,7 @@ import com.opensymphony.xwork2.ModelDriven;
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 		"actionName", "reglas-negocio"}),
-		 
+		//@Result(name = "direccion", type = "json")
 })
 public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDriven<ReglaNegocio>, SessionAware{
 	/**
@@ -101,13 +101,11 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	}
 
 	public String create() {
-		System.out.println("desde create");
 		String resultado = null;
 		try {
 			if(idTipoRN == -1) {
 				throw new PRISMAValidacionException("El usuario no seleccionó el tipo de regla de negocio.", "MSG4", null, "idTipoRN");
 			}
-			System.out.println("idTipo " + idTipoRN);
 			model.setTipoReglaNegocio(ReglaNegocioBs.consultaReglaNegocio(idTipoRN));
 			
 			System.out.println("Tipo de regla de negocio");
@@ -239,6 +237,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 
 	public void setIdEntidad(int idEntidad) {
 		System.out.println("Desde ctrl");
+		this.jsonAtributos = "hola mundo";
 		this.idEntidad = idEntidad;
 	}
 

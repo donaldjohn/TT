@@ -12,7 +12,6 @@ $(document).ready(function() {
 	
 	if (json !== "") {
 		var parsedJson = JSON.parse(json);
-		alert("parsedJson: " + parsedJson);
 		$
 				.each(
 						parsedJson,

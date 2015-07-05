@@ -126,6 +126,11 @@
 								cssErrorClass="input-error"></s:textfield></td>
 					</tr>
 					
+					<tr id = 'trTextoAyudaFormato' style="display: none;">
+						<td></td>
+						<td class="textoAyuda">Indique las extensiones permitidas separadas por una coma p.e.: PDF, docx, doc.</td>
+					</tr>
+					
 					<tr id = 'trFormatoArchivo' style="display: none;">
 						<td class="label obligatorio"><s:text name="labelFormatoArchivo" /></td>
 						<td><s:textfield name="atributo.formatoArchivo" id="atributo.formatoArchivo" cssClass="inputFormulario ui-widget"

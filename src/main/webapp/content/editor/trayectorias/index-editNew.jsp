@@ -50,7 +50,7 @@
 				</tr>
 				<tr id="filaCondicion" style="display: none;">
 					<td class="label obligatorio"><s:text name="labelCondicion" /></td>
-					<td><s:textarea rows="5" name="model.condicion" id="model.idCondicion"
+					<td><s:textarea rows="5" name="model.condicion" cssClass="inputFormulario ui-widget" id="model.idCondicion"
 							maxlength="999" cssErrorClass="input-error"></s:textarea> 
 							<s:fielderror
 							fieldName="model.condicion" cssClass="error"

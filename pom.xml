@@ -9,17 +9,13 @@
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<struts.version>2.3.24</struts.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.struts</groupId>
 			<artifactId>struts2-core</artifactId>
-			<version>2.3.24</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.struts</groupId>
-			<artifactId>struts2-json-plugin</artifactId>
-			<version>2.3.24</version>
+			<version>${struts.version}</version>
 		</dependency>
 		
 		<dependency>
@@ -79,12 +75,12 @@
 		<dependency>
 			<groupId>org.apache.struts</groupId>
 			<artifactId>struts2-convention-plugin</artifactId>
-			<version>2.3.24</version>
+			<version>${struts.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.struts</groupId>
 			<artifactId>struts2-rest-plugin</artifactId>
-			<version>2.3.24</version>
+			<version>${struts.version}</version>
 		</dependency>
 		<!-- Plugin que permite el uso de etiquetas, similares a las de struts2, 
 			para la renderización de componentes y uso de jquery -->
@@ -97,12 +93,17 @@
 		<dependency>
 			<groupId>org.apache.struts</groupId>
 			<artifactId>struts2-sitemesh-plugin</artifactId>
-			<version>2.3.24</version>
+			<version>${struts.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>1.7.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts2-json-plugin</artifactId>
+			<version>${struts.version}</version>
 		</dependency>
 	</dependencies>
 	<build>

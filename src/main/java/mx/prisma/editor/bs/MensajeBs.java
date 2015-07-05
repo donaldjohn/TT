@@ -8,6 +8,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.MensajeDAO;
 import mx.prisma.editor.dao.ParametroDAO;
 import mx.prisma.editor.model.Mensaje;
@@ -18,6 +19,7 @@ import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
 
 public class MensajeBs {
+	private static final String CLAVE = "MSG";
 
 	public static List<Mensaje> consultarMensajesProyecto(Proyecto proyecto) {
 		List<Mensaje> listMensajes = new MensajeDAO().consultarMensajes(proyecto.getId());
@@ -30,6 +32,10 @@ public class MensajeBs {
 	public static void registrarMensaje(Mensaje model) throws Exception{
 		try {
 				validar(model);
+				model.setClave(CLAVE);
+				model.setEstadoElemento(new EstadoElementoDAO()
+						.consultarEstadoElemento(ElementoBs.getIDEstadoEdicion()));
+				model.setNombre(model.getNombre().trim());
 				new MensajeDAO().registrarMensaje(model);
 		} catch (JDBCException je) {
 				if(je.getErrorCode() == 1062)
@@ -134,15 +140,10 @@ public class MensajeBs {
 		ArrayList<String> segmentos;
 		for(String token : tokens) {
 			segmentos = TokenBs.segmentarToken(token);
-			System.out.println("Segmentos " + segmentos.get(0) + " " + segmentos.get(1));
 			//Se hace la consulta con base en el nombre
 			Parametro parametro = consultarParametro(segmentos.get(1), idProyecto);
-			if(parametro != null) {
-				System.out.println("Existe param");
+			if(parametro == null) {
 				//Si el parámetro existe en la bd
-			} else {
-				System.out.println("No existe param");
-				//Si no existe en la bd
 				parametro = new Parametro(segmentos.get(1),"");
 			}
 			if (!pertecene(parametro, listParametros)) {

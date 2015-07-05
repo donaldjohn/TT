@@ -37,8 +37,8 @@
 					<td align="center">
 						<s:a>
 							<img id="" class="button"
-							title="Gestionar Pasos"
-							src="${pageContext.request.contextPath}/resources/images/icons/gestionarPasos.png" /></s:a>
+							title="Modificar Trayectoria"
+							src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></s:a>
 					</td>
 				</tr>
 				</s:if>
@@ -49,8 +49,8 @@
 					<td align="center" class="trayectoriaPrincipal">
 						<s:a>
 							<img id="" class="button"
-							title="Gestionar Pasos"
-							src="${pageContext.request.contextPath}/resources/images/icons/gestionarPasos.png" /></s:a>
+							title="Modificar Trayectoria"
+							src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></s:a>
 					</td>
 				</s:else>
 			</s:iterator>

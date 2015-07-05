@@ -55,8 +55,7 @@ public class Test {
 		// pruebaRegistroActor(); // 07/06/2015 OK
 
 		// pruebaRegistroCasoUso(); //05/06/2015
-		// pruebaModificacionCasoUso(); 
-		
+		// pruebaModificacionCasoUso();
 	}
 
 	// -----------------------------------------------------------------

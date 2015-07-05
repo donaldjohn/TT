@@ -23,7 +23,8 @@ public class Validador {
 	}
 
 	public static boolean contieneCaracterInvalido(String cadena) {
-		return  cadena.contains("_") || cadena.contains(":") || cadena.contains("·");
+		return  cadena.contains("_") || cadena.contains(":") || cadena.contains("·")
+				|| cadena.contains(".") || cadena.contains(",");
 	}
 
 }

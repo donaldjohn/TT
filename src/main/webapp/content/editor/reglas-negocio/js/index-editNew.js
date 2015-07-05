@@ -33,18 +33,24 @@ function mostrarCamposTipoRN() {
 	document.getElementById("filaEntidad2").className = "oculto";
 	document.getElementById("filaAtributo2").className = "oculto";
 	document.getElementById("filaOperador").className = "oculto";
-	document.getElementById("textoAyudaInterF").className = "oculto";
+	document.getElementById("filaTextoAyudaInterF").className = "oculto";
+	document.getElementById("filaTextoAyudaTipoRN").className = "oculto";
 	//Se selecciona la primer opción de los elementos
 	document.getElementById("entidad1").selectedIndex = 0;
 	document.getElementById("atributo1").selectedIndex = 0;
 	document.getElementById("entidad2").selectedIndex = 0;
 	document.getElementById("atributo2").selectedIndex = 0;
 	document.getElementById("operador").selectedIndex = 0;
-	
+	var instrucciones;
 	if(tipoRN == "Verificación de catálogos"){
 		console.log("1");
+		document.getElementById("instrucciones").innerHTML = "Indica que el sistema deberá verificar la existencia de los catálogos para realizar alguna operación.";
+		document.getElementById("filaTextoAyudaTipoRN").className = "";
 	} else if(tipoRN == "Comparación de atributos") {		
 		console.log("2");
+		document.getElementById("instrucciones").innerHTML = "Indica restricciones entre los valores de algunos atributos, solamente se permite hacer comparaciones" +
+																"entre atributos numéricos o entre atributos de tipo cadena.";
+		document.getElementById("filaTextoAyudaTipoRN").className = "";
 		document.getElementById("filaEntidad1").className = "";
 		document.getElementById("filaAtributo1").className = "";
 		document.getElementById("filaOperador").className = "";
@@ -52,30 +58,47 @@ function mostrarCamposTipoRN() {
 		document.getElementById("filaAtributo2").className = "";
 	} else if(tipoRN == "Unicidad de parámetros"){
 		console.log("3");
+		document.getElementById("instrucciones").innerHTML = "Permite indicar los atributos que hacen única una entidad dentro del sistema.";
+		document.getElementById("filaTextoAyudaTipoRN").className = "";
 		document.getElementById("filaEntidad1").className = "";
 		document.getElementById("filaAtributo1").className = "";
 	} else if(tipoRN == "Datos obligatorios"){
 		console.log("4");
+		document.getElementById("instrucciones").innerHTML = "Indica que todos los datos marcados como obligatorios deberán ser ingresados por el usuario.";
+		document.getElementById("filaTextoAyudaTipoRN").className = "";
 	} else if(tipoRN == "Longitud correcta"){
+		document.getElementById("instrucciones").innerHTML = "Indica que la longitud máxima de los atributos no puede ser rebasada.";
+		document.getElementById("filaTextoAyudaTipoRN").className = "";
 		console.log("5");
 	} else if(tipoRN == "Tipo de dato correcto"){
+		document.getElementById("instrucciones").innerHTML = "Indica que todos los campos que ingrese el usuario deberán cumplir con el tipo de dato indicado.";
+		document.getElementById("filaTextoAyudaTipoRN").className = "";
 		console.log("6");
 	} else if(tipoRN == "Formato de archivos"){
+		document.getElementById("instrucciones").innerHTML = "Indica que los archivos proporcionados por el usuario deberán cumplir con el formato especificado.";
+		document.getElementById("filaTextoAyudaTipoRN").className = "";
 		console.log("7");
 	} else if(tipoRN == "Tamaño de archivos"){
+		document.getElementById("instrucciones").innerHTML = "Indica que los archivos que proporcione el usuario no podrán rebasar el tamaño máximo especificado.";
+		document.getElementById("filaTextoAyudaTipoRN").className = "";
 		console.log("8");
 	} else if(tipoRN == "Intervalo de fechas correcto"){
 		console.log("9");
-		document.getElementById("textoAyudaInterF").className = "";
+		document.getElementById("instrucciones").innerHTML = "Indica el orden temporal que deberán tener dos atributos de tipo fecha.";
+		document.getElementById("filaTextoAyudaTipoRN").className = "";
+		document.getElementById("filaTextoAyudaInterF").className = "";
 		document.getElementById("filaEntidad1").className = "";
 		document.getElementById("filaAtributo1").className = "";
 		document.getElementById("filaEntidad2").className = "";
 		document.getElementById("filaAtributo2").className = "";
 	} else if(tipoRN == "Formato correcto"){
+		document.getElementById("instrucciones").innerHTML = "Indica que los datos proporcionados deben cumplir con la expresión regular indicada.";
+		document.getElementById("filaTextoAyudaTipoRN").className = "";
 		console.log("10");
 	} else if(tipoRN == "Otro"){
 		console.log("11");
 	} 
+	
 }
 
 function mostrarAtributos(select) {
@@ -89,7 +112,6 @@ function mostrarAtributos(select) {
 		data : {
 			idEntidad : idEntidad
 		},
-		dataType : 'json',
 		success : function(data) {
 			mostrarListaAtributos(data);
 		},
@@ -98,6 +120,10 @@ function mostrarAtributos(select) {
 		}
 	});
 }
+
+function mostrarListaAtributos(data) {
+	console.log("data: " + data);
+} 
 
 function registrarPaso(){
 	var numero = calcularNumeroPaso();

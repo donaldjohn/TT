@@ -11,6 +11,8 @@ import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.ElementoDAO;
+import mx.prisma.editor.dao.EntidadDAO;
+import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.dao.VerboDAO;
 import mx.prisma.editor.model.CasoUso;
@@ -23,6 +25,7 @@ import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
 
 public class CuBs {
+	private static final String CLAVE = "CU";
 	public static List<CasoUso> consultarCasosUsoModulo(Modulo modulo){
 		List<CasoUso> cus = new CasoUsoDAO().consultarCasosUso(modulo);
 		if(cus == null) {
@@ -74,6 +77,11 @@ public class CuBs {
 	public static void registrarCasoUso(CasoUso cu) throws Exception{
 		try {
 				validar(cu);
+				cu.setClave(CLAVE);
+				cu.setEstadoElemento(new EstadoElementoDAO()
+						.consultarEstadoElemento(ElementoBs.getIDEstadoEdicion()));
+				//Se quitan los espacios iniciales y finales del nombre
+				cu.setNombre(cu.getNombre().trim());
 				new CasoUsoDAO().registrarCasoUso(cu);
 		
 		} catch (JDBCException je) {
