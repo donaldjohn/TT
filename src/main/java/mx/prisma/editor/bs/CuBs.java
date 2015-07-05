@@ -31,7 +31,6 @@ public class CuBs {
 		if(cus == null) {
 			throw new PRISMAException("No se pueden consultar los casos de uso del modulo", "MSG13");
 		}
-		
 		return cus;
 	}
 	
