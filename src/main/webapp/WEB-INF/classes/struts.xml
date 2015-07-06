@@ -40,7 +40,6 @@
 	<!-- Se habilita el DMI -->
 	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
 	
-	
 	<package name="prisma" extends="rest-default,json-default">
 		<interceptors>
 		
