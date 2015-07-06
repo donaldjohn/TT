@@ -6,15 +6,13 @@ import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.CatalogoBs;
+import mx.prisma.bs.Referencia.TipoCatalogo;
 import mx.prisma.editor.dao.ActorDAO;
 import mx.prisma.editor.dao.CardinalidadDAO;
-import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
-import mx.prisma.editor.dao.UnidadTamanioDAO;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Cardinalidad;
-import mx.prisma.editor.model.Entidad;
-import mx.prisma.editor.model.UnidadTamanio;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
@@ -24,13 +22,13 @@ public class ActorBs {
  
 	public static void registrarActor(Actor model) throws Exception {
 		try {
+			model.setCardinalidad(new CardinalidadDAO().consultarCardinalidad(model.getCardinalidad().getId()));	
 			validar(model);
 			model.setClave(CLAVE);
 			model.setNumero(new ActorDAO().siguienteNumeroActor(model
 					.getProyecto().getId()));
 			model.setEstadoElemento(new EstadoElementoDAO()
 					.consultarEstadoElemento(ElementoBs.getIDEstadoEdicion()));
-
 			new ActorDAO().registrarActor(model);
 		} catch (JDBCException je) {
 			if (je.getErrorCode() == 1062) {
@@ -64,6 +62,9 @@ public class ActorBs {
 			throw new PRISMAException(
 					"No se pueden consultar las cardinalidades.", "MSG13");
 		}
+		
+		
+		CatalogoBs.opcionOtro(listCardinalidad, TipoCatalogo.CARDINALIDAD);
 		return listCardinalidad;
 	}
 
@@ -72,7 +73,7 @@ public class ActorBs {
 		// Validaciones del nombre
 		if (Validador.esNuloOVacio(model.getNombre())) {
 			throw new PRISMAValidacionException(
-					"El usuario no ingresó el nombre de la entidad.", "MSG4",
+					"El usuario no ingresó el nombre del actor.", "MSG4",
 					null, "model.nombre");
 		}
 		if (Validador.validaLongitudMaxima(model.getNombre(), 200)) {
@@ -88,7 +89,7 @@ public class ActorBs {
 		// Validaciones de la Descripción
 		if (Validador.esNuloOVacio(model.getDescripcion())) {
 			throw new PRISMAValidacionException(
-					"El usuario no ingresó la descripción de la entidad.",
+					"El usuario no ingresó la descripción del actor.",
 					"MSG4", null, "model.descripcion");
 		}
 
@@ -96,14 +97,23 @@ public class ActorBs {
 			throw new PRISMAValidacionException(
 					"El usuario ingreso una descripcion muy larga.", "MSG6",
 					new String[] { "999", "caracteres" }, "model.descripcion");
-		}		
+		}	
 		
-		if (!Validador.esNulo(model.getCardinalidad()) && Validador.esNuloOVacio(model.getOtraCardinalidad())) {
- 
+		if (Validador.esNulo(model.getCardinalidad())) {
+			throw new PRISMAValidacionException(
+					"El usuario no seleccionó la cardinalidad del actor",
+					"MSG4", null, "model.cardinalidad.id");
+		}
+		
+		if (model.getCardinalidad().getNombre().equals("otra")) {
+			if (Validador.esNuloOVacio(model.getOtraCardinalidad())) {
 				throw new PRISMAValidacionException(
-						"El usuario no ingresó la descripción de la entidad.",
-						"MSG4", null, "model.descripcion");
-		}		
+						"El usuario no ingresó la cardinalidad del actor",
+						"MSG4", null, "model.otraCardinalidad");
+			}
+		} else {
+			model.setOtraCardinalidad(null);
+		}
 	}
 
 	public static Actor consultarActor(int idActor) {

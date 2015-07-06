@@ -14,8 +14,8 @@ import org.apache.struts2.interceptor.SessionAware;
 import com.opensymphony.xwork2.ModelDriven;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.Referencia;
 import mx.prisma.editor.bs.CuBs;
-import mx.prisma.editor.bs.Referencia;
 import mx.prisma.editor.bs.TrayectoriaBs;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;

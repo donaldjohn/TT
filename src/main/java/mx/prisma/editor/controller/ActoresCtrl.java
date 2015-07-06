@@ -14,7 +14,7 @@ import com.opensymphony.xwork2.ModelDriven;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.ActorBs;
 import mx.prisma.editor.model.Actor;
-import mx.prisma.editor.model.TipoDato;
+import mx.prisma.editor.model.Cardinalidad;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
 import mx.prisma.util.PRISMAException;
@@ -34,7 +34,8 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	private Proyecto proyecto;
 	private Actor model;
 	private List<Actor> listActores;
-	private List<TipoDato> listCardinalidad;
+	private List<Cardinalidad> listCardinalidad;
+	private Integer cardinalidadSeleccionada;
 
 	public String index() throws Exception {
 		try {
@@ -75,20 +76,24 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	}
 
 	private void buscaCatalogos() {
-		
+		listCardinalidad = ActorBs.consultarCardinalidades();
+
+		if (listCardinalidad == null || listCardinalidad.isEmpty()) {
+			throw new PRISMAException(
+					"No hay cardinalidades para registrar el atributo.", "MSG25");
+		}		
 	}
 
 	public String create() throws Exception {
 		String resultado = null;
-
 		try {
 			Proyecto proyecto = SessionManager.consultarProyectoActivo();
 			model.setProyecto(proyecto);
-			//EntidadBs.registrarEntidad(model);
+			ActorBs.registrarActor(model);
 
 			resultado = SUCCESS;
-			addActionMessage(getText("MSG1", new String[] { "La",
-					"Entidad", "registrada" }));
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"Actor", "registrado" }));
 
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAValidacionException pve) {
@@ -105,10 +110,9 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 		return resultado;
 	}
 
-	
 
 	public Actor getModel() {
-		return this.model;
+		return model;
 	}
 
 	public void setModel(Actor model) {
@@ -145,12 +149,20 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 		this.listActores = listActores;
 	}
 
-	public List<TipoDato> getListCardinalidad() {
+	public List<Cardinalidad> getListCardinalidad() {
 		return listCardinalidad;
 	}
 
-	public void setListCardinalidad(List<TipoDato> listCardinalidad) {
+	public void setListCardinalidad(List<Cardinalidad> listCardinalidad) {
 		this.listCardinalidad = listCardinalidad;
+	}
+
+	public Integer getCardinalidadSeleccionada() {
+		return cardinalidadSeleccionada;
+	}
+
+	public void setCardinalidadSeleccionada(Integer cardinalidadSeleccionada) {
+		this.cardinalidadSeleccionada = cardinalidadSeleccionada;
 	}
 	
 	

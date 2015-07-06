@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.editor.bs.Referencia;
-import mx.prisma.editor.bs.Referencia.TipoReferencia;
+import mx.prisma.bs.Referencia;
+import mx.prisma.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.util.HibernateUtil;

@@ -35,6 +35,7 @@ INSERT INTO PRISMA.TipoDato (nombre) VALUES ('Entero');
 INSERT INTO PRISMA.TipoDato (nombre) VALUES ('Booleano');
 INSERT INTO PRISMA.TipoDato (nombre) VALUES ('Fecha');
 INSERT INTO PRISMA.TipoDato (nombre) VALUES ('Archivo');
+INSERT INTO PRISMA.TipoDato (nombre) VALUES ('Otro');
 
 INSERT INTO PRISMA.UnidadTamanio (nombre, abreviatura) VALUES ('Kilobyte', 'KB');
 INSERT INTO PRISMA.UnidadTamanio (nombre, abreviatura) VALUES ('Megabyte', 'MB');
@@ -64,6 +65,8 @@ INSERT INTO PRISMA.Verbo (nombre) VALUES ('Acerca');
 INSERT INTO PRISMA.Verbo (nombre) VALUES ('Arrastra');
 INSERT INTO PRISMA.Verbo (nombre) VALUES ('Calcula');
 INSERT INTO PRISMA.Verbo (nombre) VALUES ('Revisa');
+INSERT INTO PRISMA.Verbo (nombre) VALUES ('Otro');
+
 
 INSERT INTO PRISMA.TipoAccion (nombre) VALUES ('Liga');
 INSERT INTO PRISMA.TipoAccion (nombre) VALUES ('Botón');
