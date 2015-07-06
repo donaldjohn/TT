@@ -94,6 +94,9 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements ModelDriven<
 						Paso pasoAuxiliar = new Paso();
 						pasoAuxiliar.setTrayectoria(trayectoriaAux);
 						pasoAuxiliar.setNumero(paso.getNumero());
+						pasoAuxiliar.setRealizaActor(paso.isRealizaActor());
+						pasoAuxiliar.setVerbo(paso.getVerbo());
+						pasoAuxiliar.setRedaccion(TokenBs.decodificarCadenasToken(paso.getRedaccion()));
 						listPasos.add(pasoAuxiliar);
 					}
 				}

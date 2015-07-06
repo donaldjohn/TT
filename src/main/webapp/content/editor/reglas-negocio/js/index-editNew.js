@@ -101,12 +101,13 @@ function mostrarCamposTipoRN() {
 	
 }
 
-function mostrarAtributos(select) {
+function cargarAtributos(select) {
 	var idEntidad = select.value;
 	console.log("idEntidad desde mostrarAtributos " + select.value);
-	rutaCargarAtributos = contextPath + '/reglas-negocio/cargarAtributos';
+	rutaCargarAtributos = contextPath + '/reglas-negocio!cargarAtributos';
 	console.log("rutaCargarAtributos: " + rutaCargarAtributos);
 	$.ajax({
+		dataType : 'json',
 		url : rutaCargarAtributos,
 		type: "POST",
 		data : {
@@ -121,8 +122,22 @@ function mostrarAtributos(select) {
 	});
 }
 
-function mostrarListaAtributos(data) {
-	console.log("data: " + data);
+function mostrarListaAtributos(json) {
+	console.log("json: " + json);
+	if (json !== "") {
+		var atributos = document.getElementById("atributo1");
+		$
+				.each(
+						json,
+						function(i, item) {
+							console.log("Elemento rec " + i);
+							console.log("item: " + item);
+							var option = document.createElement("option");
+							option.text = item.nombre;
+							option.index = i;
+							atributos.add(option);
+						});
+	}
 } 
 
 function registrarPaso(){

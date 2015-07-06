@@ -12,8 +12,9 @@
 </head>
 
 <body>
-	<h3>Gestionar Puntos de extensión</h3>
+	
 	<h1><s:property value="%{model.casoUsoOrigen.clave + model.casoUsoOrigen.numero + ' ' + model.casoUsoOrigen.nombre}"/></h1>
+	<h3>Gestionar Puntos de extensión</h3>
 	<s:actionmessage theme="jquery"/>
 	<s:actionerror theme="jquery"/>
 	

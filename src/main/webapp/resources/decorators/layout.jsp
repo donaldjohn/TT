@@ -51,7 +51,7 @@
 		</div>
 	</div>
 	<input type="text" style="display: none;" id="rutaContexto"
- 		value="${pageContext.request.contextPath}" />	
+ 		value="${pageContext.request.contextPath}" />
 </body>
 </html>
 </jsp:root>

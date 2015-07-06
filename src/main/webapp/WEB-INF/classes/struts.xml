@@ -32,7 +32,7 @@
 		correspondiente -->
 	<constant name="struts.convention.action.mapAllMatches" value="true" />
 	
-	<constant name="struts.convention.default.parent.package" value="rest-default"/>
+	<constant name="struts.convention.default.parent.package" value="prisma"/>
 	
 	<!-- Ruta donde buscara los resultados -->
 	<constant name="struts.convention.result.path" value="/content" />
@@ -40,15 +40,8 @@
 	<!-- Se habilita el DMI -->
 	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
 	
-	<package name="json-default" extends="struts-default">
-	    <result-types>
-	        <result-type name="json" class="org.apache.struts2.json.JSONResult"/>
-	    </result-types>
-	    <interceptors>
-	        <interceptor name="json" class="org.apache.struts2.json.JSONInterceptor"/>
-	    </interceptors>
-	</package>
-	<package name="prisma" extends="rest-default,json-default" namespace="/">
+	
+	<package name="prisma" extends="rest-default,json-default">
 		<interceptors>
 		
 			<interceptor name="messageStoreInterceptor"

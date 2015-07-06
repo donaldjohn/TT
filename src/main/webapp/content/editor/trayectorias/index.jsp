@@ -8,6 +8,7 @@
 <title>Trayectorias</title>
 <![CDATA[
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/trayectorias/js/index.js"></script>
+	  
 ]]>
 </head>
 

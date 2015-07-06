@@ -240,6 +240,12 @@ var token = function() {
 			}
 		} else if (tipo == "F") {
 			var lista = $.map(listaObjetos, function(value, i) {
+				var realiza = "";
+				if(value.realizaActor == true) {
+		    		realiza = "El actor";
+		    	} else if(value.realizaActor == false) {
+		    		realiza = "El sistema";
+		    	}
 				return {
 					'id' : i,
 					"claveCU" : value.trayectoria.casoUso.clave,
@@ -247,6 +253,7 @@ var token = function() {
 					"claveTray": value.trayectoria.clave,
 					"numero" : value.numero,
 					"nombre" : value.trayectoria.casoUso.nombre,
+					"redaccion" : realiza + " " + value.verbo.nombre.toLowerCase() + " " + value.redaccion,
 					'name' : value.trayectoria.casoUso.clave
 					+ separador1 + value.trayectoria.casoUso.numero + separador2
 					+ remplazarEspaciosGuion(value.trayectoria.casoUso.nombre) + separador2 + remplazarEspaciosGuion(value.trayectoria.clave) + separador1
@@ -256,7 +263,7 @@ var token = function() {
 			var at_config = {
 				at : token + separador1,
 				data : lista,
-				displayTpl : "<li><span class=\"listaToken\">" + token
+				displayTpl : "<li title='${redaccion}'><span class=\"listaToken\">" + token
 				+ separador1 + "</span>" 
 				+ "<span class=\"listaNombre\">${claveCU}" + separador1 + "${numeroCU}"
 				+ separador2 + "${nombre}" + separador2 + "${claveTray}" 
@@ -308,3 +315,4 @@ var token = function() {
 		cargarListasToken : cargarListasToken,
 	};
 }();
+

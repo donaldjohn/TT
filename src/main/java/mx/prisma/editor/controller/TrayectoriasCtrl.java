@@ -16,6 +16,7 @@ import com.opensymphony.xwork2.ModelDriven;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.Referencia;
+import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.bs.TrayectoriaBs;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
@@ -294,6 +295,9 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 							Paso auxPaso = new Paso();
 							auxPaso.setTrayectoria(auxTrayectoria);
 							auxPaso.setNumero(paso.getNumero());
+							auxPaso.setRealizaActor(paso.isRealizaActor());
+							auxPaso.setVerbo(paso.getVerbo());
+							auxPaso.setRedaccion(TokenBs.decodificarCadenasToken(paso.getRedaccion()));
 							listPasos.add(auxPaso);
 						}
 					}

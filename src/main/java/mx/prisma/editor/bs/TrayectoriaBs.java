@@ -16,11 +16,9 @@ import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
 
 public class TrayectoriaBs {
-	private static final String CLAVE = "RN";
 	public static void registrarTrayectoria(Trayectoria model) throws Exception {
 		try {
 				validar(model);
-				model.setClave(CLAVE);
 				model.setClave(model.getClave().trim());
 				
 				new TrayectoriaDAO().registrarTrayectoria(model);
