@@ -112,7 +112,7 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 
 
 	public Actor getModel() {
-		return model;
+		return (model == null) ? model = new Actor() : model;
 	}
 
 	public void setModel(Actor model) {
