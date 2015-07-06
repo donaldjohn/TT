@@ -72,7 +72,7 @@
 								fieldName="model.redaccion" cssClass="error"
 								theme="jquery" /></td>
 						<td class="botonEditar" id="botonEditar">
-							<sj:a onclick="habiliarEdicionRedaccion();">
+							<sj:a onclick="habilitarEdicionRedaccion();">
 							<img class="button"
 							title="Redefinir Mensaje"
 							src="${pageContext.request.contextPath}/resources/images/icons/editar.png" onclick="habilitarEdicionRedaccion();"/>

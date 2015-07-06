@@ -29,7 +29,7 @@ public class EntidadBs {
 					.getProyecto().getId()));
 			model.setEstadoElemento(new EstadoElementoDAO()
 					.consultarEstadoElemento(ElementoBs.getIDEstadoEdicion()));
-
+			model.setNombre(model.getNombre().trim());
 			new EntidadDAO().registrarEntidad(model);
 		} catch (JDBCException je) {
 			if (je.getErrorCode() == 1062) {

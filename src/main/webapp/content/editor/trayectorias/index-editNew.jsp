@@ -13,7 +13,8 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.caret.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.atwho.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/trayectorias/js/token.js"></script>
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/trayectorias/js/index-editNew.js"></script>	
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/trayectorias/js/index-editNew.js"></script>
+		
 ]]>
 
 </head>
@@ -50,7 +51,7 @@
 				</tr>
 				<tr id="filaCondicion" style="display: none;">
 					<td class="label obligatorio"><s:text name="labelCondicion" /></td>
-					<td><s:textarea rows="5" name="model.condicion" id="model.idCondicion"
+					<td><s:textarea rows="5" name="model.condicion" cssClass="inputFormulario ui-widget" id="model.idCondicion"
 							maxlength="999" cssErrorClass="input-error"></s:textarea> 
 							<s:fielderror
 							fieldName="model.condicion" cssClass="error"

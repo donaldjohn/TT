@@ -17,10 +17,6 @@ $(document)
 								.each(
 										parsedJson,
 										function(i, item) {
-											console.log("for-each nombre "
-													+ item.nombre);
-											console.log("for-each descripcion "
-													+ item.descripcion);
 											var parametro = [
 													item.nombre,
 													"<textarea rows='2' class='inputFormulario ui-widget' id='idDescripcionParametro"
@@ -36,7 +32,6 @@ $(document)
 						document.getElementById("inputor").readOnly = true;
 						document.getElementById("inputor").id = "inputorreadOnly";
 						document.getElementById("botonEditar").style.display = '';
-						// abrirEmergente();
 					} else {
 						document.getElementById("seccionParametros").style.display = 'none';
 					}
@@ -48,6 +43,16 @@ $(document)
 
 					// Fin de la creación de la tabla de parámetros
 				});
+
+$(window).load(function(){
+	var cambioRedaccion = document.getElementById("cambioRedaccion").value;
+	console.log(cambioRedaccion);
+	if(cambioRedaccion == "true") {
+		document.getElementById("cambioRedaccion").value = "false";
+		console.log(cambioRedaccion);
+		alert("Escriba la descripción de cada parámetro.");
+	}
+})
 
 function habilitarEdicionRedaccion() {
 	document.getElementById("inputorreadOnly").readOnly = false;

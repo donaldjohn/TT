@@ -64,6 +64,10 @@
        						<s:fielderror fieldName="idTipoRN" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
+				<tr id="filaTextoAyudaTipoRN" class="oculto">
+						<td></td>
+						<td id="instrucciones" class="textoAyuda"></td>
+				</tr>
 				<tr>
 						<td class="label obligatorio"><s:text name="labelRedaccion" /></td>
 						<td><s:textarea rows="5" name="model.redaccion" cssClass="inputFormulario ui-widget" id="model.redaccion"
@@ -72,14 +76,14 @@
 								fieldName="model.redaccion" cssClass="error"
 								theme="jquery" /></td>	
 				</tr>
-				<tr id="textoAyudaInterF" class="oculto">
+				<tr id="filaTextoAyudaInterF" class="oculto">
 						<td></td>
 						<td class="textoAyuda">A continuación se muestran las entidades que poseen atributos de tipo fecha.</td>
 				</tr>
 				<tr id="filaEntidad1" class="oculto">
 						<td class="label obligatorio"><s:text name="labelEntidad" /></td>
 						<td><s:select list="listEntidades" cssClass="inputFormulario ui-widget" name="entidad1" id="entidad1"
-       						cssErrorClass="select-error" headerValue="Seleccione" headerKey="-1" listValue="nombre" listKey="id" onchange="mostrarAtributos(this);"></s:select></td>
+       						cssErrorClass="select-error" headerValue="Seleccione" headerKey="-1" listValue="nombre" listKey="id" onchange="cargarAtributos(this);"></s:select></td>
 				</tr>
 				<tr id="filaAtributo1" class="oculto">
 						<td class="label obligatorio"><s:text name="labelAtributo" /></td>

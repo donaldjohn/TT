@@ -8,6 +8,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.MensajeDAO;
 import mx.prisma.editor.dao.OperadorDAO;
 import mx.prisma.editor.dao.ReglaNegocioDAO;
@@ -22,7 +23,7 @@ import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
 
 public class ReglaNegocioBs {
-
+	private static final String CLAVE = "RN";
 	public static List<ReglaNegocio> consultarReglasNegocioProyecto(
 			Proyecto proyecto) {
 		List<ReglaNegocio> listMensajes = new ReglaNegocioDAO().consultarReglasNegocio(proyecto.getId());
@@ -43,6 +44,10 @@ public class ReglaNegocioBs {
 	public static void registrarReglaNegocio(ReglaNegocio model) throws Exception{
 		try {
 				validar(model);
+				model.setClave(CLAVE);
+				model.setEstadoElemento(new EstadoElementoDAO()
+						.consultarEstadoElemento(ElementoBs.getIDEstadoEdicion()));
+				model.setNombre(model.getNombre().trim());
 				new ReglaNegocioDAO().registrarReglaNegocio(model);
 		} catch (JDBCException je) {
 				if(je.getErrorCode() == 1062)

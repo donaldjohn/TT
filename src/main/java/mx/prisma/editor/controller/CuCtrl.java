@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.Set;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.bs.Referencia;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
+import mx.prisma.bs.Referencia;
+import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Atributo;
@@ -149,6 +150,9 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 							Paso auxPaso = new Paso();
 							auxPaso.setTrayectoria(auxTrayectoria);
 							auxPaso.setNumero(paso.getNumero());
+							auxPaso.setRealizaActor(paso.isRealizaActor());
+							auxPaso.setVerbo(paso.getVerbo());
+							auxPaso.setRedaccion(TokenBs.decodificarCadenasToken(paso.getRedaccion()));
 							listPasos.add(auxPaso);
 						}
 					}

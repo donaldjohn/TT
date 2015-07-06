@@ -14,8 +14,9 @@ import org.apache.struts2.interceptor.SessionAware;
 import com.opensymphony.xwork2.ModelDriven;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.bs.Referencia;
 import mx.prisma.editor.bs.CuBs;
+import mx.prisma.bs.Referencia;
+import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.bs.TrayectoriaBs;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
@@ -41,7 +42,6 @@ import mx.prisma.util.SessionManager;
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 		"actionName", "trayectorias"}),
-		//@Result(name = "direccion", type = "json")
 })
 public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven<Trayectoria>, SessionAware{
 	/**
@@ -295,6 +295,9 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 							Paso auxPaso = new Paso();
 							auxPaso.setTrayectoria(auxTrayectoria);
 							auxPaso.setNumero(paso.getNumero());
+							auxPaso.setRealizaActor(paso.isRealizaActor());
+							auxPaso.setVerbo(paso.getVerbo());
+							auxPaso.setRedaccion(TokenBs.decodificarCadenasToken(paso.getRedaccion()));
 							listPasos.add(auxPaso);
 						}
 					}

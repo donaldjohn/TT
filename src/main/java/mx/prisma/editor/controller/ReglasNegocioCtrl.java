@@ -32,7 +32,9 @@ import com.opensymphony.xwork2.ModelDriven;
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 		"actionName", "reglas-negocio"}),
-		 
+		@Result(name = "atributos", type = "json", params = {
+				"root",
+				"listAtributos" })
 })
 public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDriven<ReglaNegocio>, SessionAware{
 	/**
@@ -101,13 +103,11 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	}
 
 	public String create() {
-		System.out.println("desde create");
 		String resultado = null;
 		try {
 			if(idTipoRN == -1) {
 				throw new PRISMAValidacionException("El usuario no seleccionó el tipo de regla de negocio.", "MSG4", null, "idTipoRN");
 			}
-			System.out.println("idTipo " + idTipoRN);
 			model.setTipoReglaNegocio(ReglaNegocioBs.consultaReglaNegocio(idTipoRN));
 			
 			System.out.println("Tipo de regla de negocio");
@@ -180,10 +180,11 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		try {
 			System.out.println("idEntidad desde ctrl: " + this.idEntidad);
 			Entidad entidad = new EntidadDAO().consultarEntidad(this.idEntidad);
-			Set<Atributo> atributos = entidad.getAtributos();
-			if(atributos != null && atributos.size() != 0) {
-				jsonAtributos = JsonUtil.mapSetToJSON(entidad.getAtributos());
-			}
+			this.listAtributos = new ArrayList<Atributo>();
+			listAtributos.add(new Atributo("At1", null, "Desc1", true));
+			listAtributos.add(new Atributo("At2", null, "Desc2", true));
+			listAtributos.add(new Atributo("At3", null, "Desc3", true));
+			System.out.println("size atr: " + listAtributos.size());
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -239,6 +240,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 
 	public void setIdEntidad(int idEntidad) {
 		System.out.println("Desde ctrl");
+		this.jsonAtributos = "hola mundo";
 		this.idEntidad = idEntidad;
 	}
 

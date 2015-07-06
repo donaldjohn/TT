@@ -107,17 +107,14 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 
 	public String create() {
 		String resultado = null;
-		
-		System.out.println("redaccion " + model.getRedaccion());
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
 			//Se verifica si es parametrizado 
 			if(MensajeBs.esParametrizado(model.getRedaccion())) {
-				System.out.println("Es parametrizado");
 				
 				List<Parametro> listParametros = JsonUtil.mapJSONToArrayList(jsonParametros, Parametro.class);
 				if(listParametros.isEmpty() || this.cambioRedaccion.equals("true")) {
-					cambioRedaccion = "false";
+					cambioRedaccion = "true";
 					listParametros = MensajeBs.obtenerParametros(model.getRedaccion(), proyecto.getId());
 					this.jsonParametros = JsonUtil.mapListToJSON(listParametros);
 					return editNew();
@@ -126,36 +123,10 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 			} 
 			model.setProyecto(proyecto);
 			agregarParametros();
-			//Pruebas
-			System.out.println("PARAMETROS DEL MENSAJE");
-			/*for(MensajeParametro mPar : model.getParametros()) {
-				Parametro p = mPar.getParametro();
-				System.out.println("id: " + p.getId());
-				System.out.println("nombre: " + p.getNombre());
-				System.out.println("descripcion: " + p.getDescripcion());
-				if(p.getProyecto() != null)
-					System.out.println("nombre proyecto: " + p.getProyecto().getNombre());
-			}*/
-			//Fin pruebas
-			
+
 			//Se prepara el modelo para el registro
 			model.setProyecto(proyecto);
 			model.setEstadoElemento(ElementoBs.consultarEstadoElemento(ElementoBs.getIDEstadoEdicion()));
-			
-			/*
-			//Pruebas
-			System.out.println("INFORMACION MODEL");
-			System.out.println("---" + model.getNumero());
-			System.out.println("---" + model.getNombre());
-			System.out.println("---" + model.getDescripcion());
-			System.out.println("---" + model.getRedaccion());
-			System.out.println("---PARAMETROS");
-			for(MensajeParametro par : model.getParametros()) {
-				System.out.println("------" + par.getParametro().getNombre());
-				System.out.println("------" + par.getParametro().getDescripcion());
-			}
-			//Fin Pruebas
-			 */
 			 
 			//Se registra el mensaje
 			MensajeBs.registrarMensaje(model);
@@ -182,7 +153,6 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 	}
 
 	private void agregarParametros() throws Exception {
-		System.out.println("jsonParametros " + jsonParametros);
 		model.setParametrizado(true);
 		if(jsonParametros != null && !jsonParametros.equals("")) {
 			Set<Parametro> parametros = JsonUtil.mapJSONToSet(jsonParametros, Parametro.class);

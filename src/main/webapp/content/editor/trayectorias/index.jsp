@@ -8,6 +8,7 @@
 <title>Trayectorias</title>
 <![CDATA[
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/trayectorias/js/index.js"></script>
+	  
 ]]>
 </head>
 
@@ -37,8 +38,8 @@
 					<td align="center">
 						<s:a>
 							<img id="" class="button"
-							title="Gestionar Pasos"
-							src="${pageContext.request.contextPath}/resources/images/icons/gestionarPasos.png" /></s:a>
+							title="Modificar Trayectoria"
+							src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></s:a>
 					</td>
 				</tr>
 				</s:if>
@@ -49,8 +50,8 @@
 					<td align="center" class="trayectoriaPrincipal">
 						<s:a>
 							<img id="" class="button"
-							title="Gestionar Pasos"
-							src="${pageContext.request.contextPath}/resources/images/icons/gestionarPasos.png" /></s:a>
+							title="Modificar Trayectoria"
+							src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></s:a>
 					</td>
 				</s:else>
 			</s:iterator>

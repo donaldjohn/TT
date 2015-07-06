@@ -5,6 +5,7 @@ import java.util.Set;
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
+import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.TrayectoriaDAO;
 import mx.prisma.editor.dao.VerboDAO;
 import mx.prisma.editor.model.Paso;
@@ -15,10 +16,11 @@ import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
 
 public class TrayectoriaBs {
-
 	public static void registrarTrayectoria(Trayectoria model) throws Exception {
 		try {
 				validar(model);
+				model.setClave(model.getClave().trim());
+				
 				new TrayectoriaDAO().registrarTrayectoria(model);
 		} catch (JDBCException je) {
 				if(je.getErrorCode() == 1062)
@@ -104,7 +106,4 @@ public class TrayectoriaBs {
 		}
 		return verbo;
 	}
-	
-	
-	
 }
