@@ -32,9 +32,9 @@ import com.opensymphony.xwork2.ModelDriven;
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 		"actionName", "reglas-negocio"}),
-/*		@Result(name = "atributos", type = "json", params = {
+		@Result(name = "atributos", type = "json", params = {
 				"root",
-				"listAtributos" })*/
+				"listAtributos" })
 })
 public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDriven<ReglaNegocio>, SessionAware{
 	/**
