@@ -38,6 +38,9 @@ public class Paso implements java.io.Serializable {
 	private String redaccion;
 	private Trayectoria trayectoria;
 	private Verbo verbo;
+	private String otroVerbo;
+
+
 	private Set<ReferenciaParametro> referencias = new HashSet<ReferenciaParametro>(0);
 
 
@@ -121,6 +124,14 @@ public class Paso implements java.io.Serializable {
 		this.verbo = verbo;
 	}
 
+	@Column(name = "otroVerbo", nullable = true, length = 45)
+	public String getOtroVerbo() {
+		return otroVerbo;
+	}
+
+	public void setOtroVerbo(String otroVerbo) {
+		this.otroVerbo = otroVerbo;
+	}
 
 
 }

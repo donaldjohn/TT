@@ -71,6 +71,8 @@ INSERT INTO PRISMA.Verbo (nombre) VALUES ('Otro');
 INSERT INTO PRISMA.TipoAccion (nombre) VALUES ('Liga');
 INSERT INTO PRISMA.TipoAccion (nombre) VALUES ('Botón');
 INSERT INTO PRISMA.TipoAccion (nombre) VALUES ('Opción del menú');
+INSERT INTO PRISMA.TipoAccion (nombre) VALUES ('Otro');
+
 
 --------------------- Operadores --------------------- 
 INSERT INTO PRISMA.Operador (nombre, simbolo) VALUES ('Igual', '=');

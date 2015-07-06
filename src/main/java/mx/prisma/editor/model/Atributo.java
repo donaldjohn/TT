@@ -40,6 +40,7 @@ public class Atributo implements java.io.Serializable {
 	private Float tamanioArchivo;
 	private UnidadTamanio unidadTamanio;
 	private TipoDato tipoDato;
+	private String otroTipoDato;
 
 	public Atributo() {
 	}
@@ -151,6 +152,14 @@ public class Atributo implements java.io.Serializable {
 	}
 	public void setTamanioArchivo(Float tamanioArchivo) {
 		this.tamanioArchivo = tamanioArchivo;
+	}
+	
+	@Column(name = "otroTipoDato", nullable = true, length = 45)
+	public String getOtroTipoDato() {
+		return otroTipoDato;
+	}
+	public void setOtroTipoDato(String otroTipoDato) {
+		this.otroTipoDato = otroTipoDato;
 	}
 
 	

@@ -32,7 +32,7 @@ public class ReglaNegocio extends Elemento implements java.io.Serializable {
 	private Atributo atributoComp1;
 	private Atributo atributoComp2;
 	private Operador operadorComp;
-	
+	private String expresionRegular;
 
 	public ReglaNegocio() {
 	}
@@ -142,6 +142,15 @@ public class ReglaNegocio extends Elemento implements java.io.Serializable {
 
 	public void setOperadorComp(Operador operadorComp) {
 		this.operadorComp = operadorComp;
+	}
+
+	@Column(name = "expresionRegular", nullable = true, length = 100)
+	public String getExpresionRegular() {
+		return expresionRegular;
+	}
+
+	public void setExpresionRegular(String expresionRegular) {
+		this.expresionRegular = expresionRegular;
 	}
 
 

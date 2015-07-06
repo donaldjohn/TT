@@ -10,11 +10,10 @@ import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
 
 import com.opensymphony.xwork2.ModelDriven;
- 
+
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.editor.bs.ActorBs;
-import mx.prisma.editor.model.Actor;
-import mx.prisma.editor.model.Cardinalidad;
+import mx.prisma.editor.bs.TerminoGlosarioBs;
+import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
 import mx.prisma.util.PRISMAException;
@@ -23,24 +22,22 @@ import mx.prisma.util.SessionManager;
 
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "actores" }), })
-public class ActoresCtrl extends ActionSupportPRISMA implements
-		ModelDriven<Actor>, SessionAware {
+		"actionName", "glosario" }), })
+public class GlosarioCtrl extends ActionSupportPRISMA implements
+		ModelDriven<TerminoGlosario>, SessionAware {
 	/** 
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private Map<String, Object> userSession;
 	private Proyecto proyecto;
-	private Actor model;
-	private List<Actor> listActores;
-	private List<Cardinalidad> listCardinalidad;
-	private Integer cardinalidadSeleccionada;
+	private TerminoGlosario model;
+	private List<TerminoGlosario> listTerminosGlosario;
 
 	public String index() throws Exception {
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
-			listActores = ActorBs.consultarActoresProyecto(proyecto);
+			listTerminosGlosario = TerminoGlosarioBs.consultarTerminosGlosarioProyecto(proyecto);
 
 			@SuppressWarnings("unchecked")
 			Collection<String> msjs = (Collection<String>) SessionManager
@@ -61,7 +58,6 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 		String resultado = null;
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
-			buscaCatalogos();
 			resultado = EDITNEW;
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
@@ -75,25 +71,16 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 		return resultado;
 	}
 
-	private void buscaCatalogos() {
-		listCardinalidad = ActorBs.consultarCardinalidades();
-
-		if (listCardinalidad == null || listCardinalidad.isEmpty()) {
-			throw new PRISMAException(
-					"No hay cardinalidades para registrar el atributo.", "MSG25");
-		}		
-	}
-
 	public String create() throws Exception {
 		String resultado = null;
 		try {
 			Proyecto proyecto = SessionManager.consultarProyectoActivo();
 			model.setProyecto(proyecto);
-			ActorBs.registrarActor(model);
+			TerminoGlosarioBs.registrarTerminoGlosario(model);
 
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",
-					"Actor", "registrado" }));
+					"Término", "registrado" }));
 
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAValidacionException pve) {
@@ -111,11 +98,11 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	}
 
 
-	public Actor getModel() {
-		return (model == null) ? model = new Actor() : model;
+	public TerminoGlosario getModel() {
+		return (model == null) ? model = new TerminoGlosario() : model;
 	}
 
-	public void setModel(Actor model) {
+	public void setModel(TerminoGlosario model) {
 		this.model = model;
 	}
 
@@ -141,30 +128,14 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 		this.proyecto = proyecto;
 	}
 
-	public List<Actor> getListActores() {
-		return listActores;
+	public List<TerminoGlosario> getListTerminosGlosario() {
+		return listTerminosGlosario;
 	}
 
-	public void setListActores(List<Actor> listActores) {
-		this.listActores = listActores;
+	public void setListTerminosGlosario(List<TerminoGlosario> listTerminosGlosario) {
+		this.listTerminosGlosario = listTerminosGlosario;
 	}
 
-	public List<Cardinalidad> getListCardinalidad() {
-		return listCardinalidad;
-	}
-
-	public void setListCardinalidad(List<Cardinalidad> listCardinalidad) {
-		this.listCardinalidad = listCardinalidad;
-	}
-
-	public Integer getCardinalidadSeleccionada() {
-		return cardinalidadSeleccionada;
-	}
-
-	public void setCardinalidadSeleccionada(Integer cardinalidadSeleccionada) {
-		this.cardinalidadSeleccionada = cardinalidadSeleccionada;
-	}
-	
 	
 
 	
