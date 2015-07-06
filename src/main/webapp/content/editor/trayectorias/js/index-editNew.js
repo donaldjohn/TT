@@ -4,6 +4,16 @@ var contextPath = "prisma";
 $(document).ready(function() {
 	contextPath = $("#rutaContexto").val();
 	$('table.tablaGestion').DataTable();
+	
+	var verbo = document.getElementById("paso.verbo");
+	var verboTexto = verbo.options[verbo.selectedIndex].text;
+	
+	if (verboTexto == 'Otro' || verboTexto == 'Otra') {
+		document.getElementById("otroVerbo").style.display = '';
+	} else {
+		document.getElementById("otroVerbo").style.display = 'none';
+	}
+	
 	verificarAlternativaPrincipal();
 	ocultarColumnas("tablaPaso");
 	token.cargarListasToken();
@@ -17,6 +27,7 @@ $(document).ready(function() {
 						parsedJson,
 						function(i, item) {
 							var realizaImg;
+							var verbo;
 					    	//Se agrega la imagen referente a quien realiza el paso
 					    	if(item.realizaActor == true) {
 					    		realizaImg = "<img src='" + window.contextPath + 
@@ -25,11 +36,17 @@ $(document).ready(function() {
 					    		realizaImg = "<img src='" + window.contextPath + 
 								"/resources/images/icons/uc.png' title='Sistema' style='vertical-align: middle;'/>";
 					    	}
+					    	
+					    	if (item.verbo.nombre == 'Otro') {
+					    		verbo = item.otroVerbo;
+					    	} else {
+					    		verbo = tem.verbo.nombre;
+					    	}
 							var paso = [
 								item.numero,
-								realizaImg + " " + item.verbo.nombre + " " + item.redaccion,
+								realizaImg + " " + verbo + " " + item.redaccion,
 								item.realizaActor,
-								item.verbo.nombre, 
+								verbo, 
 								item.redaccion,
 								"<center>" +
 									"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"up\");' button='true'>" +
@@ -77,9 +94,11 @@ function registrarPaso(){
 	var realiza = document.forms["frmPasoName"]["paso.realizaActor"].value;
 	var redaccion = document.forms["frmPasoName"]["paso.redaccion"].value;
 	var verbo = document.forms["frmPasoName"]["paso.verbo"].value;
+	var otroVerbo = document.forms["frmPasoName"]["paso.otroVerbo"].value;
+	console.log(verbo);
 	
 	var up = "up";
-    if (esValidoPaso("tablaPaso", realiza, verbo, redaccion)) {
+    if (esValidoPaso("tablaPaso", realiza, verbo, otroVerbo ,redaccion)) {
     	var realizaImg;
     	//Se agrega la imagen referente a quien realiza el paso
     	if(realiza == "Actor") {
@@ -91,12 +110,16 @@ function registrarPaso(){
     		realizaImg = "<img src='" + window.contextPath + 
 			"/resources/images/icons/uc.png' title='Sistema' style='vertical-align: middle;'/>";
     	}
+    	
+
+    	
     	//Se construye la fila 
     	var row = [
     	            numero,
     	            realizaImg + " " + verbo + " " +redaccion,
     	            realizaActor,
     	            verbo, 
+    	            otroVerbo,
     	            redaccion,
 					"<center>" +
 						"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"up\");' button='true'>" +
@@ -117,7 +140,7 @@ function registrarPaso(){
     	//Se limpian los campos
     	document.getElementById("inputor").value = "";
     	document.getElementById("realiza").selectedIndex = 0;
-    	document.getElementById("verbo").selectedIndex = 0;
+    	document.getElementById("paso.verbo").selectedIndex = 0;
     	
     	//Se cierra la emergente
     	$('#pasoDialog').dialog('close');
@@ -130,7 +153,7 @@ function cancelarRegistrarPaso() {
 	//Se limpian los campos
 	document.getElementById("inputor").value = "";
 	document.getElementById("realiza").selectedIndex = 0;
-	document.getElementById("verbo").selectedIndex = 0;
+	document.getElementById("paso.verbo").selectedIndex = 0;
 	
 	//Se cierra la emergente
 	$('#pasoDialog').dialog('close');
@@ -146,11 +169,19 @@ function agregarMensaje(mensaje) {
 /*
  * Verifica que la redacción sea válida
  */
-function esValidoPaso(idTabla, realiza, verbo, redaccion) {
-	if(vaciaONula(redaccion) && realiza != -1 && verbo != -1) {
+function esValidoPaso(idTabla, realiza, verbo, otroVerbo, redaccion) {
+	console.log(realiza);
+	if(vaciaONula(redaccion) || realiza == -1 || verbo == -1) {
 		agregarMensaje("Agregue todos los campos obligatorios.");
 		return false;
 	} 
+	
+	if (verbo == 'Otro') {
+		if (vaciaONula(otroVerbo)) {
+			agregarMensaje("Agregue todos los campos obligatorios.");
+			return false;			
+		}
+	}
 	console.log("longitud de redaccione " + redaccion.length);
 	if(redaccion.length > 999) {
 		agregarMensaje("Ingrese menos de 999 caracteres.");
@@ -176,7 +207,7 @@ function tablaToJson(idTable) {
 	
 	for (var i = 0; i < table.fnSettings().fnRecordsTotal(); i++) {
 		arregloPasos.push(new Paso(table.fnGetData(i, 0), table.fnGetData(i, 2), 
-						table.fnGetData(i, 3), table.fnGetData(i, 4)));
+						table.fnGetData(i, 3), table.fnGetData(i, 4), table.fnGetData(i, 5)));
 	}
 	var jsonPasos = JSON.stringify(arregloPasos);
 	document.getElementById("jsonPasosTabla").value = jsonPasos;
@@ -191,6 +222,8 @@ function ocultarColumnas(tabla) {
 	dataTable.api().column(2).visible(false);
 	dataTable.api().column(3).visible(false);
 	dataTable.api().column(4).visible(false);
+	dataTable.api().column(5).visible(false);
+
 }
 
 function verificarAlternativaPrincipal() {
@@ -201,4 +234,15 @@ function verificarAlternativaPrincipal() {
 		select.disabled = true;
 		document.getElementById("textoAyudaPA").innerHTML = "Solamente puede registrar Trayectorias alternativas, debido a que ya existe una Trayectoria principal.";
 	} 
+}
+
+function verificarOtro() {
+	var verbo = document.getElementById("paso.verbo");
+	var verboTexto = verbo.options[verbo.selectedIndex].text;
+
+	if (verboTexto == 'Otro' || verboTexto == 'Otra') {
+		document.getElementById("otroVerbo").style.display = '';
+	} else {
+		document.getElementById("otroVerbo").style.display = 'none';
+	}
 }

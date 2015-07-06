@@ -58,7 +58,7 @@
 				
 				<tr style="display: none;" id = "otro">
 				<td class="label obligatorio"><s:text name="labelOtro" /></td>
-					<td><s:textfield name="model.otraCardinalidad" id="otraCardinalidad" maxlength="50"
+					<td><s:textfield name="model.otraCardinalidad" id="otraCardinalidad" maxlength="10"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
 						<s:fielderror fieldName = "model.otraCardinalidad" cssClass="error"
 							theme="jquery" /></td>

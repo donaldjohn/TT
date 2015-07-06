@@ -34,10 +34,11 @@ function Trayectoria(clave) {
 /*
  * Constructor del objeto Paso
  */
-function Paso(numero, realizaActor, verbo, redaccion) {
+function Paso(numero, realizaActor, verbo, otroVerbo, redaccion) {
 	this.numero = numero;
 	this.realizaActor = realizaActor;
 	this.verbo = new Verbo(verbo);
+	this.otroVerbo = otroVerbo;
 	this.redaccion = redaccion;
 }
 
