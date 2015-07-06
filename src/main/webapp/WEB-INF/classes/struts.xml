@@ -32,7 +32,7 @@
 		correspondiente -->
 	<constant name="struts.convention.action.mapAllMatches" value="true" />
 	
-	<constant name="struts.convention.default.parent.package" value="prisma"/>
+	<constant name="struts.convention.default.parent.package" value="rest-default"/>
 	
 	<!-- Ruta donde buscara los resultados -->
 	<constant name="struts.convention.result.path" value="/content" />

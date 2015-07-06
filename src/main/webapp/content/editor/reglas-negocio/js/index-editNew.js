@@ -130,11 +130,10 @@ function mostrarListaAtributos(json) {
 				.each(
 						json,
 						function(i, item) {
-							console.log("Elemento rec " + i);
-							console.log("item: " + item);
 							var option = document.createElement("option");
 							option.text = item.nombre;
 							option.index = i;
+							option.value = item.id;
 							atributos.add(option);
 						});
 	}

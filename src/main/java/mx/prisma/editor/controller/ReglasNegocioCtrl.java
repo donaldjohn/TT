@@ -32,9 +32,9 @@ import com.opensymphony.xwork2.ModelDriven;
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 		"actionName", "reglas-negocio"}),
-		@Result(name = "atributos", type = "json", params = {
+/*		@Result(name = "atributos", type = "json", params = {
 				"root",
-				"listAtributos" })
+				"listAtributos" })*/
 })
 public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDriven<ReglaNegocio>, SessionAware{
 	/**
@@ -180,10 +180,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		try {
 			System.out.println("idEntidad desde ctrl: " + this.idEntidad);
 			Entidad entidad = new EntidadDAO().consultarEntidad(this.idEntidad);
-			this.listAtributos = new ArrayList<Atributo>();
-			listAtributos.add(new Atributo("At1", null, "Desc1", true));
-			listAtributos.add(new Atributo("At2", null, "Desc2", true));
-			listAtributos.add(new Atributo("At3", null, "Desc3", true));
+			//this.listAtributos = entidad.getAtributos().toArray();
 			System.out.println("size atr: " + listAtributos.size());
 		} catch(Exception e) {
 			e.printStackTrace();
