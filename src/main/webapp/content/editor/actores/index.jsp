@@ -54,7 +54,7 @@
 	<br />
 	<div align="center">
 		<button class="boton" formmethod="post"
-			onclick="location.href='${pageContext.request.contextPath}/entidades/new'">
+			onclick="location.href='${pageContext.request.contextPath}/actores/new'">
 			<s:text name="Registrar"></s:text>
 		</button>
 	</div>

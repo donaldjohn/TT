@@ -9,7 +9,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.editor.bs.Referencia.TipoSeccion;
+import mx.prisma.bs.Referencia.TipoSeccion;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Modulo;

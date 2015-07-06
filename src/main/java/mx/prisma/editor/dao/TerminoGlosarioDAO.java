@@ -1,8 +1,8 @@
 package mx.prisma.editor.dao;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.editor.bs.Referencia;
-import mx.prisma.editor.bs.Referencia.TipoReferencia;
+import mx.prisma.bs.Referencia;
+import mx.prisma.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.model.TerminoGlosario;
 
 public class TerminoGlosarioDAO extends ElementoDAO{

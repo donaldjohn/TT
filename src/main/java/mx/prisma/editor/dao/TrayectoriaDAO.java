@@ -3,8 +3,8 @@ package mx.prisma.editor.dao;
 
 import java.util.Set;
 
+import mx.prisma.bs.Referencia.TipoSeccion;
 import mx.prisma.editor.bs.TokenBs;
-import mx.prisma.editor.bs.Referencia.TipoSeccion;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.util.HibernateUtil;

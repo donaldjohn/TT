@@ -9,8 +9,8 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.editor.bs.Referencia;
-import mx.prisma.editor.bs.Referencia.TipoReferencia;
+import mx.prisma.bs.Referencia;
+import mx.prisma.bs.Referencia.TipoReferencia;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.util.HibernateUtil;
 

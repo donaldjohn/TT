@@ -8,7 +8,7 @@ import java.util.Set;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
-import mx.prisma.editor.bs.Referencia;
+import mx.prisma.bs.Referencia;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;

@@ -1,16 +1,29 @@
-package mx.prisma.editor.bs;
+package mx.prisma.bs;
 
+import mx.prisma.admin.model.EstadoProyecto;
+import mx.prisma.admin.model.Rol;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Atributo;
+import mx.prisma.editor.model.Cardinalidad;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Entidad;
+import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Mensaje;
+import mx.prisma.editor.model.Operador;
 import mx.prisma.editor.model.Pantalla;
+import mx.prisma.editor.model.Parametro;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TerminoGlosario;
+import mx.prisma.editor.model.TipoAccion;
+import mx.prisma.editor.model.TipoComparacion;
+import mx.prisma.editor.model.TipoDato;
+import mx.prisma.editor.model.TipoParametro;
+import mx.prisma.editor.model.TipoReglaNegocio;
 import mx.prisma.editor.model.Trayectoria;
+import mx.prisma.editor.model.UnidadTamanio;
+import mx.prisma.editor.model.Verbo;
 
 public class Referencia {
 	
@@ -56,6 +69,14 @@ public class Referencia {
 		
 		/* Pasos */
 		PASO_PASOS, PASO_POSTPRECONDICIONES, PASO_EXTENSIONES
+	}
+	
+	public enum TipoCatalogo {
+		VERBO, TIPOPARAMETRO, TIPODATO, TIPOACCION, CARDINALIDAD,
+		
+		UNIDADTAMANIO, OPERADOR, TIPOCOMPARACION, TIPOREGLANEGOCIO,
+		
+		PARAMETRO, ESTADOELEMENTO, ESTADOPROYECTO, ROL
 	}
 
 	
@@ -328,5 +349,42 @@ public class Referencia {
 		
 		}
 		return null;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public static Class getClaseCatalogo (TipoCatalogo tipoCatalogo) {
+		switch(tipoCatalogo){
+		case CARDINALIDAD:
+			return Cardinalidad.class;
+		case ESTADOELEMENTO:
+			return EstadoElemento.class;
+		case ESTADOPROYECTO:
+			return EstadoProyecto.class;
+		case OPERADOR:
+			return Operador.class;
+		case PARAMETRO:
+			return Parametro.class;
+		case ROL:
+			return Rol.class;
+		case TIPOACCION:
+			return TipoAccion.class;
+		case TIPOCOMPARACION:
+			return TipoComparacion.class;
+		case TIPODATO:
+			return TipoDato.class;
+		case TIPOPARAMETRO:
+			return TipoParametro.class;
+		case TIPOREGLANEGOCIO:
+			return TipoReglaNegocio.class;
+		case UNIDADTAMANIO:
+			return UnidadTamanio.class;
+		case VERBO:
+			return Verbo.class;
+		default:
+			break;
+			
+		}
+		return null;
+
 	}
 }

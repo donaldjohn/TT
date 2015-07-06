@@ -15,7 +15,7 @@ import com.opensymphony.xwork2.ModelDriven;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.CuBs;
-import mx.prisma.editor.bs.Referencia;
+import mx.prisma.bs.Referencia;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.bs.TrayectoriaBs;
 import mx.prisma.editor.model.Accion;
