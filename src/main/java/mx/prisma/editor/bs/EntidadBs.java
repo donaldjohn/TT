@@ -148,10 +148,16 @@ public class EntidadBs {
 					}
 				} else if (!atributo.getTipoDato().getNombre()
 						.equals("Booleano")
-						&& !atributo.getTipoDato().getNombre().equals("Fecha")) {
+						&& !atributo.getTipoDato().getNombre().equals("Fecha") && !atributo.getTipoDato().getNombre().equals("Otro")) {
 					if (Validador.esNulo(atributo.getLongitud())) {
 						throw new PRISMAValidacionException(
 								"El usuario no ingresó la longitud.", "MSG4",
+								null, "model.atributos");
+					}
+				} else if (atributo.getTipoDato().getNombre().equals("Otro")) {
+					if (Validador.esNuloOVacio(atributo.getOtroTipoDato())) {
+						throw new PRISMAValidacionException(
+								"El usuario no especificó el tipo de dato.", "MSG4",
 								null, "model.atributos");
 					}
 				}

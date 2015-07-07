@@ -59,12 +59,23 @@ INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Otro');
 INSERT INTO PRISMA.Verbo (nombre) VALUES ('Solicita');
 INSERT INTO PRISMA.Verbo (nombre) VALUES ('Busca');
 INSERT INTO PRISMA.Verbo (nombre) VALUES ('Muestra');
+INSERT INTO PRISMA.Verbo (nombre) VALUES ('Ingresa');
+INSERT INTO PRISMA.Verbo (nombre) VALUES ('Verifica');
+INSERT INTO PRISMA.Verbo (nombre) VALUES ('Oprime');
+INSERT INTO PRISMA.Verbo (nombre) VALUES ('Registra');
+INSERT INTO PRISMA.Verbo (nombre) VALUES ('Actualiza');
+INSERT INTO PRISMA.Verbo (nombre) VALUES ('Modifica');
+INSERT INTO PRISMA.Verbo (nombre) VALUES ('Elimina');
+INSERT INTO PRISMA.Verbo (nombre) VALUES ('Cambia');
+INSERT INTO PRISMA.Verbo (nombre) VALUES ('Habilita');
+INSERT INTO PRISMA.Verbo (nombre) VALUES ('Marca');
 INSERT INTO PRISMA.Verbo (nombre) VALUES ('Selecciona');
 INSERT INTO PRISMA.Verbo (nombre) VALUES ('Desactiva');
 INSERT INTO PRISMA.Verbo (nombre) VALUES ('Acerca');
 INSERT INTO PRISMA.Verbo (nombre) VALUES ('Arrastra');
 INSERT INTO PRISMA.Verbo (nombre) VALUES ('Calcula');
 INSERT INTO PRISMA.Verbo (nombre) VALUES ('Revisa');
+INSERT INTO PRISMA.Verbo (nombre) VALUES ('Oprime');
 INSERT INTO PRISMA.Verbo (nombre) VALUES ('Otro');
 
 

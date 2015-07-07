@@ -27,7 +27,7 @@ $(document).ready(function() {
 						parsedJson,
 						function(i, item) {
 							var realizaImg;
-							var verbo;
+							var verboAux;
 					    	//Se agrega la imagen referente a quien realiza el paso
 					    	if(item.realizaActor == true) {
 					    		realizaImg = "<img src='" + window.contextPath + 
@@ -38,15 +38,17 @@ $(document).ready(function() {
 					    	}
 					    	
 					    	if (item.verbo.nombre == 'Otro') {
-					    		verbo = item.otroVerbo;
+					    		verboAux = item.otroVerbo;
 					    	} else {
-					    		verbo = tem.verbo.nombre;
+					    		verboAux = item.verbo.nombre;
 					    	}
+					    	
 							var paso = [
 								item.numero,
-								realizaImg + " " + verbo + " " + item.redaccion,
+								realizaImg + " " + verboAux + " " + item.redaccion,
 								item.realizaActor,
-								verbo, 
+								item.verbo.nombre, 
+								item.otroVerbo,
 								item.redaccion,
 								"<center>" +
 									"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"up\");' button='true'>" +
@@ -95,8 +97,7 @@ function registrarPaso(){
 	var redaccion = document.forms["frmPasoName"]["paso.redaccion"].value;
 	var verbo = document.forms["frmPasoName"]["paso.verbo"].value;
 	var otroVerbo = document.forms["frmPasoName"]["paso.otroVerbo"].value;
-	console.log(verbo);
-	
+	var verboAux;
 	var up = "up";
     if (esValidoPaso("tablaPaso", realiza, verbo, otroVerbo ,redaccion)) {
     	var realizaImg;
@@ -111,12 +112,15 @@ function registrarPaso(){
 			"/resources/images/icons/uc.png' title='Sistema' style='vertical-align: middle;'/>";
     	}
     	
-
-    	
     	//Se construye la fila 
+    	if (verbo == 'Otro') {
+    		verboAux = otroVerbo;
+    	} else {
+    		verboAux = verbo;
+    	}
     	var row = [
     	            numero,
-    	            realizaImg + " " + verbo + " " +redaccion,
+    	            realizaImg + " " + verboAux + " " +redaccion,
     	            realizaActor,
     	            verbo, 
     	            otroVerbo,
@@ -204,7 +208,6 @@ function prepararEnvio() {
 function tablaToJson(idTable) {
 	var table = $("#" + idTable).dataTable();
 	var arregloPasos = [];
-	
 	for (var i = 0; i < table.fnSettings().fnRecordsTotal(); i++) {
 		arregloPasos.push(new Paso(table.fnGetData(i, 0), table.fnGetData(i, 2), 
 						table.fnGetData(i, 3), table.fnGetData(i, 4), table.fnGetData(i, 5)));

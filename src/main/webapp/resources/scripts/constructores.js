@@ -67,7 +67,7 @@ function Actor(nombre) {
 /*
  * Constructor del objeto Atributo
  */
-function Atributo(nombre, descripcion, obligatorio, longitud, tipoDato, formatoArchivo, tamanioArchivo, unidadTamanio) {
+function Atributo(nombre, descripcion, obligatorio, longitud, tipoDato, otroTipoDato, formatoArchivo, tamanioArchivo, unidadTamanio) {
     this.nombre = nombre;
     this.descripcion = descripcion;
     this.obligatorio = obligatorio;
@@ -76,6 +76,7 @@ function Atributo(nombre, descripcion, obligatorio, longitud, tipoDato, formatoA
     this.formatoArchivo = formatoArchivo;
     this.tamanioArchivo = tamanioArchivo;
     this.unidadTamanio = new UnidadTamanio(unidadTamanio);
+    this.otroTipoDato = otroTipoDato; 
 }
 
 function TipoDato(nombre) {
