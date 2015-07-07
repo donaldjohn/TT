@@ -58,10 +58,26 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	private List<Entidad> listEntidades;
 	private List<Atributo> listAtributos;
 	private List<Operador> listOperadores;
-	private int idEntidadUnicidad;
-	private int idAtributoUnicidad;
+	
 	private int idAtributo;
 	private int idEntidad;
+	
+	private int idEntidadUnicidad;
+	private int idAtributoUnicidad;
+	
+	private int idAtributoFormato;
+	
+	private int idAtributoFI;
+	private int idAtributoFT;
+	
+	private int idAtributo1;
+	private int idAtributo2;
+	private int idOperador;
+	
+	
+	
+	
+	
 	public String index() {
 		try {
 			//Se consulta el proyecto activo
@@ -130,23 +146,20 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 			System.out.println("---"+model.getNombre());
 			System.out.println("---"+model.getDescripcion());
 			System.out.println("---"+model.getRedaccion());
-			System.out.println("---"+idEntidadUnicidad);
-			System.out.println("---"+idAtributoUnicidad);
+			System.out.println("---idA1 "+this.idAtributo1);
+			System.out.println("---idA2 "+this.idAtributo2);
+			System.out.println("---idOp "+this.idOperador);
 			//Fin pruebas
 			
 			String tipoRN = model.getTipoReglaNegocio().getNombre();
 			if(tipoRN.equals(ReglaNegocioBs.getCompatributos())) {
-				System.out.println("2");
+				model = ReglaNegocioBs.agregarElementosComparacion(model, idAtributo1, idOperador, idAtributo2);
 			} else if(tipoRN.equals(ReglaNegocioBs.getUnicidad())) {
-				System.out.println("3");
 				model = ReglaNegocioBs.agregarElementosUnicidad(model, idEntidadUnicidad, idAtributoUnicidad);
-			} if(tipoRN.equals(ReglaNegocioBs.getIntervalofech())) {
-				System.out.println("9");
-				
 			} else if(tipoRN.equals(ReglaNegocioBs.getFormatocampo())) {
+				//Falta setear el valor del atributo del campo correcto
 				System.out.println("10");
 			} else if(tipoRN.equals("-1")){
-				//Validaciones del tipo de RN
 				throw new PRISMAValidacionException("El usuario no seleccionó el tipo de regla de negocio.", "MSG13");
 			}
 			//Se prepara el modelo para el registro 
@@ -268,7 +281,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	}
 
 	private void buscaCatalogos() { 
-		listTipoRN = ReglaNegocioBs.consultarTipoRN();
+		listTipoRN = ReglaNegocioBs.consultarTipoRNDisponibles(proyecto);
 		listOperadores = new ArrayList<Operador>();
 	}
 
@@ -358,22 +371,6 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		this.listOperadores = listOperadores;
 	}
 
-	public int getIdEntidad1() {
-		return idEntidadUnicidad;
-	}
-
-	public int getIdAtributo1() {
-		return idAtributoUnicidad;
-	}
-
-	public void setIdEntidad1(int idEntidad1) {
-		this.idEntidadUnicidad = idEntidad1;
-	}
-
-	public void setIdAtributo1(int idAtributo1) {
-		this.idAtributoUnicidad = idAtributo1;
-	}
-
 	public int getIdEntidadUnicidad() {
 		return idEntidadUnicidad;
 	}
@@ -396,6 +393,54 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 
 	public void setIdAtributo(int idAtributo) {
 		this.idAtributo = idAtributo;
+	}
+
+	public int getIdAtributoFormato() {
+		return idAtributoFormato;
+	}
+
+	public void setIdAtributoFormato(int idAtributoFormato) {
+		this.idAtributoFormato = idAtributoFormato;
+	}
+
+	public int getIdAtributoFI() {
+		return idAtributoFI;
+	}
+
+	public void setIdAtributoFI(int idAtributoFI) {
+		this.idAtributoFI = idAtributoFI;
+	}
+
+	public int getIdAtributoFT() {
+		return idAtributoFT;
+	}
+
+	public void setIdAtributoFT(int idAtributoFT) {
+		this.idAtributoFT = idAtributoFT;
+	}
+
+	public int getIdAtributo2() {
+		return idAtributo2;
+	}
+
+	public void setIdAtributo2(int idAtributo2) {
+		this.idAtributo2 = idAtributo2;
+	}
+
+	public int getIdOperador() {
+		return idOperador;
+	}
+
+	public void setIdOperador(int idOperador) {
+		this.idOperador = idOperador;
+	}
+
+	public int getIdAtributo1() {
+		return idAtributo1;
+	}
+
+	public void setIdAtributo1(int idAtributo1) {
+		this.idAtributo1 = idAtributo1;
 	}
 
 	

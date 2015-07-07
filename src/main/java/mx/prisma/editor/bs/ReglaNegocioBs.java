@@ -28,25 +28,27 @@ import mx.prisma.util.Validador;
 
 public class ReglaNegocioBs {
 	private static final String CLAVE = "RN";
+	//Globales (una por sistema)
 	private static final String VERFCATALOGOS = "Verificación de catálogos";
-	private static final String COMPATRIBUTOS = "Comparación de atributos";
-	private static final String UNICIDAD = "Unicidad de parámetros";
 	private static final String OBLIGATORIOS = "Datos obligatorios";
 	private static final String LONGITUD = "Longitud correcta";
 	private static final String DATOCORRECTO = "Tipo de dato correcto";
 	private static final String FORMATOARCH = "Formato de archivos";
 	private static final String TAMANOARCH = "Tamaño de archivos";
+	//Particulares
 	private static final String INTERVALOFECH = "Intervalo de fechas correcto";
 	private static final String FORMATOCAMPO = "Formato correcto";
+	private static final String COMPATRIBUTOS = "Comparación de atributos";
+	private static final String UNICIDAD = "Unicidad de parámetros";
 	private static final String OTRO = "Otro";
 	
 	public static List<ReglaNegocio> consultarReglasNegocioProyecto(
 			Proyecto proyecto) {
-		List<ReglaNegocio> listMensajes = new ReglaNegocioDAO().consultarReglasNegocio(proyecto.getId());
-		if(listMensajes == null) {
+		List<ReglaNegocio> listReglasNegocio = new ReglaNegocioDAO().consultarReglasNegocio(proyecto.getId());
+		if(listReglasNegocio == null) {
 			throw new PRISMAException("No se pueden consultar las reglas de negocio.", "MSG13");
 		}
-		return listMensajes;
+		return listReglasNegocio;
 	}
 
 	public static List<TipoReglaNegocio> consultarTipoRN() {
@@ -304,5 +306,62 @@ public class ReglaNegocioBs {
 			}
 		}
 		return listAtributos;
+	}
+
+	public static List<TipoReglaNegocio> consultarTipoRNDisponibles(
+			Proyecto proyecto) {
+		List<TipoReglaNegocio> tiposRNAux = consultarTipoRN();
+		List<TipoReglaNegocio> tiposRN = new ArrayList<TipoReglaNegocio>();
+		for(TipoReglaNegocio trn : tiposRNAux) {
+			if(esGlobal(trn)) {
+				System.out.println("Es global");
+				if(!existeTipoRN(proyecto, trn)) {
+					tiposRN.add(trn);
+				}
+			} else {
+				System.out.println("No es global");
+				tiposRN.add(trn);
+			}
+			
+		}
+		return tiposRN;
+	}
+
+	private static boolean existeTipoRN(Proyecto proyecto, TipoReglaNegocio trn) {
+		List<ReglaNegocio> listReglasNegocio = new ReglaNegocioDAO().consultarReglasNegocio(proyecto.getId());
+		for(ReglaNegocio rn : listReglasNegocio) {
+			if(rn.getTipoReglaNegocio().getNombre().equals(trn.getNombre())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean esGlobal(TipoReglaNegocio trn) {
+		String nombreTipoRN = trn.getNombre();
+		return nombreTipoRN.equals(VERFCATALOGOS) ||
+				nombreTipoRN.equals(OBLIGATORIOS) ||
+				nombreTipoRN.equals(LONGITUD) ||
+				nombreTipoRN.equals(DATOCORRECTO) ||
+				nombreTipoRN.equals(FORMATOARCH) ||
+				nombreTipoRN.equals(TAMANOARCH);
+		
+	}
+
+
+	public static ReglaNegocio agregarElementosComparacion(ReglaNegocio model,
+			int idAtributo1, int idOperador, int idAtributo2) {
+		model.setAtributoComp1(EntidadBs.consultarAtributo(idAtributo1));
+		model.setOperadorComp(consultarOperador(idOperador));
+		model.setAtributoComp2(EntidadBs.consultarAtributo(idAtributo2));
+		return model;
+	}
+
+	private static Operador consultarOperador(int idOperador) {
+		Operador operador = new OperadorDAO().consultarOperador(idOperador);
+		if(operador == null) {
+			throw new PRISMAException("No se puede consultar el operador.", "MSG25");
+		}
+		return operador;
 	}
 }

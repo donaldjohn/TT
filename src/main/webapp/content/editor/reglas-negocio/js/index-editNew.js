@@ -29,6 +29,10 @@ function mostrarCamposTipoRN() {
 	var select = document.getElementById("idTipoRN");
 	var tipoRN = select.options[select.selectedIndex].text;
 	//Se ocultan los todos los campos
+	document.getElementById("filaEntidadFormato").className = "oculto";
+	document.getElementById("filaAtributoFormato").className = "oculto";
+	document.getElementById("filaExpresionRegular").className = "oculto";
+	
 	document.getElementById("filaEntidadUnicidad").className = "oculto";
 	document.getElementById("filaAtributoUnicidad").className = "oculto";
 	
@@ -45,12 +49,14 @@ function mostrarCamposTipoRN() {
 	
 	document.getElementById("filaTextoAyudaInterF").className = "oculto";
 	document.getElementById("filaTextoAyudaTipoRN").className = "oculto";
+	
 	limpiarCampos();
 	var instrucciones;
 	if(tipoRN == "Verificación de catálogos"){
 		console.log("1");
 		document.getElementById("instrucciones").innerHTML = "Indica que el sistema deberá verificar la existencia de los catálogos para realizar alguna operación.";
 		document.getElementById("filaTextoAyudaTipoRN").className = "";
+		
 	} else if(tipoRN == "Comparación de atributos") {		
 		console.log("2");
 		cargarEntidades("entidad1");
@@ -62,6 +68,7 @@ function mostrarCamposTipoRN() {
 		document.getElementById("filaAtributo1").className = "";
 		document.getElementById("filaEntidad2").className = "";
 		document.getElementById("filaAtributo2").className = "";
+		
 	} else if(tipoRN == "Unicidad de parámetros"){
 		console.log("3");
 		cargarEntidades("entidadUnicidad");
@@ -69,26 +76,32 @@ function mostrarCamposTipoRN() {
 		document.getElementById("filaTextoAyudaTipoRN").className = "";
 		document.getElementById("filaEntidadUnicidad").className = "";
 		document.getElementById("filaAtributoUnicidad").className = "";
+		
 	} else if(tipoRN == "Datos obligatorios"){
 		console.log("4");
 		document.getElementById("instrucciones").innerHTML = "Indica que todos los datos marcados como obligatorios deberán ser ingresados por el usuario.";
 		document.getElementById("filaTextoAyudaTipoRN").className = "";
+		
 	} else if(tipoRN == "Longitud correcta"){
 		document.getElementById("instrucciones").innerHTML = "Indica que la longitud máxima de los atributos no puede ser rebasada.";
 		document.getElementById("filaTextoAyudaTipoRN").className = "";
 		console.log("5");
+		
 	} else if(tipoRN == "Tipo de dato correcto"){
 		document.getElementById("instrucciones").innerHTML = "Indica que todos los campos que ingrese el usuario deberán cumplir con el tipo de dato indicado.";
 		document.getElementById("filaTextoAyudaTipoRN").className = "";
 		console.log("6");
+		
 	} else if(tipoRN == "Formato de archivos"){
 		document.getElementById("instrucciones").innerHTML = "Indica que los archivos proporcionados por el usuario deberán cumplir con el formato especificado.";
 		document.getElementById("filaTextoAyudaTipoRN").className = "";
 		console.log("7");
+		
 	} else if(tipoRN == "Tamaño de archivos"){
 		document.getElementById("instrucciones").innerHTML = "Indica que los archivos que proporcione el usuario no podrán rebasar el tamaño máximo especificado.";
 		document.getElementById("filaTextoAyudaTipoRN").className = "";
 		console.log("8");
+		
 	} else if(tipoRN == "Intervalo de fechas correcto"){
 		console.log("9");
 		cargarEntidadesFecha();
@@ -99,10 +112,16 @@ function mostrarCamposTipoRN() {
 		document.getElementById("filaAtributoFI").className = "";
 		document.getElementById("filaEntidadFT").className = "";
 		document.getElementById("filaAtributoFT").className = "";
+		
 	} else if(tipoRN == "Formato correcto"){
+		cargarEntidades("entidadFormato");
 		document.getElementById("instrucciones").innerHTML = "Indica que los datos proporcionados deben cumplir con la expresión regular indicada.";
 		document.getElementById("filaTextoAyudaTipoRN").className = "";
+		document.getElementById("filaEntidadFormato").className = "";
+		document.getElementById("filaAtributoFormato").className = "";
+		document.getElementById("filaExpresionRegular").className = "";
 		console.log("10");
+		
 	} else if(tipoRN == "Otro"){
 		console.log("11");
 	} 
@@ -112,7 +131,6 @@ function mostrarCamposTipoRN() {
 function cargarEntidades(idSelect) {
 	var idTipoRN = document.getElementById("idTipoRN").value;
 	var select = document.getElementById(idSelect);
-	console.log("tipoRN " + idTipoRN);
 	rutaCargarEntidades = contextPath + '/reglas-negocio!cargarEntidades';
 	$.ajax({
 		dataType : 'json',
@@ -133,10 +151,9 @@ function cargarEntidades(idSelect) {
 //UNICIDAD DE PARÁMETROS
 function cargarAtributos(select, idSelectAtributos) {
 	limpiarCamposDependientes(select.id);
-	var idTipoRN = document.getElementById("idTipoRN").value;
-	console.log("tipoRN " + idTipoRN);
+	console.log("id entidad: " + select.id);
+	console.log("id selectAtributos: " + idSelectAtributos);
 	var idEntidad = select.value;
-	console.log("idEntidad desde mostrarAtributos " + select.value);
 	rutaCargarAtributos = contextPath + '/reglas-negocio!cargarAtributos';
 	$.ajax({
 		dataType : 'json',
@@ -144,7 +161,6 @@ function cargarAtributos(select, idSelectAtributos) {
 		type: "POST",
 		data : {
 			idEntidad : idEntidad,
-			idTipoRN : idTipoRN
 		},
 		success : function(data) {
 			agregarListaSelect(document.getElementById(idSelectAtributos), data);
@@ -158,7 +174,6 @@ function cargarAtributos(select, idSelectAtributos) {
 //INTERVALO DE FECHAS CORRECTO
 function cargarEntidadesFecha() {
 	var idTipoRN = document.getElementById("idTipoRN").value;
-	console.log("tipoRN " + idTipoRN);
 	rutaCargarEntidades = contextPath + '/reglas-negocio!cargarEntidadesFecha';
 	$.ajax({
 		dataType : 'json',
@@ -180,9 +195,7 @@ function cargarEntidadesFecha() {
 //INTERVALO DE FECHAS CORRECTO
 function cargarAtributosFecha(select, idSelectAtributos) {
 	var idTipoRN = document.getElementById("idTipoRN").value;
-	console.log("tipoRN " + idTipoRN);
 	var idEntidad = select.value;
-	console.log("idEntidad desde mostrarAtributos " + select.value);
 	rutaCargarAtributos = contextPath + '/reglas-negocio!cargarAtributosFecha';
 	$.ajax({
 		dataType : 'json',
@@ -204,9 +217,7 @@ function cargarAtributosFecha(select, idSelectAtributos) {
 //COMPARACIÓN DE ATRIBUTOS
 function cargarOperadores(select) {
 	var idTipoRN = document.getElementById("idTipoRN").value;
-	console.log("tipoRN desde cargarOperadores " + idTipoRN);
 	var idAtributo = select.value;
-	console.log("idEntidad desde cargarOperadores " + select.value);
 	rutaCargarOperadores = contextPath + '/reglas-negocio!cargarOperadores';
 	$.ajax({
 		dataType : 'json',
@@ -227,7 +238,6 @@ function cargarOperadores(select) {
 //COMPARACIÓN DE ATRIBUTOS
 function cargarEntidadesDependientes(select, idSelectEntidades) {
 	var idAtributo = select.value;
-	console.log("idAtributo1 desde cargarEntidadesDependientes: " + idAtributo);
 	rutaCargarEntidades = contextPath + '/reglas-negocio!cargarEntidadesDependientes';
 	$.ajax({
 		dataType : 'json',
@@ -268,9 +278,6 @@ function cargarAtributosDependientes(select, idSelectAtributos) {
 }
 
 function agregarListaSelect(select, json) {
-	console.log("json: " + json);
-	console.log("idSelect: " + select.id);
-	console.log("select: " + select);
 	if (json !== "") {		
 		select.options.length = 0;
 		var option = document.createElement("option");
@@ -391,7 +398,6 @@ function esValidoPaso(idTabla, realiza, verbo, redaccion) {
 		agregarMensaje("Agregue todos los campos obligatorios.");
 		return false;
 	} 
-	console.log("longitud de redaccione " + redaccion.length);
 	if(redaccion.length > 999) {
 		agregarMensaje("Ingrese menos de 999 caracteres.");
 		return false;
@@ -444,7 +450,6 @@ function verificarAlternativaPrincipal() {
 }
 
 function bloquearOpcion(select) {
-	console.log(select.id); 
 	if(select.id == "atributo1") {
 		var elemento = document.getElementById("entidad2");
 		if(elemento.value != -1) {
