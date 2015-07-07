@@ -36,6 +36,7 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	private List<Actor> listActores;
 	private List<Cardinalidad> listCardinalidad;
 	private Integer cardinalidadSeleccionada;
+	private int idSel;
 
 	public String index() throws Exception {
 		try {
@@ -109,6 +110,15 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 		}
 		return resultado;
 	}
+	
+	public String show() {
+		String resultado = SUCCESS;
+		//Pruebas
+		idSel = 1;
+		model = ActorBs.consultarActor(idSel);
+		resultado = SHOW;
+		return resultado;
+	}
 
 
 	public Actor getModel() {
@@ -164,8 +174,22 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	public void setCardinalidadSeleccionada(Integer cardinalidadSeleccionada) {
 		this.cardinalidadSeleccionada = cardinalidadSeleccionada;
 	}
-	
-	
 
+	public int getId() {
+		return model.getId();
+	}
+
+	public void setId(int id) {
+		model.setId(id);
+	}
+
+	public int getIdSel() {
+		return idSel;
+	}
+
+	public void setIdSel(int idSel) {
+		this.idSel = idSel;
+	}
+	
 	
 }

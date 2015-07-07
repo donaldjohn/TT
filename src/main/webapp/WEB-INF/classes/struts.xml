@@ -4,6 +4,8 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
+	<constant name="struts.mapper.idParameterName" value="idSel" />
+	
 	<constant name="struts.ognl.allowStaticMethodAccess" value="true" />
 
 	<!-- Permite indicar si se van a incluir los parámetros -->

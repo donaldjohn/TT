@@ -37,7 +37,12 @@
 				<tr>
 					<td><s:property value="%{#cu.clave + ' ' + #cu.numero + ' ' +#cu.nombre}"/></td>
 					<td><s:property value="%{#cu.estadoElemento.nombre}"/></td>
-					<td align="center">				
+					<td align="center">	
+							<s:url var="urlConsultar" value="%{#pageContext.request.contextPath}/cu/%{#cu.id}"/>
+							<s:a href="%{urlConsultar}">
+								<img id="" class="button" title="Consultar Caso de uso"
+										src="${pageContext.request.contextPath}/resources/images/icons/ver.png" />
+							</s:a>			
 							<a><img
 										id="" class="button"
 										title="Editar"
