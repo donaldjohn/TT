@@ -91,4 +91,3 @@ INSERT INTO PRISMA.Operador (nombre, simbolo) VALUES ('Mayor que', '>');
 INSERT INTO PRISMA.Operador (nombre, simbolo) VALUES ('Menor igual que', '<=');
 INSERT INTO PRISMA.Operador (nombre, simbolo) VALUES ('Mayor igual que', '>=');
 INSERT INTO PRISMA.Operador (nombre, simbolo) VALUES ('Diferente', '!=');
-INSERT INTO PRISMA.Operador (nombre, simbolo) VALUES ('Igual', '=');
