@@ -11,14 +11,11 @@ import org.hibernate.JDBCException;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
-import mx.prisma.editor.dao.MensajeDAO;
 import mx.prisma.editor.dao.OperadorDAO;
 import mx.prisma.editor.dao.ReglaNegocioDAO;
-import mx.prisma.editor.dao.TipoDatoDAO;
 import mx.prisma.editor.dao.TipoReglaNegocioDAO;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Entidad;
-import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Operador;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TipoReglaNegocio;
@@ -184,7 +181,6 @@ public class ReglaNegocioBs {
 					"El usuario no seleccionó la entidad.", "MSG4",
 					null, "idEntidad1");
 		}		
-		model.setEntidadUnicidad(entidad);
 		Set<Atributo> atributos = entidad.getAtributos();
 		if(idAtributo == -1) {
 			throw new PRISMAValidacionException(

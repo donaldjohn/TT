@@ -24,7 +24,6 @@ public class ReglaNegocio extends Elemento implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private String redaccion;
 	private TipoReglaNegocio tipoReglaNegocio;
-	private Entidad entidadUnicidad;
 	private Atributo atributoUnicidad;
 	private Atributo atributoFechaI;
 	private Atributo atributoFechaF;
@@ -33,6 +32,7 @@ public class ReglaNegocio extends Elemento implements java.io.Serializable {
 	private Atributo atributoComp2;
 	private Operador operadorComp;
 	private String expresionRegular;
+	private Atributo atributoExpReg;
 
 	public ReglaNegocio() {
 	}
@@ -64,16 +64,6 @@ public class ReglaNegocio extends Elemento implements java.io.Serializable {
 		this.tipoReglaNegocio = tipoReglaNegocio;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "EntidadElementoid_unicidad", referencedColumnName = "Elementoid")	
-	public Entidad getEntidadUnicidad() {
-		return entidadUnicidad;
-	}
-
-	public void setEntidadUnicidad(Entidad entidadUnicidad) {
-		this.entidadUnicidad = entidadUnicidad;
-	}
-	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "Atributoid_unicidad", referencedColumnName = "id")	
 	public Atributo getAtributoUnicidad() {
@@ -151,6 +141,16 @@ public class ReglaNegocio extends Elemento implements java.io.Serializable {
 
 	public void setExpresionRegular(String expresionRegular) {
 		this.expresionRegular = expresionRegular;
+	}
+
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "Atributoid_expReg", referencedColumnName = "id")	
+	public Atributo getAtributoExpReg() {
+		return atributoExpReg;
+	}
+
+	public void setAtributoExpReg(Atributo atributoExpReg) {
+		this.atributoExpReg = atributoExpReg;
 	}
 
 
