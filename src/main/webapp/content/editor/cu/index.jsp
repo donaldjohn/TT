@@ -10,9 +10,7 @@
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/index.js"></script>
 ]]>
 </head>
-
-<body> 
-	
+<body>
 	<h1><s:property value="%{model.modulo.clave + ' ' + model.modulo.nombre}" /></h1>
 
 	<s:actionmessage theme="jquery" />
