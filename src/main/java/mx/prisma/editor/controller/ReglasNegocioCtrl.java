@@ -8,6 +8,7 @@ import java.util.Set;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.ElementoBs;
+import mx.prisma.editor.bs.EntidadBs;
 import mx.prisma.editor.bs.ReglaNegocioBs;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.model.Atributo;
@@ -34,7 +35,13 @@ import com.opensymphony.xwork2.ModelDriven;
 		"actionName", "reglas-negocio"}),
 		@Result(name = "atributos", type = "json", params = {
 				"root",
-				"listAtributos" })
+				"listAtributos" }),
+		@Result(name = "entidades", type = "json", params = {
+				"root",
+				"listEntidades"}),
+		@Result(name = "operadores", type = "json", params = {
+				"root",
+				"listOperadores"})
 })
 public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDriven<ReglaNegocio>, SessionAware{
 	/**
@@ -46,12 +53,15 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	private List<ReglaNegocio> listReglasNegocio;
 	private List<TipoReglaNegocio> listTipoRN;
 	private int idTipoRN;
-	private int idEntidad;
 	private String jsonAtributos;
 	private String jsonEntidades;
 	private List<Entidad> listEntidades;
 	private List<Atributo> listAtributos;
 	private List<Operador> listOperadores;
+	private int idEntidadUnicidad;
+	private int idAtributoUnicidad;
+	private int idAtributo;
+	private int idEntidad;
 	public String index() {
 		try {
 			//Se consulta el proyecto activo
@@ -79,7 +89,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 			// Creación del modelo
 			proyecto = SessionManager.consultarProyectoActivo();
 			buscaCatalogos();
-			buscarElementos();
+			buscarEntidades();
 			model.setClave("RN");
 			resultado = EDITNEW;
 		} catch (PRISMAValidacionException pve) {
@@ -95,11 +105,11 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 
 		return resultado;
 	}
-	
-	private void buscarElementos() throws Exception{
-		listEntidades = new EntidadDAO().consultarEntidades(proyecto.getId());
-		listAtributos = new ArrayList<Atributo>();
-		listAtributos.addAll(listEntidades.get(0).getAtributos());
+
+	private void buscarEntidades() {
+		this.listAtributos = new ArrayList<Atributo>();
+		this.listEntidades = new ArrayList<Entidad>();
+		
 	}
 
 	public String create() {
@@ -110,6 +120,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 			}
 			model.setTipoReglaNegocio(ReglaNegocioBs.consultaReglaNegocio(idTipoRN));
 			
+			//Pruebas
 			System.out.println("Tipo de regla de negocio");
 			System.out.println("---"+model.getTipoReglaNegocio().getNombre());
 			System.out.println("---"+model.getTipoReglaNegocio().getId());
@@ -119,31 +130,22 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 			System.out.println("---"+model.getNombre());
 			System.out.println("---"+model.getDescripcion());
 			System.out.println("---"+model.getRedaccion());
+			System.out.println("---"+idEntidadUnicidad);
+			System.out.println("---"+idAtributoUnicidad);
+			//Fin pruebas
 			
 			String tipoRN = model.getTipoReglaNegocio().getNombre();
-			if(tipoRN.equals("Verificación de catálogos")) {
-				System.out.println("1");
-			} else if(tipoRN.equals("Operaciones aritméticas")) {
+			if(tipoRN.equals(ReglaNegocioBs.getCompatributos())) {
 				System.out.println("2");
-			} else if(tipoRN.equals("Unicidad de parámetros")) {
+			} else if(tipoRN.equals(ReglaNegocioBs.getUnicidad())) {
 				System.out.println("3");
-			} else if(tipoRN.equals("Datos obligatorios")) {
-				System.out.println("4");
-			} else if(tipoRN.equals("Longitud correcta")) {
-				System.out.println("5");
-			} else if(tipoRN.equals("Tipo de dato correcto")) {
-				System.out.println("6");
-			} else if(tipoRN.equals("Formato de archivos")) {
-				System.out.println("7");
-			} else if(tipoRN.equals("Tamaño de archivos")) { 
-				System.out.println("8");
-			} else if(tipoRN.equals("Intervalo de fechas correctas")) {
+				model = ReglaNegocioBs.agregarElementosUnicidad(model, idEntidadUnicidad, idAtributoUnicidad);
+			} if(tipoRN.equals(ReglaNegocioBs.getIntervalofech())) {
 				System.out.println("9");
-			} else if(tipoRN.equals("Formato correcto")) {
+				
+			} else if(tipoRN.equals(ReglaNegocioBs.getFormatocampo())) {
 				System.out.println("10");
-			} else if(tipoRN.equals("Otro")) {
-				System.out.println("11");
-			} else {
+			} else if(tipoRN.equals("-1")){
 				//Validaciones del tipo de RN
 				throw new PRISMAValidacionException("El usuario no seleccionó el tipo de regla de negocio.", "MSG13");
 			}
@@ -157,8 +159,8 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 			resultado = SUCCESS;
 			
 			//Se agrega mensaje de éxito
-			addActionMessage(getText("MSG1", new String[] { "El",
-					"Mensaje", "registrado" }));
+			addActionMessage(getText("MSG1", new String[] { "La",
+					"Regla de negocio", "registrada" }));
 			
 			//Se agrega el mensaje a la sesión
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
@@ -176,21 +178,98 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		return resultado;
 	}
 	
+	public String cargarEntidades() {
+		try {
+			proyecto = SessionManager.consultarProyectoActivo();
+			
+			System.out.println("tipo RN desde cargarEntidades: " + this.idTipoRN);
+			String tipoRN = ReglaNegocioBs.consultaReglaNegocio(idTipoRN).getNombre();
+			System.out.println("TipoRN desde cargarEntidades: " + tipoRN);
+			listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "entidades";
+	}
+	
+	public String cargarEntidadesDependientes() {
+		try {
+			proyecto = SessionManager.consultarProyectoActivo();
+			Atributo atributo = EntidadBs.consultarAtributo(this.idAtributo);
+			listEntidades = ReglaNegocioBs.consultarEntidadesTipoDato(proyecto, atributo.getTipoDato().getNombre());
+			System.out.println("size entidades desde cargarEntidadesDependientes: " + listEntidades.size());
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "entidades";
+	}
+	
 	public String cargarAtributos() {
 		try {
-			System.out.println("idEntidad desde ctrl: " + this.idEntidad);
-			Entidad entidad = new EntidadDAO().consultarEntidad(this.idEntidad);
-			//this.listAtributos = entidad.getAtributos().toArray();
+			Entidad entidad = EntidadBs.consultarEntidad(this.idEntidad);
+			this.listAtributos = new ArrayList<Atributo>(entidad.getAtributos());
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "atributos";
+	}
+	
+	public String cargarAtributosDependientes() {
+		System.out.println("desde cargar atributos dependientes");
+		try {
+			Atributo atributo = EntidadBs.consultarAtributo(this.idAtributo);
+			String tipoDato = atributo.getTipoDato().getNombre();
+			listAtributos = ReglaNegocioBs.consultarAtributosTipoDato(idEntidad, tipoDato);
+			System.out.println("size listAtributos desde cargarAtributosDependientes: " + listAtributos.size());
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "atributos";
+	}
+	
+	public String cargarEntidadesFecha() {
+		try {
+			proyecto = SessionManager.consultarProyectoActivo();
+			
+			System.out.println("tipo RN desde cargarEntidadesFecha: " + this.idTipoRN);
+			String tipoRN = ReglaNegocioBs.consultaReglaNegocio(idTipoRN).getNombre();
+			System.out.println("TipoRN: " + tipoRN);
+			listEntidades = EntidadBs.consultarEntidadesProyectoConFecha(proyecto);
+			System.out.println("size fecha: " + listEntidades.size());
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "entidades";
+	}
+	
+	public String cargarAtributosFecha() {
+		try {
+			System.out.println("tipo RN desde cargarAtributosFecha: " + this.idTipoRN);
+			String tipoRN = ReglaNegocioBs.consultaReglaNegocio(idTipoRN).getNombre();
+			Entidad entidad = EntidadBs.consultarEntidad(this.idEntidad);
+			this.listAtributos = EntidadBs.consultarAtributosTipoFecha(this.idEntidad);
+			
 			System.out.println("size atr: " + listAtributos.size());
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 		return "atributos";
 	}
-		
+	
+	public String cargarOperadores() {
+		try {
+			Atributo atributo = EntidadBs.consultarAtributo(this.idAtributo);
+			listOperadores = ReglaNegocioBs.consultarOperadoresDisponibles(atributo.getTipoDato().getNombre());
+			System.out.println("size oper: " + listOperadores.size());
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "operadores";
+	}
+
 	private void buscaCatalogos() { 
 		listTipoRN = ReglaNegocioBs.consultarTipoRN();
-		listOperadores = ReglaNegocioBs.consultarOperadores();
+		listOperadores = new ArrayList<Operador>();
 	}
 
 	public void setSession(Map<String, Object> session) {		
@@ -236,8 +315,6 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	}
 
 	public void setIdEntidad(int idEntidad) {
-		System.out.println("Desde ctrl");
-		this.jsonAtributos = "hola mundo";
 		this.idEntidad = idEntidad;
 	}
 
@@ -281,7 +358,45 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		this.listOperadores = listOperadores;
 	}
 
-	
-	
+	public int getIdEntidad1() {
+		return idEntidadUnicidad;
+	}
 
+	public int getIdAtributo1() {
+		return idAtributoUnicidad;
+	}
+
+	public void setIdEntidad1(int idEntidad1) {
+		this.idEntidadUnicidad = idEntidad1;
+	}
+
+	public void setIdAtributo1(int idAtributo1) {
+		this.idAtributoUnicidad = idAtributo1;
+	}
+
+	public int getIdEntidadUnicidad() {
+		return idEntidadUnicidad;
+	}
+
+	public void setIdEntidadUnicidad(int idEntidadUnicidad) {
+		this.idEntidadUnicidad = idEntidadUnicidad;
+	}
+
+	public int getIdAtributoUnicidad() {
+		return idAtributoUnicidad;
+	}
+
+	public void setIdAtributoUnicidad(int idAtributoUnicidad) {
+		this.idAtributoUnicidad = idAtributoUnicidad;
+	}
+
+	public int getIdAtributo() {
+		return idAtributo;
+	}
+
+	public void setIdAtributo(int idAtributo) {
+		this.idAtributo = idAtributo;
+	}
+
+	
 }

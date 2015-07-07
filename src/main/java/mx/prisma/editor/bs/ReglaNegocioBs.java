@@ -2,18 +2,22 @@ package mx.prisma.editor.bs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.MensajeDAO;
 import mx.prisma.editor.dao.OperadorDAO;
 import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.dao.TipoDatoDAO;
 import mx.prisma.editor.dao.TipoReglaNegocioDAO;
+import mx.prisma.editor.model.Atributo;
+import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Operador;
 import mx.prisma.editor.model.ReglaNegocio;
@@ -24,6 +28,18 @@ import mx.prisma.util.Validador;
 
 public class ReglaNegocioBs {
 	private static final String CLAVE = "RN";
+	private static final String VERFCATALOGOS = "Verificación de catálogos";
+	private static final String COMPATRIBUTOS = "Comparación de atributos";
+	private static final String UNICIDAD = "Unicidad de parámetros";
+	private static final String OBLIGATORIOS = "Datos obligatorios";
+	private static final String LONGITUD = "Longitud correcta";
+	private static final String DATOCORRECTO = "Tipo de dato correcto";
+	private static final String FORMATOARCH = "Formato de archivos";
+	private static final String TAMANOARCH = "Tamaño de archivos";
+	private static final String INTERVALOFECH = "Intervalo de fechas correcto";
+	private static final String FORMATOCAMPO = "Formato correcto";
+	private static final String OTRO = "Otro";
+	
 	public static List<ReglaNegocio> consultarReglasNegocioProyecto(
 			Proyecto proyecto) {
 		List<ReglaNegocio> listMensajes = new ReglaNegocioDAO().consultarReglasNegocio(proyecto.getId());
@@ -114,6 +130,31 @@ public class ReglaNegocioBs {
 			throw new PRISMAValidacionException("El usuario ingreso una redaccion muy larga.", "MSG6", new String[] { "999",
 			"caracteres"}, "model.redaccion");
 		}
+		//Validaciones específicas por tipo de RN
+		/*String tipoRN = model.getTipoReglaNegocio().getNombre();
+		if(tipoRN.equals(VERFCATALOGOS)) {
+			System.out.println("1");
+		} else if(tipoRN.equals(COMPATRIBUTOS)) {
+			System.out.println("2");
+		} else if(tipoRN.equals(UNICIDAD)) {
+			System.out.println("3");
+		} else if(tipoRN.equals(OBLIGATORIOS)) {
+			System.out.println("4");
+		} else if(tipoRN.equals(LONGITUD)) {
+			System.out.println("5");
+		} else if(tipoRN.equals(DATOCORRECTO)) {
+			System.out.println("6");
+		} else if(tipoRN.equals(FORMATOARCH)) {
+			System.out.println("7");
+		} else if(tipoRN.equals(TAMANOARCH)) { 
+			System.out.println("8");
+		} else if(tipoRN.equals(INTERVALOFECH)) {
+			System.out.println("9");
+		} else if(tipoRN.equals(FORMATOCAMPO)) {
+			System.out.println("10");
+		} else if(tipoRN.equals(OTRO)) {
+			System.out.println("11");
+		}*/
 		
 	}
 
@@ -132,5 +173,136 @@ public class ReglaNegocioBs {
 		}
 		return listOperadores;
 	}
+	
+	public static ReglaNegocio agregarElementosUnicidad(ReglaNegocio model,
+			int idEntidad, int idAtributo) {
+		Entidad entidad = new EntidadDAO().consultarEntidad(idEntidad);
+		if(entidad == null) {
+			throw new PRISMAValidacionException(
+					"El usuario no seleccionó la entidad.", "MSG4",
+					null, "idEntidad1");
+		}		
+		model.setEntidadUnicidad(entidad);
+		Set<Atributo> atributos = entidad.getAtributos();
+		if(idAtributo == -1) {
+			throw new PRISMAValidacionException(
+					"El usuario no seleccionó el nombre del atributo.", "MSG4",
+					null, "idAtributo1");
+		}
+		for(Atributo atributo : atributos) {
+			if(atributo.getId() == idAtributo) {
+				model.setAtributoUnicidad(atributo);
+				break;
+			}
+		} 
+		return model;
+	}
 
+	public static String getClave() {
+		return CLAVE;
+	}
+
+	public static String getVerfcatalogos() {
+		return VERFCATALOGOS;
+	}
+
+	public static String getCompatributos() {
+		return COMPATRIBUTOS;
+	}
+
+	public static String getUnicidad() {
+		return UNICIDAD;
+	}
+
+	public static String getObligatorios() {
+		return OBLIGATORIOS;
+	}
+
+	public static String getLongitud() {
+		return LONGITUD;
+	}
+
+	public static String getDatocorrecto() {
+		return DATOCORRECTO;
+	}
+
+	public static String getFormatoarch() {
+		return FORMATOARCH;
+	}
+
+	public static String getTamanoarch() {
+		return TAMANOARCH;
+	}
+
+	public static String getIntervalofech() {
+		return INTERVALOFECH;
+	}
+
+	public static String getFormatocampo() {
+		return FORMATOCAMPO;
+	}
+
+	public static String getOtro() {
+		return OTRO;
+	}
+
+	public static List<Operador> consultarOperadoresDisponibles(
+			String tipoDato) {
+		List<Operador> listOperadores = new ArrayList<Operador>();
+		if(tipoDato.equals("Flotante") || tipoDato.equals("Entero")) {
+			listOperadores = consultarOperadores();
+		} else {
+			listOperadores.add(consultarOperadorSimbolo("!="));
+			listOperadores.add(consultarOperadorSimbolo("="));
+		}
+			
+		return listOperadores;
+	}
+
+	private static Operador consultarOperadorSimbolo(String simbolo) {
+		Operador operador = new OperadorDAO().consultarOperadorSimbolo(simbolo);
+		if(operador == null) {
+			throw new PRISMAException("No se puede consultar el operador.", "MSG25");
+		}
+		return operador;
+	}
+
+	public static List<Entidad> consultarEntidadesTipoDato(Proyecto proyecto, String tipoDato) {
+		List<Entidad> listEntidadesAux = EntidadBs.consultarEntidadesProyecto(proyecto);
+		List<Entidad> listEntidades = new ArrayList<Entidad>();
+		for(Entidad en : listEntidadesAux) {
+			if(contieneAtributosTipoDato(en, tipoDato)) {
+				listEntidades.add(en);
+			}
+		}
+		return listEntidades;
+	}
+
+	
+
+	private static boolean contieneAtributosTipoDato(Entidad en, String tipoDato) {
+		Set<Atributo> atributos = en.getAtributos();
+		for(Atributo at : atributos) {
+			
+			if(at.getTipoDato().getNombre().equals(tipoDato)) {
+				return true;
+			} else if(at.getTipoDato().getNombre().equals("Entero") && tipoDato.equals("Flotante")) {
+				return true;
+			} else if(at.getTipoDato().getNombre().equals("Flotante") && tipoDato.equals("Entero")) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static List<Atributo> consultarAtributosTipoDato(int idEntidad, String tipoDato) {
+		Set<Atributo> atributos = EntidadBs.consultarEntidad(idEntidad).getAtributos();
+		List<Atributo> listAtributos = new ArrayList<Atributo>();
+		for(Atributo at : atributos) {
+			if(at.getTipoDato().getNombre().equals(tipoDato)) {
+				listAtributos.add(at);
+			}
+		}
+		return listAtributos;
+	}
 }

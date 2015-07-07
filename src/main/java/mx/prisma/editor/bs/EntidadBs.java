@@ -1,17 +1,21 @@
 package mx.prisma.editor.bs;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.dao.AtributoDAO;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.TipoDatoDAO;
 import mx.prisma.editor.dao.UnidadTamanioDAO;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Entidad;
+import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TipoDato;
 import mx.prisma.editor.model.UnidadTamanio;
 import mx.prisma.util.PRISMAException;
@@ -163,12 +167,53 @@ public class EntidadBs {
 		Entidad entidad = null;
 		entidad = new EntidadDAO().consultarEntidad(idEntidad);
 		if (entidad == null) {
-			throw new PRISMAException("No se pueden consultar las entidades.",
+			throw new PRISMAException("No se puede consultar la entidad.",
 					"MSG13");
-		} else {
-
-		}
+		} 
 		return entidad;
 	}
+
+	public static List<Entidad> consultarEntidadesProyectoConFecha(
+			Proyecto proyecto) {
+			List<Entidad> listEntidadesAux = new EntidadDAO()
+					.consultarEntidades(proyecto.getId());
+			List<Entidad> listEntidades = new ArrayList<Entidad>();
+			for(Entidad entidad : listEntidadesAux) {
+				if(contieneAtributoTipoFecha(entidad)) {
+					listEntidades.add(entidad);
+				}
+			}
+			return listEntidades;
+	}
+
+	private static boolean contieneAtributoTipoFecha(Entidad entidad) {
+		Set<Atributo> atributos = entidad.getAtributos();
+		for(Atributo atributo : atributos) {
+			if(atributo.getTipoDato().getNombre().equals("Fecha")) {
+				System.out.println("tipoDato " + atributo.getTipoDato().getNombre());
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static List<Atributo> consultarAtributosTipoFecha(int idEntidad) {
+		Set<Atributo> atributos = new EntidadDAO().consultarEntidad(idEntidad).getAtributos();
+		List<Atributo> listAtributos = new ArrayList<Atributo>();
+		for(Atributo atributo : atributos) {
+			if(atributo.getTipoDato().getNombre().equals("Fecha")){
+				listAtributos.add(atributo);
+			}
+		}
+		return listAtributos;
+	}
+
+	public static Atributo consultarAtributo(int idAtributo1) {
+		Atributo atributo = new AtributoDAO().consultarAtributo(idAtributo1);
+		if(atributo == null) {
+			
+		}
+		return atributo;
+	}	
 
 }
