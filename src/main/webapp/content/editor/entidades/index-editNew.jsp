@@ -64,11 +64,14 @@
 							<th style="width: 10%;"><s:text name="colObligatorio" /></th>
 						
 							<!--  Columnas ocultas -->
+							<th style="width: 0%;"><s:text name="colTipoDatoSeleccionado" /></th>
+							<th style="width: 0%;"><s:text name="colOtroTipoDato" /></th>
 							<th style="width: 0%;"><s:text name="colDescripcion" /></th>
 							<th style="width: 0%;"><s:text name="colLongitud" /></th>
 							<th style="width: 0%;"><s:text name="colFormatoArchivo" /></th>
 							<th style="width: 0%;"><s:text name="colTamanioArchivo" /></th>
 							<th style="width: 0%;"><s:text name="colUnidadTamanio" /></th>	
+							
 							<th style="width: 20%;"><s:text name="colAcciones" /></th>
 							
 						</tr>
@@ -98,7 +101,7 @@
 	</s:form>
 
 
-	<!-- EMERGENTE REGISTRAR PASO -->
+	<!-- EMERGENTE REGISTRAR ATRIBUTO -->
 	<sj:dialog id="atributoDialog" title="Registrar Atributo" autoOpen="false"
 		minHeight="300" minWidth="800" modal="true" draggable="true">
 		<s:form id="frmAtributo" name="frmAtributoName" theme="simple">
@@ -120,6 +123,12 @@
 						<td><s:select list="listTipoDato" cssClass="inputFormulario" name="atributo.tipoDato" id="atributo.tipoDato"
        						cssErrorClass="input-error" headerValue="Seleccione" headerKey="0" listValue="nombre" onchange="disablefromTipoDato();"></s:select></td>
 					</tr>
+					<tr id = 'trOtro' style="display: none;">
+						<td class="label obligatorio"><s:text name="labelOtro" /></td>
+						<td><s:textfield name="atributo.otroTipoDato" id="atributo.otroTipoDato" cssClass="inputFormulario ui-widget"
+								cssErrorClass="input-error"></s:textfield></td>
+					</tr>
+					
 					<tr id = 'trLongitud' style="display: none;">
 						<td class="label obligatorio"><s:text name="labelLongitud" /></td>
 						<td><s:textfield name="atributo.longitud" id="atributo.longitud" cssClass="inputFormulario ui-widget"

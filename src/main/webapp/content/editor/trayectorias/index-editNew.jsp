@@ -80,6 +80,7 @@
 							<th style="width: 0;"><s:text name=""/></th>
 							<th style="width: 0;"><s:text name=""/></th>
 							<th style="width: 0;"><s:text name=""/></th>
+							<th style="width: 0;"><s:text name=""/></th>	
 							<th style="width: 10%;"><s:text name="colAcciones"/></th>
 						</tr>
 					</thead>
@@ -116,12 +117,18 @@
 						<tr>
 							<td class="label obligatorio"><s:text name="labelRealiza"/></td>
 							<td><s:select list="listRealiza" cssClass="inputFormulario" name="paso.realizaActor" id="realiza" 
-       						cssErrorClass="input-error" value="0"></s:select></td>
+       						cssErrorClass="input-error" headerKey="-1" headerValue="Seleccione"></s:select></td>
 						</tr>
 						<tr>
 							<td class="label obligatorio"><s:text name="labelVerbo"/></td>
-							<td><s:select list="listVerbos" cssClass="inputFormulario" name="paso.verbo" id="verbo"
-       						cssErrorClass="input-error" value="0"></s:select></td>
+							<td><s:select list="listVerbos" cssClass="inputFormulario" name="paso.verbo" id="paso.verbo"
+       						cssErrorClass="input-error" headerKey="-1" headerValue="Seleccione" onchange="verificarOtro();"></s:select></td>
+						</tr>
+						<tr style="display: none;" id = "otroVerbo">
+							<td class="label obligatorio"><s:text name="labelOtro" /></td>
+							<td><s:textfield name="paso.otroVerbo" id="paso.otroVerbo" maxlength="10"
+							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
+							</td>
 						</tr>
 						<tr>
 							<td class="label obligatorio"><s:text name="labelRedaccion" /></td>

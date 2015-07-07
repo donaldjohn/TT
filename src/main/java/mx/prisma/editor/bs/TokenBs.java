@@ -1042,7 +1042,7 @@ public class TokenBs {
 	public static boolean duplicadoAtributo_Entradas(Set<Entrada> entradas,
 			Entrada entrada) {
 		for (Entrada entradai : entradas) {
-			if (entrada.getAtributo() != null)
+			if (entradai.getAtributo() != null && entrada.getAtributo()!= null)
 				if (entradai.getAtributo().getId() == entrada.getAtributo()
 						.getId()) {
 					if (entradai.getCasoUso().getId() == entrada.getCasoUso()
@@ -1439,6 +1439,7 @@ public class TokenBs {
 		Pantalla pantalla;
 		ReglaNegocio reglaNegocio;
 		TerminoGlosario terminoGlosario;
+		Trayectoria trayectoria; 
 		for (Object objeto : objetos) {
 			switch (Referencia.getTipoRelacion(
 					Referencia.getTipoReferencia(objeto), tipoSeccion)) {
@@ -1528,11 +1529,11 @@ public class TokenBs {
 				referenciaParametro.setNumerToken(numeroTokenTerminoGlosario++);
 				break;
 			case TRAYECTORIA_PASOS:
-				terminoGlosario = (TerminoGlosario) objeto;
+				trayectoria = (Trayectoria) objeto;
 				tipoParametro = new TipoParametroDAO()
 						.consultarTipoParametro("Trayectoria");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
-				referenciaParametro.setElementoDestino(terminoGlosario);
+				referenciaParametro.setTrayectoria(trayectoria);
 				referenciaParametro.setNumerToken(numeroTokenTrayectoria++);
 				break;
 			default:

@@ -34,10 +34,11 @@ function Trayectoria(clave) {
 /*
  * Constructor del objeto Paso
  */
-function Paso(numero, realizaActor, verbo, redaccion) {
+function Paso(numero, realizaActor, verbo, otroVerbo, redaccion) {
 	this.numero = numero;
 	this.realizaActor = realizaActor;
 	this.verbo = new Verbo(verbo);
+	this.otroVerbo = otroVerbo;
 	this.redaccion = redaccion;
 }
 
@@ -66,7 +67,7 @@ function Actor(nombre) {
 /*
  * Constructor del objeto Atributo
  */
-function Atributo(nombre, descripcion, obligatorio, longitud, tipoDato, formatoArchivo, tamanioArchivo, unidadTamanio) {
+function Atributo(nombre, descripcion, obligatorio, longitud, tipoDato, otroTipoDato, formatoArchivo, tamanioArchivo, unidadTamanio) {
     this.nombre = nombre;
     this.descripcion = descripcion;
     this.obligatorio = obligatorio;
@@ -75,6 +76,7 @@ function Atributo(nombre, descripcion, obligatorio, longitud, tipoDato, formatoA
     this.formatoArchivo = formatoArchivo;
     this.tamanioArchivo = tamanioArchivo;
     this.unidadTamanio = new UnidadTamanio(unidadTamanio);
+    this.otroTipoDato = otroTipoDato; 
 }
 
 function TipoDato(nombre) {

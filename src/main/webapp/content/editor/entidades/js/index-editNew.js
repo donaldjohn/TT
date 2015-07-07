@@ -6,6 +6,14 @@ $(document)
 					window.scrollTo(0, 0);
 					contextPath = $("#rutaContexto").val();
 					$('table.tablaGestion').DataTable();
+					var tipoDato = document.getElementById("atributo.tipoDato");
+					var tipoDatoTexto = tipoDato.options[tipoDato.selectedIndex].text;
+					
+					if (tipoDatoTexto == 'Otro') {
+						document.getElementById("trOtro").style.display = '';
+					} else {
+						document.getElementById("trOtro").style.display = 'none';
+					}
 					ocultarColumnas("tablaAtributo");
 					var json = $("#jsonAtributosTabla").val();
 					if (json !== "") {
@@ -15,16 +23,22 @@ $(document)
 										parsedJson,
 										function(i, item) {
 											var obligatorio;
-
+											var tipoDato;
 											if (item.obligatorio == true) {
 												obligatorio = 'Sí';
 											} else {
 												obligatorio = 'No';
 											}
+											
+											if (item.tipoDato.nombre == 'Otro') {
+												tipoDato = item.otroTipoDato;
+											}
 											var atributo = [
 													item.nombre,
-													item.tipoDato.nombre,			
+													tipoDato,
 													obligatorio,
+													item.tipoDato.nombre,	
+													item.otroTipoDato,
 													item.descripcion,
 													item.longitud,
 													item.formatoArchivo,
@@ -51,25 +65,34 @@ function registrarAtributo() {
 	var nombre = document.getElementById("atributo.nombre").value;
 	var descripcion = document.getElementById("atributo.descripcion").value;
 	var tipoDato = document.getElementById("atributo.tipoDato");
+	var otroTipoDato = document.getElementById("atributo.otroTipoDato").value;
 	var longitud = document.getElementById("atributo.longitud").value;
 	var formatoArchivo = document.getElementById("atributo.formatoArchivo").value;
 	var tamanioArchivo = document.getElementById("atributo.tamanioArchivo").value;
 	var unidadTamanio = document.getElementById("atributo.unidadTamanio");
 	var obligatorio = document.getElementById("atributo.obligatorio").checked;
-
+	var tipoDatoAux;
 	if (obligatorio == true) {
 		obligatorio = "Sí";
 	} else {
 		obligatorio = "No";
 	}
 
-	if (esValidoAtributo("tablaAtributo", nombre, descripcion, tipoDato,
+	if (tipoDato.options[tipoDato.selectedIndex].text == 'Otro') {
+		tipoDatoAux = otroTipoDato;
+	} else {
+		tipoDatoAux = tipoDato.options[tipoDato.selectedIndex].text;
+	}
+	if (esValidoAtributo("tablaAtributo", nombre, descripcion, tipoDato, otroTipoDato,
 			longitud, formatoArchivo, tamanioArchivo, unidadTamanio)) {
 		// Se construye la fila
+		
 		var row = [
 				nombre,
-				tipoDato.options[tipoDato.selectedIndex].text,
+				tipoDatoAux,				
 				obligatorio,
+				tipoDato.options[tipoDato.selectedIndex].text,				
+				otroTipoDato,
 				descripcion,
 				longitud,
 				formatoArchivo,
@@ -90,12 +113,14 @@ function registrarAtributo() {
 		document.getElementById("atributo.nombre").value = null;
 		document.getElementById("atributo.descripcion").value = null;
 		document.getElementById("atributo.tipoDato").selectedIndex = 0;
+		document.getElementById("atributo.otroTipoDato").value = null;
 		document.getElementById("atributo.longitud").value = null;
 		document.getElementById("atributo.formatoArchivo").value = null;
 		document.getElementById("atributo.tamanioArchivo").value = null;
 		document.getElementById("atributo.unidadTamanio").selectedIndex = 0;
 		document.getElementById("atributo.obligatorio").checked = false;
 		
+		document.getElementById("trOtro").style.display = 'none';
 		document.getElementById("trLongitud").style.display = 'none';
 		document.getElementById("trFormatoArchivo").style.display = 'none';
 		document.getElementById("trTamanioArchivo").style.display = 'none';
@@ -110,6 +135,7 @@ function cancelarRegistrarAtributo() {
 	document.getElementById("atributo.nombre").value = null;
 	document.getElementById("atributo.descripcion").value = null;
 	document.getElementById("atributo.tipoDato").selectedIndex = 0;
+	document.getElementById("atributo.otroTipoDato").value = null;
 	document.getElementById("atributo.longitud").value = null;
 	document.getElementById("atributo.formatoArchivo").value = null;
 	document.getElementById("atributo.tamanioArchivo").value = null;
@@ -119,17 +145,21 @@ function cancelarRegistrarAtributo() {
 	document.getElementById("trLongitud").style.display = 'none';
 	document.getElementById("trFormatoArchivo").style.display = 'none';
 	document.getElementById("trTamanioArchivo").style.display = 'none';
+	document.getElementById("trOtro").style.display = 'none';
 
 
 	// Se cierra la emergente
 	$('#atributoDialog').dialog('close');
 };
 
+
+
+
 function agregarMensaje(mensaje) {
 	alert(mensaje);
 };
 
-function esValidoAtributo(idTabla, nombre, descripcion, tipoDato,
+function esValidoAtributo(idTabla, nombre, descripcion, tipoDato, otroTipoDato,
 		longitud, formatoArchivo, tamanioArchivo, unidadTamanio) {
 	
 	var tipoDatoTexto = tipoDato.options[tipoDato.selectedIndex].text;
@@ -172,7 +202,7 @@ function esValidoAtributo(idTabla, nombre, descripcion, tipoDato,
 	 * Finaliza la validación del nombre y descripción
 	 */
 	
-	if (tipoDatoTexto == 'Booleano' || tipoDatoTexto == 'Fecha' || tipoDatoTexto == 'Archivo') {
+	if (tipoDatoTexto == 'Booleano' || tipoDatoTexto == 'Fecha' || tipoDatoTexto == 'Archivo' || tipoDatoTexto == 'Otro') {
 		if (tipoDatoTexto == 'Archivo') {
 			if(vaciaONula(tamanioArchivo) || vaciaONula(formatoArchivo) || unidadTamanio.selectedIndex == 0) {
 				agregarMensaje("Agregue todos los campos obligatorios.");
@@ -181,7 +211,14 @@ function esValidoAtributo(idTabla, nombre, descripcion, tipoDato,
 			if (!esFloat(tamanioArchivo) && !esEntero(tamanioArchivo)) {
 				agregarMensaje("Ingrese un tamaño válido.");
 				return false;
-			}	
+			}
+			if (tipoDato == 'Otro') {
+				console.log('otro---');
+				if (vacioONula(otroTipoDato)) {
+					agregarMensaje("Agregue todos los campos obligatorios.");
+					return false;
+				}
+			} 
 		}
 	} else {
 		if (vaciaONula(longitud)) {
@@ -214,6 +251,8 @@ function ocultarColumnas(tabla) {
 	dataTable.api().column(5).visible(false);
 	dataTable.api().column(6).visible(false);
 	dataTable.api().column(7).visible(false);
+	dataTable.api().column(8).visible(false);
+	dataTable.api().column(9).visible(false);
 
 }
 
@@ -230,14 +269,14 @@ function disablefromTipoDato() {
 	document.getElementById("atributo.formatoArchivo").value = null;
 	document.getElementById("atributo.tamanioArchivo").value = null;
 	document.getElementById("atributo.unidadTamanio").selectedIndex = 0;
-	document.getElementById("trTextoAyudaFormato").style.display = 'none';
+	document.getElementById("atributo.otroTipoDato").value = null;
 
-	
+	document.getElementById("trTextoAyudaFormato").style.display = 'none';
 	var tipoDato = document.getElementById("atributo.tipoDato");
 	var tipoDatoTexto = tipoDato.options[tipoDato.selectedIndex].text;
 	
 	if (tipoDatoTexto == 'Booleano' || tipoDatoTexto == 'Fecha'
-			|| tipoDatoTexto == 'Archivo'  || tipoDatoTexto == 'Seleccione') {
+			|| tipoDatoTexto == 'Archivo'  || tipoDatoTexto == 'Seleccione' || tipoDatoTexto == 'Otro') {
 		document.getElementById("trLongitud").style.display = 'none';
 		if (tipoDatoTexto == 'Archivo') {
 			document.getElementById("trFormatoArchivo").style.display = '';
@@ -248,8 +287,14 @@ function disablefromTipoDato() {
 			document.getElementById("trTamanioArchivo").style.display = 'none';
 			document.getElementById("trTextoAyudaFormato").style.display = 'none';
 		}
+		if (tipoDatoTexto == 'Otro') {
+			document.getElementById("trOtro").style.display = '';
+		} else {
+			document.getElementById("trOtro").style.display = 'none';
+		}
 	} else {
 		document.getElementById("trLongitud").style.display = '';
+		document.getElementById("trOtro").style.display = 'none';
 		document.getElementById("trFormatoArchivo").style.display = 'none';
 		document.getElementById("trTamanioArchivo").style.display = 'none';
 	}
@@ -270,29 +315,23 @@ function tablaToJson(idTable) {
 
 	for (var i = 0; i < table.fnSettings().fnRecordsTotal(); i++) {
 		var nombre = table.fnGetData(i, 0);
-		var tipoDato = table.fnGetData(i, 1);
-		var obligatorio = table.fnGetData(i, 2);		
-		var descripcion = table.fnGetData(i, 3);		
-		var longitud = table.fnGetData(i, 4);
-		var formatoArchivo = table.fnGetData(i, 5);		
-		var tamanioArchivo = table.fnGetData(i, 6);		
-		var unidadTamanio = table.fnGetData(i, 7);
+		var obligatorio = table.fnGetData(i, 2);
+		var tipoDato = table.fnGetData(i, 3);
+		var otroTipoDato = table.fnGetData(i, 4);
+
+		var descripcion = table.fnGetData(i, 5);		
+		var longitud = table.fnGetData(i, 6);
+		var formatoArchivo = table.fnGetData(i, 7);		
+		var tamanioArchivo = table.fnGetData(i, 8);		
+		var unidadTamanio = table.fnGetData(i, 9);
 		
 		if (obligatorio == 'Sí') {
 			obligatorio = true;
 		} else {
 			obligatorio = false;
 		}
-		console.log(nombre);
-		console.log(descripcion);
-		console.log(obligatorio);
-		console.log(longitud);
-		console.log(tipoDato);
-		console.log(formatoArchivo);
-		console.log(tamanioArchivo);
-		console.log(unidadTamanio);
 
-		arregloAtributos.push(new Atributo(nombre, descripcion, obligatorio, longitud, tipoDato, formatoArchivo, tamanioArchivo, unidadTamanio));
+		arregloAtributos.push(new Atributo(nombre, descripcion, obligatorio, longitud, tipoDato, otroTipoDato, formatoArchivo, tamanioArchivo, unidadTamanio));
 	}
 	var jsonAtributos = JSON.stringify(arregloAtributos);
 	document.getElementById("jsonAtributosTabla").value = jsonAtributos;

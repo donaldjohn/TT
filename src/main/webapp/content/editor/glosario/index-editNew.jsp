@@ -12,7 +12,7 @@
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/validaciones.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.caret.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.atwho.js"></script>
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/actores/js/index-editNew.js"></script>	
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/glosario/js/index-editNew.js"></script>	
 ]]>
 
 </head>
@@ -21,7 +21,7 @@
 	<h1>
 		<s:property value="%{proyecto.clave + ' - ' + proyecto.nombre}" />
 	</h1>
-	<h3>Registrar Actor</h3>
+	<h3>Registrar Término del Glosario</h3>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
@@ -29,9 +29,9 @@
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 	<s:form id="frmActor" theme="simple"
-		action="%{#pageContext.request.contextPath}/actores" method="post">
+		action="%{#pageContext.request.contextPath}/glosario" method="post">
 		<div class="formulario">
-			<div class="tituloFormulario">Información general del Actor</div>
+			<div class="tituloFormulario">Información general del Término</div>
 			<table class="seccion">
 				<tr>
 					<td class="label obligatorio"><s:text name="labelNombre" /></td>
@@ -47,22 +47,6 @@
 						<s:fielderror fieldName ="model.descripcion" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
-				<tr>
-				<td class="label obligatorio"><s:text name="labelCardinalidad" /></td>
-				<td><s:select list="listCardinalidad" cssClass="inputFormulario" name="model.cardinalidad.id" id="cardinalidad"
-       						cssErrorClass="select-error" listKey="id" headerValue="Seleccione" headerKey="-1" listValue="nombre" onchange="verificarOtro();"></s:select>
-       						<s:fielderror fieldName = "model.cardinalidad.id" cssClass="error"
-							theme="jquery" />
-				</td>
-				</tr>
-				
-				<tr style="display: none;" id = "otro">
-				<td class="label obligatorio"><s:text name="labelOtro" /></td>
-					<td><s:textfield name="model.otraCardinalidad" id="otraCardinalidad" maxlength="10"
-							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
-						<s:fielderror fieldName = "model.otraCardinalidad" cssClass="error"
-							theme="jquery" /></td>
-				</tr>
 			</table>
 		</div>
 		
@@ -70,11 +54,11 @@
 		<div align="center">
 			<s:submit class="boton" value="Aceptar" />
 
-			<s:url var="urlGestionarActores"
-				value="%{#pageContext.request.contextPath}/actores">
+			<s:url var="urlGestionarGlosario"
+				value="%{#pageContext.request.contextPath}/glosario">
 			</s:url>
 			<input class="boton" type="button"
-				onclick="location.href='${urlGestionarActores}'"
+				onclick="location.href='${urlGestionarGlosario}'"
 				value="Cancelar" />
 		</div>
 	</s:form>

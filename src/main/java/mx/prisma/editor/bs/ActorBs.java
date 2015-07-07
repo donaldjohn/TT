@@ -105,7 +105,7 @@ public class ActorBs {
 					"MSG4", null, "model.cardinalidad.id");
 		}
 		
-		if (model.getCardinalidad().getNombre().equals("otra")) {
+		if (model.getCardinalidad().getNombre().equals("Otra")) {
 			if (Validador.esNuloOVacio(model.getOtraCardinalidad())) {
 				throw new PRISMAValidacionException(
 						"El usuario no ingresó la cardinalidad del actor",
@@ -122,8 +122,6 @@ public class ActorBs {
 		if (actor == null) {
 			throw new PRISMAException("No se pueden consultar los actores.",
 					"MSG13");
-		} else {
-
 		}
 		return actor;
 	}
