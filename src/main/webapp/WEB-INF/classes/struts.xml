@@ -3,11 +3,7 @@
     "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
     "http://struts.apache.org/dtds/struts-2.0.dtd">
 
-<struts>
-	<constant name="struts.mapper.idParameterName" value="idSel" />
-	
-	<constant name="struts.ognl.allowStaticMethodAccess" value="true" />
-
+<struts>	
 	<!-- Permite indicar si se van a incluir los parámetros -->
 	<constant name="struts.url.includeParams" value="all" />
 
@@ -19,8 +15,8 @@
 	
 	<!-- Permite definir mas de un ActionMapper, si el primero no obtiene una respuesta correcta, se utilizará
 	el siguiente mapper -->
-	<constant name="struts.mapper.class" value="composite" />
-	<constant name="struts.mapper.composite" value="rest,struts" />
+	<constant name="struts.mapper.class" value="rest" />
+	<!-- <constant name="struts.mapper.composite" value="rest,struts" /> -->
 
 	<!-- struts2 busca paquetes que terminen, en su nombre, con las siguientes 
 		cadenas en busca de acciones -->
@@ -41,6 +37,8 @@
 	
 	<!-- Se habilita el DMI -->
 	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	
+	<constant name="struts.mapper.idParameterName" value="idSel" />
 	
 	<package name="prisma" extends="rest-default,json-default">
 		<interceptors>

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.bs.ActorBs;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.bs.Referencia;
@@ -75,6 +76,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	private String jsonPasos;
 	private String jsonTrayectorias;
 	private String jsonAcciones;
+	
+	private int idSel;
 	/*
 	 * Agrega las postcondiciones y las precondiciones
 	 */
@@ -293,7 +296,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	public String edit() {
 		String resultado = null;
 		try {
-
+			System.out.println("id modelo: " + model.getId());
 			model = CuBs.consultarCasoUso(model.getId());
 
 			System.out.println("ESTADO ELEMENTO DESDE EDIT: "
@@ -335,6 +338,26 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			resultado = index();
 		}
 
+		return resultado;
+	}
+	
+	public String show() throws Exception {
+		String resultado = null;
+		model.getPostprecondiciones();
+		try {
+		//Pruebas
+		//idSel = 1;
+			System.out.println("idSel " + idSel);
+			model = CuBs.consultarCasoUso(idSel);
+			resultado = SHOW;
+		} catch (PRISMAException pe) {
+			pe.setIdMensaje("MSG26");
+			ErrorManager.agregaMensajeError(this, pe);
+			return index();
+		} catch(Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			return index();
+		}
 		return resultado;
 	}
 

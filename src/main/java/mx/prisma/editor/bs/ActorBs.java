@@ -120,7 +120,7 @@ public class ActorBs {
 		Actor actor = null;
 		actor = new ActorDAO().consultarActor(idActor);
 		if (actor == null) {
-			throw new PRISMAException("No se pueden consultar los actores.",
+			throw new PRISMAException("No se puede consultar el actor.",
 					"MSG13");
 		}
 		return actor;

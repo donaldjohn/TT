@@ -40,6 +40,7 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 
 	public String index() throws Exception {
 		try {
+			//Se consulta el proyecto activo
 			proyecto = SessionManager.consultarProyectoActivo();
 			listActores = ActorBs.consultarActoresProyecto(proyecto);
 
@@ -90,9 +91,7 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 		try {
 			Proyecto proyecto = SessionManager.consultarProyectoActivo();
 			model.setProyecto(proyecto);
-			ActorBs.registrarActor(model);
-
-			resultado = SUCCESS;
+			ActorBs.registrarActor(model);resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",
 					"Actor", "registrado" }));
 
@@ -102,21 +101,30 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 			resultado = editNew();
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
-			resultado = index();
+			resultado = SUCCESS;
 		} catch (Exception e) {
-			e.printStackTrace();
 			ErrorManager.agregaMensajeError(this, e);
-			resultado = index();
+			resultado = SUCCESS;
 		}
 		return resultado;
 	}
 	
-	public String show() {
-		String resultado = SUCCESS;
+	public String show() throws Exception {
+		String resultado = null;
+		try {
 		//Pruebas
-		idSel = 1;
-		model = ActorBs.consultarActor(idSel);
-		resultado = SHOW;
+		//idSel = 1;
+			System.out.println("idSel " + idSel);
+			model = ActorBs.consultarActor(idSel);
+			resultado = SHOW;
+		} catch (PRISMAException pe) {
+			pe.setIdMensaje("MSG26");
+			ErrorManager.agregaMensajeError(this, pe);
+			return index();
+		} catch(Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			return index();
+		}
 		return resultado;
 	}
 
@@ -184,10 +192,12 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	}
 
 	public int getIdSel() {
+		System.out.println("desde ctrl");
 		return idSel;
 	}
 
 	public void setIdSel(int idSel) {
+		System.out.println("desde ctrl");
 		this.idSel = idSel;
 	}
 	
