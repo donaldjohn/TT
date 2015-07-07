@@ -75,7 +75,6 @@ INSERT INTO PRISMA.Verbo (nombre) VALUES ('Acerca');
 INSERT INTO PRISMA.Verbo (nombre) VALUES ('Arrastra');
 INSERT INTO PRISMA.Verbo (nombre) VALUES ('Calcula');
 INSERT INTO PRISMA.Verbo (nombre) VALUES ('Revisa');
-INSERT INTO PRISMA.Verbo (nombre) VALUES ('Oprime');
 INSERT INTO PRISMA.Verbo (nombre) VALUES ('Otro');
 
 
