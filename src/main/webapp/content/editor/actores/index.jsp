@@ -18,7 +18,7 @@
 	<s:actionerror theme="jquery"/>
 	
 	<br/>
-	<s:form theme="simple" onsubmit="return false;">
+	<s:form autocomplete="off" theme="simple" onsubmit="return false;">
 	<div class="form">
 		<table id="gestion" class="tablaGestion" cellspacing="0" width="100%">
 			<thead>

@@ -15,7 +15,7 @@
 	<h1>PRISMA</h1>
 	<p class="instrucciones">Ingrese sus datos para iniciar sesión.</p>
 	<div class="seccion">
-		<s:form action="iniciarSesion">
+		<s:form autocomplete="off" action="iniciarSesion">
 			<s:textfield name="nombreUsuario" label="Nombre de usuario"></s:textfield>
 			<s:password name="contrasena" label="Contraseña"></s:password>
 			<s:submit value="Aceptar"></s:submit>

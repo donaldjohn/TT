@@ -24,7 +24,7 @@
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 
-	<s:form id="frmReglasNegocio" theme="simple"
+	<s:form autocomplete="off" id="frmReglasNegocio" theme="simple"
 		action="%{#pageContext.request.contextPath}/reglas-negocio"
 		method="post">
 		<div class="formulario">

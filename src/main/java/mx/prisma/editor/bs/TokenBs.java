@@ -116,6 +116,9 @@ public class TokenBs {
 				redaccion = redaccion.replace(token, tokenACC + accion.getId());
 				break;
 			case ATRIBUTO: // ATR.ENTIDAD_A_B:NOMBRE_ATT
+				if (segmentos.size() != 3) {
+					errorEnToken("el", "atributo");
+				}
 				entidad = new EntidadDAO().consultarEntidad(segmentos.get(1)
 						.replaceAll("_", " "), proyecto);
 				if (entidad == null) {
@@ -149,6 +152,9 @@ public class TokenBs {
 						tokenATR + atributo.getId());
 				break;
 			case ACTOR: // ACT.NOMBRE_ACT
+				if (segmentos.size() != 2) {
+					errorEnToken("el", "actor");
+				}
 				Actor actor = new ActorDAO().consultarActor(segmentos.get(1)
 						.replaceAll("_", " "), proyecto);
 				if (actor == null) {
@@ -163,7 +169,10 @@ public class TokenBs {
 				redaccion = redaccion.replace(token, tokenACT + actor.getId());
 
 				break;
-			case CASOUSO:
+			case CASOUSO: //CU.MODULO.NUMERO:NOMBRE_CU
+				if (segmentos.size() != 4) {
+					errorEnToken("el", "caso de uso");
+				}
 				modulo = new ModuloDAO().consultarModulo(segmentos.get(1),
 						proyecto);
 				if (modulo == null) {
@@ -192,6 +201,9 @@ public class TokenBs {
 				redaccion = redaccion.replace(token, tokenCU + casoUso.getId());
 				break;
 			case ENTIDAD: // ENT.NOMBRE_ENT
+				if (segmentos.size() != 2) {
+					errorEnToken("la", "entidad");
+				}
 				entidad = new EntidadDAO().consultarEntidad(segmentos.get(1)
 						.replaceAll("_", " "), proyecto);
 				if (entidad == null) {
@@ -208,6 +220,9 @@ public class TokenBs {
 						.replace(token, tokenENT + entidad.getId());
 				break;
 			case TERMINOGLS: // GLS.NOMBRE_GLS
+				if (segmentos.size() != 2) {
+					errorEnToken("el", "término");
+				}
 				TerminoGlosario terminoGlosario = new TerminoGlosarioDAO()
 						.consultarTerminoGlosario(
 								segmentos.get(1).replaceAll("_", " "), proyecto);
@@ -222,7 +237,10 @@ public class TokenBs {
 				redaccion = redaccion.replace(token, segmentos.get(0)
 						+ tokenSeparator1 + terminoGlosario.getId());
 				break;
-			case PANTALLA:
+			case PANTALLA: //CU.MODULO.NUMERO:NOMBRE_CU
+				if (segmentos.size() != 4) {
+					errorEnToken("la", "pantalla");
+				}
 				modulo = new ModuloDAO().consultarModulo(segmentos.get(1),
 						proyecto);
 				if (modulo == null) {
@@ -252,6 +270,9 @@ public class TokenBs {
 						.replace(token, tokenIU + pantalla.getId());
 				break;
 			case MENSAJE: // MSG.NUMERO:NOMBRE_MSG
+				if (segmentos.size() != 3) {
+					errorEnToken("el", "mensaje");
+				}
 				Mensaje mensaje = new MensajeDAO().consultarMensaje(segmentos
 						.get(2).replaceAll("_", " "), proyecto);
 				if (mensaje == null) {
@@ -267,6 +288,9 @@ public class TokenBs {
 						.replace(token, tokenMSG + mensaje.getId());
 				break;
 			case REGLANEGOCIO: // RN.NUMERO:NOMBRE_RN
+				if (segmentos.size() != 3) {
+					errorEnToken("la", "regla de negocio");
+				}
 				ReglaNegocio reglaNegocio = new ReglaNegocioDAO()
 						.consultarReglaNegocio(
 								segmentos.get(2).replaceAll("_", " "), proyecto);
@@ -283,6 +307,9 @@ public class TokenBs {
 						tokenRN + reglaNegocio.getId());
 				break;
 			case TRAYECTORIA: // TRAY.CUMODULO.NUM:NOMBRECU:CLAVETRAY
+				if (segmentos.size() != 5) {
+					errorEnToken("la", "trayectoria");
+				}
 				trayectoria = null;
 				casoUso = new CasoUsoDAO().consultarCasoUso(segmentos.get(1),
 						segmentos.get(2), proyecto);
@@ -320,6 +347,9 @@ public class TokenBs {
 						tokenTray + trayectoria.getId());
 				break;
 			case PASO: // P.CUMODULO.NUM:NOMBRECU:CLAVETRAY.NUMERO
+				if (segmentos.size() != 6) {
+					errorEnToken("el", "paso");
+				}
 				casoUso = new CasoUsoDAO().consultarCasoUso(segmentos.get(1),
 						segmentos.get(2), proyecto);
 				if (casoUso == null) {
@@ -437,6 +467,9 @@ public class TokenBs {
 			switch (Referencia.getTipoReferencia(segmentos.get(0))) {
 			case ACCION: // ACC.IUM.NUM:PANTALLA:NOMBRE_ACC =
 							// ACC.IUSF.7:Registrar_incendio:Aceptar
+				if (segmentos.size() != 6) {
+					errorEnToken("la", "acción");
+				}
 				pantalla = new PantallaDAO().consultarPantalla(segmentos.get(1)
 						.replaceAll("_", " "), Integer.parseInt(segmentos
 						.get(2)), proyecto);
@@ -471,7 +504,9 @@ public class TokenBs {
 				objetos.add(accion);
 				break;
 			case ATRIBUTO: // ATR.ENTIDAD_A_B:NOMBRE_ATT
-				System.out.println(token);
+				if (segmentos.size() != 3) {
+					errorEnToken("el", "atributo");
+				}
 				Entidad entidad = new EntidadDAO().consultarEntidad(segmentos
 						.get(1).replaceAll("_", " "), proyecto);
 				if (entidad == null) {
@@ -504,6 +539,9 @@ public class TokenBs {
 				objetos.add(atributo);
 				break;
 			case ACTOR: // ACT.NOMBRE_ACT
+				if (segmentos.size() != 2) {
+					errorEnToken("el", "actor");
+				}				
 				actor = new ActorDAO().consultarActor(segmentos.get(1)
 						.replaceAll("_", " "), proyecto);
 				if (actor == null) {
@@ -521,6 +559,9 @@ public class TokenBs {
 
 				break;
 			case CASOUSO: // CU.MODULO.NUMERO:NOMBRE_CU
+				if (segmentos.size() != 4) {
+					errorEnToken("el", "caso de uso");
+				}				
 				modulo = new ModuloDAO().consultarModulo(segmentos.get(1),
 						proyecto);
 				if (modulo == null) {
@@ -549,6 +590,9 @@ public class TokenBs {
 
 				break;
 			case ENTIDAD: // ENT.NOMBRE_ENT
+				if (segmentos.size() != 2) {
+					errorEnToken("la", "entidad");
+				}				
 				entidad = new EntidadDAO().consultarEntidad(segmentos.get(1)
 						.replaceAll("_", " "), proyecto);
 				if (entidad == null) {
@@ -564,6 +608,9 @@ public class TokenBs {
 				objetos.add(entidad);
 				break;
 			case TERMINOGLS: // GLS.NOMBRE_GLS
+				if (segmentos.size() != 2) {
+					errorEnToken("el", "término");
+				}				
 				TerminoGlosario terminoGlosario = new TerminoGlosarioDAO()
 						.consultarTerminoGlosario(
 								segmentos.get(1).replaceAll("_", " "), proyecto);
@@ -578,6 +625,9 @@ public class TokenBs {
 				objetos.add(terminoGlosario);
 				break;
 			case PANTALLA: // IU.MODULO.NUMERO:NOMBRE_IU
+				if (segmentos.size() != 4) {
+					errorEnToken("la", "pantalla");
+				}				
 				modulo = new ModuloDAO().consultarModulo(segmentos.get(1),
 						proyecto);
 				if (modulo == null) {
@@ -607,6 +657,9 @@ public class TokenBs {
 
 				break;
 			case MENSAJE: // MSG.NUMERO:NOMBRE_MSG
+				if (segmentos.size() != 3) {
+					errorEnToken("el", "mensaje");
+				}				
 				Mensaje mensaje = new MensajeDAO().consultarMensaje(segmentos
 						.get(2).replaceAll("_", " "), proyecto);
 				if (mensaje == null) {
@@ -621,6 +674,9 @@ public class TokenBs {
 				objetos.add(mensaje);
 				break;
 			case REGLANEGOCIO: // RN.NUMERO:NOMBRE_RN
+				if (segmentos.size() != 3) {
+					errorEnToken("la", "regla de negocio");
+				}				
 				ReglaNegocio reglaNegocio = new ReglaNegocioDAO()
 						.consultarReglaNegocio(
 								segmentos.get(2).replaceAll("_", " "), proyecto);
@@ -637,6 +693,9 @@ public class TokenBs {
 				break;
 							  // TRAY·CUSF·001:s:A 
 			case TRAYECTORIA: // TRAY.CUMODULO.NUM:NOMBRECU:CLAVETRAY
+				if (segmentos.size() != 5) {
+					errorEnToken("la", "trayectoria");
+				}				
 				casodeuso = new CasoUsoDAO().consultarCasoUso(segmentos.get(1),
 						segmentos.get(2), proyecto);
 				if (casodeuso == null) {
@@ -676,6 +735,9 @@ public class TokenBs {
 				break;
 
 			case PASO: // P.CUMODULO.NUM:NOMBRECU:CLAVETRAY.NUMERO
+				if (segmentos.size() != 6) {
+					errorEnToken("el", "paso");
+				}				
 				casodeuso = new CasoUsoDAO().consultarCasoUso(segmentos.get(1),
 						segmentos.get(2), proyecto);
 				if (casodeuso == null) {

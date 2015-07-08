@@ -28,7 +28,7 @@
 	<br />
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
-	<s:form id="frmActor" theme="simple"
+	<s:form autocomplete="off" id="frmActor" theme="simple"
 		action="%{#pageContext.request.contextPath}/actores" method="post">
 		<div class="formulario">
 			<div class="tituloFormulario">Información general del Actor</div>

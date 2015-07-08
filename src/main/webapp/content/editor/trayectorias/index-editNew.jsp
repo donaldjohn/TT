@@ -28,7 +28,7 @@
 	<br/>
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
-	<s:form id="frmTrayectoria" theme="simple" action="%{#pageContext.request.contextPath}/trayectorias"
+	<s:form autocomplete="off" id="frmTrayectoria" theme="simple" action="%{#pageContext.request.contextPath}/trayectorias"
 		method="post" onsubmit="return prepararEnvio();">
 		<div class="formulario">
 			<div class="tituloFormulario">Información general de la Trayectoria</div>
@@ -110,7 +110,7 @@
 	<!-- EMERGENTE REGISTRAR PASO -->	
    	<sj:dialog id="pasoDialog" title="Registrar Paso" autoOpen="false" 
    	minHeight="300" minWidth="800" modal="true" draggable="true" >
-	   	<s:form id="frmPaso" name="frmPasoName" theme="simple">
+	   	<s:form autocomplete="off" id="frmPaso" name="frmPasoName" theme="simple">
 			<div class="formulario">
 				<div class="tituloFormulario">Información del Paso</div>
 				<table class="seccion">

@@ -28,7 +28,7 @@
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 
 
-	<s:form id="frmParametros" theme="simple"
+	<s:form autocomplete="off" id="frmParametros" theme="simple"
 		action="%{#pageContext.request.contextPath}/mensajes" 
 		method="post" onsubmit="return prepararEnvio();">
 		<div class="formulario">

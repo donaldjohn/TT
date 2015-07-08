@@ -27,7 +27,7 @@
 	<br />
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
-	<s:form id="frmExtension" theme="simple" action="%{#pageContext.request.contextPath}/extensiones"  method="post">
+	<s:form autocomplete="off" id="frmExtension" theme="simple" action="%{#pageContext.request.contextPath}/extensiones"  method="post">
 		<div class="formulario">
 			<s:hidden value="%{idCU}" name="idCU" />
 			<div class="tituloFormulario">Información general del Punto de

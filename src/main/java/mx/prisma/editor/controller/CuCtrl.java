@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.editor.bs.ActorBs;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.bs.Referencia;
@@ -37,7 +36,6 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 

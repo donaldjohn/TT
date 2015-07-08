@@ -195,7 +195,7 @@ public class CuBs {
 	}
 
 	public static String calcularClave(String cModulo) {
-		return "CU" + cModulo;
+		return CLAVE + cModulo;
 	}
 
 
@@ -340,7 +340,6 @@ public class CuBs {
 					redaccion = "";
 					break;
 				} else {
-					Pantalla pantalla = accion.getPantalla();
 					redaccion = redaccion.replace(token,
 							"<a href='#'>" 
 									+ accion.getNombre() 
