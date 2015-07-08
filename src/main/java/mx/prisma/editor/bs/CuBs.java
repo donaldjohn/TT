@@ -198,7 +198,6 @@ public class CuBs {
 		return CLAVE + cModulo;
 	}
 
-
 	public static CasoUso consultarCasoUso(int id) {
 		CasoUso cu = null;
 		try {

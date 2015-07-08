@@ -78,7 +78,9 @@ function cambiarElementosAlternativaPrincipal() {
 		document.getElementById("filaCondicion").style.display = 'none';
 	    document.getElementById("model.idCondicion").value = "";
 	    document.getElementById("model.finCasoUso").checked = true;
-	    document.getElementById("model.finCasoUso").disabled = true;
+	    document.getElementById("model.finCasoUso").onclick = function() { 
+           return false; 
+        };
 	} else if(varAlternativaPrincipal == "Alternativa") {
 		//Si es una trayectoria alternativa
 		document.getElementById("filaCondicion").style.display = '';
@@ -87,7 +89,9 @@ function cambiarElementosAlternativaPrincipal() {
 	} else if(varAlternativaPrincipal == "Seleccione"){
 		document.getElementById("filaCondicion").style.display = 'none';
 		document.getElementById("model.finCasoUso").checked = false;
-		document.getElementById("model.finCasoUso").disabled = false;
+	    document.getElementById("model.finCasoUso").onclick = function() { 
+	           return true; 
+	        }
 	}
 }
 
@@ -119,7 +123,7 @@ function registrarPaso(){
     		verboAux = verbo;
     	}
     	var row = [
-    	            numero,
+    	           	numero,
     	            realizaImg + " " + verboAux + " " +redaccion,
     	            realizaActor,
     	            verbo, 
