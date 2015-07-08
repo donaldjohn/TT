@@ -28,6 +28,7 @@ public class ActionSupportPRISMA extends ActionSupport {
 	public ActionSupportPRISMA() {
 		super();
 		try {
+			System.out.println("desde actionsupport");
 			SessionManager.pushURL(request);
 			urlPrev = SessionManager.popURL(request);
 		} catch (Exception e) {

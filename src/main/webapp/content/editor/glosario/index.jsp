@@ -30,6 +30,11 @@
 				<tr>
 					<td><s:property value="%{#termino.nombre}"/></td>		
 					<td align="center">
+						<s:url var="urlConsultar" value="%{#pageContext.request.contextPath}/glosario/%{#termino.id}"/>
+						<s:a href="%{urlConsultar}">
+							<img id="" class="button" title="Consultar Término"
+									src="${pageContext.request.contextPath}/resources/images/icons/ver.png" />
+						</s:a>
 						<s:a href="#">
 							<img id="" class="button" title="Modificar Término"
 									src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />

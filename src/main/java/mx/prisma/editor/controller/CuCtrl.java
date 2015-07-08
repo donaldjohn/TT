@@ -352,8 +352,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	
 	public String show() throws Exception {
 		String resultado = null;
-		model.getPostprecondiciones();
-		
 		try {
 			model = CuBs.consultarCasoUso(idSel);
 			this.existenPrecondiciones = CuBs.existenPrecondiciones(model.getPostprecondiciones());
