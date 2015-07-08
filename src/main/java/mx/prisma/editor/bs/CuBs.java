@@ -11,6 +11,7 @@ import org.hibernate.JDBCException;
 import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.Referencia;
+import mx.prisma.editor.dao.AccionDAO;
 import mx.prisma.editor.dao.ActorDAO;
 import mx.prisma.editor.dao.AtributoDAO;
 import mx.prisma.editor.dao.CasoUsoDAO;
@@ -19,10 +20,12 @@ import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.MensajeDAO;
 import mx.prisma.editor.dao.ModuloDAO;
+import mx.prisma.editor.dao.PantallaDAO;
 import mx.prisma.editor.dao.PasoDAO;
 import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.dao.TerminoGlosarioDAO;
 import mx.prisma.editor.dao.TrayectoriaDAO;
+import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
@@ -30,6 +33,7 @@ import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Modulo;
+import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.ReglaNegocio;
@@ -278,12 +282,10 @@ public class CuBs {
 		if(!Validador.esNuloOVacio(postprecondiciones)) {
 			for(PostPrecondicion pp : postprecondicionesAux) {
 				redaccion = pp.getRedaccion();
-				if(!Validador.esNuloOVacio(redaccion)) {
-					postprecondiciones.remove(pp);
-					redaccion = agregarReferencias(actionContext, redaccion);
-					pp.setRedaccion(redaccion);
-					postprecondiciones.add(pp);					
-				}
+				postprecondiciones.remove(pp);
+				redaccion = agregarReferencias(actionContext, redaccion);
+				pp.setRedaccion(redaccion);
+				postprecondiciones.add(pp);
 			}
 		}
 		
@@ -296,6 +298,7 @@ public class CuBs {
 			trayectorias.remove(trayectoria);
 			for(Paso paso : pasosAux) {
 				pasos.remove(paso);
+				redaccion = paso.getRedaccion();
 				redaccion = agregarReferencias(actionContext, redaccion);
 				paso.setRedaccion(redaccion);
 				pasos.add(paso);
@@ -318,7 +321,7 @@ public class CuBs {
 			String tokenReferencia = segmentos.get(0);
 			int id = Integer.parseInt(segmentos.get(1));
 			switch(Referencia.getTipoReferencia(tokenReferencia)) {
-			/*case ACCION:
+			case ACCION:
 				Accion accion = new AccionDAO().consultarAccion(Integer
 						.parseInt(segmentos.get(1)));
 				if (accion == null) {
@@ -327,11 +330,11 @@ public class CuBs {
 				} else {
 					Pantalla pantalla = accion.getPantalla();
 					redaccion = redaccion.replace(token,
-							"<a href='" + url + "/acciones/" + id + "'>" 
+							"<a href='#'>" 
 									+ accion.getNombre() 
 							+ "</a>");
 				}
-				break;*/
+				break;
 			case ACTOR:
 				Actor actor = new ActorDAO().consultarActor(Integer
 						.parseInt(segmentos.get(1)));
@@ -396,7 +399,7 @@ public class CuBs {
 								+ terminoGlosario.getNombre() 
 						+ "</a>");
 				break;
-			/*case PANTALLA: // IU.ID -> // IU.MODULO.NUMERO:NOMBRE_IU
+			case PANTALLA: // IU.ID -> // IU.MODULO.NUMERO:NOMBRE_IU
 				Pantalla pantalla = new PantallaDAO().consultarPantalla(Integer
 						.parseInt(segmentos.get(1)));
 				if (pantalla == null) {
@@ -404,10 +407,10 @@ public class CuBs {
 					break;
 				}
 				redaccion = redaccion.replace(token,
-						"<a href='" + actionContext + "/pantallas/" + id + "'>" 
-								+ atributo.getNombre() 
+						"<a href='#'>" 
+								+ pantalla.getNombre() 
 						+ "</a>");
-				break;*/
+				break;
 
 			case MENSAJE: // GLS.ID -> MSG.NUMERO:NOMBRE_MSG
 				Mensaje mensaje = new MensajeDAO().consultarMensaje(Integer
@@ -464,6 +467,26 @@ public class CuBs {
 		}
 		return redaccion;
 		
+	}
+
+	public static boolean existenPrecondiciones(
+			Set<PostPrecondicion> postprecondiciones) {
+		for(PostPrecondicion pp : postprecondiciones) {
+			if(pp.isPrecondicion()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static boolean existenPostcondiciones(
+			Set<PostPrecondicion> postprecondiciones) {
+		for(PostPrecondicion pp : postprecondiciones) {
+			if(!pp.isPrecondicion()) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }
