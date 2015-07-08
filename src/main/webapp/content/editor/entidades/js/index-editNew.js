@@ -173,7 +173,7 @@ function esValidoAtributo(idTabla, nombre, descripcion, tipoDato, otroTipoDato,
 		return false;
 	}
 	
-	if (nombre.length > 45) {
+	if (nombre.length > 200) {
 		agregarMensaje("Ingrese menos de 45 caracteres.");
 		return false;
 	}

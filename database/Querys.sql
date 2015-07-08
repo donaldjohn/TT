@@ -12,8 +12,6 @@ INSERT INTO PRISMA.Actor (Elementoid, Cardinalidadid) VALUES ('2', '1');
 INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('ACT', '3', 'Responsable del evento', 'Se refiere al personal que administra la información asociada a cada uno de los eventos.', '1', '1');
 INSERT INTO PRISMA.Actor (Elementoid, otraCardinalidad, Cardinalidadid) VALUES ('3', 'Uno por evento', '3');
 
-#INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('ACT', '4', 'Cartógrafo del evento', 'Se refiere al personal que realiza las georreferencias asociadas a cada uno de los eventos.', '1', '1');
-#INSERT INTO PRISMA.Actor (Elementoid, otraCardinalidad, Cardinalidadid) VALUES ('4', 'Uno por evento', '3');
 
 --------------------- Entidad --------------------- 
 INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('ENT', '1', 'Evento', 'Se refiere a cada una de las operaciones y programas realizados.', '1', '1');
@@ -25,18 +23,13 @@ INSERT INTO PRISMA.Entidad (Elementoid) VALUES ('5');
 INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('ENT', '3', 'Reforestación', 'Establecimiento inducido de vegetación forestal.', '1', '1');
 INSERT INTO PRISMA.Entidad (Elementoid) VALUES ('6');
 
-#INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('ENT', '4', 'Incendio', 'Programa cuyo objetivo es la protección de las superficies forestales con acciones de prevención, combate y control de incendios.', '1', '1');
-#INSERT INTO PRISMA.Entidad (Elementoid) VALUES ('7');
-
 
 --------------------- Atributo --------------------- 
 INSERT INTO PRISMA.Atributo (nombre, descripcion, obligatorio, longitud, EntidadElementoid, TipoDatoid) VALUES ('Folio', 'Cadena conformada por números, letras o la combinación de ambos que sirve para identificar al evento.', '1', '10', '4', '1');
 INSERT INTO PRISMA.Atributo (nombre, descripcion, obligatorio, longitud, EntidadElementoid, TipoDatoid) VALUES ('Observaciones', 'Información adicional referente al evento y a los documentos asociados.', '1', '999', '4', '1');
-#INSERT INTO PRISMA.Atributo (nombre, descripcion, obligatorio, EntidadElementoid, TipoDatoid) VALUES ('Fecha del último estado', 'Indica el día, mes y año de la asignación del último estado del evento.', '1', '4', '4');
 
 INSERT INTO PRISMA.Atributo (nombre, descripcion, obligatorio, EntidadElementoid, TipoDatoid) VALUES ('Fecha del pago', 'Se utiliza como referencia temporal para identificar al evento.', '1', '5', '4');
 INSERT INTO PRISMA.Atributo (nombre, descripcion, obligatorio, longitud, EntidadElementoid, TipoDatoid) VALUES ('Superficie solicitada', 'Superficie total solicitada para ecibir el beneficio.', '1', '10', '5', '2');
-#INSERT INTO PRISMA.Atributo (nombre, descripcion, obligatorio, longitud, EntidadElementoid, TipoDatoid) VALUES ('Superficie aprobada', 'Superficie total aprobada para ecibir el beneficio.', '1', '10', '5', '2');
 
 INSERT INTO PRISMA.Atributo (nombre, descripcion, obligatorio, EntidadElementoid, TipoDatoid) VALUES ('Fecha de plantación', 'Es el día, mes y año en que se realizó la plantación.', '1', '5', '4');
 INSERT INTO PRISMA.Atributo (nombre, descripcion, obligatorio, longitud, EntidadElementoid, TipoDatoid) VALUES ('Paraje', 'Describe al lugar o superficie relacionada al evento.', '0', '999', '5', '1');
@@ -54,8 +47,6 @@ INSERT INTO PRISMA.TerminoGlosario (Elementoid) VALUES ('9');
 INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('GLS', '4', 'Causa del incendio', 'Determina el origen de un incendio forestal.', '1', '1');
 INSERT INTO PRISMA.TerminoGlosario (Elementoid) VALUES ('10');
 
-#INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('GLS', '5', 'Exposición', 'Orientación en que el cuerpo u organismo recibe directamente el efecto de la radiación.', '1', '1');
-#INSERT INTO PRISMA.TerminoGlosario (Elementoid) VALUES ('11');  
 
 --------------------- ReglaNegocio --------------------- 
 INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('RN', '1', 'Datos obligatorios', 'Esta regla se utilizará para verificar que los datos marcados como obligatorios sean ingresados.', '1', '1');

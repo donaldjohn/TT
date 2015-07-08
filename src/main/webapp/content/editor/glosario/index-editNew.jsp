@@ -42,7 +42,7 @@
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelDescripcion" /></td>
-					<td><s:textarea name="model.descripcion" maxlength="200"
+					<td><s:textarea name="model.descripcion" maxlength="999"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
 						<s:fielderror fieldName ="model.descripcion" cssClass="error"
 							theme="jquery" /></td>
