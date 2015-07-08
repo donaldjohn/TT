@@ -9,6 +9,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.CatalogoBs;
+import mx.prisma.bs.Referencia.TipoCatalogo;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.OperadorDAO;
@@ -320,6 +322,7 @@ public class ReglaNegocioBs {
 			}
 			
 		}
+		CatalogoBs.opcionOtro(tiposRN, TipoCatalogo.TIPOREGLANEGOCIO);
 		return tiposRN;
 	}
 

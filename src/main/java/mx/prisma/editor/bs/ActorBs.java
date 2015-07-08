@@ -63,7 +63,6 @@ public class ActorBs {
 					"No se pueden consultar las cardinalidades.", "MSG13");
 		}
 		
-		
 		CatalogoBs.opcionOtro(listCardinalidad, TipoCatalogo.CARDINALIDAD);
 		return listCardinalidad;
 	}

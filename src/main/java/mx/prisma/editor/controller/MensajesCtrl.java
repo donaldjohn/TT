@@ -216,12 +216,10 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 	public void setJsonParametrosGuardados(String jsonParametrosGuardados) {
 		this.jsonParametrosGuardados = jsonParametrosGuardados;
 	}
-
 	
 	public boolean isParametrizado() {
 		return parametrizado;
 	}
-
 	
 	public void setParametrizado(boolean parametrizado) {
 		this.parametrizado = parametrizado;
