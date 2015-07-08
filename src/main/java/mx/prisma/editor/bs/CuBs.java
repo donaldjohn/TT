@@ -278,12 +278,10 @@ public class CuBs {
 		if(!Validador.esNuloOVacio(postprecondiciones)) {
 			for(PostPrecondicion pp : postprecondicionesAux) {
 				redaccion = pp.getRedaccion();
-				if(!Validador.esNuloOVacio(redaccion)) {
-					postprecondiciones.remove(pp);
-					redaccion = agregarReferencias(actionContext, redaccion);
-					pp.setRedaccion(redaccion);
-					postprecondiciones.add(pp);					
-				}
+				postprecondiciones.remove(pp);
+				redaccion = agregarReferencias(actionContext, redaccion);
+				pp.setRedaccion(redaccion);
+				postprecondiciones.add(pp);
 			}
 		}
 		
@@ -296,6 +294,7 @@ public class CuBs {
 			trayectorias.remove(trayectoria);
 			for(Paso paso : pasosAux) {
 				pasos.remove(paso);
+				redaccion = paso.getRedaccion();
 				redaccion = agregarReferencias(actionContext, redaccion);
 				paso.setRedaccion(redaccion);
 				pasos.add(paso);
@@ -464,6 +463,26 @@ public class CuBs {
 		}
 		return redaccion;
 		
+	}
+
+	public static boolean existenPrecondiciones(
+			Set<PostPrecondicion> postprecondiciones) {
+		for(PostPrecondicion pp : postprecondiciones) {
+			if(pp.isPrecondicion()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static boolean existenPostcondiciones(
+			Set<PostPrecondicion> postprecondiciones) {
+		for(PostPrecondicion pp : postprecondiciones) {
+			if(!pp.isPrecondicion()) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

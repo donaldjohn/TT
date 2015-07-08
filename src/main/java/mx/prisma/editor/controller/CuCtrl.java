@@ -81,8 +81,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	
 	private Integer idSel;
 	
-	//Prueba
-	private String tag;
+	private boolean existenPrecondiciones;
+	private boolean existenPostcondiciones;
 	/*
 	 * Agrega las postcondiciones y las precondiciones
 	 */
@@ -354,11 +354,12 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		//Pruebas
 		//idSel = 1;
 			model = CuBs.consultarCasoUso(idSel);
+			this.existenPrecondiciones = CuBs.existenPrecondiciones(model.getPostprecondiciones());
+			this.existenPostcondiciones = CuBs.existenPostcondiciones(model.getPostprecondiciones());
 			
 			String actionContext = ServletActionContext.getRequest().getContextPath();
 			CuBs.agregarReferencias(actionContext, this.model);
 			
-			tag = "<a href='prisma/cu'>hola</s> mundo";
 			resultado = SHOW;
 		} catch (PRISMAException pe) {
 			pe.setIdMensaje("MSG26");
@@ -606,14 +607,21 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		this.idSel = idSel;
 	}
 
-	public String getTag() {
-		return tag;
+	public boolean isExistenPrecondiciones() {
+		return existenPrecondiciones;
 	}
 
-	public void setTag(String tag) {
-		this.tag = tag;
+	public void setExistenPrecondiciones(boolean existenPrecondiciones) {
+		this.existenPrecondiciones = existenPrecondiciones;
 	}
-	
-	
 
+	public boolean isExistenPostcondiciones() {
+		return existenPostcondiciones;
+	}
+
+	public void setExistenPostcondiciones(boolean existenPostcondiciones) {
+		this.existenPostcondiciones = existenPostcondiciones;
+	}
+
+	
 }
