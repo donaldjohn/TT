@@ -31,6 +31,7 @@ import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entidad;
+import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
@@ -306,6 +307,17 @@ public class CuBs {
 			trayectorias.add(trayectoria);
 		}
 		
+		//Puntos de extensión
+		String region;
+		Set<Extension> extensiones = model.getExtiende();
+		List<Extension> extensionesAux = new ArrayList<Extension>(extensiones);
+		for(Extension extension : extensionesAux) {
+			extensiones.remove(extension);
+			region = extension.getRegion();
+			region = agregarReferencias(actionContext, region);
+			extension.setRegion(region);
+			extensiones.add(extension);
+		}
 				
 		
 	}
@@ -465,6 +477,7 @@ public class CuBs {
 				
 			}
 		}
+		System.out.println("Redaccion: " + redaccion);
 		return redaccion;
 		
 	}
