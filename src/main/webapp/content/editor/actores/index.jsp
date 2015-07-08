@@ -35,6 +35,11 @@
 					</td>
 					
 					<td align="center">
+						<s:url var="urlConsultar" value="%{#pageContext.request.contextPath}/actores/%{#actor.id}"/>
+						<s:a href="%{urlConsultar}">
+							<img id="" class="button" title="Consultar Actor"
+									src="${pageContext.request.contextPath}/resources/images/icons/ver.png" />
+						</s:a>
 						<s:a href="#">
 							<img id="" class="button" title="Modificar Actor"
 									src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
@@ -43,6 +48,7 @@
 							<img id="" class="button" title="Eliminar Actor"
 									src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" />
 						</s:a>
+						
 					</td>
 				</tr>
 			</s:iterator>
