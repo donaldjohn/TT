@@ -48,7 +48,7 @@
 						<s:fielderror fieldName ="model.descripcion" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
-			</table>
+			</table> 
 		</div>
 		<div class="formulario">
 			<div class="tituloFormulario">Atributos de la Entidad</div>
