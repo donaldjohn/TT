@@ -35,9 +35,7 @@
 					</td>
 					
 					<td align="center">
-						<s:url var="urlConsultar" value="%{#pageContext.request.contextPath}/actores/%{#actor.id}">
-							<s:param name="idSel" value="%{#actor.id}"/>
-						</s:url>
+						<s:url var="urlConsultar" value="%{#pageContext.request.contextPath}/actores/%{#actor.id}"/>
 						<s:a href="%{urlConsultar}">
 							<img id="" class="button" title="Consultar Actor"
 									src="${pageContext.request.contextPath}/resources/images/icons/ver.png" />

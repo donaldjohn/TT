@@ -32,23 +32,19 @@
 		<table class="seccion">
 			<tr>
 				<td class="label consulta"><s:text name="labelNombre" /></td>
-				<td class="inputFormulario ui-widget"><s:text
-						name="model.nombre" /> <s:fielderror fieldName="model.nombre"
-						cssClass="error" theme="jquery" /></td>
+				<td class="inputFormulario ui-widget"><s:property value="model.nombre" /> </td>
 			</tr>
 			<tr>
 				<td class="label consulta"><s:text name="labelDescripcion" /></td>
-				<td class="inputFormulario ui-widget"><s:text
-						name="model.descripcion" /> <s:fielderror
-						fieldName="model.descripcion" cssClass="error" theme="jquery" /></td>
+				<td class="inputFormulario ui-widget"><s:property value="model.descripcion" /></td>
 			</tr>
 			<tr>
 				<td class="label consulta"><s:text name="labelCardinalidad" /></td>
 				<td class="inputFormulario ui-widget"><s:if
 						test="model.cardinalidad.nombre != 'Otra'">
-						<s:text name="model.cardinalidad.nombre"></s:text>
+						<s:property value="model.cardinalidad.nombre"/>
 					</s:if> <s:else>
-						<s:text name="model.otraCardinalidad"></s:text>
+						<s:property value="model.otraCardinalidad"/>
 					</s:else></td>
 			</tr>
 		</table>

@@ -32,10 +32,12 @@ import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.SessionManager;
 
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 
@@ -77,7 +79,10 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	private String jsonTrayectorias;
 	private String jsonAcciones;
 	
-	private int idSel;
+	private Integer idSel;
+	
+	//Prueba
+	private String tag;
 	/*
 	 * Agrega las postcondiciones y las precondiciones
 	 */
@@ -344,11 +349,16 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	public String show() throws Exception {
 		String resultado = null;
 		model.getPostprecondiciones();
+		
 		try {
 		//Pruebas
 		//idSel = 1;
-			System.out.println("idSel " + idSel);
 			model = CuBs.consultarCasoUso(idSel);
+			
+			String actionContext = ServletActionContext.getRequest().getContextPath();
+			CuBs.agregarReferencias(actionContext, this.model);
+			
+			tag = "<a href='prisma/cu'>hola</s> mundo";
 			resultado = SHOW;
 		} catch (PRISMAException pe) {
 			pe.setIdMensaje("MSG26");
@@ -585,5 +595,25 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		}
 		return resultado;
 	}
+
+	
+
+	public Integer getIdSel() {
+		return idSel;
+	}
+
+	public void setIdSel(Integer idSel) {
+		this.idSel = idSel;
+	}
+
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+	
+	
 
 }

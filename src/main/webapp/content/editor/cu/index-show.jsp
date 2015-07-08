@@ -8,66 +8,94 @@
 <head>
 <title>Casos de uso</title>
 
-<![CDATA[
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/constructores.js"></script>
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/validaciones.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.caret.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.atwho.js"></script>
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/token.js"></script>	
-]]>
-
 </head>
 <body>
-	<h1>Registrar Caso de uso</h1>
-	
+	<h1>Consultar Caso de uso</h1>
+	<h3><s:property value="%{model.clave + ' ' + model.numero + ' ' + model.nombre}"/></h3>
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
 	<br/>
 
 	
 		<div class="formulario">
+		<div class="tituloFormulario"><img src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></div>
+		<div class="seccion">
 			<h4><s:property value="%{model.clave + ' ' + model.numero + ' ' + model.nombre}"/></h4>
 			<h5><s:text name="labelDescripcion"></s:text> </h5>
-			<s:text name="model.descripcion"></s:text>
-			<table class="seccion">
+			<p class="instrucciones"><s:text name="model.descripcion"></s:text></p>
+			
+			<table border="1">
 				<tr>
-					<td class="label"><s:text name="labelActores" /></td>
-					<td><s:text name="model.redaccionActores"/> </td>
+					<td class="label consulta"><s:text name="labelActores" /></td>
+					<td class="ui-widget">${model.redaccionActores} </td>
 				</tr>
 				<tr>
-					<td class="label"><s:text name="labelEntradas" /></td>
-					<td><s:text name="model.redaccionEntradas"/></td>
+					<td class="label consulta"><s:text name="labelEntradas" /></td>
+					<td class="ui-widget">${model.redaccionEntradas}</td>
 				</tr>
 				<tr>
-					<td class="label"><s:text name="labelSalidas" /></td>
-					<td><s:text name="model.redaccionSalidas"/></td>
+					<td class="label consulta"><s:text name="labelSalidas" /></td>
+					<td class="ui-widget">${model.redaccionSalidas}</td>
 				</tr>
 				<tr>
-					<td class="label"><s:text name="labelReglasNegocio" /></td>
-					<td><s:text name="model.redaccionReglasNegocio"/></td>
+					<td class="label consulta"><s:text name="labelReglasNegocio" /></td>
+					<td class="ui-widget">${model.redaccionReglasNegocio}</td>
 				</tr>
 				<tr>
-					<td class="label"><s:text name="precondiciones"></s:text> </td>
-				<s:iterator value="model.postprecondiciones" var="postprecondicion">
-					<s:if test="postprecondicion.precondicion">
-						<td><s:text name="postprecondicion.redaccion"></s:text></td>					
-					</s:if> 
+					<td class="label consulta"><s:text name="labelPrecondiciones"></s:text> </td>
+					<td class="ui-widget">
+						<ul>
+							<s:iterator value="model.postprecondiciones" var="postprecondicion">
+							<s:if test="%{#postprecondicion.precondicion}">
+								<li>${postprecondicion.redaccion}</li>					
+							</s:if>
+							</s:iterator>
+						</ul> 
+					</td>
 				</tr>
 				<tr>
-					<td class="label"><s:text name="precondiciones"></s:text> </td>
-					<s:else>
-						<td><s:text name="postprecondicion.redaccion"></s:text></td>
-					</s:else>					
-				</s:iterator>
+					<td class="label consulta"><s:text name="labelPostcondiciones"></s:text> </td>
+					<td class="ui-widget">
+						<ul>
+							<s:iterator value="model.postprecondiciones" var="postprecondicion">
+							<s:if test="!#postprecondicion.precondicion">
+								<li>${postprecondicion.redaccion}</li>					
+							</s:if>
+							</s:iterator>
+						</ul> 
+					</td>
 				</tr>
-			</table>		
+			</table>	
+			</div>
+		</div>
+		<div class="formulario">
+			<div class="tituloFormulario"><img src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></div>
+			<div class="seccion">
+			<h5><s:text name="labelTrayectorias"></s:text></h5>
+			<s:iterator value="model.trayectorias" var="tray">
+				<s:if test="!#tray.alternativa">
+					<h6><s:text name="labelTrayectoriaPrincipal"></s:text></h6>
+					adios
+					<s:set var = "breakLoop" value = "%{true}"/>
+				</s:if>
+			</s:iterator>
+			<s:iterator value="model.trayectorias" var="tray">
+				<h6><s:text name="labelTrayectoriaPrincipal + #tray.clave"></s:text></h6>
+				<h6><s:text name="labelTrayectoriaPrincipal"></s:text></h6>
+				<s:if test="#tray.alternativa">
+				adios
+				</s:if>
+			</s:iterator>
+			</div>
+		</div>
+		
+			
+			
 		<br />
 		<div align="center">
-			<s:submit class="boton" value="Aceptar" />
-
 			<input class="boton" type="button"
 				onclick="location.href='${pageContext.request.contextPath}/cu'"
-				value="Cancelar" />
+				value="Aceptar" />
 		</div>    	
 </body>
 	</html>
