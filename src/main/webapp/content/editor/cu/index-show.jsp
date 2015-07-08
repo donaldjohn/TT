@@ -69,7 +69,7 @@
 							</ul>
 						</td>
 					</s:if> <s:else>
-						<td class="ui-widget">Sin información</td>
+						<td class="ui-widget"><s:text name="labelSinInformacion"/></td>
 					</s:else>
 				</tr>
 				<tr>
@@ -87,7 +87,7 @@
 							</ul>
 						</td>
 					</s:if> <s:else>
-						<td class="ui-widget">Sin información</td>
+						<td class="ui-widget"><s:text name="labelSinInformacion"/></td>
 					</s:else>
 				</tr>
 			</table>
@@ -99,9 +99,13 @@
 				src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
 		</div>
 		<div class="seccion">
+		
 			<h5>
 				<s:text name="labelTrayectorias"></s:text>
 			</h5>
+			<s:if test="!existenTrayectorias">
+				<p class="instrucciones"><s:text name="labelSinTrayectorias"/></p>
+			</s:if>
 			<s:iterator value="model.trayectorias" var="tray">
 				<s:if test="!#tray.alternativa">
 					<h6>
@@ -121,10 +125,11 @@
 							${blanks} ${paso.verbo.nombre} ${blanks} ${paso.redaccion}
 						</s:else></li>
 						</s:iterator>
+						<s:if test="#tray.finCasoUso">
+						<li class="ui-widget" style="list-style-type:none"><s:text name="labelfinCasoUso"/></li>
+						</s:if>
 					</ol>
-					<s:if test="#tray.finCasoUso">
-						<div class="ui-widget"><s:text name="labelfinCasoUso"/></div>
-					</s:if>
+					
 					<s:set var="breakLoop" value="%{true}" />
 				</s:if>
 			</s:iterator>
@@ -148,10 +153,10 @@
 							${blanks} ${paso.verbo.nombre} ${blanks} ${paso.redaccion}
 						</s:else></li>
 						</s:iterator>
+						<s:if test="#tray.finCasoUso">
+						<li class="ui-widget" style="list-style-type:none"><s:text name="labelfinCasoUso"/></li>
+						</s:if>
 					</ol>
-					<s:if test="#tray.finCasoUso">
-						<div class="ui-widget"><s:text name="labelfinCasoUso"/></div>
-					</s:if>
 					<s:set var="breakLoop" value="%{true}" />
 				</s:if>
 			</s:iterator>
