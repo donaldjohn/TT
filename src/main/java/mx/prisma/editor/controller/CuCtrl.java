@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.ActorBs;
 import mx.prisma.editor.bs.CuBs;
@@ -85,6 +87,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	private boolean existenPostcondiciones;
 	private boolean existenTrayectorias;
 	private boolean existenExtensiones;
+	
+	
 	/*
 	 * Agrega las postcondiciones y las precondiciones
 	 */
@@ -353,16 +357,14 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		model.getPostprecondiciones();
 		
 		try {
-		//Pruebas
-		//idSel = 1;
 			model = CuBs.consultarCasoUso(idSel);
 			this.existenPrecondiciones = CuBs.existenPrecondiciones(model.getPostprecondiciones());
 			this.existenPostcondiciones = CuBs.existenPostcondiciones(model.getPostprecondiciones());
 			this.existenTrayectorias = model.getTrayectorias().size() > 0 ? true : false;
 			this.existenExtensiones = model.getExtiende().size() > 0 ? true : false;
-			String actionContext = ServletActionContext.getRequest().getContextPath();
-			CuBs.agregarReferencias(actionContext, this.model);
 			
+			CuBs.agregarReferencias(request.getContextPath(), this.model);
+						
 			resultado = SHOW;
 		} catch (PRISMAException pe) {
 			pe.setIdMensaje("MSG26");

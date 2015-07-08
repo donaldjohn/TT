@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringEscapeUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
@@ -325,7 +328,7 @@ public class CuBs {
 	private static String agregarReferencias(String actionContext, String redaccion) {
 		if(redaccion == null || redaccion.isEmpty()) {
 			return "Sin información";
-		}
+		}		
 		redaccion = redaccion.substring(1);
 		ArrayList<String> tokens = TokenBs.procesarTokenIpunt(redaccion);
 		for(String token : tokens) {
@@ -340,7 +343,6 @@ public class CuBs {
 					redaccion = "";
 					break;
 				} else {
-					Pantalla pantalla = accion.getPantalla();
 					redaccion = redaccion.replace(token,
 							"<a href='#'>" 
 									+ accion.getNombre() 
@@ -477,7 +479,9 @@ public class CuBs {
 				
 			}
 		}
-		System.out.println("Redaccion: " + redaccion);
+		
+		redaccion = redaccion.replace("\n", "<br/>");
+		redaccion = redaccion.replace("\r", "<br/>");
 		return redaccion;
 		
 	}
@@ -500,7 +504,6 @@ public class CuBs {
 			}
 		}
 		return false;
-	}
-	
+	}	
 }
 

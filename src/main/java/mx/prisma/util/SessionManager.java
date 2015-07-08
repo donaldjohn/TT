@@ -1,5 +1,11 @@
 package mx.prisma.util;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.NoSuchElementException;
+
+import javax.servlet.http.HttpServletRequest;
+
 import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.CuBs;
@@ -102,5 +108,45 @@ public class SessionManager {
 
 	public static void agregarIDCasoUso(int idCU) {
 		SessionManager.set(idCU, "idCU");
+	}
+
+	public static void pushURL(HttpServletRequest request) throws Exception{
+		@SuppressWarnings("unchecked")
+		Deque<String> URLStack = (Deque<String>) SessionManager.get("URLStack");
+		if(URLStack == null) {
+			URLStack = new ArrayDeque<String>();
+		}
+		
+		//Pruebas
+		System.out.println("URL****************"+request.getRequestURL().toString());  
+		System.out.println("URI****************"+request.getRequestURI().toString());
+		System.out.println("ContextPath****************"+request.getContextPath().toString());
+
+		String url = request.getHeader("Referer");
+		if(url == null) {
+			System.out.println("url null");
+			url = request.getRequestURL().toString();
+		}
+		System.out.println("push url: " + url);
+		URLStack.push(url);
+		SessionManager.set(URLStack, "URLStack");
+	}
+
+	public static String popURL(HttpServletRequest request) throws Exception{		
+		@SuppressWarnings("unchecked")
+		Deque<String> URLStack = (Deque<String>) SessionManager.get("URLStack");
+		String urlPrev = null;
+		try {
+		urlPrev = URLStack.pop();
+		} catch (NoSuchElementException nse) {
+			System.err.println("No hay url en la pila");
+			urlPrev = request.getContextPath();
+		} catch (NullPointerException npe) {
+			System.err.println("No existe URLStack en la pila");
+			urlPrev = request.getContextPath();
+		}
+		SessionManager.set(URLStack, "URLStack");
+		System.out.println("pop url: " + urlPrev);
+		return urlPrev;
 	}
 }

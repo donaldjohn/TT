@@ -230,7 +230,7 @@
 	<br />
 	<div align="center">
 		<input class="boton" type="button"
-			onclick="location.href='${pageContext.request.contextPath}/cu'"
+			onclick="location.href='${urlPrev}'"
 			value="Aceptar" />
 	</div>
 </body>
