@@ -38,7 +38,7 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
 			listTerminosGlosario = TerminoGlosarioBs.consultarTerminosGlosarioProyecto(proyecto);
-
+			model.setProyecto(proyecto);
 			@SuppressWarnings("unchecked")
 			Collection<String> msjs = (Collection<String>) SessionManager
 					.get("mensajesAccion");

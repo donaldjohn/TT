@@ -42,6 +42,7 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 		try {
 			//Se consulta el proyecto activo
 			proyecto = SessionManager.consultarProyectoActivo();
+			model.setProyecto(proyecto);
 			listActores = ActorBs.consultarActoresProyecto(proyecto);
 
 			@SuppressWarnings("unchecked")
@@ -150,15 +151,7 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 		// TODO Auto-generated method stub
 
 	}
-
-	public Proyecto getProyecto() {
-		return proyecto;
-	}
-
-	public void setProyecto(Proyecto proyecto) {
-		this.proyecto = proyecto;
-	}
-
+	
 	public List<Actor> getListActores() {
 		return listActores;
 	}

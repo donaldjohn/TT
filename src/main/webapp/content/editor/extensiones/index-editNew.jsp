@@ -48,7 +48,7 @@
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelRegion" /></td>
-					<td><s:textarea name="region" id="inputor" cssErrorClass="input-error" maxlength="500" 
+					<td><s:textarea name="region" id="inputor" cssErrorClass="input-error" maxlength="499" 
 					cssClass="inputFormulario ui-widget"></s:textarea> <s:fielderror
 							fieldName="region" cssClass="error" theme="jquery" /></td>
 				</tr>				

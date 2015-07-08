@@ -86,7 +86,7 @@ public class Paso implements java.io.Serializable {
 		this.realizaActor = realizaActor;
 	}
 
-	@Column(name = "redaccion", nullable = false, length = 999)
+	@Column(name = "redaccion", nullable = false, length = 1000)
 	public String getRedaccion() {
 		return this.redaccion;
 	}

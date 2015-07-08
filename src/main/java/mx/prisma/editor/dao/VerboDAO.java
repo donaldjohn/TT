@@ -77,12 +77,11 @@ public class VerboDAO {
 			session.getTransaction().rollback();
 		}
 		
-		if(results!=null){
-			if (results.size() > 0){
-				return results;
-			}
-		}
-		return null;
+		if(results==null){
+				return null;
+			} else
+		
+		return results;
 
 	}
 }

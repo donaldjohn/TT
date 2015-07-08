@@ -115,11 +115,12 @@ public class TrayectoriaBs {
 		if(lv == null) {
 			throw new PRISMAException("No se pueden consultar los verbos.", "MSG13");
 		}
+		CatalogoBs.opcionOtro(lv, TipoCatalogo.VERBO);
+
 		List<String> verbos = new ArrayList<String>();
 		for (Verbo v : lv) {
 			verbos.add(v.getNombre());
 		}
-		CatalogoBs.opcionOtro(lv, TipoCatalogo.VERBO);
 		return verbos;
 	}
 }
