@@ -42,7 +42,7 @@
 				</tr>
 				<tr>
 					<td class="label consulta"><s:text name="labelActores" /></td>
-					<td class="ui-widget">${model.redaccionActores}</td>
+					<td class="ui-widget inputFormulario">${model.redaccionActores}</td>
 				</tr>
 				<tr>
 					<td class="label consulta"><s:text name="labelEntradas" /></td>
@@ -196,31 +196,13 @@
 										name="labelRegion" /></span> <span class="ui-widget">${blanks} ${extension.region}</span>
 								<br /> <span class="labelIzq consulta"><s:text
 										name="labelCasoUsoExtiende" /></span> <span class="ui-widget">
-									${blanks} <a href='${pageContext.request.contextPath}/cu/${extension.casoUsoDestino.id}'>
+									${blanks} <a class="referencia" href='${pageContext.request.contextPath}/cu/${extension.casoUsoDestino.id}'>
 									${extension.casoUsoDestino.clave}
 									${extension.casoUsoDestino.numero} ${blanks}
 									${extension.casoUsoDestino.nombre}</a></span></td>
 						</tr>
 					</table>
 				</s:iterator>
-				<!-- <table>
-				<s:iterator value="model.extiende" var="extension">
-					<tr>
-						<td class="label consulta"><s:text name="labelCausa" /></td>
-						<td class="ui-widget">${extension.causa}</td>
-					</tr>
-					<tr>
-						<td class="label consulta"><s:text name="labelRegion" /></td>
-						<td class="ui-widget">${extension.region}</td>
-					</tr>
-					<tr>
-						<td class="label consulta"><s:text name="labelExtiende" /></td>
-						<td class="ui-widget">${extension.casoUsoDestino.clave} 
-						${extension.casoUsoDestino.numero} ${blanks}
-						${extension.casoUsoDestino.nombre}</td>
-					</tr>
-				</s:iterator>
-				</table> -->
 			</s:else>
 		</div>
 	</div>

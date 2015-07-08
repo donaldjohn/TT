@@ -257,9 +257,15 @@ public class CuBs {
 	}
 
 	public static void agregarReferencias(String actionContext, CasoUso model) {
-		String redaccion = model.getRedaccionActores();
+		String redaccion = null;
+		//Descripción
+		redaccion = model.getDescripcion();
+		redaccion = agregarReferencias(actionContext, redaccion);
+		model.setDescripcion(redaccion);
 		
 		// Información general del caso de uso
+		redaccion = model.getRedaccionActores();
+		
 		redaccion = agregarReferencias(actionContext, redaccion);
 		model.setRedaccionActores(redaccion);
 
@@ -328,7 +334,10 @@ public class CuBs {
 		if(redaccion == null || redaccion.isEmpty()) {
 			return "Sin información";
 		}		
-		redaccion = redaccion.substring(1);
+		if(redaccion.charAt(0) == '$') {
+			redaccion = redaccion.substring(1);
+		}
+		System.out.println("Redaccion bruta: " + StringEscapeUtils.escapeJava(redaccion));
 		ArrayList<String> tokens = TokenBs.procesarTokenIpunt(redaccion);
 		for(String token : tokens) {
 			ArrayList<String> segmentos = TokenBs.segmentarToken(token);
@@ -356,7 +365,7 @@ public class CuBs {
 					break;
 				}
 				redaccion = redaccion.replace(token, 
-						"<a href='" + actionContext + "/actores/" + id + "'>" 
+						"<a class='referencia' href='" + actionContext + "/actores/" + id + "'>" 
 								+ actor.getNombre() 
 						+ "</a>");
 				break;
@@ -368,7 +377,7 @@ public class CuBs {
 					break;
 				} else {
 					redaccion = redaccion.replace(token,
-							"<a href='" + actionContext + "/atributos/" + id + "'>" 
+							"<a class='referencia' href='" + actionContext + "/atributos/" + id + "'>" 
 									+ atributo.getNombre() 
 							+ "</a>");
 				}
@@ -382,7 +391,7 @@ public class CuBs {
 				}
 				redaccion = redaccion.replace(
 						token,
-						"<a href='" + actionContext + "/cu/" + id + "'>" 
+						"<a class='referencia' href='" + actionContext + "/cu/" + id + "'>" 
 								+ casoUso.getClave() + " " + casoUso.getNumero() + " " + casoUso.getNombre() 
 						+ "</a>");
 
@@ -395,7 +404,7 @@ public class CuBs {
 					break;
 				}
 				redaccion = redaccion.replace(token, 
-						"<a href='" + actionContext + "/entidades/" + id + "'>" 
+						"<a class='referencia' href='" + actionContext + "/entidades/" + id + "'>" 
 								+ entidad.getNombre() 
 						+ "</a>");
 
@@ -408,7 +417,7 @@ public class CuBs {
 					redaccion = "";
 				}
 				redaccion = redaccion.replace(token, 
-						"<a href='" + actionContext + "/glosario/" + id + "'>" 
+						"<a class='referencia' href='" + actionContext + "/glosario/" + id + "'>" 
 								+ terminoGlosario.getNombre() 
 						+ "</a>");
 				break;
@@ -420,7 +429,7 @@ public class CuBs {
 					break;
 				}
 				redaccion = redaccion.replace(token,
-						"<a href='#'>" 
+						"<a class='referencia' href='#'>" 
 								+ pantalla.getClave() + " " + pantalla.getNumero() + " " + pantalla.getNombre() 
 						+ "</a>");
 				break;
@@ -432,7 +441,7 @@ public class CuBs {
 					redaccion = "";
 				}
 				redaccion = redaccion.replace(token, 
-						"<a href='" + actionContext + "/mensajes/" + id + "'>" 
+						"<a class='referencia' href='" + actionContext + "/mensajes/" + id + "'>" 
 								+ mensaje.getClave() + " " + mensaje.getNumero() + " " + mensaje.getNombre() 
 						+ "</a>");
 				break;
@@ -444,7 +453,7 @@ public class CuBs {
 					redaccion = "";
 				}
 				redaccion = redaccion.replace(token, 
-						"<a href='" + actionContext + "/reglas-negocio/" + id + "'>" 
+						"<a class='referencia' href='" + actionContext + "/reglas-negocio/" + id + "'>" 
 								+ reglaNegocio.getClave() + " " + reglaNegocio.getNumero() + " " + reglaNegocio.getNombre() 
 						+ "</a>");
 				break;
@@ -456,7 +465,7 @@ public class CuBs {
 				}
 
 				redaccion = redaccion.replace(token,
-						"<a href='" + actionContext + "/trayectorias/" + id + "'>" 
+						"<a class='referencia' href='" + actionContext + "/trayectorias/" + id + "'>" 
 								+ trayectoria.getClave() 
 						+ "</a>");
 				break;
@@ -468,7 +477,7 @@ public class CuBs {
 					redaccion = "";
 				}
 				redaccion = redaccion.replace(token, 
-						"<a href='" + actionContext + "/reglas-negocio/" + id + "'>" 
+						"<a class='referencia' href='" + actionContext + "/reglas-negocio/" + id + "'>" 
 								+ paso.getNumero() 
 						+ "</a>");
 				break;
@@ -479,8 +488,10 @@ public class CuBs {
 			}
 		}
 		
+		redaccion = redaccion.replace("\r\n", "<br/>");
 		redaccion = redaccion.replace("\n", "<br/>");
 		redaccion = redaccion.replace("\r", "<br/>");
+		
 		return redaccion;
 		
 	}

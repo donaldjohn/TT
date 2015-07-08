@@ -143,7 +143,7 @@ p.main {
   	/*background-color: #0000ff;*/
   	border: 0px;
   	top: 0px;
-  	padding: 0px 40px 10px 30px;
+  	padding: 10px 40px 10px 30px;
 }
 
 .subseccion {
@@ -307,7 +307,7 @@ a.menuCUSel:hover {
 }
 
 .inputFormulario {
-	min-width:500px;
+	min-width: 500px;
 }
 
 textarea { 
@@ -396,9 +396,7 @@ textarea[readonly=""] {
 	/*background-color: #e5e5e5;*/
 	border: 1px solid #D2D7D9;
 	position: relative;
-	border-radius: 10px;
 	margin: auto;	
-	border-collapse: collapse;
 }
 .tablaDescripcion td, .tablaDescripcion th {
     padding: 5px;
@@ -408,4 +406,15 @@ textarea[readonly=""] {
 .encabezadoTabla {
 	color: white;
 	background: #4d4d4d; 
+}
+
+a.referencia{
+	font-weight: bold;
+    text-decoration: none;
+    color: #004589;
+}
+
+a.referencia:hover {
+	font-weight: bold;
+    color: #7f7f7f;
 }
