@@ -28,7 +28,7 @@
 	<br />
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
-	<s:form id="frmEntidad" theme="simple"
+	<s:form autocomplete="off" id="frmEntidad" theme="simple"
 		action="%{#pageContext.request.contextPath}/entidades" method="post"
 		onsubmit="return preparaEnvio();">
 		<div class="formulario">
@@ -104,7 +104,7 @@
 	<!-- EMERGENTE REGISTRAR ATRIBUTO -->
 	<sj:dialog id="atributoDialog" title="Registrar Atributo" autoOpen="false"
 		minHeight="300" minWidth="800" modal="true" draggable="true">
-		<s:form id="frmAtributo" name="frmAtributoName" theme="simple">
+		<s:form autocomplete="off" id="frmAtributo" name="frmAtributoName" theme="simple">
 			<div class="formulario">
 				<div class="tituloFormulario">Información del Atributo</div>
 				<table class="seccion">

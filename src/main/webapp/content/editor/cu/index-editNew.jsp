@@ -28,7 +28,7 @@
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 
 
-	<s:form id="frmCU" theme="simple"
+	<s:form autocomplete="off" id="frmCU" theme="simple"
 		action="%{#pageContext.request.contextPath}/cu" 
 		method="post" onsubmit="return preparaEnvio();">
 		<div class="formulario">
@@ -166,7 +166,7 @@
 	<!-- PRECONDICIONES -->	
    	<sj:dialog id="precondDialog" title="Registrar Precondición" autoOpen="false" 
    	minHeight="300" minWidth="800" modal="true" draggable="true" >
-	   	<s:form id="frmPrecondicion" name="frmPrecondicionName" theme="simple">
+	   	<s:form autocomplete="off" id="frmPrecondicion" name="frmPrecondicionName" theme="simple">
 			<div class="formulario">
 				<div class="tituloFormulario">Información de la Precondición</div>
 				<table class="seccion">
@@ -191,7 +191,7 @@
 	<!-- POSTCONDICIONES -->	
    	<sj:dialog id="postcondDialog" title="Registrar Postcondición" autoOpen="false" 
    	minHeight="300" minWidth="800" modal="true" draggable="true" >
-	   	<s:form id="frmPostcondicion" name="frmPostcondicionName" theme="simple">
+	   	<s:form autocomplete="off" id="frmPostcondicion" name="frmPostcondicionName" theme="simple">
 			<div class="formulario">
 				<div class="tituloFormulario">Información de la Postcondición</div>
 				<table class="seccion">
