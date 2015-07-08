@@ -343,7 +343,7 @@ public class CuBs {
 					break;
 				} else {
 					redaccion = redaccion.replace(token,
-							"<a href='#'>" 
+							"<a class='referencia' href='#'>" 
 									+ accion.getNombre() 
 							+ "</a>");
 				}
@@ -383,7 +383,7 @@ public class CuBs {
 				redaccion = redaccion.replace(
 						token,
 						"<a href='" + actionContext + "/cu/" + id + "'>" 
-								+ casoUso.getNombre() 
+								+ casoUso.getClave() + " " + casoUso.getNumero() + " " + casoUso.getNombre() 
 						+ "</a>");
 
 				break;
@@ -421,7 +421,7 @@ public class CuBs {
 				}
 				redaccion = redaccion.replace(token,
 						"<a href='#'>" 
-								+ pantalla.getNombre() 
+								+ pantalla.getClave() + " " + pantalla.getNumero() + " " + pantalla.getNombre() 
 						+ "</a>");
 				break;
 
@@ -433,7 +433,7 @@ public class CuBs {
 				}
 				redaccion = redaccion.replace(token, 
 						"<a href='" + actionContext + "/mensajes/" + id + "'>" 
-								+ mensaje.getNombre() 
+								+ mensaje.getClave() + " " + mensaje.getNumero() + " " + mensaje.getNombre() 
 						+ "</a>");
 				break;
 			case REGLANEGOCIO: // RN.ID -> RN.NUMERO:NOMBRE_RN
@@ -445,7 +445,7 @@ public class CuBs {
 				}
 				redaccion = redaccion.replace(token, 
 						"<a href='" + actionContext + "/reglas-negocio/" + id + "'>" 
-								+ reglaNegocio.getNombre() 
+								+ reglaNegocio.getClave() + " " + reglaNegocio.getNumero() + " " + reglaNegocio.getNombre() 
 						+ "</a>");
 				break;
 			case TRAYECTORIA: // TRAY.ID -> TRAY.CUMODULO.NUM:NOMBRECU:CLAVETRAY

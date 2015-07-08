@@ -35,7 +35,7 @@
 			<p class="instrucciones">
 				<s:text name="model.descripcion"></s:text>
 			</p>
-
+	<br/>
 			<table  class="tablaDescripcion">
 				<tr>
 					<td colspan="2" class="encabezadoTabla">Información general del Caso de uso</td>
