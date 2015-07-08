@@ -78,6 +78,11 @@ public class TokenBs {
 			switch (Referencia.getTipoReferencia(segmentos.get(0))) {
 			case ACCION: // ACC.IUM.NUM:PANTALLA:NOMBRE_ACC =
 							// ACC.IUSF.7:Registrar_incendio:Aceptar
+				
+				if (segmentos.size() != 6) {
+					errorEnToken("acción");
+
+				}
 				pantalla = new PantallaDAO().consultarPantalla(segmentos.get(1)
 						.replaceAll("_", " "), Integer.parseInt(segmentos
 						.get(2)), proyecto);
@@ -387,6 +392,20 @@ public class TokenBs {
 			return "$" + redaccion;
 		else
 			return "";
+	}
+
+	private static void errorEnToken(String articulo, String elemento) {
+		String[] parametros = {
+				articulo,
+				elemento,
+				 };
+		
+		throw new PRISMAValidacionException( 
+				"TokenBs.errorEnToken: El token acción no"
+						+ segmentos.get(4).replaceAll("_", " ")
+						+ "de la pantalla" + segmentos.get(1)
+						+ segmentos.get(2) + "no está registrada",
+				"MSG15", parametros);		
 	}
 
 	private static boolean coma(String cadena, int i, char caracter) {

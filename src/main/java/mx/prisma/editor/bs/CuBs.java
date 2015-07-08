@@ -95,7 +95,7 @@ public class CuBs {
 	public static void registrarCasoUso(CasoUso cu) throws Exception{
 		try {
 				validar(cu);
-				cu.setClave(CLAVE);
+				cu.setClave(calcularClave(cu.getModulo().getClave()));
 				cu.setEstadoElemento(new EstadoElementoDAO()
 						.consultarEstadoElemento(ElementoBs.getIDEstadoEdicion()));
 				//Se quitan los espacios iniciales y finales del nombre
