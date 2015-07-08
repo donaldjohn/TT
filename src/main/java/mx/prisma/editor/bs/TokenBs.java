@@ -401,11 +401,10 @@ public class TokenBs {
 				 };
 		
 		throw new PRISMAValidacionException( 
-				"TokenBs.errorEnToken: El token acción no"
-						+ segmentos.get(4).replaceAll("_", " ")
-						+ "de la pantalla" + segmentos.get(1)
-						+ segmentos.get(2) + "no está registrada",
-				"MSG15", parametros);		
+				"TokenBs.errorEnToken: El token ingresado para "
+						+ articulo + " "
+						+ elemento + "es inválido.",
+				"MSG27", parametros);		
 	}
 
 	private static boolean coma(String cadena, int i, char caracter) {
