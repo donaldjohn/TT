@@ -40,7 +40,6 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 	private Entidad model;
 	private List<Entidad> listEntidades;
 	private String jsonAtributosTabla;
-
 	private List<TipoDato> listTipoDato;
 	private List<UnidadTamanio> listUnidadTamanio;
 

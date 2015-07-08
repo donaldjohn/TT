@@ -121,9 +121,7 @@ public class ElementoDAO {
 			throw he;
 		}
 
-		if (results == null) {
-			return null;
-		} else if (results.isEmpty()) {
+		if (results == null || results.isEmpty()) {
 			return 1 + "";
 		} else
 			return results.get(0) + "";

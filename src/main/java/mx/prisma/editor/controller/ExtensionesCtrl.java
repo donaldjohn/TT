@@ -99,9 +99,10 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 							pasoAuxiliar.setNumero(paso.getNumero());
 							pasoAuxiliar.setRealizaActor(paso.isRealizaActor());
 							pasoAuxiliar.setVerbo(paso.getVerbo());
-							pasoAuxiliar.setRedaccion(TokenBs
+							pasoAuxiliar.setRedaccion(TokenBs.decodificarCadenaSinToken(TokenBs
 									.decodificarCadenasToken(paso
-											.getRedaccion()));
+											.getRedaccion())));
+							
 							listPasos.add(pasoAuxiliar);
 						}
 					}

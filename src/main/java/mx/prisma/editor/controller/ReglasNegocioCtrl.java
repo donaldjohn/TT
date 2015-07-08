@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.EntidadBs;
 import mx.prisma.editor.bs.ReglaNegocioBs;
-import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Operador;
@@ -18,7 +16,6 @@ import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TipoReglaNegocio;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
-import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.SessionManager;
@@ -258,8 +255,6 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	public String cargarAtributosFecha() {
 		try {
 			System.out.println("tipo RN desde cargarAtributosFecha: " + this.idTipoRN);
-			String tipoRN = ReglaNegocioBs.consultaReglaNegocio(idTipoRN).getNombre();
-			Entidad entidad = EntidadBs.consultarEntidad(this.idEntidad);
 			this.listAtributos = EntidadBs.consultarAtributosTipoFecha(this.idEntidad);
 			
 			System.out.println("size atr: " + listAtributos.size());
