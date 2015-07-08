@@ -379,3 +379,33 @@ textarea[readonly=""] {
 	font-weight: bold;
 	letter-spacing: 1px;
 }
+
+.labelIzq::after {
+	content: ":";
+}
+
+.labelIzq {
+	font-size:12px;
+	text-align: left; 
+	vertical-align: top; 
+	width: 200px;
+}
+
+.tablaDescripcion {
+	/*background-color: #e5e5e5;*/
+	border: 1px solid #D2D7D9;
+	position: relative;
+	border-radius: 10px;
+	margin: 15px;	
+	border-collapse: collapse;
+	
+}
+.tablaDescripcion td, .tablaDescripcion th {
+    padding: 5px;
+    font-size: 12px;
+    border: 1px solid #D2D7D9;
+}
+.encabezadoTabla {
+	color: white;
+	background: #4d4d4d; 
+}

@@ -83,6 +83,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	
 	private boolean existenPrecondiciones;
 	private boolean existenPostcondiciones;
+	private boolean existenTrayectorias;
+	private boolean existenExtensiones;
 	/*
 	 * Agrega las postcondiciones y las precondiciones
 	 */
@@ -356,7 +358,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			model = CuBs.consultarCasoUso(idSel);
 			this.existenPrecondiciones = CuBs.existenPrecondiciones(model.getPostprecondiciones());
 			this.existenPostcondiciones = CuBs.existenPostcondiciones(model.getPostprecondiciones());
-			
+			this.existenTrayectorias = model.getTrayectorias().size() > 0 ? true : false;
+			this.existenExtensiones = model.getExtiende().size() > 0 ? true : false;
 			String actionContext = ServletActionContext.getRequest().getContextPath();
 			CuBs.agregarReferencias(actionContext, this.model);
 			
@@ -621,6 +624,22 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 	public void setExistenPostcondiciones(boolean existenPostcondiciones) {
 		this.existenPostcondiciones = existenPostcondiciones;
+	}
+
+	public boolean isExistenTrayectorias() {
+		return existenTrayectorias;
+	}
+
+	public void setExistenTrayectorias(boolean existenTrayectorias) {
+		this.existenTrayectorias = existenTrayectorias;
+	}
+
+	public boolean isExistenExtensiones() {
+		return existenExtensiones;
+	}
+
+	public void setExistenExtensiones(boolean existenExtensiones) {
+		this.existenExtensiones = existenExtensiones;
 	}
 
 	
