@@ -15,13 +15,20 @@ public class CatalogoBs {
 			switch (tipoCatalogo){
 			case CARDINALIDAD:
 				Cardinalidad cardinalidad = null;
+				boolean cambio = false;
+				lista:
 				for (Object objeto : lista) {
 					cardinalidad = (Cardinalidad)objeto;
 					if (cardinalidad.getNombre().equals(otro) || cardinalidad.getNombre().equals(otra)) {
-						lista.remove(objeto);
-						lista.add(cardinalidad);
+						
+						cambio = true;
+						break lista;
 					}
-				}				
+				}	
+				if(cambio) {
+					lista.remove(cardinalidad);
+					lista.add(cardinalidad);
+				}
 				break;
 			case ESTADOELEMENTO:
 				break;

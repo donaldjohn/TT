@@ -2,6 +2,7 @@ package mx.prisma.util;
 
 
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import mx.prisma.admin.dao.ColaboradorDAO;
 import mx.prisma.admin.dao.EstadoProyectoDAO;
@@ -32,7 +33,12 @@ import mx.prisma.editor.model.PostPrecondicion;
 
 public class Test {
 	public static void main(String[] args) {
+		
+		
+		
 		/* Módulo Administrador */
+		System.out.println(Pattern.matches("\\d\\d\\d\\d-\\d\\d\\d\\d", "0123-0123"));
+	
 
 		// pruebaRegistroColaborador(); // 07/06/2015 OK
 		// pruebaModificacionColaborador(); // 07/06/2015 OK

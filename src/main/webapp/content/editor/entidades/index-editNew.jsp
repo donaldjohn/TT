@@ -111,7 +111,7 @@
 					<tr>
 						<td class="label obligatorio"><s:text name="labelNombre" /></td>
 						<td><s:textfield name="atributo.nombre" id="atributo.nombre" cssClass="inputFormulario ui-widget"
-								maxlength="45" cssErrorClass="input-error"></s:textfield></td>
+								maxlength="200" cssErrorClass="input-error"></s:textfield></td>
 					</tr>
 					<tr>
 						<td class="label obligatorio"><s:text name="labelDescripcion" /></td>

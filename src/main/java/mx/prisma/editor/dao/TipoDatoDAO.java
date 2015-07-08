@@ -16,20 +16,30 @@ public class TipoDatoDAO {
 		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
 	}
 
-	public TipoDato consultarTipoDato(int identificador) {
-		TipoDato tipoDato = null;
+	@SuppressWarnings("unchecked")
+	public TipoDato consultarTipoDato(int id) {
+		List<TipoDato> results = null;
 
 		try {
 			session.beginTransaction();
-			tipoDato = (TipoDato) session.get(TipoDato.class,
-					identificador);
+			Query query = session
+					.createQuery("from TipoDato where id = :id");
+ 			query.setParameter("id", id);
+
+			results = query.list();
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
-		return tipoDato;
-
+		
+		if(results!=null){
+			if (results.get(0) != null){
+				return results.get(0);
+			}
+		}
+		
+		return null;
 	}
 	
 	@SuppressWarnings("unchecked")

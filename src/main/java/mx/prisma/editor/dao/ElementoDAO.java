@@ -200,8 +200,6 @@ public class ElementoDAO {
 		}
 		if (elementos == null) {
 			return null;
-		} else if (elementos.isEmpty()) {
-			return null;
 		} else
 			return elementos;
 	}
