@@ -15,9 +15,7 @@ import com.opensymphony.xwork2.ModelDriven;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.CuBs;
-import mx.prisma.bs.CatalogoBs;
 import mx.prisma.bs.Referencia;
-import mx.prisma.bs.Referencia.TipoCatalogo;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.bs.TrayectoriaBs;
 import mx.prisma.editor.model.Accion;
@@ -168,7 +166,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		
 		//Se extraen los verbos de la BD
 		listVerbos = TrayectoriaBs.consultarVerbos();
-		CatalogoBs.opcionOtro(listVerbos, TipoCatalogo.VERBO);
 	}
 
 	/**

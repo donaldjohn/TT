@@ -57,8 +57,8 @@ public class ExtensionBs {
 		if(Validador.esNuloOVacio(extension.getRegion())) {
 			throw new PRISMAValidacionException("El usuario no ingresó la región.", "MSG4", null, "region");
 		}
-		if(Validador.validaLongitudMaxima(extension.getCausa(), 500)) {
-			throw new PRISMAValidacionException("El usuario ingreso una región muy larga.", "MSG6", new String[] { "500",
+		if(Validador.validaLongitudMaxima(extension.getCausa(), 499)) {
+			throw new PRISMAValidacionException("El usuario ingreso una región muy larga.", "MSG6", new String[] { "499",
 			"caracteres"}, "causa");
 		}
 		return true;

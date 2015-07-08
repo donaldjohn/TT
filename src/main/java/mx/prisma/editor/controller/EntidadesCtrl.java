@@ -48,6 +48,7 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
 			listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
+			model.setProyecto(proyecto);
 
 			@SuppressWarnings("unchecked")
 			Collection<String> msjs = (Collection<String>) SessionManager
