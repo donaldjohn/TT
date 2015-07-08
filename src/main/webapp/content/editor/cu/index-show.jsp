@@ -19,7 +19,6 @@
 	<s:actionerror theme="jquery" />
 	<br />
 
-
 	<div class="formulario">
 		<div class="tituloFormulario">
 			<img
