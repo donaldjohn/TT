@@ -2,6 +2,7 @@ package mx.prisma.editor.bs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.hibernate.HibernateException;
@@ -9,16 +10,36 @@ import org.hibernate.JDBCException;
 
 import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.Referencia;
+import mx.prisma.editor.dao.AccionDAO;
+import mx.prisma.editor.dao.ActorDAO;
+import mx.prisma.editor.dao.AtributoDAO;
 import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.ElementoDAO;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
+import mx.prisma.editor.dao.MensajeDAO;
 import mx.prisma.editor.dao.ModuloDAO;
+import mx.prisma.editor.dao.PantallaDAO;
+import mx.prisma.editor.dao.PasoDAO;
+import mx.prisma.editor.dao.ReglaNegocioDAO;
+import mx.prisma.editor.dao.TerminoGlosarioDAO;
+import mx.prisma.editor.dao.TrayectoriaDAO;
 import mx.prisma.editor.dao.VerboDAO;
+import mx.prisma.editor.model.Accion;
+import mx.prisma.editor.model.Actor;
+import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
+import mx.prisma.editor.model.Entidad;
+import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Modulo;
+import mx.prisma.editor.model.Pantalla;
+import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
+import mx.prisma.editor.model.ReglaNegocio;
+import mx.prisma.editor.model.TerminoGlosario;
+import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.editor.model.Verbo;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
@@ -235,6 +256,236 @@ public class CuBs {
 			verbos.add(v.getNombre());
 		}
 		return verbos;
+	}
+
+	public static CasoUso decodificarAtributos(CasoUso model) {
+		String redaccionActores = model.getRedaccionActores();
+		if(!Validador.esNuloOVacio(redaccionActores)) {
+			model.setRedaccionActores(TokenBs.decodificarCadenasToken(redaccionActores));
+		}
+		return model;
+			
+	}
+
+	public static void agregarReferencias(String actionContext, CasoUso model) {
+		String redaccion = model.getRedaccionActores();
+		
+		// Información general del caso de uso
+		redaccion = agregarReferencias(actionContext, redaccion);
+		model.setRedaccionActores(redaccion);
+
+		redaccion = model.getRedaccionEntradas();
+		
+		redaccion = agregarReferencias(actionContext, redaccion);
+		model.setRedaccionEntradas(redaccion);
+
+		redaccion = model.getRedaccionSalidas();
+
+		redaccion = agregarReferencias(actionContext, redaccion);
+		model.setRedaccionSalidas(redaccion);
+			
+		redaccion = model.getRedaccionReglasNegocio();
+		
+		redaccion = agregarReferencias(actionContext, redaccion);
+		model.setRedaccionReglasNegocio(redaccion);
+		
+		
+		//Precondiciones y postcondiciones
+		Set<PostPrecondicion> postprecondiciones = model.getPostprecondiciones();
+		List<PostPrecondicion> postprecondicionesAux = new ArrayList<PostPrecondicion>(postprecondiciones);
+		if(!Validador.esNuloOVacio(postprecondiciones)) {
+			for(PostPrecondicion pp : postprecondicionesAux) {
+				redaccion = pp.getRedaccion();
+				if(!Validador.esNuloOVacio(redaccion)) {
+					postprecondiciones.remove(pp);
+					redaccion = agregarReferencias(actionContext, redaccion);
+					pp.setRedaccion(redaccion);
+					postprecondiciones.add(pp);					
+				}
+			}
+		}
+		
+		//Trayectorias
+		Set<Trayectoria> trayectorias = model.getTrayectorias();
+		List<Trayectoria> trayectoriasAux = new ArrayList<Trayectoria>(trayectorias);
+		for(Trayectoria trayectoria : trayectoriasAux) {
+			Set<Paso> pasos = trayectoria.getPasos();
+			List<Paso> pasosAux = new ArrayList<Paso>(pasos);
+			trayectorias.remove(trayectoria);
+			for(Paso paso : pasosAux) {
+				pasos.remove(paso);
+				redaccion = agregarReferencias(actionContext, redaccion);
+				paso.setRedaccion(redaccion);
+				pasos.add(paso);
+			}
+			trayectorias.add(trayectoria);
+		}
+		
+				
+		
+	}
+
+	private static String agregarReferencias(String actionContext, String redaccion) {
+		if(redaccion == null || redaccion.isEmpty()) {
+			return "Sin información";
+		}
+		redaccion = redaccion.substring(1);
+		ArrayList<String> tokens = TokenBs.procesarTokenIpunt(redaccion);
+		for(String token : tokens) {
+			ArrayList<String> segmentos = TokenBs.segmentarToken(token);
+			String tokenReferencia = segmentos.get(0);
+			int id = Integer.parseInt(segmentos.get(1));
+			String url = "prisma";
+			switch(Referencia.getTipoReferencia(tokenReferencia)) {
+			/*case ACCION:
+				Accion accion = new AccionDAO().consultarAccion(Integer
+						.parseInt(segmentos.get(1)));
+				if (accion == null) {
+					redaccion = "";
+					break;
+				} else {
+					Pantalla pantalla = accion.getPantalla();
+					redaccion = redaccion.replace(token,
+							"<a href='" + url + "/acciones/" + id + "'>" 
+									+ accion.getNombre() 
+							+ "</a>");
+				}
+				break;*/
+			case ACTOR:
+				Actor actor = new ActorDAO().consultarActor(Integer
+						.parseInt(segmentos.get(1)));
+				if (actor == null) {
+					redaccion = "";
+					break;
+				}
+				redaccion = redaccion.replace(token, 
+						"<a href='" + actionContext + "/actores/" + id + "'>" 
+								+ actor.getNombre() 
+						+ "</a>");
+				break;
+			case ATRIBUTO:
+				Atributo atributo = new AtributoDAO().consultarAtributo(Integer
+						.parseInt(segmentos.get(1)));
+				if (atributo == null) {
+					redaccion = "";
+					break;
+				} else {
+					redaccion = redaccion.replace(token,
+							"<a href='" + actionContext + "/atributos/" + id + "'>" 
+									+ atributo.getNombre() 
+							+ "</a>");
+				}
+				break;
+			case CASOUSO:
+				CasoUso casoUso = new CasoUsoDAO().consultarCasoUso(Integer
+						.parseInt(segmentos.get(1)));
+				if (casoUso == null) {
+					redaccion = "";
+					break;
+				}
+				redaccion = redaccion.replace(
+						token,
+						"<a href='" + actionContext + "/cu/" + id + "'>" 
+								+ casoUso.getNombre() 
+						+ "</a>");
+
+				break;
+			case ENTIDAD: // ENT.ID -> ENT.NOMBRE_ENT
+				Entidad entidad = new EntidadDAO().consultarEntidad(Integer
+						.parseInt(segmentos.get(1)));
+				if (entidad == null) {
+					redaccion = "";
+					break;
+				}
+				redaccion = redaccion.replace(token, 
+						"<a href='" + actionContext + "/entidades/" + id + "'>" 
+								+ entidad.getNombre() 
+						+ "</a>");
+
+				break;
+			case TERMINOGLS: // GLS.ID -> GLS.NOMBRE_GLS
+				TerminoGlosario terminoGlosario = new TerminoGlosarioDAO()
+						.consultarTerminoGlosario(Integer.parseInt(segmentos
+								.get(1)));
+				if (terminoGlosario == null) {
+					redaccion = "";
+				}
+				redaccion = redaccion.replace(token, 
+						"<a href='" + actionContext + "/glosario/" + id + "'>" 
+								+ terminoGlosario.getNombre() 
+						+ "</a>");
+				break;
+			/*case PANTALLA: // IU.ID -> // IU.MODULO.NUMERO:NOMBRE_IU
+				Pantalla pantalla = new PantallaDAO().consultarPantalla(Integer
+						.parseInt(segmentos.get(1)));
+				if (pantalla == null) {
+					redaccion = "";
+					break;
+				}
+				redaccion = redaccion.replace(token,
+						"<a href='" + actionContext + "/pantallas/" + id + "'>" 
+								+ atributo.getNombre() 
+						+ "</a>");
+				break;*/
+
+			case MENSAJE: // GLS.ID -> MSG.NUMERO:NOMBRE_MSG
+				Mensaje mensaje = new MensajeDAO().consultarMensaje(Integer
+						.parseInt(segmentos.get(1)));
+				if (mensaje == null) {
+					redaccion = "";
+				}
+				redaccion = redaccion.replace(token, 
+						"<a href='" + actionContext + "/mensajes/" + id + "'>" 
+								+ mensaje.getNombre() 
+						+ "</a>");
+				break;
+			case REGLANEGOCIO: // RN.ID -> RN.NUMERO:NOMBRE_RN
+				ReglaNegocio reglaNegocio = new ReglaNegocioDAO()
+						.consultarReglaNegocio(Integer.parseInt(segmentos
+								.get(1)));
+				if (reglaNegocio == null) {
+					redaccion = "";
+				}
+				redaccion = redaccion.replace(token, 
+						"<a href='" + actionContext + "/reglas-negocio/" + id + "'>" 
+								+ reglaNegocio.getNombre() 
+						+ "</a>");
+				break;
+			case TRAYECTORIA: // TRAY.ID -> TRAY.CUMODULO.NUM:NOMBRECU:CLAVETRAY
+				Trayectoria trayectoria = new TrayectoriaDAO()
+						.consultarTrayectoria(Integer.parseInt(segmentos.get(1)));
+				if (trayectoria == null) {
+					redaccion = "";
+				}
+
+				CasoUso cu = trayectoria.getCasoUso();
+				redaccion = redaccion.replace(token,
+						"<a href='" + actionContext + "/trayectorias/" + id + "'>" 
+								+ trayectoria.getClave() 
+						+ "</a>");
+				break;
+
+			case PASO: // P.CUMODULO.NUM:NOMBRECU:CLAVETRAY.NUMERO
+				Paso paso = new PasoDAO().consultarPaso(Integer
+						.parseInt(segmentos.get(1)));
+				if (paso == null) {
+					redaccion = "";
+				}
+				Trayectoria t = paso.getTrayectoria();
+				CasoUso cut = t.getCasoUso();
+				redaccion = redaccion.replace(token, 
+						"<a href='" + actionContext + "/reglas-negocio/" + id + "'>" 
+								+ paso.getNumero() 
+						+ "</a>");
+				break;
+
+			default:
+				break;
+				
+			}
+		}
+		return redaccion;
+		
 	}
 	
 }

@@ -26,50 +26,41 @@
 	<s:actionerror theme="jquery" />
 	<br />
 
-	<s:form id="frmActor" theme="simple"
-		action="%{#pageContext.request.contextPath}/actores" method="post">
-		<div class="formulario">
-			<div class="tituloFormulario">Información general del Actor</div>
-			<table class="seccion">
-				<tr>
-					<td class="label consulta"><s:text name="labelNombre" /></td>
-					<td class="inputFormulario ui-widget"><s:text name="model.nombre"/>
-						<s:fielderror fieldName="model.nombre" cssClass="error"
-							theme="jquery" /></td>
-				</tr>
-				<tr>
-					<td class="label consulta"><s:text name="labelDescripcion" /></td>
-					<td class="inputFormulario ui-widget"><s:text name="model.descripcion"/>
-						<s:fielderror fieldName="model.descripcion" cssClass="error"
-							theme="jquery" /></td>
-				</tr>
-				<tr>
-					<td class="label consulta"><s:text name="labelCardinalidad" /></td>
-					<td class="inputFormulario ui-widget">
-					<s:if test="model.cardinalidad.nombre != 'Otra'">
-						<s:text name="model.cardinalidad.nombre"></s:text>
-					</s:if> <s:else>
-						<s:text name="model.otraCardinalidad"></s:text>
-					</s:else>
-					</td>
-				</tr>
-			</table>
-		</div>
 
-		<br />
-		<div align="center">
-			<s:url var="urlPrevia"
-				value="%{#request.header.referer}">
-			</s:url>
-			
-			<s:url var="urlGestionarActores"
-				value="%{#pageContext.request.contextPath}/actores">
-			</s:url>
-			<input class="boton" type="button"
-				onclick="location.href='${urlGestionarActores}'"
-				value="Aceptar" />
-		</div>
-	</s:form>
+	<div class="formulario">
+		<div class="tituloFormulario">Información general del Actor</div>
+		<table class="seccion">
+			<tr>
+				<td class="label consulta"><s:text name="labelNombre" /></td>
+				<td class="inputFormulario ui-widget"><s:property value="model.nombre" /> </td>
+			</tr>
+			<tr>
+				<td class="label consulta"><s:text name="labelDescripcion" /></td>
+				<td class="inputFormulario ui-widget"><s:property value="model.descripcion" /></td>
+			</tr>
+			<tr>
+				<td class="label consulta"><s:text name="labelCardinalidad" /></td>
+				<td class="inputFormulario ui-widget"><s:if
+						test="model.cardinalidad.nombre != 'Otra'">
+						<s:property value="model.cardinalidad.nombre"/>
+					</s:if> <s:else>
+						<s:property value="model.otraCardinalidad"/>
+					</s:else></td>
+			</tr>
+		</table>
+	</div>
+
+	<br />
+	<div align="center">
+		<s:url var="urlPrevia" value="%{#request.header.referer}">
+		</s:url>
+
+		<s:url var="urlGestionarActores"
+			value="%{#pageContext.request.contextPath}/actores">
+		</s:url>
+		<input class="boton" type="button"
+			onclick="location.href='${urlGestionarActores}'" value="Aceptar" />
+	</div>
 </body>
 	</html>
 </jsp:root>

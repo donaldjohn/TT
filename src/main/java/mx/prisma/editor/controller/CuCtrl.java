@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.bs.ActorBs;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.bs.Referencia;
@@ -31,10 +32,12 @@ import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.SessionManager;
 
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 
@@ -75,6 +78,11 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	private String jsonPasos;
 	private String jsonTrayectorias;
 	private String jsonAcciones;
+	
+	private Integer idSel;
+	
+	//Prueba
+	private String tag;
 	/*
 	 * Agrega las postcondiciones y las precondiciones
 	 */
@@ -293,7 +301,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	public String edit() {
 		String resultado = null;
 		try {
-
+			System.out.println("id modelo: " + model.getId());
 			model = CuBs.consultarCasoUso(model.getId());
 
 			System.out.println("ESTADO ELEMENTO DESDE EDIT: "
@@ -335,6 +343,31 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			resultado = index();
 		}
 
+		return resultado;
+	}
+	
+	public String show() throws Exception {
+		String resultado = null;
+		model.getPostprecondiciones();
+		
+		try {
+		//Pruebas
+		//idSel = 1;
+			model = CuBs.consultarCasoUso(idSel);
+			
+			String actionContext = ServletActionContext.getRequest().getContextPath();
+			CuBs.agregarReferencias(actionContext, this.model);
+			
+			tag = "<a href='prisma/cu'>hola</s> mundo";
+			resultado = SHOW;
+		} catch (PRISMAException pe) {
+			pe.setIdMensaje("MSG26");
+			ErrorManager.agregaMensajeError(this, pe);
+			return index();
+		} catch(Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			return index();
+		}
 		return resultado;
 	}
 
@@ -562,5 +595,25 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		}
 		return resultado;
 	}
+
+	
+
+	public Integer getIdSel() {
+		return idSel;
+	}
+
+	public void setIdSel(Integer idSel) {
+		this.idSel = idSel;
+	}
+
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+	
+	
 
 }
