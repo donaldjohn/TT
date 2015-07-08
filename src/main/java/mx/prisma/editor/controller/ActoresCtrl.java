@@ -113,9 +113,6 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	public String show() throws Exception {
 		String resultado = null;
 		try {
-		//Pruebas
-		//idSel = 1;
-			System.out.println("idSel " + idSel);
 			model = ActorBs.consultarActor(idSel);
 			resultado = SHOW;
 		} catch (PRISMAException pe) {

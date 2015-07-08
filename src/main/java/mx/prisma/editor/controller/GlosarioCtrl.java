@@ -12,6 +12,7 @@ import org.apache.struts2.interceptor.SessionAware;
 import com.opensymphony.xwork2.ModelDriven;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.TerminoGlosarioBs;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.util.ActionSupportPRISMA;
@@ -33,7 +34,7 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 	private Proyecto proyecto;
 	private TerminoGlosario model;
 	private List<TerminoGlosario> listTerminosGlosario;
-
+	private Integer idSel;
 	public String index() throws Exception {
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
@@ -97,6 +98,23 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 		return resultado;
 	}
 
+	public String show() throws Exception {
+		System.out.println("desde show");
+		String resultado = null;
+		
+		try {
+			model = TerminoGlosarioBs.consultarTerminoGlosario(idSel);			
+			resultado = SHOW;
+		} catch (PRISMAException pe) {
+			pe.setIdMensaje("MSG26");
+			ErrorManager.agregaMensajeError(this, pe);
+			return index();
+		} catch(Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			return index();
+		}
+		return resultado;
+	}
 
 	public TerminoGlosario getModel() {
 		return (model == null) ? model = new TerminoGlosario() : model;
@@ -134,6 +152,14 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 
 	public void setListTerminosGlosario(List<TerminoGlosario> listTerminosGlosario) {
 		this.listTerminosGlosario = listTerminosGlosario;
+	}
+
+	public Integer getIdSel() {
+		return idSel;
+	}
+
+	public void setIdSel(Integer idSel) {
+		this.idSel = idSel;
 	}
 
 	
