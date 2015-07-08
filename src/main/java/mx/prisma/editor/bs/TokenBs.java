@@ -80,8 +80,7 @@ public class TokenBs {
 							// ACC.IUSF.7:Registrar_incendio:Aceptar
 				
 				if (segmentos.size() != 6) {
-					errorEnToken("acción");
-
+					errorEnToken("la", "acción");
 				}
 				pantalla = new PantallaDAO().consultarPantalla(segmentos.get(1)
 						.replaceAll("_", " "), Integer.parseInt(segmentos
@@ -398,12 +397,12 @@ public class TokenBs {
 		String[] parametros = {
 				articulo,
 				elemento,
-				 };
+		};
 		
 		throw new PRISMAValidacionException( 
 				"TokenBs.errorEnToken: El token ingresado para "
 						+ articulo + " "
-						+ elemento + "es inválido.",
+						+ elemento + " es inválido.",
 				"MSG27", parametros);		
 	}
 
