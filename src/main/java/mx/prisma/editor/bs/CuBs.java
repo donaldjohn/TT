@@ -11,7 +11,6 @@ import org.hibernate.JDBCException;
 import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.Referencia;
-import mx.prisma.editor.dao.AccionDAO;
 import mx.prisma.editor.dao.ActorDAO;
 import mx.prisma.editor.dao.AtributoDAO;
 import mx.prisma.editor.dao.CasoUsoDAO;
@@ -20,13 +19,10 @@ import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.MensajeDAO;
 import mx.prisma.editor.dao.ModuloDAO;
-import mx.prisma.editor.dao.PantallaDAO;
 import mx.prisma.editor.dao.PasoDAO;
 import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.dao.TerminoGlosarioDAO;
 import mx.prisma.editor.dao.TrayectoriaDAO;
-import mx.prisma.editor.dao.VerboDAO;
-import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
@@ -34,13 +30,11 @@ import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Modulo;
-import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.editor.model.Trayectoria;
-import mx.prisma.editor.model.Verbo;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
@@ -246,18 +240,6 @@ public class CuBs {
 		return listCasoUso;
 	}
 
-	public static List<String> consultarVerbos() {
-		List<Verbo> lv = new VerboDAO().consultarVerbos();
-		if(lv == null) {
-			throw new PRISMAException("No se pueden consultar los verbos.", "MSG13");
-		}
-		List<String> verbos = new ArrayList<String>();
-		for (Verbo v : lv) {
-			verbos.add(v.getNombre());
-		}
-		return verbos;
-	}
-
 	public static CasoUso decodificarAtributos(CasoUso model) {
 		String redaccionActores = model.getRedaccionActores();
 		if(!Validador.esNuloOVacio(redaccionActores)) {
@@ -335,7 +317,6 @@ public class CuBs {
 			ArrayList<String> segmentos = TokenBs.segmentarToken(token);
 			String tokenReferencia = segmentos.get(0);
 			int id = Integer.parseInt(segmentos.get(1));
-			String url = "prisma";
 			switch(Referencia.getTipoReferencia(tokenReferencia)) {
 			/*case ACCION:
 				Accion accion = new AccionDAO().consultarAccion(Integer
@@ -458,7 +439,6 @@ public class CuBs {
 					redaccion = "";
 				}
 
-				CasoUso cu = trayectoria.getCasoUso();
 				redaccion = redaccion.replace(token,
 						"<a href='" + actionContext + "/trayectorias/" + id + "'>" 
 								+ trayectoria.getClave() 
@@ -471,8 +451,6 @@ public class CuBs {
 				if (paso == null) {
 					redaccion = "";
 				}
-				Trayectoria t = paso.getTrayectoria();
-				CasoUso cut = t.getCasoUso();
 				redaccion = redaccion.replace(token, 
 						"<a href='" + actionContext + "/reglas-negocio/" + id + "'>" 
 								+ paso.getNumero() 

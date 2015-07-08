@@ -167,7 +167,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements ModelDriven
 		listAlternativa.add("Alternativa");
 		
 		//Se extraen los verbos de la BD
-		listVerbos = CuBs.consultarVerbos();
+		listVerbos = TrayectoriaBs.consultarVerbos();
 		CatalogoBs.opcionOtro(listVerbos, TipoCatalogo.VERBO);
 	}
 

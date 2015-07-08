@@ -8,6 +8,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.CatalogoBs;
+import mx.prisma.bs.Referencia.TipoCatalogo;
 import mx.prisma.editor.dao.AtributoDAO;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
@@ -15,7 +17,6 @@ import mx.prisma.editor.dao.TipoDatoDAO;
 import mx.prisma.editor.dao.UnidadTamanioDAO;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Entidad;
-import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TipoDato;
 import mx.prisma.editor.model.UnidadTamanio;
 import mx.prisma.util.PRISMAException;
@@ -67,6 +68,7 @@ public class EntidadBs {
 			throw new PRISMAException(
 					"No se pueden consultar los tipos de dato.", "MSG13");
 		}
+		CatalogoBs.opcionOtro(listTiposDato, TipoCatalogo.TIPODATO);
 		return listTiposDato;
 	}
 

@@ -1,11 +1,14 @@
 package mx.prisma.editor.bs;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
-import mx.prisma.editor.dao.EstadoElementoDAO;
+import mx.prisma.bs.CatalogoBs;
+import mx.prisma.bs.Referencia.TipoCatalogo;
 import mx.prisma.editor.dao.TrayectoriaDAO;
 import mx.prisma.editor.dao.VerboDAO;
 import mx.prisma.editor.model.Paso;
@@ -105,5 +108,18 @@ public class TrayectoriaBs {
 					"verbo"});
 		}
 		return verbo;
+	}
+
+	public static List<String> consultarVerbos() {
+		List<Verbo> lv = new VerboDAO().consultarVerbos();
+		if(lv == null) {
+			throw new PRISMAException("No se pueden consultar los verbos.", "MSG13");
+		}
+		List<String> verbos = new ArrayList<String>();
+		for (Verbo v : lv) {
+			verbos.add(v.getNombre());
+		}
+		CatalogoBs.opcionOtro(lv, TipoCatalogo.VERBO);
+		return verbos;
 	}
 }

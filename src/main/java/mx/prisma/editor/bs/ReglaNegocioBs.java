@@ -320,9 +320,16 @@ public class ReglaNegocioBs {
 				System.out.println("No es global");
 				tiposRN.add(trn);
 			}
-			
+			 
 		}
+		for(TipoReglaNegocio tn : tiposRN) {
+			System.out.println(tn.getNombre());
+		}
+		System.out.println("--");
 		CatalogoBs.opcionOtro(tiposRN, TipoCatalogo.TIPOREGLANEGOCIO);
+		for(TipoReglaNegocio tn : tiposRN) {
+			System.out.println(tn.getNombre());
+		}
 		return tiposRN;
 	}
 
