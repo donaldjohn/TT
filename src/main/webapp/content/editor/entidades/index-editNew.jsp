@@ -18,10 +18,7 @@
 </head>
 <body>
 
-	<h1>
-		<s:property value="%{proyecto.clave + ' - ' + proyecto.nombre}" />
-	</h1>
-	<h3>Registrar Entidad</h3>
+	<h1>Registrar Entidad</h1>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />

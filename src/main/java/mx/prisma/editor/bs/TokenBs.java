@@ -79,12 +79,12 @@ public class TokenBs {
 			case ACCION: // ACC.IUM.NUM:PANTALLA:NOMBRE_ACC =
 							// ACC.IUSF.7:Registrar_incendio:Aceptar
 				
-				if (segmentos.size() != 6) {
+				if (segmentos.size() != 5) {
 					errorEnToken("la", "acción");
 				}
 				pantalla = new PantallaDAO().consultarPantalla(segmentos.get(1)
-						.replaceAll("_", " "), Integer.parseInt(segmentos
-						.get(2)), proyecto);
+						.replaceAll("_", " "), segmentos
+						.get(2), proyecto);
 				if (pantalla == null) {
 					// Construcción del mensaje de error;
 					String[] parametros = { "la", "pantalla",
@@ -255,7 +255,7 @@ public class TokenBs {
 				}
 
 				pantalla = new PantallaDAO().consultarPantalla(modulo,
-						Integer.parseInt(segmentos.get(2)));
+						segmentos.get(2));
 				if (pantalla == null) {
 					// Construcción del mensaje de error;
 					String[] parametros = { "la", "pantalla", token,
@@ -467,12 +467,12 @@ public class TokenBs {
 			switch (Referencia.getTipoReferencia(segmentos.get(0))) {
 			case ACCION: // ACC.IUM.NUM:PANTALLA:NOMBRE_ACC =
 							// ACC.IUSF.7:Registrar_incendio:Aceptar
-				if (segmentos.size() != 6) {
+				if (segmentos.size() != 5) {
 					errorEnToken("la", "acción");
 				}
 				pantalla = new PantallaDAO().consultarPantalla(segmentos.get(1)
-						.replaceAll("_", " "), Integer.parseInt(segmentos
-						.get(2)), proyecto);
+						.replaceAll("_", " "), segmentos
+						.get(2), proyecto);
 				if (pantalla == null) {
 					// Construcción del mensaje de error;
 					String[] parametros = { "la", "pantalla",
@@ -642,7 +642,7 @@ public class TokenBs {
 				}
 
 				pantalla = new PantallaDAO().consultarPantalla(modulo,
-						Integer.parseInt(segmentos.get(2)));
+						segmentos.get(2));
 				if (pantalla == null) {
 					// Construcción del mensaje de error;
 					String[] parametros = { "la", "pantalla", tokenIU + segmentos.get(1) + segmentos.get(2),
