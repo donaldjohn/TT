@@ -164,6 +164,7 @@ p.main {
 	font-size: 15px;
 	width: 100%;
 	background-color: #bfbfbf;
+	min-height: 16px;
 }
 
 /*Mensajes*/

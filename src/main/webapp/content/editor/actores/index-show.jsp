@@ -20,17 +20,18 @@
 
 
 	<div class="formulario">
-		<div class="tituloFormulario">
-			<img
-				src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
-		</div>
+		<div class="tituloFormulario">${blanks}</div>
 		<div class="seccion">
 			<h4><s:property value="model.nombre"/></h4>
 			<p class="instrucciones">
 				<s:property value="model.descripcion" />
 			</p>
-
-			<table class="seccion">
+		</div>
+	</div>
+	<div class="formulario">
+		<div class="tituloFormulario">${blanks}</div>
+		<div class="seccion">
+			<table>
 				<tr>
 					<td><span class="label consulta"><s:text
 								name="labelCardinalidad" /></span> <span

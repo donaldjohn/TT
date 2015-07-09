@@ -18,10 +18,7 @@
 	<s:actionerror theme="jquery" />
 	<br />
 	<div class="formulario">
-		<div class="tituloFormulario">
-			<img
-				src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
-		</div>
+		<div class="tituloFormulario">${blanks}</div>
 		<div class="seccion">
 			<h4>
 				<s:property
@@ -33,10 +30,7 @@
 		</div>
 	</div>
 	<div class="formulario">
-	<div class="tituloFormulario">
-			<img
-				src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
-		</div>	
+	<div class="tituloFormulario">${blanks}</div>	
 		<div class="seccion">
 		<table>
 				<tr>

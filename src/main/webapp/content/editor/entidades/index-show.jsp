@@ -16,22 +16,15 @@
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
 	<br />
-
 		<div class="formulario">
-			<div class="tituloFormulario">
-			<img
-				src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
-			</div>
+			<div class="tituloFormulario">${blanks}</div>
 			<div class="seccion">
 				<h4><s:property value="model.nombre"/></h4>
 				<p class="instrucciones"><s:property value="model.descripcion"/></p>
 			</div>
 		</div>
 		<div class="formulario">
-			<div class="tituloFormulario">
-			<img
-				src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
-			</div>
+			<div class="tituloFormulario">${blanks}</div>
 			<div class="seccion">
 				<h5><s:text name="labelAtributos" /></h5>
 				<s:iterator value="atributos" var="atributo">

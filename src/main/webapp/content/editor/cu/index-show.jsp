@@ -11,24 +11,14 @@
 </head>
 <body>
 	<h1>Consultar Caso de uso</h1>
-	<h3>
-		<s:property
-			value="%{model.clave + ' ' + model.numero + ' ' + model.nombre}" />
-	</h3>
+	<h3><s:property value="%{model.clave + ' ' + model.numero + ' ' + model.nombre}" /></h3>
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
 	<br />
-
 	<div class="formulario">
-		<div class="tituloFormulario">
-			<img
-				src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
-		</div>
+		<div class="tituloFormulario">${blanks}</div>
 		<div class="seccion">
-			<h4>
-				<s:property
-					value="%{model.clave + ' ' + model.numero + ' ' + model.nombre}" />
-			</h4>
+			<h4><s:property value="%{model.clave + ' ' + model.numero + ' ' + model.nombre}" /></h4>
 			<h5>
 				<s:text name="labelDescripcion"></s:text>
 			</h5>
@@ -100,8 +90,7 @@
 	</div>
 	<div class="formulario">
 		<div class="tituloFormulario">
-			<img
-				src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
+			${blanks}
 		</div>
 		<div class="seccion">
 
