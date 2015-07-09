@@ -2,7 +2,7 @@ package mx.prisma.editor.bs;
 
 import java.util.ArrayList;
 import java.util.Set;
-
+import org.apache.commons.lang.StringEscapeUtils;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.Referencia;
 import mx.prisma.bs.Referencia.TipoSeccion;
@@ -1005,10 +1005,10 @@ public class TokenBs {
 		return false;
 	}
 
-	public static boolean ignorarSignos(String cadena, int i, char caracter) {
+	public static boolean ignorarEscape(String cadena, int i, char caracter) {
 		if (puntoSeguido(cadena, i, caracter) || espacio(cadena, i, caracter)
 				|| coma(cadena, i, caracter)
-				|| puntoComa(cadena, i, caracter) || caracter == '\n' || caracter == '\t') {
+				|| puntoComa(cadena, i, caracter) || caracter == '\n' || caracter == '\t' || caracter == '\r') {
 			return true;
 		}
 
@@ -1023,13 +1023,12 @@ public class TokenBs {
 		boolean almacenar = false;
 		if (cadena != null) {
 			int longitud = cadena.length();
-
 			for (int i = 0; i < longitud; i++) {
 				caracter = cadena.charAt(i);
 				if (almacenar) {
 					if (puntoFinal(longitud, i, caracter)) {
 						tokens.add(token);
-					} else if (ignorarSignos(cadena, i, caracter)) {
+					} else if (ignorarEscape(cadena, i, caracter)) {
 						tokens.add(token);
 						pila = "";
 						almacenar = false;
@@ -1043,7 +1042,8 @@ public class TokenBs {
 				} else {
 					if (caracter == ' ') {
 						pila = "";
-					} else {
+					} else 
+						if (!ignorarEscape(cadena, i, caracter)){
 						pila += cadena.charAt(i);
 						/*
 						 * Si el sistema encuentra un token, el estado de la
@@ -1057,7 +1057,6 @@ public class TokenBs {
 				}
 			}
 		}
-
 		return tokens;
 	}
 
@@ -1675,7 +1674,7 @@ public class TokenBs {
 					break;
 				}
 				redaccion = redaccion.replace(
-						token, casoUso.getNombre());
+						token, casoUso.getClave() + " " + casoUso.getNumero() + " " + casoUso.getNombre());
 
 				break;
 			case ENTIDAD: // ENT.ID -> ENT.NOMBRE_ENT
@@ -1704,7 +1703,7 @@ public class TokenBs {
 					redaccion = "";
 					break;
 				}
-				redaccion = redaccion.replace(token, pantalla.getNombre());
+				redaccion = redaccion.replace(token, pantalla.getClave() + " " + pantalla.getNumero() + " " + pantalla.getNombre());
 				break;
 
 			case MENSAJE: // GLS.ID -> MSG.NUMERO:NOMBRE_MSG
@@ -1713,7 +1712,7 @@ public class TokenBs {
 				if (mensaje == null) {
 					redaccion = "";
 				}
-				redaccion = redaccion.replace(token, mensaje.getNombre());
+				redaccion = redaccion.replace(token, mensaje.getClave() + " " + mensaje.getNumero() + " " + mensaje.getNombre());
 				break;
 			case REGLANEGOCIO: // RN.ID -> RN.NUMERO:NOMBRE_RN
 				ReglaNegocio reglaNegocio = new ReglaNegocioDAO()
@@ -1722,7 +1721,7 @@ public class TokenBs {
 				if (reglaNegocio == null) {
 					redaccion = "";
 				}
-				redaccion = redaccion.replace(token, reglaNegocio.getNombre());
+				redaccion = redaccion.replace(token, reglaNegocio.getClave() + " " + reglaNegocio.getNumero() + " " + reglaNegocio.getNombre());
 				break;
 			case TRAYECTORIA: // TRAY.ID -> TRAY.CUMODULO.NUM:NOMBRECU:CLAVETRAY
 				Trayectoria trayectoria = new TrayectoriaDAO()

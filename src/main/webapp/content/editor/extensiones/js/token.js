@@ -31,11 +31,18 @@ var token = function() {
 		if (tipo == "F") {
 			var lista = $.map(listaObjetos, function(value, i) {
 				var realiza = "";
+				var verbo  = "";
 				if(value.realizaActor == true) {
 		    		realiza = "El actor";
 		    	} else if(value.realizaActor == false) {
 		    		realiza = "El sistema";
 		    	}
+				
+				if(value.verbo.nombre == 'Otro') {
+					verbo = value.otroVerbo;
+				} else {
+					verbo = value.verbo.nombre;
+				}
 				return {
 					'id' : i,
 					"claveCU" : value.trayectoria.casoUso.clave,
@@ -43,7 +50,7 @@ var token = function() {
 					"claveTray": value.trayectoria.clave,
 					"numero" : value.numero,
 					"nombre" : value.trayectoria.casoUso.nombre,
-					"redaccion" : realiza + " " + value.verbo.nombre.toLowerCase() + " " + value.redaccion,
+					"redaccion" : realiza + " " + verbo.toLowerCase() + " " + value.redaccion,
 					'name' : value.trayectoria.casoUso.clave
 					+ separador1 + value.trayectoria.casoUso.numero + separador2
 					+ remplazarEspaciosGuion(value.trayectoria.casoUso.nombre) + separador2 + remplazarEspaciosGuion(value.trayectoria.clave) + separador1

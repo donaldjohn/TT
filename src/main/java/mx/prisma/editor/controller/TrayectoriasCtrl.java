@@ -308,8 +308,9 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 								auxPaso.setNumero(paso.getNumero());
 								auxPaso.setRealizaActor(paso.isRealizaActor());
 								auxPaso.setVerbo(paso.getVerbo());
+								auxPaso.setOtroVerbo(paso.getOtroVerbo());
 								auxPaso.setRedaccion(TokenBs
-										.decodificarCadenasToken(paso
+										.decodificarCadenaSinToken(paso
 												.getRedaccion()));
 								listPasos.add(auxPaso);
 							}

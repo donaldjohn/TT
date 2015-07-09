@@ -164,7 +164,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 							auxPaso.setNumero(paso.getNumero());
 							auxPaso.setRealizaActor(paso.isRealizaActor());
 							auxPaso.setVerbo(paso.getVerbo());
-							auxPaso.setRedaccion(TokenBs.decodificarCadenasToken(paso.getRedaccion()));
+							auxPaso.setOtroVerbo(paso.getOtroVerbo());
+							auxPaso.setRedaccion(TokenBs.decodificarCadenaSinToken(paso.getRedaccion()));
 							listPasos.add(auxPaso);
 						}
 					}
