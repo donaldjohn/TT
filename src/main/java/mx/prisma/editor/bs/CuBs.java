@@ -326,8 +326,6 @@ public class CuBs {
 			extension.setRegion(region);
 			extensiones.add(extension);
 		}
-				
-		
 	}
 
 	private static String agregarReferencias(String actionContext, String redaccion) {
@@ -337,7 +335,6 @@ public class CuBs {
 		if(redaccion.charAt(0) == '$') {
 			redaccion = redaccion.substring(1);
 		}
-		System.out.println("Redaccion bruta: " + StringEscapeUtils.escapeJava(redaccion));
 		ArrayList<String> tokens = TokenBs.procesarTokenIpunt(redaccion);
 		for(String token : tokens) {
 			ArrayList<String> segmentos = TokenBs.segmentarToken(token);

@@ -30,6 +30,11 @@
 				<tr>
 					<td><s:property value="%{#entidad.nombre}"/></td>
 					<td align="center">
+						<s:url var="urlConsultar" value="%{#pageContext.request.contextPath}/entidades/%{#entidad.id}"/>
+							<s:a href="%{urlConsultar}">
+								<img id="" class="button" title="Consultar Entidad"
+										src="${pageContext.request.contextPath}/resources/images/icons/ver.png" />
+							</s:a>
 						<s:a href="#">
 							<img id="" class="button" title="Modificar Entidad"
 									src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />

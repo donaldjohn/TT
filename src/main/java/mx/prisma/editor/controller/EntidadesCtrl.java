@@ -12,6 +12,7 @@ import org.apache.struts2.interceptor.SessionAware;
 import com.opensymphony.xwork2.ModelDriven;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.EntidadBs;
 import mx.prisma.editor.dao.TipoDatoDAO;
 import mx.prisma.editor.dao.UnidadTamanioDAO;
@@ -42,6 +43,8 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 	private String jsonAtributosTabla;
 	private List<TipoDato> listTipoDato;
 	private List<UnidadTamanio> listUnidadTamanio;
+	private String urlPrev;
+	private Integer idSel;
 
 	public String index() throws Exception {
 		try {
@@ -120,6 +123,22 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 			e.printStackTrace();
 			ErrorManager.agregaMensajeError(this, e);
 			resultado = index();
+		}
+		return resultado;
+	}
+	
+	public String show() throws Exception{
+		String resultado = null;
+		try {
+			model = EntidadBs.consultarEntidad(idSel);						
+			resultado = SHOW;
+		} catch (PRISMAException pe) {
+			pe.setIdMensaje("MSG26");
+			ErrorManager.agregaMensajeError(this, pe);
+			return index();
+		} catch(Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			return index();
 		}
 		return resultado;
 	}
@@ -214,4 +233,22 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 	public void setListUnidadTamanio(List<UnidadTamanio> listUnidadTamanio) {
 		this.listUnidadTamanio = listUnidadTamanio;
 	}
+
+	public String getUrlPrev() {
+		return urlPrev;
+	}
+
+	public void setUrlPrev(String urlPrev) {
+		this.urlPrev = urlPrev;
+	}
+
+	public Integer getIdSel() {
+		return idSel;
+	}
+
+	public void setIdSel(Integer idSel) {
+		this.idSel = idSel;
+	}
+	
+	
 }
