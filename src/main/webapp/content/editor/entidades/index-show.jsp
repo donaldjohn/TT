@@ -25,13 +25,21 @@
 			<div class="seccion">
 				<h4><s:property value="model.nombre"/></h4>
 				<p class="instrucciones"><s:property value="model.descripcion"/></p>
+			</div>
+		</div>
+		<div class="formulario">
+			<div class="tituloFormulario">
+			<img
+				src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
+			</div>
+			<div class="seccion">
 				<h5><s:text name="labelAtributos" /></h5>
 				<s:iterator value="atributos" var="atributo">
 					<table>
 						<tr>
-							<td>
+							<td class="definicion">
 								<span class="labelIzq consulta"><s:property value="#atributo.nombre"/></span>
-								<span class="ui-widget"> 
+								<span class="ui-widget "> 
 								${blanks} <s:property value="#atributo.descripcion"/>
 								${blanks}
 								
@@ -71,7 +79,6 @@
 								</s:else>
 								
 								</span>
-								
 							</td>
 						</tr>
 					</table>

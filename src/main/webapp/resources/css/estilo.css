@@ -418,3 +418,9 @@ a.referencia:hover {
 	font-weight: bold;
     color: #7f7f7f;
 }
+
+.definicion {
+	padding-left: 2em;
+	text-indent: -2em;
+	text-align: justify;
+}

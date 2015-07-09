@@ -178,15 +178,10 @@
 				src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
 		</div>
 		<div class="seccion">
-			<h5>
+			<s:if test="existenExtensiones">
+				<h5>
 				<s:text name="labelExtensiones"></s:text>
-			</h5>
-			<s:if test="!existenExtensiones">
-				<p class="instrucciones">
-					<s:text name="labelSinExtensiones" />
-				</p>
-			</s:if>
-			<s:else>
+				</h5>
 				<s:iterator value="model.extiende" var="extension">
 					<table>
 						<tr>
@@ -203,7 +198,7 @@
 						</tr>
 					</table>
 				</s:iterator>
-			</s:else>
+			</s:if>
 		</div>
 	</div>
 
