@@ -24,6 +24,12 @@
 				<h4><s:property
 			value="model.clave + ' ' + model.numero + ' ' + model.nombre" /></h4>
 				<p class="instrucciones"><s:property value="model.descripcion"/></p>
+			</div>
+		</div>
+		<div class="formulario">
+			<div class="tituloFormulario"><img
+				src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></div>
+			<div class="seccion">
 			<table >
 				<tr>
 					<td class="definicion">
@@ -32,31 +38,31 @@
 						<s:property value="model.redaccion"/></span>
 					</td>
 				</tr>
-				
 			</table>
-			</div>
-		</div>
-		<s:if test="existenParametros">
-		<div class="formulario">
-			<div class="tituloFormulario"><img
-				src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></div>
-			<div class="seccion">
-			<h5><s:text name="labelParametros"/></h5>
+			<s:if test="existenParametros">
 			<table>
+				<tr>	
+					<td colspan="2"><span class="labelIzq consulta"><s:text name="labelParametros"/></span>
+						<span class="inputFormulario ui-widget">${blanks}
+						El mensaje tiene los siguientes parámetros:</span></td>
+						<br/>
+				</tr>
 				<s:iterator value="model.parametros" var="parametro">
 				<tr>
-					<td class="definicion">
+					<td style="padding-left: 2em">
 						<span class="labelIzq consulta">
 							${parametro.nombre}
 						</span> <span
 						class="ui-widget inputFormulario"> ${blanks} ${parametro.descripcion}</span>
+						
 					</td>
 				</tr>
 				</s:iterator>
 			</table>
+			</s:if>
 			</div>
 		</div>
-		</s:if>
+		
 		<br />
 		<div align="center">
 			<input class="boton" type="button"

@@ -182,12 +182,10 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	}
 
 	public int getIdSel() {
-		System.out.println("desde ctrl");
 		return idSel;
 	}
 
 	public void setIdSel(int idSel) {
-		System.out.println("desde ctrl");
 		this.idSel = idSel;
 	}
 	

@@ -103,7 +103,6 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 		try {
 			agregarAtributos();
 			Proyecto proyecto = SessionManager.consultarProyectoActivo();
-			System.out.println(model);
 			model.setProyecto(proyecto);
 			EntidadBs.registrarEntidad(model);
 

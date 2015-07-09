@@ -99,7 +99,6 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 	}
 
 	public String show() throws Exception {
-		System.out.println("desde show");
 		String resultado = null;
 		
 		try {

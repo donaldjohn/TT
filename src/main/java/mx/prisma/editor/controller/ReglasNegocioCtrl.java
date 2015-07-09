@@ -191,10 +191,6 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	public String cargarEntidades() {
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
-			
-			System.out.println("tipo RN desde cargarEntidades: " + this.idTipoRN);
-			String tipoRN = ReglaNegocioBs.consultaTipoReglaNegocio(idTipoRN).getNombre();
-			System.out.println("TipoRN desde cargarEntidades: " + tipoRN);
 			listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -207,7 +203,6 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 			proyecto = SessionManager.consultarProyectoActivo();
 			Atributo atributo = EntidadBs.consultarAtributo(this.idAtributo);
 			listEntidades = ReglaNegocioBs.consultarEntidadesTipoDato(proyecto, atributo.getTipoDato().getNombre());
-			System.out.println("size entidades desde cargarEntidadesDependientes: " + listEntidades.size());
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -225,12 +220,10 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	}
 	
 	public String cargarAtributosDependientes() {
-		System.out.println("desde cargar atributos dependientes");
 		try {
 			Atributo atributo = EntidadBs.consultarAtributo(this.idAtributo);
 			String tipoDato = atributo.getTipoDato().getNombre();
 			listAtributos = ReglaNegocioBs.consultarAtributosTipoDato(idEntidad, tipoDato);
-			System.out.println("size listAtributos desde cargarAtributosDependientes: " + listAtributos.size());
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -240,12 +233,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	public String cargarEntidadesFecha() {
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
-			
-			System.out.println("tipo RN desde cargarEntidadesFecha: " + this.idTipoRN);
-			String tipoRN = ReglaNegocioBs.consultaTipoReglaNegocio(idTipoRN).getNombre();
-			System.out.println("TipoRN: " + tipoRN);
 			listEntidades = EntidadBs.consultarEntidadesProyectoConFecha(proyecto);
-			System.out.println("size fecha: " + listEntidades.size());
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -254,10 +242,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	
 	public String cargarAtributosFecha() {
 		try {
-			System.out.println("tipo RN desde cargarAtributosFecha: " + this.idTipoRN);
 			this.listAtributos = EntidadBs.consultarAtributosTipoFecha(this.idEntidad);
-			
-			System.out.println("size atr: " + listAtributos.size());
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -268,7 +253,6 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		try {
 			Atributo atributo = EntidadBs.consultarAtributo(this.idAtributo);
 			listOperadores = ReglaNegocioBs.consultarOperadoresDisponibles(atributo.getTipoDato().getNombre());
-			System.out.println("size oper: " + listOperadores.size());
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

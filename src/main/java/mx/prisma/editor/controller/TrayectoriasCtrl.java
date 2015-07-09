@@ -188,8 +188,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 				model.setAlternativa(false);
 			} else {
 				// Validaciones del tipo de trayectoria
-				System.out.println("alternativaPrincipal "
-						+ alternativaPrincipal);
 				throw new PRISMAValidacionException(
 						"El usuario no seleccionó el tipo de la trayectoria.",
 						"MSG4", null, "alternativaPrincipal");
@@ -207,8 +205,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 			model.setCasoUso(casoUso);
 
 			// Se registra la trayectoria
-			System.out.println("pasos antes de llamar registro "
-					+ model.getPasos());
 			TrayectoriaBs.registrarTrayectoria(model);
 
 			resultado = SUCCESS;
@@ -233,7 +229,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 	}
 
 	private void agregarPasos() {
-		System.out.println("jsonPasosTabla " + jsonPasosTabla);
 		if (jsonPasosTabla != null && !jsonPasosTabla.equals("")) {
 			model.setPasos(JsonUtil.mapJSONToSet(jsonPasosTabla, Paso.class));
 			for (Paso p : model.getPasos()) {

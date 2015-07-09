@@ -306,12 +306,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	public String edit() {
 		String resultado = null;
 		try {
-			System.out.println("id modelo: " + model.getId());
 			model = CuBs.consultarCasoUso(model.getId());
-
-			System.out.println("ESTADO ELEMENTO DESDE EDIT: "
-					+ model.getEstadoElemento().getNombre());
-
 			resultado = EDIT;
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
@@ -375,8 +370,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	}
 
 	public boolean esEditable(String idAutor, CasoUso cu) {
-		System.out.println("ES EDITABLE CON ESTADO "
-				+ cu.getEstadoElemento().getNombre());
 		return CuBs.esEditable(idAutor, cu);
 	}
 

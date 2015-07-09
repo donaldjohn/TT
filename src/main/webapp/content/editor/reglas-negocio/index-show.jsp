@@ -30,8 +30,15 @@
 			<p class="instrucciones">
 				<s:property value="model.descripcion" />
 			</p>
-
-			<table>
+		</div>
+	</div>
+	<div class="formulario">
+	<div class="tituloFormulario">
+			<img
+				src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
+		</div>	
+		<div class="seccion">
+		<table>
 				<tr>
 					<td class="definicion"><span class="labelIzq consulta"><s:text
 								name="labelRedaccion" /></span> <span
