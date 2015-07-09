@@ -22,7 +22,7 @@ public class PantallaDAO extends ElementoDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Pantalla consultarPantalla(String clave, int numero, Proyecto proyecto) {
+	public Pantalla consultarPantalla(String clave, String numero, Proyecto proyecto) {
 		List<Pantalla> results = null;
 
 		try {
@@ -47,7 +47,7 @@ public class PantallaDAO extends ElementoDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Pantalla consultarPantalla(Modulo modulo, int numero) {
+	public Pantalla consultarPantalla(Modulo modulo, String numero) {
 		List<Pantalla> results = null;
 
 		try {
