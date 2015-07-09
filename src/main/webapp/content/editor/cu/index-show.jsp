@@ -35,10 +35,11 @@
 			<p class="instrucciones">
 				<s:text name="model.descripcion"></s:text>
 			</p>
-	<br/>
-			<table  class="tablaDescripcion">
+			<br />
+			<table class="tablaDescripcion">
 				<tr>
-					<td colspan="2" class="encabezadoTabla">Información general del Caso de uso</td>
+					<td colspan="2" class="encabezadoTabla">Información general
+						del Caso de uso</td>
 				</tr>
 				<tr>
 					<td class="label consulta"><s:text name="labelActores" /></td>
@@ -172,42 +173,43 @@
 			</s:else>
 		</div>
 	</div>
-	<div class="formulario">
-		<div class="tituloFormulario">
-			<img
-				src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
-		</div>
-		<div class="seccion">
-			<s:if test="existenExtensiones">
+	<s:if test="existenExtensiones">
+		<div class="formulario">
+			<div class="tituloFormulario">
+				<img
+					src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
+			</div>
+			<div class="seccion">
 				<h5>
-				<s:text name="labelExtensiones"></s:text>
+					<s:text name="labelExtensiones"></s:text>
 				</h5>
 				<s:iterator value="model.extiende" var="extension">
 					<table>
 						<tr>
 							<td><span class="labelIzq consulta"><s:text
-										name="labelCausa" /></span> <span class="ui-widget">${blanks} ${extension.causa}</span> 
-								<br /> <span class="labelIzq consulta"><s:text
-										name="labelRegion" /></span> <span class="ui-widget">${blanks} ${extension.region}</span>
-								<br /> <span class="labelIzq consulta"><s:text
+										name="labelCausa" /></span> <span class="ui-widget">${blanks}
+									${extension.causa}</span> <br /> <span class="labelIzq consulta"><s:text
+										name="labelRegion" /></span> <span class="ui-widget">${blanks}
+									${extension.region}</span> <br /> <span class="labelIzq consulta"><s:text
 										name="labelCasoUsoExtiende" /></span> <span class="ui-widget">
-									${blanks} <a class="referencia" href='${pageContext.request.contextPath}/cu/${extension.casoUsoDestino.id}'>
-									${extension.casoUsoDestino.clave}
-									${extension.casoUsoDestino.numero} ${blanks}
-									${extension.casoUsoDestino.nombre}</a></span></td>
+									${blanks} <a class="referencia"
+									href='${pageContext.request.contextPath}/cu/${extension.casoUsoDestino.id}'>
+										${extension.casoUsoDestino.clave}
+										${extension.casoUsoDestino.numero} ${blanks}
+										${extension.casoUsoDestino.nombre}</a>
+							</span></td>
 						</tr>
 					</table>
 				</s:iterator>
-			</s:if>
+			</div>
 		</div>
-	</div>
+	</s:if>
 
 
 	<br />
 	<div align="center">
 		<input class="boton" type="button"
-			onclick="location.href='${urlPrev}'"
-			value="Aceptar" />
+			onclick="location.href='${urlPrev}'" value="Aceptar" />
 	</div>
 </body>
 	</html>

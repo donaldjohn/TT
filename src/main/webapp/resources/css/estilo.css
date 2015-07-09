@@ -125,9 +125,9 @@ p.main {
 
 /*Formularios*/
 .instrucciones {
-	padding-left: 15px;
 	font-size: 12px;
 	text-align: justify;
+	text-indent: 2em;
 }
 
 .formulario {
@@ -420,7 +420,7 @@ a.referencia:hover {
 }
 
 .definicion {
-	padding-left: 2em;
-	text-indent: -2em;
+	/*padding-left: 2em;*/
+	text-indent: 2em;
 	text-align: justify;
 }
