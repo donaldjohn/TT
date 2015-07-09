@@ -71,7 +71,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	private int idAtributo2;
 	private int idOperador;
 	
-	
+	private Integer idSel;
 	
 	
 	
@@ -131,22 +131,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 			if(idTipoRN == -1) {
 				throw new PRISMAValidacionException("El usuario no seleccionó el tipo de regla de negocio.", "MSG4", null, "idTipoRN");
 			}
-			model.setTipoReglaNegocio(ReglaNegocioBs.consultaReglaNegocio(idTipoRN));
-			
-			//Pruebas
-			System.out.println("Tipo de regla de negocio");
-			System.out.println("---"+model.getTipoReglaNegocio().getNombre());
-			System.out.println("---"+model.getTipoReglaNegocio().getId());
-			
-			System.out.println("Regla de negocio");
-			System.out.println("---"+model.getNumero());
-			System.out.println("---"+model.getNombre());
-			System.out.println("---"+model.getDescripcion());
-			System.out.println("---"+model.getRedaccion());
-			System.out.println("---idA1 "+this.idAtributo1);
-			System.out.println("---idA2 "+this.idAtributo2);
-			System.out.println("---idOp "+this.idOperador);
-			//Fin pruebas
+			model.setTipoReglaNegocio(ReglaNegocioBs.consultaTipoReglaNegocio(idTipoRN));
 			
 			String tipoRN = model.getTipoReglaNegocio().getNombre();
 			if(tipoRN.equals(ReglaNegocioBs.getCompatributos())) {
@@ -154,8 +139,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 			} else if(tipoRN.equals(ReglaNegocioBs.getUnicidad())) {
 				model = ReglaNegocioBs.agregarElementosUnicidad(model, idEntidadUnicidad, idAtributoUnicidad);
 			} else if(tipoRN.equals(ReglaNegocioBs.getFormatocampo())) {
-				//Falta setear el valor del atributo del campo correcto
-				System.out.println("10");
+				model = ReglaNegocioBs.agregarElementosFormatoCampo(model, idAtributoFormato);
 			} else if(tipoRN.equals("-1")){
 				throw new PRISMAValidacionException("El usuario no seleccionó el tipo de regla de negocio.", "MSG13");
 			}
@@ -188,12 +172,28 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		return resultado;
 	}
 	
+	public String show() throws Exception{
+		String resultado = null;
+		try {
+			model = ReglaNegocioBs.consultaReglaNegocio(idSel);			
+			resultado = SHOW;
+		} catch (PRISMAException pe) {
+			pe.setIdMensaje("MSG26");
+			ErrorManager.agregaMensajeError(this, pe);
+			return index();
+		} catch(Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			return index();
+		}
+		return resultado;
+	}
+	
 	public String cargarEntidades() {
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
 			
 			System.out.println("tipo RN desde cargarEntidades: " + this.idTipoRN);
-			String tipoRN = ReglaNegocioBs.consultaReglaNegocio(idTipoRN).getNombre();
+			String tipoRN = ReglaNegocioBs.consultaTipoReglaNegocio(idTipoRN).getNombre();
 			System.out.println("TipoRN desde cargarEntidades: " + tipoRN);
 			listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
 		} catch(Exception e) {
@@ -242,7 +242,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 			proyecto = SessionManager.consultarProyectoActivo();
 			
 			System.out.println("tipo RN desde cargarEntidadesFecha: " + this.idTipoRN);
-			String tipoRN = ReglaNegocioBs.consultaReglaNegocio(idTipoRN).getNombre();
+			String tipoRN = ReglaNegocioBs.consultaTipoReglaNegocio(idTipoRN).getNombre();
 			System.out.println("TipoRN: " + tipoRN);
 			listEntidades = EntidadBs.consultarEntidadesProyectoConFecha(proyecto);
 			System.out.println("size fecha: " + listEntidades.size());
@@ -436,6 +436,14 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 
 	public void setIdAtributo1(int idAtributo1) {
 		this.idAtributo1 = idAtributo1;
+	}
+
+	public Integer getIdSel() {
+		return idSel;
+	}
+
+	public void setIdSel(Integer idSel) {
+		this.idSel = idSel;
 	}
 
 	

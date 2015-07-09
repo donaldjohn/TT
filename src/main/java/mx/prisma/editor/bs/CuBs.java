@@ -373,8 +373,10 @@ public class CuBs {
 					redaccion = "";
 					break;
 				} else {
+					Entidad entidad = atributo.getEntidad();
 					redaccion = redaccion.replace(token,
-							"<a class='referencia' href='" + actionContext + "/atributos/" + id + "'>" 
+							"<a class='referencia' href='" + actionContext + "/entidades/" + entidad.getId() + "#atributo-" + id 
+							+ "'>" 
 									+ atributo.getNombre() 
 							+ "</a>");
 				}
@@ -412,11 +414,13 @@ public class CuBs {
 								.get(1)));
 				if (terminoGlosario == null) {
 					redaccion = "";
-				}
+					break;
+				} else {
 				redaccion = redaccion.replace(token, 
 						"<a class='referencia' href='" + actionContext + "/glosario/" + id + "'>" 
 								+ terminoGlosario.getNombre() 
 						+ "</a>");
+				}
 				break;
 			case PANTALLA: // IU.ID -> // IU.MODULO.NUMERO:NOMBRE_IU
 				Pantalla pantalla = new PantallaDAO().consultarPantalla(Integer
@@ -436,6 +440,7 @@ public class CuBs {
 						.parseInt(segmentos.get(1)));
 				if (mensaje == null) {
 					redaccion = "";
+					break;
 				}
 				redaccion = redaccion.replace(token, 
 						"<a class='referencia' href='" + actionContext + "/mensajes/" + id + "'>" 
@@ -448,6 +453,7 @@ public class CuBs {
 								.get(1)));
 				if (reglaNegocio == null) {
 					redaccion = "";
+					break;
 				}
 				redaccion = redaccion.replace(token, 
 						"<a class='referencia' href='" + actionContext + "/reglas-negocio/" + id + "'>" 
@@ -459,10 +465,12 @@ public class CuBs {
 						.consultarTrayectoria(Integer.parseInt(segmentos.get(1)));
 				if (trayectoria == null) {
 					redaccion = "";
+					break;
 				}
-
+				CasoUso cu = trayectoria.getCasoUso();
 				redaccion = redaccion.replace(token,
-						"<a class='referencia' href='" + actionContext + "/trayectorias/" + id + "'>" 
+						"<a class='referencia' href='" + actionContext + "/cu/" + cu.getId() + "#trayectoria-" + id 
+						+ "'>" 
 								+ trayectoria.getClave() 
 						+ "</a>");
 				break;
@@ -472,9 +480,12 @@ public class CuBs {
 						.parseInt(segmentos.get(1)));
 				if (paso == null) {
 					redaccion = "";
+					break;
 				}
+				CasoUso cup = paso.getTrayectoria().getCasoUso();
 				redaccion = redaccion.replace(token, 
-						"<a class='referencia' href='" + actionContext + "/reglas-negocio/" + id + "'>" 
+						"<a class='referencia' href='" + actionContext + "/cu/" + cup.getId() + "#paso-" + id 
+						+ "'>" 
 								+ paso.getNumero() 
 						+ "</a>");
 				break;

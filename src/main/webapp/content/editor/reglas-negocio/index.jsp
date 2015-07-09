@@ -33,6 +33,11 @@
 				<tr>
 					<td><s:property value="%{#rn.clave + ' ' + #rn.numero + ' ' + #rn.nombre}"/></td>
 					<td align="center">				
+						<s:url var="urlConsultar" value="%{#pageContext.request.contextPath}/reglas-negocio/%{#rn.id}"/>
+							<s:a href="%{urlConsultar}">
+								<img id="" class="button" title="Consultar Regla de negocio"
+										src="${pageContext.request.contextPath}/resources/images/icons/ver.png" />
+							</s:a>
 						<s:a href="#">
 							<img id="" class="button" title="Modificar Punto de extensión"
 									src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />

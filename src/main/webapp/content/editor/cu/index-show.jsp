@@ -117,10 +117,12 @@
 				<s:iterator value="model.trayectorias" var="tray">
 					<s:if test="!#tray.alternativa">
 						<h6>
-							<s:text name="labelTrayectoriaPrincipal"></s:text>
+							<a name="trayectoria-${tray.id}"><!--  --></a>
+							<s:text name="labelTrayectoriaPrincipal"/><s:property value="' ' + #tray.clave"/>
 						</h6>
 						<ol>
 							<s:iterator value="#tray.pasos" var="paso">
+								<a name="paso-${#paso.id}"></a>
 								<li class="ui-widget"><s:if test="#paso.realizaActor">
 										<img
 											src="${pageContext.request.contextPath}/resources/images/icons/actor.png" />
@@ -145,6 +147,7 @@
 				<s:iterator value="model.trayectorias" var="tray">
 					<s:if test="#tray.alternativa">
 						<h6>
+							<a name="trayectoria-${tray.id}"><!--  --></a>
 							<s:text name="labelTrayectoriaAlternativa" />
 							<s:property value="' ' + #tray.clave" />
 						</h6>

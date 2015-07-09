@@ -43,7 +43,6 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 	private String jsonAtributosTabla;
 	private List<TipoDato> listTipoDato;
 	private List<UnidadTamanio> listUnidadTamanio;
-	private String urlPrev;
 	private Integer idSel;
 
 	public String index() throws Exception {
@@ -232,14 +231,6 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 
 	public void setListUnidadTamanio(List<UnidadTamanio> listUnidadTamanio) {
 		this.listUnidadTamanio = listUnidadTamanio;
-	}
-
-	public String getUrlPrev() {
-		return urlPrev;
-	}
-
-	public void setUrlPrev(String urlPrev) {
-		this.urlPrev = urlPrev;
 	}
 
 	public Integer getIdSel() {

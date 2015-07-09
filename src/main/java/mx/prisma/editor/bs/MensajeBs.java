@@ -172,5 +172,13 @@ public class MensajeBs {
 		List<Parametro> listParametros = new ParametroDAO().consultarParametros(idProyecto);
 		return listParametros;
 	}
+
+	public static Mensaje consultarMensaje(Integer id) {
+		Mensaje mensaje = new MensajeDAO().consultarMensaje(id);
+		if(mensaje == null) {
+			throw new PRISMAException("No se puede consultar el mensaje.", "MSG13");
+		}
+		return mensaje;
+	}
 	
 }

@@ -159,7 +159,7 @@ public class ReglaNegocioBs {
 		
 	}
 
-	public static TipoReglaNegocio consultaReglaNegocio(int idTipoRN) {
+	public static TipoReglaNegocio consultaTipoReglaNegocio(int idTipoRN) {
 		TipoReglaNegocio tipoRN = new TipoReglaNegocioDAO().consultarTipoReglaNegocio(idTipoRN);
 		if(tipoRN == null) {
 			throw new PRISMAException("No se puede consulta la regla de negocio.", "MSG13");
@@ -369,5 +369,19 @@ public class ReglaNegocioBs {
 			throw new PRISMAException("No se puede consultar el operador.", "MSG25");
 		}
 		return operador;
+	}
+	
+	public static ReglaNegocio agregarElementosFormatoCampo(ReglaNegocio model,
+			int idAtributoFormato) {
+		model.setAtributoExpReg(EntidadBs.consultarAtributo(idAtributoFormato));
+		return model;
+	}
+
+	public static ReglaNegocio consultaReglaNegocio(Integer id) {
+		ReglaNegocio reglaNegocio = new ReglaNegocioDAO().consultarReglaNegocio(id);
+		if(reglaNegocio == null) {
+			throw new PRISMAException("No se puede consultar la regla de negocio.", "MSG25");
+		}
+		return reglaNegocio;
 	}
 }

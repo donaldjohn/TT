@@ -38,6 +38,7 @@
 					<table>
 						<tr>
 							<td class="definicion">
+								<a name="atributo-${atributo.id}"><!-- ${atributo.nombre} --></a>
 								<span class="labelIzq consulta"><s:property value="#atributo.nombre"/></span>
 								<span class="ui-widget "> 
 								${blanks} <s:property value="#atributo.descripcion"/>
@@ -92,7 +93,7 @@
 		<div align="center">
 			<input class="boton" type="button"
 				onclick="location.href='${urlPrev}'"
-				value="Cancelar" />
+				value="Aceptar" />
 		</div>
 		
 

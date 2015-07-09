@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:s="/struts-tags" xmlns:sj="/struts-jquery-tags">
+	<jsp:directive.page language="java"
+		contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" />
+	<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Mensaje</title>
+
+</head>
+<body>
+	<h1>Consultar Mensaje</h1>
+	<h3><s:property
+			value="model.clave + ' ' + model.numero + ' ' + model.nombre" /></h3>
+	
+	<s:actionmessage theme="jquery" />
+	<s:actionerror theme="jquery" />
+	<br/>
+		<div class="formulario">
+			<div class="tituloFormulario"><img
+				src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></div>
+			<div class="seccion">
+				<h4><s:property
+			value="model.clave + ' ' + model.numero + ' ' + model.nombre" /></h4>
+				<p class="instrucciones"><s:property value="model.descripcion"/></p>
+			<table >
+				<tr>
+					<td class="definicion">
+						<span class="labelIzq consulta"><s:text name="labelRedaccion"/></span>
+						<span class="inputFormulario ui-widget">${blanks}
+						<s:property value="model.redaccion"/></span>
+					</td>
+				</tr>
+				
+			</table>
+			</div>
+		</div>
+		<s:if test="existenParametros">
+		<div class="formulario">
+			<div class="tituloFormulario"><img
+				src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></div>
+			<div class="seccion">
+			<h5><s:text name="labelParametros"/></h5>
+			<table>
+				<s:iterator value="model.parametros" var="parametro">
+				<tr>
+					<td class="definicion">
+						<span class="labelIzq consulta">
+							${parametro.nombre}
+						</span> <span
+						class="ui-widget inputFormulario"> ${blanks} ${parametro.descripcion}</span>
+					</td>
+				</tr>
+				</s:iterator>
+			</table>
+			</div>
+		</div>
+		</s:if>
+		<br />
+		<div align="center">
+			<input class="boton" type="button"
+				onclick="location.href='${urlPrev}'"
+				value="Aceptar" />
+		</div>	
+</body>
+	</html>
+</jsp:root>

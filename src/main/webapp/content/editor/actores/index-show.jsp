@@ -7,20 +7,12 @@
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Actor</title>
-<![CDATA[
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/constructores.js"></script>
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/validaciones.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.caret.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.atwho.js"></script>	
-]]>
-
 </head>
 <body>
-
-	<h1>
-		<s:property value="%{proyecto.clave + ' - ' + proyecto.nombre}" />
-	</h1>
-	<h3>Consultar Actor</h3>
+	<h1>Consultar Actor</h1>
+	<h3>
+		<s:property value="model.nombre" />
+	</h3>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
@@ -28,38 +20,35 @@
 
 
 	<div class="formulario">
-		<div class="tituloFormulario">Información general del Actor</div>
-		<table class="seccion">
-			<tr>
-				<td class="label consulta"><s:text name="labelNombre" /></td>
-				<td class="inputFormulario ui-widget"><s:property value="model.nombre" /> </td>
-			</tr>
-			<tr>
-				<td class="label consulta"><s:text name="labelDescripcion" /></td>
-				<td class="inputFormulario ui-widget"><s:property value="model.descripcion" /></td>
-			</tr>
-			<tr>
-				<td class="label consulta"><s:text name="labelCardinalidad" /></td>
-				<td class="inputFormulario ui-widget"><s:if
-						test="model.cardinalidad.nombre != 'Otra'">
-						<s:property value="model.cardinalidad.nombre"/>
-					</s:if> <s:else>
-						<s:property value="model.otraCardinalidad"/>
-					</s:else></td>
-			</tr>
-		</table>
+		<div class="tituloFormulario">
+			<img
+				src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
+		</div>
+		<div class="seccion">
+			<h4><s:property value="model.nombre"/></h4>
+			<p class="instrucciones">
+				<s:property value="model.descripcion" />
+			</p>
+
+			<table class="seccion">
+				<tr>
+					<td><span class="label consulta"><s:text
+								name="labelCardinalidad" /></span> <span
+						class="inputFormulario ui-widget"> ${blanks} <s:if
+								test="model.cardinalidad.nombre != 'Otra'">
+								<s:property value="model.cardinalidad.nombre" />
+							</s:if> <s:else>
+								<s:property value="model.otraCardinalidad" />
+							</s:else></span></td>
+				</tr>
+			</table>
+		</div>
 	</div>
 
 	<br />
 	<div align="center">
-		<s:url var="urlPrevia" value="%{#request.header.referer}">
-		</s:url>
-
-		<s:url var="urlGestionarActores"
-			value="%{#pageContext.request.contextPath}/actores">
-		</s:url>
 		<input class="boton" type="button"
-			onclick="location.href='${urlGestionarActores}'" value="Aceptar" />
+			onclick="location.href='${urlPrev}'" value="Aceptar" />
 	</div>
 </body>
 	</html>

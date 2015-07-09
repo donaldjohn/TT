@@ -15,6 +15,7 @@ import com.opensymphony.xwork2.ModelDriven;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.ElementoBs;
+import mx.prisma.editor.bs.EntidadBs;
 import mx.prisma.editor.bs.MensajeBs;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.MensajeParametro;
@@ -44,6 +45,8 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 	private String jsonParametrosGuardados;
 	private String cambioRedaccion;
 	private boolean parametrizado = false;
+	private Integer idSel;
+	private boolean existenParametros;
 	public String index() {
 		try {
 			//Se consulta el proyecto activo
@@ -152,6 +155,23 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 		return resultado;
 	}
 
+	public String show() throws Exception{
+		String resultado = null;
+		try {
+			model = MensajeBs.consultarMensaje(idSel);
+			this.existenParametros = model.getParametros().size() > 0 ? true : false;
+			resultado = SHOW;
+		} catch (PRISMAException pe) {
+			pe.setIdMensaje("MSG26");
+			ErrorManager.agregaMensajeError(this, pe);
+			return index();
+		} catch(Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			return index();
+		}
+		return resultado;
+	}
+	
 	private void agregarParametros() throws Exception {
 		model.setParametrizado(true);
 		if(jsonParametros != null && !jsonParametros.equals("")) {
@@ -223,6 +243,22 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 	
 	public void setParametrizado(boolean parametrizado) {
 		this.parametrizado = parametrizado;
+	}
+
+	public Integer getIdSel() {
+		return idSel;
+	}
+
+	public void setIdSel(Integer idSel) {
+		this.idSel = idSel;
+	}
+
+	public boolean isExistenParametros() {
+		return existenParametros;
+	}
+
+	public void setExistenParametros(boolean existenParametros) {
+		this.existenParametros = existenParametros;
 	}
 
 	

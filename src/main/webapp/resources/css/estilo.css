@@ -420,7 +420,7 @@ a.referencia:hover {
 }
 
 .definicion {
-	/*padding-left: 2em;*/
-	text-indent: 2em;
+	padding-left: 2em;
+	text-indent: -2em;
 	text-align: justify;
 }

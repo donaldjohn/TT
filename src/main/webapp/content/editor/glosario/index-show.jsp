@@ -7,48 +7,37 @@
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Actor</title>
-<![CDATA[
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/constructores.js"></script>
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/validaciones.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.caret.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.atwho.js"></script>
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/glosario/js/index-editNew.js"></script>	
-]]>
-
 </head>
 <body>
-
-	<h1>
-		<s:property value="%{proyecto.clave + ' - ' + proyecto.nombre}" />
-	</h1>
-	<h3>Consultar Término del Glosario</h3>
+	<h1>Consultar Término del Glosario</h1>
+	<h3>
+		<s:property value="model.nombre" />
+	</h3>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
 	<br />
 
-		<div class="formulario">
-			<div class="tituloFormulario">Información general del Término</div>
-			<div class="seccion">
-				<table>
-					<tr>
-						<td class="label consulta"><s:text name="labelNombre" /></td>
-						<td class="ui-widget"><s:property value="model.nombre"/></td>
-					</tr>
-					<tr>
-						<td class="label consulta"><s:text name="labelDescripcion" /></td>
-						<td class="ui-widget"><s:property value="model.descripcion"/></td>
-					</tr>
-				</table>
-			</div>
+	<div class="formulario">
+		<div class="tituloFormulario">
+			<img
+				src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
 		</div>
-		
-		<br />
-		<div align="center">
+		<div class="seccion">
+			<h4>
+				<s:property value="model.nombre" />
+			</h4>
+			<p class="instrucciones">
+				<s:property value="model.descripcion" />
+			</p>
+		</div>
+	</div>
+
+	<br />
+	<div align="center">
 		<input class="boton" type="button"
-			onclick="location.href='${urlPrev}'"
-			value="Aceptar" />
-		</div>
+			onclick="location.href='${urlPrev}'" value="Aceptar" />
+	</div>
 </body>
 	</html>
 </jsp:root>

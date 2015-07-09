@@ -32,7 +32,12 @@
 			<s:iterator value="listMensajes" var="msj">
 				<tr>
 					<td><s:property value="%{#msj.clave + ' ' + #msj.numero + ' ' + #msj.nombre}"/></td>
-					<td align="center">				
+					<td align="center">		
+						<s:url var="urlConsultar" value="%{#pageContext.request.contextPath}/mensajes/%{#msj.id}"/>
+							<s:a href="%{urlConsultar}">
+								<img id="" class="button" title="Consultar Mensaje"
+										src="${pageContext.request.contextPath}/resources/images/icons/ver.png" />
+							</s:a>		
 						<s:a href="#">
 							<img id="" class="button" title="Modificar Punto de extensión"
 									src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
