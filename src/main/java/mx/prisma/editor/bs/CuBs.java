@@ -491,8 +491,7 @@ public class CuBs {
 				break;
 
 			default:
-				break;
-				
+				break;		
 			}
 		}
 		
