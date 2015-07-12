@@ -3,7 +3,7 @@ INSERT INTO EstadoProyecto (nombre) VALUES ('Iniciado');
 INSERT INTO EstadoProyecto (nombre) VALUES ('Terminado');
 
 INSERT INTO EstadoElemento (nombre) VALUES ('Edición');
-INSERT INTO EstadoElemento (nombre) VALUES ('En Revisión');
+INSERT INTO EstadoElemento (nombre) VALUES ('Revisión');
 INSERT INTO EstadoElemento (nombre) VALUES ('Por liberar');
 INSERT INTO EstadoElemento (nombre) VALUES ('Terminado');
 INSERT INTO EstadoElemento (nombre) VALUES ('Pendiente de corrección');

@@ -17,6 +17,7 @@ public class PantallaDAO extends ElementoDAO {
 	public PantallaDAO() {
 		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
 	}
+	
 	public void registrarEntidad(Pantalla pantalla) {
 		super.registrarElemento(pantalla);
 	}
@@ -72,6 +73,7 @@ public class PantallaDAO extends ElementoDAO {
 			return results.get(0);
 
 	}
+
 	public Pantalla consultarPantalla(int id) {
 		return (Pantalla) super.consultarElemento(id);
 	}

@@ -478,7 +478,7 @@ CREATE TABLE `EstadoElemento` (
 
 LOCK TABLES `EstadoElemento` WRITE;
 /*!40000 ALTER TABLE `EstadoElemento` DISABLE KEYS */;
-INSERT INTO `EstadoElemento` VALUES (1,'Edición'),(2,'En Revisión'),(6,'Liberado'),(5,'Pendiente de corrección'),(3,'Por liberar'),(4,'Terminado');
+INSERT INTO `EstadoElemento` VALUES (1,'Edición'),(2,'Revisión'),(6,'Liberado'),(5,'Pendiente de corrección'),(3,'Por liberar'),(4,'Terminado');
 /*!40000 ALTER TABLE `EstadoElemento` ENABLE KEYS */;
 UNLOCK TABLES;
 

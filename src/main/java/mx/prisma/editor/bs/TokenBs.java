@@ -2,7 +2,6 @@ package mx.prisma.editor.bs;
 
 import java.util.ArrayList;
 import java.util.Set;
-import org.apache.commons.lang.StringEscapeUtils;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.Referencia;
 import mx.prisma.bs.Referencia.TipoSeccion;
@@ -62,7 +61,7 @@ public class TokenBs {
 
 	public static String codificarCadenaToken(String redaccion,
 			Proyecto proyecto) {
-
+		
 		ArrayList<String> tokens = procesarTokenIpunt(redaccion);
 		ArrayList<String> segmentos;
 		Pantalla pantalla;
