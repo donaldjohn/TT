@@ -6,7 +6,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.model.Proyecto;
-
+import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.TerminoGlosarioDAO;
 import mx.prisma.editor.model.TerminoGlosario;
@@ -23,8 +23,7 @@ public class TerminoGlosarioBs {
 			model.setClave(CLAVE);
 			model.setNumero(new TerminoGlosarioDAO().siguienteNumeroTerminoGlosario(model
 					.getProyecto().getId()));
-			model.setEstadoElemento(new EstadoElementoDAO()
-					.consultarEstadoElemento(ElementoBs.getIDEstadoEdicion()));
+			model.setEstadoElemento(ElementoBs.consultarEstadoElemento(Estado.EDICION));
 			new TerminoGlosarioDAO().registrarTerminoGlosario(model);
 		} catch (JDBCException je) {
 			if (je.getErrorCode() == 1062) {

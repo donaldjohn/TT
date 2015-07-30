@@ -971,6 +971,133 @@ public class TokenBs {
 		return cadenaDecodificada;
 	}
 
+	public static String decodificarCadenaSinToken(String redaccion) {
+		if(redaccion == null || redaccion.isEmpty()) {
+			return "Sin información";
+		}		
+		redaccion = redaccion.substring(1);
+		ArrayList<String> tokens = TokenBs.procesarTokenIpunt(redaccion);
+		for(String token : tokens) {
+			ArrayList<String> segmentos = TokenBs.segmentarToken(token);
+			String tokenReferencia = segmentos.get(0);
+			switch(Referencia.getTipoReferencia(tokenReferencia)) {
+			case ACCION:
+				Accion accion = new AccionDAO().consultarAccion(Integer
+						.parseInt(segmentos.get(1)));
+				if (accion == null) {
+					redaccion = "";
+					break;
+				} else {
+					redaccion = redaccion.replace(token, accion.getNombre());
+				}
+				break;
+			case ACTOR:
+				Actor actor = new ActorDAO().consultarActor(Integer
+						.parseInt(segmentos.get(1)));
+				if (actor == null) {
+					redaccion = "";
+					break;
+				}
+				redaccion = redaccion.replace(token, actor.getNombre());
+				break;
+			case ATRIBUTO:
+				Atributo atributo = new AtributoDAO().consultarAtributo(Integer
+						.parseInt(segmentos.get(1)));
+				if (atributo == null) {
+					redaccion = "";
+					break;
+				} else {
+					redaccion = redaccion.replace(token, atributo.getNombre());
+				}
+				break;
+			case CASOUSO:
+				CasoUso casoUso = new CasoUsoDAO().consultarCasoUso(Integer
+						.parseInt(segmentos.get(1)));
+				if (casoUso == null) {
+					redaccion = "";
+					break;
+				}
+				redaccion = redaccion.replace(
+						token, casoUso.getClave() + " " + casoUso.getNumero() + " " + casoUso.getNombre());
+
+				break;
+			case ENTIDAD: // ENT.ID -> ENT.NOMBRE_ENT
+				Entidad entidad = new EntidadDAO().consultarEntidad(Integer
+						.parseInt(segmentos.get(1)));
+				if (entidad == null) {
+					redaccion = "";
+					break;
+				}
+				redaccion = redaccion.replace(token, entidad.getNombre());
+
+				break;
+			case TERMINOGLS: // GLS.ID -> GLS.NOMBRE_GLS
+				TerminoGlosario terminoGlosario = new TerminoGlosarioDAO()
+						.consultarTerminoGlosario(Integer.parseInt(segmentos
+								.get(1)));
+				if (terminoGlosario == null) {
+					redaccion = "";
+				}
+				redaccion = redaccion.replace(token, terminoGlosario.getNombre());
+				break;
+			case PANTALLA: // IU.ID -> // IU.MODULO.NUMERO:NOMBRE_IU
+				Pantalla pantalla = new PantallaDAO().consultarPantalla(Integer
+						.parseInt(segmentos.get(1)));
+				if (pantalla == null) {
+					redaccion = "";
+					break;
+				}
+				redaccion = redaccion.replace(token, pantalla.getClave() + " " + pantalla.getNumero() + " " + pantalla.getNombre());
+				break;
+
+			case MENSAJE: // GLS.ID -> MSG.NUMERO:NOMBRE_MSG
+				Mensaje mensaje = new MensajeDAO().consultarMensaje(Integer
+						.parseInt(segmentos.get(1)));
+				if (mensaje == null) {
+					redaccion = "";
+				}
+				redaccion = redaccion.replace(token, mensaje.getClave() + " " + mensaje.getNumero() + " " + mensaje.getNombre());
+				break;
+			case REGLANEGOCIO: // RN.ID -> RN.NUMERO:NOMBRE_RN
+				ReglaNegocio reglaNegocio = new ReglaNegocioDAO()
+						.consultarReglaNegocio(Integer.parseInt(segmentos
+								.get(1)));
+				if (reglaNegocio == null) {
+					redaccion = "";
+				}
+				redaccion = redaccion.replace(token, reglaNegocio.getClave() + " " + reglaNegocio.getNumero() + " " + reglaNegocio.getNombre());
+				break;
+			case TRAYECTORIA: // TRAY.ID -> TRAY.CUMODULO.NUM:NOMBRECU:CLAVETRAY
+				Trayectoria trayectoria = new TrayectoriaDAO()
+						.consultarTrayectoria(Integer.parseInt(segmentos.get(1)));
+				if (trayectoria == null) {
+					redaccion = "";
+				}
+
+				redaccion = redaccion.replace(token, trayectoria.getClave());
+				break;
+
+			case PASO: // P.CUMODULO.NUM:NOMBRECU:CLAVETRAY.NUMERO
+				Paso paso = new PasoDAO().consultarPaso(Integer
+						.parseInt(segmentos.get(1)));
+				if (paso == null) {
+					redaccion = "";
+				}
+				redaccion = redaccion.replace(token, paso.getNumero() + "");
+				break;
+
+			default:
+				break;
+				
+			}
+		}
+		
+		redaccion = redaccion.replace("\n", "<br/>");
+		redaccion = redaccion.replace("\r", "<br/>");
+		return redaccion;
+		
+	}
+	
 	public static boolean espacio(String cadena, int i, char caracter) {
 		if (caracter == ' ') {
 			return true;
@@ -1096,8 +1223,9 @@ public class TokenBs {
 				segmento += token.charAt(i);
 			}
 		}
-		segmentos.add(segmento);
-
+		if (segmento != "") {
+			segmentos.add(segmento);
+		}
 		return segmentos;
 	}
 
@@ -1626,130 +1754,4 @@ public class TokenBs {
 
 	}
 
-	public static String decodificarCadenaSinToken(String redaccion) {
-		if(redaccion == null || redaccion.isEmpty()) {
-			return "Sin información";
-		}		
-		redaccion = redaccion.substring(1);
-		ArrayList<String> tokens = TokenBs.procesarTokenIpunt(redaccion);
-		for(String token : tokens) {
-			ArrayList<String> segmentos = TokenBs.segmentarToken(token);
-			String tokenReferencia = segmentos.get(0);
-			switch(Referencia.getTipoReferencia(tokenReferencia)) {
-			case ACCION:
-				Accion accion = new AccionDAO().consultarAccion(Integer
-						.parseInt(segmentos.get(1)));
-				if (accion == null) {
-					redaccion = "";
-					break;
-				} else {
-					redaccion = redaccion.replace(token, accion.getNombre());
-				}
-				break;
-			case ACTOR:
-				Actor actor = new ActorDAO().consultarActor(Integer
-						.parseInt(segmentos.get(1)));
-				if (actor == null) {
-					redaccion = "";
-					break;
-				}
-				redaccion = redaccion.replace(token, actor.getNombre());
-				break;
-			case ATRIBUTO:
-				Atributo atributo = new AtributoDAO().consultarAtributo(Integer
-						.parseInt(segmentos.get(1)));
-				if (atributo == null) {
-					redaccion = "";
-					break;
-				} else {
-					redaccion = redaccion.replace(token, atributo.getNombre());
-				}
-				break;
-			case CASOUSO:
-				CasoUso casoUso = new CasoUsoDAO().consultarCasoUso(Integer
-						.parseInt(segmentos.get(1)));
-				if (casoUso == null) {
-					redaccion = "";
-					break;
-				}
-				redaccion = redaccion.replace(
-						token, casoUso.getClave() + " " + casoUso.getNumero() + " " + casoUso.getNombre());
-
-				break;
-			case ENTIDAD: // ENT.ID -> ENT.NOMBRE_ENT
-				Entidad entidad = new EntidadDAO().consultarEntidad(Integer
-						.parseInt(segmentos.get(1)));
-				if (entidad == null) {
-					redaccion = "";
-					break;
-				}
-				redaccion = redaccion.replace(token, entidad.getNombre());
-
-				break;
-			case TERMINOGLS: // GLS.ID -> GLS.NOMBRE_GLS
-				TerminoGlosario terminoGlosario = new TerminoGlosarioDAO()
-						.consultarTerminoGlosario(Integer.parseInt(segmentos
-								.get(1)));
-				if (terminoGlosario == null) {
-					redaccion = "";
-				}
-				redaccion = redaccion.replace(token, terminoGlosario.getNombre());
-				break;
-			case PANTALLA: // IU.ID -> // IU.MODULO.NUMERO:NOMBRE_IU
-				Pantalla pantalla = new PantallaDAO().consultarPantalla(Integer
-						.parseInt(segmentos.get(1)));
-				if (pantalla == null) {
-					redaccion = "";
-					break;
-				}
-				redaccion = redaccion.replace(token, pantalla.getClave() + " " + pantalla.getNumero() + " " + pantalla.getNombre());
-				break;
-
-			case MENSAJE: // GLS.ID -> MSG.NUMERO:NOMBRE_MSG
-				Mensaje mensaje = new MensajeDAO().consultarMensaje(Integer
-						.parseInt(segmentos.get(1)));
-				if (mensaje == null) {
-					redaccion = "";
-				}
-				redaccion = redaccion.replace(token, mensaje.getClave() + " " + mensaje.getNumero() + " " + mensaje.getNombre());
-				break;
-			case REGLANEGOCIO: // RN.ID -> RN.NUMERO:NOMBRE_RN
-				ReglaNegocio reglaNegocio = new ReglaNegocioDAO()
-						.consultarReglaNegocio(Integer.parseInt(segmentos
-								.get(1)));
-				if (reglaNegocio == null) {
-					redaccion = "";
-				}
-				redaccion = redaccion.replace(token, reglaNegocio.getClave() + " " + reglaNegocio.getNumero() + " " + reglaNegocio.getNombre());
-				break;
-			case TRAYECTORIA: // TRAY.ID -> TRAY.CUMODULO.NUM:NOMBRECU:CLAVETRAY
-				Trayectoria trayectoria = new TrayectoriaDAO()
-						.consultarTrayectoria(Integer.parseInt(segmentos.get(1)));
-				if (trayectoria == null) {
-					redaccion = "";
-				}
-
-				redaccion = redaccion.replace(token, trayectoria.getClave());
-				break;
-
-			case PASO: // P.CUMODULO.NUM:NOMBRECU:CLAVETRAY.NUMERO
-				Paso paso = new PasoDAO().consultarPaso(Integer
-						.parseInt(segmentos.get(1)));
-				if (paso == null) {
-					redaccion = "";
-				}
-				redaccion = redaccion.replace(token, paso.getNumero() + "");
-				break;
-
-			default:
-				break;
-				
-			}
-		}
-		
-		redaccion = redaccion.replace("\n", "<br/>");
-		redaccion = redaccion.replace("\r", "<br/>");
-		return redaccion;
-		
-	}
 }

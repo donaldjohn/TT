@@ -5,15 +5,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringEscapeUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.Referencia;
+import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.AccionDAO;
 import mx.prisma.editor.dao.ActorDAO;
 import mx.prisma.editor.dao.AtributoDAO;
@@ -66,7 +64,7 @@ public class CuBs {
 	 * 5.- Revisión (Consultar, revisar <solamente quien lo está revisando>)
 	 * 6.- Liberado (Consulta, editar)
 	 * */
-	public static boolean esEditable(String idAutor, CasoUso cu) {
+	/*public static boolean esEditable(String idAutor, CasoUso cu) {
 		idAutor = "NGHS";
 		String idAutorCU = "NGHS";
 		//PENDIENTE AGREGAR TODOS LOS CASOS EN LOS QUE ES POSIBLE EDITAR UN CU
@@ -75,7 +73,7 @@ public class CuBs {
 			return true;
 		}
 		return false;
-	}
+	}*/
 
 
 	public static Modulo consultarModulo(String claveModulo, Proyecto proyecto) throws Exception{
@@ -100,8 +98,8 @@ public class CuBs {
 		try {
 				validar(cu);
 				cu.setClave(calcularClave(cu.getModulo().getClave()));
-				cu.setEstadoElemento(new EstadoElementoDAO()
-						.consultarEstadoElemento(ElementoBs.getIDEstadoEdicion()));
+				cu.setEstadoElemento(ElementoBs
+						.consultarEstadoElemento(Estado.EDICION));
 				//Se quitan los espacios iniciales y finales del nombre
 				cu.setNombre(cu.getNombre().trim());
 				new CasoUsoDAO().registrarCasoUso(cu);
@@ -521,6 +519,10 @@ public class CuBs {
 			}
 		}
 		return false;
+	}
+
+	public static void validarPrecondiciones(CasoUso model) {
+	
 	}	
 }
 

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.ElementoBs;
+import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.bs.EntidadBs;
 import mx.prisma.editor.bs.ReglaNegocioBs;
 import mx.prisma.editor.model.Atributo;
@@ -146,7 +147,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 			//Se prepara el modelo para el registro 
 			proyecto = SessionManager.consultarProyectoActivo();
 			model.setProyecto(proyecto);
-			model.setEstadoElemento(ElementoBs.consultarEstadoElemento(ElementoBs.getIDEstadoEdicion()));
+			model.setEstadoElemento(ElementoBs.consultarEstadoElemento(Estado.EDICION));
 			
 			//Se registra el mensaje
 			ReglaNegocioBs.registrarReglaNegocio(model);

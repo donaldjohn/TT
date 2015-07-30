@@ -8,10 +8,13 @@ import org.hibernate.JDBCException;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.CatalogoBs;
 import mx.prisma.bs.Referencia.TipoCatalogo;
+import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.ActorDAO;
+import mx.prisma.editor.dao.ActualizacionDAO;
 import mx.prisma.editor.dao.CardinalidadDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.model.Actor;
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Cardinalidad;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
@@ -19,7 +22,7 @@ import mx.prisma.util.Validador;
 
 public class ActorBs {
 	private static final String CLAVE = "ACT";
- 
+	private Actualizacion actualizacion;
 	public static void registrarActor(Actor model) throws Exception {
 		try {
 			model.setCardinalidad(new CardinalidadDAO().consultarCardinalidad(model.getCardinalidad().getId()));	
@@ -27,9 +30,11 @@ public class ActorBs {
 			model.setClave(CLAVE);
 			model.setNumero(new ActorDAO().siguienteNumeroActor(model
 					.getProyecto().getId()));
-			model.setEstadoElemento(new EstadoElementoDAO()
-					.consultarEstadoElemento(ElementoBs.getIDEstadoEdicion()));
+			model.setEstadoElemento(ElementoBs.consultarEstadoElemento(Estado.EDICION));
+			
 			new ActorDAO().registrarActor(model);
+			//actualizacion = new Actualizacion();
+			new ActualizacionDAO();
 		} catch (JDBCException je) {
 			if (je.getErrorCode() == 1062) {
 				throw new PRISMAValidacionException("El actor "

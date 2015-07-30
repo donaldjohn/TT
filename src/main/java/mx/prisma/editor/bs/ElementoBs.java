@@ -5,16 +5,64 @@ import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.util.PRISMAException;
 
 public class ElementoBs {
+	
 	private final static int ID_EDICION = 1;
-	public static EstadoElemento consultarEstadoElemento(int i) throws Exception{
-		EstadoElemento estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(i);
+	private final static int ID_TERMINADO = 2;
+	private final static int ID_PENDIENTECORRECCION = 3;
+	private final static int ID_REVISION = 4;
+	private final static int ID_PORLIBERAR = 5;
+	private final static int ID_LIBERADO = 6;
+	
+	public enum Estado {
+	    EDICION, TERMINADO, REVISION, PENDIENTECORRECCION, PORLIBERAR, LIBERADO
+	}
+	
+	public static EstadoElemento consultarEstadoElemento(Estado estado) throws Exception{
+		EstadoElemento estadoElemento = null;
+		switch(estado) {
+		case EDICION:
+			 estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(ID_EDICION);
+			break;
+		case LIBERADO:
+			estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(ID_LIBERADO);
+			break;
+		case PENDIENTECORRECCION:
+			estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(ID_PENDIENTECORRECCION);
+			break;
+		case PORLIBERAR:
+			estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(ID_PORLIBERAR);
+			break;
+		case REVISION:
+			estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(ID_REVISION);
+			break;
+		case TERMINADO:
+			estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(ID_TERMINADO);
+			break;
+		default:
+			break;
+		}
 		if(estadoElemento == null) {
 			throw new PRISMAException("No se puede consultar el estado del elemento", "MSG13");
 		}
 		return estadoElemento;
 	}
 	
-	public static int getIDEstadoEdicion() {
-		return ID_EDICION;
+	public static int getIdEstado(Estado estado) {
+		switch(estado) {
+		case EDICION:
+			return ID_EDICION;
+		case LIBERADO:
+			return ID_LIBERADO;
+		case PENDIENTECORRECCION:
+			return ID_PENDIENTECORRECCION;
+		case PORLIBERAR:
+			return ID_PORLIBERAR;
+		case REVISION:
+			return ID_REVISION;
+		case TERMINADO:
+			return ID_TERMINADO;
+		default:
+			return 0;
+		}
 	}
 }

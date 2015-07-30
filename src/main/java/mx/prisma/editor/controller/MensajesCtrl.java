@@ -15,6 +15,7 @@ import com.opensymphony.xwork2.ModelDriven;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.ElementoBs;
+import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.bs.EntidadBs;
 import mx.prisma.editor.bs.MensajeBs;
 import mx.prisma.editor.model.Mensaje;
@@ -129,7 +130,7 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 
 			//Se prepara el modelo para el registro
 			model.setProyecto(proyecto);
-			model.setEstadoElemento(ElementoBs.consultarEstadoElemento(ElementoBs.getIDEstadoEdicion()));
+			model.setEstadoElemento(ElementoBs.consultarEstadoElemento((Estado.EDICION)));
 			 
 			//Se registra el mensaje
 			MensajeBs.registrarMensaje(model);

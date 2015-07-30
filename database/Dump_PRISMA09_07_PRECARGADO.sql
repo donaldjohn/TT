@@ -810,7 +810,7 @@ DROP TABLE IF EXISTS `Proyecto`;
 CREATE TABLE `Proyecto` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `clave` varchar(10) NOT NULL,
-  `nombre` varchar(50) NOT NULL,
+  `nombre` varchar(200) NOT NULL,
   `fechaInicioProgramada` date NOT NULL,
   `fechaTerminoProgramada` date NOT NULL,
   `fechaInicio` date DEFAULT NULL,
@@ -833,7 +833,7 @@ CREATE TABLE `Proyecto` (
 
 LOCK TABLES `Proyecto` WRITE;
 /*!40000 ALTER TABLE `Proyecto` DISABLE KEYS */;
-INSERT INTO `Proyecto` VALUES (1,'SIG','Sistema de Información Geográfica','2011-03-12','2012-03-12','2011-03-13','2012-03-13','Sistema para la gestión de áreas naturales protegidas y superficies forestales.',5000000,'IPN',1);
+INSERT INTO `Proyecto` VALUES (1,'SIG','Sistema de Información Geográfica','2011-03-12','2012-03-12','2011-03-13','2012-03-13','El proyecto tiene como propósito desarrollar un Sistema de Informaciónn Geográfica que permita el registro, modificación y consulta de los predios manejados por la Protectora de Bosques del Estado de México, así como el registro y visualización de 3 eventos manejados por PROBOSQUE: incendios, reforestación y pagos por servicios ambientales hidrológicos. El Sistema de Información Geográfica permitirá poner a disposición de la SMAGEM, a través de la Internet, la información sustantiva de predios, incendios, reforestaciones y pago por servicios ambientales hidrológicos que sirve para satisfacer las peticiones de información del Gobierno del Estado de México en materia de Medio Ambiente.',5000000,'IPN',1);
 /*!40000 ALTER TABLE `Proyecto` ENABLE KEYS */;
 UNLOCK TABLES;
 

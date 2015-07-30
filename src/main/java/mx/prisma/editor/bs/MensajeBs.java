@@ -8,6 +8,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.MensajeDAO;
 import mx.prisma.editor.dao.ParametroDAO;
@@ -33,8 +34,7 @@ public class MensajeBs {
 		try {
 				validar(model);
 				model.setClave(CLAVE);
-				model.setEstadoElemento(new EstadoElementoDAO()
-						.consultarEstadoElemento(ElementoBs.getIDEstadoEdicion()));
+				model.setEstadoElemento(ElementoBs.consultarEstadoElemento(Estado.EDICION));
 				model.setNombre(model.getNombre().trim());
 				new MensajeDAO().registrarMensaje(model);
 		} catch (JDBCException je) {

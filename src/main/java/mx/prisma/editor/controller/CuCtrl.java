@@ -5,11 +5,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
+import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.bs.Referencia;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.model.Accion;
@@ -18,6 +17,7 @@ import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entidad;
+import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
@@ -33,7 +33,6 @@ import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.SessionManager;
 
-import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
@@ -57,10 +56,11 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 	// Modelo
 	private CasoUso model;
+	
+	private EstadoElemento estado;
 
 	// Lista de registros
 	private List<CasoUso> listCU;
-	private List<CasoUso> listCUProyecto;
 	private String jsonCasosUsoModulo;
 	private String jsonPrecondiciones;
 	private String jsonPostcondiciones;
@@ -87,9 +87,184 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	private boolean existenExtensiones;
 	
 	
-	/*
-	 * Agrega las postcondiciones y las precondiciones
-	 */
+	
+	public String index() {
+		try {
+					
+			// Se consulta el módulo
+			modulo = SessionManager.consultarModuloActivo();
+			
+			//Se consulta el proyecto
+			proyecto = modulo.getProyecto();
+
+
+			// Se agrega el módulo al caso de uso
+			model.setModulo(modulo);
+
+			// Se consultan todos los casos de uso para mostrarlos en la gestión
+			listCU = CuBs.consultarCasosUsoModulo(modulo);
+			
+			@SuppressWarnings("unchecked")
+			Collection<String> msjs = (Collection<String>) SessionManager.get("mensajesAccion");
+			this.setActionMessages(msjs);
+			SessionManager.delete("mensajesAccion");
+
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+		}
+		return INDEX;
+	}
+	
+	public String editNew() {
+		String resultado = null;
+		try {
+			
+			// Creación del modelo
+			modulo = SessionManager.consultarModuloActivo();
+			proyecto = modulo.getProyecto();
+			
+			// Se buscan los elementos disponibles para referenciar
+			buscaElementos();
+			
+			model.setClave(CuBs.calcularClave(modulo.getClave()));
+			resultado = EDITNEW;
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = editNew();
+		}catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+
+		return resultado;
+	}
+	
+	public String create() throws PRISMAException, Exception {
+		String resultado = null;
+		try {
+			// Creación del modelo
+			modulo = SessionManager.consultarModuloActivo();
+			proyecto = modulo.getProyecto();
+						
+			model.setProyecto(proyecto);
+			model.setModulo(modulo);
+			model.setEstadoElemento(ElementoBs.consultarEstadoElemento(Estado.EDICION));
+			
+			//Se agregan las postcondiciones y precondiciones
+			agregarPostPrecondiciones(model);
+
+			CuBs.registrarCasoUso(model);
+			resultado = SUCCESS;
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"caso de uso", "registrado" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = editNew();
+		}catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+
+	public String edit() {
+		
+		String resultado = null;
+		try {
+			
+			// Creación del modelo
+			model = CuBs.consultarCasoUso(idSel);
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			model.setModulo(modulo);
+			CuBs.validarPrecondiciones(model);
+
+			/*
+			 *  Se buscan los elementos disponibles para referenciar, para obtenerlos es necesario
+			 *  determinar el proyecto y el módulo en el que se encuentra.
+			 */
+			
+;
+			buscaElementos();
+			prepararVista();
+			
+			resultado = EDIT;
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = editNew();
+		}catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+	
+	public String update() throws Exception {
+		String resultado = null;
+		try {
+			// Creación del modelo
+			modulo = SessionManager.consultarModuloActivo();
+			proyecto = modulo.getProyecto();
+						
+			model.setProyecto(proyecto);
+			model.setModulo(modulo);
+			model.setEstadoElemento(ElementoBs.consultarEstadoElemento(Estado.EDICION));
+			
+			//Se agregan las postcondiciones y precondiciones
+			agregarPostPrecondiciones(model);
+
+			CuBs.registrarCasoUso(model);
+			resultado = SUCCESS;
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"caso de uso", "registrado" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = editNew();
+		}catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;	}
+
+	public String show() throws Exception {
+		String resultado = null;
+		try {
+			model = CuBs.consultarCasoUso(idSel);
+			this.existenPrecondiciones = CuBs.existenPrecondiciones(model.getPostprecondiciones());
+			this.existenPostcondiciones = CuBs.existenPostcondiciones(model.getPostprecondiciones());
+			this.existenTrayectorias = model.getTrayectorias().size() > 0 ? true : false;
+			this.existenExtensiones = model.getExtiende().size() > 0 ? true : false;
+			
+			CuBs.agregarReferencias(request.getContextPath(), this.model);
+						
+			resultado = SHOW;
+		} catch (PRISMAException pe) {
+			pe.setIdMensaje("MSG26");
+			ErrorManager.agregaMensajeError(this, pe);
+			return index();
+		} catch(Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			return index();
+		}
+		return resultado;
+	}
+	
 	private void agregarPostPrecondiciones(CasoUso casoUso) {
 		// Se agregan precondiciones al caso de uso
 		if (jsonPrecondiciones != null && !jsonPrecondiciones.equals("")) {
@@ -269,110 +444,42 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		}
 
 	}
+	
+	private void prepararVista() {
+		Set<PostPrecondicion> postPrecondiciones = model.getPostprecondiciones();
+		ArrayList<PostPrecondicion> precondiciones = new ArrayList<PostPrecondicion>();
+		ArrayList<PostPrecondicion> postcondiciones = new ArrayList<PostPrecondicion>();
+		PostPrecondicion postPrecondicionAux;
 
-
-	public String create() throws PRISMAException, Exception {
-		String resultado = null;
-		try {
-			// Creación del modelo
-			modulo = SessionManager.consultarModuloActivo();
-			proyecto = modulo.getProyecto();
-						
-			model.setProyecto(proyecto);
-			model.setModulo(modulo);
-			model.setEstadoElemento(ElementoBs.consultarEstadoElemento(ElementoBs.getIDEstadoEdicion()));
-			
-			//Se agregan las postcondiciones y precondiciones
-			agregarPostPrecondiciones(model);
-
-			CuBs.registrarCasoUso(model);
-			resultado = SUCCESS;
-			addActionMessage(getText("MSG1", new String[] { "El",
-					"caso de uso", "registrado" }));
-			SessionManager.set(this.getActionMessages(), "mensajesAccion");
-		} catch (PRISMAValidacionException pve) {
-			ErrorManager.agregaMensajeError(this, pve);
-			resultado = editNew();
-		}catch (PRISMAException pe) {
-			ErrorManager.agregaMensajeError(this, pe);
-			resultado = index();
-		} catch (Exception e) {
-			ErrorManager.agregaMensajeError(this, e);
-			resultado = index();
+		for(PostPrecondicion postPrecondicion : postPrecondiciones) {
+			postPrecondicionAux = new PostPrecondicion();
+			postPrecondicionAux.setRedaccion(TokenBs.decodificarCadenasToken(postPrecondicion.getRedaccion()));
+			if (postPrecondicion.isPrecondicion()) {	
+				precondiciones.add(postPrecondicionAux);
+			} else {
+				postcondiciones.add(postPrecondicionAux);
+			}
 		}
-		return resultado;
+		this.jsonPrecondiciones = JsonUtil.mapListToJSON(precondiciones);
+		this.jsonPostcondiciones = JsonUtil.mapListToJSON(postcondiciones);
+		
+		model.setRedaccionActores((TokenBs.decodificarCadenasToken(model.getRedaccionActores())));
+		model.setRedaccionEntradas((TokenBs.decodificarCadenasToken(model.getRedaccionEntradas())));
+		model.setRedaccionSalidas((TokenBs.decodificarCadenasToken(model.getRedaccionSalidas())));
+		model.setRedaccionReglasNegocio((TokenBs.decodificarCadenasToken(model.getRedaccionReglasNegocio())));
+
+
+		
 	}
-
-	public String edit() {
-		String resultado = null;
-		try {
-			model = CuBs.consultarCasoUso(model.getId());
-			resultado = EDIT;
-		} catch (PRISMAException pe) {
-			ErrorManager.agregaMensajeError(this, pe);
-			resultado = index();
-		} catch (Exception e) {
-			ErrorManager.agregaMensajeError(this, e);
-			resultado = index();
+		
+	@VisitorFieldValidator
+	public CasoUso getModel() {
+		if (this.model == null) {
+			model = new CasoUso();
 		}
-		return resultado;
-	}
-
-	public String editNew() {
-		String resultado = null;
-		try {
-			
-			// Creación del modelo
-			modulo = SessionManager.consultarModuloActivo();
-			proyecto = modulo.getProyecto();
-			
-			// Se buscan los elementos disponibles para referenciar
-			buscaElementos();
-			
-			listCUProyecto = CuBs.consultarCasosUsoModulo(modulo);
-			model.setClave(CuBs.calcularClave(modulo.getClave()));
-			resultado = EDITNEW;
-		} catch (PRISMAValidacionException pve) {
-			ErrorManager.agregaMensajeError(this, pve);
-			resultado = editNew();
-		}catch (PRISMAException pe) {
-			ErrorManager.agregaMensajeError(this, pe);
-			resultado = index();
-		} catch (Exception e) {
-			ErrorManager.agregaMensajeError(this, e);
-			resultado = index();
-		}
-
-		return resultado;
+		return model;
 	}
 	
-	public String show() throws Exception {
-		String resultado = null;
-		try {
-			model = CuBs.consultarCasoUso(idSel);
-			this.existenPrecondiciones = CuBs.existenPrecondiciones(model.getPostprecondiciones());
-			this.existenPostcondiciones = CuBs.existenPostcondiciones(model.getPostprecondiciones());
-			this.existenTrayectorias = model.getTrayectorias().size() > 0 ? true : false;
-			this.existenExtensiones = model.getExtiende().size() > 0 ? true : false;
-			
-			CuBs.agregarReferencias(request.getContextPath(), this.model);
-						
-			resultado = SHOW;
-		} catch (PRISMAException pe) {
-			pe.setIdMensaje("MSG26");
-			ErrorManager.agregaMensajeError(this, pe);
-			return index();
-		} catch(Exception e) {
-			ErrorManager.agregaMensajeError(this, e);
-			return index();
-		}
-		return resultado;
-	}
-
-	public boolean esEditable(String idAutor, CasoUso cu) {
-		return CuBs.esEditable(idAutor, cu);
-	}
-
 	public String getJsonAcciones() {
 		return jsonAcciones;
 	}
@@ -437,52 +544,10 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		return listCU;
 	}
 
-	public List<CasoUso> getListCUProyecto() {
-		return listCUProyecto;
-	}
-
-	@VisitorFieldValidator
-	public CasoUso getModel() {
-		if (this.model == null) {
-			model = new CasoUso();
-		}
-		return model;
-	}
-
-	public String index() {
-		try {
-					
-			// Se consulta el módulo
-			modulo = SessionManager.consultarModuloActivo();
-			
-			//Se consulta el proyecto
-			proyecto = modulo.getProyecto();
-
-
-			// Se agrega el módulo al caso de uso
-			model.setModulo(modulo);
-
-			// Se consultan todos los casos de uso para mostrarlos en la gestión
-			listCU = CuBs.consultarCasosUsoModulo(modulo);
-			
-			@SuppressWarnings("unchecked")
-			Collection<String> msjs = (Collection<String>) SessionManager.get("mensajesAccion");
-			this.setActionMessages(msjs);
-			SessionManager.delete("mensajesAccion");
-
-		} catch (PRISMAException pe) {
-			ErrorManager.agregaMensajeError(this, pe);
-		} catch (Exception e) {
-			ErrorManager.agregaMensajeError(this, e);
-		}
-		return INDEX;
-	}
-
 	public void setJsonAcciones(String jsonAcciones) {
 		this.jsonAcciones = jsonAcciones;
 	}
 
-	
 	public void setJsonActores(String jsonActores) {
 		this.jsonActores = jsonActores;
 	}
@@ -543,56 +608,9 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		this.listCU = listCU;
 	}
 
-	public void setListCUProyecto(List<CasoUso> listCUProyecto) {
-		this.listCUProyecto = listCUProyecto;
-	}
-
 	public void setModel(CasoUso model) {
 		this.model = model;
 	}
-
-	
-	/**
-	 * Método para crear casos de uso, si la operación es exitosa muestra el
-	 * mensaje MSG1 en caso contrario redirige a la pantalla de registro.
-	 * */
-	public String update() throws Exception {
-		String resultado = null;
-
-		try {
-			CasoUso modelAux = CuBs.consultarCasoUso(model.getId());
-			modelAux.setNombre(model.getNombre());
-			modelAux.setDescripcion(model.getDescripcion());
-			modelAux.setRedaccionActores(model.getRedaccionActores());
-			modelAux.setRedaccionEntradas(model.getRedaccionEntradas());
-			modelAux.setRedaccionSalidas(model.getRedaccionSalidas());
-			modelAux.setRedaccionReglasNegocio(model.getRedaccionReglasNegocio());
-
-			//Se agregan las postcondiciones y precondiciones
-			agregarPostPrecondiciones(modelAux);
-			
-
-			// Solamente se actualiza el modelo debido a que ya se registró
-			CuBs.modificarCasoUso(modelAux);
-			resultado = SUCCESS;
-			addActionMessage(getText("MSG1", new String[] { "El",
-					"caso de uso", "actualizado" }));
-			SessionManager.set(this.getActionMessages(), "mensajesAccion");
-
-		} catch (PRISMAValidacionException pve) {
-			ErrorManager.agregaMensajeError(this, pve);
-			resultado = editNew();
-		}catch (PRISMAException pe) {
-			ErrorManager.agregaMensajeError(this, pe);
-			resultado = index();
-		} catch (Exception e) {
-			ErrorManager.agregaMensajeError(this, e);
-			resultado = index();
-		}
-		return resultado;
-	}
-
-	
 
 	public Integer getIdSel() {
 		return idSel;
