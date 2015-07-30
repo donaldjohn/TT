@@ -8,6 +8,7 @@ import mx.prisma.editor.model.Pantalla;
 import mx.prisma.util.HibernateUtil;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
@@ -76,6 +77,24 @@ public class PantallaDAO extends ElementoDAO {
 
 	public Pantalla consultarPantalla(int id) {
 		return (Pantalla) super.consultarElemento(id);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Pantalla> consultarPantallasModulo(Modulo modulo) {
+		List<Pantalla> pantallas = null;
+
+		try {
+			session.beginTransaction();
+			Query query = session
+					.createQuery("from Pantalla where Moduloid = :modulo");
+			query.setParameter("modulo", modulo.getId());
+			pantallas = query.list();
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		return pantallas;
 	}
 
 }
