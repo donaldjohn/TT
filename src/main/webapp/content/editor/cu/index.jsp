@@ -36,15 +36,19 @@
 					<td><s:property value="%{#cu.clave + ' ' + #cu.numero + ' ' +#cu.nombre}"/></td>
 					<td><s:property value="%{#cu.estadoElemento.nombre}"/></td>
 					<td align="center">	
+							<!-- Consultar caso de uso -->		
 							<s:url var="urlConsultar" value="%{#pageContext.request.contextPath}/cu/%{#cu.id}"/>
 							<s:a href="%{urlConsultar}">
 								<img id="" class="button" title="Consultar Caso de uso"
 										src="${pageContext.request.contextPath}/resources/images/icons/ver.png" />
-							</s:a>			
-							<a><img
-										id="" class="button"
-										title="Editar"
-										src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></a>
+							</s:a>	
+							${blanks}
+							<!-- Modificar caso de uso -->		
+							<s:url var="urlEditar" value="%{#pageContext.request.contextPath}/cu/%{#cu.id}/edit"/>			
+							<s:a href="%{urlEditar}">
+								<img id="" class="button" title="Modificar Caso de uso"
+										src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
+							</s:a>	
 							${blanks}			
 							<!-- Gestionar trayectorias -->			
 							<s:url var="urlGestionarTrayectorias" value="%{#pageContext.request.contextPath}/trayectorias">

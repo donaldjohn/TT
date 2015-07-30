@@ -11,6 +11,7 @@ import org.hibernate.JDBCException;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.CatalogoBs;
 import mx.prisma.bs.Referencia.TipoCatalogo;
+import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.OperadorDAO;
@@ -62,8 +63,7 @@ public class ReglaNegocioBs {
 		try {
 				validar(model);
 				model.setClave(CLAVE);
-				model.setEstadoElemento(new EstadoElementoDAO()
-						.consultarEstadoElemento(ElementoBs.getIDEstadoEdicion()));
+				model.setEstadoElemento(ElementoBs.consultarEstadoElemento(Estado.EDICION));
 				model.setNombre(model.getNombre().trim());
 				new ReglaNegocioDAO().registrarReglaNegocio(model);
 		} catch (JDBCException je) {
