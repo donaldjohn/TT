@@ -2,6 +2,7 @@ package mx.prisma.editor.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -20,10 +21,12 @@ import mx.prisma.editor.bs.EntidadBs;
 import mx.prisma.editor.bs.PantallaBs;
 import mx.prisma.editor.dao.TipoDatoDAO;
 import mx.prisma.editor.dao.UnidadTamanioDAO;
+import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
+import mx.prisma.editor.model.TipoAccion;
 import mx.prisma.editor.model.TipoDato;
 import mx.prisma.editor.model.UnidadTamanio;
 import mx.prisma.util.ActionSupportPRISMA;
@@ -48,7 +51,10 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	private Modulo modulo;
 	private Pantalla model;
 	private List<Pantalla> listPantallas;
-	private String jsonAtributosTabla;
+	private List<TipoAccion> listTipoAccion;
+	private String jsonPantallasDestino;
+	
+	private String jsonAccionesTabla;
 	private Integer idSel;
 	private File imagenPantalla;
 	private String imagenPantallaContentType;
@@ -86,6 +92,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 			modulo = SessionManager.consultarModuloActivo();
 			proyecto = modulo.getProyecto();
 			model.setClave("IU" + modulo.getClave());
+			buscaCatalogos();
 			resultado = EDITNEW;
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
@@ -99,26 +106,53 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 		return resultado;
 	}
 
+	private void buscaCatalogos() {
+		listTipoAccion = PantallaBs.consultarTiposAccion();
+		
+		List<Pantalla> pantallasAux = PantallaBs.consultarPantallasProyecto(proyecto);
+		List<Pantalla> pantallas = new ArrayList<Pantalla>();
+		
+		for(Pantalla pantalla : pantallasAux) {
+			Pantalla pAux = new Pantalla();
+			pAux.setClave(pantalla.getClave());
+			pAux.setNombre(pantalla.getNombre());
+			pAux.setNumero(pantalla.getNumero());
+			pAux.setId(pantalla.getId());
+			pantallas.add(pAux);
+		}
+		jsonPantallasDestino = JsonUtil.mapListToJSON(pantallas);
+	}
+
+	private void agregarAcciones() {
+		if (jsonAccionesTabla != null && !jsonAccionesTabla.equals("")) {
+			model.setAcciones(JsonUtil.mapJSONToSet(jsonAccionesTabla,
+					Accion.class));
+			for (Accion accion : model.getAcciones()) {
+				accion.setPantalla(model);
+			}
+		}
+	}
 
 	public String create() throws Exception {
 		String resultado = null;
 
 		try {
-			//agregarAcciones();
+			agregarAcciones();
 			agregarImagen();
 			modulo = SessionManager.consultarModuloActivo();
 			proyecto = modulo.getProyecto();
 			
 			model.setModulo(modulo);
 			model.setProyecto(proyecto);
-			System.out.println("imagen contentType " + this.imagenPantallaContentType);
+			/*System.out.println("imagen contentType " + this.imagenPantallaContentType);
 			System.out.println("imagen fileName " + this.imagenPantallaFileName);
 			System.out.println("imagen image " + this.imagenPantalla);
 			
 			System.out.println("imagen name " + this.imagenPantalla.getName());
-			System.out.println("imagen path " + this.imagenPantalla.getPath());
-			PantallaBs.registrarPantalla(model);
-			Convertidor.convertByteArrayToFile("/tmp/prisma/hola.png", model.getImagen());
+			System.out.println("imagen path " + this.imagenPantalla.getPath());*/
+			
+//			PantallaBs.registrarPantalla(model);
+			
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "La",
 					"Pantalla", "registrada" }));
@@ -185,14 +219,6 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 		this.userSession = userSession;
 	}
 
-	public String getJsonAtributosTabla() {
-		return jsonAtributosTabla;
-	}
-
-	public void setJsonAtributosTabla(String jsonAtributosTabla) {
-		this.jsonAtributosTabla = jsonAtributosTabla;
-	}
-
 	public void setSession(Map<String, Object> arg0) {
 		// TODO Auto-generated method stub
 
@@ -252,6 +278,30 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 
 	public void setImagenPantallaFileName(String imagenPantallaFileName) {
 		this.imagenPantallaFileName = imagenPantallaFileName;
+	}
+
+	public String getJsonAccionesTabla() {
+		return jsonAccionesTabla;
+	}
+
+	public void setJsonAccionesTabla(String jsonAccionesTabla) {
+		this.jsonAccionesTabla = jsonAccionesTabla;
+	}
+
+	public List<TipoAccion> getListTipoAccion() {
+		return listTipoAccion;
+	}
+
+	public void setListTipoAccion(List<TipoAccion> listTipoAccion) {
+		this.listTipoAccion = listTipoAccion;
+	}
+
+	public String getJsonPantallasDestino() {
+		return jsonPantallasDestino;
+	}
+
+	public void setJsonPantallasDestino(String jsonPantallasDestino) {
+		this.jsonPantallasDestino = jsonPantallasDestino;
 	}
 	
 	

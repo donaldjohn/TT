@@ -26,7 +26,7 @@
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 	<s:form autocomplete="off" id="frmPantalla" theme="simple" enctype="multipart/form-data"
-		action="%{#pageContext.request.contextPath}/pantallas" method="post">
+		action="%{#pageContext.request.contextPath}/pantallas" method="post" onsubmit="return preparaEnvio();">
 		<div class="formulario">
 			<div class="tituloFormulario">Información general de la Pantalla</div>
 			<table class="seccion">
@@ -59,12 +59,14 @@
 				<tr>
 						<td class="label"><s:text name="labelImagen"/></td>
 						<td><s:file name="imagenPantalla" size="40" cssClass="inputFormulario ui-widget"
-								cssErrorClass="input-error"/>
+								cssErrorClass="input-error" onchange="agregarImagen(this, 'pantalla');"/>
 								<s:fielderror
 								fieldName="model.imagen" cssClass="error"
 								theme="jquery" /></td>
 				</tr>
 			</table> 
+			<center><img id="pantalla" src="#" style="display: none;" class="pantalla"/></center>
+			<br/>
 		</div>
 		<div class="formulario">
 			<div class="tituloFormulario">Acciones de la Pantalla</div>
@@ -77,6 +79,10 @@
 						<tr>
 							<th style="width: 20%;"><s:text name="colImagen" /></th>
 							<th style="width: 40%;"><s:text name="colNombre" /></th>
+							<th><!-- Imagen en cadena --></th>
+							<th><!-- Descripcion --></th>
+							<th><!-- Tipo acción --></th>
+							<th><!-- Pantalla destino --></th>
 							<th style="width: 30%;"><s:text name="colAcciones" /></th>
 						</tr>
 					</thead>
@@ -99,8 +105,9 @@
 				value="Cancelar" />
 		</div>
 		
-		<s:hidden id="jsonAtributosTabla" name="jsonAtributosTabla"
-			value="%{jsonAtributosTabla}" />
+		<s:hidden id="jsonAccionesTabla" name="jsonAccionesTabla"
+			value="%{jsonAccionesTabla}" /> 
+		<s:hidden name="jsonPantallasDestino" id="jsonPantallasDestino" value="%{jsonPantallasDestino}"/>
 	</s:form>
 
 	<!-- EMERGENTE REGISTRAR ACCION -->
@@ -124,6 +131,16 @@
 						<td class="label"><s:text name="labelImagen"/></td>
 						<td><s:file name="accion.imagen" id="accion.imagen" size="40" /></td>
 					</tr>
+					<tr>
+						<td class="label obligatorio"><s:text name="labelTipoAccion"/></td>
+						<td><s:select list="listTipoAccion" cssClass="inputFormulario" name="accion.tipoAccion" id="accion.tipoAccion"
+       						cssErrorClass="input-error" headerValue="Seleccione" headerKey="0" listValue="nombre" listKey="id"></s:select></td>
+					</tr>
+					<tr>
+						<td class="label obligatorio"><s:text name="labelPantallaDestino"/></td>
+						<td><s:select list="listTipoAccion" cssClass="inputFormulario" name="accion.pantallaDestino" id="accion.pantallaDestino"
+       						cssErrorClass="input-error" headerValue="Seleccione" headerKey="0" listValue="nombre"></s:select></td>
+					</tr>
 				</table>
 			</div>
 			<br />
@@ -133,7 +150,8 @@
 			</div>
 		</s:form>
 	</sj:dialog>
-
+	
+	
 </body>
 	</html>
 </jsp:root>

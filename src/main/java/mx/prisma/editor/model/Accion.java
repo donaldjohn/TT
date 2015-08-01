@@ -31,6 +31,7 @@ public class Accion implements java.io.Serializable {
 	private Pantalla pantalla;
 	private String nombre;
 	private TipoAccion tipoAccion;
+	private Pantalla pantallaDestino;
 
 	public Accion() {
 	}
@@ -82,6 +83,16 @@ public class Accion implements java.io.Serializable {
 		this.tipoAccion = tipoAccion;
 	}
 
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "PantallaElementoidDestino", referencedColumnName = "id")
+	public Pantalla getPantallaDestino() {
+		return pantallaDestino;
+	}
 
+	public void setPantallaDestino(Pantalla pantallaDestino) {
+		this.pantallaDestino = pantallaDestino;
+	}
 
+	
+	
 }

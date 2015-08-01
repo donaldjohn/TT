@@ -425,3 +425,7 @@ a.referencia:hover {
 	text-indent: -2em;
 	text-align: justify;
 }
+
+.pantalla {
+	max-width: 80%;
+}

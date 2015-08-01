@@ -1,18 +1,27 @@
 package mx.prisma.editor.bs;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
+import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.Referencia;
+import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.PantallaDAO;
+import mx.prisma.editor.dao.TipoAccionDAO;
+import mx.prisma.editor.dao.UnidadTamanioDAO;
 import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
+import mx.prisma.editor.model.TipoAccion;
+import mx.prisma.editor.model.UnidadTamanio;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
@@ -33,8 +42,8 @@ public class PantallaBs {
 		try {
 			validar(model);
 			model.setClave(CLAVE + model.getModulo().getClave());
-			model.setEstadoElemento(new EstadoElementoDAO()
-					.consultarEstadoElemento(ElementoBs.getIDEstadoEdicion()));
+			model.setEstadoElemento(ElementoBs
+					.consultarEstadoElemento(Estado.EDICION));
 			model.setNombre(model.getNombre().trim());
 			new PantallaDAO().registrarElemento(model);
 		} catch (JDBCException je) {
@@ -110,6 +119,30 @@ public class PantallaBs {
 					"pantalla"});
 		}
 		return p;
+	}
+
+	public static List<TipoAccion> consultarTiposAccion() {
+		List<TipoAccion> listTiposAccion = new TipoAccionDAO()
+				.consultarTiposAccion();
+		if (listTiposAccion == null) {
+			throw new PRISMAException("No se pueden consultar los tipos de acción.",
+					"MSG13");
+		}
+		return listTiposAccion;
+	}
+
+	public static List<Pantalla> consultarPantallasProyecto(Proyecto proyecto) {
+		List<Elemento> listPantallasAux = new PantallaDAO().consultarElementos(Referencia.TipoReferencia.PANTALLA, proyecto.getId());
+		List<Pantalla> listPantallas = new ArrayList<Pantalla>();
+		if (listPantallasAux == null) {
+			throw new PRISMAException("No se pueden consultar las pantallas por proyecto.",
+					"MSG13");
+		}
+		for(Elemento elem : listPantallasAux) {
+			listPantallas.add((Pantalla)elem);
+		}
+		
+		return listPantallas;
 	}
 
 }

@@ -3,6 +3,7 @@ var contextPath = "error";
 $(document).ready(function() {
 	contextPath = $("#rutaContexto").val();
 	$('#tablaAccion').DataTable();
+	cargarCatalogos();
 });
 
 function agregarImagen(inputFile, idImg) {
@@ -10,11 +11,11 @@ function agregarImagen(inputFile, idImg) {
         var reader = new FileReader();
 
         reader.onload = function (e) {
-        	console.log("e.target.result " + e.target.result);
             $('#' + idImg).attr('src', e.target.result);
         }
-
-        reader.readAsDataURL(inputFile.files[0]);
+        document.getElementById(idImg).style.display = '';
+        console.log("pos blob: " + inputFile.files[0]);
+        console.log("readAsDataURL: " + reader.readAsDataURL(inputFile.files[0]));
     }
 }
 
@@ -22,14 +23,30 @@ function registrarAccion() {
 
 	var nombre = document.getElementById("accion.nombre").value;
 	var descripcion = document.getElementById("accion.descripcion").value;
-	var inputFile = document.getElementById("accion.imagen");
+	
+	var imagen = document.getElementById("accion.imagen");
+	
+	var img = imagen.files[0];
+	
+	var selectTipoAccion = document.getElementById("accion.tipoAccion");
+	var selectPantallaDestino = document.getElementById("accion.pantallaDestino");
+	
+	var tipoAccion = selectTipoAccion.options[selectTipoAccion.selectedIndex].value;
+	var idPantallaDestino = selectPantallaDestino.options[selectPantallaDestino.selectedIndex].value;
+	
+	console.log("TA " + tipoAccion);
+	console.log("PD " + idPantallaDestino);
 
-	if (esValidaAccion("tablaAccion", nombre, descripcion, inputFile.value)) {
+	if (esValidaAccion("tablaAccion", nombre, descripcion, imagen, selectTipoAccion, selectPantallaDestino)) {
 		// Se construye la fila
 		//http://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded
 		var row = [
 				"<center><img id='" + nombre + "' src='" + "#" + "'/></center>",
+				img.getAsText('utf-8'),
 				nombre,
+				descripcion, 
+				tipoAccion,
+				idPantallaDestino,
 				"<center>"
 						+ "<a button='true'>"
 						+ "<img class='icon'  id='icon' src='"
@@ -41,12 +58,14 @@ function registrarAccion() {
 						+ "/resources/images/icons/eliminar.png' title='Eliminar Acción'/></a>"
 						+ "</center>" ];
 		dataTableCDT.addRow("tablaAccion", row);
-		agregarImagen(inputFile, nombre);
+		agregarImagen(imagen, nombre);
 		
 		
 		document.getElementById("accion.nombre").value = null;
 		document.getElementById("accion.descripcion").value = null;
 		document.getElementById("accion.imagen").value = null;
+		document.getElementById("accion.tipoAccion").selectedIndex = 0;
+		document.getElementById("accion.pantallaDestino").selectedIndex = 0;
 
 		$('#accionDialog').dialog('close');
 	} else {
@@ -59,6 +78,8 @@ function cancelarRegistrarAccion() {
 	document.getElementById("accion.nombre").value = null;
 	document.getElementById("accion.descripcion").value = null;
 	document.getElementById("accion.imagen").value = null;
+	document.getElementById("accion.tipoAccion").selectedIndex = 0;
+	document.getElementById("accion.pantallaDestino").selectedIndex = 0;
 	// Se cierra la emergente
 	$('#accionDialog').dialog('close');
 };
@@ -67,12 +88,12 @@ function agregarMensaje(mensaje) {
 	alert(mensaje);
 };
 
-function esValidaAccion(idTabla, nombre, descripcion, imagen) {
+function esValidaAccion(idTabla, nombre, descripcion, imagen, tipoAccion, pantallaDestino) {
 	/*
 	 * Inicia la validación del nombre y descripción, los cuales se deben validar independientemente del tipo de dato seleccionado.
 	 */
 
-	if (vaciaONula(nombre) || vaciaONula(descripcion)) {
+	if (vaciaONula(nombre) || vaciaONula(descripcion) || tipoAccion.selectedIndex == 0 || pantallaDestino.selectedIndex == 0) {
 		agregarMensaje("Agregue todos los campos obligatorios.");
 		return false;
 	}
@@ -110,65 +131,17 @@ function esValidaAccion(idTabla, nombre, descripcion, imagen) {
 		agregarMensaje("Esta Acción ya está en la Pantalla.");
 		return false;
 	}
-
-	return true;
-}
-
-function ocultarColumnas(tabla) {
-	var dataTable = $("#" + tabla).dataTable();
-	dataTable.api().column(3).visible(false);
-	dataTable.api().column(4).visible(false);
-	dataTable.api().column(5).visible(false);
-	dataTable.api().column(6).visible(false);
-	dataTable.api().column(7).visible(false);
-	dataTable.api().column(8).visible(false);
-	dataTable.api().column(9).visible(false);
-
-}
-
-function esEntero(str) {
-	return /^([1-9]\d*)$/.test(str);
-}
-
-function esFloat(str) {
-	return /^(\.(\d+)([1-9]))|(\d+)(\.)(\d+)([1-9])$/.test(str);
-}
-
-function disablefromTipoDato() {
-	document.getElementById("atributo.longitud").value = null;
-	document.getElementById("atributo.formatoArchivo").value = null;
-	document.getElementById("atributo.tamanioArchivo").value = null;
-	document.getElementById("atributo.unidadTamanio").selectedIndex = 0;
-	document.getElementById("atributo.otroTipoDato").value = null;
-
-	document.getElementById("trTextoAyudaFormato").style.display = 'none';
-	var tipoDato = document.getElementById("atributo.tipoDato");
-	var tipoDatoTexto = tipoDato.options[tipoDato.selectedIndex].text;
-
-	if (tipoDatoTexto == 'Booleano' || tipoDatoTexto == 'Fecha'
-			|| tipoDatoTexto == 'Archivo' || tipoDatoTexto == 'Seleccione'
-			|| tipoDatoTexto == 'Otro') {
-		document.getElementById("trLongitud").style.display = 'none';
-		if (tipoDatoTexto == 'Archivo') {
-			document.getElementById("trFormatoArchivo").style.display = '';
-			document.getElementById("trTamanioArchivo").style.display = '';
-			document.getElementById("trTextoAyudaFormato").style.display = '';
-		} else {
-			document.getElementById("trFormatoArchivo").style.display = 'none';
-			document.getElementById("trTamanioArchivo").style.display = 'none';
-			document.getElementById("trTextoAyudaFormato").style.display = 'none';
+	
+	var tamMaximo = 2000;
+	if(imagen.files.length == 1) {
+		var img = imagen.files[0];
+		if(img.size > tamMaximo) {
+			agregarMensaje("Ingrese una imagen con tamaño máximo de " + tamMaximo + " bytes");
+			console.log("getAsText('utf-8'): " + img.getAsText('utf-8'));
 		}
-		if (tipoDatoTexto == 'Otro') {
-			document.getElementById("trOtro").style.display = '';
-		} else {
-			document.getElementById("trOtro").style.display = 'none';
-		}
-	} else {
-		document.getElementById("trLongitud").style.display = '';
-		document.getElementById("trOtro").style.display = 'none';
-		document.getElementById("trFormatoArchivo").style.display = 'none';
-		document.getElementById("trTamanioArchivo").style.display = 'none';
 	}
+
+	return true; 
 }
 
 function preparaEnvio() {
@@ -182,30 +155,53 @@ function preparaEnvio() {
 
 function tablaToJson(idTable) {
 	var table = $("#" + idTable).dataTable();
-	var arregloAtributos = [];
+	var arregloAcciones = [];
 
 	for (var i = 0; i < table.fnSettings().fnRecordsTotal(); i++) {
-		var nombre = table.fnGetData(i, 0);
-		var obligatorio = table.fnGetData(i, 2);
-		var tipoDato = table.fnGetData(i, 3);
-		var otroTipoDato = table.fnGetData(i, 4);
-
-		var descripcion = table.fnGetData(i, 5);
-		var longitud = table.fnGetData(i, 6);
-		var formatoArchivo = table.fnGetData(i, 7);
-		var tamanioArchivo = table.fnGetData(i, 8);
-		var unidadTamanio = table.fnGetData(i, 9);
-
-		if (obligatorio == 'Sí') {
-			obligatorio = true;
-		} else {
-			obligatorio = false;
-		}
-
-		arregloAtributos.push(new Atributo(nombre, descripcion, obligatorio,
+		var imagen = table.fnGetData(i, 1);
+		var nombre = table.fnGetData(i, 2);
+		var descripcion = table.fnGetData(i, 3);
+		var tipoAccion = table.fnGetData(i, 4);
+		var pantallaDestino = table.fnGetData(i, 5);
+		
+		arregloAcciones.push(new Accion(nombre, descripcion, obligatorio,
 				longitud, tipoDato, otroTipoDato, formatoArchivo,
 				tamanioArchivo, unidadTamanio));
 	}
 	var jsonAtributos = JSON.stringify(arregloAtributos);
 	document.getElementById("jsonAtributosTabla").value = jsonAtributos;
+}
+
+function cargarCatalogos() {
+	var selectPantallasDestino = document.getElementById("accion.pantallaDestino");
+	var json = document.getElementById("jsonPantallasDestino").value;
+	agregarListaSelect(selectPantallasDestino, json);
+}
+
+function agregarListaSelect(select, cadena) {
+	var json = JSON.parse(cadena);
+	if (json !== "") {		
+		select.options.length = 0;
+		var option = document.createElement("option");
+		option.text = "Seleccione";
+		option.index = -1;
+		option.value = -1;
+		select.add(option);
+		//Se agrega la pantalla actual
+		var option = document.createElement("option");
+		option.text = "Pantalla actual";
+		option.index = 0;
+		option.value = 0;
+		select.add(option);
+		$
+				.each(
+						json,
+						function(i, item) {
+							option = document.createElement("option");
+							option.text = item.clave + item.numero + ' ' + item.nombre;
+							option.index = i + 1;
+							option.value = item.id;
+							select.add(option);
+						});
+	}
 }
