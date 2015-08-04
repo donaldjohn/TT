@@ -1,6 +1,10 @@
 package mx.prisma.editor.bs;
 
+import mx.prisma.editor.bs.AnalisisBs.CU_CasosUso;
+import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
+import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.util.PRISMAException;
 
@@ -63,6 +67,19 @@ public class ElementoBs {
 			return ID_TERMINADO;
 		default:
 			return 0;
+		}
+	}
+	
+	public static void verificarEstado(Elemento elemento, CU_CasosUso casoUsoAnalisis) {
+		switch(casoUsoAnalisis) {
+		case ModificarCasoUso5_2:
+			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION) && elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.PENDIENTECORRECCION)) {
+					throw new PRISMAException("El estado del caso de uso es inválido.", "MSG13");
+			}
+			break;
+		default:
+			break;
+		
 		}
 	}
 }

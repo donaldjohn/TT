@@ -1,7 +1,6 @@
 package mx.prisma.editor.dao;
 
 import java.util.List;
-import java.util.Set;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -9,11 +8,9 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.bs.Referencia.TipoSeccion;
-import mx.prisma.editor.bs.TokenBs;
+
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Modulo;
-import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.util.HibernateUtil;
 
 public class CasoUsoDAO extends ElementoDAO {
@@ -72,56 +69,16 @@ public class CasoUsoDAO extends ElementoDAO {
 		if (results.isEmpty()) {
 			return null;
 		} else
-			
+
 			return results.get(0);
 
 	}
 
 	public void modificarCasoUso(CasoUso casodeuso) {
-		
-	}
-
-	public void preAlmacenarObjetosToken(CasoUso casoUso) {
-		TokenBs.almacenarObjetosToken(TokenBs.convertirToken_Objeto(
-				casoUso.getRedaccionActores(), casoUso.getProyecto()), casoUso,
-				TipoSeccion.ACTORES);
-		casoUso.setRedaccionActores(TokenBs.codificarCadenaToken(
-				casoUso.getRedaccionActores(), casoUso.getProyecto()));
-
-		TokenBs.almacenarObjetosToken(TokenBs.convertirToken_Objeto(
-				casoUso.getRedaccionEntradas(), casoUso.getProyecto()),
-				casoUso, TipoSeccion.ENTRADAS);
-		casoUso.setRedaccionEntradas(TokenBs.codificarCadenaToken(
-				casoUso.getRedaccionEntradas(), casoUso.getProyecto()));
-
-		TokenBs.almacenarObjetosToken(TokenBs.convertirToken_Objeto(
-				casoUso.getRedaccionSalidas(), casoUso.getProyecto()), casoUso,
-				TipoSeccion.SALIDAS);
-		casoUso.setRedaccionSalidas(TokenBs.codificarCadenaToken(
-				casoUso.getRedaccionSalidas(), casoUso.getProyecto()));
-
-		TokenBs.almacenarObjetosToken(
-				TokenBs.convertirToken_Objeto(
-						casoUso.getRedaccionReglasNegocio(),
-						casoUso.getProyecto()), casoUso,
-				TipoSeccion.REGLASNEGOCIOS);
-		casoUso.setRedaccionReglasNegocio(TokenBs.codificarCadenaToken(
-				casoUso.getRedaccionReglasNegocio(), casoUso.getProyecto()));
-
-		Set<PostPrecondicion> postPrecondiciones = casoUso.getPostprecondiciones();
-		for (PostPrecondicion postPrecondicion : postPrecondiciones) {
-			TokenBs.almacenarObjetosToken(
-					TokenBs.convertirToken_Objeto( 
-							postPrecondicion.getRedaccion(),
-							casoUso.getProyecto()), casoUso,
-					TipoSeccion.POSTPRECONDICIONES, postPrecondicion);
-			postPrecondicion.setRedaccion(TokenBs.codificarCadenaToken(
-					postPrecondicion.getRedaccion(), casoUso.getProyecto()));
-		}
+		super.modificarElemento(casodeuso);
 	}
 
 	public void registrarCasoUso(CasoUso casodeuso) {
-		preAlmacenarObjetosToken(casodeuso);
 		super.registrarElemento(casodeuso);
 
 	}
@@ -147,14 +104,14 @@ public class CasoUsoDAO extends ElementoDAO {
 		if (casosdeuso == null){
 			return null;
 		} else
-			
+
 			return casosdeuso.get(0);
 
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<CasoUso> consultarCasosUso(Integer id) {
-		
+
 		List<CasoUso> casosdeuso = null;
 
 		try {

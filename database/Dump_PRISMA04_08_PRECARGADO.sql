@@ -29,10 +29,16 @@ CREATE TABLE `Accion` (
   `PantallaElementoid` int(11) NOT NULL,
   `nombre` varchar(45) NOT NULL,
   `TipoAccionid` int(11) NOT NULL,
+  `PantallaElementoidDestino` int(11) NOT NULL,
+  `imagen` blob DEFAULT NULL,
+  
+  
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniqueAccion` (`PantallaElementoid`,`nombre`),
   KEY `FKAccion918990` (`PantallaElementoid`),
   KEY `FKAccion910670` (`TipoAccionid`),
+  KEY `FKAccion62036` (`PantallaElementoidDestino`),
+  CONSTRAINT `FKAccion62036` FOREIGN KEY (`PantallaElementoidDestino`) REFERENCES `Pantalla` (`Elementoid`) ON UPDATE CASCADE,
   CONSTRAINT `FKAccion910670` FOREIGN KEY (`TipoAccionid`) REFERENCES `TipoAccion` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `FKAccion918990` FOREIGN KEY (`PantallaElementoid`) REFERENCES `Pantalla` (`Elementoid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
@@ -44,7 +50,7 @@ CREATE TABLE `Accion` (
 
 LOCK TABLES `Accion` WRITE;
 /*!40000 ALTER TABLE `Accion` DISABLE KEYS */;
-INSERT INTO `Accion` VALUES (1,23,'Menú del Responsable del evento',3),(2,23,'Solicitar registro',2),(3,26,'Solicitar registro',2),(4,27,'Aceptar',2),(5,27,'Cancelar',2);
+INSERT INTO `Accion` VALUES (1,23,'Menú del Responsable del evento',3,23,NULL),(2,23,'Solicitar registro',2,23,NULL),(3,26,'Solicitar registro',2,23,NULL),(4,27,'Aceptar',2,23,NULL),(5,27,'Cancelar',2,23,NULL);
 /*!40000 ALTER TABLE `Accion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -73,7 +79,7 @@ CREATE TABLE `Actor` (
 
 LOCK TABLES `Actor` WRITE;
 /*!40000 ALTER TABLE `Actor` DISABLE KEYS */;
-INSERT INTO `Actor` VALUES (NULL,21,2),(NULL,22,1);
+INSERT INTO `Actor` VALUES (NULL,21,2),(NULL,22,1),(NULL,56,1);
 /*!40000 ALTER TABLE `Actor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -140,7 +146,7 @@ CREATE TABLE `Atributo` (
   CONSTRAINT `FKAtributo156815` FOREIGN KEY (`TipoDatoid`) REFERENCES `TipoDato` (`id`),
   CONSTRAINT `FKAtributo234480` FOREIGN KEY (`UnidadTamanioid`) REFERENCES `UnidadTamanio` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `FKAtributo539266` FOREIGN KEY (`EntidadElementoid`) REFERENCES `Entidad` (`Elementoid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -149,7 +155,7 @@ CREATE TABLE `Atributo` (
 
 LOCK TABLES `Atributo` WRITE;
 /*!40000 ALTER TABLE `Atributo` DISABLE KEYS */;
-INSERT INTO `Atributo` VALUES (1,'Fecha del último estado','Indica el día, mes y año de la asignación del último estado del evento.',1,NULL,NULL,NULL,NULL,8,5,''),(2,'Comentarios para el cartógrafo','Aquella información adicional que necesita conocer el Cartógrafo del evento para definir la georreferencia del evento.',0,999,NULL,NULL,NULL,8,1,''),(3,'Observaciones','Información adicional referente al evento y a los documentos asociados que avalan el registro o existencia del mismo.',0,999,NULL,NULL,NULL,8,1,''),(4,'Georreferencia','Indica la georreferencia del evento.',1,NULL,NULL,NULL,NULL,8,7,'Georreferencia'),(5,'Comentarios para el responsable','Información proveniente del cartógrafo que necesita conocer el Responsable del evento para corregir la información del evento.',0,999,NULL,NULL,NULL,8,1,''),(6,'Folio o Número de incendio','Cadena conformada por números, letras, o la combinación de ellos, que es único en el sistema y sirve como identificador para los incendios, pagos por servicios ambientales hidrológicos y reforestaciones. ',1,10,NULL,NULL,NULL,8,1,''),(7,'Nombre del núcleo agrario','Nombre del propietario y/o representante legal del predio en el que se localiza el evento.',1,200,NULL,NULL,NULL,9,1,''),(8,'Espaciamiento programado','Distancia que determina la organización espacial de la plantación.',1,10,NULL,NULL,NULL,9,1,''),(9,'Altitud','Distancia vertical que existe desde un plano de referencia, generalmente el nivel medio del mar, hasta un punto situado en la superficie de la Tierra, en este caso el terreno en cuestión.',1,10,NULL,NULL,NULL,9,3,''),(10,'Pendiente','Es el grado de inclinación que presenta un terreno, a menudo es expresada como un porcentaje de la tangente.',1,5,NULL,NULL,NULL,9,2,''),(11,'Densidad programada','Es el número de árboles plantados por hectárea.',1,10,NULL,NULL,NULL,9,2,''),(12,'Paraje','Describe el lugar o superficie relacionada al evento.',1,999,NULL,NULL,NULL,9,1,''),(13,'Fecha de plantación','Es el día, mes y año en que se realizó la plantación.',1,NULL,NULL,NULL,NULL,9,5,'');
+INSERT INTO `Atributo` VALUES (1,'Fecha del último estado','Indica el día, mes y año de la asignación del último estado del evento.',1,NULL,NULL,NULL,NULL,8,5,''),(2,'Comentarios para el cartógrafo','Aquella información adicional que necesita conocer el Cartógrafo del evento para definir la georreferencia del evento.',0,999,NULL,NULL,NULL,8,1,''),(3,'Observaciones','Información adicional referente al evento y a los documentos asociados que avalan el registro o existencia del mismo.',0,999,NULL,NULL,NULL,8,1,''),(4,'Georreferencia','Indica la georreferencia del evento.',1,NULL,NULL,NULL,NULL,8,7,'Georreferencia'),(5,'Comentarios para el responsable','Información proveniente del cartógrafo que necesita conocer el Responsable del evento para corregir la información del evento.',0,999,NULL,NULL,NULL,8,1,''),(6,'Folio o Número de incendio','Cadena conformada por números, letras, o la combinación de ellos, que es único en el sistema y sirve como identificador para los incendios, pagos por servicios ambientales hidrológicos y reforestaciones. ',1,10,NULL,NULL,NULL,8,1,''),(7,'Nombre del núcleo agrario','Nombre del propietario y/o representante legal del predio en el que se localiza el evento.',1,200,NULL,NULL,NULL,9,1,''),(8,'Espaciamiento programado','Distancia que determina la organización espacial de la plantación.',1,10,NULL,NULL,NULL,9,1,''),(9,'Altitud','Distancia vertical que existe desde un plano de referencia, generalmente el nivel medio del mar, hasta un punto situado en la superficie de la Tierra, en este caso el terreno en cuestión.',1,10,NULL,NULL,NULL,9,3,''),(10,'Pendiente','Es el grado de inclinación que presenta un terreno, a menudo es expresada como un porcentaje de la tangente.',1,5,NULL,NULL,NULL,9,2,''),(11,'Densidad programada','Es el número de árboles plantados por hectárea.',1,10,NULL,NULL,NULL,9,2,''),(12,'Paraje','Describe el lugar o superficie relacionada al evento.',1,999,NULL,NULL,NULL,9,1,''),(13,'Fecha de plantación','Es el día, mes y año en que se realizó la plantación.',1,NULL,NULL,NULL,NULL,9,5,''),(14,'Otros apoyos','Descripción de los apoyos adicionales como transporte, herramienta, maquinaria, entre otros, que se brindan en el combate al incendio.',0,999,NULL,NULL,NULL,53,1,''),(15,'Número de participantes','Número de personas que participan en el combate al incendio.',0,10,NULL,NULL,NULL,53,3,''),(16,'Fecha del combate','Es el día, mes y año del registro del combate al incendio forestal.',1,NULL,NULL,NULL,NULL,53,5,'');
 /*!40000 ALTER TABLE `Atributo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -383,7 +389,7 @@ CREATE TABLE `Elemento` (
   KEY `FKElemento378533` (`EstadoElementoid`),
   CONSTRAINT `FKElemento378533` FOREIGN KEY (`EstadoElementoid`) REFERENCES `EstadoElemento` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FKElemento728649` FOREIGN KEY (`Proyectoid`) REFERENCES `Proyecto` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -392,7 +398,7 @@ CREATE TABLE `Elemento` (
 
 LOCK TABLES `Elemento` WRITE;
 /*!40000 ALTER TABLE `Elemento` DISABLE KEYS */;
-INSERT INTO `Elemento` VALUES (1,'GLS','1','Anillo','Elemento geométrico que compone a los polígonos, es un camino cerrado (que inicia y termina en el mismo punto).',1,1),(2,'GLS','2','Anillo sin cerrar','Anillo cuyo último punto de su último segmento no coincide con el primer punto del primer segmento.',1,1),(3,'GLS','3','Aprobacióon de registro','Es el resultado de la evaluación del registro de un predio o evento, por parte del responsable. Esta opción determinará si se aprueba o rechaza el registro.',1,1),(5,'GLS','5','Coordenadas','Par de magnitudes (latitud y longitud) que sirven para determinar la posición de un punto en la superficie de la Tierra.',1,1),(6,'GLS','6','Causa del incendio','Determina el origen de un incendio forestal. Se utiliza como tipo de dato para el sistema con los valores: “Actividades agropecuarias”, “Actividades forestales”, “Otras actividades productivas”, “Limpia de derechos de vía”, “Fumadores”, “Fogatas de paseantes”, “Quemas de basureros”, “Litigios”, “Rencillas”, “Para obtener autorización de aprovechamiento forestal”, “Cazadores furtivos”, “Descargas eléctricas”, “Cultivos ilícitos”, “Ferrocarril” y “No determinadas”.',1,1),(7,'GLS','7','Especies','Cada uno de los grupos en que se dividen los géneros y que se componen de individuos que, además de los caracteres genéricos, tienen en común otros caracteres por los cuales se asemejan entre sí y se distinguen de los de las demás especies. ',1,1),(8,'ENT','1','Evento','Cada una de las operaciones y programas realizados sobre las superficies forestales, que comprenden acciones de producción, protección, conservación, reforestación y fomento de los recursos forestales',1,1),(9,'ENT','1','Reforestación','Establecimiento inducido de vegetación forestal en terrenos forestales.',1,1),(10,'RN','1','Tipo de dato correcto','Esta regla de negocio permite verificar que los datos ingresados sean del tipo de dato correcto.',1,1),(11,'RN','2','Datos obligatorios','Esta regla de negocio permitirá verificar que los datos marcados como obligatorios sean proporcionados.',1,1),(12,'RN','3','Identificador único del evento','Esta regla de negocio permitirá conocer qué dato del evento determina su unicidad.',1,1),(13,'MSG','1','No existe información registrada por el momento','Este mensaje permitirá notificar al actor que aún no existe información registrada en el sistema.',1,1),(14,'MSG','2','Operación realizada exitosamente','Este mensaje permitirá notificar al actor que la acción solicitada fue realizada exitosamente.',1,1),(15,'MSG','3','Confirmación de envío de información','Este mensaje permitirá indicar al actor que es necesario que verifique la información antes de ser enviada debido a que no se podrán realizar las modificaciones.',1,1),(16,'MSG','4','No se encontró información sustantiva','Este mensaje permitirá indicar al actor que no se puede ejecutar la operación debido a que el sistema no tiene información base.',1,1),(17,'MSG','5','Falta un dato requerido para efectuar la operación solicitada','Este mensaje permitirá indicar al actor la omisión de algún dato requerido para ejecutar la operación solicitada.',1,1),(18,'MSG','6','Formato incorrecto','Este mensaje permitirá indicar al actor que uno de los campos ingresados en el formulario no cumple con el tipo de dato definido en el diccionario de datos.',1,1),(19,'MSG','7','Se ha excedido la longitud máxima del campo','Este mensaje permitirá indicar al actor que el valor ingresado en uno de los campos del formulario no cumple o rebasa la longitud especificada.',1,1),(20,'MSG','8','Registro repetido','Este mensaje permitirá indicar al actor que ya existe un registro con los mismos datos.',1,1),(21,'ACT','1','Responsable de la reforestación','Se refiere al personal que administra la información asociada al evento reforestación.',1,1),(22,'ACT','2','Responsable del predio','Se refiere al personal que administra la información asociada a los predios.',1,1),(23,'IUSF','1','Administrar reforestaciones (Responsable)','Esta pantalla permite al Responsable del evento visualizar las reforestaciones registradas y sirve como punto de acceso para definir nuevas, así como modificar, aprobar o consultar las ya registradas.',1,1),(24,'CUSF','1','Administrar reforestaciones (Responsable)','Este caso de uso tiene como finalidad mostrar todas las reforestaciones registradas en el sistema. El actor podrá acceder a las operaciones de registrar nuevas reforestaciones, modificar su información asociada, aprobar el registro de estas o consultar su información.',1,1),(25,'CUSF','1.1','Solicitar registro de la reforestación','Este caso de uso permite al actor solicitar el registro de una reforestación, para que a partir de la información registrada, se realice la georreferencia. El actor podrá registrar la información que describa la reforestación, así como escribir observaciones que ayuden al Cartógrafo de la Reforestación a realizar la georreferencia correctamente.',1,1),(26,'IUSF','2','Administrar incendios (Responsable)','Esta pantalla permite al Responsable del evento visualizar los incendios registrados y sirve como punto de acceso para definir nuevos, así como modificar, aprobar o consultar los ya registrados.',1,1),(27,'IUSF','2.1','Solicitar registro del incendio','Este caso de uso permite al actor solicitar el registro de un incendio, para que a partir de la información registrada, se realice la georreferencia. El actor podrá registrar la información que describa el incendio, así como escribir observaciones que ayuden al Cartógrafo de la Reforestación a realizar la georreferencia correctamente.',1,1);
+INSERT INTO `Elemento` VALUES (1,'GLS','1','Anillo','Elemento geométrico que compone a los polígonos, es un camino cerrado (que inicia y termina en el mismo punto).',1,1),(2,'GLS','2','Anillo sin cerrar','Anillo cuyo último punto de su último segmento no coincide con el primer punto del primer segmento.',1,1),(3,'GLS','3','Aprobacióon de registro','Es el resultado de la evaluación del registro de un predio o evento, por parte del responsable. Esta opción determinará si se aprueba o rechaza el registro.',1,1),(5,'GLS','5','Coordenadas','Par de magnitudes (latitud y longitud) que sirven para determinar la posición de un punto en la superficie de la Tierra.',1,1),(6,'GLS','6','Causa del incendio','Determina el origen de un incendio forestal. Se utiliza como tipo de dato para el sistema con los valores: “Actividades agropecuarias”, “Actividades forestales”, “Otras actividades productivas”, “Limpia de derechos de vía”, “Fumadores”, “Fogatas de paseantes”, “Quemas de basureros”, “Litigios”, “Rencillas”, “Para obtener autorización de aprovechamiento forestal”, “Cazadores furtivos”, “Descargas eléctricas”, “Cultivos ilícitos”, “Ferrocarril” y “No determinadas”.',1,1),(7,'GLS','7','Especies','Cada uno de los grupos en que se dividen los géneros y que se componen de individuos que, además de los caracteres genéricos, tienen en común otros caracteres por los cuales se asemejan entre sí y se distinguen de los de las demás especies. ',1,1),(8,'ENT','1','Evento','Cada una de las operaciones y programas realizados sobre las superficies forestales, que comprenden acciones de producción, protección, conservación, reforestación y fomento de los recursos forestales',1,1),(9,'ENT','1','Reforestación','Establecimiento inducido de vegetación forestal en terrenos forestales.',1,1),(10,'RN','1','Tipo de dato correcto','Esta regla de negocio permite verificar que los datos ingresados sean del tipo de dato correcto.',1,1),(11,'RN','2','Datos obligatorios','Esta regla de negocio permitirá verificar que los datos marcados como obligatorios sean proporcionados.',1,1),(12,'RN','3','Identificador único del evento','Esta regla de negocio permitirá conocer qué dato del evento determina su unicidad.',1,1),(13,'MSG','1','No existe información registrada por el momento','Este mensaje permitirá notificar al actor que aún no existe información registrada en el sistema.',1,1),(14,'MSG','2','Operación realizada exitosamente','Este mensaje permitirá notificar al actor que la acción solicitada fue realizada exitosamente.',1,1),(15,'MSG','3','Confirmación de envío de información','Este mensaje permitirá indicar al actor que es necesario que verifique la información antes de ser enviada debido a que no se podrán realizar las modificaciones.',1,1),(16,'MSG','4','No se encontró información sustantiva','Este mensaje permitirá indicar al actor que no se puede ejecutar la operación debido a que el sistema no tiene información base.',1,1),(17,'MSG','5','Falta un dato requerido para efectuar la operación solicitada','Este mensaje permitirá indicar al actor la omisión de algún dato requerido para ejecutar la operación solicitada.',1,1),(18,'MSG','6','Formato incorrecto','Este mensaje permitirá indicar al actor que uno de los campos ingresados en el formulario no cumple con el tipo de dato definido en el diccionario de datos.',1,1),(19,'MSG','7','Se ha excedido la longitud máxima del campo','Este mensaje permitirá indicar al actor que el valor ingresado en uno de los campos del formulario no cumple o rebasa la longitud especificada.',1,1),(20,'MSG','8','Registro repetido','Este mensaje permitirá indicar al actor que ya existe un registro con los mismos datos.',1,1),(21,'ACT','1','Responsable de la reforestación','Se refiere al personal que administra la información asociada al evento reforestación.',1,1),(22,'ACT','2','Responsable del predio','Se refiere al personal que administra la información asociada a los predios.',1,1),(23,'IUSF','1','Administrar reforestaciones (Responsable)','Esta pantalla permite al Responsable del evento visualizar las reforestaciones registradas y sirve como punto de acceso para definir nuevas, así como modificar, aprobar o consultar las ya registradas.',1,1),(24,'CUSF','1','Administrar reforestaciones (Responsable)','Este caso de uso tiene como finalidad mostrar todas las reforestaciones registradas en el sistema. El actor podrá acceder a las operaciones de registrar nuevas reforestaciones, modificar su información asociada, aprobar el registro de estas o consultar su información.',1,1),(25,'CUSF','1.1','Solicitar registro de la reforestación','Este caso de uso permite al actor solicitar el registro de una reforestación, para que a partir de la información registrada, se realice la georreferencia. El actor podrá registrar la información que describa la reforestación, así como escribir observaciones que ayuden al Cartógrafo de la Reforestación a realizar la georreferencia correctamente.',1,1),(26,'IUSF','2','Administrar incendios (Responsable)','Esta pantalla permite al Responsable del evento visualizar los incendios registrados y sirve como punto de acceso para definir nuevos, así como modificar, aprobar o consultar los ya registrados.',1,1),(27,'IUSF','2.1','Solicitar registro del incendio','Este caso de uso permite al actor solicitar el registro de un incendio, para que a partir de la información registrada, se realice la georreferencia. El actor podrá registrar la información que describa el incendio, así como escribir observaciones que ayuden al Cartógrafo de la Reforestación a realizar la georreferencia correctamente.',1,1),(52,'GLS','7','Estratos afectados','Se refiere al tipo de vegetación afectada por un incendio.',1,1),(53,'ENT','1','Incendio','Programa cuyo objetivo es la protección de las superficies forestales con acciones de prevención, combate y control de incendios.',1,1),(54,'RN','4','Formato de número de incendio','Esta regla de negocio describe cómo debe conformarse el número de incendio.',1,1),(55,'MSG','9','Error en formato de folio','Este mensaje servirá para notificar al actor que el folio ingresado no cumple con el formato especificado.',1,1),(56,'ACT','2','Responsable del incendio','Se refiere al personal que administra la información asociada al evento incendio.',1,1);
 /*!40000 ALTER TABLE `Elemento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -417,7 +423,7 @@ CREATE TABLE `Entidad` (
 
 LOCK TABLES `Entidad` WRITE;
 /*!40000 ALTER TABLE `Entidad` DISABLE KEYS */;
-INSERT INTO `Entidad` VALUES (8),(9);
+INSERT INTO `Entidad` VALUES (8),(9),(53);
 /*!40000 ALTER TABLE `Entidad` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -590,7 +596,7 @@ CREATE TABLE `Mensaje` (
 
 LOCK TABLES `Mensaje` WRITE;
 /*!40000 ALTER TABLE `Mensaje` DISABLE KEYS */;
-INSERT INTO `Mensaje` VALUES (13,'Aún no existen registros de PARAM·ENTIDAD en el sistema.',1),(14,'PARAM·DETERMINADO PARAM·ENTIDAD PARAM·VALOR ha sido PARAM·OPERACIÓN exitosamente.',1),(15,'¿Está seguro que los datos proporcionados son correctos? Una vez que envíe la solicitud no podría modificarlos.',1),(16,'Error, no se encontró información registrada en PARAM·DETERMINADO PARAM·ENTIDAD. Favor de contactar al administrador del sistema.',1),(17,'El campo PARAM·CAMPO es requerido para realizar la operación.',1),(18,'El valor del campo CAMPO es incorrecto, favor de introducir un dato válido.',1),(19,'La longitud del campo PARAM·CAMPO es incorrecta, favor de introducir un dato válido. La longitud debe ser menor a PARAM·TAMAÑO.',1),(20,'Error, ya se PARAM·OPERACIÓN PARAM·INDETERMINADO PARAM·ENTIDAD con el mismo valor en el atributo PARAM·ATRIBUTO, favor de verificarlo.',1);
+INSERT INTO `Mensaje` VALUES (13,'Aún no existen registros de PARAM·ENTIDAD en el sistema.',1),(14,'PARAM·DETERMINADO PARAM·ENTIDAD PARAM·VALOR ha sido PARAM·OPERACIÓN exitosamente.',1),(15,'¿Está seguro que los datos proporcionados son correctos? Una vez que envíe la solicitud no podría modificarlos.',1),(16,'Error, no se encontró información registrada en PARAM·DETERMINADO PARAM·ENTIDAD. Favor de contactar al administrador del sistema.',1),(17,'El campo PARAM·CAMPO es requerido para realizar la operación.',1),(18,'El valor del campo CAMPO es incorrecto, favor de introducir un dato válido.',1),(19,'La longitud del campo PARAM·CAMPO es incorrecta, favor de introducir un dato válido. La longitud debe ser menor a PARAM·TAMAÑO.',1),(20,'Error, ya se PARAM·OPERACIÓN PARAM·INDETERMINADO PARAM·ENTIDAD con el mismo valor en el atributo PARAM·ATRIBUTO, favor de verificarlo.',1),(55,'El folio ingresado no cumple con el formato especificado por el sistema, ingrese un folio con el formato: PARAM·FORMATO. Por ejemplo, PARAM·EJEMPLO.',1);
 /*!40000 ALTER TABLE `Mensaje` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -610,7 +616,7 @@ CREATE TABLE `Mensaje_Parametro` (
   KEY `FKMensaje_Pa138078` (`Parametroid`),
   CONSTRAINT `FKMensaje_Pa138078` FOREIGN KEY (`Parametroid`) REFERENCES `Parametro` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `FKMensaje_Pa262782` FOREIGN KEY (`MensajeElementoid`) REFERENCES `Mensaje` (`Elementoid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -619,7 +625,7 @@ CREATE TABLE `Mensaje_Parametro` (
 
 LOCK TABLES `Mensaje_Parametro` WRITE;
 /*!40000 ALTER TABLE `Mensaje_Parametro` DISABLE KEYS */;
-INSERT INTO `Mensaje_Parametro` VALUES (1,13,1),(2,14,1),(3,14,2),(4,14,3),(5,14,4),(6,16,1),(7,16,4),(8,17,5),(9,19,6),(10,19,5),(11,20,7),(12,20,8),(13,20,1),(14,20,3);
+INSERT INTO `Mensaje_Parametro` VALUES (1,13,1),(2,14,1),(3,14,2),(4,14,3),(5,14,4),(6,16,1),(7,16,4),(8,17,5),(9,19,6),(10,19,5),(11,20,7),(12,20,8),(13,20,1),(14,20,3),(15,55,9),(16,55,10);
 /*!40000 ALTER TABLE `Mensaje_Parametro` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -725,7 +731,7 @@ CREATE TABLE `Parametro` (
   UNIQUE KEY `uniqueParametro` (`nombre`,`Proyectoid`),
   KEY `FKParametro572300` (`Proyectoid`),
   CONSTRAINT `FKParametro572300` FOREIGN KEY (`Proyectoid`) REFERENCES `Proyecto` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -734,7 +740,7 @@ CREATE TABLE `Parametro` (
 
 LOCK TABLES `Parametro` WRITE;
 /*!40000 ALTER TABLE `Parametro` DISABLE KEYS */;
-INSERT INTO `Parametro` VALUES (1,'ENTIDAD','Especifica la entidad sobre la que se está realizando la consulta.',1),(2,'VALOR','Es un sustantivo concreto y generalmente se refiere a un valor específico.',1),(3,'OPERACIÓN','Se refiere a una acción que se debe realizar sobre los datos de una o varias entidades.',1),(4,'DETERMINADO','Artículo determinado.',1),(5,'CAMPO','Indica el campo del formulario que presenta el error de omisión.',1),(6,'TAMAÑO','Indica la longitud máxima permitida para el atributo.',1),(7,'INDETERMINADO','Es un artículo indeterminado.',1),(8,'ATRIBUTO','Es un atributo de la entidad.',1);
+INSERT INTO `Parametro` VALUES (1,'ENTIDAD','Especifica la entidad sobre la que se está realizando la consulta.',1),(2,'VALOR','Es un sustantivo concreto y generalmente se refiere a un valor específico.',1),(3,'OPERACIÓN','Se refiere a una acción que se debe realizar sobre los datos de una o varias entidades.',1),(4,'DETERMINADO','Artículo determinado.',1),(5,'CAMPO','Indica el campo del formulario que presenta el error de omisión.',1),(6,'TAMAÑO','Indica la longitud máxima permitida para el atributo.',1),(7,'INDETERMINADO','Es un artículo indeterminado.',1),(8,'ATRIBUTO','Es un atributo de la entidad.',1),(9,'EJEMPLO','Un ejemplo de un folio válido.',1),(10,'FORMATO','Descripción del formato válido para el folio.',1);
 /*!40000 ALTER TABLE `Parametro` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -833,7 +839,7 @@ CREATE TABLE `Proyecto` (
 
 LOCK TABLES `Proyecto` WRITE;
 /*!40000 ALTER TABLE `Proyecto` DISABLE KEYS */;
-INSERT INTO `Proyecto` VALUES (1,'SIG','Sistema para la gestión de áreas naturales protegidas y superficies forestales','2011-03-12','2012-03-12','2011-03-13','2012-03-13','El proyecto tiene como propósito desarrollar un Sistema de Informaciónn Geográfica que permita el registro, modificación y consulta de los predios manejados por la Protectora de Bosques del Estado de México, así como el registro y visualización de 3 eventos manejados por PROBOSQUE: incendios, reforestación y pagos por servicios ambientales hidrológicos. El Sistema de Información Geográfica permitirá poner a disposición de la SMAGEM, a través de la Internet, la información sustantiva de predios, incendios, reforestaciones y pago por servicios ambientales hidrológicos que sirve para satisfacer las peticiones de información del Gobierno del Estado de México en materia de Medio Ambiente.',5000000,'IPN',1);
+INSERT INTO `Proyecto` VALUES (1,'SIG','Sistema de Información Geográfica','2011-03-12','2012-03-12','2011-03-13','2012-03-13','El proyecto tiene como propósito desarrollar un Sistema de Informaciónn Geográfica que permita el registro, modificación y consulta de los predios manejados por la Protectora de Bosques del Estado de México, así como el registro y visualización de 3 eventos manejados por PROBOSQUE: incendios, reforestación y pagos por servicios ambientales hidrológicos. El Sistema de Información Geográfica permitirá poner a disposición de la SMAGEM, a través de la Internet, la información sustantiva de predios, incendios, reforestaciones y pago por servicios ambientales hidrológicos que sirve para satisfacer las peticiones de información del Gobierno del Estado de México en materia de Medio Ambiente.',5000000,'IPN',1);
 /*!40000 ALTER TABLE `Proyecto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -942,7 +948,7 @@ CREATE TABLE `ReglaNegocio` (
 
 LOCK TABLES `ReglaNegocio` WRITE;
 /*!40000 ALTER TABLE `ReglaNegocio` DISABLE KEYS */;
-INSERT INTO `ReglaNegocio` VALUES (10,'Los datos que se proporcionen deben pertenecer al tipo de dato especificado en el modelo de información.',6,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,''),(11,'Los datos que se proporcionen al sistema marcados como “requeridos” no se pueden omitir.',4,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,''),(12,'El Folio de la resforestación no puede repetirse en el sistema.',3,6,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'');
+INSERT INTO `ReglaNegocio` VALUES (10,'Los datos que se proporcionen deben pertenecer al tipo de dato especificado en el modelo de información.',6,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,''),(11,'Los datos que se proporcionen al sistema marcados como “requeridos” no se pueden omitir.',4,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,''),(12,'El Folio de la resforestación no puede repetirse en el sistema.',3,6,NULL,NULL,NULL,NULL,NULL,NULL,NULL,''),(54,'El número de incendio debe ser una cadena de caracteres con la siguiente estructura ordenada:\r\n1. Cuatro dígitos.\r\n2. Un guión “-”.\r\n3. Cuatro dígitos.',10,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'\\d\\d\\d\\d-\\d\\d\\d\\d');
 /*!40000 ALTER TABLE `ReglaNegocio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1088,7 +1094,7 @@ CREATE TABLE `TerminoGlosario` (
 
 LOCK TABLES `TerminoGlosario` WRITE;
 /*!40000 ALTER TABLE `TerminoGlosario` DISABLE KEYS */;
-INSERT INTO `TerminoGlosario` VALUES (1),(2),(3),(4),(5),(6),(7);
+INSERT INTO `TerminoGlosario` VALUES (1),(2),(3),(5),(6),(7),(52);
 /*!40000 ALTER TABLE `TerminoGlosario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1308,4 +1314,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-07-09  2:46:06
+-- Dump completed on 2015-07-09  2:58:30

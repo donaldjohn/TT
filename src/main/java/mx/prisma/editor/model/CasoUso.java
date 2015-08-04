@@ -116,7 +116,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 	}
 	
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casouso", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casouso", cascade = CascadeType.ALL, orphanRemoval = true)
 	public Set<CasoUsoActor> getActores() {
 		return actores;
 	}
@@ -125,7 +125,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.actores = actores;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.ALL, orphanRemoval = true)
 	public Set<Entrada> getEntradas() {
 		return entradas;
 	}
@@ -134,7 +134,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.entradas = entradas;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.ALL)	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.ALL, orphanRemoval = true)	
 	public Set<Salida> getSalidas() {
 		return salidas;
 	}
@@ -143,7 +143,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.salidas = salidas;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.ALL)	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.ALL, orphanRemoval = true)	
 	public Set<CasoUsoReglaNegocio> getReglas() {
 		return reglas;
 	}
@@ -153,7 +153,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 	}
 	
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.ALL)	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.ALL, orphanRemoval = true)	
 	public Set<PostPrecondicion> getPostprecondiciones() {
 		return postprecondiciones;
 	}

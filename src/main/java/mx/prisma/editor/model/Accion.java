@@ -84,7 +84,7 @@ public class Accion implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "PantallaElementoidDestino", referencedColumnName = "id")
+	@JoinColumn(name = "PantallaElementoidDestino", referencedColumnName = "Elementoid")
 	public Pantalla getPantallaDestino() {
 		return pantallaDestino;
 	}

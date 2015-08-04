@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.bs.AnalisisBs.CU_CasosUso;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.ElementoBs.Estado;
@@ -17,7 +18,6 @@ import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entidad;
-import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
@@ -57,8 +57,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	// Modelo
 	private CasoUso model;
 	
-	private EstadoElemento estado;
-
 	// Lista de registros
 	private List<CasoUso> listCU;
 	private String jsonCasosUsoModulo;
@@ -156,6 +154,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			model.setEstadoElemento(ElementoBs.consultarEstadoElemento(Estado.EDICION));
 			
 			//Se agregan las postcondiciones y precondiciones
+			CuBs.preAlmacenarObjetosToken(model);
 			agregarPostPrecondiciones(model);
 
 			CuBs.registrarCasoUso(model);
@@ -177,23 +176,20 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	}
 
 	public String edit() {
-		
 		String resultado = null;
 		try {
 			
-			// Creación del modelo
-			model = CuBs.consultarCasoUso(idSel);
 			proyecto = SessionManager.consultarProyectoActivo();
 			modulo = SessionManager.consultarModuloActivo();
 			model.setModulo(modulo);
-			CuBs.validarPrecondiciones(model);
-
+			
+			ElementoBs.verificarEstado(model, CU_CasosUso.ModificarCasoUso5_2);
+						
 			/*
 			 *  Se buscan los elementos disponibles para referenciar, para obtenerlos es necesario
 			 *  determinar el proyecto y el módulo en el que se encuentra.
 			 */
 			
-;
 			buscaElementos();
 			prepararVista();
 			
@@ -210,29 +206,30 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		}
 		return resultado;
 	}
-	
+
 	public String update() throws Exception {
 		String resultado = null;
 		try {
-			// Creación del modelo
 			modulo = SessionManager.consultarModuloActivo();
 			proyecto = modulo.getProyecto();
-						
-			model.setProyecto(proyecto);
-			model.setModulo(modulo);
-			model.setEstadoElemento(ElementoBs.consultarEstadoElemento(Estado.EDICION));
 			
-			//Se agregan las postcondiciones y precondiciones
+			model.getActores().clear();
+			model.getEntradas().clear();
+			model.getSalidas().clear();
+			model.getReglas().clear();
+			model.getPostprecondiciones().clear();
+
+			CuBs.preAlmacenarObjetosToken(model);
 			agregarPostPrecondiciones(model);
 
-			CuBs.registrarCasoUso(model);
+			CuBs.modificarCasoUso(model);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",
-					"caso de uso", "registrado" }));
+					"caso de uso", "modificado" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
-			resultado = editNew();
+			resultado = edit();
 		}catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
@@ -240,7 +237,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			ErrorManager.agregaMensajeError(this, e);
 			resultado = index();
 		}
-		return resultado;	}
+		return resultado;	
+	}
 
 	public String show() throws Exception {
 		String resultado = null;
@@ -268,8 +266,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	private void agregarPostPrecondiciones(CasoUso casoUso) {
 		// Se agregan precondiciones al caso de uso
 		if (jsonPrecondiciones != null && !jsonPrecondiciones.equals("")) {
-			casoUso.setPostprecondiciones(JsonUtil.mapJSONToSet(
-					jsonPrecondiciones, PostPrecondicion.class));
+			casoUso.getPostprecondiciones().addAll((JsonUtil.mapJSONToSet(
+					jsonPrecondiciones, PostPrecondicion.class)));
 		}
 		// Se agregan postcondiciones al caso de uso
 		if (jsonPostcondiciones != null && !jsonPostcondiciones.equals("")) {
@@ -467,9 +465,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		model.setRedaccionEntradas((TokenBs.decodificarCadenasToken(model.getRedaccionEntradas())));
 		model.setRedaccionSalidas((TokenBs.decodificarCadenasToken(model.getRedaccionSalidas())));
 		model.setRedaccionReglasNegocio((TokenBs.decodificarCadenasToken(model.getRedaccionReglasNegocio())));
-
-
-		
 	}
 		
 	@VisitorFieldValidator
@@ -618,6 +613,13 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 	public void setIdSel(Integer idSel) {
 		this.idSel = idSel;
+		this.model = CuBs.consultarCasoUso(idSel);
+		/*model.getActores().clear();
+		model.getEntradas().clear();
+		model.getSalidas().clear();
+		model.getReglas().clear();
+		*/
+		
 	}
 
 	public boolean isExistenPrecondiciones() {

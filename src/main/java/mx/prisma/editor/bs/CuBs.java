@@ -11,6 +11,8 @@ import org.hibernate.JDBCException;
 import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.Referencia;
+import mx.prisma.bs.Referencia.TipoSeccion;
+import mx.prisma.editor.bs.AnalisisBs.CU_CasosUso;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.AccionDAO;
 import mx.prisma.editor.dao.ActorDAO;
@@ -18,7 +20,6 @@ import mx.prisma.editor.dao.AtributoDAO;
 import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.ElementoDAO;
 import mx.prisma.editor.dao.EntidadDAO;
-import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.MensajeDAO;
 import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.dao.PantallaDAO;
@@ -47,6 +48,7 @@ import mx.prisma.util.Validador;
 
 public class CuBs {
 	private static final String CLAVE = "CU";
+	
 	public static List<CasoUso> consultarCasosUsoModulo(Modulo modulo){
 		List<CasoUso> cus = new CasoUsoDAO().consultarCasosUso(modulo);
 		if(cus == null) {
@@ -55,27 +57,6 @@ public class CuBs {
 		return cus;
 	}
 	
-	/*Verifica las operaciones disponible de acuerdo a la RN9
-	 * Los estados del caso de uso son:
-	 * 1.- Registro (N/A)
-	 * 2.- Pendiente de corrección (Consultar, editar) 
-	 * 3.- Edición (Consultar, editar <solamente el que lo está editando>)
-	 * 4.- Terminado (Consultar, revisar, eliminar, editar <solamente quien lo terminó>)
-	 * 5.- Revisión (Consultar, revisar <solamente quien lo está revisando>)
-	 * 6.- Liberado (Consulta, editar)
-	 * */
-	/*public static boolean esEditable(String idAutor, CasoUso cu) {
-		idAutor = "NGHS";
-		String idAutorCU = "NGHS";
-		//PENDIENTE AGREGAR TODOS LOS CASOS EN LOS QUE ES POSIBLE EDITAR UN CU
-		int idEdicion = ElementoBs.getIDEstadoEdicion();
-		if(cu.getEstadoElemento().getId() == idEdicion && idAutor.equals(idAutorCU)) {
-			return true;
-		}
-		return false;
-	}*/
-
-
 	public static Modulo consultarModulo(String claveModulo, Proyecto proyecto) throws Exception{
 		
 		Modulo modulo = new ModuloDAO().consultarModulo(claveModulo, proyecto);
@@ -127,12 +108,12 @@ public class CuBs {
 		List<CasoUso> casosUso = consultarCasosUsoModulo(cu.getModulo());
 		for(CasoUso c : casosUso) {
 			if(c.getId() != cu.getId()) {
-				if(c.getNombre().equals(cu.getNombre())) {
+				if(c.getNombre().equals(cu.getNombre()) && c.getId() != cu.getId()) {
 					throw new PRISMAValidacionException("El nombre del caso de uso ya existe.", "MSG7",
 							new String[] { "El","Caso de uso", cu.getNombre()}, "model.nombre");
 				}
-				if(c.getNumero().equals(cu.getNumero())) {
-					throw new PRISMAValidacionException("El numero del caso de uso ya existe.", "MSG7",
+				if(c.getNumero().equals(cu.getNumero()) && c.getId() != cu.getId()) {
+					throw new PRISMAValidacionException("El número del caso de uso ya existe.", "MSG7",
 							new String[] { "El","Caso de uso", cu.getNumero()}, "model.numero");
 				}
 			}
@@ -217,19 +198,22 @@ public class CuBs {
 		return "Autor";
 	}
 	
-	public static void modificarCasoUso(CasoUso modelAux) throws Exception {
+	public static void modificarCasoUso(CasoUso cu) throws Exception{
 		try {
-				validar(modelAux);
-				new CasoUsoDAO().modificarCasoUso(modelAux);
-				System.out.println("Registra el caso de uso");
+				validar(cu);
+				cu.setEstadoElemento(ElementoBs
+						.consultarEstadoElemento(Estado.EDICION));
+				//Se quitan los espacios iniciales y finales del nombre
+				cu.setNombre(cu.getNombre().trim());
+				ElementoBs.verificarEstado(cu, CU_CasosUso.ModificarCasoUso5_2);
+				
+				new CasoUsoDAO().modificarCasoUso(cu);
+		
 		} catch (JDBCException je) {
-			System.out.println("Entra a jdbcexception");
 			System.out.println("ERROR CODE " + je.getErrorCode());
 			je.printStackTrace();
 			throw new Exception();
 		} catch(HibernateException he) {
-			System.out.println("Entra a HException");
-			System.out.println("Se cacha en modificar cu en hibernateException");
 			he.printStackTrace();
 			throw new Exception();
 		}
@@ -521,8 +505,45 @@ public class CuBs {
 		return false;
 	}
 
-	public static void validarPrecondiciones(CasoUso model) {
-	
-	}	
+	public static void preAlmacenarObjetosToken(CasoUso casoUso) {
+		TokenBs.almacenarObjetosToken(TokenBs.convertirToken_Objeto(
+				casoUso.getRedaccionActores(), casoUso.getProyecto()), casoUso,
+				TipoSeccion.ACTORES);
+		casoUso.setRedaccionActores(TokenBs.codificarCadenaToken(
+				casoUso.getRedaccionActores(), casoUso.getProyecto()));
+
+		TokenBs.almacenarObjetosToken(TokenBs.convertirToken_Objeto(
+				casoUso.getRedaccionEntradas(), casoUso.getProyecto()),
+				casoUso, TipoSeccion.ENTRADAS);
+		casoUso.setRedaccionEntradas(TokenBs.codificarCadenaToken(
+				casoUso.getRedaccionEntradas(), casoUso.getProyecto()));
+
+		TokenBs.almacenarObjetosToken(TokenBs.convertirToken_Objeto(
+				casoUso.getRedaccionSalidas(), casoUso.getProyecto()), casoUso,
+				TipoSeccion.SALIDAS);
+		casoUso.setRedaccionSalidas(TokenBs.codificarCadenaToken(
+				casoUso.getRedaccionSalidas(), casoUso.getProyecto()));
+
+		TokenBs.almacenarObjetosToken(
+				TokenBs.convertirToken_Objeto(
+						casoUso.getRedaccionReglasNegocio(),
+						casoUso.getProyecto()), casoUso,
+						TipoSeccion.REGLASNEGOCIOS);
+		casoUso.setRedaccionReglasNegocio(TokenBs.codificarCadenaToken(
+				casoUso.getRedaccionReglasNegocio(), casoUso.getProyecto()));
+
+		Set<PostPrecondicion> postPrecondiciones = casoUso.getPostprecondiciones();
+		for (PostPrecondicion postPrecondicion : postPrecondiciones) {
+			TokenBs.almacenarObjetosToken(
+					TokenBs.convertirToken_Objeto( 
+							postPrecondicion.getRedaccion(),
+							casoUso.getProyecto()), casoUso,
+							TipoSeccion.POSTPRECONDICIONES, postPrecondicion);
+			postPrecondicion.setRedaccion(TokenBs.codificarCadenaToken(
+					postPrecondicion.getRedaccion(), casoUso.getProyecto()));
+		}
+	}
+
+
 }
 

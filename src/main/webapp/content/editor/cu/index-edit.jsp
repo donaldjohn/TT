@@ -29,8 +29,9 @@
 
 
 	<s:form autocomplete="off" id="frmCU" theme="simple"
-		action="%{#pageContext.request.contextPath}/cu" 
-		method="put" onsubmit="return preparaEnvio();">
+		action="%{#pageContext.request.contextPath}/cu/%{idSel}" 
+		onsubmit="return preparaEnvio();" method="post">
+		<s:hidden name="_method" value = "put"/>
 		<div class="formulario">
 			<div class="tituloFormulario">Información general del caso de
 				uso</div>
@@ -40,6 +41,7 @@
 					<td class="labelDerecho"><s:property value="model.clave"/>
 							<s:fielderror fieldName="model.clave" cssClass="error" theme="jquery" /></td>
 					<s:hidden value="%{model.clave}" name="model.clave"/>
+					
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelNumero" /></td>
@@ -145,6 +147,9 @@
 				onclick="location.href='${pageContext.request.contextPath}/cu'"
 				value="Cancelar" />
 		</div>    
+		
+		<s:hidden value="%{model.id}" name="model.id"/>
+		
 		<s:hidden name="jsonPrecondiciones" id="jsonPrecondiciones" value="%{jsonPrecondiciones}"/>
 		<s:hidden name="jsonPostcondiciones" id="jsonPostcondiciones" value="%{jsonPostcondiciones}"/>
 		

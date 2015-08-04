@@ -809,12 +809,13 @@ public class TokenBs {
 	}
 
 	public static String decodificarCadenasToken(String cadenaCodificada) {
-
+		String cadenaDecodificada = "";
+		if (cadenaCodificada != null && cadenaCodificada != "") {
 		String cadenaCodificadaBruta = cadenaCodificada.substring(1);
 		ArrayList<String> tokens = procesarTokenIpunt(cadenaCodificadaBruta);
 		ArrayList<String> segmentos;
 		Modulo modulo;
-		String cadenaDecodificada = cadenaCodificadaBruta;
+		cadenaDecodificada = cadenaCodificadaBruta;
 
 		for (String token : tokens) {
 			segmentos = segmentarToken(token);
@@ -967,6 +968,7 @@ public class TokenBs {
 				break;
 
 			}
+		}
 		}
 		return cadenaDecodificada;
 	}

@@ -62,18 +62,18 @@ INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoi
 INSERT INTO PRISMA.Mensaje (Elementoid, redaccion, parametrizado) VALUES ('14', 'No se puede cargar el archivo seleccionado, verifique que el formato del archivo sea PDF.', '0');
 
 --------------------- Pantalla --------------------- 
-INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('IUSF', '1', 'Administrar incendios', 'Esta pantalla permite al responsable del evento visualizar los incendios registrados y sirve como punto de acceso para definir nuevos, así como modificar, aprobar o consultar los ya registrados.', '1', '1');
-INSERT INTO PRISMA.Pantalla (Elementoid, Moduloid) VALUES ('15', '1');
+--INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('IUSF', '1', 'Administrar incendios', 'Esta pantalla permite al responsable del evento visualizar los incendios registrados y sirve como punto de acceso para definir nuevos, así como modificar, aprobar o consultar los ya registrados.', '1', '1');
+--INSERT INTO PRISMA.Pantalla (Elementoid, Moduloid) VALUES ('15', '1');
 
-INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('IUSF', '2', 'Registrar incendio', 'Esta pantalla permite al actor interactuar con los componentes necesarios para registrar un evento del tipo incendio.', '1', '1');
-INSERT INTO PRISMA.Pantalla (Elementoid, Moduloid) VALUES ('16', '1');
+--INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('IUSF', '2', 'Registrar incendio', 'Esta pantalla permite al actor interactuar con los componentes necesarios para registrar un evento del tipo incendio.', '1', '1');
+--INSERT INTO PRISMA.Pantalla (Elementoid, Moduloid) VALUES ('16', '1');
 
 --------------------- Acción --------------------- 
-INSERT INTO PRISMA.Accion (PantallaElementoid, nombre, TipoAccionid) VALUES ('15', 'Nuevo', '2');
-INSERT INTO PRISMA.Accion (PantallaElementoid, nombre, TipoAccionid) VALUES ('15', 'Ayuda', '1');
+--INSERT INTO PRISMA.Accion (PantallaElementoid, nombre, TipoAccionid) VALUES ('15', 'Nuevo', '2');
+--INSERT INTO PRISMA.Accion (PantallaElementoid, nombre, TipoAccionid) VALUES ('15', 'Ayuda', '1');
 
-INSERT INTO PRISMA.Accion (PantallaElementoid, nombre, TipoAccionid) VALUES ('16', 'Aceptar', '2');
-INSERT INTO PRISMA.Accion (PantallaElementoid, nombre, TipoAccionid) VALUES ('16', 'Cancelar', '2');
+--INSERT INTO PRISMA.Accion (PantallaElementoid, nombre, TipoAccionid) VALUES ('16', 'Aceptar', '2');
+--INSERT INTO PRISMA.Accion (PantallaElementoid, nombre, TipoAccionid) VALUES ('16', 'Cancelar', '2');
 
 
 

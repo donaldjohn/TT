@@ -3,10 +3,10 @@ INSERT INTO EstadoProyecto (nombre) VALUES ('Iniciado');
 INSERT INTO EstadoProyecto (nombre) VALUES ('Terminado');
 
 INSERT INTO EstadoElemento (nombre) VALUES ('Edición');
-INSERT INTO EstadoElemento (nombre) VALUES ('Revisión');
-INSERT INTO EstadoElemento (nombre) VALUES ('Por liberar');
 INSERT INTO EstadoElemento (nombre) VALUES ('Terminado');
 INSERT INTO EstadoElemento (nombre) VALUES ('Pendiente de corrección');
+INSERT INTO EstadoElemento (nombre) VALUES ('Revisión');
+INSERT INTO EstadoElemento (nombre) VALUES ('Por liberar');
 INSERT INTO EstadoElemento (nombre) VALUES ('Liberado');
 
 INSERT INTO Cardinalidad (nombre) VALUES ('Uno');
@@ -40,7 +40,7 @@ INSERT INTO PRISMA.TipoDato (nombre) VALUES ('Otro');
 INSERT INTO PRISMA.UnidadTamanio (nombre, abreviatura) VALUES ('Kilobyte', 'KB');
 INSERT INTO PRISMA.UnidadTamanio (nombre, abreviatura) VALUES ('Megabyte', 'MB');
 INSERT INTO PRISMA.UnidadTamanio (nombre, abreviatura) VALUES ('Gigabyte', 'GB');
-INSERT INTO PRISMA.UnidadTamanio (nombre, abreviatura) VALUES ('Terabyte', 'TB',);
+INSERT INTO PRISMA.UnidadTamanio (nombre, abreviatura) VALUES ('Terabyte', 'TB');
 INSERT INTO PRISMA.UnidadTamanio (nombre, abreviatura) VALUES ('Petabyte', 'PT');
 
 INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Verificación de catálogos');
