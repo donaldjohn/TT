@@ -10,9 +10,9 @@ import org.hibernate.JDBCException;
 
 import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.bs.Referencia;
-import mx.prisma.bs.Referencia.TipoSeccion;
-import mx.prisma.editor.bs.AnalisisBs.CU_CasosUso;
+import mx.prisma.bs.ReferenciaEnum;
+import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
+import mx.prisma.bs.ReferenciaEnum.TipoSeccion;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.AccionDAO;
 import mx.prisma.editor.dao.ActorDAO;
@@ -322,7 +322,7 @@ public class CuBs {
 			ArrayList<String> segmentos = TokenBs.segmentarToken(token);
 			String tokenReferencia = segmentos.get(0);
 			int id = Integer.parseInt(segmentos.get(1));
-			switch(Referencia.getTipoReferencia(tokenReferencia)) {
+			switch(ReferenciaEnum.getTipoReferencia(tokenReferencia)) {
 			case ACCION:
 				Accion accion = new AccionDAO().consultarAccion(Integer
 						.parseInt(segmentos.get(1)));

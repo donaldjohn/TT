@@ -3,8 +3,8 @@ package mx.prisma.editor.bs;
 import java.util.ArrayList;
 import java.util.Set;
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.bs.Referencia;
-import mx.prisma.bs.Referencia.TipoSeccion;
+import mx.prisma.bs.ReferenciaEnum;
+import mx.prisma.bs.ReferenciaEnum.TipoSeccion;
 import mx.prisma.editor.dao.AccionDAO;
 import mx.prisma.editor.dao.ActorDAO;
 import mx.prisma.editor.dao.AtributoDAO;
@@ -74,7 +74,7 @@ public class TokenBs {
 		Paso paso;
 		for (String token : tokens) {
 			segmentos = segmentarToken(token);
-			switch (Referencia.getTipoReferencia(segmentos.get(0))) {
+			switch (ReferenciaEnum.getTipoReferencia(segmentos.get(0))) {
 			case ACCION: // ACC.IUM.NUM:PANTALLA:NOMBRE_ACC =
 							// ACC.IUSF.7:Registrar_incendio:Aceptar
 				
@@ -463,7 +463,7 @@ public class TokenBs {
 		for (String token : tokens) {
 			segmentos = segmentarToken(token);
 			
-			switch (Referencia.getTipoReferencia(segmentos.get(0))) {
+			switch (ReferenciaEnum.getTipoReferencia(segmentos.get(0))) {
 			case ACCION: // ACC.IUM.NUM:PANTALLA:NOMBRE_ACC =
 							// ACC.IUSF.7:Registrar_incendio:Aceptar
 				if (segmentos.size() != 5) {
@@ -819,7 +819,7 @@ public class TokenBs {
 
 		for (String token : tokens) {
 			segmentos = segmentarToken(token);
-			switch (Referencia.getTipoReferencia(segmentos.get(0))) {
+			switch (ReferenciaEnum.getTipoReferencia(segmentos.get(0))) {
 			case ACCION: // ACC.IUM.NUM:PANTALLA:NOMBRE_ACC =
 							// ACC.IUSF.7:Registrar_incendio:Aceptar
 				Accion accion = new AccionDAO().consultarAccion(Integer
@@ -982,7 +982,7 @@ public class TokenBs {
 		for(String token : tokens) {
 			ArrayList<String> segmentos = TokenBs.segmentarToken(token);
 			String tokenReferencia = segmentos.get(0);
-			switch(Referencia.getTipoReferencia(tokenReferencia)) {
+			switch(ReferenciaEnum.getTipoReferencia(tokenReferencia)) {
 			case ACCION:
 				Accion accion = new AccionDAO().consultarAccion(Integer
 						.parseInt(segmentos.get(1)));
@@ -1357,8 +1357,8 @@ public class TokenBs {
 		ReglaNegocio reglaNegocio;
 
 		for (Object objeto : objetos) {
-			switch (Referencia.getTipoRelacion(
-					Referencia.getTipoReferencia(objeto), tipoSeccion)) {
+			switch (ReferenciaEnum.getTipoRelacion(
+					ReferenciaEnum.getTipoReferencia(objeto), tipoSeccion)) {
 			case ACTOR_ACTORES:
 				actor = (Actor) objeto;
 				casoUsoActor = new CasoUsoActor(numeroTokenActor_Actores++,
@@ -1477,8 +1477,8 @@ public class TokenBs {
 		Trayectoria trayectoria;
 
 		for (Object objeto : objetos) {
-			switch (Referencia.getTipoRelacion(
-					Referencia.getTipoReferencia(objeto), tipoSeccion)) {
+			switch (ReferenciaEnum.getTipoRelacion(
+					ReferenciaEnum.getTipoReferencia(objeto), tipoSeccion)) {
 
 			case ACCION_POSTPRECONDICIONES:
 				accion = (Accion) objeto;
@@ -1597,8 +1597,8 @@ public class TokenBs {
 		Paso paso;
 
 		for (Object objeto : objetos) {
-			switch (Referencia.getTipoRelacion(
-					Referencia.getTipoReferencia(objeto), tipoSeccion)) {
+			switch (ReferenciaEnum.getTipoRelacion(
+					ReferenciaEnum.getTipoReferencia(objeto), tipoSeccion)) {
 			
 			case PASO_EXTENSIONES:
 				paso = (Paso) objeto;
@@ -1648,8 +1648,8 @@ public class TokenBs {
 		TerminoGlosario terminoGlosario;
 		Trayectoria trayectoria; 
 		for (Object objeto : objetos) {
-			switch (Referencia.getTipoRelacion(
-					Referencia.getTipoReferencia(objeto), tipoSeccion)) {
+			switch (ReferenciaEnum.getTipoRelacion(
+					ReferenciaEnum.getTipoReferencia(objeto), tipoSeccion)) {
 
 			case ACCION_PASOS:
 				accion = (Accion) objeto;

@@ -10,7 +10,7 @@ import org.hibernate.JDBCException;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.CatalogoBs;
-import mx.prisma.bs.Referencia.TipoCatalogo;
+import mx.prisma.bs.ReferenciaEnum.TipoCatalogo;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;

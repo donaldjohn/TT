@@ -25,7 +25,7 @@ import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.editor.model.UnidadTamanio;
 import mx.prisma.editor.model.Verbo;
 
-public class Referencia {
+public class ReferenciaEnum {
 	
 	public enum TipoReferencia {
 	    ACTOR, ENTIDAD, CASOUSO, PANTALLA, PASO, ATRIBUTO,

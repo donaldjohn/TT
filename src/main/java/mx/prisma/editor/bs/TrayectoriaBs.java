@@ -8,14 +8,16 @@ import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.bs.CatalogoBs;
-import mx.prisma.bs.Referencia.TipoCatalogo;
+import mx.prisma.bs.ReferenciaEnum.TipoCatalogo;
 import mx.prisma.editor.dao.TrayectoriaDAO;
 import mx.prisma.editor.dao.VerboDAO;
+import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.editor.model.Verbo;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
+import mx.prisma.util.SessionManager;
 import mx.prisma.util.Validador;
 
 public class TrayectoriaBs {
@@ -122,5 +124,45 @@ public class TrayectoriaBs {
 			verbos.add(v.getNombre());
 		}
 		return verbos;
+	}
+
+	public static boolean existeTrayectoriaPrincipal(int idCU) {
+		if (idCU == 0) {
+			idCU = (Integer) SessionManager.get("idCU");
+		}
+		CasoUso casoUso = CuBs.consultarCasoUso(idCU);
+		for (Trayectoria t : casoUso.getTrayectorias()) {
+			if (!t.isAlternativa()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static boolean existeTrayectoriaPrincipal(int idCU, int idTray) {
+		if (idCU == 0) {
+			idCU = (Integer) SessionManager.get("idCU");
+		}
+		CasoUso casoUso = CuBs.consultarCasoUso(idCU);
+		for (Trayectoria t : casoUso.getTrayectorias()) {
+			if (!t.isAlternativa() && t.getId() != idTray) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static Trayectoria consultarTrayectoria(int id) {
+		Trayectoria trayectoria = null;
+		try {
+			trayectoria = new TrayectoriaDAO().consultarTrayectoria(id);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		if(trayectoria == null) {
+			throw new PRISMAException("No se puede consultar la trayectoria por el id.", "MSG16", new String[] { "La",
+					"trayectoria"});
+		}
+		return trayectoria;
 	}
 }
