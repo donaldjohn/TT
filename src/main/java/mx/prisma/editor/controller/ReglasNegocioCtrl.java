@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.TipoReglaNegocioEnum;
+import mx.prisma.editor.bs.AnalisisBs.CU_ReglasNegocio;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.bs.EntidadBs;
@@ -55,6 +57,8 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	private String jsonEntidades;
 	private List<Entidad> listEntidades;
 	private List<Atributo> listAtributos;
+	private List<Entidad> listEntidades2;
+	private List<Atributo> listAtributos2;
 	private List<Operador> listOperadores;
 	
 	private int idAtributo;
@@ -99,8 +103,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	public String editNew() {
 		String resultado = null;
 		try {
-			
-			// Creación del modelo
+
 			proyecto = SessionManager.consultarProyectoActivo();
 			buscaCatalogos();
 			buscarEntidades();
@@ -120,12 +123,6 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		return resultado;
 	}
 
-	private void buscarEntidades() {
-		this.listAtributos = new ArrayList<Atributo>();
-		this.listEntidades = new ArrayList<Entidad>();
-		
-	}
-
 	public String create() {
 		String resultado = null;
 		try {
@@ -134,16 +131,22 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 			}
 			model.setTipoReglaNegocio(ReglaNegocioBs.consultaTipoReglaNegocio(idTipoRN));
 			
-			String tipoRN = model.getTipoReglaNegocio().getNombre();
-			if(tipoRN.equals(ReglaNegocioBs.getCompatributos())) {
+			TipoReglaNegocio trn = model.getTipoReglaNegocio();
+
+			switch(TipoReglaNegocioEnum.getTipoReglaNegocio(trn)) {
+			case COMPATRIBUTOS:
 				model = ReglaNegocioBs.agregarElementosComparacion(model, idAtributo1, idOperador, idAtributo2);
-			} else if(tipoRN.equals(ReglaNegocioBs.getUnicidad())) {
-				model = ReglaNegocioBs.agregarElementosUnicidad(model, idEntidadUnicidad, idAtributoUnicidad);
-			} else if(tipoRN.equals(ReglaNegocioBs.getFormatocampo())) {
+				break;
+			case FORMATOCAMPO:
 				model = ReglaNegocioBs.agregarElementosFormatoCampo(model, idAtributoFormato);
-			} else if(tipoRN.equals("-1")){
-				throw new PRISMAValidacionException("El usuario no seleccionó el tipo de regla de negocio.", "MSG13");
+				break;
+			case UNICIDAD:
+				model = ReglaNegocioBs.agregarElementosUnicidad(model, idEntidadUnicidad, idAtributoUnicidad);
+				break;
+			default:
+				break;
 			}
+			
 			//Se prepara el modelo para el registro 
 			proyecto = SessionManager.consultarProyectoActivo();
 			model.setProyecto(proyecto);
@@ -173,10 +176,120 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		return resultado;
 	}
 	
+public String edit() {
+		
+		String resultado = null;
+		try {
+			//model = ReglaNegocioBs.consultaReglaNegocio(idSel);
+			ElementoBs.verificarEstado(model, CU_ReglasNegocio.ModificarReglaNegocio8_2);
+			proyecto = SessionManager.consultarProyectoActivo();
+			
+			buscaCatalogos();
+			buscarEntidades();
+			prepararVista();
+			
+			resultado = EDIT;
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = edit();
+		}catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+
+	private void prepararVista() {
+		TipoReglaNegocio trn = model.getTipoReglaNegocio();
+		idTipoRN = trn.getId();
+		switch(TipoReglaNegocioEnum.getTipoReglaNegocio(trn)) {
+		case COMPATRIBUTOS:
+			this.listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
+			this.listAtributos = new ArrayList<Atributo>(model.getAtributoComp1().getEntidad().getAtributos());
+			this.listEntidades2 = ReglaNegocioBs.consultarEntidadesTipoDato(proyecto, model.getAtributoComp2().getTipoDato().getNombre());
+			this.listAtributos2 = listAtributos = ReglaNegocioBs.consultarAtributosTipoDato(idEntidad, model.getAtributoComp2().getTipoDato().getNombre());
+			
+			listOperadores = ReglaNegocioBs.consultarOperadoresDisponibles(model.getAtributoComp1().getTipoDato().getNombre());
+			
+			break;
+		case FORMATOCAMPO:
+			this.listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
+			this.listAtributos = new ArrayList<Atributo>(model.getAtributoExpReg().getEntidad().getAtributos());
+			break;
+		case UNICIDAD:
+			this.listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
+			this.listAtributos = new ArrayList<Atributo>(model.getAtributoUnicidad().getEntidad().getAtributos());
+			break;
+		case VERFCATALOGOS:
+			break;
+		default:
+			break;
+		
+		}
+		
+		
+	}
+
+	private void buscarEntidades() {
+		this.listAtributos = new ArrayList<Atributo>();		
+		this.listEntidades = new ArrayList<Entidad>();
+	}
+
+	
+	public String update() {
+		String resultado = null;
+		try {
+			if(idTipoRN == -1) {
+				throw new PRISMAValidacionException("El usuario no seleccionó el tipo de regla de negocio.", "MSG4", null, "idTipoRN");
+			}
+			
+			model.setTipoReglaNegocio(ReglaNegocioBs.consultaTipoReglaNegocio(idTipoRN));
+			TipoReglaNegocio trn = model.getTipoReglaNegocio();
+			
+			switch(TipoReglaNegocioEnum.getTipoReglaNegocio(trn)) {
+			case COMPATRIBUTOS:
+				model = ReglaNegocioBs.agregarElementosComparacion(model, idAtributo1, idOperador, idAtributo2);
+				break;
+			case FORMATOCAMPO:
+				model = ReglaNegocioBs.agregarElementosFormatoCampo(model, idAtributoFormato);
+				break;
+			case UNICIDAD:
+				model = ReglaNegocioBs.agregarElementosUnicidad(model, idEntidadUnicidad, idAtributoUnicidad);
+				break;
+			default:
+				break;
+			}
+			
+			ReglaNegocioBs.modificarReglaNegocio(model);
+			resultado = SUCCESS;
+			
+			//Se agrega mensaje de éxito
+			addActionMessage(getText("MSG1", new String[] { "La",
+					"Regla de negocio", "registrada" }));
+			
+			//Se agrega el mensaje a la sesión
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+			
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = edit();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+	
 	public String show() throws Exception{
 		String resultado = null;
 		try {
-			model = ReglaNegocioBs.consultaReglaNegocio(idSel);			
+			//model = ReglaNegocioBs.consultaReglaNegocio(idSel);			
 			resultado = SHOW;
 		} catch (PRISMAException pe) {
 			pe.setIdMensaje("MSG26");
@@ -261,7 +374,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	}
 
 	private void buscaCatalogos() { 
-		listTipoRN = ReglaNegocioBs.consultarTipoRNDisponibles(proyecto);
+		listTipoRN = ReglaNegocioBs.consultarTipoRNDisponibles(proyecto, model.getTipoReglaNegocio());
 		listOperadores = new ArrayList<Operador>();
 	}
 
@@ -429,7 +542,15 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 
 	public void setIdSel(Integer idSel) {
 		this.idSel = idSel;
+		this.model = ReglaNegocioBs.consultaReglaNegocio(this.idSel);
+	}
+	
+	public int getDefaultIdEntidadUnicidad() {
+		return model.getAtributoUnicidad().getEntidad().getId();
+	}
+	
+	public int getDefaultIdAtributoUnicidad() {
+		return model.getAtributoUnicidad().getId();
 	}
 
-	
 }

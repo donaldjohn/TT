@@ -11,9 +11,10 @@ import org.hibernate.JDBCException;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.CatalogoBs;
 import mx.prisma.bs.Referencia.TipoCatalogo;
+import mx.prisma.bs.TipoReglaNegocioEnum;
+import mx.prisma.editor.bs.AnalisisBs.CU_ReglasNegocio;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.EntidadDAO;
-import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.OperadorDAO;
 import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.dao.TipoReglaNegocioDAO;
@@ -28,19 +29,6 @@ import mx.prisma.util.Validador;
 
 public class ReglaNegocioBs {
 	private static final String CLAVE = "RN";
-	//Globales (una por sistema)
-	private static final String VERFCATALOGOS = "Verificación de catálogos";
-	private static final String OBLIGATORIOS = "Datos obligatorios";
-	private static final String LONGITUD = "Longitud correcta";
-	private static final String DATOCORRECTO = "Tipo de dato correcto";
-	private static final String FORMATOARCH = "Formato de archivos";
-	private static final String TAMANOARCH = "Tamaño de archivos";
-	//Particulares
-	private static final String INTERVALOFECH = "Intervalo de fechas correcto";
-	private static final String FORMATOCAMPO = "Formato correcto";
-	private static final String COMPATRIBUTOS = "Comparación de atributos";
-	private static final String UNICIDAD = "Unicidad de parámetros";
-	private static final String OTRO = "Otro";
 	
 	public static List<ReglaNegocio> consultarReglasNegocioProyecto(
 			Proyecto proyecto) {
@@ -181,13 +169,13 @@ public class ReglaNegocioBs {
 		if(entidad == null) {
 			throw new PRISMAValidacionException(
 					"El usuario no seleccionó la entidad.", "MSG4",
-					null, "idEntidad1");
+					null, "idEntidad");
 		}		
 		Set<Atributo> atributos = entidad.getAtributos();
 		if(idAtributo == -1) {
 			throw new PRISMAValidacionException(
 					"El usuario no seleccionó el nombre del atributo.", "MSG4",
-					null, "idAtributo1");
+					null, "idAtributo");
 		}
 		for(Atributo atributo : atributos) {
 			if(atributo.getId() == idAtributo) {
@@ -200,50 +188,6 @@ public class ReglaNegocioBs {
 
 	public static String getClave() {
 		return CLAVE;
-	}
-
-	public static String getVerfcatalogos() {
-		return VERFCATALOGOS;
-	}
-
-	public static String getCompatributos() {
-		return COMPATRIBUTOS;
-	}
-
-	public static String getUnicidad() {
-		return UNICIDAD;
-	}
-
-	public static String getObligatorios() {
-		return OBLIGATORIOS;
-	}
-
-	public static String getLongitud() {
-		return LONGITUD;
-	}
-
-	public static String getDatocorrecto() {
-		return DATOCORRECTO;
-	}
-
-	public static String getFormatoarch() {
-		return FORMATOARCH;
-	}
-
-	public static String getTamanoarch() {
-		return TAMANOARCH;
-	}
-
-	public static String getIntervalofech() {
-		return INTERVALOFECH;
-	}
-
-	public static String getFormatocampo() {
-		return FORMATOCAMPO;
-	}
-
-	public static String getOtro() {
-		return OTRO;
 	}
 
 	public static List<Operador> consultarOperadoresDisponibles(
@@ -307,29 +251,25 @@ public class ReglaNegocioBs {
 	}
 
 	public static List<TipoReglaNegocio> consultarTipoRNDisponibles(
-			Proyecto proyecto) {
+			Proyecto proyecto, TipoReglaNegocio tipoReglaNegocioActual ) {
 		List<TipoReglaNegocio> tiposRNAux = consultarTipoRN();
 		List<TipoReglaNegocio> tiposRN = new ArrayList<TipoReglaNegocio>();
 		for(TipoReglaNegocio trn : tiposRNAux) {
-			if(esGlobal(trn)) {
-				System.out.println("Es global");
+			if(TipoReglaNegocioEnum.esGlobal(trn)) {
 				if(!existeTipoRN(proyecto, trn)) {
 					tiposRN.add(trn);
+				} else {
+					if(tipoReglaNegocioActual != null && trn.getId() == tipoReglaNegocioActual.getId()) {
+						tiposRN.add(trn);
+					}
 				}
 			} else {
-				System.out.println("No es global");
 				tiposRN.add(trn);
 			}
 			 
 		}
-		for(TipoReglaNegocio tn : tiposRN) {
-			System.out.println(tn.getNombre());
-		}
-		System.out.println("--");
+		
 		CatalogoBs.opcionOtro(tiposRN, TipoCatalogo.TIPOREGLANEGOCIO);
-		for(TipoReglaNegocio tn : tiposRN) {
-			System.out.println(tn.getNombre());
-		}
 		return tiposRN;
 	}
 
@@ -342,18 +282,6 @@ public class ReglaNegocioBs {
 		}
 		return false;
 	}
-
-	private static boolean esGlobal(TipoReglaNegocio trn) {
-		String nombreTipoRN = trn.getNombre();
-		return nombreTipoRN.equals(VERFCATALOGOS) ||
-				nombreTipoRN.equals(OBLIGATORIOS) ||
-				nombreTipoRN.equals(LONGITUD) ||
-				nombreTipoRN.equals(DATOCORRECTO) ||
-				nombreTipoRN.equals(FORMATOARCH) ||
-				nombreTipoRN.equals(TAMANOARCH);
-		
-	}
-
 
 	public static ReglaNegocio agregarElementosComparacion(ReglaNegocio model,
 			int idAtributo1, int idOperador, int idAtributo2) {
@@ -383,5 +311,29 @@ public class ReglaNegocioBs {
 			throw new PRISMAException("No se puede consultar la regla de negocio.", "MSG25");
 		}
 		return reglaNegocio;
+	}
+
+	public static void modificarReglaNegocio(ReglaNegocio model) throws Exception {
+		try {
+				validar(model);
+				model.setClave(CLAVE);
+				model.setEstadoElemento(ElementoBs.consultarEstadoElemento(Estado.EDICION));
+				model.setNombre(model.getNombre().trim());
+				ElementoBs.verificarEstado(model, CU_ReglasNegocio.ModificarReglaNegocio8_2);
+				new ReglaNegocioDAO().modificarElemento(model);
+		} catch (JDBCException je) {
+				if(je.getErrorCode() == 1062)
+				{
+					throw new PRISMAValidacionException("El nombre de la regla de negocio ya existe.", "MSG7",
+							new String[] { "La","Regla de negocio", model.getNombre()}, "model.nombre");
+				}
+				System.out.println("ERROR CODE " + je.getErrorCode());
+				je.printStackTrace();
+				throw new Exception();
+		} catch(HibernateException he) {
+			he.printStackTrace();
+			throw new Exception();
+		}
+		
 	}
 }

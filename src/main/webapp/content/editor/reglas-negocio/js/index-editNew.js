@@ -18,10 +18,6 @@ $(document).ready(function() {
 							entidades.add(option);
 						});
 	}
-	//document.getElementById("idTipoRN").value = document.getElementById("");
-	//Pruebas
-	//document.getElementById("idTipoRN").selectedIndex = 10;
-	//Fin pruebas
 	mostrarCamposTipoRN();
 } );
 
@@ -36,11 +32,6 @@ function mostrarCamposTipoRN() {
 	document.getElementById("filaEntidadUnicidad").className = "oculto";
 	document.getElementById("filaAtributoUnicidad").className = "oculto";
 	
-	document.getElementById("filaEntidadFI").className = "oculto";
-	document.getElementById("filaAtributoFI").className = "oculto";
-	document.getElementById("filaEntidadFT").className = "oculto";
-	document.getElementById("filaAtributoFT").className = "oculto";
-	
 	document.getElementById("filaOperador").className = "oculto";
 	document.getElementById("filaEntidad1").className = "oculto";
 	document.getElementById("filaAtributo1").className = "oculto";
@@ -50,7 +41,7 @@ function mostrarCamposTipoRN() {
 	document.getElementById("filaTextoAyudaInterF").className = "oculto";
 	document.getElementById("filaTextoAyudaTipoRN").className = "oculto";
 	
-	limpiarCampos();
+	//limpiarCampos();
 	var instrucciones;
 	if(tipoRN == "Verificación de catálogos"){
 		console.log("1");
@@ -59,7 +50,11 @@ function mostrarCamposTipoRN() {
 		
 	} else if(tipoRN == "Comparación de atributos") {		
 		console.log("2");
+		
 		cargarEntidades("entidad1");
+		if(document.getElementById("entidad1").selectedIndex != -1) {
+			
+		}
 		document.getElementById("instrucciones").innerHTML = "Indica restricciones entre los valores de algunos atributos, solamente se permite hacer comparaciones " +
 																"entre atributos numéricos o entre atributos de tipo cadena.";
 		document.getElementById("filaTextoAyudaTipoRN").className = "";
@@ -101,17 +96,6 @@ function mostrarCamposTipoRN() {
 		document.getElementById("instrucciones").innerHTML = "Indica que los archivos que proporcione el usuario no podrán rebasar el tamaño máximo especificado.";
 		document.getElementById("filaTextoAyudaTipoRN").className = "";
 		console.log("8");
-		
-	} else if(tipoRN == "Intervalo de fechas correcto"){
-		console.log("9");
-		cargarEntidadesFecha();
-		document.getElementById("instrucciones").innerHTML = "Indica el orden temporal que deberán tener dos atributos de tipo fecha.";
-		document.getElementById("filaTextoAyudaTipoRN").className = "";
-		document.getElementById("filaTextoAyudaInterF").className = "";
-		document.getElementById("filaEntidadFI").className = "";
-		document.getElementById("filaAtributoFI").className = "";
-		document.getElementById("filaEntidadFT").className = "";
-		document.getElementById("filaAtributoFT").className = "";
 		
 	} else if(tipoRN == "Formato correcto"){
 		cargarEntidades("entidadFormato");
@@ -171,48 +155,6 @@ function cargarAtributos(select, idSelectAtributos) {
 	});
 }
 
-//INTERVALO DE FECHAS CORRECTO
-function cargarEntidadesFecha() {
-	var idTipoRN = document.getElementById("idTipoRN").value;
-	rutaCargarEntidades = contextPath + '/reglas-negocio!cargarEntidadesFecha';
-	$.ajax({
-		dataType : 'json',
-		url : rutaCargarEntidades,
-		type: "POST",
-		data : {
-			idTipoRN : idTipoRN
-		},
-		success : function(data) {
-			agregarListaSelect(document.getElementById("entidadFI"), data);
-			agregarListaSelect(document.getElementById("entidadFT"), data);
-		},
-		error : function(err) {
-			console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
-		}
-	});
-}
-
-//INTERVALO DE FECHAS CORRECTO
-function cargarAtributosFecha(select, idSelectAtributos) {
-	var idTipoRN = document.getElementById("idTipoRN").value;
-	var idEntidad = select.value;
-	rutaCargarAtributos = contextPath + '/reglas-negocio!cargarAtributosFecha';
-	$.ajax({
-		dataType : 'json',
-		url : rutaCargarAtributos,
-		type: "POST",
-		data : {
-			idEntidad : idEntidad,
-			idTipoRN : idTipoRN
-		},
-		success : function(data) {
-			agregarListaSelect(document.getElementById(idSelectAtributos), data);
-		},
-		error : function(err) {
-			console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
-		}
-	});
-}
 
 //COMPARACIÓN DE ATRIBUTOS
 function cargarOperadores(select) {
@@ -278,7 +220,9 @@ function cargarAtributosDependientes(select, idSelectAtributos) {
 }
 
 function agregarListaSelect(select, json) {
-	if (json !== "") {		
+	if (json !== "") {
+		var opcSeleccionada = select.value;
+		console.log("value select " + select.value);
 		select.options.length = 0;
 		var option = document.createElement("option");
 		option.text = "Seleccione";
@@ -295,6 +239,7 @@ function agregarListaSelect(select, json) {
 							option.value = item.id;
 							select.add(option);
 						});
+		select.value = opcSeleccionada;
 	}
 } 
 
@@ -465,12 +410,7 @@ function limpiarCampos() {
 	//Se selecciona la primer opción de los elementos
 	document.getElementById("entidadUnicidad").selectedIndex = 0;
 	document.getElementById("atributoUnicidad").selectedIndex = 0;
-	
-	document.getElementById("entidadFI").selectedIndex = 0;
-	document.getElementById("atributoFI").selectedIndex = 0;
-	document.getElementById("entidadFT").selectedIndex = 0;
-	document.getElementById("atributoFT").selectedIndex = 0;
-	
+
 	document.getElementById("operador").selectedIndex = 0;
 	document.getElementById("entidad1").selectedIndex = 0;
 	document.getElementById("atributo1").selectedIndex = 0;

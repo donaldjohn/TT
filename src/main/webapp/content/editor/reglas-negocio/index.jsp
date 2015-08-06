@@ -38,12 +38,13 @@
 								<img id="" class="button" title="Consultar Regla de negocio"
 										src="${pageContext.request.contextPath}/resources/images/icons/ver.png" />
 							</s:a>
-						<s:a href="#">
-							<img id="" class="button" title="Modificar Punto de extensión"
+						<s:url var="urlEditar" value="%{#pageContext.request.contextPath}/reglas-negocio/%{#rn.id}/edit"/>
+						<s:a href="%{urlEditar}">
+							<img id="" class="button" title="Modificar Regla de negocio"
 									src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
 						</s:a>
 						<s:a href="#">
-							<img id="" class="button" title="Eliminar Punto de extensión"
+							<img id="" class="button" title="Eliminar Regla de negocio"
 									src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" />
 						</s:a>						
 					</td>
