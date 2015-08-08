@@ -11,7 +11,9 @@ import org.hibernate.Session;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
+import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.CasoUsoReglaNegocio;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.util.HibernateUtil;
 
@@ -217,9 +219,12 @@ public class ElementoDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArrayList<CasoUso> consultarReferenciasCasoUso(Elemento elemento) {
-		ArrayList<CasoUso> results = null;
+	public List<Integer> consultarReferenciasCasoUso(Elemento elemento) {
+		List<Integer> results = null;
+		SQLQuery query = null;
+
 		String queryCadena = null;
+		
 		switch(ReferenciaEnum.getTipoReferencia(elemento)) {
 		case ACCION:
 			break;
@@ -238,7 +243,9 @@ public class ElementoDAO {
 		case PASO:
 			break;
 		case REGLANEGOCIO:
-			queryCadena = "from CasoUso_ReglaNegocio where ReglaNegocioElementoid = :id";
+			queryCadena = "SELECT CasoUsoElementoid  FROM CasoUso_ReglaNegocio WHERE ReglaNegocioElementoid = "+elemento.getId()+";";
+	
+	
 			break;
 		case TERMINOGLS:
 			break;
@@ -248,14 +255,14 @@ public class ElementoDAO {
 			break;
 			
 		}
-
 		try {
-			session.beginTransaction();
-			Query query = session
-					.createQuery(queryCadena);
-			query.setParameter("id", elemento.getId());
-			results = (ArrayList<CasoUso>) query.list();
-			session.getTransaction().commit();
+		session.beginTransaction();
+		query = session.createSQLQuery(queryCadena);
+		results = query.list();
+		
+
+		session.getTransaction().commit();
+		
 
 		} catch (HibernateException he) {
 			he.printStackTrace();
