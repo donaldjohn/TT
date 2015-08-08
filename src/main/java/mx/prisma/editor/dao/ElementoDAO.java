@@ -9,8 +9,8 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.bs.Referencia;
-import mx.prisma.bs.Referencia.TipoReferencia;
+import mx.prisma.bs.ReferenciaEnum;
+import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.util.HibernateUtil;
@@ -197,11 +197,11 @@ public class ElementoDAO {
 			SQLQuery query = session
 					.createSQLQuery(
 							"SELECT * FROM Elemento INNER JOIN "
-									+ Referencia.getTabla(tipoReferencia)
+									+ ReferenciaEnum.getTabla(tipoReferencia)
 									+ " ON Elemento.id = "
-									+ Referencia.getTabla(tipoReferencia)
+									+ ReferenciaEnum.getTabla(tipoReferencia)
 									+ ".Elementoid WHERE Elemento.Proyectoid = :proyecto")
-					.addEntity(Referencia.getClase(tipoReferencia));
+					.addEntity(ReferenciaEnum.getClase(tipoReferencia));
 			query.setParameter("proyecto", idProyecto);
 			elementos = query.list();
 			session.getTransaction().commit();
@@ -220,7 +220,7 @@ public class ElementoDAO {
 	public ArrayList<CasoUso> consultarReferenciasCasoUso(Elemento elemento) {
 		ArrayList<CasoUso> results = null;
 		String queryCadena = null;
-		switch(Referencia.getTipoReferencia(elemento)) {
+		switch(ReferenciaEnum.getTipoReferencia(elemento)) {
 		case ACCION:
 			break;
 		case ACTOR:

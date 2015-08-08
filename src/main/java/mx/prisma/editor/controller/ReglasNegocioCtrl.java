@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.AnalisisEnum.CU_ReglasNegocio;
 import mx.prisma.bs.TipoReglaNegocioEnum;
-import mx.prisma.editor.bs.AnalisisBs.CU_ReglasNegocio;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.bs.EntidadBs;

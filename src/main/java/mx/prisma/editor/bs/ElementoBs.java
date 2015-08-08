@@ -1,7 +1,7 @@
 package mx.prisma.editor.bs;
 
-import mx.prisma.editor.bs.AnalisisBs.CU_CasosUso;
-import mx.prisma.editor.bs.AnalisisBs.CU_ReglasNegocio;
+import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
+import mx.prisma.bs.AnalisisEnum.CU_ReglasNegocio;
 import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.model.CasoUso;
@@ -93,7 +93,7 @@ public class ElementoBs {
 				throw new PRISMAException("El estado de la regla de negocio es inválido.", "MSG13");
 			}
 			break;
-		case EliminarReglaNegocio8_3 :
+		case EliminarReglaNegocio8_3:
 			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION)) {
 				throw new PRISMAException("El estado de la regla de negocio es inválido.", "MSG13");
 			}

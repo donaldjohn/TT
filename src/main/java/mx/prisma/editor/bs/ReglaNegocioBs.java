@@ -9,10 +9,10 @@ import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.AnalisisEnum.CU_ReglasNegocio;
 import mx.prisma.bs.CatalogoBs;
-import mx.prisma.bs.Referencia.TipoCatalogo;
+import mx.prisma.bs.ReferenciaEnum.TipoCatalogo;
 import mx.prisma.bs.TipoReglaNegocioEnum;
-import mx.prisma.editor.bs.AnalisisBs.CU_ReglasNegocio;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.OperadorDAO;

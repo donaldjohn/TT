@@ -7,8 +7,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.bs.Referencia;
-import mx.prisma.bs.Referencia.TipoReferencia;
+import mx.prisma.bs.ReferenciaEnum;
+import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.MensajeParametro;
@@ -43,7 +43,7 @@ public class MensajeDAO extends ElementoDAO {
 
 	public Mensaje consultarMensaje(String nombre, Proyecto proyecto) {
 		return (Mensaje) super.consultarElemento(nombre, proyecto,
-				Referencia.getTabla(TipoReferencia.MENSAJE));
+				ReferenciaEnum.getTabla(TipoReferencia.MENSAJE));
 	}
 
 	public List<Mensaje> consultarMensajes(int idProyecto) {

@@ -15,7 +15,9 @@ import com.opensymphony.xwork2.ModelDriven;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.CuBs;
-import mx.prisma.bs.Referencia;
+import mx.prisma.bs.ReferenciaEnum;
+import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
+import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.bs.TrayectoriaBs;
 import mx.prisma.editor.model.Accion;
@@ -74,6 +76,8 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 	private String jsonPasos;
 	private String jsonTrayectorias;
 	private String jsonAcciones;
+	
+	private Integer idSel;
 
 	private boolean existeTPrincipal;
 	private List<String> listAlternativa;
@@ -125,7 +129,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 			casoUso = SessionManager.consultarCasoUsoActivo();
 			model.setCasoUso(casoUso);
 
-			existeTPrincipal = existeTrayectoriaPrincipal();
+			existeTPrincipal = TrayectoriaBs.existeTrayectoriaPrincipal(casoUso.getId());
 			buscaElementos();
 			buscaCatalogos();
 
@@ -140,35 +144,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 			resultado = index();
 		}
 		return resultado;
-	}
-
-	private boolean existeTrayectoriaPrincipal() {
-		if (idCU == 0) {
-			idCU = (Integer) SessionManager.get("idCU");
-		}
-		CasoUso casoUso = CuBs.consultarCasoUso(idCU);
-		existeTPrincipal = false;
-		for (Trayectoria t : casoUso.getTrayectorias()) {
-			if (!t.isAlternativa()) {
-				return true;
-			}
-		}
-		return existeTPrincipal;
-	}
-
-	private void buscaCatalogos() {
-		// Se llena la lista del catálogo de quien realiza
-		listRealiza = new ArrayList<String>();
-		listRealiza.add("Actor");
-		listRealiza.add("Sistema");
-
-		// Se llena la lista par indicar si es alternativa o no
-		listAlternativa = new ArrayList<String>();
-		listAlternativa.add("Principal");
-		listAlternativa.add("Alternativa");
-
-		// Se extraen los verbos de la BD
-		listVerbos = TrayectoriaBs.consultarVerbos();
 	}
 
 	/**
@@ -228,6 +203,100 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 		return resultado;
 	}
 
+	public String edit() throws Exception {
+		String resultado = null;
+		try {
+			
+			casoUso = model.getCasoUso();
+			
+			ElementoBs.verificarEstado(casoUso, CU_CasosUso.ModificarTrayectoria5_1_1_2);
+			// buscarObservaciones
+			buscaElementos();
+			buscaCatalogos();
+			existeTPrincipal = TrayectoriaBs.existeTrayectoriaPrincipal(casoUso.getId(), model.getId());
+			
+			prepararVista();
+
+			resultado = EDITNEW;
+		} catch (PRISMAException pe) {
+			System.err.println(pe.getMessage());
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			e.printStackTrace();
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+
+	public String update() throws Exception {
+		String resultado = null;
+
+		try {
+			// Se verifica si es alternativa
+			if (alternativaPrincipal == null
+					|| alternativaPrincipal.equals("Alternativa")) {
+				model.setAlternativa(true);
+			} else if (alternativaPrincipal.equals("Principal")) {
+				model.setAlternativa(false);
+			} else {
+				// Validaciones del tipo de trayectoria
+				throw new PRISMAValidacionException(
+						"El usuario no seleccionó el tipo de la trayectoria.",
+						"MSG4", null, "alternativaPrincipal");
+			}
+
+			// Se llama al método que convierte los json a pasos de la
+			// trayectoria
+			agregarPasos();
+
+			// Se consulta el caso de uso para el que se va a registrar la
+			// trayectoria
+			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
+
+			// Se agrega el caso de uso a a la trayectoria
+			model.setCasoUso(casoUso);
+
+			// Se registra la trayectoria
+			TrayectoriaBs.registrarTrayectoria(model);
+
+			resultado = SUCCESS;
+
+			// Se agrega mensaje de éxito
+			addActionMessage(getText("MSG1", new String[] { "La",
+					"Trayectoria", "registrada" }));
+
+			// Se agrega el mensaje a la sesión
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = editNew();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+	
+	private void buscaCatalogos() {
+		// Se llena la lista del catálogo de quien realiza
+		listRealiza = new ArrayList<String>();
+		listRealiza.add("Actor");
+		listRealiza.add("Sistema");
+
+		// Se llena la lista par indicar si es alternativa o no
+		listAlternativa = new ArrayList<String>();
+		listAlternativa.add("Principal");
+		listAlternativa.add("Alternativa");
+
+		// Se extraen los verbos de la BD
+		listVerbos = TrayectoriaBs.consultarVerbos();
+	}
+
 	private void agregarPasos() {
 		if (jsonPasosTabla != null && !jsonPasosTabla.equals("")) {
 			model.setPasos(JsonUtil.mapJSONToSet(jsonPasosTabla, Paso.class));
@@ -269,7 +338,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 		if (listElementos != null && !listElementos.isEmpty()) {
 			// Se clasifican los conjuntos
 			for (Elemento el : listElementos) {
-				switch (Referencia.getTipoReferencia(el)) {
+				switch (ReferenciaEnum.getTipoReferencia(el)) {
 
 				case ACTOR:
 					Actor auxActor = new Actor();
@@ -415,7 +484,32 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 
 	}
 
-	// @VisitorFieldValidator
+	private void prepararVista() {
+		Set<Paso> pasos = model.getPasos();
+		ArrayList<Paso> pasosTabla = new ArrayList<Paso>();
+		Paso pasoAux;
+		
+		for (Paso paso : pasos) {
+			pasoAux = new Paso();
+			pasoAux.setNumero(paso.getNumero());
+			pasoAux.setRedaccion(TokenBs.decodificarCadenasToken(paso.getRedaccion()));
+			pasoAux.setRealizaActor(paso.isRealizaActor());
+			pasoAux.setVerbo(paso.getVerbo());
+			pasoAux.setOtroVerbo(paso.getOtroVerbo());
+			pasosTabla.add(pasoAux);
+		}
+		
+		this.jsonPasosTabla = JsonUtil.mapListToJSON(pasosTabla);
+		
+		if (model.isAlternativa()) {
+			alternativaPrincipal = "Alternativa";
+		} else {
+			alternativaPrincipal = "Principal";
+		}
+		System.out.println(model.isFinCasoUso());
+	
+	}
+	
 	public Trayectoria getModel() {
 		if (this.model == null) {
 			model = new Trayectoria();
@@ -592,4 +686,16 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 		this.userSession = userSession;
 	}
 
+	
+	public Integer getIdSel() {
+		return idSel;
+	}
+
+	
+	public void setIdSel(Integer idSel) {
+		this.idSel = idSel;
+		this.model = TrayectoriaBs.consultarTrayectoria(idSel);
+	}
+
+	
 }

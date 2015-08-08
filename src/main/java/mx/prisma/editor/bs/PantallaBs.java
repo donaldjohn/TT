@@ -8,7 +8,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.bs.Referencia;
+import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.EntidadDAO;
@@ -132,7 +132,7 @@ public class PantallaBs {
 	}
 
 	public static List<Pantalla> consultarPantallasProyecto(Proyecto proyecto) {
-		List<Elemento> listPantallasAux = new PantallaDAO().consultarElementos(Referencia.TipoReferencia.PANTALLA, proyecto.getId());
+		List<Elemento> listPantallasAux = new PantallaDAO().consultarElementos(ReferenciaEnum.TipoReferencia.PANTALLA, proyecto.getId());
 		List<Pantalla> listPantallas = new ArrayList<Pantalla>();
 		if (listPantallasAux == null) {
 			throw new PRISMAException("No se pueden consultar las pantallas por proyecto.",

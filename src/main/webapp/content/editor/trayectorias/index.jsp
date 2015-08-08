@@ -36,10 +36,13 @@
 					<td><s:property value="%{#tray.clave}"/></td>
 					<td><s:property value="%{#tray.condicion}"/></td>
 					<td align="center">
-						<s:a>
-							<img id="" class="button"
-							title="Modificar Trayectoria"
-							src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></s:a>
+							<!-- Modificar trayectoria -->		
+							<s:url var="urlModificar" value="%{#pageContext.request.contextPath}/trayectorias/%{#tray.id}/edit"/>
+							<s:a href="%{urlModificar}">
+								<img id="" class="button" title="Modificar Trayectoria"
+										src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
+							</s:a>	
+							${blanks}
 					</td>
 				</tr>
 				</s:if>
@@ -48,10 +51,13 @@
 					<td class="trayectoriaPrincipal"><s:property value="%{#tray.clave}"/></td>
 					<td class="trayectoriaPrincipal">Trayectoria principal</td>
 					<td align="center" class="trayectoriaPrincipal">
-						<s:a>
-							<img id="" class="button"
-							title="Modificar Trayectoria"
-							src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></s:a>
+						<!-- Modificar trayectoria -->		
+							<s:url var="urlModificar" value="%{#pageContext.request.contextPath}/trayectorias/%{#tray.id}/edit"/>
+							<s:a href="%{urlModificar}">
+								<img id="" class="button" title="Modificar Trayectoria"
+										src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
+							</s:a>	
+							${blanks}
 					</td>
 				</s:else>
 			</s:iterator>

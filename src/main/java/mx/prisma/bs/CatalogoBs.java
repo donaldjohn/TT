@@ -2,7 +2,7 @@ package mx.prisma.bs;
 
 import java.util.List;
 
-import mx.prisma.bs.Referencia.TipoCatalogo;
+import mx.prisma.bs.ReferenciaEnum.TipoCatalogo;
 import mx.prisma.editor.model.Cardinalidad;
 import mx.prisma.editor.model.TipoDato;
 import mx.prisma.editor.model.TipoReglaNegocio;

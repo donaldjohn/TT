@@ -4,7 +4,7 @@ package mx.prisma.editor.dao;
 import java.util.List;
 import java.util.Set;
 
-import mx.prisma.bs.Referencia.TipoSeccion;
+import mx.prisma.bs.ReferenciaEnum.TipoSeccion;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.Trayectoria;

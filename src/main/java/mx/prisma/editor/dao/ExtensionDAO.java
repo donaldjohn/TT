@@ -1,7 +1,7 @@
 package mx.prisma.editor.dao;
 
 
-import mx.prisma.bs.Referencia.TipoSeccion;
+import mx.prisma.bs.ReferenciaEnum.TipoSeccion;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.model.Extension;
 import mx.prisma.util.HibernateUtil;

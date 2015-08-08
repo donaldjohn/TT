@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.bs.Referencia;
-import mx.prisma.bs.Referencia.TipoReferencia;
+import mx.prisma.bs.ReferenciaEnum;
+import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Elemento;
 
@@ -22,7 +22,7 @@ public class ActorDAO extends ElementoDAO {
 	}
 	
 	public Actor consultarActor(String nombre, Proyecto proyecto) {
-		return (Actor)super.consultarElemento(nombre, proyecto, Referencia.getTabla(TipoReferencia.ACTOR));
+		return (Actor)super.consultarElemento(nombre, proyecto, ReferenciaEnum.getTabla(TipoReferencia.ACTOR));
 	}
 	
 	public List<Actor> consultarActores(int idProyecto) {

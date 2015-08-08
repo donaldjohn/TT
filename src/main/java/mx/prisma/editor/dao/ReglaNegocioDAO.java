@@ -11,8 +11,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.bs.Referencia;
-import mx.prisma.bs.Referencia.TipoReferencia;
+import mx.prisma.bs.ReferenciaEnum;
+import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.ReglaNegocio;
 
@@ -31,7 +31,7 @@ public class ReglaNegocioDAO extends ElementoDAO {
 
 	public ReglaNegocio consultarReglaNegocio(String nombre, Proyecto proyecto) {
 		return (ReglaNegocio) super.consultarElemento(nombre, proyecto,
-				Referencia.getTabla(TipoReferencia.REGLANEGOCIO));
+				ReferenciaEnum.getTabla(TipoReferencia.REGLANEGOCIO));
 	}
 
 	public List<ReglaNegocio> consultarReglasNegocio(int idProyecto) {

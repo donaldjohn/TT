@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Set;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.editor.bs.AnalisisBs.CU_CasosUso;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.ElementoBs.Estado;
-import mx.prisma.bs.Referencia;
+import mx.prisma.bs.ReferenciaEnum;
+import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
@@ -184,12 +184,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			model.setModulo(modulo);
 			
 			ElementoBs.verificarEstado(model, CU_CasosUso.ModificarCasoUso5_2);
-						
-			/*
-			 *  Se buscan los elementos disponibles para referenciar, para obtenerlos es necesario
-			 *  determinar el proyecto y el módulo en el que se encuentra.
-			 */
-			
+					
 			buscaElementos();
 			prepararVista();
 			
@@ -307,7 +302,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		if (listElementos != null && !listElementos.isEmpty()) {
 			// Se clasifican los conjuntos
 			for (Elemento el : listElementos) {
-				switch (Referencia.getTipoReferencia(el)) {
+				switch (ReferenciaEnum.getTipoReferencia(el)) {
 				
 				case ACTOR:
 					Actor auxActor = new Actor();
@@ -614,12 +609,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	public void setIdSel(Integer idSel) {
 		this.idSel = idSel;
 		this.model = CuBs.consultarCasoUso(idSel);
-		/*model.getActores().clear();
-		model.getEntradas().clear();
-		model.getSalidas().clear();
-		model.getReglas().clear();
-		*/
-		
 	}
 
 	public boolean isExistenPrecondiciones() {

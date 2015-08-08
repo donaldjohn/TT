@@ -12,6 +12,7 @@
 *.blg
 *reporte.pdf
 *.classpath
+.classpath
 /target/
 
 # OSX generated files #
