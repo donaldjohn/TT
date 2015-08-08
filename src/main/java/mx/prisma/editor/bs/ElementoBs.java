@@ -74,7 +74,7 @@ public class ElementoBs {
 	
 	public static void verificarEstado(Elemento elemento, CU_CasosUso casoUsoAnalisis) {
 		switch(casoUsoAnalisis) {
-		case ModificarCasoUso5_2:
+		case MODIFICARCASOUSO5_2:
 			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION) && elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.PENDIENTECORRECCION)) {
 					throw new PRISMAException("El estado del caso de uso es inválido.", "MSG13");
 			}

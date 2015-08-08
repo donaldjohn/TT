@@ -830,7 +830,7 @@ public class TokenBs {
 				} else {
 					Pantalla pantalla = accion.getPantalla();
 					cadenaDecodificada = cadenaDecodificada.replace(token,
-							tokenATR + pantalla.getClave() + tokenSeparator1
+							tokenACC + pantalla.getClave() + tokenSeparator1
 									+ pantalla.getNumero() + tokenSeparator2
 									+ pantalla.getNombre().replace(" ", "_")
 									+ tokenSeparator2

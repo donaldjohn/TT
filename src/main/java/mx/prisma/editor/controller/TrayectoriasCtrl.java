@@ -161,6 +161,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 				model.setAlternativa(true);
 			} else if (alternativaPrincipal.equals("Principal")) {
 				model.setAlternativa(false);
+				model.setCondicion(null);
 			} else {
 				// Validaciones del tipo de trayectoria
 				throw new PRISMAValidacionException(
@@ -171,6 +172,8 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 			// Se llama al método que convierte los json a pasos de la
 			// trayectoria
 			agregarPasos();
+			TrayectoriaBs.preAlmacenarObjetosToken(model);
+
 
 			// Se consulta el caso de uso para el que se va a registrar la
 			// trayectoria
@@ -204,12 +207,13 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 	}
 
 	public String edit() throws Exception {
+		System.out.println("edit");
 		String resultado = null;
 		try {
 			
 			casoUso = model.getCasoUso();
 			
-			ElementoBs.verificarEstado(casoUso, CU_CasosUso.ModificarTrayectoria5_1_1_2);
+			ElementoBs.verificarEstado(casoUso, CU_CasosUso.MODIFICARTRAYECTORIA5_1_1_2);
 			// buscarObservaciones
 			buscaElementos();
 			buscaCatalogos();
@@ -217,7 +221,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 			
 			prepararVista();
 
-			resultado = EDITNEW;
+			resultado = EDIT;
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
 			ErrorManager.agregaMensajeError(this, pe);
@@ -234,44 +238,30 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 		String resultado = null;
 
 		try {
-			// Se verifica si es alternativa
 			if (alternativaPrincipal == null
 					|| alternativaPrincipal.equals("Alternativa")) {
 				model.setAlternativa(true);
 			} else if (alternativaPrincipal.equals("Principal")) {
 				model.setAlternativa(false);
 			} else {
-				// Validaciones del tipo de trayectoria
 				throw new PRISMAValidacionException(
 						"El usuario no seleccionó el tipo de la trayectoria.",
 						"MSG4", null, "alternativaPrincipal");
 			}
-
-			// Se llama al método que convierte los json a pasos de la
-			// trayectoria
+			
+			model.getPasos().clear();
 			agregarPasos();
+			TrayectoriaBs.preAlmacenarObjetosToken(model);
 
-			// Se consulta el caso de uso para el que se va a registrar la
-			// trayectoria
-			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
-
-			// Se agrega el caso de uso a a la trayectoria
-			model.setCasoUso(casoUso);
-
-			// Se registra la trayectoria
-			TrayectoriaBs.registrarTrayectoria(model);
-
+			TrayectoriaBs.modificarTrayectoria(model);
 			resultado = SUCCESS;
-
-			// Se agrega mensaje de éxito
 			addActionMessage(getText("MSG1", new String[] { "La",
-					"Trayectoria", "registrada" }));
+					"Trayectoria", "modificada" }));
 
-			// Se agrega el mensaje a la sesión
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
-			resultado = editNew();
+			resultado = edit();
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();

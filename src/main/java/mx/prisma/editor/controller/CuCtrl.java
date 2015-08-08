@@ -183,7 +183,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			modulo = SessionManager.consultarModuloActivo();
 			model.setModulo(modulo);
 			
-			ElementoBs.verificarEstado(model, CU_CasosUso.ModificarCasoUso5_2);
+			ElementoBs.verificarEstado(model, CU_CasosUso.MODIFICARCASOUSO5_2);
 					
 			buscaElementos();
 			prepararVista();
@@ -214,8 +214,9 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			model.getReglas().clear();
 			model.getPostprecondiciones().clear();
 
-			CuBs.preAlmacenarObjetosToken(model);
 			agregarPostPrecondiciones(model);
+			CuBs.preAlmacenarObjetosToken(model);
+
 
 			CuBs.modificarCasoUso(model);
 			resultado = SUCCESS;

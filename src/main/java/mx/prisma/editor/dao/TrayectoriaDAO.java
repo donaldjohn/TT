@@ -23,24 +23,27 @@ public class TrayectoriaDAO {
 
 
 	public void registrarTrayectoria(Trayectoria trayectoria) {
-		Set<Paso> pasos = trayectoria.getPasos();
-
-		for (Paso paso : pasos) {
-			TokenBs.almacenarObjetosToken(
-					TokenBs.convertirToken_Objeto(
-							paso.getRedaccion(),
-							trayectoria.getCasoUso().getProyecto()),
-					TipoSeccion.PASOS, paso);
-			System.out.println(paso.getRedaccion());
-			paso.setRedaccion(TokenBs.codificarCadenaToken(
-					paso.getRedaccion(), trayectoria.getCasoUso().getProyecto()));
-			System.out.println(paso.getRedaccion());
-			
-		}
 		try {
-			this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+			//this.session = HibernateUtil.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
 			session.saveOrUpdate(trayectoria);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
+	}
+	
+	public void modificarTrayectoria(Trayectoria trayectoria) {
+		
+		try {
+			//this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+			session.beginTransaction();
+			Query query1 = session.createQuery("DELETE FROM Paso WHERE trayectoria.id = :id");
+			query1.setParameter("id", trayectoria.getId());
+			query1.executeUpdate();
+			session.update(trayectoria);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
