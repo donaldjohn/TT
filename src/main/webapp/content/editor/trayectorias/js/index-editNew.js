@@ -86,6 +86,9 @@ function cambiarElementosAlternativaPrincipal() {
 		document.getElementById("filaCondicion").style.display = '';
 		document.getElementById("model.finCasoUso").checked = false;
 		document.getElementById("model.finCasoUso").disabled = false;
+	    document.getElementById("model.finCasoUso").onclick = function() { 
+	           return true; 
+	        };
 	} else if(varAlternativaPrincipal == "Seleccione"){
 		document.getElementById("filaCondicion").style.display = 'none';
 		document.getElementById("model.finCasoUso").checked = false;

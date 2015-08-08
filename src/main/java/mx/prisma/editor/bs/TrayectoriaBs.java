@@ -8,11 +8,15 @@ import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.bs.CatalogoBs;
+import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
 import mx.prisma.bs.ReferenciaEnum.TipoCatalogo;
+import mx.prisma.bs.ReferenciaEnum.TipoSeccion;
+import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.TrayectoriaDAO;
 import mx.prisma.editor.dao.VerboDAO;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Paso;
+import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.editor.model.Verbo;
 import mx.prisma.util.PRISMAException;
@@ -42,6 +46,31 @@ public class TrayectoriaBs {
 		}
 	}
 
+	public static void modificarTrayectoria(Trayectoria model) throws Exception {
+		try {
+				validar(model);
+				ElementoBs.verificarEstado(model.getCasoUso(), CU_CasosUso.MODIFICARTRAYECTORIA5_1_1_2);
+				model.getCasoUso().setEstadoElemento(ElementoBs
+						.consultarEstadoElemento(Estado.EDICION));
+				model.setClave(model.getClave().trim());
+				
+				new TrayectoriaDAO().modificarTrayectoria(model);
+		} catch (JDBCException je) {
+				if(je.getErrorCode() == 1062)
+				{
+					throw new PRISMAValidacionException("La clave de la trayectoria ya existe.", "MSG7",
+							new String[] { "La","Trayectoria", model.getClave()}, "model.clave");
+				}
+				System.out.println("ERROR CODE " + je.getErrorCode());
+				je.printStackTrace();
+				throw new Exception();
+		} catch(HibernateException he) {
+			he.printStackTrace();
+			throw new Exception();
+		}
+	}
+	
+
 	private static void validar(Trayectoria model) {
 		//Validaciones de la clave
 		if(Validador.esNuloOVacio(model.getClave())) {
@@ -64,7 +93,7 @@ public class TrayectoriaBs {
 			//Si es una trayectoria principal, entonces se debe verificar que no haya una registrada previamente
 			Set<Trayectoria> trayectorias = model.getCasoUso().getTrayectorias(); 
 			for(Trayectoria t : trayectorias) {
-				if(!t.isAlternativa()) {
+				if(!t.isAlternativa() && t.getId() != model.getId()) {
 					throw new PRISMAValidacionException("Ya existe una trayectoria principal registrada.", "MSG20", null, "alternativaPrincipal");
 				}
 			}
@@ -164,5 +193,22 @@ public class TrayectoriaBs {
 					"trayectoria"});
 		}
 		return trayectoria;
+	}
+
+	public static void preAlmacenarObjetosToken(Trayectoria trayectoria) {
+		Set<Paso> pasos = trayectoria.getPasos();
+
+		for (Paso paso : pasos) {
+			TokenBs.almacenarObjetosToken(
+					TokenBs.convertirToken_Objeto(
+							paso.getRedaccion(),
+							trayectoria.getCasoUso().getProyecto()),
+					TipoSeccion.PASOS, paso);
+			System.out.println(paso.getRedaccion());
+			paso.setRedaccion(TokenBs.codificarCadenaToken(
+					paso.getRedaccion(), trayectoria.getCasoUso().getProyecto()));
+			System.out.println(paso.getRedaccion());
+			
+		}
 	}
 }

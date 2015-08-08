@@ -95,6 +95,27 @@ public class CuBs {
 		}
 	}
 
+	public static void modificarCasoUso(CasoUso cu) throws Exception{
+		try {
+				validar(cu);
+				ElementoBs.verificarEstado(cu, CU_CasosUso.MODIFICARCASOUSO5_2);
+				cu.setEstadoElemento(ElementoBs
+						.consultarEstadoElemento(Estado.EDICION));
+				//Se quitan los espacios iniciales y finales del nombre
+				cu.setNombre(cu.getNombre().trim());
+				
+				new CasoUsoDAO().modificarCasoUso(cu);
+		
+		} catch (JDBCException je) {
+			System.out.println("ERROR CODE " + je.getErrorCode());
+			je.printStackTrace();
+			throw new Exception();
+		} catch(HibernateException he) {
+			he.printStackTrace();
+			throw new Exception();
+		}
+	}
+	
 	private static void validar(CasoUso cu) throws PRISMAValidacionException{
 		//Validaciones del número
 		if(Validador.esNuloOVacio(cu.getNumero())) {
@@ -196,27 +217,6 @@ public class CuBs {
 	
 	public static String consultarAutor(CasoUso cu) {
 		return "Autor";
-	}
-	
-	public static void modificarCasoUso(CasoUso cu) throws Exception{
-		try {
-				validar(cu);
-				cu.setEstadoElemento(ElementoBs
-						.consultarEstadoElemento(Estado.EDICION));
-				//Se quitan los espacios iniciales y finales del nombre
-				cu.setNombre(cu.getNombre().trim());
-				ElementoBs.verificarEstado(cu, CU_CasosUso.ModificarCasoUso5_2);
-				
-				new CasoUsoDAO().modificarCasoUso(cu);
-		
-		} catch (JDBCException je) {
-			System.out.println("ERROR CODE " + je.getErrorCode());
-			je.printStackTrace();
-			throw new Exception();
-		} catch(HibernateException he) {
-			he.printStackTrace();
-			throw new Exception();
-		}
 	}
 
 	public static List<Elemento> consultarElementos(Proyecto proyecto) {
