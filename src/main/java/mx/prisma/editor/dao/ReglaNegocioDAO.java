@@ -6,6 +6,10 @@ import java.util.List;
 
 
 
+
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.Referencia;
 import mx.prisma.bs.Referencia.TipoReferencia;

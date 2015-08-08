@@ -43,10 +43,14 @@
 							<img id="" class="button" title="Modificar Regla de negocio"
 									src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
 						</s:a>
-						<s:a href="#">
+						<s:url var="urlEliminar" value="%{#pageContext.request.contextPath}/reglas-negocio/%{#rn.id}" method="post">
+							<s:param name="_method">delete</s:param>
+						</s:url>
+						<s:a onclick="return verificarEliminacionElemento(%{#rn.id});"><!-- openDialog="confirmarEliminacionDialog" -->
 							<img id="" class="button" title="Eliminar Regla de negocio"
 									src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" />
 						</s:a>						
+						
 					</td>
 				</tr>
 			</s:iterator>
@@ -63,6 +67,21 @@
 		</button>
 	</div>
 	</s:form>	
+	<!-- EMERGENTE REGISTRAR ACCION -->
+	<sj:dialog id="confirmarEliminacionDialog" title="Confirmación" autoOpen="false"
+		minHeight="100" minWidth="400" modal="true" draggable="true">
+		<s:form autocomplete="off" id="frmConfirmarEliminacion" name="frmConfirmarEliminacionName" theme="simple">
+				<div class="seccion">
+				<s:text name="MSG11"></s:text>
+				</div>
+			<br />
+			<div align="center">
+			
+				<input type="button" onclick="window.location.href = '${urlEliminar}';" value="Aceptar"/> <input
+					type="button" onclick="cancelarConfirmarEliminacion();" value="Cancelar" />
+			</div>
+		</s:form>
+	</sj:dialog>
 </body>
 </html>
 </jsp:root>

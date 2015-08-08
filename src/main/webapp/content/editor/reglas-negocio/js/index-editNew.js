@@ -222,7 +222,6 @@ function cargarAtributosDependientes(select, idSelectAtributos) {
 function agregarListaSelect(select, json) {
 	if (json !== "") {
 		var opcSeleccionada = select.value;
-		console.log("value select " + select.value);
 		select.options.length = 0;
 		var option = document.createElement("option");
 		option.text = "Seleccione";

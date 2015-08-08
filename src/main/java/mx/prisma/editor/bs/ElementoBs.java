@@ -93,6 +93,11 @@ public class ElementoBs {
 				throw new PRISMAException("El estado de la regla de negocio es inválido.", "MSG13");
 			}
 			break;
+		case EliminarReglaNegocio8_3 :
+			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION)) {
+				throw new PRISMAException("El estado de la regla de negocio es inválido.", "MSG13");
+			}
+			break;
 		default:
 			break;
 		}

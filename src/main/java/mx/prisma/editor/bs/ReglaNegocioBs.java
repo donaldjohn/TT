@@ -19,6 +19,8 @@ import mx.prisma.editor.dao.OperadorDAO;
 import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.dao.TipoReglaNegocioDAO;
 import mx.prisma.editor.model.Atributo;
+import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Operador;
 import mx.prisma.editor.model.ReglaNegocio;
@@ -335,5 +337,30 @@ public class ReglaNegocioBs {
 			throw new Exception();
 		}
 		
+	}
+
+	public static void eliminarReglaNegocio(ReglaNegocio model) throws Exception {
+		try {
+			ElementoBs.verificarEstado(model, CU_ReglasNegocio.ModificarReglaNegocio8_2);
+			new ReglaNegocioDAO().eliminarElemento(model);
+	} catch (JDBCException je) {
+			if(je.getErrorCode() == 1451)
+			{
+				throw new PRISMAException("No se puede eliminar la regla de negocio.", "MSG14");
+			}
+			System.out.println("ERROR CODE " + je.getErrorCode());
+			je.printStackTrace();
+			throw new Exception();
+	} catch(HibernateException he) {
+		he.printStackTrace();
+		throw new Exception();
+	}
+		
+	}
+
+	public static List<CasoUso> verificarReferenciasCasoUso(ReglaNegocio model) {
+		List<CasoUso> elementosReferencias = new ReglaNegocioDAO().consultarReferenciasCasoUso(model);
+		
+		return elementosReferencias;
 	}
 }

@@ -5,6 +5,6 @@ public class AnalisisBs {
 		ModificarCasoUso5_2
 	}
 	public enum CU_ReglasNegocio {
-		ModificarReglaNegocio8_2
+		ModificarReglaNegocio8_2, EliminarReglaNegocio8_3
 	}
 }

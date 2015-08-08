@@ -16,6 +16,7 @@ function agregarImagen(inputFile, idImg) {
         document.getElementById(idImg).style.display = '';
         console.log("pos blob: " + inputFile.files[0]);
         console.log("readAsDataURL: " + reader.readAsDataURL(inputFile.files[0]));
+        //sconsole.log("readAsText: " + reader.readAsText(inputFile.files[0]));
     }
 }
 
@@ -42,7 +43,7 @@ function registrarAccion() {
 		//http://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded
 		var row = [
 				"<center><img id='" + nombre + "' src='" + "#" + "'/></center>",
-				img.getAsText('utf-8'),
+				img,
 				nombre,
 				descripcion, 
 				tipoAccion,
@@ -149,7 +150,8 @@ function preparaEnvio() {
 		tablaToJson("tablaAccion");
 		return true;
 	} catch (err) {
-		alert("Ocurrió un error.");
+		alert("Ocurrió un error: " + err);
+		return false;
 	}
 }
 
@@ -168,8 +170,8 @@ function tablaToJson(idTable) {
 				longitud, tipoDato, otroTipoDato, formatoArchivo,
 				tamanioArchivo, unidadTamanio));
 	}
-	var jsonAtributos = JSON.stringify(arregloAtributos);
-	document.getElementById("jsonAtributosTabla").value = jsonAtributos;
+	var jsonAtributos = JSON.stringify(arregloAcciones);
+	document.getElementById("jsonAccionesTabla").value = jsonAtributos;
 }
 
 function cargarCatalogos() {

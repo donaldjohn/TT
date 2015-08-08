@@ -13,6 +13,8 @@ import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.bs.EntidadBs;
 import mx.prisma.editor.bs.ReglaNegocioBs;
 import mx.prisma.editor.model.Atributo;
+import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Operador;
 import mx.prisma.editor.model.ReglaNegocio;
@@ -41,7 +43,10 @@ import com.opensymphony.xwork2.ModelDriven;
 				"listEntidades"}),
 		@Result(name = "operadores", type = "json", params = {
 				"root",
-				"listOperadores"})
+				"listOperadores"}),
+		@Result(name = "verificarEliminacion", type = "json", params = {
+				"root",
+				"esEliminable"})
 })
 public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDriven<ReglaNegocio>, SessionAware{
 	/**
@@ -75,6 +80,8 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	private int idAtributo1;
 	private int idAtributo2;
 	private int idOperador;
+	
+	private boolean esEliminable;
 	
 	private Integer idSel;
 	
@@ -265,12 +272,9 @@ public String edit() {
 			
 			ReglaNegocioBs.modificarReglaNegocio(model);
 			resultado = SUCCESS;
-			
-			//Se agrega mensaje de éxito
+
 			addActionMessage(getText("MSG1", new String[] { "La",
 					"Regla de negocio", "registrada" }));
-			
-			//Se agrega el mensaje a la sesión
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 			
 		} catch (PRISMAValidacionException pve) {
@@ -289,7 +293,6 @@ public String edit() {
 	public String show() throws Exception{
 		String resultado = null;
 		try {
-			//model = ReglaNegocioBs.consultaReglaNegocio(idSel);			
 			resultado = SHOW;
 		} catch (PRISMAException pe) {
 			pe.setIdMensaje("MSG26");
@@ -298,6 +301,27 @@ public String edit() {
 		} catch(Exception e) {
 			ErrorManager.agregaMensajeError(this, e);
 			return index();
+		}
+		return resultado;
+	}
+	
+	public String destroy() {
+		String resultado = null;
+		try {
+			ReglaNegocioBs.eliminarReglaNegocio(model);
+			resultado = SUCCESS;
+			addActionMessage(getText("MSG1", new String[] { "La",
+					"Regla de negocio", "eliminada" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = edit();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
 		}
 		return resultado;
 	}
@@ -376,6 +400,15 @@ public String edit() {
 	private void buscaCatalogos() { 
 		listTipoRN = ReglaNegocioBs.consultarTipoRNDisponibles(proyecto, model.getTipoReglaNegocio());
 		listOperadores = new ArrayList<Operador>();
+	}
+	
+	public String verificarEliminacion() {
+		List<CasoUso> elementosReferencias = ReglaNegocioBs.verificarReferenciasCasoUso(model);
+		for(CasoUso cu : elementosReferencias) {
+			System.out.println("Cu: " + cu.getClave() + cu.getNumero() + " " + cu.getNombre());
+		}
+		System.out.println("desde verificarEliminacion");
+		return "verificarEliminacion";
 	}
 
 	public void setSession(Map<String, Object> session) {		
@@ -543,6 +576,7 @@ public String edit() {
 	public void setIdSel(Integer idSel) {
 		this.idSel = idSel;
 		this.model = ReglaNegocioBs.consultaReglaNegocio(this.idSel);
+		System.out.println("idSel: " + idSel);
 	}
 	
 	public int getDefaultIdEntidadUnicidad() {
@@ -552,5 +586,16 @@ public String edit() {
 	public int getDefaultIdAtributoUnicidad() {
 		return model.getAtributoUnicidad().getId();
 	}
+
+	public boolean isEsEliminable() {
+		return esEliminable;
+	}
+
+	public void setEsEliminable(boolean esEliminable) {
+		this.esEliminable = esEliminable;
+	}
+
+	
+	
 
 }
