@@ -54,7 +54,7 @@ public class ReglaNegocio extends Elemento implements java.io.Serializable {
 		this.redaccion = redaccion;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "TipoReglaNegocioid", referencedColumnName = "id")
 	public TipoReglaNegocio getTipoReglaNegocio() {
 		return tipoReglaNegocio;
@@ -64,7 +64,7 @@ public class ReglaNegocio extends Elemento implements java.io.Serializable {
 		this.tipoReglaNegocio = tipoReglaNegocio;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Atributoid_unicidad", referencedColumnName = "id")	
 	public Atributo getAtributoUnicidad() {
 		return atributoUnicidad;
@@ -74,7 +74,7 @@ public class ReglaNegocio extends Elemento implements java.io.Serializable {
 		this.atributoUnicidad = atributoUnicidad;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Atributoid_fechaI", referencedColumnName = "id")	
 	public Atributo getAtributoFechaI() {
 		return atributoFechaI;
@@ -84,7 +84,7 @@ public class ReglaNegocio extends Elemento implements java.io.Serializable {
 		this.atributoFechaI = atributoFechaI;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Atributoid_fechaT", referencedColumnName = "id")	
 	public Atributo getAtributoFechaF() {
 		return atributoFechaF;
@@ -94,7 +94,7 @@ public class ReglaNegocio extends Elemento implements java.io.Serializable {
 		this.atributoFechaF = atributoFechaF;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "TipoComparacionid", referencedColumnName = "id")	
 	public TipoComparacion getTipoComparacion() {
 		return tipoComparacion;
@@ -104,7 +104,7 @@ public class ReglaNegocio extends Elemento implements java.io.Serializable {
 		this.tipoComparacion = tipoComparacion;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Atributoid_comp1", referencedColumnName = "id")	
 	public Atributo getAtributoComp1() {
 		return atributoComp1;
@@ -114,7 +114,7 @@ public class ReglaNegocio extends Elemento implements java.io.Serializable {
 		this.atributoComp1 = atributoComp1;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Atributoid_comp2", referencedColumnName = "id")	
 	public Atributo getAtributoComp2() {
 		return atributoComp2;
@@ -124,7 +124,7 @@ public class ReglaNegocio extends Elemento implements java.io.Serializable {
 		this.atributoComp2 = atributoComp2;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Operadorid", referencedColumnName = "id")	
 	public Operador getOperadorComp() {
 		return operadorComp;
@@ -143,7 +143,7 @@ public class ReglaNegocio extends Elemento implements java.io.Serializable {
 		this.expresionRegular = expresionRegular;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Atributoid_expReg", referencedColumnName = "id")	
 	public Atributo getAtributoExpReg() {
 		return atributoExpReg;
