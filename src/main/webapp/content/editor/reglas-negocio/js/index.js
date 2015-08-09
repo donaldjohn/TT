@@ -3,9 +3,9 @@ $(document).ready(function() {
 	contextPath = $("#rutaContexto").val();
 } );
 
-function confirmarEliminacion() {
+function confirmarEliminacion(urlEliminar) {
 	$('#confirmarEliminacionDialog').dialog('close');
-	return true;
+	window.location.href = urlEliminar;
 }
 
 function cancelarConfirmarEliminacion() {
@@ -13,31 +13,46 @@ function cancelarConfirmarEliminacion() {
 }
 
 function verificarEliminacionElemento(idElemento) {
-	$('#confirmarEliminacionDialog').dialog('open');
-	rutaVerificarEliminacion = contextPath + '/reglas-negocio!verificarEliminacion';
+	rutaVerificarReferencias = contextPath + '/reglas-negocio!verificarElementosReferencias';
 	$.ajax({
 		dataType : 'json',
-		url : rutaVerificarEliminacion,
+		url : rutaVerificarReferencias,
 		type: "POST",
 		data : {
 			idSel : idElemento
 		},
 		success : function(data) {
+			console.log("data: " + data);
 			mostrarMensajeEliminacion(data);
 		},
 		error : function(err) {
 			console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
+			alert("Error");
 		}
 	});
-	
 	return false;
+	
 }
 
-function mostrarMensajeEliminacion(data) {
-	console.log("data: " + data);
-	if(data) {
-		alert("se eliminara");
+function mostrarMensajeEliminacion(json) {
+	
+	var elementos = document.createElement("ul");
+	if (json != "") {
+		$
+				.each(
+						json,
+						function(i, item) {
+							var elemento = document.createElement("li");
+							elemento.appendChild(document.createTextNode(item.clave + item.numero + " " + item.nombre));
+							elementos.appendChild(elemento);
+						});
+		document.getElementById("elementosReferencias").appendChild(elementos);
+		
+		$('#mensajeReferenciasDialog').dialog('open');
 	} else {
-		alert("no se eliminara");
+		$('#confirmarEliminacionDialog').dialog('open');
 	}
+}
+function cerrarMensajeReferencias() {
+	$('#mensajeReferenciasDialog').dialog('close');
 }

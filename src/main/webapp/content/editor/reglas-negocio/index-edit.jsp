@@ -11,7 +11,7 @@
 <![CDATA[
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/constructores.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/validaciones.js"></script>
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/reglas-negocio/js/index-editNew.js"></script>	
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/reglas-negocio/js/index-edit.js"></script>	
 ]]>
 
 </head>
@@ -26,8 +26,8 @@
 
 	<s:form autocomplete="off" id="frmReglasNegocio" theme="simple"
 		action="%{#pageContext.request.contextPath}/reglas-negocio/%{idSel}"
-		method="post">
-		<s:hidden name="_method" value = "put"/>
+		method="post" onsubmit="return mostrarEmergenteComentarios();">
+		<s:hidden name="_method" value="put" />
 		<div class="formulario">
 			<div class="tituloFormulario">Información general de la Regla
 				de negocio</div>
@@ -65,8 +65,9 @@
 							cssClass="inputFormulario ui-widget" name="idTipoRN"
 							id="idTipoRN" listKey="id" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
-							onchange="mostrarCamposTipoRN();" value="idTipoRN"></s:select> <s:param value=""/><s:fielderror
-							fieldName="idTipoRN" cssClass="error" theme="jquery" /></td>
+							onchange="mostrarCamposTipoRN();" value="idTipoRN"></s:select> <s:param
+							value="" /> <s:fielderror fieldName="idTipoRN" cssClass="error"
+							theme="jquery" /></td>
 				</tr>
 				<tr id="filaTextoAyudaTipoRN" class="oculto">
 					<td></td>
@@ -91,9 +92,9 @@
 							cssClass="inputFormulario ui-widget" name="idEntidadFormato"
 							id="entidadFormato" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
-							listKey="id" onchange="cargarAtributos(this, 'atributoFormato');" value="defaultIdEntidadFormato"></s:select>
-						<s:fielderror fieldName="idEntidadFormato" cssClass="error"
-							theme="jquery" /></td>
+							listKey="id" onchange="cargarAtributos(this, 'atributoFormato');"
+							value="defaultIdEntidadFormato"></s:select> <s:fielderror
+							fieldName="idEntidadFormato" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr id="filaAtributoFormato" class="oculto">
 					<td class="label obligatorio"><s:text name="labelAtributo" /></td>
@@ -119,10 +120,10 @@
 							id="entidadUnicidad" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
 							listKey="id"
-							onchange="cargarAtributos(this, 'atributoUnicidad');" value="defaultIdEntidadUnicidad"></s:select>
-							<s:param value="defaultIdEntidadUnicidad"/>
-						<s:fielderror fieldName="idEntidadUnicidad" cssClass="error"
-							theme="jquery" /></td>
+							onchange="cargarAtributos(this, 'atributoUnicidad');"
+							value="defaultIdEntidadUnicidad"></s:select> <s:param
+							value="defaultIdEntidadUnicidad" /> <s:fielderror
+							fieldName="idEntidadUnicidad" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr id="filaAtributoUnicidad" class="oculto">
 					<td class="label obligatorio"><s:text name="labelAtributo" /></td>
@@ -133,7 +134,7 @@
 							listKey="id" value="defaultIdAtributoUnicidad"></s:select> <s:fielderror
 							fieldName="idAtributoUnicidad" cssClass="error" theme="jquery" /></td>
 				</tr>
-				
+
 				<!-- COMPARACIÓN DE ATRIBUTOS -->
 				<tr id="filaEntidad1" class="oculto">
 					<td class="label obligatorio"><s:text name="labelEntidad1" /></td>
@@ -141,9 +142,9 @@
 							cssClass="inputFormulario ui-widget" name="idEntidad1"
 							id="entidad1" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
-							listKey="id" onchange="cargarAtributos(this, 'atributo1');" value="defaultIdEntidad1"></s:select>
-						<s:fielderror fieldName="idEntidad1" cssClass="error"
-							theme="jquery" /></td>
+							listKey="id" onchange="cargarAtributos(this, 'atributo1');"
+							value="defaultIdEntidad1"></s:select> <s:fielderror
+							fieldName="idEntidad1" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr id="filaAtributo1" class="oculto">
 					<td class="label obligatorio"><s:text name="labelAtributo1" /></td>
@@ -152,9 +153,9 @@
 							id="atributo1" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
 							listKey="id"
-							onchange="cargarOperadores(this);cargarEntidadesDependientes(this, 'entidad2');" value="defaultIdAtributo1"></s:select>
-						<s:fielderror fieldName="idAtributo1" cssClass="error"
-							theme="jquery" /></td>
+							onchange="cargarOperadores(this);cargarEntidadesDependientes(this, 'entidad2');"
+							value="defaultIdAtributo1"></s:select> <s:fielderror
+							fieldName="idAtributo1" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr id="filaOperador" class="oculto">
 					<td class="label obligatorio"><s:text
@@ -172,9 +173,9 @@
 							id="entidad2" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
 							listKey="id"
-							onchange="cargarAtributosDependientes(this, 'atributo2');" value="defaultIdEntidad2"></s:select>
-						<s:fielderror fieldName="idEntidad2" cssClass="error"
-							theme="jquery" /></td>
+							onchange="cargarAtributosDependientes(this, 'atributo2');"
+							value="defaultIdEntidad2"></s:select> <s:fielderror
+							fieldName="idEntidad2" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr id="filaAtributo2" class="oculto">
 					<td class="label obligatorio"><s:text name="labelAtributo2" /></td>
@@ -182,8 +183,8 @@
 							cssClass="inputFormulario ui-widget" name="idAtributo2"
 							id="atributo2" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
-							listKey="id" value="defaultIdAtributo2"></s:select> <s:fielderror fieldName="idAtributo2"
-							cssClass="error" theme="jquery" /></td>
+							listKey="id" value="defaultIdAtributo2"></s:select> <s:fielderror
+							fieldName="idAtributo2" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr id="filaResultado" class="oculto">
 					<td class="label"><s:text name="labelResultado" /></td>
@@ -194,8 +195,7 @@
 		</div>
 		<br />
 		<div align="center">
-			<s:submit class="boton" value="Aceptar" />
-
+			<s:submit class="boton" value="Aceptar"/>
 			<input class="boton" type="button"
 				onclick="location.href='${pageContext.request.contextPath}/reglas-negocio'"
 				value="Cancelar" />
@@ -204,7 +204,34 @@
 			value="%{jsonAtributos}" />
 		<s:hidden name="jsonEntidades" id="jsonEntidades"
 			value="%{jsonEntidades}" />
+		<s:hidden name="comentarios" id="comentarios"
+			value="%{comentarios}" />
 	</s:form>
+	<!-- EMERGENTE COMENTARIOS -->
+	<sj:dialog id="comentariosDialog" title="Comentarios del cambio"
+		autoOpen="false" minHeight="100" minWidth="800" modal="true"
+		draggable="true" onCloseTopics="prueba();">
+		<div class="seccion">
+			<table>
+				<tr>
+					<td class="label obligatorio"><s:text name="labelComentarios" /></td>
+					<td><s:textarea rows="5" name="comentario" id="comentario"
+							cssClass="inputFormulario ui-widget" maxlength="999"
+							cssErrorClass="input-error"></s:textarea></td>
+				</tr>
+			</table>
+		</div>
+		<br />
+		<div align="center">
+			<s:url var="urlGuardarCambios"
+				value="%{#pageContext.request.contextPath}/reglas-negocio/%{idSel}?_method=put"
+				method="post" />
+			<input type="button"
+				onclick="return true;" value="Aceptar" />
+			<input type="button" onclick="cancelarComentarios();"
+				value="Cancelar" />
+		</div>
+	</sj:dialog>
 </body>
 	</html>
 </jsp:root>

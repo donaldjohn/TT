@@ -44,9 +44,9 @@ import com.opensymphony.xwork2.ModelDriven;
 		@Result(name = "operadores", type = "json", params = {
 				"root",
 				"listOperadores"}),
-		@Result(name = "verificarEliminacion", type = "json", params = {
+		@Result(name = "referencias", type = "json", params = {
 				"root",
-				"esEliminable"})
+				"elementosReferencias"})
 })
 public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDriven<ReglaNegocio>, SessionAware{
 	/**
@@ -80,8 +80,11 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	private int idAtributo1;
 	private int idAtributo2;
 	private int idOperador;
+	private List<Elemento> elementosReferencias;
 	
 	private boolean esEliminable;
+	
+	private String comentarios;
 	
 	private Integer idSel;
 	
@@ -270,11 +273,13 @@ public String edit() {
 				break;
 			}
 			
+			System.out.println("comentarios: " + comentarios);
+			
 			ReglaNegocioBs.modificarReglaNegocio(model);
 			resultado = SUCCESS;
 
 			addActionMessage(getText("MSG1", new String[] { "La",
-					"Regla de negocio", "registrada" }));
+					"Regla de negocio", "modificada" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 			
 		} catch (PRISMAValidacionException pve) {
@@ -309,7 +314,7 @@ public String edit() {
 		String resultado = null;
 		try {
 			ReglaNegocioBs.eliminarReglaNegocio(model);
-			resultado = SUCCESS;
+			resultado = index();
 			addActionMessage(getText("MSG1", new String[] { "La",
 					"Regla de negocio", "eliminada" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
@@ -402,13 +407,17 @@ public String edit() {
 		listOperadores = new ArrayList<Operador>();
 	}
 	
-	public String verificarEliminacion() {
-		List<CasoUso> elementosReferencias = ReglaNegocioBs.verificarReferenciasCasoUso(model);
-		for(CasoUso cu : elementosReferencias) {
-			System.out.println("Cu: " + cu.getClave() + cu.getNumero() + " " + cu.getNombre());
+	public String verificarElementosReferencias() {
+		try {
+			elementosReferencias = new ArrayList<Elemento>();
+			List<CasoUso> listCasosUso = ReglaNegocioBs.verificarReferenciasCasoUso(model);
+			for(CasoUso cu : listCasosUso) {
+				elementosReferencias.add(cu);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		System.out.println("desde verificarEliminacion");
-		return "verificarEliminacion";
+		return "referencias";
 	}
 
 	public void setSession(Map<String, Object> session) {		
@@ -576,7 +585,6 @@ public String edit() {
 	public void setIdSel(Integer idSel) {
 		this.idSel = idSel;
 		this.model = ReglaNegocioBs.consultaReglaNegocio(this.idSel);
-		System.out.println("idSel: " + idSel);
 	}
 	
 	public int getDefaultIdEntidadUnicidad() {
@@ -593,6 +601,22 @@ public String edit() {
 
 	public void setEsEliminable(boolean esEliminable) {
 		this.esEliminable = esEliminable;
+	}
+
+	public String getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(String comentarios) {
+		this.comentarios = comentarios;
+	}
+
+	public List<Elemento> getElementosReferencias() {
+		return elementosReferencias;
+	}
+
+	public void setElementosReferencias(List<Elemento> elementosReferencias) {
+		this.elementosReferencias = elementosReferencias;
 	}
 
 	

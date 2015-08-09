@@ -43,9 +43,7 @@
 							<img id="" class="button" title="Modificar Regla de negocio"
 									src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
 						</s:a>
-						<s:url var="urlEliminar" value="%{#pageContext.request.contextPath}/reglas-negocio/%{#rn.id}" method="post">
-							<s:param name="_method">delete</s:param>
-						</s:url>
+						<s:url var="urlEliminar" value="%{#pageContext.request.contextPath}/reglas-negocio/%{#rn.id}?_method=delete" method="post"/>
 						<s:a onclick="return verificarEliminacionElemento(%{#rn.id});"><!-- openDialog="confirmarEliminacionDialog" -->
 							<img id="" class="button" title="Eliminar Regla de negocio"
 									src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" />
@@ -67,7 +65,7 @@
 		</button>
 	</div>
 	</s:form>	
-	<!-- EMERGENTE REGISTRAR ACCION -->
+	<!-- EMERGENTE CONFIRMAR ELIMINACIÓN -->
 	<sj:dialog id="confirmarEliminacionDialog" title="Confirmación" autoOpen="false"
 		minHeight="100" minWidth="400" modal="true" draggable="true">
 		<s:form autocomplete="off" id="frmConfirmarEliminacion" name="frmConfirmarEliminacionName" theme="simple">
@@ -76,9 +74,22 @@
 				</div>
 			<br />
 			<div align="center">
-			
-				<input type="button" onclick="window.location.href = '${urlEliminar}';" value="Aceptar"/> <input
+				<input type="button" onclick="confirmarEliminacion('${urlEliminar}')" value="Aceptar"/> <input
 					type="button" onclick="cancelarConfirmarEliminacion();" value="Cancelar" />
+			</div>
+		</s:form>
+	</sj:dialog>
+	<!-- EMERGENTE ERROR REFERENCIAS -->
+	<sj:dialog id="mensajeReferenciasDialog" title="Confirmación" autoOpen="false"
+		minHeight="100" minWidth="400" modal="true" draggable="true">
+		<s:form autocomplete="off" id="frmConfirmarEliminacion" name="frmConfirmarEliminacionName" theme="simple">
+				<div class="seccion">
+				<s:text name="MSG14"/>
+				<div id="elementosReferencias"></div>
+				</div>
+			<br />
+			<div align="center">
+				<input type="button" onclick="cerrarMensajeReferencias()" value="Aceptar"/> 
 			</div>
 		</s:form>
 	</sj:dialog>

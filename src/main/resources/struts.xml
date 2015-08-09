@@ -4,9 +4,6 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>	
-	<!-- Permite indicar si se van a incluir los parámetros -->
-	<constant name="struts.url.includeParams" value="all" />
-
 	<!-- Permite utilizar los recursos de global.properties -->
 	<constant name="struts.custom.i18n.resources" value="global" />
 	

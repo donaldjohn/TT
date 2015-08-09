@@ -361,8 +361,10 @@ public class ReglaNegocioBs {
 	public static List<CasoUso> verificarReferenciasCasoUso(ReglaNegocio model) {
 		List<Integer> idelementosReferencias = new ReglaNegocioDAO().consultarReferenciasCasoUso(model);
 		List<CasoUso> casosUso = new ArrayList<CasoUso>();
-		for (Integer integer : idelementosReferencias) {	
-			casosUso.add(CuBs.consultarCasoUso(integer));
+		if(idelementosReferencias != null) {
+			for (Integer integer : idelementosReferencias) {	
+				casosUso.add(CuBs.consultarCasoUso(integer));
+			}
 		}
 		return casosUso;
 	}
