@@ -83,6 +83,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	private boolean existenPostcondiciones;
 	private boolean existenTrayectorias;
 	private boolean existenExtensiones;
+	private String observaciones;
 	
 	
 	
@@ -182,7 +183,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			proyecto = SessionManager.consultarProyectoActivo();
 			modulo = SessionManager.consultarModuloActivo();
 			model.setModulo(modulo);
-			
 			ElementoBs.verificarEstado(model, CU_CasosUso.MODIFICARCASOUSO5_2);
 					
 			buscaElementos();

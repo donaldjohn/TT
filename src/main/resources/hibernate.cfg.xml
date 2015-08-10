@@ -39,7 +39,9 @@
   <mapping class="mx.prisma.editor.model.PostPrecondicion"/>
   <mapping class="mx.prisma.editor.model.ReferenciaParametro"/>
   <mapping class="mx.prisma.editor.model.ReglaNegocio"/>
+  <mapping class="mx.prisma.editor.model.Revision"/>
   <mapping class="mx.prisma.editor.model.Salida"/>
+  <mapping class="mx.prisma.editor.model.Seccion"/>
   <mapping class="mx.prisma.editor.model.TerminoGlosario"/>
   <mapping class="mx.prisma.editor.model.TipoAccion"/>
   <mapping class="mx.prisma.editor.model.TipoComparacion"/>

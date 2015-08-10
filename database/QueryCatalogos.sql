@@ -51,7 +51,6 @@ INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Longitud correcta');
 INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Tipo de dato correcto');
 INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Formato de archivos');
 INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Tamaño de archivos');
-INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Intervalo de fechas correcto');
 INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Formato correcto');
 INSERT INTO PRISMA.TipoReglaNegocio (nombre) VALUES ('Otro');
 
@@ -83,3 +82,7 @@ INSERT INTO PRISMA.Operador (nombre, simbolo) VALUES ('Mayor que', '>');
 INSERT INTO PRISMA.Operador (nombre, simbolo) VALUES ('Menor igual que', '<=');
 INSERT INTO PRISMA.Operador (nombre, simbolo) VALUES ('Mayor igual que', '>=');
 INSERT INTO PRISMA.Operador (nombre, simbolo) VALUES ('Diferente', '!=');
+
+INSERT INTO PRISMA.Seccion (nombre) VALUES ('General');
+INSERT INTO PRISMA.Seccion (nombre) VALUES ('Trayectorias');
+INSERT INTO PRISMA.Seccion (nombre) VALUES ('Puntos de extensión');

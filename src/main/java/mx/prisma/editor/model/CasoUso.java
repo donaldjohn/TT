@@ -45,6 +45,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 	private Set<Inclusion> incluye = new HashSet<Inclusion>(0);
 	private Set<Extension> Extiende = new HashSet<Extension>(0);
 	private Set<Extension> ExtendidoDe = new HashSet<Extension>(0);
+	private Set<Revision> revisiones = new HashSet<Revision>(0);
 	
 	public CasoUso() {
 	}
@@ -204,6 +205,14 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 
 	public void setIncluye(Set<Inclusion> incluye) {
 		this.incluye = incluye;
+	}
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso")
+	public Set<Revision> getRevisiones() {
+		return revisiones;
+	}
+
+	public void setRevisiones(Set<Revision> revisiones) {
+		this.revisiones = revisiones;
 	}
 
 }

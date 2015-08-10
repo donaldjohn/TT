@@ -4,8 +4,13 @@ package mx.prisma.editor.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -16,18 +21,23 @@ import javax.persistence.Table;
 @Table(name = "Revision", catalog = "PRISMA")
 public class Revision implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String observaciones;
-	private int casoUsoElementoid;
-	private int seccionid;
+	private CasoUso casoUso;
+	private Seccion seccion;
+	private boolean revisado;
 
 	public Revision() {
 	}
 
-	public Revision(String observaciones, int casoUsoElementoid, int seccionid) {
+	public Revision(String observaciones, CasoUso casoUso, Seccion seccion) {
 		this.observaciones = observaciones;
-		this.casoUsoElementoid = casoUsoElementoid;
-		this.seccionid = seccionid;
+		this.casoUso = casoUso;
+		this.seccion = seccion;
 	}
 
 	@Id
@@ -41,7 +51,7 @@ public class Revision implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "observaciones", nullable = false, length = 999)
+	@Column(name = "observaciones")
 	public String getObservaciones() {
 		return this.observaciones;
 	}
@@ -49,23 +59,36 @@ public class Revision implements java.io.Serializable {
 	public void setObservaciones(String observaciones) {
 		this.observaciones = observaciones;
 	}
-
-	@Column(name = "CasoUsoElementoid", nullable = false)
-	public int getCasoUsoElementoid() {
-		return this.casoUsoElementoid;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "CasoUsoElementoid")
+	public CasoUso getCasoUso() {
+		return casoUso;
 	}
 
-	public void setCasoUsoElementoid(int casoUsoElementoid) {
-		this.casoUsoElementoid = casoUsoElementoid;
+	public void setCasoUso(CasoUso casoUso) {
+		this.casoUso = casoUso;
 	}
 
-	@Column(name = "Seccionid", nullable = false)
-	public int getSeccionid() {
-		return this.seccionid;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "Seccionid")
+	public Seccion getSeccion() {
+		return seccion;
 	}
 
-	public void setSeccionid(int seccionid) {
-		this.seccionid = seccionid;
+	public void setSeccion(Seccion seccion) {
+		this.seccion = seccion;
 	}
+
+	@Column(name = "revisado")
+	public boolean isRevisado() {
+		return revisado;
+	}
+
+	public void setRevisado(boolean revisado) {
+		this.revisado = revisado;
+	}
+
+	
 
 }
