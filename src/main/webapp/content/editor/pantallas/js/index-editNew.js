@@ -16,7 +16,6 @@ function agregarImagen(inputFile, idImg) {
         document.getElementById(idImg).style.display = '';
         console.log("pos blob: " + inputFile.files[0]);
         console.log("readAsDataURL: " + reader.readAsDataURL(inputFile.files[0]));
-        //sconsole.log("readAsText: " + reader.readAsText(inputFile.files[0]));
     }
 }
 
@@ -28,6 +27,7 @@ function registrarAccion() {
 	var imagen = document.getElementById("accion.imagen");
 	
 	var img = imagen.files[0];
+	console.log("typeof icono" + typeof(img));
 	
 	var selectTipoAccion = document.getElementById("accion.tipoAccion");
 	var selectPantallaDestino = document.getElementById("accion.pantallaDestino");
@@ -43,7 +43,7 @@ function registrarAccion() {
 		//http://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded
 		var row = [
 				"<center><img id='" + nombre + "' src='" + "#" + "'/></center>",
-				img,
+				imagen,
 				nombre,
 				descripcion, 
 				tipoAccion,
@@ -160,15 +160,13 @@ function tablaToJson(idTable) {
 	var arregloAcciones = [];
 
 	for (var i = 0; i < table.fnSettings().fnRecordsTotal(); i++) {
-		var imagen = table.fnGetData(i, 1);
 		var nombre = table.fnGetData(i, 2);
 		var descripcion = table.fnGetData(i, 3);
 		var tipoAccion = table.fnGetData(i, 4);
 		var pantallaDestino = table.fnGetData(i, 5);
 		
-		arregloAcciones.push(new Accion(nombre, descripcion, obligatorio,
-				longitud, tipoDato, otroTipoDato, formatoArchivo,
-				tamanioArchivo, unidadTamanio));
+		arregloAcciones.push(new Accion(nombre, descripcion, tipoAccion,
+				pantallaDestino));
 	}
 	var jsonAtributos = JSON.stringify(arregloAcciones);
 	document.getElementById("jsonAccionesTabla").value = jsonAtributos;

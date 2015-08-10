@@ -110,19 +110,13 @@ function Pantalla(nombreModulo, numero, nombre, id) {
 	this.modulo = new Modulo(nombreModulo);
 	this.numero = numero;
 	this.nombre = nombre;
+	this.id = id;
 }
 
 /*
  * Constructor del objeto Módulo 
  */
 function Modulo(nombre) {
-	this.nombre = nombre;
-}
-
-/*
- * Constructor del objeto Accion
- */
-function Accion(nombre) {
 	this.nombre = nombre;
 }
 
@@ -144,12 +138,17 @@ function Parametro(nombre, descripcion) {
 /*
  * Constructor del objeto Accion
  */
-function Accion(image, nombre, descripcion, tipoAccion, pantallaDestino) {
-	this.imagen = imagen;
+function Accion(nombre, descripcion, idTipoAccion, idPantallaDestino) {
 	this.nombre = nombre;
 	this.descripcion = descripcion;
-	tipoAccion = new TipoAccion(tipoAccion);
-	this.pantalla = new Pantalla(null, null, null, pantallaDestino);
+	this.tipoAccion = new TipoAccion(idTipoAccion);
+	this.pantallaDestino = new Pantalla(null, null, null, idPantallaDestino);
 }
+
+function TipoAccion(id, nombre) {
+	this.id = id;
+	this.nombre = nombre;
+}
+
 
 

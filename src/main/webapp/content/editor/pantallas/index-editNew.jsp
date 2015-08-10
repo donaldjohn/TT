@@ -58,7 +58,7 @@
 				</tr>
 				<tr>
 						<td class="label"><s:text name="labelImagen"/></td>
-						<td><s:file name="imagenPantalla" size="40" cssClass="inputFormulario ui-widget"
+						<td><s:file id="imagenPantalla" name="imagenPantalla" size="40" cssClass="inputFormulario ui-widget"
 								cssErrorClass="input-error" onchange="agregarImagen(this, 'pantalla');"/>
 								<s:fielderror
 								fieldName="model.imagen" cssClass="error"
@@ -129,7 +129,7 @@
 					</tr>
 					<tr>
 						<td class="label"><s:text name="labelImagen"/></td>
-						<td><s:file name="accion.imagen" id="accion.imagen" size="40" /></td>
+						<td><s:file name="imagenesAcciones" id="accion.imagen" size="40" /></td>
 					</tr>
 					<tr>
 						<td class="label obligatorio"><s:text name="labelTipoAccion"/></td>

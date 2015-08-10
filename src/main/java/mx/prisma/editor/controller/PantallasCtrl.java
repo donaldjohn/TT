@@ -57,6 +57,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	private String jsonAccionesTabla;
 	private Integer idSel;
 	private File imagenPantalla;
+	private List<File> imagenesAcciones;
 	private String imagenPantallaContentType;
 	private String imagenPantallaFileName;
 
@@ -127,8 +128,11 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 		if (jsonAccionesTabla != null && !jsonAccionesTabla.equals("")) {
 			model.setAcciones(JsonUtil.mapJSONToSet(jsonAccionesTabla,
 					Accion.class));
-			for (Accion accion : model.getAcciones()) {
-				accion.setPantalla(model);
+			System.out.println("model.getAcciones: " + model.getAcciones());
+			if(model.getAcciones() != null) {
+				for (Accion accion : model.getAcciones()) {
+					accion.setPantalla(model);
+				}
 			}
 		}
 	}
@@ -302,6 +306,15 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 
 	public void setJsonPantallasDestino(String jsonPantallasDestino) {
 		this.jsonPantallasDestino = jsonPantallasDestino;
+	}
+
+	public List<File> getImagenesAcciones() {
+		return imagenesAcciones;
+	}
+
+	public void setImagenesAcciones(List<File> imagenesAcciones) {
+		System.out.println("tama;o de imagenesAcciones" + imagenesAcciones.size());
+		this.imagenesAcciones = imagenesAcciones;
 	}
 	
 	
