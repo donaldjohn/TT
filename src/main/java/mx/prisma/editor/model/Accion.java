@@ -32,6 +32,7 @@ public class Accion implements java.io.Serializable {
 	private String nombre;
 	private TipoAccion tipoAccion;
 	private Pantalla pantallaDestino;
+	private String descripcion;
 
 	public Accion() {
 	}
@@ -91,6 +92,15 @@ public class Accion implements java.io.Serializable {
 
 	public void setPantallaDestino(Pantalla pantallaDestino) {
 		this.pantallaDestino = pantallaDestino;
+	}
+
+	@Column(name = "descripcion", nullable = false, length = 999)
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 	
