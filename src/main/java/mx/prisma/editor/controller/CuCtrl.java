@@ -184,7 +184,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			modulo = SessionManager.consultarModuloActivo();
 			model.setModulo(modulo);
 			ElementoBs.verificarEstado(model, CU_CasosUso.MODIFICARCASOUSO5_2);
-					
+			
 			buscaElementos();
 			prepararVista();
 			
@@ -461,6 +461,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		model.setRedaccionEntradas((TokenBs.decodificarCadenasToken(model.getRedaccionEntradas())));
 		model.setRedaccionSalidas((TokenBs.decodificarCadenasToken(model.getRedaccionSalidas())));
 		model.setRedaccionReglasNegocio((TokenBs.decodificarCadenasToken(model.getRedaccionReglasNegocio())));
+		
+		//if ()
 	}
 		
 	@VisitorFieldValidator
