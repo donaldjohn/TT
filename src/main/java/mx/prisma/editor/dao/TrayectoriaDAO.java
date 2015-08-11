@@ -2,11 +2,7 @@ package mx.prisma.editor.dao;
 
 
 import java.util.List;
-import java.util.Set;
-
-import mx.prisma.bs.ReferenciaEnum.TipoSeccion;
-import mx.prisma.editor.bs.TokenBs;
-import mx.prisma.editor.model.Paso;
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.util.HibernateUtil;
 
@@ -35,15 +31,12 @@ public class TrayectoriaDAO {
 		}
 	}
 	
-	public void modificarTrayectoria(Trayectoria trayectoria) {
-		
+	public void modificarTrayectoria(Trayectoria trayectoria, Actualizacion actualizacion) {
+			
 		try {
-			//this.session = HibernateUtil.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
-			Query query1 = session.createQuery("DELETE FROM Paso WHERE trayectoria.id = :id");
-			query1.setParameter("id", trayectoria.getId());
-			query1.executeUpdate();
-			session.update(trayectoria);
+			session.beginTransaction();			
+ 			session.update(trayectoria);
+			session.save(actualizacion);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();

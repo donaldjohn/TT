@@ -50,6 +50,7 @@ $(document).ready(function() {
 								item.verbo.nombre, 
 								item.otroVerbo,
 								item.redaccion,
+								item.id,
 								"<center>" +
 									"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"up\");' button='true'>" +
 									"<img class='icon'  id='icon' src='" + window.contextPath + 
@@ -131,6 +132,7 @@ function registrarPaso(){
     	            verbo, 
     	            otroVerbo,
     	            redaccion,
+    	            0,
 					"<center>" +
 						"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"up\");' button='true'>" +
 						"<img class='icon'  id='icon' src='" + window.contextPath + 
@@ -204,7 +206,8 @@ function esValidoPaso(idTabla, realiza, verbo, otroVerbo, redaccion) {
 function prepararEnvio() {
 	try {
 		tablaToJson("tablaPaso");
-		return true;
+		$('#mensajeConfirmacion').dialog('open');
+		return false;
 	} catch(err) {
 		alert("Ocurrió un error.");
 		return false;
@@ -216,7 +219,7 @@ function tablaToJson(idTable) {
 	var arregloPasos = [];
 	for (var i = 0; i < table.fnSettings().fnRecordsTotal(); i++) {
 		arregloPasos.push(new Paso(table.fnGetData(i, 0), table.fnGetData(i, 2), 
-						table.fnGetData(i, 3), table.fnGetData(i, 4), table.fnGetData(i, 5)));
+						table.fnGetData(i, 3), table.fnGetData(i, 4), table.fnGetData(i, 5), table.fnGetData(i, 6)));
 	}
 	var jsonPasos = JSON.stringify(arregloPasos);
 	document.getElementById("jsonPasosTabla").value = jsonPasos;
@@ -254,4 +257,19 @@ function verificarOtro() {
 	} else {
 		document.getElementById("otroVerbo").style.display = 'none';
 	}
+}
+
+function enviarComentarios(){
+	var redaccionDialogo = document.getElementById("comentarioDialogo").value;
+	if(vaciaONula(redaccionDialogo)) {
+		agregarMensaje("Agregue todos los campos obligatorios.");
+		return false;
+	}
+	document.getElementById("comentario").value = redaccionDialogo;
+	document.getElementById("frmTrayectoria").submit();
+
+	}
+function cancelarRegistroComentarios() {
+	document.getElementById("comentario").value = "";
+	$('#mensajeConfirmacion').dialog('close');
 }

@@ -2,6 +2,8 @@ package mx.prisma.editor.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,12 +18,16 @@ import com.opensymphony.xwork2.ModelDriven;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.bs.ReferenciaEnum;
+import mx.prisma.bs.TipoSeccionEnum;
 import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
+import mx.prisma.bs.TipoSeccionEnum.TipoSeccionENUM;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.bs.TrayectoriaBs;
+import mx.prisma.editor.dao.PasoDAO;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
@@ -31,9 +37,9 @@ import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.ReglaNegocio;
+import mx.prisma.editor.model.Revision;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.editor.model.Trayectoria;
-import mx.prisma.editor.model.Verbo;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
 import mx.prisma.util.JsonUtil;
@@ -82,6 +88,9 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 	private boolean existeTPrincipal;
 	private List<String> listAlternativa;
 	private String alternativaPrincipal;
+	
+	private String observaciones;
+	private String comentario;
 
 	public String index() throws Exception {
 		try {
@@ -101,6 +110,13 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 			for (Trayectoria t : casoUso.getTrayectorias()) {
 				listTrayectorias.add(t);
 			}
+			
+			for (Revision rev : model.getCasoUso().getRevisiones()) {
+				if (!rev.isRevisado() && rev.getSeccion().getNombre().equals(TipoSeccionEnum.getNombre(TipoSeccionENUM.TRAYECTORIA))) {
+					this.observaciones = rev.getObservaciones();
+				}
+			}
+			
 			@SuppressWarnings("unchecked")
 			Collection<String> msjs = (Collection<String>) SessionManager
 					.get("mensajesAccion");
@@ -161,7 +177,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 				model.setAlternativa(true);
 			} else if (alternativaPrincipal.equals("Principal")) {
 				model.setAlternativa(false);
-				model.setCondicion(null);
 			} else {
 				// Validaciones del tipo de trayectoria
 				throw new PRISMAValidacionException(
@@ -171,16 +186,11 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 
 			// Se llama al método que convierte los json a pasos de la
 			// trayectoria
+			CasoUso casoUso = CuBs.consultarCasoUso(idCU);			
+			model.setCasoUso(casoUso);
 			agregarPasos();
 			TrayectoriaBs.preAlmacenarObjetosToken(model);
 
-
-			// Se consulta el caso de uso para el que se va a registrar la
-			// trayectoria
-			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
-
-			// Se agrega el caso de uso a a la trayectoria
-			model.setCasoUso(casoUso);
 
 			// Se registra la trayectoria
 			TrayectoriaBs.registrarTrayectoria(model);
@@ -207,14 +217,13 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 	}
 
 	public String edit() throws Exception {
-		System.out.println("edit");
 		String resultado = null;
 		try {
 			
 			casoUso = model.getCasoUso();
 			
 			ElementoBs.verificarEstado(casoUso, CU_CasosUso.MODIFICARTRAYECTORIA5_1_1_2);
-			// buscarObservaciones
+
 			buscaElementos();
 			buscaCatalogos();
 			existeTPrincipal = TrayectoriaBs.existeTrayectoriaPrincipal(casoUso.getId(), model.getId());
@@ -250,10 +259,13 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 			}
 			
 			model.getPasos().clear();
+			
 			agregarPasos();
 			TrayectoriaBs.preAlmacenarObjetosToken(model);
+			Actualizacion actualizacion = new Actualizacion(new Date(), comentario, model.getCasoUso(), SessionManager.consultarColaboradorActivo());
 
-			TrayectoriaBs.modificarTrayectoria(model);
+
+			TrayectoriaBs.modificarTrayectoria(model, actualizacion);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "La",
 					"Trayectoria", "modificada" }));
@@ -288,13 +300,33 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 	}
 
 	private void agregarPasos() {
+		Set<Paso> pasosModelo = new HashSet<Paso>(0);
+		Set<Paso> pasosVista = new HashSet<Paso>(0);
+
+		Paso pasoBD = null;
+		
 		if (jsonPasosTabla != null && !jsonPasosTabla.equals("")) {
-			model.setPasos(JsonUtil.mapJSONToSet(jsonPasosTabla, Paso.class));
-			for (Paso p : model.getPasos()) {
-				Verbo v = TrayectoriaBs.consultaVerbo(p.getVerbo().getNombre());
-				p.setVerbo(v);
-				p.setTrayectoria(model);
+			pasosVista = JsonUtil.mapJSONToSet(jsonPasosTabla, Paso.class);
+			for (Paso pasoVista : pasosVista) {
+				if (pasoVista.getId() != 0) {
+					pasoBD = new PasoDAO().consultarPaso(pasoVista.getId());
+					pasoBD.setNumero(pasoVista.getNumero());
+					pasoBD.setRealizaActor(pasoVista.isRealizaActor());
+					pasoBD.setVerbo(TrayectoriaBs.consultaVerbo(pasoVista.getVerbo().getNombre()));
+					pasoBD.setOtroVerbo(pasoVista.getOtroVerbo());
+					pasoBD.setRedaccion(pasoVista.getRedaccion());
+					pasoBD.getReferencias().clear();
+					pasosModelo.add(pasoBD);
+					
+				} else {
+					pasoVista.setId(null);
+					pasoVista.setVerbo(TrayectoriaBs.consultaVerbo(pasoVista.getVerbo().getNombre()));
+					pasoVista.setTrayectoria(model);
+					pasosModelo.add(pasoVista);
+
+				}
 			}
+			model.setPasos(pasosModelo);
 		}
 	}
 
@@ -486,6 +518,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 			pasoAux.setRealizaActor(paso.isRealizaActor());
 			pasoAux.setVerbo(paso.getVerbo());
 			pasoAux.setOtroVerbo(paso.getOtroVerbo());
+			pasoAux.setId(paso.getId());
 			pasosTabla.add(pasoAux);
 		}
 		
@@ -496,7 +529,12 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 		} else {
 			alternativaPrincipal = "Principal";
 		}
-		System.out.println(model.isFinCasoUso());
+		
+		for (Revision rev : model.getCasoUso().getRevisiones()) {
+			if (!rev.isRevisado() && rev.getSeccion().getNombre().equals(TipoSeccionEnum.getNombre(TipoSeccionENUM.TRAYECTORIA))) {
+				this.observaciones = rev.getObservaciones();
+			}
+		}
 	
 	}
 	
@@ -675,17 +713,32 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 	public void setUserSession(Map<String, Object> userSession) {
 		this.userSession = userSession;
 	}
-
 	
 	public Integer getIdSel() {
 		return idSel;
 	}
 
-	
 	public void setIdSel(Integer idSel) {
 		this.idSel = idSel;
 		this.model = TrayectoriaBs.consultarTrayectoria(idSel);
 	}
 
+	public String getObservaciones() {
+		return observaciones;
+	}
+
+	public void setObservaciones(String observaciones) {
+		this.observaciones = observaciones;
+	}
+
+	public String getComentario() {
+		return comentario;
+	}
+
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
+	}
+
+	
 	
 }

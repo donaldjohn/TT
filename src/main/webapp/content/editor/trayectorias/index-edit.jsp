@@ -29,7 +29,16 @@
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
 	<br />
+<s:set var="obs" value="observaciones" />
 
+	<s:if test="%{#obs != null}">
+		<div class="formulario">
+			<div class="tituloObservaciones">Observaciones</div>
+			<div class="observaciones">
+				<s:property value="#obs" />
+			</div>
+		</div>
+	</s:if>
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 	<s:form autocomplete="off" id="frmTrayectoria" theme="simple"
 		action="%{#pageContext.request.contextPath}/trayectorias/%{idSel}"
@@ -88,6 +97,7 @@
 							<th style="width: 0;"><s:text name="" /></th>
 							<th style="width: 0;"><s:text name="" /></th>
 							<th style="width: 0;"><s:text name="" /></th>
+							<th style="width: 0;"><s:text name="" /></th>
 							<th style="width: 10%;"><s:text name="colAcciones" /></th>
 						</tr>
 					</thead>
@@ -113,6 +123,8 @@
 		</div>
 		<s:hidden id="jsonPasosTabla" name="jsonPasosTabla"
 			value="%{jsonPasosTabla}" />
+		<s:hidden name="comentario" id="comentario" value="%{comentario}" />
+		
 	</s:form>
 
 
@@ -159,29 +171,35 @@
 		</s:form>
 	</sj:dialog>
 
-	<!-- MENSAJE DE ALERTA -->
+	<!-- COMENTARIOS DE LA ACTUALIZACIÓN -->
 	<sj:dialog id="mensajeConfirmacion" title="Confirmación"
-		autoOpen="false" minHeight="200" minWidth="400" modal="true"
+		autoOpen="false" minHeight="300" minWidth="800" modal="true"
 		draggable="true">
+		<s:form autocomplete="off" id="frmComentario"
+			name="frmPostcondicionName" theme="simple">
+			<div class="formulario">
+				<div class="tituloFormulario">Comentarios de la modificación</div>
+				<div class="seccion">
+					<p class="instrucciones">Ingrese un comentario referente a la
+						modificación realizada.</p>
+				</div>
 
-		<div class="seccion">
-			<p class="instrucciones">Ingrese un comentario referente a la
-				modificación realizada.</p>
-		</div>
-
-		<table class="seccion">
-			<tr>
-						<td class="label obligatorio"><s:text name="labelComentario" /></td>
-						<td><s:textfield name="actualizacion.comentario" id="actualizacion.comentario"
-								maxlength="999" cssErrorClass="input-error"
-								cssClass="inputFormulario ui-widget" /></td>
-			</tr>
-		</table>
-
-		<br />
-		<div align="center">
-			<input type="button" onclick="cerrarEmergente()" value="Aceptar" />
-		</div>
+				<table>
+					<tr>
+						<td class="label obligatorio"><s:text name="labelComentarios" /></td>
+						<td><s:textarea rows="5" name="comentarioDialogo"
+								id="comentarioDialogo" maxlength="999"
+								cssErrorClass="input-error" cssClass="inputFormulario ui-widget" /></td>
+					</tr>
+				</table>
+			</div>
+			<br />
+			<div align="center">
+				<input type="button" onclick="enviarComentarios()" value="Aceptar" />
+				<input type="button" onclick="cancelarRegistroComentarios()"
+					value="Cancelar" />
+			</div>
+		</s:form>
 	</sj:dialog>
 
 	<!-- Json de elementos -->

@@ -2,8 +2,6 @@ package mx.prisma.util;
 
 import java.util.Set;
 
-import mx.prisma.editor.model.Paso;
-
 public class Validador {
 
 	public static boolean esNuloOVacio(String cadena) {

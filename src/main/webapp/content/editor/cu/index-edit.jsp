@@ -39,7 +39,7 @@
 
 	<s:form autocomplete="off" id="frmCU" theme="simple"
 		action="%{#pageContext.request.contextPath}/cu/%{idSel}"
-		onsubmit="return preparaEnvio();" method="post">
+		onsubmit="return prepararEnvio();" method="post">
 		<s:hidden name="_method" value="put" />
 		<div class="formulario">
 			<div class="tituloFormulario">Información general del caso de
@@ -252,7 +252,7 @@
 		autoOpen="false" minHeight="300" minWidth="800" modal="true"
 		draggable="true">
 		<s:form autocomplete="off" id="frmComentario"
-			name="frmPostcondicionName" theme="simple">
+			name="frmComentario" theme="simple">
 			<div class="formulario">
 				<div class="tituloFormulario">Comentarios de la modificación</div>
 				<div class="seccion">

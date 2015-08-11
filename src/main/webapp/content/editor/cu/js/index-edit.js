@@ -125,7 +125,7 @@ function esValidoPtoExtension(idTabla, varIdCUDestino, varCausa, varRegion) {
 	return true;
 }
 
-function preparaEnvio() {
+function prepararEnvio() {
 	try {
 		tablaPrecondicionesToJson("tablaPrecondiciones");
 		tablaPostcondicionesToJson("tablaPostcondiciones");

@@ -11,7 +11,9 @@ import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.bs.ReferenciaEnum;
+import mx.prisma.bs.TipoSeccionEnum;
 import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
+import mx.prisma.bs.TipoSeccionEnum.TipoSeccionENUM;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
@@ -467,7 +469,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		model.setRedaccionReglasNegocio((TokenBs.decodificarCadenasToken(model.getRedaccionReglasNegocio())));
 		
 		for (Revision rev : model.getRevisiones()) {
-			if (!rev.isRevisado()) {
+			if (!rev.isRevisado() && rev.getSeccion().getNombre().equals(TipoSeccionEnum.getNombre(TipoSeccionENUM.GENERAL))) {
 				this.observaciones = rev.getObservaciones();
 			}
 		}
