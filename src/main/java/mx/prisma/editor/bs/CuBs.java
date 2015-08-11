@@ -29,6 +29,7 @@ import mx.prisma.editor.dao.TerminoGlosarioDAO;
 import mx.prisma.editor.dao.TrayectoriaDAO;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
@@ -95,7 +96,7 @@ public class CuBs {
 		}
 	}
 
-	public static void modificarCasoUso(CasoUso cu) throws Exception{
+	public static void modificarCasoUso(CasoUso cu, Actualizacion actualizacion) throws Exception{
 		try {
 				validar(cu);
 				ElementoBs.verificarEstado(cu, CU_CasosUso.MODIFICARCASOUSO5_2);
@@ -104,7 +105,7 @@ public class CuBs {
 				//Se quitan los espacios iniciales y finales del nombre
 				cu.setNombre(cu.getNombre().trim());
 				
-				new CasoUsoDAO().modificarCasoUso(cu);
+				new CasoUsoDAO().modificarCasoUso(cu, actualizacion);
 		
 		} catch (JDBCException je) {
 			System.out.println("ERROR CODE " + je.getErrorCode());

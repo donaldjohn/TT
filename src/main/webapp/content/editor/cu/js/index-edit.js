@@ -129,7 +129,8 @@ function preparaEnvio() {
 	try {
 		tablaPrecondicionesToJson("tablaPrecondiciones");
 		tablaPostcondicionesToJson("tablaPostcondiciones");
-		return true;
+		$('#mensajeConfirmacion').dialog('open');
+		return false;
 	} catch(err) {
 		alert("Ocurrió un error.");
 		return false;
@@ -156,5 +157,17 @@ function tablaPostcondicionesToJson(idTable) {
 	document.getElementById("jsonPostcondiciones").value = json;
 }
 
+function enviarComentarios(){
+	var redaccionDialogo = document.getElementById("comentarioDialogo").value;
+	if(vaciaONula(redaccionDialogo)) {
+		agregarMensaje("Agregue todos los campos obligatorios.");
+		return false;
+	}
+	document.getElementById("comentario").value = redaccionDialogo;
+	document.getElementById("frmCU").submit();
 
-
+	}
+function cancelarRegistroComentarios() {
+	document.getElementById("comentario").value = "";
+	$('#mensajeConfirmacion').dialog('close');
+}

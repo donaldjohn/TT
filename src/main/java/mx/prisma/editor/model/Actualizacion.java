@@ -10,7 +10,10 @@ import javax.persistence.GeneratedValue;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,23 +34,18 @@ public class Actualizacion implements java.io.Serializable {
 	private Integer id;
 	private Date fecha;
 	private String comentario;
-	private EstadoElemento estadoPre;
-	private EstadoElemento estadoPost;
 	private Elemento elemento;
-	private ColaboradorProyecto colaboradorProyectoid;
+	private ColaboradorProyecto colaboradorProyecto;
 
 	public Actualizacion() {
 	}
 
 	public Actualizacion(Date fecha, String comentario,
-			int estadoElementoidPre, EstadoElemento estadoPre, EstadoElemento estadoPost,
-			int colaboradorProyectoid) {
+			Elemento elemento, ColaboradorProyecto colaboradorProyecto) {
 		this.fecha = fecha;
 		this.comentario = comentario;
-		/*this.estadoElementoidPre = estadoElementoidPre;
-		this.estadoElementoidPost = estadoElementoidPost;
-		this.elementoid = elementoid;
-		this.colaboradorProyectoid = colaboradorProyectoid;*/
+		this.elemento = elemento;
+		this.colaboradorProyecto = colaboradorProyecto;
 	}
 
 	@Id
@@ -79,41 +77,27 @@ public class Actualizacion implements java.io.Serializable {
 	public void setComentario(String comentario) {
 		this.comentario = comentario;
 	}
-
-	/*@Column(name = "EstadoElementoidPre", nullable = false)
-	public int getEstadoElementoidPre() {
-		return this.estadoElementoidPre;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "Elementoid",referencedColumnName="id", nullable = false)
+	public Elemento getElemento() {
+		return elemento;
 	}
 
-	public void setEstadoElementoidPre(int estadoElementoidPre) {
-		this.estadoElementoidPre = estadoElementoidPre;
+	public void setElemento(Elemento elemento) {
+		this.elemento = elemento;
+	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "Colaborador_Proyectoid",referencedColumnName="id", nullable = false)
+	public ColaboradorProyecto getColaboradorProyecto() {
+		return colaboradorProyecto;
 	}
 
-	@Column(name = "EstadoElementoidPost", nullable = false)
-	public int getEstadoElementoidPost() {
-		return this.estadoElementoidPost;
+	public void setColaboradorProyecto(ColaboradorProyecto colaboradorProyecto) {
+		this.colaboradorProyecto = colaboradorProyecto;
 	}
 
-	public void setEstadoElementoidPost(int estadoElementoidPost) {
-		this.estadoElementoidPost = estadoElementoidPost;
-	}
-
-	@Column(name = "Elementoid", nullable = false)
-	public int getElementoid() {
-		return this.elementoid;
-	}
-
-	public void setElementoid(int elementoid) {
-		this.elementoid = elementoid;
-	}
-
-	@Column(name = "Colaborador_Proyectoid", nullable = false)
-	public int getColaboradorProyectoid() {
-		return this.colaboradorProyectoid;
-	}
-
-	public void setColaboradorProyectoid(int colaboradorProyectoid) {
-		this.colaboradorProyectoid = colaboradorProyectoid;
-	}*/
+	
 
 }

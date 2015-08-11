@@ -429,3 +429,24 @@ a.referencia:hover {
 .pantalla {
 	max-width: 80%;
 }
+
+.observaciones {
+	font-size:12px;
+		padding-left: 2em;
+		padding-right: 2em;
+		
+	
+}
+
+.tituloObservaciones {
+	position: relative;
+	top: 0px;
+	left: 0px;
+	color: #4d4d4d;
+	font-size: 15px;
+	width: 100%;
+	background-color: #d9a696;
+	min-height: 16px;
+}
+
+

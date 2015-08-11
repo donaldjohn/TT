@@ -6,7 +6,9 @@ import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import mx.prisma.admin.dao.ColaboradorProyectoDAO;
 import mx.prisma.admin.dao.ProyectoDAO;
+import mx.prisma.admin.model.ColaboradorProyecto;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.dao.ModuloDAO;
@@ -71,9 +73,9 @@ public class SessionManager {
 	}
 	
 	public static Proyecto consultarProyectoActivo() throws Exception{
-		String claveProy = "SIG";//Se debe obtener de sesión
+		Integer idProy = 1;//Se debe obtener de sesión
 		Proyecto proyecto = null;
-		proyecto = new ProyectoDAO().consultarProyecto(claveProy);
+		proyecto = new ProyectoDAO().consultarProyecto(idProy);
 		if(proyecto == null) {
 			throw new PRISMAException("No se puede consultar el proyecto", "MSG13");
 		}
@@ -81,18 +83,25 @@ public class SessionManager {
 	}
 
 	public static Modulo consultarModuloActivo() throws Exception{
-		String claveModulo = "SF"; //Se debe obtener de sesión
-		String claveProy = "SIG";//Se debe obtener de sesión
+		Integer idMod = 1; //Se debe obtener de sesión
 		Modulo modulo = null;
-		Proyecto proyecto = new ProyectoDAO().consultarProyecto(claveProy);
-		if(proyecto == null) {
-			throw new PRISMAException("No se puede consultar el proyecto", "MSG13");
-		}
-		modulo = new ModuloDAO().consultarModulo(claveModulo, proyecto);
+		
+		modulo = new ModuloDAO().consultarModulo(idMod);
 		if(modulo == null) {
 			throw new PRISMAException("No se puede consultar el módulo", "MSG13");
 		}
 		return modulo;
+	}
+	
+	public static ColaboradorProyecto consultarColaboradorActivo() throws Exception{
+		Integer idColaboradorProyecto = 1; //Se debe obtener de sesión
+		ColaboradorProyecto colaboradorProyecto;
+
+		colaboradorProyecto = new ColaboradorProyectoDAO().consultarColaboradorProyecto(idColaboradorProyecto);
+		if(colaboradorProyecto == null) {
+			throw new PRISMAException("No se puede consultar el colaborador", "MSG13");
+		}
+		return colaboradorProyecto;
 	}
 
 	public static CasoUso consultarCasoUsoActivo() {

@@ -46,6 +46,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 	private Set<Extension> Extiende = new HashSet<Extension>(0);
 	private Set<Extension> ExtendidoDe = new HashSet<Extension>(0);
 	private Set<Revision> revisiones = new HashSet<Revision>(0);
+
 	
 	public CasoUso() {
 	}
