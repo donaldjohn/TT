@@ -256,3 +256,7 @@ function verificarOtro() {
 		document.getElementById("otroVerbo").style.display = 'none';
 	}
 }
+
+
+
+

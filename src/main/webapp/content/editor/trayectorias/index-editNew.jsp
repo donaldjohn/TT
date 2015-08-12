@@ -148,6 +148,9 @@
 			</div>
 		</s:form>
 	</sj:dialog>
+	
+	
+	
 	<!-- Json de elementos -->
 	<s:hidden name="jsonReglasNegocio" id="jsonReglasNegocio" value="%{jsonReglasNegocio}"/>
 	<s:hidden name="jsonEntidades" id="jsonEntidades" value="%{jsonEntidades}"/>

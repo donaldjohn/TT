@@ -11,9 +11,6 @@ import org.hibernate.Session;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
-import mx.prisma.editor.bs.CuBs;
-import mx.prisma.editor.model.CasoUso;
-import mx.prisma.editor.model.CasoUsoReglaNegocio;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.util.HibernateUtil;
 
@@ -244,8 +241,6 @@ public class ElementoDAO {
 			break;
 		case REGLANEGOCIO:
 			queryCadena = "SELECT CasoUsoElementoid  FROM CasoUso_ReglaNegocio WHERE ReglaNegocioElementoid = "+elemento.getId()+";";
-	
-	
 			break;
 		case TERMINOGLS:
 			break;
@@ -274,6 +269,57 @@ public class ElementoDAO {
 		} else
 			return results;
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	public List<Integer> consultarReferenciasParametro(Elemento elemento) {
+		List<Integer> results = null;
+		SQLQuery query = null;
+		String queryCadena = null;
+		
+		switch(ReferenciaEnum.getTipoReferencia(elemento)) {
+		case ACCION:
+			break;
+		case ACTOR:
+			break;
+		case ATRIBUTO:
+			break;
+		case CASOUSO:
+			queryCadena = "SELECT id FROM ReferenciaParametro WHERE ElementoidDestino = "+elemento.getId()+";";
+			break;
+		case ENTIDAD:
+			break;
+		case MENSAJE:
+			break;
+		case PANTALLA:
+			break;
+		case PASO:
+			break;
+		case REGLANEGOCIO:
+			break;
+		case TERMINOGLS:
+			break;
+		case TRAYECTORIA:
+			break;
+		default:
+			break;
+			
+		}
+		try {
+		session.beginTransaction();
+		query = session.createSQLQuery(queryCadena);
+		results = query.list();
+		session.getTransaction().commit();
+		
+
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
+		if (results.isEmpty()) {
+			return null;
+		} else
+			return results;
+	}
 
 }

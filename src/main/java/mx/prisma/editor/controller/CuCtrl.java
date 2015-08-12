@@ -46,9 +46,12 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 
 @ResultPath("/content/editor/")
-@Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "cu" }),
-})
+@Results({
+		@Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
+				"actionName", "cu" }),
+		@Result(name = "referencias", type = "json", params = { "root",
+				"elementosReferencias" }) })
+
 public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> {
 	/**
 	 * 
@@ -61,7 +64,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 	// Modelo
 	private CasoUso model;
-	
+
 	// Lista de registros
 	private List<CasoUso> listCU;
 	private String jsonCasosUsoModulo;
@@ -81,36 +84,35 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	private String jsonPasos;
 	private String jsonTrayectorias;
 	private String jsonAcciones;
-	
+
 	private Integer idSel;
-	
+
 	private boolean existenPrecondiciones;
 	private boolean existenPostcondiciones;
 	private boolean existenTrayectorias;
 	private boolean existenExtensiones;
 	private String observaciones;
 	private String comentario;
-	
-	
-	
+	private List<String> elementosReferencias;
+
 	public String index() {
 		try {
-					
+			
 			// Se consulta el módulo
 			modulo = SessionManager.consultarModuloActivo();
-			
-			//Se consulta el proyecto
-			proyecto = modulo.getProyecto();
 
+			// Se consulta el proyecto
+			proyecto = modulo.getProyecto();
 
 			// Se agrega el módulo al caso de uso
 			model.setModulo(modulo);
 
 			// Se consultan todos los casos de uso para mostrarlos en la gestión
 			listCU = CuBs.consultarCasosUsoModulo(modulo);
-			
+
 			@SuppressWarnings("unchecked")
-			Collection<String> msjs = (Collection<String>) SessionManager.get("mensajesAccion");
+			Collection<String> msjs = (Collection<String>) SessionManager
+					.get("mensajesAccion");
 			this.setActionMessages(msjs);
 			SessionManager.delete("mensajesAccion");
 
@@ -121,24 +123,24 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		}
 		return INDEX;
 	}
-	
+
 	public String editNew() {
 		String resultado = null;
 		try {
-			
+
 			// Creación del modelo
 			modulo = SessionManager.consultarModuloActivo();
 			proyecto = modulo.getProyecto();
-			
+
 			// Se buscan los elementos disponibles para referenciar
 			buscaElementos();
-			
+
 			model.setClave(CuBs.calcularClave(modulo.getClave()));
 			resultado = EDITNEW;
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			resultado = editNew();
-		}catch (PRISMAException pe) {
+		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
 		} catch (Exception e) {
@@ -148,19 +150,20 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 		return resultado;
 	}
-	
+
 	public String create() throws PRISMAException, Exception {
 		String resultado = null;
 		try {
 			// Creación del modelo
 			modulo = SessionManager.consultarModuloActivo();
 			proyecto = modulo.getProyecto();
-						
+
 			model.setProyecto(proyecto);
 			model.setModulo(modulo);
-			model.setEstadoElemento(ElementoBs.consultarEstadoElemento(Estado.EDICION));
-			
-			//Se agregan las postcondiciones y precondiciones
+			model.setEstadoElemento(ElementoBs
+					.consultarEstadoElemento(Estado.EDICION));
+
+			// Se agregan las postcondiciones y precondiciones
 			agregarPostPrecondiciones(model);
 			CuBs.preAlmacenarObjetosToken(model);
 
@@ -172,7 +175,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			resultado = editNew();
-		}catch (PRISMAException pe) {
+		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
 		} catch (Exception e) {
@@ -183,22 +186,26 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	}
 
 	public String edit() {
+		verificarElementosReferencias();
+		for (String cadena : elementosReferencias) {
+			System.out.println(cadena);
+		}
 		String resultado = null;
 		try {
-			
+
 			proyecto = SessionManager.consultarProyectoActivo();
 			modulo = SessionManager.consultarModuloActivo();
 			model.setModulo(modulo);
 			ElementoBs.verificarEstado(model, CU_CasosUso.MODIFICARCASOUSO5_2);
-			
+
 			buscaElementos();
 			prepararVista();
-			
+
 			resultado = EDIT;
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			resultado = editNew();
-		}catch (PRISMAException pe) {
+		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
 		} catch (Exception e) {
@@ -213,7 +220,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		try {
 			modulo = SessionManager.consultarModuloActivo();
 			proyecto = modulo.getProyecto();
-			
+
 			model.getActores().clear();
 			model.getEntradas().clear();
 			model.getSalidas().clear();
@@ -222,7 +229,9 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 			agregarPostPrecondiciones(model);
 			CuBs.preAlmacenarObjetosToken(model);
-			Actualizacion actualizacion = new Actualizacion(new Date(), comentario, model, SessionManager.consultarColaboradorActivo());
+			Actualizacion actualizacion = new Actualizacion(new Date(),
+					comentario, model,
+					SessionManager.consultarColaboradorActivo());
 
 			CuBs.modificarCasoUso(model, actualizacion);
 			resultado = SUCCESS;
@@ -232,44 +241,49 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			resultado = edit();
-		}catch (PRISMAException pe) {
+		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
 		} catch (Exception e) {
 			ErrorManager.agregaMensajeError(this, e);
 			resultado = index();
 		}
-		return resultado;	
+		return resultado;
 	}
 
 	public String show() throws Exception {
 		String resultado = null;
 		try {
 			model = CuBs.consultarCasoUso(idSel);
-			this.existenPrecondiciones = CuBs.existenPrecondiciones(model.getPostprecondiciones());
-			this.existenPostcondiciones = CuBs.existenPostcondiciones(model.getPostprecondiciones());
-			this.existenTrayectorias = model.getTrayectorias().size() > 0 ? true : false;
-			this.existenExtensiones = model.getExtiende().size() > 0 ? true : false;
-			
+			this.existenPrecondiciones = CuBs.existenPrecondiciones(model
+					.getPostprecondiciones());
+			this.existenPostcondiciones = CuBs.existenPostcondiciones(model
+					.getPostprecondiciones());
+			this.existenTrayectorias = model.getTrayectorias().size() > 0 ? true
+					: false;
+			this.existenExtensiones = model.getExtiende().size() > 0 ? true
+					: false;
+
 			CuBs.agregarReferencias(request.getContextPath(), this.model);
-						
+
 			resultado = SHOW;
 		} catch (PRISMAException pe) {
 			pe.setIdMensaje("MSG26");
 			ErrorManager.agregaMensajeError(this, pe);
 			return index();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			ErrorManager.agregaMensajeError(this, e);
 			return index();
 		}
 		return resultado;
 	}
-	
+
 	private void agregarPostPrecondiciones(CasoUso casoUso) {
 		// Se agregan precondiciones al caso de uso
 		if (jsonPrecondiciones != null && !jsonPrecondiciones.equals("")) {
-			casoUso.getPostprecondiciones().addAll((JsonUtil.mapJSONToSet(
-					jsonPrecondiciones, PostPrecondicion.class)));
+			casoUso.getPostprecondiciones().addAll(
+					(JsonUtil.mapJSONToSet(jsonPrecondiciones,
+							PostPrecondicion.class)));
 		}
 		// Se agregan postcondiciones al caso de uso
 		if (jsonPostcondiciones != null && !jsonPostcondiciones.equals("")) {
@@ -300,17 +314,17 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 		// Se consultan los elementos de todo el proyecto
 		listElementos = CuBs.consultarElementos(proyecto);
-		
+
 		// Módulo auxiliar para la serialización
 		Modulo moduloAux = new Modulo();
 		moduloAux.setId(modulo.getId());
 		moduloAux.setNombre(modulo.getNombre());
-		moduloAux.setClave( modulo.getClave());
+		moduloAux.setClave(modulo.getClave());
 		if (listElementos != null && !listElementos.isEmpty()) {
 			// Se clasifican los conjuntos
 			for (Elemento el : listElementos) {
 				switch (ReferenciaEnum.getTipoReferencia(el)) {
-				
+
 				case ACTOR:
 					Actor auxActor = new Actor();
 					auxActor.setClave(el.getClave());
@@ -324,9 +338,10 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 					auxCasoUso.setNombre(el.getNombre());
 					auxCasoUso.setModulo(moduloAux);
 					listCasosUso.add(auxCasoUso);
-					
+
 					// Se obtienen las Trayectorias
-					Set<Trayectoria> trayectorias = ((CasoUso)el).getTrayectorias();
+					Set<Trayectoria> trayectorias = ((CasoUso) el)
+							.getTrayectorias();
 					for (Trayectoria tray : trayectorias) {
 						Trayectoria auxTrayectoria = new Trayectoria();
 						auxTrayectoria.setClave(tray.getClave());
@@ -340,7 +355,9 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 							auxPaso.setRealizaActor(paso.isRealizaActor());
 							auxPaso.setVerbo(paso.getVerbo());
 							auxPaso.setOtroVerbo(paso.getOtroVerbo());
-							auxPaso.setRedaccion(TokenBs.decodificarCadenaSinToken(paso.getRedaccion()));
+							auxPaso.setRedaccion(TokenBs
+									.decodificarCadenaSinToken(paso
+											.getRedaccion()));
 							listPasos.add(auxPaso);
 						}
 					}
@@ -350,14 +367,14 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 					auxEntidad.setNombre(el.getNombre());
 					listEntidades.add(auxEntidad);
 					// Se obtienen los Atributos
-					Set<Atributo> atributos = ((Entidad)el).getAtributos();
-					for(Atributo atributo : atributos) {
+					Set<Atributo> atributos = ((Entidad) el).getAtributos();
+					for (Atributo atributo : atributos) {
 						Atributo auxAtributo = new Atributo();
 						auxAtributo.setEntidad(auxEntidad);
 						auxAtributo.setNombre(atributo.getNombre());
 						listAtributos.add(auxAtributo);
 					}
-					
+
 					break;
 				case MENSAJE:
 					Mensaje auxMensaje = new Mensaje();
@@ -373,8 +390,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 					auxPantalla.setModulo(moduloAux);
 					listPantallas.add(auxPantalla);
 					// Se obtienen las acciones
-					Set<Accion> acciones = ((Pantalla)el).getAcciones();
-					for(Accion accion : acciones) {
+					Set<Accion> acciones = ((Pantalla) el).getAcciones();
+					for (Accion accion : acciones) {
 						Accion auxAccion = new Accion();
 						auxAccion.setPantalla(auxPantalla);
 						auxAccion.setNombre(accion.getNombre());
@@ -396,10 +413,11 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 					break;
 				}
 			}
-	
+
 			// Se convierte en json las Reglas de Negocio
 			if (listReglasNegocio != null) {
-				this.jsonReglasNegocio = JsonUtil.mapListToJSON(listReglasNegocio);
+				this.jsonReglasNegocio = JsonUtil
+						.mapListToJSON(listReglasNegocio);
 			}
 			// Se convierte en json las Entidades
 			if (listEntidades != null) {
@@ -407,7 +425,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			}
 			// Se convierte en json los Casos de Uso
 			if (listCasosUso != null) {
-				this.jsonCasosUsoProyecto = JsonUtil.mapListToJSON(listCasosUso);
+				this.jsonCasosUsoProyecto = JsonUtil
+						.mapListToJSON(listCasosUso);
 			}
 			// Se convierte en json las Pantallas
 			if (listPantallas != null) {
@@ -435,7 +454,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			}
 			// Se convierte en json las Trayectorias
 			if (listTrayectorias != null) {
-				this.jsonTrayectorias = JsonUtil.mapListToJSON(listTrayectorias);
+				this.jsonTrayectorias = JsonUtil
+						.mapListToJSON(listTrayectorias);
 			}
 			// Se convierte en json las Acciones
 			if (listAcciones != null) {
@@ -444,17 +464,19 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		}
 
 	}
-	
+
 	private void prepararVista() {
-		Set<PostPrecondicion> postPrecondiciones = model.getPostprecondiciones();
+		Set<PostPrecondicion> postPrecondiciones = model
+				.getPostprecondiciones();
 		ArrayList<PostPrecondicion> precondiciones = new ArrayList<PostPrecondicion>();
 		ArrayList<PostPrecondicion> postcondiciones = new ArrayList<PostPrecondicion>();
 		PostPrecondicion postPrecondicionAux;
 
-		for(PostPrecondicion postPrecondicion : postPrecondiciones) {
+		for (PostPrecondicion postPrecondicion : postPrecondiciones) {
 			postPrecondicionAux = new PostPrecondicion();
-			postPrecondicionAux.setRedaccion(TokenBs.decodificarCadenasToken(postPrecondicion.getRedaccion()));
-			if (postPrecondicion.isPrecondicion()) {	
+			postPrecondicionAux.setRedaccion(TokenBs
+					.decodificarCadenasToken(postPrecondicion.getRedaccion()));
+			if (postPrecondicion.isPrecondicion()) {
 				precondiciones.add(postPrecondicionAux);
 			} else {
 				postcondiciones.add(postPrecondicionAux);
@@ -462,19 +484,39 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		}
 		this.jsonPrecondiciones = JsonUtil.mapListToJSON(precondiciones);
 		this.jsonPostcondiciones = JsonUtil.mapListToJSON(postcondiciones);
-		
-		model.setRedaccionActores((TokenBs.decodificarCadenasToken(model.getRedaccionActores())));
-		model.setRedaccionEntradas((TokenBs.decodificarCadenasToken(model.getRedaccionEntradas())));
-		model.setRedaccionSalidas((TokenBs.decodificarCadenasToken(model.getRedaccionSalidas())));
-		model.setRedaccionReglasNegocio((TokenBs.decodificarCadenasToken(model.getRedaccionReglasNegocio())));
-		
+
+		model.setRedaccionActores((TokenBs.decodificarCadenasToken(model
+				.getRedaccionActores())));
+		model.setRedaccionEntradas((TokenBs.decodificarCadenasToken(model
+				.getRedaccionEntradas())));
+		model.setRedaccionSalidas((TokenBs.decodificarCadenasToken(model
+				.getRedaccionSalidas())));
+		model.setRedaccionReglasNegocio((TokenBs.decodificarCadenasToken(model
+				.getRedaccionReglasNegocio())));
+
 		for (Revision rev : model.getRevisiones()) {
-			if (!rev.isRevisado() && rev.getSeccion().getNombre().equals(TipoSeccionEnum.getNombre(TipoSeccionENUM.GENERAL))) {
+			if (!rev.isRevisado()
+					&& rev.getSeccion()
+							.getNombre()
+							.equals(TipoSeccionEnum
+									.getNombre(TipoSeccionENUM.GENERAL))) {
 				this.observaciones = rev.getObservaciones();
 			}
 		}
 	}
-		
+
+	public String verificarElementosReferencias() {
+		try {
+			elementosReferencias = new ArrayList<String>();
+			elementosReferencias = CuBs.verificarReferencias(model);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "referencias";
+	}
+
 	@VisitorFieldValidator
 	public CasoUso getModel() {
 		if (this.model == null) {
@@ -482,7 +524,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		}
 		return model;
 	}
-	
+
 	public String getJsonAcciones() {
 		return jsonAcciones;
 	}
@@ -656,24 +698,29 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		this.existenExtensiones = existenExtensiones;
 	}
 
-	
 	public String getObservaciones() {
 		return observaciones;
 	}
 
-	
 	public void setObservaciones(String observaciones) {
 		this.observaciones = observaciones;
 	}
 
-	
 	public String getComentario() {
 		return comentario;
 	}
 
-	
 	public void setComentario(String comentario) {
 		this.comentario = comentario;
+	}
+
+	
+	public List<String> getElementosReferencias() {
+		return elementosReferencias;
+	}
+
+	public void setElementosReferencias(List<String> elementosReferencias) {
+		this.elementosReferencias = elementosReferencias;
 	}
 
 	

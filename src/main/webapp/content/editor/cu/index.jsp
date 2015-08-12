@@ -49,7 +49,7 @@
 								<img id="" class="button" title="Modificar Caso de uso"
 										src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
 							</s:a>	
-							${blanks}			
+							${blanks}	
 							<!-- Gestionar trayectorias -->			
 							<s:url var="urlGestionarTrayectorias" value="%{#pageContext.request.contextPath}/trayectorias">
 								<s:param name="idCU" value="%{#cu.id}"/>
@@ -66,7 +66,13 @@
 							<s:a href="%{urlGestionarPuntosExtension}"><img
 										id="" class="button"
 										title="Gestionar Puntos de extensión" 
-										src="${pageContext.request.contextPath}/resources/images/icons/P.png" /></s:a>						
+										src="${pageContext.request.contextPath}/resources/images/icons/P.png" /></s:a>	
+							${blanks}		
+							<!-- Eliminar caso de uso -->			
+							<s:url var="urlEliminar" value="%{#pageContext.request.contextPath}/cu/%{#cu.id}?_method = delete" method="post"/>
+							<s:a onclick="return verificarEliminacionElemento(%{#cu.id});">
+							<img id="" class="button" title="Eliminar Regla de negocio"
+									src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" /></s:a>					
 					</td>
 					
 					
@@ -84,7 +90,36 @@
 			<s:text name="Registrar"></s:text>
 		</button>
 	</div>
-	</s:form>	
+	</s:form>
+	
+	<!-- EMERGENTE CONFIRMAR ELIMINACIÓN -->
+	<sj:dialog id="confirmarEliminacionDialog" title="Confirmación" autoOpen="false"
+		minHeight="100" minWidth="400" modal="true" draggable="true">
+		<s:form autocomplete="off" id="frmConfirmarEliminacion" name="frmConfirmarEliminacionName" theme="simple">
+				<div class="seccion">
+				<s:text name="MSG11"></s:text>
+				</div>
+			<br />
+			<div align="center">
+				<input type="button" onclick="confirmarEliminacion('${urlEliminar}')" value="Aceptar"/> <input
+					type="button" onclick="cancelarConfirmarEliminacion();" value="Cancelar" />
+			</div>
+		</s:form>
+	</sj:dialog>
+	<!-- EMERGENTE ERROR REFERENCIAS -->
+	<sj:dialog id="mensajeReferenciasDialog" title="Confirmación" autoOpen="false"
+		minHeight="100" minWidth="400" modal="true" draggable="true">
+		<s:form autocomplete="off" id="frmConfirmarEliminacion" name="frmConfirmarEliminacionName" theme="simple">
+				<div class="seccion">
+				<s:text name="MSG14"/>
+				<div id="elementosReferencias"></div>
+				</div>
+			<br />
+			<div align="center">
+				<input type="button" onclick="cerrarMensajeReferencias()" value="Aceptar"/> 
+			</div>
+		</s:form>
+	</sj:dialog>	
 </body>
 </html>
 </jsp:root>

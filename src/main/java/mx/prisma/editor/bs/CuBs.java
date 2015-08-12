@@ -20,10 +20,12 @@ import mx.prisma.editor.dao.AtributoDAO;
 import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.ElementoDAO;
 import mx.prisma.editor.dao.EntidadDAO;
+import mx.prisma.editor.dao.ExtensionDAO;
 import mx.prisma.editor.dao.MensajeDAO;
 import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.dao.PantallaDAO;
 import mx.prisma.editor.dao.PasoDAO;
+import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.dao.TerminoGlosarioDAO;
 import mx.prisma.editor.dao.TrayectoriaDAO;
@@ -40,6 +42,7 @@ import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
+import mx.prisma.editor.model.ReferenciaParametro;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.editor.model.Trayectoria;
@@ -543,6 +546,104 @@ public class CuBs {
 			postPrecondicion.setRedaccion(TokenBs.codificarCadenaToken(
 					postPrecondicion.getRedaccion(), casoUso.getProyecto()));
 		}
+	}
+
+	public static void eliminarCasoUso(CasoUso model) throws Exception {
+		try {
+			ElementoBs.verificarEstado(model, CU_CasosUso.ELIMINARCASOUSO5_3);
+			new CasoUsoDAO().eliminarElemento(model);
+	} catch (JDBCException je) {
+			if(je.getErrorCode() == 1451)
+			{
+				throw new PRISMAException("No se puede eliminar el caso de uso", "MSG14");
+			}
+			System.out.println("ERROR CODE " + je.getErrorCode());
+			je.printStackTrace();
+			throw new Exception();
+	} catch(HibernateException he) {
+		he.printStackTrace();
+		throw new Exception();
+	}
+		
+	}
+
+	public static List<String> verificarReferencias(CasoUso model) {
+		List<Integer> ids_ReferenciaParametro = null;
+		List<Integer> ids_PtosExtension = null;
+
+		List<ReferenciaParametro> referenciasParametro = new ArrayList<ReferenciaParametro>();
+		List<Extension> referenciasExtension = new ArrayList<Extension>();
+		
+		List<String> referenciasVista = new ArrayList<String>();
+		List<Integer> cu_ptosExtensionNotificados = new ArrayList<Integer>();
+		PostPrecondicion postPrecondicion = null;
+		boolean postcondicion = false;
+		boolean precondicion = false;
+		String casoUso = "";
+		Paso paso = null;
+		Extension extension = null;
+		
+		ids_ReferenciaParametro = new CasoUsoDAO().consultarReferenciasParametro(model);
+		ids_PtosExtension = new ExtensionDAO().consultarReferenciasExtension(model);
+		
+		if(ids_ReferenciaParametro != null) {
+			for (Integer id : ids_ReferenciaParametro) {	
+				referenciasParametro.add(new ReferenciaParametroDAO().consultarReferenciaParametro(id));
+			}
+		}
+		
+		if(ids_PtosExtension != null) {
+			for (Integer id : ids_PtosExtension) {	
+				referenciasExtension.add(new ExtensionDAO().consultarExtension(id));
+			}
+		}
+		
+		for (ReferenciaParametro referencia : referenciasParametro) {
+			String linea = "";
+			postPrecondicion = referencia.getPostPrecondicion();
+			paso = referencia.getPaso();
+			extension = referencia.getExtension();
+			
+			if (postPrecondicion != null && precondicion == false) {
+				casoUso =  postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
+				if (postPrecondicion.isPrecondicion()) {
+					 linea = "Precondiciones del caso de uso " + casoUso;
+					 precondicion = true;
+				} else if (postcondicion == false) {
+					 linea = "Postcondiciones del caso de uso " + postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
+					 postcondicion = true;
+				}
+				 
+			} else if (paso != null) {
+				casoUso =  paso.getTrayectoria().getCasoUso().getClave()  + paso.getTrayectoria().getCasoUso().getNumero() + " " + paso.getTrayectoria().getCasoUso().getNombre();
+				linea = "Paso " + paso.getNumero() + " de la trayectoria " + ((paso.getTrayectoria().isAlternativa()) ? "alternativa " + paso.getTrayectoria().getClave() : "principal") + " del caso de uso" + casoUso;
+			} else if (extension != null && !isListado(cu_ptosExtensionNotificados, extension.getCasoUsoDestino().getId())) {
+				casoUso = extension.getCasoUsoOrigen().getClave() + extension.getCasoUsoOrigen().getNumero() + " " + extension.getCasoUsoOrigen().getNombre();
+				linea = "Puntos de extensión del caso de uso " + casoUso;
+				cu_ptosExtensionNotificados.add(extension.getCasoUsoOrigen().getId());
+			}
+			referenciasVista.add(linea);
+		}
+		
+		for (Extension referenciaExtension : referenciasExtension) {
+			String linea = "";
+			if (!isListado(cu_ptosExtensionNotificados, referenciaExtension.getCasoUsoOrigen().getId())) {
+				casoUso = referenciaExtension.getCasoUsoOrigen().getClave() + referenciaExtension.getCasoUsoOrigen().getNumero() + " " + referenciaExtension.getCasoUsoOrigen().getNombre();
+				linea = "Puntos de extensión del caso de uso " + casoUso;
+			}
+			referenciasVista.add(linea);
+		}
+		
+		return referenciasVista;
+	}
+	
+	public static boolean isListado(List<Integer> enteros, Integer entero) {
+		for (Integer i : enteros) {
+			if (i == entero) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
