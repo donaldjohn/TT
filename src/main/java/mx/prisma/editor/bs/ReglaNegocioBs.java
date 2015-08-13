@@ -20,7 +20,6 @@ import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.dao.TipoReglaNegocioDAO;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
-import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Operador;
 import mx.prisma.editor.model.ReglaNegocio;

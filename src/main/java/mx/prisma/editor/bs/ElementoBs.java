@@ -2,12 +2,9 @@ package mx.prisma.editor.bs;
 
 import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
 import mx.prisma.bs.AnalisisEnum.CU_ReglasNegocio;
-import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
-import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.EstadoElemento;
-import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.util.PRISMAException;
 
 public class ElementoBs {
@@ -78,6 +75,9 @@ public class ElementoBs {
 			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION) && elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.PENDIENTECORRECCION)) {
 					throw new PRISMAException("El estado del caso de uso es inválido.", "MSG13");
 			}
+			
+		case ELIMINARCASOUSO5_3:
+			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION))
 			break;
 		default:
 			break;
