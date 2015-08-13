@@ -346,4 +346,9 @@ function eliminarImagen(idImg, idFileUpload) {
 
 function cargarImagenPantalla() {
 	var imgPantalla = document.getElementById("pantallaB64").value;
+	if(imgPantalla != "") {
+		document.getElementById("pantalla").src = "data:image/png;base64," + imgPantalla;
+		document.getElementById("imagenPantalla").style.display = 'none';
+		document.getElementById("marco-pantalla").style.display = '';
+	}
 }
