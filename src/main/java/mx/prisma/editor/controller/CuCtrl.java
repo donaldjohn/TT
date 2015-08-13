@@ -9,6 +9,7 @@ import java.util.Set;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
+import mx.prisma.editor.bs.ReglaNegocioBs;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.TipoSeccionEnum;
@@ -186,10 +187,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	}
 
 	public String edit() {
-		verificarElementosReferencias();
-		for (String cadena : elementosReferencias) {
-			System.out.println(cadena);
-		}
+
+		
 		String resultado = null;
 		try {
 
@@ -278,6 +277,27 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		return resultado;
 	}
 
+	public String destroy() {
+		String resultado = null;
+		try {
+			CuBs.eliminarCasoUso(model);
+			resultado = SUCCESS;
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"caso de uso", "eliminado" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = edit();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+	
 	private void agregarPostPrecondiciones(CasoUso casoUso) {
 		// Se agregan precondiciones al caso de uso
 		if (jsonPrecondiciones != null && !jsonPrecondiciones.equals("")) {
@@ -509,7 +529,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		try {
 			elementosReferencias = new ArrayList<String>();
 			elementosReferencias = CuBs.verificarReferencias(model);
-			
 			
 		} catch (Exception e) {
 			e.printStackTrace();

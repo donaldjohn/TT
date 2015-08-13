@@ -616,13 +616,16 @@ public class CuBs {
 				 
 			} else if (paso != null) {
 				casoUso =  paso.getTrayectoria().getCasoUso().getClave()  + paso.getTrayectoria().getCasoUso().getNumero() + " " + paso.getTrayectoria().getCasoUso().getNombre();
-				linea = "Paso " + paso.getNumero() + " de la trayectoria " + ((paso.getTrayectoria().isAlternativa()) ? "alternativa " + paso.getTrayectoria().getClave() : "principal") + " del caso de uso" + casoUso;
+				linea = "Paso " + paso.getNumero() + " de la trayectoria " + ((paso.getTrayectoria().isAlternativa()) ? "alternativa " + paso.getTrayectoria().getClave() : "principal") + " del caso de uso " + casoUso;
 			} else if (extension != null && !isListado(cu_ptosExtensionNotificados, extension.getCasoUsoDestino().getId())) {
 				casoUso = extension.getCasoUsoOrigen().getClave() + extension.getCasoUsoOrigen().getNumero() + " " + extension.getCasoUsoOrigen().getNombre();
 				linea = "Puntos de extensión del caso de uso " + casoUso;
 				cu_ptosExtensionNotificados.add(extension.getCasoUsoOrigen().getId());
+				
 			}
-			referenciasVista.add(linea);
+			if (linea != "") {
+				referenciasVista.add(linea);
+			}
 		}
 		
 		for (Extension referenciaExtension : referenciasExtension) {
@@ -631,7 +634,9 @@ public class CuBs {
 				casoUso = referenciaExtension.getCasoUsoOrigen().getClave() + referenciaExtension.getCasoUsoOrigen().getNumero() + " " + referenciaExtension.getCasoUsoOrigen().getNombre();
 				linea = "Puntos de extensión del caso de uso " + casoUso;
 			}
-			referenciasVista.add(linea);
+			if (linea != "") {
+				referenciasVista.add(linea);
+			}		
 		}
 		
 		return referenciasVista;

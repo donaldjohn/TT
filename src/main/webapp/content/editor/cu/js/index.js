@@ -1,9 +1,10 @@
 $(document).ready(function() {
 	$('#gestion').DataTable();
-	document.getElementById("idAreaTrabajo").style.visibility = "visible" ;
+	contextPath = $("#rutaContexto").val();
 } );
 
 function confirmarEliminacion(urlEliminar) {
+	console.log(urlEliminar);
 	$('#confirmarEliminacionDialog').dialog('close');
 	window.location.href = urlEliminar;
 }
@@ -22,34 +23,38 @@ function verificarEliminacionElemento(idElemento) {
 			idSel : idElemento
 		},
 		success : function(data) {
-			console.log("data: " + data);
-			mostrarMensajeEliminacion(data);
+			mostrarMensajeEliminacion(data, idElemento);
 		},
 		error : function(err) {
-			console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
-			alert("Error");
+			alert("AJAX error in request: " + JSON.stringify(err, null, 2));
 		}
 	});
+	
 	return false;
 	
 }
 
-function mostrarMensajeEliminacion(json) {
-	
+function mostrarMensajeEliminacion(json, id) {
 	var elementos = document.createElement("ul");
+	var elementosReferencias = document.getElementById("elementosReferencias");
+	var urlEliminar = contextPath + "/cu/" +id+ "?_method=delete";
+	while (elementosReferencias.firstChild) {
+		elementosReferencias.removeChild(elementosReferencias.firstChild);
+	}
 	if (json != "") {
 		$
 				.each(
 						json,
 						function(i, item) {
 							var elemento = document.createElement("li");
-							elemento.appendChild(document.createTextNode(item.clave + item.numero + " " + item.nombre));
+							elemento.appendChild(document.createTextNode(item));
 							elementos.appendChild(elemento);
 						});
 		document.getElementById("elementosReferencias").appendChild(elementos);
 		
 		$('#mensajeReferenciasDialog').dialog('open');
-	} else {
+	} else {	
+		document.getElementById("btnConfirmarEliminacion").onclick = function(){ confirmarEliminacion(urlEliminar);};
 		$('#confirmarEliminacionDialog').dialog('open');
 	}
 }

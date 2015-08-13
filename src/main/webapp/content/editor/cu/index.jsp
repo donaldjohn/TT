@@ -69,7 +69,7 @@
 										src="${pageContext.request.contextPath}/resources/images/icons/P.png" /></s:a>	
 							${blanks}		
 							<!-- Eliminar caso de uso -->			
-							<s:url var="urlEliminar" value="%{#pageContext.request.contextPath}/cu/%{#cu.id}?_method = delete" method="post"/>
+							<s:url var="urlEliminar" value="%{#pageContext.request.contextPath}/cu/%{#cu.id}?_method=delete" method="post"/>
 							<s:a onclick="return verificarEliminacionElemento(%{#cu.id});">
 							<img id="" class="button" title="Eliminar Regla de negocio"
 									src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" /></s:a>					
@@ -101,14 +101,14 @@
 				</div>
 			<br />
 			<div align="center">
-				<input type="button" onclick="confirmarEliminacion('${urlEliminar}')" value="Aceptar"/> <input
+				<input id = "btnConfirmarEliminacion" type="button" onclick="" value="Aceptar"/> <input
 					type="button" onclick="cancelarConfirmarEliminacion();" value="Cancelar" />
 			</div>
 		</s:form>
 	</sj:dialog>
 	<!-- EMERGENTE ERROR REFERENCIAS -->
 	<sj:dialog id="mensajeReferenciasDialog" title="Confirmación" autoOpen="false"
-		minHeight="100" minWidth="400" modal="true" draggable="true">
+		minHeight="200" minWidth="700" modal="true" draggable="true">
 		<s:form autocomplete="off" id="frmConfirmarEliminacion" name="frmConfirmarEliminacionName" theme="simple">
 				<div class="seccion">
 				<s:text name="MSG14"/>
