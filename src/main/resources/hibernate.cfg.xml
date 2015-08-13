@@ -17,6 +17,7 @@
   <mapping class="mx.prisma.admin.model.Telefono"/>
   <mapping class="mx.prisma.editor.model.Accion"/>
   <mapping class="mx.prisma.editor.model.Actor"/>
+  <mapping class="mx.prisma.editor.model.Actualizacion"/>
   <mapping class="mx.prisma.editor.model.Atributo"/>
   <mapping class="mx.prisma.editor.model.Cardinalidad"/>
   <mapping class="mx.prisma.editor.model.CasoUso"/>

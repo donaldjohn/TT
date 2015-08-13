@@ -105,7 +105,7 @@ public class Paso implements java.io.Serializable {
 		this.trayectoria = trayectoria;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "paso", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "paso", cascade = CascadeType.ALL, orphanRemoval = true)
 	public Set<ReferenciaParametro> getReferencias() {
 		return referencias;
 	}

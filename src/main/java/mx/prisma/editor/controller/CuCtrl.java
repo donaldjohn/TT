@@ -1,5 +1,6 @@
 package mx.prisma.editor.controller;
 
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -10,10 +11,13 @@ import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.bs.ReferenciaEnum;
+import mx.prisma.bs.TipoSeccionEnum;
 import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
+import mx.prisma.bs.TipoSeccionEnum.TipoSeccionENUM;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
@@ -24,6 +28,7 @@ import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.ReglaNegocio;
+import mx.prisma.editor.model.Revision;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.util.ActionSupportPRISMA;
@@ -84,6 +89,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	private boolean existenTrayectorias;
 	private boolean existenExtensiones;
 	private String observaciones;
+	private String comentario;
 	
 	
 	
@@ -155,8 +161,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			model.setEstadoElemento(ElementoBs.consultarEstadoElemento(Estado.EDICION));
 			
 			//Se agregan las postcondiciones y precondiciones
-			CuBs.preAlmacenarObjetosToken(model);
 			agregarPostPrecondiciones(model);
+			CuBs.preAlmacenarObjetosToken(model);
 
 			CuBs.registrarCasoUso(model);
 			resultado = SUCCESS;
@@ -216,9 +222,9 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 			agregarPostPrecondiciones(model);
 			CuBs.preAlmacenarObjetosToken(model);
+			Actualizacion actualizacion = new Actualizacion(new Date(), comentario, model, SessionManager.consultarColaboradorActivo());
 
-
-			CuBs.modificarCasoUso(model);
+			CuBs.modificarCasoUso(model, actualizacion);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",
 					"caso de uso", "modificado" }));
@@ -462,7 +468,11 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		model.setRedaccionSalidas((TokenBs.decodificarCadenasToken(model.getRedaccionSalidas())));
 		model.setRedaccionReglasNegocio((TokenBs.decodificarCadenasToken(model.getRedaccionReglasNegocio())));
 		
-		//if ()
+		for (Revision rev : model.getRevisiones()) {
+			if (!rev.isRevisado() && rev.getSeccion().getNombre().equals(TipoSeccionEnum.getNombre(TipoSeccionENUM.GENERAL))) {
+				this.observaciones = rev.getObservaciones();
+			}
+		}
 	}
 		
 	@VisitorFieldValidator
@@ -644,6 +654,26 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 	public void setExistenExtensiones(boolean existenExtensiones) {
 		this.existenExtensiones = existenExtensiones;
+	}
+
+	
+	public String getObservaciones() {
+		return observaciones;
+	}
+
+	
+	public void setObservaciones(String observaciones) {
+		this.observaciones = observaciones;
+	}
+
+	
+	public String getComentario() {
+		return comentario;
+	}
+
+	
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
 	}
 
 	

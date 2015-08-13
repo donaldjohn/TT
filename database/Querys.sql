@@ -2,6 +2,12 @@ INSERT INTO Proyecto (clave, nombre, fechaInicioProgramada, fechaTerminoPrograma
 
 INSERT INTO Modulo (nombre, clave, Proyectoid, descripcion) VALUES ('Superficies Forestales', 'SF', 1, 'Superficies Forestales');
 
+INSERT INTO PRISMA.Colaborador (CURP, nombre, apellidoPaterno, apellidoMaterno, correoElectronico, contrasenia) VALUES ('RACS930702HMCMMR05', 'Sergio', 'Ramírez', 'Camacho', 'sramirezc@live.com', 'helloworld');
+INSERT INTO PRISMA.Colaborador (CURP, nombre, apellidoPaterno, apellidoMaterno, correoElectronico, contrasenia) VALUES ('HESN930515MDFRNT03', 'Natalia', 'Hernández', 'Sánchez', 'hdznatali@gmail.com', 'password');
+
+INSERT INTO PRISMA.Colaborador_Proyecto (ColaboradorCURP, Rolid, Proyectoid) VALUES ('RACS930702HMCMMR05', '1', '1');
+INSERT INTO PRISMA.Colaborador_Proyecto (ColaboradorCURP, Rolid, Proyectoid) VALUES ('HESN930515MDFRNT03', '1', '1');
+
 --------------------- Actores --------------------- 
 INSERT INTO PRISMA.Elemento (clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('ACT', '1', 'Responsable del predio', 'Se refiere al personal de que administra la información asociada a los predios.', '1', '1');
 INSERT INTO PRISMA.Actor (Elementoid, Cardinalidadid) VALUES ('1', '1');

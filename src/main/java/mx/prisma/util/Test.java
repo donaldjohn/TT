@@ -269,7 +269,7 @@ public class Test {
 		
 
 		try {
-			new CasoUsoDAO().modificarCasoUso(cu);
+			//new CasoUsoDAO().modificarCasoUso(cu);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -14,9 +14,9 @@ import mx.prisma.bs.ReferenciaEnum.TipoSeccion;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.TrayectoriaDAO;
 import mx.prisma.editor.dao.VerboDAO;
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Paso;
-import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.editor.model.Verbo;
 import mx.prisma.util.PRISMAException;
@@ -46,7 +46,7 @@ public class TrayectoriaBs {
 		}
 	}
 
-	public static void modificarTrayectoria(Trayectoria model) throws Exception {
+	public static void modificarTrayectoria(Trayectoria model, Actualizacion actualizacion) throws Exception {
 		try {
 				validar(model);
 				ElementoBs.verificarEstado(model.getCasoUso(), CU_CasosUso.MODIFICARTRAYECTORIA5_1_1_2);
@@ -54,7 +54,7 @@ public class TrayectoriaBs {
 						.consultarEstadoElemento(Estado.EDICION));
 				model.setClave(model.getClave().trim());
 				
-				new TrayectoriaDAO().modificarTrayectoria(model);
+				new TrayectoriaDAO().modificarTrayectoria(model, actualizacion);
 		} catch (JDBCException je) {
 				if(je.getErrorCode() == 1062)
 				{
@@ -197,17 +197,15 @@ public class TrayectoriaBs {
 
 	public static void preAlmacenarObjetosToken(Trayectoria trayectoria) {
 		Set<Paso> pasos = trayectoria.getPasos();
-
+		
 		for (Paso paso : pasos) {
 			TokenBs.almacenarObjetosToken(
 					TokenBs.convertirToken_Objeto(
 							paso.getRedaccion(),
 							trayectoria.getCasoUso().getProyecto()),
 					TipoSeccion.PASOS, paso);
-			System.out.println(paso.getRedaccion());
 			paso.setRedaccion(TokenBs.codificarCadenaToken(
 					paso.getRedaccion(), trayectoria.getCasoUso().getProyecto()));
-			System.out.println(paso.getRedaccion());
 			
 		}
 	}

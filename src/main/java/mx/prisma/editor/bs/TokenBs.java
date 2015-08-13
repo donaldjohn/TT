@@ -443,7 +443,23 @@ public class TokenBs {
 		}
 		return false;
 	}
-
+	
+	
+	/*
+	 * El método ArrayList<Object> convertirToken_Objeto(String P1, Proyecto P2) se encarga de generar objetos con base en los tokens 
+	 * contenidos en una cadena.
+	 * 
+	 * Parámetros:
+	 * 	P1: Cadena cuyo contenido incluye los tokens en su versión visual, por ejemplo: ATR.Escuela:Nombre. Se utilizará para 
+	 * 		procesar los tokens y convertirlos a objetos.
+	 * 	P2: Proyecto en cuestión. Se utilizará para únicamente entregar como respuesta una lista de objetos, presentes para el proyecto actual.
+	 * 
+	 * 
+	 * Ejemplo: 
+	 * 
+	 * Para la cadena 'El sistema muestra la pantalla IU.SF.1:Gestionar elementos con el mensaje  MSG.1:Operación exitosa', el método
+	 * entregaría como resultado un ArrayList con dos objetos; uno de tipo Pantalla y otro de tipo Mensaje, con sus respectivas variables cargadas.
+	 */
 	public static ArrayList<Object> convertirToken_Objeto(String redaccion,
 			Proyecto proyecto) {
 
@@ -1085,6 +1101,7 @@ public class TokenBs {
 				if (paso == null) {
 					redaccion = "";
 				}
+				System.out.println("-----" + redaccion + "-----" + paso.getId());
 				redaccion = redaccion.replace(token, paso.getNumero() + "");
 				break;
 

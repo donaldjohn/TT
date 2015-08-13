@@ -40,4 +40,20 @@ public class ModuloDAO {
 		return modulo;
 
 	}
+	
+	public Modulo consultarModulo(Integer id) {
+		Modulo modulo = null;
+
+		try {
+			session.beginTransaction();
+			modulo = (Modulo) session.get(Modulo.class, id);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		
+		return modulo;
+
+	}
 }

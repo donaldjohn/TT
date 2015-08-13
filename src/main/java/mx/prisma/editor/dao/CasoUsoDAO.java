@@ -8,7 +8,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import mx.prisma.admin.model.Proyecto;
-
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.util.HibernateUtil;
@@ -74,7 +74,7 @@ public class CasoUsoDAO extends ElementoDAO {
 
 	}
 
-	public void modificarCasoUso(CasoUso casodeuso) {
+	public void modificarCasoUso(CasoUso casodeuso, Actualizacion actualizacion) {
 		try {
 			session.beginTransaction();
 			Query query1 = session.createQuery("DELETE FROM CasoUsoActor WHERE casouso.id = :id");
@@ -94,6 +94,7 @@ public class CasoUsoDAO extends ElementoDAO {
 			query5.executeUpdate();
 			
 			session.update(casodeuso);
+			session.save(actualizacion);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
