@@ -428,12 +428,12 @@ a.referencia:hover {
 
 .imagen {
 	max-width: 80%;
+	margin: 20px;
 }
 
 .marcoImagen {
 	border-style: dashed;
 	border-color: #e5e5e5;
-	padding: 20px;
 	margin: 20px;
 }
 
@@ -454,4 +454,10 @@ a.referencia:hover {
 	width: 100%;
 	background-color: #d9a696;
 	min-height: 16px;
+}
+
+.btnEliminar {
+	position: relative;
+	vertical-align: top; 
+	text-align: right; 
 }

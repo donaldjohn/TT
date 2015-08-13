@@ -52,7 +52,8 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	private String jsonImagenesAcciones;
 	private String imagenPantallaContentType;
 	private String imagenPantallaFileName;
-	private List<String> imagenesAcciones;
+	private String pantallaB64;
+	
 
 	public String index() throws Exception {
 		try {
@@ -345,13 +346,14 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 		this.jsonImagenesAcciones = jsonImagenesAcciones;
 	}
 
-	public List<String> getImagenesAcciones() {
-		return imagenesAcciones;
+	public String getPantallaB64() {
+		return pantallaB64;
 	}
 
-	public void setImagenesAcciones(List<String> imagenesAcciones) {
-		this.imagenesAcciones = imagenesAcciones;
+	public void setPantallaB64(String pantallaB64) {
+		this.pantallaB64 = pantallaB64;
 	}
 
+	
 	
 }

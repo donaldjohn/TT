@@ -65,16 +65,17 @@
 					<td><s:file id="imagenPantalla" name="imagenPantalla"
 							size="40" cssClass="inputFormulario ui-widget"
 							cssErrorClass="input-error"
-							onchange="mostrarPrevisualizacion(this, 'pantalla');"
+							onchange="mostrarPrevisualizacion(this, 'pantalla'); obtenerImagenTextoPantalla(this);"
 							accept=".png" /> <s:fielderror fieldName="model.imagen"
 							cssClass="error" theme="jquery" /></td>
-					<td id="botones-pantalla"><input type="button"
-						onclick="cancelarRegistrarAccion()" value="Cambiar" /> <input
-						type="button" onclick="cancelarRegistrarAccion()" value="Eliminar" />
-					</td>
 				</tr>
 			</table>
 			<div class="marcoImagen" id="marco-pantalla" style="display: none;">
+				<div class="btnEliminar">
+					<a onclick="eliminarImagen('pantalla', 'imagenPantalla');"><img
+						title="Eliminar"
+						src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" /></a>
+				</div>
 				<center>
 					<img id="pantalla" src="#" class="imagen" />
 				</center>
@@ -109,7 +110,7 @@
 					</thead>
 				</table>
 				<div align="center">
-					<sj:a onclick="registrarAccion();" button="true">Registrar</sj:a>
+					<sj:a onclick="solicitarRegistroAccion();" button="true">Registrar</sj:a>
 				</div>
 			</div>
 		</div>
@@ -124,23 +125,24 @@
 			<input class="boton" type="button"
 				onclick="location.href='${urlGestionarPantallas}'" value="Cancelar" />
 		</div>
-
+		
+		
 		<s:hidden id="jsonAccionesTabla" name="jsonAccionesTabla"
 			value="%{jsonAccionesTabla}" />
 		<s:hidden id="jsonImagenesAcciones" name="jsonImagenesAcciones"
 			value="%{jsonImagenesAcciones}" />
+		<s:hidden id="pantallaB64" name="pantallaB64"
+			value="%{pantallaB64}" />
 		<s:hidden name="jsonPantallasDestino" id="jsonPantallasDestino"
 			value="%{jsonPantallasDestino}" />
 	</s:form>
 
 	<!-- EMERGENTE REGISTRAR ACCION -->
-	<sj:dialog id="accionDialog" title="Registrar Acción" autoOpen="false"
+	<sj:dialog id="accionDialog" title="Ingrese la información de la Acción" autoOpen="false"
 		minHeight="300" minWidth="800" modal="true" draggable="true">
 		<s:form autocomplete="off" id="frmAccion" name="frmAccionName"
 			theme="simple">
-			<div class="formulario">
 				<s:hidden id="filaAccion" />
-				<div class="tituloFormulario">Información de la Acción</div>
 				<table class="seccion">
 					<tr>
 						<td class="label obligatorio"><s:text name="labelNombre" /></td>
@@ -164,6 +166,11 @@
 					<tr>
 						<td colspan="2"><div class="marcoImagen" id="marco-accion"
 								style="display: none;">
+								<div class="btnEliminar">
+									<a onclick="eliminarImagen('accion', 'accion.imagen');"><img
+										title="Eliminar"
+										src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" /></a>
+								</div>
 								<center>
 									<img src="#" id="accion" class="imagen" />
 								</center>
@@ -186,7 +193,6 @@
 								headerValue="Seleccione" headerKey="-1" listValue="nombre"></s:select></td>
 					</tr>
 				</table>
-			</div>
 			<br />
 			<div align="center">
 				<input type="button" onclick="registrarAccion()" value="Aceptar" />

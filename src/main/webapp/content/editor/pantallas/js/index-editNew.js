@@ -6,6 +6,8 @@ $(document).ready(function() {
 	ocultarColumnas("tablaAccion");
 	cargarCatalogos();
 	
+	cargarImagenPantalla();
+	
 	var json = $("#jsonAccionesTabla").val();
 	var jsonImg = $("#jsonImagenesAcciones").val(); 
 	if (json !== "") {
@@ -49,6 +51,7 @@ function ocultarColumnas(tabla) {
 }
 
 function mostrarPrevisualizacion(inputFile, nombre) {
+	inputFile.style.display = 'none';
 	var idImg = nombre.replace(/\s/g, "_");
 	if (inputFile.files && inputFile.files[0]) {
         var reader = new FileReader();
@@ -76,11 +79,25 @@ function mostrarPrevisualizacionTabla(inputFile, nombre) {
     }
 }
 
-function obtenerImagenTexto(inputFile, nombre) {
-	var idImgTexto = nombre.replace(/\s/g, "_");
+function obtenerImagenTextoPantalla(inputFile) {
 	if (inputFile.files && inputFile.files[0]) {
         var reader = new FileReader();
-        reader.readAsDataURL(inputFile.files[0]);//Cambiar
+        reader.readAsDataURL(inputFile.files[0]);
+        reader.onload = function (e) {
+            var imgTextoCrudo = reader.result;
+            var i = imgTextoCrudo.indexOf("base64") + 7;
+            var imgTextoB64 = imgTextoCrudo.substring(i, imgTextoCrudo.length);
+            document.getElementById("pantallaB64").value = imgTextoB64;
+        }
+    } else {
+    	return "";
+    }
+}
+
+function obtenerImagenTextoAccion(inputFile) {
+	if (inputFile.files && inputFile.files[0]) {
+        var reader = new FileReader();
+        reader.readAsDataURL(inputFile.files[0]);
         reader.onload = function (e) {
             var imgTextoCrudo = reader.result;
             var i = imgTextoCrudo.indexOf("base64") + 7;
@@ -130,7 +147,7 @@ function registrarAccion() {
 		
 		
 		mostrarPrevisualizacionTabla(imagen, nombre);
-		obtenerImagenTexto(imagen, nombre);
+		obtenerImagenTextoAccion(imagen, nombre);
 		
 		
 		document.getElementById("accion.nombre").value = null;
@@ -138,7 +155,7 @@ function registrarAccion() {
 		document.getElementById("accion.imagen").value = null;
 		document.getElementById("accion.tipoAccion").selectedIndex = 0;
 		document.getElementById("accion.pantallaDestino").selectedIndex = 0;
-		document.getElementById("accion").style.display = 'none';
+		document.getElementById("marco-accion").style.display = 'none';
 
 		$('#accionDialog').dialog('close');
 	} else {
@@ -153,7 +170,7 @@ function cancelarRegistrarAccion() {
 	document.getElementById("accion.imagen").value = null;
 	document.getElementById("accion.tipoAccion").selectedIndex = 0;
 	document.getElementById("accion.pantallaDestino").selectedIndex = 0;
-	document.getElementById("accion").style.display = 'none';
+	document.getElementById("marco-accion").style.display = 'none';
 	// Se cierra la emergente
 	$('#accionDialog').dialog('close');
 };
@@ -306,10 +323,27 @@ function solicitarModificacionAccion(idTabla, registro) {
 	document.getElementById("accion.tipoAccion").value = cells[4];
 	document.getElementById("accion.pantallaDestino").value = cells[5];
 	document.getElementById("filaAccion").value = registro;
+	$('#accionDialog').title = "Modificar Acción";
 	$('#accionDialog').dialog('open');
 }
 
 function solicitarRegistroAccion() {
 	document.getElementById("filaAccion").value = -1;
 	$('#accionDialog').dialog('open');
+}
+
+function eliminarImagen(idImg, idFileUpload) {
+	var img = document.getElementById(idImg);
+	img.src = "";
+	console.log("idImg: " + idImg);
+	document.getElementById("marco-" + idImg).style.display = 'none';
+	
+	var fileUpload = document.getElementById(idFileUpload);
+	fileUpload.value = null;
+	fileUpload.style.display = '';
+
+}
+
+function cargarImagenPantalla() {
+	var imgPantalla = document.getElementById("pantallaB64").value;
 }

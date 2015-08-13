@@ -11,8 +11,6 @@
 *.bbl
 *.blg
 *reporte.pdf
-*.classpath
-.classpath
 /target/
 
 # OSX generated files #
@@ -30,3 +28,4 @@
 *.backup
 *.kate-swp
 *.bak~1
+/bin/
