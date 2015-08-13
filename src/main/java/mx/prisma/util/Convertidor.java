@@ -9,12 +9,17 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Base64;
+import java.util.Base64.Decoder;
+import java.util.Base64.Encoder;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+
 
 public class Convertidor {
 	public static byte[] convertFileToByteArray(File file) {
@@ -52,7 +57,6 @@ public class Convertidor {
 		}
 
 		File file = new File(ruta);
-		System.out.println("isDire desde convertidor " + file.isDirectory());
 		if (file.getParentFile().mkdirs()) {
 			System.out.println("Se creo la carpeta");
 		} else {
@@ -75,5 +79,28 @@ public class Convertidor {
 		}
 
 		return file;
+	}
+	
+	public static byte[] decodeByteArrayB64( byte[] bImage) {
+		Decoder decoder = Base64.getDecoder();
+		byte[] bImageDecod = null;
+		if(bImage != null) {
+			bImageDecod = decoder.decode(bImage);
+		} else {
+			System.err.println("No se puede decodificar un array nulo");
+		}
+		return bImageDecod;
+	}
+
+	public static byte[] encodeByteArrayB64(byte[] bImagen) {
+		Encoder encoder = Base64.getEncoder();
+		byte[] bImageEncod = null;
+		if(bImagen != null) {
+			bImageEncod = encoder.encode(bImagen);
+		} else {
+			System.err.println("No se puede codificar un array nulo");
+		}
+		
+		return bImageEncod;
 	}
 }

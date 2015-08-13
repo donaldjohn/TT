@@ -33,6 +33,7 @@ public class Accion implements java.io.Serializable {
 	private TipoAccion tipoAccion;
 	private Pantalla pantallaDestino;
 	private String descripcion;
+	private byte[] imagen; 
 
 	public Accion() {
 	}
@@ -103,6 +104,13 @@ public class Accion implements java.io.Serializable {
 		this.descripcion = descripcion;
 	}
 
-	
+	@Column(name = "imagen", length = 999)
+	public byte[] getImagen() {
+		return this.imagen;
+	}
+
+	public void setImagen(byte[] imagen) {
+		this.imagen = imagen;
+	}
 	
 }

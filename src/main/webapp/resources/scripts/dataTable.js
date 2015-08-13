@@ -1,5 +1,9 @@
 var dataTableCDT = function() {
 	
+	function editRow(idTable, index, row) {
+		$("#" + idTable).DataTable().row(index).data(row);
+	}
+	
 	function deleteRowPasos(table, element) {
 		//Se elimina el elemento
 		$("#" + table.id).DataTable().row($(element).parents('tr')).remove()
@@ -183,10 +187,21 @@ var dataTableCDT = function() {
 		return table;
 	}
 	
-	
+	function insertarValorCelda(idTabla, row, column, data) {
+		var tabla = $("#" + idTabla).dataTable();
+		if(row == "max") {
+			row = tabla.fnSettings().fnRecordsTotal() - 1;
+		}
+		console.log("column, row: " + column + "," + row);
+		tabla.api().cell(row, column).data(data);
+		console.log("data: " + tabla.api().cell( row, column ).data());
+		tabla.api().draw();
+	}
 
 	return {
+		insertarValorCelda : insertarValorCelda,
 		addRow : addRow,
+		editRow : editRow,
 		deleteRow : deleteRow,
 		deleteRows : deleteRows,
 		exist : exist,

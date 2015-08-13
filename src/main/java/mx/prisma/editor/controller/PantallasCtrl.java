@@ -7,28 +7,20 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
+import org.apache.tomcat.util.codec.binary.Base64;
 
 import com.opensymphony.xwork2.ModelDriven;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.editor.bs.CuBs;
-import mx.prisma.editor.bs.EntidadBs;
 import mx.prisma.editor.bs.PantallaBs;
-import mx.prisma.editor.dao.TipoDatoDAO;
-import mx.prisma.editor.dao.UnidadTamanioDAO;
 import mx.prisma.editor.model.Accion;
-import mx.prisma.editor.model.Atributo;
-import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.TipoAccion;
-import mx.prisma.editor.model.TipoDato;
-import mx.prisma.editor.model.UnidadTamanio;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.Convertidor;
 import mx.prisma.util.ErrorManager;
@@ -57,9 +49,10 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	private String jsonAccionesTabla;
 	private Integer idSel;
 	private File imagenPantalla;
-	private List<File> imagenesAcciones;
+	private String jsonImagenesAcciones;
 	private String imagenPantallaContentType;
 	private String imagenPantallaFileName;
+	private List<String> imagenesAcciones;
 
 	public String index() throws Exception {
 		try {
@@ -124,16 +117,52 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 		jsonPantallasDestino = JsonUtil.mapListToJSON(pantallas);
 	}
 
-	private void agregarAcciones() {
-		if (jsonAccionesTabla != null && !jsonAccionesTabla.equals("")) {
-			model.setAcciones(JsonUtil.mapJSONToSet(jsonAccionesTabla,
-					Accion.class));
-			System.out.println("model.getAcciones: " + model.getAcciones());
-			if(model.getAcciones() != null) {
-				for (Accion accion : model.getAcciones()) {
-					accion.setPantalla(model);
+	private void agregarAcciones() throws Exception{
+		System.out.println("jsonAccionesTabla: " + jsonAccionesTabla);
+		System.out.println("jsonImagenesAcciones: " + jsonImagenesAcciones);
+		
+		List<String> imagenesAccionesTexto = null;
+		try {
+			if (jsonAccionesTabla != null && !jsonAccionesTabla.equals("")) {
+				if(jsonImagenesAcciones != null && !jsonImagenesAcciones.equals("")) {
+					imagenesAccionesTexto = JsonUtil.mapJSONToArrayList(jsonImagenesAcciones, String.class);
+					System.out.println("size imagenesAccionesTexto: " + imagenesAccionesTexto.size());
+					for(String img : imagenesAccionesTexto) {
+						System.out.println("img b64: " + img);
+					}
+				}
+	
+				
+				model.setAcciones(JsonUtil.mapJSONToSet(jsonAccionesTabla,
+						Accion.class));
+				if(model.getAcciones() != null) {
+					int i = 0;
+					for (Accion accion : model.getAcciones()) {
+						accion.setPantalla(model);
+						accion.setTipoAccion(PantallaBs.consultarTipoAccion(accion.getTipoAccion().getId()));
+						if(accion.getPantallaDestino().getId() == 0) {
+							accion.setPantallaDestino(model);
+						} else {
+							accion.setPantallaDestino(PantallaBs.consultarPantalla(accion.getPantallaDestino().getId()));
+						}
+						
+						byte[] imgDecodificada= imagenesAccionesTexto.get(i).getBytes();
+						
+						accion.setImagen(imgDecodificada);
+						
+						System.out.println("img byte[]: " + accion.getImagen());
+						
+						byte[] bImage = Convertidor.decodeByteArrayB64(accion.getImagen());
+
+						@SuppressWarnings("deprecation")
+						String ruta = request.getRealPath("/") + "/tmp/images/" + accion.getNombre() + ".png";
+						Convertidor.convertByteArrayToFile(ruta, bImage);
+						i++;
+					}
 				}
 			}
+		} catch (Exception e) {
+			throw e;
 		}
 	}
 
@@ -155,7 +184,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 			System.out.println("imagen name " + this.imagenPantalla.getName());
 			System.out.println("imagen path " + this.imagenPantalla.getPath());*/
 			
-//			PantallaBs.registrarPantalla(model);
+			PantallaBs.registrarPantalla(model);
 			
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "La",
@@ -178,7 +207,8 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	
 	private void agregarImagen() throws IOException {
 		byte[] bImagen = Convertidor.convertFileToByteArray(this.imagenPantalla);
-		model.setImagen(bImagen);
+		byte[] bImagenB64 = Convertidor.encodeByteArrayB64(bImagen);
+		model.setImagen(bImagenB64);
 	}
 
 	public String show() throws Exception{
@@ -186,6 +216,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 		try {
 			model = PantallaBs.consultarPantalla(idSel);
 			String nombre = model.getClave() + model.getNombre() + model.getNumero() + ".png";
+			@SuppressWarnings("deprecation")
 			String ruta = request.getRealPath("/") + "/tmp/images/" + nombre;
 			System.out.println("ruta " + ruta);
 			
@@ -224,8 +255,6 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	}
 
 	public void setSession(Map<String, Object> arg0) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public Proyecto getProyecto() {
@@ -308,15 +337,21 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 		this.jsonPantallasDestino = jsonPantallasDestino;
 	}
 
-	public List<File> getImagenesAcciones() {
+	public String getJsonImagenesAcciones() {
+		return jsonImagenesAcciones;
+	}
+
+	public void setJsonImagenesAcciones(String jsonImagenesAcciones) {
+		this.jsonImagenesAcciones = jsonImagenesAcciones;
+	}
+
+	public List<String> getImagenesAcciones() {
 		return imagenesAcciones;
 	}
 
-	public void setImagenesAcciones(List<File> imagenesAcciones) {
-		System.out.println("tama;o de imagenesAcciones" + imagenesAcciones.size());
+	public void setImagenesAcciones(List<String> imagenesAcciones) {
 		this.imagenesAcciones = imagenesAcciones;
 	}
-	
-	
+
 	
 }

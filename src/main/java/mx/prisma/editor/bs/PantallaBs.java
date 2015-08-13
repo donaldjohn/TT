@@ -145,4 +145,13 @@ public class PantallaBs {
 		return listPantallas;
 	}
 
+	public static TipoAccion consultarTipoAccion(Integer id) {
+		TipoAccion ta = new TipoAccionDAO().consultarTipoAccion(id);
+		if(ta == null) {
+			throw new PRISMAException("No se puede consultar el tipo de accion por el id.",
+					"MSG13");
+		}
+		return ta;
+	}
+
 }

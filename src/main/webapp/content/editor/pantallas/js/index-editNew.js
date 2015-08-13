@@ -3,19 +3,92 @@ var contextPath = "error";
 $(document).ready(function() {
 	contextPath = $("#rutaContexto").val();
 	$('#tablaAccion').DataTable();
+	ocultarColumnas("tablaAccion");
 	cargarCatalogos();
+	
+	var json = $("#jsonAccionesTabla").val();
+	var jsonImg = $("#jsonImagenesAcciones").val(); 
+	if (json !== "") {
+		var parsedJson = JSON.parse(json);
+		var parsedJsonImg = JSON.parse(jsonImg);
+		$
+				.each(
+						parsedJson,
+						function(i, item) {
+							var img = "Sin imagen"; 
+					    	if(parsedJsonImg[i] != "") {
+					    		img = "<center><img src = 'data:image/png;base64," + parsedJsonImg[i] + "'/></center>";
+					    	}
+					    		
+							var accion = [
+								img,
+								item.nombre, 
+								parsedJsonImg[i],
+								item.descripcion,
+								item.tipoAccion.id,
+								item.pantallaDestino.id,
+								"<center>" +
+									"<a onclick='solicitarModificacionAccion(\"tablaAccion\", this);'button='true'>" +
+									"<img class='icon'  id='icon' src='" + window.contextPath + 
+									"/resources/images/icons/editar.png' title='Modificar Acción'/></a>" +
+									"<a onclick='dataTableCDT.deleteRowPasos(tablaAccion, this);' button='true'>" +
+									"<img class='icon'  id='icon' src='" + window.contextPath + 
+									"/resources/images/icons/eliminar.png' title='Eliminar Acción'/></a>" +
+								"</center>" ];
+							dataTableCDT.addRow("tablaAccion", accion); 
+						}); 
+	}
 });
 
-function agregarImagen(inputFile, idImg) {
-    if (inputFile.files && inputFile.files[0]) {
-        var reader = new FileReader();
+function ocultarColumnas(tabla) {
+	var dataTable = $("#" + tabla).dataTable();
+	dataTable.api().column(2).visible(false);
+	dataTable.api().column(3).visible(false);
+	dataTable.api().column(4).visible(false);
+	dataTable.api().column(5).visible(false);
+}
 
+function mostrarPrevisualizacion(inputFile, nombre) {
+	var idImg = nombre.replace(/\s/g, "_");
+	if (inputFile.files && inputFile.files[0]) {
+        var reader = new FileReader();
+        reader.readAsDataURL(inputFile.files[0])
         reader.onload = function (e) {
-            $('#' + idImg).attr('src', e.target.result);
+            $('#' + idImg).attr('src', reader.result); 
+	    	
         }
-        document.getElementById(idImg).style.display = '';
-        console.log("pos blob: " + inputFile.files[0]);
-        console.log("readAsDataURL: " + reader.readAsDataURL(inputFile.files[0]));
+        document.getElementById("marco-" + idImg).style.display = '';
+    }
+}
+
+function mostrarPrevisualizacionTabla(inputFile, nombre) {
+	var idImg = nombre.replace(/\s/g, "_");
+	if (inputFile.files && inputFile.files[0]) {
+        var reader = new FileReader();
+        reader.readAsDataURL(inputFile.files[0])
+        reader.onload = function (e) {
+        	if(reader.result != "") {
+        		$('#' + idImg).attr('src', reader.result);
+        	} else {
+        		dataTableCDT.insertarValorCelda("tablaAccion", "max", 0, "Sin imagen");
+        	}	    	
+        }
+    }
+}
+
+function obtenerImagenTexto(inputFile, nombre) {
+	var idImgTexto = nombre.replace(/\s/g, "_");
+	if (inputFile.files && inputFile.files[0]) {
+        var reader = new FileReader();
+        reader.readAsDataURL(inputFile.files[0]);//Cambiar
+        reader.onload = function (e) {
+            var imgTextoCrudo = reader.result;
+            var i = imgTextoCrudo.indexOf("base64") + 7;
+            var imgTextoB64 = imgTextoCrudo.substring(i, imgTextoCrudo.length);
+            dataTableCDT.insertarValorCelda("tablaAccion", "max", 2, imgTextoB64);
+        }
+    } else {
+    	return "";
     }
 }
 
@@ -23,33 +96,23 @@ function registrarAccion() {
 
 	var nombre = document.getElementById("accion.nombre").value;
 	var descripcion = document.getElementById("accion.descripcion").value;
-	
 	var imagen = document.getElementById("accion.imagen");
-	
-	var img = imagen.files[0];
-	console.log("typeof icono" + typeof(img));
-	
 	var selectTipoAccion = document.getElementById("accion.tipoAccion");
 	var selectPantallaDestino = document.getElementById("accion.pantallaDestino");
-	
 	var tipoAccion = selectTipoAccion.options[selectTipoAccion.selectedIndex].value;
 	var idPantallaDestino = selectPantallaDestino.options[selectPantallaDestino.selectedIndex].value;
 	
-	console.log("TA " + tipoAccion);
-	console.log("PD " + idPantallaDestino);
 
-	if (esValidaAccion("tablaAccion", nombre, descripcion, imagen, selectTipoAccion, selectPantallaDestino)) {
-		// Se construye la fila
-		//http://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded
+	if (esValidaAccion("tablaAccion", nombre, descripcion, imagen, selectTipoAccion, selectPantallaDestino)) { 
 		var row = [
-				"<center><img id='" + nombre + "' src='" + "#" + "'/></center>",
-				imagen,
+				"<center><img src='#' id='" + nombre.replace(/\s/g, "_") + "'/></center>",
 				nombre,
+				"",
 				descripcion, 
 				tipoAccion,
 				idPantallaDestino,
 				"<center>"
-						+ "<a button='true'>"
+						+ "<a onclick='solicitarModificacionAccion(\"tablaAccion\", this);' button='true'>"
 						+ "<img class='icon'  id='icon' src='"
 						+ window.contextPath
 						+ "/resources/images/icons/editar.png' title='Modificar Acción'/></a>"
@@ -58,8 +121,16 @@ function registrarAccion() {
 						+ window.contextPath
 						+ "/resources/images/icons/eliminar.png' title='Eliminar Acción'/></a>"
 						+ "</center>" ];
-		dataTableCDT.addRow("tablaAccion", row);
-		agregarImagen(imagen, nombre);
+		var indexFilaAccion = document.getElementById("filaAccion").value;
+		if(indexFilaAccion == -1) {
+			dataTableCDT.addRow("tablaAccion", row);
+		} else {
+			dataTableCDT.editRow("tablaAccion", indexFilaAccion, row);
+		}
+		
+		
+		mostrarPrevisualizacionTabla(imagen, nombre);
+		obtenerImagenTexto(imagen, nombre);
 		
 		
 		document.getElementById("accion.nombre").value = null;
@@ -67,6 +138,7 @@ function registrarAccion() {
 		document.getElementById("accion.imagen").value = null;
 		document.getElementById("accion.tipoAccion").selectedIndex = 0;
 		document.getElementById("accion.pantallaDestino").selectedIndex = 0;
+		document.getElementById("accion").style.display = 'none';
 
 		$('#accionDialog').dialog('close');
 	} else {
@@ -81,6 +153,7 @@ function cancelarRegistrarAccion() {
 	document.getElementById("accion.imagen").value = null;
 	document.getElementById("accion.tipoAccion").selectedIndex = 0;
 	document.getElementById("accion.pantallaDestino").selectedIndex = 0;
+	document.getElementById("accion").style.display = 'none';
 	// Se cierra la emergente
 	$('#accionDialog').dialog('close');
 };
@@ -133,12 +206,11 @@ function esValidaAccion(idTabla, nombre, descripcion, imagen, tipoAccion, pantal
 		return false;
 	}
 	
-	var tamMaximo = 2000;
+	var tamMaximo = 2000000;
 	if(imagen.files.length == 1) {
 		var img = imagen.files[0];
 		if(img.size > tamMaximo) {
 			agregarMensaje("Ingrese una imagen con tamaño máximo de " + tamMaximo + " bytes");
-			console.log("getAsText('utf-8'): " + img.getAsText('utf-8'));
 		}
 	}
 
@@ -158,18 +230,28 @@ function preparaEnvio() {
 function tablaToJson(idTable) {
 	var table = $("#" + idTable).dataTable();
 	var arregloAcciones = [];
-
+	var arregloImagenesAcciones = [];
 	for (var i = 0; i < table.fnSettings().fnRecordsTotal(); i++) {
-		var nombre = table.fnGetData(i, 2);
+		var nombre = table.fnGetData(i, 1);
+		var imagenCadena = table.fnGetData(i, 2);
 		var descripcion = table.fnGetData(i, 3);
 		var tipoAccion = table.fnGetData(i, 4);
 		var pantallaDestino = table.fnGetData(i, 5);
 		
-		arregloAcciones.push(new Accion(nombre, descripcion, tipoAccion,
+		var imagen = [];
+		/*for (var i = 0; i < imagenCadena.length; ++i) {
+		    imagen.push(imagenCadena.charCodeAt(i));
+		}*/
+		
+		arregloAcciones.push(new Accion(nombre, imagen, descripcion, tipoAccion,
 				pantallaDestino));
+		
+		arregloImagenesAcciones[arregloImagenesAcciones.length] = imagenCadena;
 	}
-	var jsonAtributos = JSON.stringify(arregloAcciones);
-	document.getElementById("jsonAccionesTabla").value = jsonAtributos;
+	var jsonAcciones = JSON.stringify(arregloAcciones);
+	var jsonImagenesAcciones = JSON.stringify(arregloImagenesAcciones);
+	document.getElementById("jsonAccionesTabla").value = jsonAcciones;
+	document.getElementById("jsonImagenesAcciones").value = jsonImagenesAcciones;
 }
 
 function cargarCatalogos() {
@@ -204,4 +286,30 @@ function agregarListaSelect(select, cadena) {
 							select.add(option);
 						});
 	}
+}
+
+function solicitarModificacionAccion(idTabla, registro) {
+	var row = $("#" + idTabla).DataTable().row($(registro).parents('tr'));
+	
+	document.getElementById("filaAccion").value = row.index();
+	
+	var cells = row.data();
+
+	document.getElementById("accion.nombre").value = cells[1];
+	
+	if(cells[2] != "") {
+		document.getElementById("accion").src = 'data:image/png;base64,' + cells[2];
+		document.getElementById("marco-accion").style.display = '';
+	}
+		
+	document.getElementById("accion.descripcion").value = cells[3];
+	document.getElementById("accion.tipoAccion").value = cells[4];
+	document.getElementById("accion.pantallaDestino").value = cells[5];
+	document.getElementById("filaAccion").value = registro;
+	$('#accionDialog').dialog('open');
+}
+
+function solicitarRegistroAccion() {
+	document.getElementById("filaAccion").value = -1;
+	$('#accionDialog').dialog('open');
 }

@@ -426,6 +426,13 @@ a.referencia:hover {
 	text-align: justify;
 }
 
-.pantalla {
+.imagen {
 	max-width: 80%;
+}
+
+.marcoImagen {
+	border-style: dashed;
+	border-color: #e5e5e5;
+	padding: 20px;
+	margin: 20px;
 }

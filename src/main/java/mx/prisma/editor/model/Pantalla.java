@@ -67,7 +67,7 @@ public class Pantalla extends Elemento implements java.io.Serializable {
 		this.modulo = modulo;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "pantalla")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "pantalla", cascade = CascadeType.ALL, orphanRemoval = true)
 	public Set<Accion> getAcciones() {
 		return acciones;
 	}
