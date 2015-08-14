@@ -208,6 +208,13 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 		byte[] bImagenB64 = Convertidor.encodeByteArrayB64(bImagen);
 		model.setImagen(bImagenB64);
 	}
+	
+	public String edit() throws Exception {
+		String resultado = null;
+		
+		return resultado;
+		
+	}
 
 	public String show() throws Exception{
 		String resultado = null;
