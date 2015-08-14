@@ -2,6 +2,7 @@ package mx.prisma.editor.dao;
 
 
 import java.util.List;
+
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.util.HibernateUtil;
@@ -68,5 +69,18 @@ public class TrayectoriaDAO {
 		}
 		return null;
 
+	}
+	
+	public void eliminarTrayectoria(Trayectoria trayectoria) {
+
+		try {
+			session.beginTransaction();
+			session.delete(trayectoria);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
 	}
 }

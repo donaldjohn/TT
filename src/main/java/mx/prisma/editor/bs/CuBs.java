@@ -1,6 +1,7 @@
 package mx.prisma.editor.bs;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -575,13 +576,13 @@ public class CuBs {
 		List<Extension> referenciasExtension = new ArrayList<Extension>();
 		
 		List<String> referenciasVista = new ArrayList<String>();
-		List<Integer> cu_ptosExtensionNotificados = new ArrayList<Integer>();
+		Set<String> cadenasReferencia = new HashSet<String>(0);
+
 		PostPrecondicion postPrecondicion = null;
-		boolean postcondicion = false;
-		boolean precondicion = false;
-		String casoUso = "";
 		Paso paso = null;
 		Extension extension = null;
+		String casoUso = "";
+
 		
 		ids_ReferenciaParametro = new CasoUsoDAO().consultarReferenciasParametro(model);
 		ids_PtosExtension = new ExtensionDAO().consultarReferenciasExtension(model);
@@ -604,40 +605,41 @@ public class CuBs {
 			paso = referencia.getPaso();
 			extension = referencia.getExtension();
 			
-			if (postPrecondicion != null && precondicion == false) {
+			if (postPrecondicion != null) {
 				casoUso =  postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
 				if (postPrecondicion.isPrecondicion()) {
 					 linea = "Precondiciones del caso de uso " + casoUso;
-					 precondicion = true;
-				} else if (postcondicion == false) {
+				} else {
 					 linea = "Postcondiciones del caso de uso " + postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
-					 postcondicion = true;
 				}
 				 
 			} else if (paso != null) {
 				casoUso =  paso.getTrayectoria().getCasoUso().getClave()  + paso.getTrayectoria().getCasoUso().getNumero() + " " + paso.getTrayectoria().getCasoUso().getNombre();
 				linea = "Paso " + paso.getNumero() + " de la trayectoria " + ((paso.getTrayectoria().isAlternativa()) ? "alternativa " + paso.getTrayectoria().getClave() : "principal") + " del caso de uso " + casoUso;
-			} else if (extension != null && !isListado(cu_ptosExtensionNotificados, extension.getCasoUsoDestino().getId())) {
+			} else if (extension != null) {
 				casoUso = extension.getCasoUsoOrigen().getClave() + extension.getCasoUsoOrigen().getNumero() + " " + extension.getCasoUsoOrigen().getNombre();
 				linea = "Puntos de extensión del caso de uso " + casoUso;
-				cu_ptosExtensionNotificados.add(extension.getCasoUsoOrigen().getId());
 				
 			}
 			if (linea != "") {
-				referenciasVista.add(linea);
+				cadenasReferencia.add(linea);
 			}
 		}
 		
 		for (Extension referenciaExtension : referenciasExtension) {
 			String linea = "";
-			if (!isListado(cu_ptosExtensionNotificados, referenciaExtension.getCasoUsoOrigen().getId())) {
 				casoUso = referenciaExtension.getCasoUsoOrigen().getClave() + referenciaExtension.getCasoUsoOrigen().getNumero() + " " + referenciaExtension.getCasoUsoOrigen().getNombre();
 				linea = "Puntos de extensión del caso de uso " + casoUso;
-			}
 			if (linea != "") {
-				referenciasVista.add(linea);
+				cadenasReferencia.add(linea);
 			}		
 		}
+		
+		for (Trayectoria tray : model.getTrayectorias()) {
+			cadenasReferencia.addAll(TrayectoriaBs.verificarReferencias(tray));
+		}
+			
+		referenciasVista.addAll(cadenasReferencia);
 		
 		return referenciasVista;
 	}

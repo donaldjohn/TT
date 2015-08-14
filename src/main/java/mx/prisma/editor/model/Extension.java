@@ -101,7 +101,7 @@ public class Extension implements java.io.Serializable {
 		this.casoUsoDestino = casoUsoDestino;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "extension", orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "extension", orphanRemoval = true)
 	public Set<ReferenciaParametro> getReferencias() {
 		return referencias;
 	}
