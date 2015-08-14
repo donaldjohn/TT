@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -15,8 +16,13 @@ import org.apache.struts2.interceptor.SessionAware;
 import com.opensymphony.xwork2.ModelDriven;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
+import mx.prisma.bs.AnalisisEnum.CU_Pantallas;
+import mx.prisma.editor.bs.CuBs;
+import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.PantallaBs;
 import mx.prisma.editor.model.Accion;
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.TipoAccion;
@@ -30,7 +36,9 @@ import mx.prisma.util.SessionManager;
 
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "pantallas" }), })
+		"actionName", "pantallas" }),
+		@Result(name = "referencias", type = "json", params = { "root",
+		"elementosReferencias" }) })
 public class PantallasCtrl extends ActionSupportPRISMA implements
 		ModelDriven<Pantalla>, SessionAware {
 	/** 
@@ -53,6 +61,9 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	private String imagenPantallaFileName;
 	private String pantallaB64;
 	private List<String> imagenesAcciones;
+	private List<String> elementosReferencias;
+	private String observaciones;
+	private String comentario;
 	
 
 	public String index() throws Exception {
@@ -137,6 +148,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 					for (Accion accion : model.getAcciones()) {
 						accion.setPantalla(model);
 						accion.setTipoAccion(PantallaBs.consultarTipoAccion(accion.getTipoAccion().getId()));
+						
 						if(accion.getPantallaDestino().getId() == 0) {
 							accion.setPantallaDestino(model);
 						} else {
@@ -146,15 +158,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 						byte[] imgDecodificada= Convertidor.convertStringPNGB64ToBytes(imagenesAccionesTexto.get(i));
 						
 						accion.setImagen(imgDecodificada);
-						
-						//Pruebas
-						byte[] bImage = Convertidor.decodeByteArrayB64(accion.getImagen());
-
-						@SuppressWarnings("deprecation")
-						String ruta = request.getRealPath("/") + "/tmp/images/" + accion.getNombre() + ".png";
-						Convertidor.convertByteArrayToFile(ruta, bImage);
-						//Fin pruebas
-						
+									
 						i++;
 					}
 				}
@@ -211,9 +215,78 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	
 	public String edit() throws Exception {
 		String resultado = null;
-		
+		prepararVista();
+		try {
+
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			model.setModulo(modulo);
+			ElementoBs.verificarEstado(model, CU_Pantallas.MODIFICARPANTALLA6_2);
+
+			buscaCatalogos();
+			prepararVista();
+
+			resultado = EDIT;
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = edit();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+
 		return resultado;
 		
+	}
+	
+	public String update() throws Exception {
+		String resultado = null;
+		try {
+			modulo = SessionManager.consultarModuloActivo();
+			proyecto = modulo.getProyecto();
+
+			Actualizacion actualizacion = new Actualizacion(new Date(),
+					comentario, model,
+					SessionManager.consultarColaboradorActivo());
+
+			//PantallaBs.modificarPantalla(model, actualizacion);
+			resultado = SUCCESS;
+			addActionMessage(getText("MSG1", new String[] { "La",
+					"Pantalla", "modificada" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = edit();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+	
+	public String destroy() throws Exception {
+		String resultado =  null;
+		try {
+			PantallaBs.eliminarPantalla(model);
+			resultado = SUCCESS;
+			addActionMessage(getText("MSG1", new String[] { "La",
+					"Pantalla", "eliminada" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+			
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
 	}
 
 	public String show() throws Exception{
@@ -269,6 +342,17 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 		jsonAccionesTabla = JsonUtil.mapListToJSON(listAcciones);
 		jsonImagenesAcciones = JsonUtil.mapListToJSON(listImagenesAcciones);
 		
+	}
+	
+	public String verificarElementosReferencias() {
+		try {
+			elementosReferencias = new ArrayList<String>();
+			elementosReferencias = PantallaBs.verificarReferencias(model);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "referencias";
 	}
 
 	public Pantalla getModel() {
@@ -385,6 +469,14 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 
 	public void setImagenesAcciones(List<String> imagenesAcciones) {
 		this.imagenesAcciones = imagenesAcciones;
+	}
+
+	public List<String> getElementosReferencias() {
+		return elementosReferencias;
+	}
+
+	public void setElementosReferencias(List<String> elementosReferencias) {
+		this.elementosReferencias = elementosReferencias;
 	}
 
 	

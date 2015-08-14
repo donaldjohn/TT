@@ -8,6 +8,9 @@ public class AnalisisEnum {
 		ELIMINARTRAYECTORIA5_1_1_3
 	}
 	public enum CU_ReglasNegocio {
-		ModificarReglaNegocio8_2, EliminarReglaNegocio8_3
+		MODIFICARREGLANEGOCIO8_2, ELIMINARREGLANEGOCIO8_3
+	}
+	public enum CU_Pantallas {
+		MODIFICARPANTALLA6_2, ELIMINARPANTALLA6_3  
 	}
 }

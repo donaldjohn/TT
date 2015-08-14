@@ -320,7 +320,7 @@ public class ReglaNegocioBs {
 				model.setClave(CLAVE);
 				model.setEstadoElemento(ElementoBs.consultarEstadoElemento(Estado.EDICION));
 				model.setNombre(model.getNombre().trim());
-				ElementoBs.verificarEstado(model, CU_ReglasNegocio.ModificarReglaNegocio8_2);
+				ElementoBs.verificarEstado(model, CU_ReglasNegocio.MODIFICARREGLANEGOCIO8_2);
 				new ReglaNegocioDAO().modificarElemento(model);
 		} catch (JDBCException je) {
 				if(je.getErrorCode() == 1062)
@@ -340,7 +340,7 @@ public class ReglaNegocioBs {
 
 	public static void eliminarReglaNegocio(ReglaNegocio model) throws Exception {
 		try {
-			ElementoBs.verificarEstado(model, CU_ReglasNegocio.ModificarReglaNegocio8_2);
+			ElementoBs.verificarEstado(model, CU_ReglasNegocio.MODIFICARREGLANEGOCIO8_2);
 			new ReglaNegocioDAO().eliminarElemento(model);
 	} catch (JDBCException je) {
 			if(je.getErrorCode() == 1451)

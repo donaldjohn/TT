@@ -1,6 +1,7 @@
 package mx.prisma.editor.bs;
 
 import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
+import mx.prisma.bs.AnalisisEnum.CU_Pantallas;
 import mx.prisma.bs.AnalisisEnum.CU_ReglasNegocio;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.model.Elemento;
@@ -88,14 +89,32 @@ public class ElementoBs {
 	public static void verificarEstado(Elemento elemento,
 			CU_ReglasNegocio reglaNegocioAnalisis) {
 		switch(reglaNegocioAnalisis) {
-		case ModificarReglaNegocio8_2:
+		case MODIFICARREGLANEGOCIO8_2:
 			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION)) {
 				throw new PRISMAException("El estado de la regla de negocio es inválido.", "MSG13");
 			}
 			break;
-		case EliminarReglaNegocio8_3:
+		case ELIMINARREGLANEGOCIO8_3:
 			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION)) {
 				throw new PRISMAException("El estado de la regla de negocio es inválido.", "MSG13");
+			}
+			break;
+		default:
+			break;
+		}
+		
+	}
+	public static void verificarEstado(Elemento elemento,
+			CU_Pantallas reglaNegocioAnalisis) {
+		switch(reglaNegocioAnalisis) {
+		case MODIFICARPANTALLA6_2:
+			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION)) {
+				throw new PRISMAException("El estado de la pantalla es inválido.", "MSG13");
+			}
+			break;
+		case ELIMINARPANTALLA6_3:
+			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION)) {
+				throw new PRISMAException("El estado de la pantalla es inválido.", "MSG13");
 			}
 			break;
 		default:

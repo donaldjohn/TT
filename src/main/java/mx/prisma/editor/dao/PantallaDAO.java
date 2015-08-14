@@ -3,6 +3,7 @@ package mx.prisma.editor.dao;
 import java.util.List;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
 import mx.prisma.util.HibernateUtil;
@@ -95,6 +96,22 @@ public class PantallaDAO extends ElementoDAO {
 			session.getTransaction().rollback();
 		}
 		return pantallas;
+	}
+
+	public void modificarPantalla(Pantalla model, Actualizacion actualizacion) {
+		try {
+			session.beginTransaction();
+			
+			
+			session.update(model);
+			session.save(actualizacion);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
+		
 	}
 
 }

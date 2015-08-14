@@ -191,7 +191,7 @@ public String edit() {
 		String resultado = null;
 		try {
 			//model = ReglaNegocioBs.consultaReglaNegocio(idSel);
-			ElementoBs.verificarEstado(model, CU_ReglasNegocio.ModificarReglaNegocio8_2);
+			ElementoBs.verificarEstado(model, CU_ReglasNegocio.MODIFICARREGLANEGOCIO8_2);
 			proyecto = SessionManager.consultarProyectoActivo();
 			
 			buscaCatalogos();
