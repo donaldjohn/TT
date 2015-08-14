@@ -5,9 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Base64;
-import java.util.Base64.Decoder;
-import java.util.Base64.Encoder;
+
+import org.apache.commons.codec.binary.Base64;
 
 public class Convertidor {
 	public static byte[] convertFileToByteArray(File file) {
@@ -38,7 +37,6 @@ public class Convertidor {
 
 	public static File convertByteArrayToFile(String ruta, byte[] bImage)
 			throws FileNotFoundException, IOException {
-		System.out.println("ruta desde convertidor " + ruta);
 		if (bImage == null) {
 			System.err.println("No se puede convertir un arreglo nulo");
 			return null;
@@ -70,7 +68,7 @@ public class Convertidor {
 	}
 	
 	public static byte[] decodeByteArrayB64( byte[] bImage) {
-		Decoder decoder = Base64.getDecoder();
+		Base64 decoder = new Base64();
 		byte[] bImageDecod = null;
 		if(bImage != null) {
 			bImageDecod = decoder.decode(bImage);
@@ -81,7 +79,7 @@ public class Convertidor {
 	}
 
 	public static byte[] encodeByteArrayB64(byte[] bImagen) {
-		Encoder encoder = Base64.getEncoder();
+		Base64 encoder = new Base64();
 		byte[] bImageEncod = null;
 		if(bImagen != null) {
 			bImageEncod = encoder.encode(bImagen);
@@ -90,5 +88,24 @@ public class Convertidor {
 		}
 		
 		return bImageEncod;
+	}
+
+	public static byte[] convertStringPNGB64ToBytes(String string) {
+		int index = string.indexOf("base64") + 7;
+		System.out.println("index: " + index);
+		System.out.println("img a bytes: " + string.substring(index));
+		return string.substring(index).getBytes();
+	}
+
+	public static String convertBytesToStringPNGB64(byte[] bytes) {
+		String string = null;
+		if(bytes != null) {
+			string = new String(bytes);
+			string = "data:image/png;base64,".concat(string);
+		} else {
+			System.err.println("No se puede convertir un byte array a cadena");
+		}
+		
+		return string;
 	}
 }

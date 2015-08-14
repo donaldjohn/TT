@@ -59,10 +59,7 @@
 					Además, también buscará el parámetro request_locale para el cambio de idioma -->
 				<interceptor-ref name="i18n" />
 				
-				<interceptor-ref name="fileUpload">
-		       		<param name="allowedTypes">image/jpeg,image/png</param>
-		       		<param name="maximumSize">10240</param>
-		  	    </interceptor-ref>
+				<interceptor-ref name="fileUpload"/>
 
 				<!-- Permite la ejecución del método prepare -->
 				<interceptor-ref name="prepare" />

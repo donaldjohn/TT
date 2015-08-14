@@ -11,7 +11,6 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
-import org.apache.tomcat.util.codec.binary.Base64;
 
 import com.opensymphony.xwork2.ModelDriven;
 
@@ -53,6 +52,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	private String imagenPantallaContentType;
 	private String imagenPantallaFileName;
 	private String pantallaB64;
+	private List<String> imagenesAcciones;
 	
 
 	public String index() throws Exception {
@@ -127,10 +127,6 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 			if (jsonAccionesTabla != null && !jsonAccionesTabla.equals("")) {
 				if(jsonImagenesAcciones != null && !jsonImagenesAcciones.equals("")) {
 					imagenesAccionesTexto = JsonUtil.mapJSONToArrayList(jsonImagenesAcciones, String.class);
-					System.out.println("size imagenesAccionesTexto: " + imagenesAccionesTexto.size());
-					for(String img : imagenesAccionesTexto) {
-						System.out.println("img b64: " + img);
-					}
 				}
 	
 				
@@ -147,17 +143,18 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 							accion.setPantallaDestino(PantallaBs.consultarPantalla(accion.getPantallaDestino().getId()));
 						}
 						
-						byte[] imgDecodificada= imagenesAccionesTexto.get(i).getBytes();
+						byte[] imgDecodificada= Convertidor.convertStringPNGB64ToBytes(imagenesAccionesTexto.get(i));
 						
 						accion.setImagen(imgDecodificada);
 						
-						System.out.println("img byte[]: " + accion.getImagen());
-						
+						//Pruebas
 						byte[] bImage = Convertidor.decodeByteArrayB64(accion.getImagen());
 
 						@SuppressWarnings("deprecation")
 						String ruta = request.getRealPath("/") + "/tmp/images/" + accion.getNombre() + ".png";
 						Convertidor.convertByteArrayToFile(ruta, bImage);
+						//Fin pruebas
+						
 						i++;
 					}
 				}
@@ -169,7 +166,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 
 	public String create() throws Exception {
 		String resultado = null;
-
+		System.out.println("desde create");
 		try {
 			agregarAcciones();
 			agregarImagen();
@@ -215,7 +212,8 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	public String show() throws Exception{
 		String resultado = null;
 		try {
-			model = PantallaBs.consultarPantalla(idSel);
+			
+			prepararVista();
 			String nombre = model.getClave() + model.getNombre() + model.getNumero() + ".png";
 			@SuppressWarnings("deprecation")
 			String ruta = request.getRealPath("/") + "/tmp/images/" + nombre;
@@ -239,6 +237,33 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	}
 
 	
+	private void prepararVista() {
+		pantallaB64 = Convertidor.convertBytesToStringPNGB64(model.getImagen());
+		List<Accion> listAcciones = new ArrayList<Accion>();
+		List<String> listImagenesAcciones = new ArrayList<String>();
+		for(Accion acc : model.getAcciones()) {
+			Accion accAux = new Accion();
+			accAux.setId(acc.getId());
+			accAux.setNombre(acc.getNombre());
+			accAux.setDescripcion(acc.getDescripcion());
+			accAux.setTipoAccion(acc.getTipoAccion());
+			
+			Pantalla pAux = new Pantalla();
+			Pantalla pant = acc.getPantalla();
+			pAux.setClave(pant.getClave());
+			pAux.setNumero(pant.getNumero());
+			pAux.setNombre(pant.getNombre());
+			
+			accAux.setPantallaDestino(pAux);
+			listAcciones.add(accAux);
+			
+			listImagenesAcciones.add(Convertidor.convertBytesToStringPNGB64(acc.getImagen()));
+		}
+		jsonAccionesTabla = JsonUtil.mapListToJSON(listAcciones);
+		jsonImagenesAcciones = JsonUtil.mapListToJSON(listImagenesAcciones);
+		
+	}
+
 	public Pantalla getModel() {
 		return (model == null) ? model = new Pantalla() : this.model;
 	}
@@ -272,6 +297,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 
 	public void setIdSel(Integer idSel) {
 		this.idSel = idSel;
+		model = PantallaBs.consultarPantalla(idSel);
 	}
 
 	public List<Pantalla> getListPantallas() {
@@ -280,14 +306,6 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 
 	public void setListPantallas(List<Pantalla> listPantallas) {
 		this.listPantallas = listPantallas;
-	}
-
-	public File getImagePantalla() {
-		return imagenPantalla;
-	}
-
-	public void setImagePantalla(File imagePantalla) {
-		this.imagenPantalla = imagePantalla;
 	}
 
 	public File getImagenPantalla() {
@@ -352,6 +370,14 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 
 	public void setPantallaB64(String pantallaB64) {
 		this.pantallaB64 = pantallaB64;
+	}
+
+	public List<String> getImagenesAcciones() {
+		return imagenesAcciones;
+	}
+
+	public void setImagenesAcciones(List<String> imagenesAcciones) {
+		this.imagenesAcciones = imagenesAcciones;
 	}
 
 	

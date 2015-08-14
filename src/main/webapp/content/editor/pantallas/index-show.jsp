@@ -7,6 +7,9 @@
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Pantalla</title>
+<![CDATA[
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/pantallas/js/index-show.js"></script>	
+]]>
 
 </head>
 <body>
@@ -22,68 +25,68 @@
 				<h4><s:property value="model.nombre"/></h4>
 				<p class="instrucciones"><s:property value="model.descripcion"/></p>
 			</div>
+			<div class="marcoImagen" id="marco-pantalla" style="display: none;">
+				<center>
+					<img id="pantalla" src="#" class="imagen" />
+				</center>
+			</div>
 		</div>
-		<div class="formulario">
-			<div class="seccion"><center><img src="/tmp/images/IUop1212.png"/></center></div>
-		</div>
-		<!--  <div class="formulario">
+		
+		
+		<div class="formulario" id="seccion-acciones" >
 			<div class="tituloFormulario">${blanks}</div>
-			<div class="seccion">
-				<h5><s:text name="labelAtributos" /></h5>
-				<s:iterator value="atributos" var="atributo">
-					<table>
+			<div class="seccion" id="acciones">
+				<h5><s:text name="labelAcciones" /></h5>
+				<s:iterator value="model.acciones" var="accion">
+				<table class="tablaConsulta">
 						<tr>
 							<td class="definicion">
-								<a name="atributo-${atributo.id}"></a>
-								<span class="labelIzq consulta"><s:property value="#atributo.nombre"/></span>
+								<a name="accion-${accion.id}"><!-- accion --></a>
+								<span class="labelIzq consulta"><s:property value="%{#accion.nombre}"/></span>
+											<span class="ui-widget "> 
+											${blanks} <s:property value="%{#accion.descripcion}"/>
+											${blanks}
+											</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="marcoImagen" id="marco-accion${accion.id}" style="display: none;">
+									<center><img src="#" id="accion${accion.id}"/></center>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="labelIzq consulta"><s:text name="labelTipoAccion" /></span>
 								<span class="ui-widget "> 
-								${blanks} <s:property value="#atributo.descripcion"/>
-								${blanks}
-								
-								<s:if test="#atributo.tipoDato.nombre == 'Cadena'">
-									<s:text name="descripcionCadena">
-										<s:param><s:property value="#atributo.longitud"/></s:param>
-									</s:text> ${blanks}
-								</s:if> <s:elseif test="#atributo.tipoDato.nombre == 'Fecha'">
-									<s:text name="descripcionFecha"/> ${blanks}
-								</s:elseif> <s:elseif test="#atributo.tipoDato.nombre == 'Archivo'">
-									<s:text name="descripcionArchivo">
-										<s:param><s:property value="#atributo.formatoArchivo"/></s:param>
-										<s:param><s:property value="#atributo.tamanioArchivo"/></s:param>
-										<s:param><s:property value="#atributo.unidadTamanio.abreviatura"/></s:param>
-									</s:text> ${blanks}
-								</s:elseif> <s:elseif test="#atributo.tipoDato.nombre == 'Booleano'">
-									<s:text name="descripcionBooleano"/> ${blanks}
-								</s:elseif> <s:elseif test="#atributo.tipoDato.nombre == 'Entero'">
-									<s:text name="descripcionEntero">
-										<s:param><s:property value="#atributo.longitud"/></s:param>
-									</s:text> ${blanks}
-								</s:elseif> <s:elseif test="#atributo.tipoDato.nombre == 'Flotante'">
-									<s:text name="descripcionFlotante">
-										<s:param><s:property value="#atributo.longitud"/></s:param>
-									</s:text> ${blanks}
-								</s:elseif> <s:elseif test="#atributo.tipoDato.nombre == 'Otro'">
-									<s:text name="descripcionOtro">
-										<s:param><s:property value="#atributo.otroTipoDato"/></s:param>
-									</s:text> ${blanks}
-								</s:elseif> 
-								
-								
-								<s:if test="#atributo.obligatorio">
-									<s:text name="descripcionObligatorio"/> ${blanks}
-								</s:if> <s:else>
-									<s:text name="descripcionOpcional"/> ${blanks}
-								</s:else>
-								
+											${blanks} <s:property value="#accion.tipoAccion.nombre"/>
+											${blanks}
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="labelIzq consulta"><s:text name="labelPantallaDestino" /></span>
+								<span class="ui-widget "> 
+											${blanks}
+											<s:if test="#accion.pantallaDestino.id == model.id">
+												<s:text name="labelPantallaActual"/>
+											</s:if> <s:else>
+											<a class="referencia"
+												href='${pageContext.request.contextPath}/pantallas/${accion.pantallaDestino.id}'>
+													${accion.pantallaDestino.clave}
+													${accion.pantallaDestino.numero} ${blanks}
+													${accion.pantallaDestino.nombre}</a>
+											</s:else> 
+											
 								</span>
 							</td>
 						</tr>
 					</table>
-					<br/>
 				</s:iterator>
-				
 			</div>
-		</div>-->
+		</div>
 
 		<br />
 		<div align="center">
@@ -92,6 +95,12 @@
 				value="Aceptar" />
 		</div>
 		
+		<s:hidden id="pantallaB64" name="pantallaB64"
+			value="%{pantallaB64}" />
+		<s:hidden id="jsonAccionesTabla" name="jsonAccionesTabla"
+			value="%{jsonAccionesTabla}" />
+		<s:hidden id="jsonImagenesAcciones" name="jsonImagenesAcciones"
+			value="%{jsonImagenesAcciones}" />
 
 
 

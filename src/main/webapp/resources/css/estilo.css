@@ -435,6 +435,7 @@ a.referencia:hover {
 	border-style: dashed;
 	border-color: #e5e5e5;
 	margin: 20px;
+	padding: 5px;
 }
 
 .observaciones {
@@ -460,4 +461,8 @@ a.referencia:hover {
 	position: relative;
 	vertical-align: top; 
 	text-align: right; 
+}
+
+.tablaConsulta {
+	min-width: 100%;
 }

@@ -19,7 +19,7 @@ $(document).ready(function() {
 						function(i, item) {
 							var img = "Sin imagen"; 
 					    	if(parsedJsonImg[i] != "") {
-					    		img = "<center><img src = 'data:image/png;base64," + parsedJsonImg[i] + "'/></center>";
+					    		img = "<center><img src = '" + parsedJsonImg[i] + "'/></center>";
 					    	}
 					    		
 							var accion = [
@@ -51,7 +51,7 @@ function ocultarColumnas(tabla) {
 }
 
 function mostrarPrevisualizacion(inputFile, nombre) {
-	inputFile.style.display = 'none';
+	document.getElementById("fila-" + nombre).style.display = 'none';
 	var idImg = nombre.replace(/\s/g, "_");
 	if (inputFile.files && inputFile.files[0]) {
         var reader = new FileReader();
@@ -84,10 +84,7 @@ function obtenerImagenTextoPantalla(inputFile) {
         var reader = new FileReader();
         reader.readAsDataURL(inputFile.files[0]);
         reader.onload = function (e) {
-            var imgTextoCrudo = reader.result;
-            var i = imgTextoCrudo.indexOf("base64") + 7;
-            var imgTextoB64 = imgTextoCrudo.substring(i, imgTextoCrudo.length);
-            document.getElementById("pantallaB64").value = imgTextoB64;
+            document.getElementById("pantallaB64").value = reader.result;
         }
     } else {
     	return "";
@@ -99,10 +96,7 @@ function obtenerImagenTextoAccion(inputFile) {
         var reader = new FileReader();
         reader.readAsDataURL(inputFile.files[0]);
         reader.onload = function (e) {
-            var imgTextoCrudo = reader.result;
-            var i = imgTextoCrudo.indexOf("base64") + 7;
-            var imgTextoB64 = imgTextoCrudo.substring(i, imgTextoCrudo.length);
-            dataTableCDT.insertarValorCelda("tablaAccion", "max", 2, imgTextoB64);
+            dataTableCDT.insertarValorCelda("tablaAccion", "max", 2, reader.result);
         }
     } else {
     	return "";
@@ -156,6 +150,7 @@ function registrarAccion() {
 		document.getElementById("accion.tipoAccion").selectedIndex = 0;
 		document.getElementById("accion.pantallaDestino").selectedIndex = 0;
 		document.getElementById("marco-accion").style.display = 'none';
+		document.getElementById("fila-accion").style.display = '';
 
 		$('#accionDialog').dialog('close');
 	} else {
@@ -171,6 +166,7 @@ function cancelarRegistrarAccion() {
 	document.getElementById("accion.tipoAccion").selectedIndex = 0;
 	document.getElementById("accion.pantallaDestino").selectedIndex = 0;
 	document.getElementById("marco-accion").style.display = 'none';
+	document.getElementById("fila-accion").style.display = '';
 	// Se cierra la emergente
 	$('#accionDialog').dialog('close');
 };
@@ -315,7 +311,7 @@ function solicitarModificacionAccion(idTabla, registro) {
 	document.getElementById("accion.nombre").value = cells[1];
 	
 	if(cells[2] != "") {
-		document.getElementById("accion").src = 'data:image/png;base64,' + cells[2];
+		document.getElementById("accion").src = cells[2];
 		document.getElementById("marco-accion").style.display = '';
 	}
 		
@@ -340,15 +336,15 @@ function eliminarImagen(idImg, idFileUpload) {
 	
 	var fileUpload = document.getElementById(idFileUpload);
 	fileUpload.value = null;
-	fileUpload.style.display = '';
+	document.getElementById("fila-" + idImg).style.display = '';
 
 }
 
 function cargarImagenPantalla() {
 	var imgPantalla = document.getElementById("pantallaB64").value;
 	if(imgPantalla != "") {
-		document.getElementById("pantalla").src = "data:image/png;base64," + imgPantalla;
-		document.getElementById("imagenPantalla").style.display = 'none';
+		document.getElementById("pantalla").src = imgPantalla;
+		document.getElementById("fila-pantalla").style.display = 'none';
 		document.getElementById("marco-pantalla").style.display = '';
 	}
 }

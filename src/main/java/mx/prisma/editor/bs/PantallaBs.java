@@ -50,7 +50,7 @@ public class PantallaBs {
 			if (je.getErrorCode() == 1062) {
 				throw new PRISMAValidacionException("La pantalla "
 						+ model.getNombre() + " ya existe.", "MSG7",
-						new String[] { "La", "entidad", model.getNombre() },
+						new String[] { "La", "Pantalla", model.getNombre() },
 						"model.nombre");
 			}
 			System.out.println("ERROR CODE " + je.getErrorCode());

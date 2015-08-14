@@ -60,7 +60,7 @@
 							cssErrorClass="input-error"></s:textarea> <s:fielderror
 							fieldName="model.descripcion" cssClass="error" theme="jquery" /></td>
 				</tr>
-				<tr>
+				<tr id="fila-pantalla">
 					<td class="label"><s:text name="labelImagen" /></td>
 					<td><s:file id="imagenPantalla" name="imagenPantalla"
 							size="40" cssClass="inputFormulario ui-widget"
@@ -71,6 +71,7 @@
 				</tr>
 			</table>
 			<div class="marcoImagen" id="marco-pantalla" style="display: none;">
+				
 				<div class="btnEliminar">
 					<a onclick="eliminarImagen('pantalla', 'imagenPantalla');"><img
 						title="Eliminar"
@@ -79,6 +80,7 @@
 				<center>
 					<img id="pantalla" src="#" class="imagen" />
 				</center>
+				<div class="textoAyuda">Imagen seleccionada</div>
 			</div>
 			<br />
 		</div>
@@ -138,10 +140,13 @@
 	</s:form>
 
 	<!-- EMERGENTE REGISTRAR ACCION -->
-	<sj:dialog id="accionDialog" title="Ingrese la información de la Acción" autoOpen="false"
+	<sj:dialog id="accionDialog" title="Acción" autoOpen="false"
 		minHeight="300" minWidth="800" modal="true" draggable="true">
 		<s:form autocomplete="off" id="frmAccion" name="frmAccionName"
 			theme="simple">
+			<div class="formulario">
+			<div class="tituloFormulario">Información general de la
+				Acción</div>
 				<s:hidden id="filaAccion" />
 				<table class="seccion">
 					<tr>
@@ -156,7 +161,7 @@
 								id="accion.descripcion" maxlength="999"
 								cssErrorClass="input-error"></s:textarea></td>
 					</tr>
-					<tr>
+					<tr id="fila-accion">
 						<td class="label"><s:text name="labelImagen" /></td>
 						<td id="imagenAccion"><s:file name="imagenesAcciones"
 								id="accion.imagen" size="40"
@@ -174,6 +179,7 @@
 								<center>
 									<img src="#" id="accion" class="imagen" />
 								</center>
+								<div class="textoAyuda">Imagen seleccionada</div>
 							</div></td>
 					</tr>
 					<tr>
@@ -193,6 +199,7 @@
 								headerValue="Seleccione" headerKey="-1" listValue="nombre"></s:select></td>
 					</tr>
 				</table>
+			</div>
 			<br />
 			<div align="center">
 				<input type="button" onclick="registrarAccion()" value="Aceptar" />
