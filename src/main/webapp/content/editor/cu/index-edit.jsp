@@ -258,7 +258,7 @@
 				<div class="seccion">
 					<p class="instrucciones">Ingrese un comentario referente a la
 						modificación realizada.</p>
-				</div>
+				
 
 				<table>
 					<tr>
@@ -268,6 +268,7 @@
 								cssErrorClass="input-error" cssClass="inputFormulario ui-widget" /></td>
 					</tr>
 				</table>
+				</div>
 			</div>
 			<br />
 			<div align="center">

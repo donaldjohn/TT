@@ -244,7 +244,8 @@ public class TrayectoriaBs {
 		Paso paso = null;
 		
 		String casoUso = "";
-
+		Integer idSelf = null;
+		
 		ids_ReferenciaParametro = new ElementoDAO().consultarReferenciasParametro(model);
 		
 		if(ids_ReferenciaParametro != null) {
@@ -268,11 +269,12 @@ public class TrayectoriaBs {
 				}
 				 
 			} else if (paso != null) {
+				idSelf = paso.getTrayectoria().getId();
 				casoUso =  paso.getTrayectoria().getCasoUso().getClave()  + paso.getTrayectoria().getCasoUso().getNumero() + " " + paso.getTrayectoria().getCasoUso().getNombre();
 				linea = "Paso " + paso.getNumero() + " de la trayectoria " + ((paso.getTrayectoria().isAlternativa()) ? "alternativa " + paso.getTrayectoria().getClave() : "principal") + " del caso de uso " + casoUso;
 			} 
 			
-			if (linea != "") {
+			if (linea != "" && idSelf != model.getId()) {
 				cadenasReferencia.add(linea);
 			}
 		}

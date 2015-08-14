@@ -182,7 +182,7 @@
 				<div class="seccion">
 					<p class="instrucciones">Ingrese un comentario referente a la
 						modificación realizada.</p>
-				</div>
+				
 
 				<table>
 					<tr>
@@ -198,6 +198,24 @@
 				<input type="button" onclick="enviarComentarios()" value="Aceptar" />
 				<input type="button" onclick="cancelarRegistroComentarios()"
 					value="Cancelar" />
+			</div>
+		</s:form>
+	</sj:dialog>
+	
+	<!-- EMERGENTE ERROR REFERENCIAS -->
+	<sj:dialog id="mensajeReferenciasDialog" title="Confirmación"
+		autoOpen="false" minHeight="200" minWidth="700" modal="true"
+		draggable="true">
+		<s:form autocomplete="off" id="frmConfirmarEliminacion"
+			name="frmConfirmarEliminacionName" theme="simple">
+			<div class="seccion">
+				<s:text name="MSG14" />
+				<div id="elementosReferencias"></div>
+			</div>
+			<br />
+			<div align="center">
+				<input type="button" onclick="cerrarMensajeReferencias()"
+					value="Aceptar" />
 			</div>
 		</s:form>
 	</sj:dialog>

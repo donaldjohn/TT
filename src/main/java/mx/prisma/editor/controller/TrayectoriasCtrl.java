@@ -22,6 +22,7 @@ import mx.prisma.bs.TipoSeccionEnum;
 import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
 import mx.prisma.bs.TipoSeccionEnum.TipoSeccionENUM;
 import mx.prisma.editor.bs.ElementoBs;
+import mx.prisma.editor.bs.PasoBs;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.bs.TrayectoriaBs;
 import mx.prisma.editor.dao.PasoDAO;
@@ -88,6 +89,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 	private String jsonAcciones;
 
 	private Integer idSel;
+	private Integer idSelPaso;
 
 	private boolean existeTPrincipal;
 	private List<String> listAlternativa;
@@ -589,7 +591,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 	public String verificarElementosReferenciasPaso() {
 		try {
 			elementosReferencias = new ArrayList<String>();
-			elementosReferencias = TrayectoriaBs.verificarReferencias(model);
+			elementosReferencias = PasoBs.verificarReferencias(PasoBs.consultarPaso(idSelPaso));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -806,4 +808,15 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 		this.elementosReferencias = elementosReferencias;
 	}
 
+	
+	public Integer getIdSelPaso() {
+		return idSelPaso;
+	}
+
+	
+	public void setIdSelPaso(Integer idSelPaso) {
+		this.idSelPaso = idSelPaso;
+	}
+
+	
 }
