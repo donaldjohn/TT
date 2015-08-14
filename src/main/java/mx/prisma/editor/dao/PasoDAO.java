@@ -10,7 +10,7 @@ public class PasoDAO {
 	private Session session = null;
 
 	public PasoDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		this.session = HibernateUtil.getSessionFactory().openSession();
 	}
 	public Paso consultarPaso(int id) {
 		Paso paso = null;
@@ -25,6 +25,5 @@ public class PasoDAO {
 		}
 
 		return paso;
-
 	}
 }

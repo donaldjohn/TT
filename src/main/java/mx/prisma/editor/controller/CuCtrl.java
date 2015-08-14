@@ -9,7 +9,6 @@ import java.util.Set;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
-import mx.prisma.editor.bs.ReglaNegocioBs;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.TipoSeccionEnum;
@@ -277,7 +276,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		return resultado;
 	}
 
-	public String destroy() {
+	public String destroy() throws Exception {
 		String resultado = null;
 		try {
 			CuBs.eliminarCasoUso(model);
@@ -732,7 +731,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	public void setComentario(String comentario) {
 		this.comentario = comentario;
 	}
-
 	
 	public List<String> getElementosReferencias() {
 		return elementosReferencias;

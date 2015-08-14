@@ -1,6 +1,7 @@
 package mx.prisma.editor.bs;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -12,11 +13,15 @@ import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
 import mx.prisma.bs.ReferenciaEnum.TipoCatalogo;
 import mx.prisma.bs.ReferenciaEnum.TipoSeccion;
 import mx.prisma.editor.bs.ElementoBs.Estado;
+import mx.prisma.editor.dao.ElementoDAO;
+import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.dao.TrayectoriaDAO;
 import mx.prisma.editor.dao.VerboDAO;
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Paso;
+import mx.prisma.editor.model.PostPrecondicion;
+import mx.prisma.editor.model.ReferenciaParametro;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.editor.model.Verbo;
 import mx.prisma.util.PRISMAException;
@@ -70,6 +75,24 @@ public class TrayectoriaBs {
 		}
 	}
 	
+	public static void eliminarTrayectoria(Trayectoria model) throws Exception {
+		try {
+			ElementoBs.verificarEstado(model.getCasoUso(), CU_CasosUso.ELIMINARTRAYECTORIA5_1_1_3);
+			new TrayectoriaDAO().eliminarTrayectoria(model);
+	} catch (JDBCException je) {
+			if(je.getErrorCode() == 1451)
+			{
+				throw new PRISMAException("No se puede eliminar el caso de uso", "MSG14");
+			}
+			System.out.println("ERROR CODE " + je.getErrorCode());
+			je.printStackTrace();
+			throw new Exception();
+	} catch(HibernateException he) {
+		he.printStackTrace();
+		throw new Exception();
+	}
+		
+	}
 
 	private static void validar(Trayectoria model) {
 		//Validaciones de la clave
@@ -208,5 +231,67 @@ public class TrayectoriaBs {
 					paso.getRedaccion(), trayectoria.getCasoUso().getProyecto()));
 			
 		}
+	}
+	
+	public static List<String> verificarReferencias(Trayectoria model) {
+		List<Integer> ids_ReferenciaParametro = null;
+		
+		List<ReferenciaParametro> referenciasParametro = new ArrayList<ReferenciaParametro>();
+		
+		List<String> referenciasVista = new ArrayList<String>();
+		Set<String> cadenasReferencia = new HashSet<String>(0);
+		PostPrecondicion postPrecondicion = null;
+		Paso paso = null;
+		
+		String casoUso = "";
+
+		ids_ReferenciaParametro = new ElementoDAO().consultarReferenciasParametro(model);
+		
+		if(ids_ReferenciaParametro != null) {
+			for (Integer id : ids_ReferenciaParametro) {	
+				referenciasParametro.add(new ReferenciaParametroDAO().consultarReferenciaParametro(id));
+			}
+		}
+
+		
+		for (ReferenciaParametro referencia : referenciasParametro) {
+			String linea = "";
+			postPrecondicion = referencia.getPostPrecondicion();
+			paso = referencia.getPaso();
+			
+			if (postPrecondicion != null) {
+				casoUso =  postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
+				if (postPrecondicion.isPrecondicion()) {
+					 linea = "Precondiciones del caso de uso " + casoUso;
+				} else {
+					 linea = "Postcondiciones del caso de uso " + postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
+				}
+				 
+			} else if (paso != null) {
+				casoUso =  paso.getTrayectoria().getCasoUso().getClave()  + paso.getTrayectoria().getCasoUso().getNumero() + " " + paso.getTrayectoria().getCasoUso().getNombre();
+				linea = "Paso " + paso.getNumero() + " de la trayectoria " + ((paso.getTrayectoria().isAlternativa()) ? "alternativa " + paso.getTrayectoria().getClave() : "principal") + " del caso de uso " + casoUso;
+			} 
+			
+			if (linea != "") {
+				cadenasReferencia.add(linea);
+			}
+		}
+		
+		for (Paso pasoModel : model.getPasos()) {
+			cadenasReferencia.addAll(PasoBs.verificarReferencias(pasoModel));
+		}
+			
+		referenciasVista.addAll(cadenasReferencia);
+			
+		return referenciasVista;
+	}
+	
+	public static boolean isListado(List<Integer> enteros, Integer entero) {
+		for (Integer i : enteros) {
+			if (i == entero) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

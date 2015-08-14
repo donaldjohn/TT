@@ -71,7 +71,7 @@
 							<!-- Eliminar caso de uso -->			
 							<s:url var="urlEliminar" value="%{#pageContext.request.contextPath}/cu/%{#cu.id}?_method=delete" method="post"/>
 							<s:a onclick="return verificarEliminacionElemento(%{#cu.id});">
-							<img id="" class="button" title="Eliminar Regla de negocio"
+							<img id="" class="button" title="Eliminar Caso de uso"
 									src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" /></s:a>					
 					</td>
 					

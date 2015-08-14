@@ -12,6 +12,8 @@ import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
 import mx.prisma.editor.model.Elemento;
+import mx.prisma.editor.model.Paso;
+import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.util.HibernateUtil;
 
 public class ElementoDAO {
@@ -271,12 +273,12 @@ public class ElementoDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Integer> consultarReferenciasParametro(Elemento elemento) {
+	public List<Integer> consultarReferenciasParametro(Object objeto) {
 		List<Integer> results = null;
 		SQLQuery query = null;
 		String queryCadena = null;
 		
-		switch(ReferenciaEnum.getTipoReferencia(elemento)) {
+		switch(ReferenciaEnum.getTipoReferencia(objeto)) {
 		case ACCION:
 			break;
 		case ACTOR:
@@ -284,6 +286,7 @@ public class ElementoDAO {
 		case ATRIBUTO:
 			break;
 		case CASOUSO:
+			Elemento elemento = (Elemento) objeto;
 			queryCadena = "SELECT id FROM ReferenciaParametro WHERE ElementoidDestino = "+elemento.getId()+";";
 			break;
 		case ENTIDAD:
@@ -293,12 +296,16 @@ public class ElementoDAO {
 		case PANTALLA:
 			break;
 		case PASO:
+			Paso paso = (Paso) objeto;
+			queryCadena = "SELECT id FROM ReferenciaParametro WHERE PasoidDestino = "+paso.getId()+";";
 			break;
 		case REGLANEGOCIO:
 			break;
 		case TERMINOGLS:
 			break;
 		case TRAYECTORIA:
+			Trayectoria trayectoria = (Trayectoria) objeto;
+			queryCadena = "SELECT id FROM ReferenciaParametro WHERE Trayectoriaid = "+trayectoria.getId()+";";
 			break;
 		default:
 			break;

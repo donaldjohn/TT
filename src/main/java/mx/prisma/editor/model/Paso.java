@@ -95,7 +95,7 @@ public class Paso implements java.io.Serializable {
 		this.redaccion = redaccion;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "Trayectoriaid", referencedColumnName ="id", nullable = false)
 	public Trayectoria getTrayectoria() {
 		return trayectoria;
@@ -105,7 +105,7 @@ public class Paso implements java.io.Serializable {
 		this.trayectoria = trayectoria;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "paso", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "paso", cascade = CascadeType.ALL, orphanRemoval = true)
 	public Set<ReferenciaParametro> getReferencias() {
 		return referencias;
 	}

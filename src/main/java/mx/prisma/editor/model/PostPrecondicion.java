@@ -86,7 +86,7 @@ public class PostPrecondicion implements java.io.Serializable {
 		this.casoUso = casoUso;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "postPrecondicion", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "postPrecondicion", cascade = CascadeType.ALL)
 	public Set<ReferenciaParametro> getReferencias() {
 		return referencias;
 	}
