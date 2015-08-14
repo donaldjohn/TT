@@ -284,9 +284,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			addActionMessage(getText("MSG1", new String[] { "El",
 					"caso de uso", "eliminado" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
-		} catch (PRISMAValidacionException pve) {
-			ErrorManager.agregaMensajeError(this, pve);
-			resultado = edit();
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();

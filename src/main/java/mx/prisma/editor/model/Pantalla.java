@@ -57,7 +57,7 @@ public class Pantalla extends Elemento implements java.io.Serializable {
 		this.imagen = imagen;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Moduloid", referencedColumnName = "id")	
 	public Modulo getModulo() {
 		return this.modulo;

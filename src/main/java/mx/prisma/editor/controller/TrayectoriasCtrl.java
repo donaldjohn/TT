@@ -304,9 +304,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 			addActionMessage(getText("MSG1", new String[] { "La",
 					"trayectoria", "eliminada" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
-		} catch (PRISMAValidacionException pve) {
-			ErrorManager.agregaMensajeError(this, pve);
-			resultado = edit();
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
@@ -579,7 +576,17 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 	}
 
 	public String verificarElementosReferencias() {
-		System.out.println("Mehotd java");
+		try {
+			elementosReferencias = new ArrayList<String>();
+			elementosReferencias = TrayectoriaBs.verificarReferencias(model);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "referencias";
+	}
+	
+	public String verificarElementosReferenciasPaso() {
 		try {
 			elementosReferencias = new ArrayList<String>();
 			elementosReferencias = TrayectoriaBs.verificarReferencias(model);

@@ -61,7 +61,7 @@ $(document).ready(function() {
 									"<a button='true'>" +
 									"<img class='icon'  id='icon' src='" + window.contextPath + 
 									"/resources/images/icons/editar.png' title='Modificar Paso'/></a>" +
-									"<a onclick='dataTableCDT.deleteRowPasos(tablaPaso, this);' button='true'>" +
+									"<a onclick='return verificarEliminacionPaso("+ item.id +");' button='true'>" +
 									"<img class='icon'  id='icon' src='" + window.contextPath + 
 									"/resources/images/icons/eliminar.png' title='Eliminar Paso'/></a>" +
 								"</center>" ];
@@ -272,4 +272,63 @@ function enviarComentarios(){
 function cancelarRegistroComentarios() {
 	document.getElementById("comentario").value = "";
 	$('#mensajeConfirmacion').dialog('close');
+}
+function confirmarEliminacion(urlEliminar) {
+	console.log(urlEliminar);
+	$('#confirmarEliminacionDialog').dialog('close');
+	window.location.href = urlEliminar;
+}
+
+function cancelarConfirmarEliminacion() {
+	$('#confirmarEliminacionDialog').dialog('close');
+}
+
+function verificarEliminacionPaso(idElemento) {
+	rutaVerificarReferencias = contextPath + '/trayectorias!verificarElementosReferencias';
+
+	$.ajax({
+		dataType : 'json',
+		url : rutaVerificarReferencias,
+		type: "POST",
+		data : {
+			idPasoBorrar : idElemento
+		},
+		success : function(data) {
+			mostrarMensajeEliminacion(data, idElemento);
+		},
+		error : function(err) {
+			alert("AJAX error in request: " + JSON.stringify(err, null, 2));
+		}
+	});
+	
+	return false;
+	
+}
+
+function mostrarMensajeEliminacion(json, id) {
+	var elementos = document.createElement("ul");
+	var elementosReferencias = document.getElementById("elementosReferencias");
+	var urlEliminar = contextPath + "/trayectorias/" +id+ "?_method=delete";
+	while (elementosReferencias.firstChild) {
+		elementosReferencias.removeChild(elementosReferencias.firstChild);
+	}
+	if (json != "") {
+		$
+				.each(
+						json,
+						function(i, item) {
+							var elemento = document.createElement("li");
+							elemento.appendChild(document.createTextNode(item));
+							elementos.appendChild(elemento);
+						});
+		document.getElementById("elementosReferencias").appendChild(elementos);
+		
+		$('#mensajeReferenciasDialog').dialog('open');
+	} else {	
+		document.getElementById("btnConfirmarEliminacion").onclick = function(){ confirmarEliminacion(urlEliminar);};
+		$('#confirmarEliminacionDialog').dialog('open');
+	}
+}
+function cerrarMensajeReferencias() {
+	$('#mensajeReferenciasDialog').dialog('close');
 }

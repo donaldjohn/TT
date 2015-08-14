@@ -24,7 +24,7 @@ function cancelarConfirmarEliminacion() {
 	$('#confirmarEliminacionDialog').dialog('close');
 }
 
-function verificarEliminacionElemento(idElemento) {
+function verificarEliminacionTrayectoria(idElemento) {
 	rutaVerificarReferencias = contextPath + '/trayectorias!verificarElementosReferencias';
 
 	$.ajax({

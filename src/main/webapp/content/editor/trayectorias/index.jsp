@@ -61,7 +61,7 @@
 										var="urlEliminar"
 										value="%{#pageContext.request.contextPath}/trayectorias/%{#tray.id}?_method=delete"
 										method="post" /> <s:a
-										onclick="return verificarEliminacionElemento(%{#tray.id});">
+										onclick="return verificarEliminacionTrayectoria(%{#tray.id});">
 										<img id="" class="button" title="Eliminar Trayectoria"
 											src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" />
 									</s:a>
@@ -86,7 +86,7 @@
 									var="urlEliminar"
 									value="%{#pageContext.request.contextPath}/trayectorias/%{#tray.id}?_method=delete"
 									method="post" /> <s:a
-									onclick="return verificarEliminacionElemento(%{#tray.id});">
+									onclick="return verificarEliminacionTrayectoria(%{#tray.id});">
 									<img id="" class="button" title="Eliminar Trayectoria"
 										src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" />
 								</s:a>
