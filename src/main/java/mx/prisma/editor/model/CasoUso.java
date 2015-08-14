@@ -4,7 +4,7 @@ package mx.prisma.editor.model;
  * Sergio Ramírez Camacho 07/06/2015
  */
 
-import java.util.HashSet;
+import java.util.HashSet; 
 import java.util.Set;
 
 import javax.persistence.CascadeType;
