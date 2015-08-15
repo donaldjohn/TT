@@ -33,7 +33,7 @@
 		</div>
 		
 		
-		<div class="formulario" id="seccion-acciones" >
+		<div class="formulario" id="seccion-acciones" style="display: none;">
 			<div class="tituloFormulario">${blanks}</div>
 			<div class="seccion" id="acciones">
 				<h5><s:text name="labelAcciones" /></h5>

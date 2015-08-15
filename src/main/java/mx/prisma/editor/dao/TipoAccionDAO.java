@@ -16,30 +16,17 @@ public class TipoAccionDAO {
 		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
 	}
 
-	@SuppressWarnings("unchecked")
 	public TipoAccion consultarTipoAccion(int id) {
-		List<TipoAccion> results = null;
-
+		TipoAccion tipoAccion = null;
 		try {
 			session.beginTransaction();
-			Query query = session
-					.createQuery("from TipoAccion where id = :id");
- 			query.setParameter("id", id);
-
-			results = query.list();
+			tipoAccion = (TipoAccion) session.get(TipoAccion.class, id);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
-		
-		if(results!=null){
-			if (results.get(0) != null){
-				return results.get(0);
-			}
-		}
-		
-		return null;
+		return tipoAccion;
 	}
 	
 	@SuppressWarnings("unchecked")

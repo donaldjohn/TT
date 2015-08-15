@@ -1,27 +1,30 @@
 package mx.prisma.editor.bs;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.AnalisisEnum.CU_Pantallas;
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.editor.bs.ElementoBs.Estado;
-import mx.prisma.editor.dao.CasoUsoDAO;
-import mx.prisma.editor.dao.EntidadDAO;
-import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.PantallaDAO;
+import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.dao.TipoAccionDAO;
-import mx.prisma.editor.dao.UnidadTamanioDAO;
-import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.Accion;
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
+import mx.prisma.editor.model.Paso;
+import mx.prisma.editor.model.PostPrecondicion;
+import mx.prisma.editor.model.ReferenciaParametro;
 import mx.prisma.editor.model.TipoAccion;
-import mx.prisma.editor.model.UnidadTamanio;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
@@ -71,11 +74,10 @@ public class PantallaBs {
 				if(!Pattern.matches("[0-9]+(\\.[0-9]+)*", model.getNumero())) {
 					throw new PRISMAValidacionException("El usuario no ingresó el número del cu.", "MSG5", new String[]{"un", "número"}, "model.numero");
 				}
-				System.out.println("Modulo " + model.getModulo().getNombre());
 				//Se asegura la unicidad del nombre y del numero
 				List<Pantalla> pantallas = consultarPantallasModulo(model.getModulo());
 				for(Pantalla p : pantallas) {
-					if(p.getId() != p.getId()) {
+					if(p.getId() != model.getId()) {
 						if(p.getNombre().equals(model.getNombre())) {
 							throw new PRISMAValidacionException("El nombre del caso de uso ya existe.", "MSG7",
 									new String[] { "El","Caso de uso", model.getNombre()}, "model.nombre");
@@ -154,4 +156,103 @@ public class PantallaBs {
 		return ta;
 	}
 
+	public static void eliminarPantalla(Pantalla model) throws Exception {
+		try {
+			ElementoBs.verificarEstado(model, CU_Pantallas.ELIMINARPANTALLA6_3);
+			new PantallaDAO().eliminarElemento(model);
+	} catch (JDBCException je) {
+			if(je.getErrorCode() == 1451)
+			{
+				throw new PRISMAException("No se puede eliminar la pantalla", "MSG14");
+			}
+			System.out.println("ERROR CODE " + je.getErrorCode());
+			je.printStackTrace();
+			throw new Exception();
+	} catch(HibernateException he) {
+		he.printStackTrace();
+		throw new Exception();
+	}
+		
+	}
+
+	public static List<String> verificarReferencias(Pantalla model) {
+		List<Integer> ids_ReferenciaParametro = null; // Donde se referencia el model (destino de la referencia)
+
+		List<ReferenciaParametro> referenciasParametro = new ArrayList<ReferenciaParametro>();
+		
+		List<String> referenciasVista = new ArrayList<String>();
+		Set<String> cadenasReferencia = new HashSet<String>(0);
+
+		PostPrecondicion postPrecondicion = null; //Origen de la referencia
+		Paso paso = null; //Origen de la referencia
+		Accion accion = null; //Origen de la referencia
+		String casoUso = ""; //Caso de uso que tiene la referencia
+		String pantalla = ""; //Pantalla que tiene la referencia
+
+		
+		ids_ReferenciaParametro = new PantallaDAO().consultarReferenciasParametro(model);
+		
+		if(ids_ReferenciaParametro != null) {
+			for (Integer id : ids_ReferenciaParametro) {	
+				referenciasParametro.add(new ReferenciaParametroDAO().consultarReferenciaParametro(id));
+			}
+		}
+		
+		for (ReferenciaParametro referencia : referenciasParametro) {
+			String linea = "";
+			postPrecondicion = referencia.getPostPrecondicion();
+			paso = referencia.getPaso();
+			accion = referencia.getAccionDestino();
+			
+			if (postPrecondicion != null) {
+				casoUso =  postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
+				if (postPrecondicion.isPrecondicion()) {
+					 linea = "Precondiciones del caso de uso " + casoUso;
+				} else {
+					 linea = "Postcondiciones del caso de uso " + postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
+				}
+				 
+			} else if (paso != null) {
+				casoUso =  paso.getTrayectoria().getCasoUso().getClave()  + paso.getTrayectoria().getCasoUso().getNumero() + " " + paso.getTrayectoria().getCasoUso().getNombre();
+				linea = "Paso " + paso.getNumero() + " de la trayectoria " + ((paso.getTrayectoria().isAlternativa()) ? "alternativa " + paso.getTrayectoria().getClave() : "principal") + " del caso de uso " + casoUso;
+			} else if (accion != null) {
+				pantalla =  accion.getPantalla().getClave()  + accion.getPantalla().getNumero() + " " + accion.getPantalla().getNombre();
+				linea = "Acción " + accion.getNombre() + " de la pantalla " + pantalla;
+			}
+			
+			if (linea != "") {
+				cadenasReferencia.add(linea);
+			}
+		}
+
+		
+		for (Accion acc : model.getAcciones()) {
+			cadenasReferencia.addAll(AccionBs.verificarReferencias(acc));
+		}
+			
+		referenciasVista.addAll(cadenasReferencia);
+		
+		return referenciasVista;
+	}
+
+	public static void modificarPantalla(Pantalla model,
+			Actualizacion actualizacion) throws Exception{
+		try {
+			validar(model);
+			ElementoBs.verificarEstado(model, CU_Pantallas.MODIFICARPANTALLA6_2);
+			model.setEstadoElemento(ElementoBs.consultarEstadoElemento(Estado.EDICION));
+			model.setNombre(model.getNombre().trim());
+			
+			new PantallaDAO().modificarPantalla(model, actualizacion);
+	
+		} catch (JDBCException je) {
+			System.out.println("ERROR CODE " + je.getErrorCode());
+			je.printStackTrace();
+			throw new Exception();
+		} catch(HibernateException he) {
+			he.printStackTrace();
+			throw new Exception();
+		}
+		
+	}
 }

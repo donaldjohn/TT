@@ -12,64 +12,103 @@
 </head>
 
 <body>
-	<h1><s:property value="%{model.modulo.clave + ' ' + model.modulo.nombre}" /></h1>
+	<h1>
+		<s:property value="%{model.modulo.clave + ' ' + model.modulo.nombre}" />
+	</h1>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
-	
-	<p class="instrucciones"><s:property value="%{modulo.descripcion}" /></p>
-	
+
+	<p class="instrucciones">
+		<s:property value="%{modulo.descripcion}" />
+	</p>
+
 	<h3>Gestionar Pantallas</h3>
-	
+
 	<s:form autocomplete="off" theme="simple" onsubmit="return false;">
-	<div class="form">
-	 
-		<table id="gestion" class="tablaGestion" cellspacing="0" width="100%"> 
-			<thead>
-				<tr>
-					<th><s:text name="colPantalla"/></th>
-					<th style="width: 20%;"><s:text name="colAcciones"/></th>
-				</tr>
-			</thead>
-			<tbody>
-			<s:iterator value="listPantallas" var="pantalla">
-				<tr>
-					<td><s:property value="%{#pantalla.clave + ' ' + #pantalla.numero + ' ' +#pantalla.nombre}"/></td>
-					<td align="center">	
-							<s:url var="urlConsultar" value="%{#pageContext.request.contextPath}/pantallas/%{#pantalla.id}"/>
-							<s:a href="%{urlConsultar}">
-								<img id="" class="button" title="Consultar Pantalla"
+		<div class="form">
+
+			<table id="gestion" class="tablaGestion" cellspacing="0" width="100%">
+				<thead>
+					<tr>
+						<th><s:text name="colPantalla" /></th>
+						<th style="width: 20%;"><s:text name="colAcciones" /></th>
+					</tr>
+				</thead>
+				<tbody>
+					<s:iterator value="listPantallas" var="pantalla">
+						<tr>
+							<td><s:property
+									value="%{#pantalla.clave + ' ' + #pantalla.numero + ' ' +#pantalla.nombre}" /></td>
+							<td align="center">
+								<s:url var="urlConsultar"
+									value="%{#pageContext.request.contextPath}/pantallas/%{#pantalla.id}" />
+								<s:a href="%{urlConsultar}">
+									<img id="" class="button" title="Consultar Pantalla"
 										src="${pageContext.request.contextPath}/resources/images/icons/ver.png" />
-							</s:a>			
-							<a><img
-										id="" class="button"
-										title="Modificar"
-										src="${pageContext.request.contextPath}/resources/images/icons/editar.png" /></a>
-							${blanks}			
-							<a><img
-										id="" class="button"
-										title="Eliminar"
-										src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" /></a>
-													
-					</td>
-					
-					
-				</tr>
-			</s:iterator>
-			</tbody>
-		</table>
-		
-	</div>
-	<br />
-	<br />
-	<div align="center">
-		<button class="boton" formmethod="post"
-			onclick="location.href='${pageContext.request.contextPath}/pantallas/new'">
-			<s:text name="Registrar"></s:text>
-		</button>
-	</div>
+								
+								</s:a> 
+								<s:url var="urlEditar" value="%{#pageContext.request.contextPath}/pantallas/%{#pantalla.id}/edit"/>			
+								<s:a href="%{urlEditar}">
+									<img id="" class="button" title="Modificar pantalla"
+											src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
+								</s:a>
+								<s:a onclick="return verificarEliminacionElemento(%{#pantalla.id});">
+									<img id="" class="button" title="Eliminar Pantalla"
+										src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" />
+								</s:a></td>
+
+
+						</tr>
+					</s:iterator>
+				</tbody>
+			</table>
+
+		</div>
+		<br />
+		<br />
+		<div align="center">
+			<button class="boton" formmethod="post"
+				onclick="location.href='${pageContext.request.contextPath}/pantallas/new'">
+				<s:text name="Registrar"></s:text>
+			</button>
+		</div>
 	</s:form>
+	<!-- EMERGENTE CONFIRMAR ELIMINACIÓN -->
+	<sj:dialog id="confirmarEliminacionDialog" title="Confirmación"
+		autoOpen="false" minHeight="100" minWidth="400" modal="true"
+		draggable="true">
+		<s:form autocomplete="off" id="frmConfirmarEliminacion"
+			name="frmConfirmarEliminacionName" theme="simple">
+			<div class="seccion">
+				<s:text name="MSG11"></s:text>
+			</div>
+			<br />
+			<div align="center">
+				<input id="btnConfirmarEliminacion" type="button" onclick=""
+					value="Aceptar" /> <input type="button"
+					onclick="cancelarConfirmarEliminacion();" value="Cancelar" />
+			</div>
+		</s:form>
+	</sj:dialog>
+	<!-- EMERGENTE ERROR REFERENCIAS -->
+	<sj:dialog id="mensajeReferenciasDialog" title="Confirmación"
+		autoOpen="false" minHeight="200" minWidth="700" modal="true"
+		draggable="true">
+		<s:form autocomplete="off" id="frmConfirmarEliminacion"
+			name="frmConfirmarEliminacionName" theme="simple">
+			<div class="seccion">
+				<s:text name="MSG14" />
+				<div id="elementosReferencias"></div>
+			</div>
+			<br />
+			<div align="center">
+				<input type="button" onclick="cerrarMensajeReferencias()"
+					value="Aceptar" />
+			</div>
+		</s:form>
+	</sj:dialog>
 </body>
-</html>
+	</html>
 </jsp:root>
 

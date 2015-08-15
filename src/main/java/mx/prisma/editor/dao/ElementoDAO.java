@@ -11,7 +11,10 @@ import org.hibernate.Session;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
+import mx.prisma.editor.model.Accion;
+import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
+import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.util.HibernateUtil;
@@ -280,20 +283,24 @@ public class ElementoDAO {
 		
 		switch(ReferenciaEnum.getTipoReferencia(objeto)) {
 		case ACCION:
+			Accion accion = (Accion) objeto;
+			queryCadena = "SELECT id FROM ReferenciaParametro WHERE AccionidDestino = " + accion.getId() + ";";
 			break;
 		case ACTOR:
 			break;
 		case ATRIBUTO:
 			break;
 		case CASOUSO:
-			Elemento elemento = (Elemento) objeto;
-			queryCadena = "SELECT id FROM ReferenciaParametro WHERE ElementoidDestino = "+elemento.getId()+";";
+			CasoUso casoUso = (CasoUso) objeto;
+			queryCadena = "SELECT id FROM ReferenciaParametro WHERE ElementoidDestino = " + casoUso.getId() + ";";
 			break;
 		case ENTIDAD:
 			break;
 		case MENSAJE:
 			break;
 		case PANTALLA:
+			Pantalla pantalla = (Pantalla) objeto;
+			queryCadena = "SELECT id FROM ReferenciaParametro WHERE ElementoidDestino = " + pantalla.getId() + ";";
 			break;
 		case PASO:
 			Paso paso = (Paso) objeto;

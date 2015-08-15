@@ -18,17 +18,10 @@ public class Convertidor {
 		byte[] bFile = null;
 		try {
 			bFile = new byte[(int) file.length()];
-			// convert file into array of bytes
 			fileInputStream = new FileInputStream(file);
 			fileInputStream.read(bFile);
 			fileInputStream.close();
 
-			/*
-			 * for (int i = 0; i < bFile.length; i++) { System.out.print((char)
-			 * bFile[i]); }
-			 */
-
-			// System.out.println("Done");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -43,17 +36,8 @@ public class Convertidor {
 		}
 
 		File file = new File(ruta);
-		if (file.getParentFile().mkdirs()) {
-			System.out.println("Se creo la carpeta");
-		} else {
-			System.out.println("NO se creo la carpeta");
-		}
-		
-		if(file.createNewFile()){
-			System.out.println("Se creo la imagen");
-		} else {
-			System.out.println("La imagen se actualizo");
-		}
+		file.getParentFile().mkdirs();
+		file.createNewFile();
 
 		try {
 
@@ -92,8 +76,6 @@ public class Convertidor {
 
 	public static byte[] convertStringPNGB64ToBytes(String string) {
 		int index = string.indexOf("base64") + 7;
-		System.out.println("index: " + index);
-		System.out.println("img a bytes: " + string.substring(index));
 		return string.substring(index).getBytes();
 	}
 
