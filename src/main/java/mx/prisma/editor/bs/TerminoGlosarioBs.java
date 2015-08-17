@@ -1,14 +1,28 @@
 package mx.prisma.editor.bs;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.AnalisisEnum.CU_Actores;
+import mx.prisma.bs.AnalisisEnum.CU_Glosario;
 import mx.prisma.editor.bs.ElementoBs.Estado;
+import mx.prisma.editor.dao.ActorDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
+import mx.prisma.editor.dao.PantallaDAO;
+import mx.prisma.editor.dao.ReferenciaParametroDAO;
+import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.dao.TerminoGlosarioDAO;
+import mx.prisma.editor.model.Actor;
+import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.Paso;
+import mx.prisma.editor.model.PostPrecondicion;
+import mx.prisma.editor.model.ReferenciaParametro;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
@@ -91,6 +105,76 @@ public class TerminoGlosarioBs {
 					"MSG13");
 		}
 		return terminoGlosario;
+	}
+
+	public static void eliminarTermino(TerminoGlosario model) throws Exception {
+		try {
+			ElementoBs.verificarEstado(model, CU_Glosario.ELIMINARTERMINO10_3);
+			new ReglaNegocioDAO().eliminarElemento(model);
+		} catch (JDBCException je) {
+				if(je.getErrorCode() == 1451)
+				{
+					throw new PRISMAException("No se puede eliminar la regla de negocio.", "MSG14");
+				}
+				System.out.println("ERROR CODE " + je.getErrorCode());
+				je.printStackTrace();
+				throw new Exception();
+		} catch(HibernateException he) {
+			he.printStackTrace();
+			throw new Exception();
+		}
+		
+	}
+
+	public static List<String> verificarReferencias(TerminoGlosario model) {
+		List<Integer> ids_ReferenciaParametro = null; // Donde se referencia el model (destino de la referencia)
+
+		List<ReferenciaParametro> referenciasParametro = new ArrayList<ReferenciaParametro>();
+		
+		List<String> referenciasVista = new ArrayList<String>();
+		Set<String> cadenasReferencia = new HashSet<String>(0);
+
+		PostPrecondicion postPrecondicion = null; //Origen de la referencia
+		Paso paso = null; //Origen de la referencia
+		String casoUso = ""; //Caso de uso que tiene la referencia
+
+		
+		ids_ReferenciaParametro = new PantallaDAO().consultarReferenciasParametro(model);
+		
+		if(ids_ReferenciaParametro != null) {
+			for (Integer id : ids_ReferenciaParametro) {	
+				referenciasParametro.add(new ReferenciaParametroDAO().consultarReferenciaParametro(id));
+			}
+		}
+		
+		for (ReferenciaParametro referencia : referenciasParametro) {
+			String linea = "";
+			postPrecondicion = referencia.getPostPrecondicion();
+			paso = referencia.getPaso();
+			
+			if (postPrecondicion != null) {
+				casoUso =  postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
+				if (postPrecondicion.isPrecondicion()) {
+					 linea = "Precondiciones del caso de uso " + casoUso;
+				} else {
+					 linea = "Postcondiciones del caso de uso " + postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
+				}
+				 
+			} else if (paso != null) {
+				casoUso =  paso.getTrayectoria().getCasoUso().getClave()  + paso.getTrayectoria().getCasoUso().getNumero() + " " + paso.getTrayectoria().getCasoUso().getNombre();
+				linea = "Paso " + paso.getNumero() + " de la trayectoria " + ((paso.getTrayectoria().isAlternativa()) ? "alternativa " + paso.getTrayectoria().getClave() : "principal") + " del caso de uso " + casoUso;
+			}
+			
+			if (linea != "") {
+				cadenasReferencia.add(linea);
+			}
+		}
+
+		
+			
+		referenciasVista.addAll(cadenasReferencia);
+		
+		return referenciasVista;
 	}
 
 }
