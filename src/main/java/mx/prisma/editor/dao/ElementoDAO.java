@@ -7,6 +7,7 @@ import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
 import mx.prisma.dao.GenericDAO;
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Elemento;
 
 import org.hibernate.HibernateException;
@@ -31,11 +32,12 @@ public class ElementoDAO extends GenericDAO{
 		}
 	}
 
-	public void modificarElemento(Elemento elemento) {
+	public void modificarElemento(Elemento elemento, Actualizacion actualizacion) {
 
 		try {
 			session.beginTransaction();
 			session.update(elemento);
+			session.save(actualizacion);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
