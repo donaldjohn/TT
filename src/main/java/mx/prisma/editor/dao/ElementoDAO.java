@@ -81,6 +81,7 @@ public class ElementoDAO extends GenericDAO{
 		List<Integer> results = null;
 		String sentencia = "";
 		switch (referencia) {
+		
 		case ACTOR:
 			sentencia = "SELECT MAX(CAST(numero AS SIGNED)) FROM Elemento INNER JOIN Actor ON Elemento.id = Actor.Elementoid WHERE Elemento.Proyectoid = "
 					+ idProyecto + ";";
