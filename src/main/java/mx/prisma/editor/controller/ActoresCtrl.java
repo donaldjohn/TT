@@ -15,16 +15,11 @@ import com.opensymphony.xwork2.ModelDriven;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AnalisisEnum.CU_Actores;
-import mx.prisma.bs.AnalisisEnum.CU_Pantallas;
 import mx.prisma.editor.bs.ActorBs;
 import mx.prisma.editor.bs.ElementoBs;
-import mx.prisma.editor.bs.PantallaBs;
-import mx.prisma.editor.bs.ReglaNegocioBs;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Cardinalidad;
-import mx.prisma.editor.model.CasoUso;
-import mx.prisma.editor.model.Elemento;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
 import mx.prisma.util.PRISMAException;

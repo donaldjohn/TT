@@ -14,17 +14,10 @@ import org.apache.struts2.interceptor.SessionAware;
 import com.opensymphony.xwork2.ModelDriven;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.bs.AnalisisEnum.CU_Actores;
 import mx.prisma.bs.AnalisisEnum.CU_Glosario;
-import mx.prisma.editor.bs.ActorBs;
-import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
-import mx.prisma.editor.bs.PantallaBs;
-import mx.prisma.editor.bs.ReglaNegocioBs;
 import mx.prisma.editor.bs.TerminoGlosarioBs;
 import mx.prisma.editor.model.Actualizacion;
-import mx.prisma.editor.model.CasoUso;
-import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
