@@ -9,6 +9,7 @@ import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.EstadoElemento;
+import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.util.PRISMAException;
 
 public class ElementoBs {
@@ -144,7 +145,7 @@ public class ElementoBs {
 		
 	}
 	
-	public static void verificarEstado(Actor elemento, CU_Glosario glosarioAnalisis) {
+	public static void verificarEstado(TerminoGlosario elemento, CU_Glosario glosarioAnalisis) {
 		switch(glosarioAnalisis) {
 		case MODIFICARTERMINO10_2:
 			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION)) {
