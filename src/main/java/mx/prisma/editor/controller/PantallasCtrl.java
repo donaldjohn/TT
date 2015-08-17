@@ -18,10 +18,8 @@ import org.apache.struts2.interceptor.SessionAware;
 import com.opensymphony.xwork2.ModelDriven;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
 import mx.prisma.bs.AnalisisEnum.CU_Pantallas;
 import mx.prisma.editor.bs.AccionBs;
-import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.PantallaBs;
 import mx.prisma.editor.model.Accion;
