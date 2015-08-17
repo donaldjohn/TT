@@ -4,17 +4,15 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.Session;
 
+import mx.prisma.dao.GenericDAO;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Pantalla;
-import mx.prisma.util.HibernateUtil;
 
-public class AccionDAO {
-	Session session = null;
+public class AccionDAO extends GenericDAO {
 
 	public AccionDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		super();
 	}
 
 	public void registrarAccion(Accion accion) throws Exception {

@@ -4,17 +4,15 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.Session;
 
+import mx.prisma.dao.GenericDAO;
 import mx.prisma.editor.model.Cardinalidad;
 import mx.prisma.editor.model.TipoDato;
-import mx.prisma.util.HibernateUtil;
 
-public class CardinalidadDAO {
-	Session session = null;
+public class CardinalidadDAO extends GenericDAO{
 
 	public CardinalidadDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		super();
 	}
 
 	public Cardinalidad consultarCardinalidad(int idCardinalidad) {

@@ -6,18 +6,15 @@ import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
-import mx.prisma.util.HibernateUtil;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
-import org.hibernate.Session;
 
 public class PantallaDAO extends ElementoDAO {
-	Session session = null;
 
 	public PantallaDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		super();
 	}
 	
 	public void registrarEntidad(Pantalla pantalla) {

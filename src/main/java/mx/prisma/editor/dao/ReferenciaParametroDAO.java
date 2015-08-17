@@ -1,17 +1,15 @@
 package mx.prisma.editor.dao;
 
 
+import mx.prisma.dao.GenericDAO;
 import mx.prisma.editor.model.ReferenciaParametro;
-import mx.prisma.util.HibernateUtil;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 
-public class ReferenciaParametroDAO {
-	private Session session = null;
+public class ReferenciaParametroDAO extends GenericDAO {
 
 	public ReferenciaParametroDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		super();
 	}
 	
 	public ReferenciaParametro consultarReferenciaParametro(int id) {

@@ -4,20 +4,18 @@ package mx.prisma.editor.dao;
 import java.util.List;
 
 import mx.prisma.bs.ReferenciaEnum.TipoSeccion;
+import mx.prisma.dao.GenericDAO;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Extension;
-import mx.prisma.util.HibernateUtil;
 
 import org.hibernate.HibernateException;
 import org.hibernate.SQLQuery;
-import org.hibernate.Session;
 
-public class ExtensionDAO {
-	private Session session = null;
+public class ExtensionDAO extends GenericDAO{
 
 	public ExtensionDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		super();
 	}
 
 	public void registrarExtension(Extension extension) {
@@ -35,14 +33,13 @@ public class ExtensionDAO {
 				extension.getCasoUsoOrigen().getProyecto()));
 
 		try {
-
-			 this.session = HibernateUtil.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
 			session.save(extension);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
+			throw he;
 		}
 	}
 
@@ -56,6 +53,7 @@ public class ExtensionDAO {
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
+			throw he;
 		}
 
 		return extension;

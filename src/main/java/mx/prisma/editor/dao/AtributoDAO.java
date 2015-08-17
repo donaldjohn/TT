@@ -6,15 +6,15 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import mx.prisma.dao.GenericDAO;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.util.HibernateUtil;
 
-public class AtributoDAO {
-	Session session = null;
+public class AtributoDAO extends GenericDAO {
 
 	public AtributoDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		super();
 	}
 
 	public void registrarAtributo(Atributo atributo) throws Exception {

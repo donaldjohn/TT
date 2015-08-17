@@ -6,11 +6,11 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
-import org.hibernate.Session;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
+import mx.prisma.dao.GenericDAO;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
@@ -19,11 +19,10 @@ import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.util.HibernateUtil;
 
-public class ElementoDAO {
-	private Session session = null;
+public class ElementoDAO extends GenericDAO{
 
 	public ElementoDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		super();
 	}
 
 	public void registrarElemento(Elemento elemento) {

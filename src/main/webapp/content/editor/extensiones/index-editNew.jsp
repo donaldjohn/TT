@@ -35,7 +35,7 @@
 			<table class="seccion">
 				<tr>
 					<td class="label obligatorio"><s:text name="labelCasoUsoExtiende" /></td>
-					<td><s:select name="claveCasoUsoDestino" id="model.idCu" headerValue="Seleccione" headerKey="-1" 
+					<td><s:select name="idCasoUsoDestino" id="model.idCu" headerValue="Seleccione" headerKey="-1" 
 							list="catalogoCasoUso" listKey="id" 
 							listValue="%{clave + numero + ' ' +  nombre}" cssErrorClass="select-error" cssClass="inputFormulario ui-widget"></s:select>
 							<s:fielderror fieldName="claveCasoUsoDestino" cssClass="error" theme="jquery" /></td>

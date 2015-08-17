@@ -1,16 +1,14 @@
 package mx.prisma.editor.dao;
 
+import mx.prisma.dao.GenericDAO;
 import mx.prisma.editor.model.Paso;
-import mx.prisma.util.HibernateUtil;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 
-public class PasoDAO {
-	private Session session = null;
+public class PasoDAO extends GenericDAO{
 
 	public PasoDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		super();
 	}
 	public Paso consultarPaso(int id) {
 		Paso paso = null;
