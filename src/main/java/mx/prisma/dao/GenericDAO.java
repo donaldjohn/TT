@@ -10,8 +10,6 @@ public class GenericDAO {
 
 		if (session == null || !session.isOpen()) {
 			session = HibernateUtil.getSessionFactory().openSession();
-		} else {
-			session.clear();
 		}
 	}
 }

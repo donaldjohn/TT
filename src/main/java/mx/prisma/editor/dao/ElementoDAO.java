@@ -22,7 +22,7 @@ import mx.prisma.editor.model.Trayectoria;
 public class ElementoDAO extends GenericDAO{
 
 	public ElementoDAO() {
-		
+		super();
 	}
 
 	public void registrarElemento(Elemento elemento) {
