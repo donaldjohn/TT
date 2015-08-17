@@ -13,4 +13,10 @@ public class AnalisisEnum {
 	public enum CU_Pantallas {
 		MODIFICARPANTALLA6_2, ELIMINARPANTALLA6_3  
 	}
+	public enum CU_Actores {
+		MODIFICARACTOR7_2, ELIMINARACTOR7_3  
+	}
+	public enum CU_Glosario {
+		MODIFICARTERMINO10_2, ELIMINARTERMINO10_3  
+	}
 }

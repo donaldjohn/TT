@@ -1,9 +1,12 @@
 package mx.prisma.editor.bs;
 
+import mx.prisma.bs.AnalisisEnum.CU_Actores;
 import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
+import mx.prisma.bs.AnalisisEnum.CU_Glosario;
 import mx.prisma.bs.AnalisisEnum.CU_Pantallas;
 import mx.prisma.bs.AnalisisEnum.CU_ReglasNegocio;
 import mx.prisma.editor.dao.EstadoElementoDAO;
+import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.util.PRISMAException;
@@ -105,8 +108,8 @@ public class ElementoBs {
 		
 	}
 	public static void verificarEstado(Elemento elemento,
-			CU_Pantallas reglaNegocioAnalisis) {
-		switch(reglaNegocioAnalisis) {
+			CU_Pantallas pantallaAnalisis) {
+		switch(pantallaAnalisis) {
 		case MODIFICARPANTALLA6_2:
 			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION)) {
 				throw new PRISMAException("El estado de la pantalla es inválido.", "MSG13");
@@ -115,6 +118,42 @@ public class ElementoBs {
 		case ELIMINARPANTALLA6_3:
 			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION)) {
 				throw new PRISMAException("El estado de la pantalla es inválido.", "MSG13");
+			}
+			break;
+		default:
+			break;
+		}
+		
+	}
+
+	public static void verificarEstado(Actor elemento, CU_Actores actorAnalisis) {
+		switch(actorAnalisis) {
+		case MODIFICARACTOR7_2:
+			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION)) {
+				throw new PRISMAException("El estado del actor es inválido.", "MSG13");
+			}
+			break;
+		case ELIMINARACTOR7_3:
+			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION)) {
+				throw new PRISMAException("El estado del actor es inválido.", "MSG13");
+			}
+			break;
+		default:
+			break;
+		}
+		
+	}
+	
+	public static void verificarEstado(Actor elemento, CU_Glosario glosarioAnalisis) {
+		switch(glosarioAnalisis) {
+		case MODIFICARTERMINO10_2:
+			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION)) {
+				throw new PRISMAException("El estado del término es inválido.", "MSG13");
+			}
+			break;
+		case ELIMINARTERMINO10_3:
+			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION)) {
+				throw new PRISMAException("El estado del término es inválido.", "MSG13");
 			}
 			break;
 		default:
