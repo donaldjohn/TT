@@ -7,9 +7,12 @@ public class GenericDAO {
 	protected static Session session = null;
 
 	public GenericDAO() {
-
+		
 		if (session == null || !session.isOpen()) {
 			session = HibernateUtil.getSessionFactory().openSession();
+		} else {
+			session.flush();
+			session.clear();
 		}
 	}
 }

@@ -3,24 +3,14 @@ package mx.prisma.editor.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
-
-
-
-
-
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.ReglaNegocio;
-import mx.prisma.util.HibernateUtil;
+
+import org.hibernate.HibernateException;
 
 public class ReglaNegocioDAO extends ElementoDAO {
 	

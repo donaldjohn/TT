@@ -569,34 +569,20 @@ public class CuBs {
 	}
 
 	public static List<String> verificarReferencias(CasoUso model) {
-		List<Integer> ids_ReferenciaParametro = null;
-		List<Integer> ids_PtosExtension = null;
-
-		List<ReferenciaParametro> referenciasParametro = new ArrayList<ReferenciaParametro>();
-		List<Extension> referenciasExtension = new ArrayList<Extension>();
 		
-		List<String> referenciasVista = new ArrayList<String>();
-		Set<String> cadenasReferencia = new HashSet<String>(0);
+		List<ReferenciaParametro> referenciasParametro;
+		List<Extension> referenciasExtension;
+		
+		List<String> listReferenciasVista = new ArrayList<String>();
+		Set<String> setReferenciasVista = new HashSet<String>(0);
 		PostPrecondicion postPrecondicion = null;
 		Paso paso = null;
 		
 		String casoUso = "";
 		Integer idSelf = null;
 		
-		ids_ReferenciaParametro = new CasoUsoDAO().consultarReferenciasParametro(model);
-		ids_PtosExtension = new ExtensionDAO().consultarReferenciasExtension(model);
-		
-		if(ids_ReferenciaParametro != null) {
-			for (Integer id : ids_ReferenciaParametro) {	
-				referenciasParametro.add(new ReferenciaParametroDAO().consultarReferenciaParametro(id));
-			}
-		}
-		
-		if(ids_PtosExtension != null) {
-			for (Integer id : ids_PtosExtension) {	
-				referenciasExtension.add(new ExtensionDAO().consultarExtension(id));
-			}
-		}
+		referenciasParametro = new ReferenciaParametroDAO().consultarReferenciasParametro(model);
+		referenciasExtension = new ExtensionDAO().consultarReferencias(model);
 		
 		for (ReferenciaParametro referencia : referenciasParametro) {
 			String linea = "";
@@ -618,7 +604,7 @@ public class CuBs {
 				linea = "Paso " + paso.getNumero() + " de la trayectoria " + ((paso.getTrayectoria().isAlternativa()) ? "alternativa " + paso.getTrayectoria().getClave() : "principal") + " del caso de uso " + casoUso;
 			} 
 			if (linea != "" && idSelf != model.getId()) {
-				cadenasReferencia.add(linea);
+				setReferenciasVista.add(linea);
 			}
 		}
 		
@@ -628,17 +614,17 @@ public class CuBs {
 			casoUso = referenciaExtension.getCasoUsoOrigen().getClave() + referenciaExtension.getCasoUsoOrigen().getNumero() + " " + referenciaExtension.getCasoUsoOrigen().getNombre();
 			linea = "Puntos de extensión del caso de uso " + casoUso;
 			if (linea != "" && idSelf != model.getId()) {
-				cadenasReferencia.add(linea);
+				setReferenciasVista.add(linea);
 			}		
 		}
 		
 		for (Trayectoria tray : model.getTrayectorias()) {
-			cadenasReferencia.addAll(TrayectoriaBs.verificarReferencias(tray));
+			setReferenciasVista.addAll(TrayectoriaBs.verificarReferencias(tray));
 		}
 			
-		referenciasVista.addAll(cadenasReferencia);
+		listReferenciasVista.addAll(setReferenciasVista);
 		
-		return referenciasVista;
+		return listReferenciasVista;
 	}
 	
 	public static boolean isListado(List<Integer> enteros, Integer entero) {
