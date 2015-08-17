@@ -2,18 +2,17 @@ package mx.prisma.editor.dao;
 
 import java.util.List;
 
+import mx.prisma.dao.GenericDAO;
 import mx.prisma.editor.model.TipoDato;
-import mx.prisma.util.HibernateUtil;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.Session;
 
-public class TipoDatoDAO {
-	Session session = null;
+public class TipoDatoDAO extends GenericDAO{
+	
 
 	public TipoDatoDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		super();
 	}
 
 	@SuppressWarnings("unchecked")

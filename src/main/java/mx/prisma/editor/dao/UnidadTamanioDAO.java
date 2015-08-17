@@ -2,18 +2,17 @@ package mx.prisma.editor.dao;
 
 import java.util.List;
 
+import mx.prisma.dao.GenericDAO;
 import mx.prisma.editor.model.UnidadTamanio;
-import mx.prisma.util.HibernateUtil;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.Session;
 
-public class UnidadTamanioDAO {
-	Session session = null;
+public class UnidadTamanioDAO extends GenericDAO {
+	
 
 	public UnidadTamanioDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		super();
 	}
 
 	public UnidadTamanio consultarUnidadTamanio(int identificador) {

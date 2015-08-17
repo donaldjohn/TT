@@ -15,7 +15,7 @@ import org.hibernate.SQLQuery;
 public class ExtensionDAO extends GenericDAO{
 
 	public ExtensionDAO() {
-		super();
+		
 	}
 
 	public void registrarExtension(Extension extension) {

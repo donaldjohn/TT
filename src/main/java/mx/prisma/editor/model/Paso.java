@@ -95,7 +95,7 @@ public class Paso implements java.io.Serializable {
 		this.redaccion = redaccion;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Trayectoriaid", referencedColumnName ="id", nullable = false)
 	public Trayectoria getTrayectoria() {
 		return trayectoria;

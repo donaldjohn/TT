@@ -4,17 +4,16 @@ import java.util.List;
 
 import mx.prisma.admin.model.ColaboradorProyecto;
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.util.HibernateUtil;
+import mx.prisma.dao.GenericDAO;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.Session;
 
-public class ProyectoDAO {
-	Session session = null;
+public class ProyectoDAO extends GenericDAO {
+	
 
 	public ProyectoDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		super();
 	}
 	
 	public void registrarProyecto(Proyecto proyecto) {

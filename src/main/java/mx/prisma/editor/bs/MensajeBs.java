@@ -1,20 +1,30 @@
 package mx.prisma.editor.bs;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.AnalisisEnum.CU_Mensajes;
 import mx.prisma.editor.bs.ElementoBs.Estado;
-import mx.prisma.editor.dao.EstadoElementoDAO;
+import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.MensajeDAO;
 import mx.prisma.editor.dao.ParametroDAO;
+import mx.prisma.editor.dao.ReferenciaParametroDAO;
+import mx.prisma.editor.dao.SalidaDAO;
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.MensajeParametro;
 import mx.prisma.editor.model.Parametro;
+import mx.prisma.editor.model.Paso;
+import mx.prisma.editor.model.PostPrecondicion;
+import mx.prisma.editor.model.ReferenciaParametro;
+import mx.prisma.editor.model.Salida;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
@@ -51,6 +61,26 @@ public class MensajeBs {
 			throw new Exception();
 		}
 		
+	}
+
+	public static void modificarMensaje(Mensaje model, Actualizacion actualizacion) throws Exception{
+		try {
+				validar(model);
+				ElementoBs.verificarEstado(model, CU_Mensajes.MODIFICARMENSAJE9_2);
+				model.setEstadoElemento(ElementoBs
+						.consultarEstadoElemento(Estado.EDICION));
+				model.setNombre(model.getNombre().trim());
+				
+				new MensajeDAO().modificarMensaje(model, actualizacion);
+		
+		} catch (JDBCException je) {
+			System.out.println("ERROR CODE " + je.getErrorCode());
+			je.printStackTrace();
+			throw new Exception();
+		} catch(HibernateException he) {
+			he.printStackTrace();
+			throw new Exception();
+		}
 	}
 
 	private static void validar(Mensaje model) {
@@ -133,6 +163,7 @@ public class MensajeBs {
 		//Se convierte la lista de parametros en json para enviarlos a la vista
 		ArrayList<String> tokens = TokenBs.procesarTokenIpunt(redaccion);
 		ArrayList<Parametro> listParametros = new ArrayList<Parametro>();
+		Parametro parametroAux = null;
 		if(listParametros.size() > 10) {
 			throw new PRISMAValidacionException("El usuario no ingresó la descripcion de algun parametros del mensaje.", "MSG6", new String[]{"10", "parámetros"}, 
 					"model.parametros");
@@ -147,7 +178,9 @@ public class MensajeBs {
 				parametro = new Parametro(segmentos.get(1),"");
 			}
 			if (!pertecene(parametro, listParametros)) {
-				listParametros.add(parametro);
+				parametroAux = new Parametro(parametro.getNombre(), parametro.getDescripcion());
+				listParametros.add(parametroAux);
+				
 			}
 		}
 		return listParametros;
@@ -181,4 +214,82 @@ public class MensajeBs {
 		return mensaje;
 	}
 	
+	public static void eliminarMensaje(Mensaje model) throws Exception {
+		try {
+			ElementoBs.verificarEstado(model, CU_Mensajes.ELIMINARMENSAJE9_3);
+			new MensajeDAO().eliminarElemento(model);
+	} catch (JDBCException je) {
+			if(je.getErrorCode() == 1451)
+			{
+				throw new PRISMAException("No se puede eliminar el caso de uso", "MSG14");
+			}
+			System.out.println("ERROR CODE " + je.getErrorCode());
+			je.printStackTrace();
+			throw new Exception();
+	} catch(HibernateException he) {
+		he.printStackTrace();
+		throw new Exception();
+	}
+		
+	}
+
+	public static List<String> verificarReferencias(Mensaje model) {
+		List<Integer> ids_ReferenciaParametro = null;
+
+		List<ReferenciaParametro> referenciasParametro = new ArrayList<ReferenciaParametro>();
+		List<Salida> referenciasSalida = new ArrayList<Salida>();
+		
+		List<String> listReferenciasVista = new ArrayList<String>();
+		Set<String> setReferenciasVista = new HashSet<String>(0);
+		PostPrecondicion postPrecondicion = null;
+		Paso paso = null;
+		
+		String casoUso = "";
+		
+		ids_ReferenciaParametro = new CasoUsoDAO().consultarReferenciasParametro(model);
+		referenciasSalida = new SalidaDAO().consultarReferencias(model);
+		
+		if(ids_ReferenciaParametro != null) {
+			for (Integer id : ids_ReferenciaParametro) {	
+				referenciasParametro.add(new ReferenciaParametroDAO().consultarReferenciaParametro(id));
+			}
+		}
+		
+		for (ReferenciaParametro referencia : referenciasParametro) {
+			String linea = "";
+			postPrecondicion = referencia.getPostPrecondicion();
+			paso = referencia.getPaso();
+			
+			if (postPrecondicion != null) {
+				casoUso =  postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
+				if (postPrecondicion.isPrecondicion()) {
+					 linea = "Precondiciones del caso de uso " + casoUso;
+				} else {
+					 linea = "Postcondiciones del caso de uso " + postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
+				}
+				 
+			} else if (paso != null) {
+				casoUso =  paso.getTrayectoria().getCasoUso().getClave()  + paso.getTrayectoria().getCasoUso().getNumero() + " " + paso.getTrayectoria().getCasoUso().getNombre();
+				linea = "Paso " + paso.getNumero() + " de la trayectoria " + ((paso.getTrayectoria().isAlternativa()) ? "alternativa " + paso.getTrayectoria().getClave() : "principal") + " del caso de uso " + casoUso;
+			} 
+			if (linea != "") {
+				setReferenciasVista.add(linea);
+			}
+		}
+		
+		for (Salida salida : referenciasSalida) {
+			String linea = "";
+			casoUso = salida.getCasoUso().getClave() + salida.getCasoUso().getNumero() + " " + salida.getCasoUso().getNombre();
+			linea = "Salidas del caso de uso " + casoUso;
+			if (linea != "") {
+				setReferenciasVista.add(linea);
+			}		
+		}
+		
+		
+			
+		listReferenciasVista.addAll(setReferenciasVista);
+		
+		return listReferenciasVista;
+	}
 }

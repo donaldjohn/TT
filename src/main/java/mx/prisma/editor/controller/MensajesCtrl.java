@@ -2,6 +2,7 @@ package mx.prisma.editor.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,10 +15,12 @@ import org.apache.struts2.interceptor.SessionAware;
 import com.opensymphony.xwork2.ModelDriven;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.AnalisisEnum.CU_Mensajes;
+import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.ElementoBs.Estado;
-import mx.prisma.editor.bs.EntidadBs;
 import mx.prisma.editor.bs.MensajeBs;
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.MensajeParametro;
 import mx.prisma.editor.model.Parametro;
@@ -31,10 +34,11 @@ import mx.prisma.util.SessionManager;
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 		"actionName", "mensajes"}),
+			@Result(name = "referencias", type = "json", params = { "root",
+		"elementosReferencias" })
 })
 public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Mensaje>, SessionAware{
 	private static final long serialVersionUID = 1L;
-	private Map<String, Object> userSession ;
 
 	// Proyecto y módulo
 	private Proyecto proyecto;
@@ -48,6 +52,10 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 	private boolean parametrizado = false;
 	private Integer idSel;
 	private boolean existenParametros;
+	private String comentario;
+	private List<String> elementosReferencias;
+
+	
 	public String index() {
 		try {
 			//Se consulta el proyecto activo
@@ -73,9 +81,9 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 	public String editNew() {
 		String resultado = null;
 		try {
-			buscarParametrosDisponibles(SessionManager.consultarProyectoActivo().getId());
-			// Creación del modelo
 			proyecto = SessionManager.consultarProyectoActivo();
+			buscarParametrosDisponibles(proyecto.getId());
+			// Creación del modelo
 			model.setClave("MSG");
 			resultado = EDITNEW;
 		} catch (PRISMAValidacionException pve) {
@@ -92,6 +100,163 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 		return resultado;
 	}
 	
+	public String create() {
+		String resultado = null;
+		try {
+			proyecto = SessionManager.consultarProyectoActivo();
+
+			if(MensajeBs.esParametrizado(model.getRedaccion())) {	
+				List<Parametro> listParametros = JsonUtil.mapJSONToArrayList(jsonParametros, Parametro.class);
+				if(listParametros.isEmpty() || this.cambioRedaccion.equals("true")) {
+					cambioRedaccion = "true";
+					listParametros = MensajeBs.obtenerParametros(model.getRedaccion(), proyecto.getId());
+					
+					this.jsonParametros = JsonUtil.mapListToJSON(listParametros);
+					return editNew();
+				}
+				
+			} 
+			model.setProyecto(proyecto);
+			model.setEstadoElemento(ElementoBs.consultarEstadoElemento((Estado.EDICION)));
+			
+			agregarParametros();
+			 
+			MensajeBs.registrarMensaje(model);
+			resultado = SUCCESS;
+			
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"Mensaje", "registrado" }));
+			
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+			
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = editNew();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+	
+	public String edit() {
+		String resultado = null;
+		try {
+
+			ElementoBs.verificarEstado(model, CU_Mensajes.MODIFICARMENSAJE9_2);
+			proyecto = SessionManager.consultarProyectoActivo();
+			buscarParametrosDisponibles(proyecto.getId());
+			prepararVista();
+
+			resultado = EDIT;
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = edit();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+
+	public String update() {
+		String resultado = null;
+		try {
+			proyecto = SessionManager.consultarProyectoActivo();
+			if(MensajeBs.esParametrizado(model.getRedaccion())) {	
+				List<Parametro> listParametros = JsonUtil.mapJSONToArrayList(jsonParametros, Parametro.class);
+				if(listParametros.isEmpty() || this.cambioRedaccion.equals("true")) {
+					cambioRedaccion = "true";
+					listParametros = MensajeBs.obtenerParametros(model.getRedaccion(), proyecto.getId());
+					this.jsonParametros = JsonUtil.mapListToJSON(listParametros);
+					System.out.println(jsonParametros);
+					return edit();
+				}
+				
+			} 
+			model.setProyecto(proyecto);
+			model.setEstadoElemento(ElementoBs.consultarEstadoElemento((Estado.EDICION)));
+			
+			model.getParametros().clear();
+			agregarParametros();
+			
+			Actualizacion actualizacion = new Actualizacion(new Date(),
+					comentario, model,
+					SessionManager.consultarColaboradorActivo());
+			MensajeBs.modificarMensaje(model, actualizacion);
+			resultado = SUCCESS;
+			
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"Mensaje", "registrado" }));
+			
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+			
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = edit();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+	
+	public String show() throws Exception{
+		String resultado = null;
+		try {
+			model = MensajeBs.consultarMensaje(idSel);
+			this.existenParametros = model.getParametros().size() > 0 ? true : false;
+			resultado = SHOW;
+		} catch (PRISMAException pe) {
+			pe.setIdMensaje("MSG26");
+			ErrorManager.agregaMensajeError(this, pe);
+			return index();
+		} catch(Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			return index();
+		}
+		return resultado;
+	}
+	
+	public String destroy() throws Exception {
+		String resultado = null;
+		try {
+			MensajeBs.eliminarMensaje(model);
+			resultado = SUCCESS;
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"Mensaje", "eliminado" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+	
+	public String verificarElementosReferencias() {
+	System.out.println("AJAC");
+		try {
+			elementosReferencias = new ArrayList<String>();
+			elementosReferencias = MensajeBs.verificarReferencias(model);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "referencias";
+	}
+
 	private void buscarParametrosDisponibles(int idProyecto) {
 		List<Parametro> listParametrosAux = MensajeBs.consultarParametros(idProyecto);
 		List<Parametro> listParametros = new ArrayList<Parametro>();
@@ -109,69 +274,25 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 		
 	}
 
-	public String create() {
-		String resultado = null;
-		try {
-			proyecto = SessionManager.consultarProyectoActivo();
-			//Se verifica si es parametrizado 
-			if(MensajeBs.esParametrizado(model.getRedaccion())) {
-				
-				List<Parametro> listParametros = JsonUtil.mapJSONToArrayList(jsonParametros, Parametro.class);
-				if(listParametros.isEmpty() || this.cambioRedaccion.equals("true")) {
-					cambioRedaccion = "true";
-					listParametros = MensajeBs.obtenerParametros(model.getRedaccion(), proyecto.getId());
-					this.jsonParametros = JsonUtil.mapListToJSON(listParametros);
-					return editNew();
-				}
-				
-			} 
-			model.setProyecto(proyecto);
-			agregarParametros();
 
-			//Se prepara el modelo para el registro
-			model.setProyecto(proyecto);
-			model.setEstadoElemento(ElementoBs.consultarEstadoElemento((Estado.EDICION)));
-			 
-			//Se registra el mensaje
-			MensajeBs.registrarMensaje(model);
-			resultado = SUCCESS;
-			
-			//Se agrega mensaje de éxito
-			addActionMessage(getText("MSG1", new String[] { "El",
-					"Mensaje", "registrado" }));
-			
-			//Se agrega el mensaje a la sesión
-			SessionManager.set(this.getActionMessages(), "mensajesAccion");
-			
-		} catch (PRISMAValidacionException pve) {
-			ErrorManager.agregaMensajeError(this, pve);
-			resultado = editNew();
-		} catch (PRISMAException pe) {
-			ErrorManager.agregaMensajeError(this, pe);
-			resultado = index();
-		} catch (Exception e) {
-			ErrorManager.agregaMensajeError(this, e);
-			resultado = index();
+	private void prepararVista() {
+		ArrayList<Parametro> parametrosVista = new ArrayList<Parametro>();
+		Parametro parametroAux = null;
+		if (cambioRedaccion == null) {
+			cambioRedaccion = "false";
 		}
-		return resultado;
-	}
+		
+		
+		if (jsonParametros == null) {
+		for (MensajeParametro parametro : model.getParametros()) {
+			parametroAux = new Parametro(parametro.getParametro().getNombre(), parametro.getParametro().getDescripcion());
+			parametrosVista.add(parametroAux);
+		}
+		this.jsonParametros = JsonUtil.mapListToJSON(parametrosVista);
+		}
 
-	public String show() throws Exception{
-		String resultado = null;
-		try {
-			model = MensajeBs.consultarMensaje(idSel);
-			this.existenParametros = model.getParametros().size() > 0 ? true : false;
-			resultado = SHOW;
-		} catch (PRISMAException pe) {
-			pe.setIdMensaje("MSG26");
-			ErrorManager.agregaMensajeError(this, pe);
-			return index();
-		} catch(Exception e) {
-			ErrorManager.agregaMensajeError(this, e);
-			return index();
-		}
-		return resultado;
 	}
+	
 	
 	private void agregarParametros() throws Exception {
 		model.setParametrizado(true);
@@ -195,6 +316,7 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 	public void setSession(Map<String, Object> session) {
 	}
 
+	
 	public Mensaje getModel() {
 		if(model == null){
 			model = new Mensaje();
@@ -210,6 +332,7 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 		this.listMensajes = listMensajes;
 	}
 
+	
 	public void setModel(Mensaje model) {
 		this.model = model;
 	}
@@ -238,10 +361,11 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 		this.jsonParametrosGuardados = jsonParametrosGuardados;
 	}
 	
+	
 	public boolean isParametrizado() {
 		return parametrizado;
 	}
-	
+
 	public void setParametrizado(boolean parametrizado) {
 		this.parametrizado = parametrizado;
 	}
@@ -252,6 +376,8 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 
 	public void setIdSel(Integer idSel) {
 		this.idSel = idSel;
+		this.model = MensajeBs.consultarMensaje(idSel);
+
 	}
 
 	public boolean isExistenParametros() {
@@ -260,6 +386,22 @@ public class MensajesCtrl extends ActionSupportPRISMA implements ModelDriven<Men
 
 	public void setExistenParametros(boolean existenParametros) {
 		this.existenParametros = existenParametros;
+	}
+
+	public String getComentario() {
+		return comentario;
+	}
+
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
+	}
+
+	public List<String> getElementosReferencias() {
+		return elementosReferencias;
+	}
+
+	public void setElementosReferencias(List<String> elementosReferencias) {
+		this.elementosReferencias = elementosReferencias;
 	}
 
 	

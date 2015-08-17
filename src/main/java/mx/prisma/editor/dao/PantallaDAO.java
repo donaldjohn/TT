@@ -14,7 +14,7 @@ import org.hibernate.SQLQuery;
 public class PantallaDAO extends ElementoDAO {
 
 	public PantallaDAO() {
-		super();
+		
 	}
 	
 	public void registrarEntidad(Pantalla pantalla) {

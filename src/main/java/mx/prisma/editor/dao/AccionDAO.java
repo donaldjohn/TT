@@ -12,7 +12,7 @@ import mx.prisma.editor.model.Pantalla;
 public class AccionDAO extends GenericDAO {
 
 	public AccionDAO() {
-		super();
+		
 	}
 
 	public void registrarAccion(Accion accion) throws Exception {

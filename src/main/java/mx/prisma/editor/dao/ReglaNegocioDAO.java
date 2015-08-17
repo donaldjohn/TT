@@ -23,9 +23,9 @@ import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.util.HibernateUtil;
 
 public class ReglaNegocioDAO extends ElementoDAO {
-	Session session = null;
+	
 	public ReglaNegocioDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		super();
 	}
 
 	public void registrarReglaNegocio(ReglaNegocio reglaNegocio) throws Exception {

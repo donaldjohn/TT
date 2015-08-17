@@ -3,6 +3,7 @@ package mx.prisma.editor.bs;
 import mx.prisma.bs.AnalisisEnum.CU_Actores;
 import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
 import mx.prisma.bs.AnalisisEnum.CU_Glosario;
+import mx.prisma.bs.AnalisisEnum.CU_Mensajes;
 import mx.prisma.bs.AnalisisEnum.CU_Pantallas;
 import mx.prisma.bs.AnalisisEnum.CU_ReglasNegocio;
 import mx.prisma.editor.dao.EstadoElementoDAO;
@@ -108,6 +109,26 @@ public class ElementoBs {
 		}
 		
 	}
+	
+	public static void verificarEstado(Elemento elemento,
+			CU_Mensajes mensajeAnalisis) {
+		switch(mensajeAnalisis) {
+		case MODIFICARMENSAJE9_2:
+			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION)) {
+				throw new PRISMAException("El estado de la regla de negocio es inválido.", "MSG13");
+			}
+			break;
+		case ELIMINARMENSAJE9_3:
+			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION)) {
+				throw new PRISMAException("El estado de la regla de negocio es inválido.", "MSG13");
+			}
+			break;
+		default:
+			break;
+		}
+		
+	}
+	
 	public static void verificarEstado(Elemento elemento,
 			CU_Pantallas pantallaAnalisis) {
 		switch(pantallaAnalisis) {

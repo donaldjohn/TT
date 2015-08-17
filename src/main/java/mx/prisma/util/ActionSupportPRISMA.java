@@ -8,8 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
 
-import mx.prisma.editor.bs.CuBs;
-
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ActionSupportPRISMA extends ActionSupport {

@@ -450,9 +450,9 @@ public class TokenBs {
 	 * contenidos en una cadena.
 	 * 
 	 * Parámetros:
-	 * 	P1: Cadena cuyo contenido incluye los tokens en su versión visual, por ejemplo: ATR.Escuela:Nombre. Se utilizará para 
+	 * 	@P1: Cadena cuyo contenido incluye los tokens en su versión visual, por ejemplo: ATR.Escuela:Nombre. Se utilizará para 
 	 * 		procesar los tokens y convertirlos a objetos.
-	 * 	P2: Proyecto en cuestión. Se utilizará para únicamente entregar como respuesta una lista de objetos, presentes para el proyecto actual.
+	 * 	@P2: Proyecto en cuestión. Se utilizará para únicamente entregar como respuesta una lista de objetos, presentes para el proyecto actual.
 	 * 
 	 * 
 	 * Ejemplo: 

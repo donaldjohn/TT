@@ -39,7 +39,7 @@
 
 	<s:form autocomplete="off" id="frmCU" theme="simple"
 		action="%{#pageContext.request.contextPath}/cu/%{idSel}"
-		onsubmit="return prepararEnvio();" method="post">
+		onsubmit="return false;" method="post">
 		<s:hidden name="_method" value="put" />
 		<div class="formulario">
 			<div class="tituloFormulario">Información general del caso de
@@ -153,7 +153,7 @@
 
 		<br />
 		<div align="center">
-			<s:submit class="boton" value="Aceptar" />
+			<s:submit class="boton" value="Aceptar" onclick="prepararEnvio();"/>
 
 			<input class="boton" type="button"
 				onclick="location.href='${pageContext.request.contextPath}/cu'"

@@ -14,7 +14,7 @@ import mx.prisma.editor.model.Modulo;
 public class CasoUsoDAO extends ElementoDAO {
 
 	public CasoUsoDAO() {
-		super();
+		
 	}
 
 	public void cleanRelaciones(CasoUso casodeuso) {
@@ -97,7 +97,8 @@ public class CasoUsoDAO extends ElementoDAO {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 			throw he;
-		}	}
+		}	
+	}
 
 	public void registrarCasoUso(CasoUso casodeuso) {
 		super.registrarElemento(casodeuso);

@@ -7,6 +7,11 @@ public class AnalisisEnum {
 		MODIFICARTRAYECTORIA5_1_1_2,
 		ELIMINARTRAYECTORIA5_1_1_3
 	}
+	
+	public enum CU_Mensajes {
+		MODIFICARMENSAJE9_2,
+		ELIMINARMENSAJE9_3
+	}
 	public enum CU_ReglasNegocio {
 		MODIFICARREGLANEGOCIO8_2, ELIMINARREGLANEGOCIO8_3
 	}

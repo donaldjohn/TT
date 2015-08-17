@@ -1,16 +1,15 @@
 package mx.prisma.admin.dao;
 
 import mx.prisma.admin.model.Colaborador;
-import mx.prisma.util.HibernateUtil;
+import mx.prisma.dao.GenericDAO;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 
-public class ColaboradorDAO {
-	Session session = null;
+public class ColaboradorDAO extends GenericDAO {
+	
 
 	public ColaboradorDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		super();
 	}
 
 	public void registrarColaborador(Colaborador colaborador) {

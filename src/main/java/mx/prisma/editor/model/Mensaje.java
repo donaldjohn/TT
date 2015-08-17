@@ -5,7 +5,6 @@ package mx.prisma.editor.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -59,7 +58,7 @@ public class Mensaje extends Elemento implements java.io.Serializable {
 		this.parametrizado = parametrizado;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "mensaje", cascade = CascadeType.ALL )	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mensaje")	
 	public Set<MensajeParametro> getParametros() {
 		return parametros;
 	}

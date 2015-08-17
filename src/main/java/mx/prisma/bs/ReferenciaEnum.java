@@ -29,11 +29,11 @@ public class ReferenciaEnum {
 	
 	public enum TipoReferencia {
 	    ACTOR, ENTIDAD, CASOUSO, PANTALLA, PASO, ATRIBUTO,
-	    MENSAJE, REGLANEGOCIO, TERMINOGLS, ACCION, TRAYECTORIA 
+	    MENSAJE, REGLANEGOCIO, TERMINOGLS, ACCION, TRAYECTORIA, PARAMETRO
 	}
 	
 	public enum TipoSeccion {
-		ACTORES, ENTRADAS, SALIDAS, REGLAS, POSTPRECONDICIONES, REGLASNEGOCIOS, PASOS, EXTENSIONES
+		ACTORES, ENTRADAS, SALIDAS, REGLAS, POSTPRECONDICIONES, REGLASNEGOCIOS, PASOS, EXTENSIONES, PARAMETROS
 	}
 	
 	public enum TipoRelacion {
@@ -114,6 +114,9 @@ public class ReferenciaEnum {
 		}
 		if (tokenReferencia.equals("P")){
 			return TipoReferencia.PASO;
+		}
+		if (tokenReferencia.equals("PARAM")){
+			return TipoReferencia.PARAMETRO;
 		}
 		return null;
 	}

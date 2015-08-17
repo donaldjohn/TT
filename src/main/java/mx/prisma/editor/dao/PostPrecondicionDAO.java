@@ -12,7 +12,7 @@ import org.hibernate.Query;
 public class PostPrecondicionDAO extends GenericDAO{
 
 	public PostPrecondicionDAO() {
-		super();
+		
 	}
 
 	public void registrarPostPrecondicion(PostPrecondicion postprecondicion) {

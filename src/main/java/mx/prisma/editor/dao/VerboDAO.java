@@ -2,18 +2,17 @@ package mx.prisma.editor.dao;
 
 import java.util.List;
 
+import mx.prisma.dao.GenericDAO;
 import mx.prisma.editor.model.Verbo;
-import mx.prisma.util.HibernateUtil;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.Session;
 
-public class VerboDAO {
-	Session session = null;
+public class VerboDAO extends GenericDAO{
+	
 
 	public VerboDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		super();
 	}
 
 	public Verbo consultarVerbo(int identificador) {

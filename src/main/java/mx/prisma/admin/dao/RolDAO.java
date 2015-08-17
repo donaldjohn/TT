@@ -1,16 +1,15 @@
 package mx.prisma.admin.dao;
 
 import mx.prisma.admin.model.Rol;
-import mx.prisma.util.HibernateUtil;
+import mx.prisma.dao.GenericDAO;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 
-public class RolDAO {
-	Session session = null;
+public class RolDAO extends GenericDAO {
+	
 
 	public RolDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		super();
 	}
 	public Rol consultarRol(int id) {
 		Rol rol = null;

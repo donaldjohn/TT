@@ -130,10 +130,8 @@ function prepararEnvio() {
 		tablaPrecondicionesToJson("tablaPrecondiciones");
 		tablaPostcondicionesToJson("tablaPostcondiciones");
 		$('#mensajeConfirmacion').dialog('open');
-		return false;
 	} catch(err) {
 		alert("Ocurrió un error.");
-		return false;
 	}
 }
 

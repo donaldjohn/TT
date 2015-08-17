@@ -9,7 +9,7 @@ import org.hibernate.HibernateException;
 public class ReferenciaParametroDAO extends GenericDAO {
 
 	public ReferenciaParametroDAO() {
-		super();
+		
 	}
 	
 	public ReferenciaParametro consultarReferenciaParametro(int id) {

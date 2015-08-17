@@ -1,16 +1,15 @@
 package mx.prisma.admin.dao;
 
 import mx.prisma.admin.model.EstadoProyecto;
-import mx.prisma.util.HibernateUtil;
+import mx.prisma.dao.GenericDAO;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 
-public class EstadoProyectoDAO {
-	Session session = null;
+public class EstadoProyectoDAO extends GenericDAO {
+	
 
 	public EstadoProyectoDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		super();
 	}
 	
 	public EstadoProyecto consultarEstadoProyecto(int idEstadoProyecto) {

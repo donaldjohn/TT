@@ -12,7 +12,14 @@ import mx.prisma.editor.model.TerminoGlosario;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
+
+
 public class SalidaDAO extends GenericDAO{
+	
+	public SalidaDAO() {
+		
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Salida> consultarReferencias(Object objeto) {
 		List<Salida> results = null;
@@ -49,10 +56,8 @@ public class SalidaDAO extends GenericDAO{
 			session.getTransaction().rollback();
 			throw he;
 		}
-		if (results.isEmpty()) {
-			return null;
-		} else
-			return results;
+
+		return results;
 	}
 
 

@@ -8,7 +8,7 @@ import org.hibernate.HibernateException;
 public class PasoDAO extends GenericDAO{
 
 	public PasoDAO() {
-		super();
+		
 	}
 	public Paso consultarPaso(int id) {
 		Paso paso = null;

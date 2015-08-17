@@ -4,22 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
+import org.hibernate.Query;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.MensajeParametro;
-import mx.prisma.util.HibernateUtil;
 
 public class MensajeDAO extends ElementoDAO {
 	
-	private Session session = null;
-
 	public MensajeDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
 	}
 
 	public void registrarMensaje(Mensaje mensaje) throws Exception {
@@ -35,7 +33,28 @@ public class MensajeDAO extends ElementoDAO {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 			throw he;
-		}	}
+		}	
+	}
+	
+public void modificarMensaje(Mensaje mensaje, Actualizacion actualizacion) throws Exception {
+	try {
+		session.beginTransaction();
+		Query query1 = session.createQuery("DELETE FROM MensajeParametro WHERE mensaje.id = :id");
+		query1.setParameter("id", mensaje.getId());
+		query1.executeUpdate();
+		
+		for (MensajeParametro parametro : mensaje.getParametros()) {
+			session.saveOrUpdate(parametro);
+		}
+		session.update(mensaje);
+		session.save(actualizacion);
+		session.getTransaction().commit();
+	} catch (HibernateException he) {
+		he.printStackTrace();
+		session.getTransaction().rollback();
+		throw he;
+	}
+	}
 
 	public Mensaje consultarMensaje(int id) {
 		return (Mensaje) super.consultarElemento(id);

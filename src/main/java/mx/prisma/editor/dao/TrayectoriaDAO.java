@@ -13,7 +13,7 @@ import org.hibernate.Query;
 public class TrayectoriaDAO extends GenericDAO {
 
 	public TrayectoriaDAO() {
-		super();
+		
 	}
 
 

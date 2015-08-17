@@ -14,19 +14,18 @@ import mx.prisma.dao.GenericDAO;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
+import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.Trayectoria;
-import mx.prisma.util.HibernateUtil;
 
 public class ElementoDAO extends GenericDAO{
 
 	public ElementoDAO() {
-		super();
+		
 	}
 
 	public void registrarElemento(Elemento elemento) {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
 			session.save(elemento);
@@ -64,27 +63,19 @@ public class ElementoDAO extends GenericDAO{
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public Elemento consultarElemento(int id) {
-		List<Elemento> elementos = null;
+		Elemento elemento = null;
 
 		try {
 			session.beginTransaction();
-			Query query = session.createQuery("from Elemento where id = :id");
-			query.setParameter("id", id);
-			elementos = query.list();
+			elemento = (Elemento) session.get(Elemento.class, id);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 			throw he;
 		}
-		if (elementos == null) {
-			return null;
-		} else if (elementos.isEmpty()) {
-			return null;
-		} else
-			return elementos.get(0);
+		return elemento;
 
 	}
 
@@ -283,7 +274,7 @@ public class ElementoDAO extends GenericDAO{
 		switch(ReferenciaEnum.getTipoReferencia(objeto)) {
 		case ACCION:
 			Accion accion = (Accion) objeto;
-			queryCadena = "SELECT id FROM ReferenciaParametro WHERE AccionidDestino = " + accion.getId() + ";";
+			queryCadena = "SELECT id FROM ReferenciaParametro WHERE AccionidDestino = " + accion.getId();
 			break;
 		case ACTOR:
 			break;
@@ -291,19 +282,21 @@ public class ElementoDAO extends GenericDAO{
 			break;
 		case CASOUSO:
 			CasoUso casoUso = (CasoUso) objeto;
-			queryCadena = "SELECT id FROM ReferenciaParametro WHERE ElementoidDestino = " + casoUso.getId() + ";";
+			queryCadena = "SELECT id FROM ReferenciaParametro WHERE ElementoidDestino = " + casoUso.getId();
 			break;
 		case ENTIDAD:
 			break;
 		case MENSAJE:
+			Mensaje mensaje = (Mensaje) objeto;
+			queryCadena = "SELECT id FROM ReferenciaParametro WHERE ElementoidDestino = " + mensaje.getId();
 			break;
 		case PANTALLA:
 			Pantalla pantalla = (Pantalla) objeto;
-			queryCadena = "SELECT id FROM ReferenciaParametro WHERE ElementoidDestino = " + pantalla.getId() + ";";
+			queryCadena = "SELECT id FROM ReferenciaParametro WHERE ElementoidDestino = " + pantalla.getId();
 			break;
 		case PASO:
 			Paso paso = (Paso) objeto;
-			queryCadena = "SELECT id FROM ReferenciaParametro WHERE PasoidDestino = "+paso.getId()+";";
+			queryCadena = "SELECT id FROM ReferenciaParametro WHERE PasoidDestino = "+paso.getId();
 			break;
 		case REGLANEGOCIO:
 			break;
@@ -311,7 +304,7 @@ public class ElementoDAO extends GenericDAO{
 			break;
 		case TRAYECTORIA:
 			Trayectoria trayectoria = (Trayectoria) objeto;
-			queryCadena = "SELECT id FROM ReferenciaParametro WHERE Trayectoriaid = "+trayectoria.getId()+";";
+			queryCadena = "SELECT id FROM ReferenciaParametro WHERE Trayectoriaid = "+trayectoria.getId();
 			break;
 		default:
 			break;

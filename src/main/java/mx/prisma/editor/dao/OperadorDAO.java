@@ -2,18 +2,17 @@ package mx.prisma.editor.dao;
 
 import java.util.List;
 
+import mx.prisma.dao.GenericDAO;
 import mx.prisma.editor.model.Operador;
-import mx.prisma.util.HibernateUtil;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.Session;
 
-public class OperadorDAO {
-	Session session = null;
+public class OperadorDAO extends GenericDAO {
+	
 
 	public OperadorDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		super();
 	}
 
 	public Operador consultarOperador(int identificador) {

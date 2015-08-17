@@ -170,7 +170,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			CuBs.registrarCasoUso(model);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",
-					"caso de uso", "registrado" }));
+					"Caso de uso", "registrado" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
@@ -234,7 +234,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			CuBs.modificarCasoUso(model, actualizacion);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",
-					"caso de uso", "modificado" }));
+					"Caso de uso", "modificado" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
@@ -282,7 +282,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			CuBs.eliminarCasoUso(model);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",
-					"caso de uso", "eliminado" }));
+					"Caso de uso", "eliminado" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
