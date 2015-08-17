@@ -2,6 +2,7 @@ package mx.prisma.editor.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,9 @@ import mx.prisma.bs.TipoReglaNegocioEnum;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.bs.EntidadBs;
+import mx.prisma.editor.bs.PantallaBs;
 import mx.prisma.editor.bs.ReglaNegocioBs;
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
@@ -83,8 +86,8 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	private List<Elemento> elementosReferencias;
 	
 	private boolean esEliminable;
-	
-	private String comentarios;
+
+	private String comentario;
 	
 	private Integer idSel;
 	
@@ -273,9 +276,11 @@ public String edit() {
 				break;
 			}
 			
-			System.out.println("comentarios: " + comentarios);
-			
-			ReglaNegocioBs.modificarReglaNegocio(model);
+			Actualizacion actualizacion = new Actualizacion(new Date(),
+					comentario, model,
+					SessionManager.consultarColaboradorActivo());
+
+			ReglaNegocioBs.modificarReglaNegocio(model, actualizacion);
 			resultado = SUCCESS;
 
 			addActionMessage(getText("MSG1", new String[] { "La",
@@ -603,12 +608,14 @@ public String edit() {
 		this.esEliminable = esEliminable;
 	}
 
-	public String getComentarios() {
-		return comentarios;
+	
+
+	public String getComentario() {
+		return comentario;
 	}
 
-	public void setComentarios(String comentarios) {
-		this.comentarios = comentarios;
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
 	}
 
 	public List<Elemento> getElementosReferencias() {

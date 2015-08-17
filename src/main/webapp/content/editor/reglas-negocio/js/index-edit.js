@@ -352,24 +352,12 @@ function esValidoPaso(idTabla, realiza, verbo, redaccion) {
 
 function prepararEnvio() {
 	try {
-		tablaToJson("tablaPaso");
+		$('#mensajeConfirmacion').dialog('open');
 		return true;
 	} catch(err) {
-		alert("Ocurrió un error.");
+		alert("Ocurrió un error: " + err);
 		return false;
 	}
-}
-
-function tablaToJson(idTable) {
-	var table = $("#" + idTable).dataTable();
-	var arregloPasos = [];
-	
-	for (var i = 0; i < table.fnSettings().fnRecordsTotal(); i++) {
-		arregloPasos.push(new Paso(table.fnGetData(i, 0), table.fnGetData(i, 2), 
-						table.fnGetData(i, 3), table.fnGetData(i, 4)));
-	}
-	var jsonPasos = JSON.stringify(arregloPasos);
-	document.getElementById("jsonPasosTabla").value = jsonPasos;
 }
 
 function calcularNumeroPaso() {
@@ -459,8 +447,18 @@ function agregarMensaje(mensaje) {
 	alert(mensaje);
 };
 
-////////////////////////////////////////
-function prueba() {
-	alert("hola");
-	
+function enviarComentarios(){
+	var redaccionDialogo = document.getElementById("comentarioDialogo").value;
+	if(vaciaONula(redaccionDialogo)) {
+		agregarMensaje("Agregue todos los campos obligatorios.");
+		return false;
+	}
+	document.getElementById("comentario").value = redaccionDialogo;
+	document.getElementById("frmReglasNegocio").submit();
+
+}
+
+function cancelarRegistroComentarios() {
+	document.getElementById("comentario").value = "";
+	$('#mensajeConfirmacion').dialog('close');
 }

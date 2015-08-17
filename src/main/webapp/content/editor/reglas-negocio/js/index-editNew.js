@@ -350,28 +350,6 @@ function esValidoPaso(idTabla, realiza, verbo, redaccion) {
 	return true;
 }
 
-function prepararEnvio() {
-	try {
-		tablaToJson("tablaPaso");
-		return true;
-	} catch(err) {
-		alert("Ocurrió un error.");
-		return false;
-	}
-}
-
-function tablaToJson(idTable) {
-	var table = $("#" + idTable).dataTable();
-	var arregloPasos = [];
-	
-	for (var i = 0; i < table.fnSettings().fnRecordsTotal(); i++) {
-		arregloPasos.push(new Paso(table.fnGetData(i, 0), table.fnGetData(i, 2), 
-						table.fnGetData(i, 3), table.fnGetData(i, 4)));
-	}
-	var jsonPasos = JSON.stringify(arregloPasos);
-	document.getElementById("jsonPasosTabla").value = jsonPasos;
-}
-
 function calcularNumeroPaso() {
 	return $("#tablaPaso").dataTable().fnSettings().fnRecordsTotal() + 1;
 }

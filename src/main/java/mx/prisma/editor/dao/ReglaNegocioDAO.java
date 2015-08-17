@@ -7,18 +7,25 @@ import java.util.List;
 
 
 
+
+
+
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.Session;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.ReglaNegocio;
+import mx.prisma.util.HibernateUtil;
 
 public class ReglaNegocioDAO extends ElementoDAO {
-
+	Session session = null;
 	public ReglaNegocioDAO() {
+		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
 	}
 
 	public void registrarReglaNegocio(ReglaNegocio reglaNegocio) throws Exception {
@@ -45,6 +52,23 @@ public class ReglaNegocioDAO extends ElementoDAO {
 
 	public String siguienteNumero(int idProyecto) {
 		return super.siguienteNumero(TipoReferencia.REGLANEGOCIO, idProyecto);
+	}
+
+	public void modificarReglaNegocio(ReglaNegocio model,
+			Actualizacion actualizacion) {
+		try {
+			session.beginTransaction();
+			
+			
+			session.update(model);
+			session.save(actualizacion);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
+		
 	}
 
 }

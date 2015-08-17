@@ -26,7 +26,7 @@
 
 	<s:form autocomplete="off" id="frmReglasNegocio" theme="simple"
 		action="%{#pageContext.request.contextPath}/reglas-negocio/%{idSel}"
-		method="post" onsubmit="return mostrarEmergenteComentarios();">
+		method="post" onsubmit="return false;">
 		<s:hidden name="_method" value="put" />
 		<div class="formulario">
 			<div class="tituloFormulario">Información general de la Regla
@@ -195,7 +195,7 @@
 		</div>
 		<br />
 		<div align="center">
-			<s:submit class="boton" value="Aceptar"/>
+			<s:submit class="boton" value="Aceptar" onclick="prepararEnvio();"/>
 			<input class="boton" type="button"
 				onclick="location.href='${pageContext.request.contextPath}/reglas-negocio'"
 				value="Cancelar" />
@@ -204,33 +204,37 @@
 			value="%{jsonAtributos}" />
 		<s:hidden name="jsonEntidades" id="jsonEntidades"
 			value="%{jsonEntidades}" />
-		<s:hidden name="comentarios" id="comentarios"
-			value="%{comentarios}" />
+		<s:hidden name="comentario" id="comentario" value="%{comentario}" />
 	</s:form>
-	<!-- EMERGENTE COMENTARIOS -->
-	<sj:dialog id="comentariosDialog" title="Comentarios del cambio"
-		autoOpen="false" minHeight="100" minWidth="800" modal="true"
-		draggable="true" onCloseTopics="prueba();">
-		<div class="seccion">
-			<table>
-				<tr>
-					<td class="label obligatorio"><s:text name="labelComentarios" /></td>
-					<td><s:textarea rows="5" name="comentario" id="comentario"
-							cssClass="inputFormulario ui-widget" maxlength="999"
-							cssErrorClass="input-error"></s:textarea></td>
-				</tr>
-			</table>
-		</div>
-		<br />
-		<div align="center">
-			<s:url var="urlGuardarCambios"
-				value="%{#pageContext.request.contextPath}/reglas-negocio/%{idSel}?_method=put"
-				method="post" />
-			<input type="button"
-				onclick="return true;" value="Aceptar" />
-			<input type="button" onclick="cancelarComentarios();"
-				value="Cancelar" />
-		</div>
+	<!-- COMENTARIOS DE LA ACTUALIZACIÓN -->
+	<sj:dialog id="mensajeConfirmacion" title="Confirmación"
+		autoOpen="false" minHeight="300" minWidth="800" modal="true"
+		draggable="true">
+		<s:form autocomplete="off" id="frmComentario"
+			name="frmComentario" theme="simple">
+			<div class="formulario">
+				<div class="tituloFormulario">Comentarios de la modificación</div>
+				<div class="seccion">
+					<p class="instrucciones">Ingrese un comentario referente a la
+						modificación realizada.</p>
+
+				<table>
+					<tr>
+						<td class="label obligatorio"><s:text name="labelComentarios" /></td>
+						<td><s:textarea rows="5" name="comentarioDialogo"
+								id="comentarioDialogo" maxlength="999"
+								cssErrorClass="input-error" cssClass="inputFormulario ui-widget" /></td>
+					</tr>
+				</table>
+				</div>
+			</div>
+			<br />
+			<div align="center">
+				<input type="button" onclick="enviarComentarios()" value="Aceptar" />
+				<input type="button" onclick="cancelarRegistroComentarios()"
+					value="Cancelar" />
+			</div>
+		</s:form>
 	</sj:dialog>
 </body>
 	</html>

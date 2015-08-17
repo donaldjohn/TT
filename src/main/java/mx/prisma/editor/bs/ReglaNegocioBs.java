@@ -18,6 +18,7 @@ import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.OperadorDAO;
 import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.dao.TipoReglaNegocioDAO;
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Entidad;
@@ -314,14 +315,14 @@ public class ReglaNegocioBs {
 		return reglaNegocio;
 	}
 
-	public static void modificarReglaNegocio(ReglaNegocio model) throws Exception {
+	public static void modificarReglaNegocio(ReglaNegocio model, Actualizacion actualizacion) throws Exception {
 		try {
 				validar(model);
 				model.setClave(CLAVE);
 				model.setEstadoElemento(ElementoBs.consultarEstadoElemento(Estado.EDICION));
 				model.setNombre(model.getNombre().trim());
 				ElementoBs.verificarEstado(model, CU_ReglasNegocio.MODIFICARREGLANEGOCIO8_2);
-				new ReglaNegocioDAO().modificarElemento(model);
+				new ReglaNegocioDAO().modificarReglaNegocio(model, actualizacion);
 		} catch (JDBCException je) {
 				if(je.getErrorCode() == 1062)
 				{
