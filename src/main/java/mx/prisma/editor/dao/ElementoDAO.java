@@ -3,21 +3,15 @@ package mx.prisma.editor.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.SQLQuery;
-
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
 import mx.prisma.dao.GenericDAO;
-import mx.prisma.editor.model.Accion;
-import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
-import mx.prisma.editor.model.Mensaje;
-import mx.prisma.editor.model.Pantalla;
-import mx.prisma.editor.model.Paso;
-import mx.prisma.editor.model.Trayectoria;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 
 public class ElementoDAO extends GenericDAO{
 
@@ -209,123 +203,4 @@ public class ElementoDAO extends GenericDAO{
 		} else
 			return elementos;
 	}
-	
-	@SuppressWarnings("unchecked")
-	public List<Integer> consultarReferenciasCasoUso(Elemento elemento) {
-		List<Integer> results = null;
-		SQLQuery query = null;
-
-		String queryCadena = null;
-		
-		switch(ReferenciaEnum.getTipoReferencia(elemento)) {
-		case ACCION:
-			break;
-		case ACTOR:
-			break;
-		case ATRIBUTO:
-			break;
-		case CASOUSO:
-			break;
-		case ENTIDAD:
-			break;
-		case MENSAJE:
-			break;
-		case PANTALLA:
-			break;
-		case PASO:
-			break;
-		case REGLANEGOCIO:
-			queryCadena = "SELECT CasoUsoElementoid  FROM CasoUso_ReglaNegocio WHERE ReglaNegocioElementoid = "+elemento.getId()+";";
-			break;
-		case TERMINOGLS:
-			break;
-		case TRAYECTORIA:
-			break;
-		default:
-			break;
-			
-		}
-		try {
-		session.beginTransaction();
-		query = session.createSQLQuery(queryCadena);
-		results = query.list();
-		
-
-		session.getTransaction().commit();
-		
-
-		} catch (HibernateException he) {
-			he.printStackTrace();
-			session.getTransaction().rollback();
-			throw he;
-		}
-		if (results.isEmpty()) {
-			return null;
-		} else
-			return results;
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<Integer> consultarReferenciasParametro(Object objeto) {
-		List<Integer> results = null;
-		SQLQuery query = null;
-		String queryCadena = null;
-		
-		switch(ReferenciaEnum.getTipoReferencia(objeto)) {
-		case ACCION:
-			Accion accion = (Accion) objeto;
-			queryCadena = "SELECT id FROM ReferenciaParametro WHERE AccionidDestino = " + accion.getId();
-			break;
-		case ACTOR:
-			break;
-		case ATRIBUTO:
-			break;
-		case CASOUSO:
-			CasoUso casoUso = (CasoUso) objeto;
-			queryCadena = "SELECT id FROM ReferenciaParametro WHERE ElementoidDestino = " + casoUso.getId();
-			break;
-		case ENTIDAD:
-			break;
-		case MENSAJE:
-			Mensaje mensaje = (Mensaje) objeto;
-			queryCadena = "SELECT id FROM ReferenciaParametro WHERE ElementoidDestino = " + mensaje.getId();
-			break;
-		case PANTALLA:
-			Pantalla pantalla = (Pantalla) objeto;
-			queryCadena = "SELECT id FROM ReferenciaParametro WHERE ElementoidDestino = " + pantalla.getId();
-			break;
-		case PASO:
-			Paso paso = (Paso) objeto;
-			queryCadena = "SELECT id FROM ReferenciaParametro WHERE PasoidDestino = "+paso.getId();
-			break;
-		case REGLANEGOCIO:
-			break;
-		case TERMINOGLS:
-			break;
-		case TRAYECTORIA:
-			Trayectoria trayectoria = (Trayectoria) objeto;
-			queryCadena = "SELECT id FROM ReferenciaParametro WHERE Trayectoriaid = "+trayectoria.getId();
-			break;
-		default:
-			break;
-			
-		}
-		try {
-		session.beginTransaction();
-		query = session.createSQLQuery(queryCadena);
-		results = query.list();
-		session.getTransaction().commit();
-		
-
-		} catch (HibernateException he) {
-			he.printStackTrace();
-			session.getTransaction().rollback();
-			throw he;
-		}
-		if (results.isEmpty()) {
-			return null;
-		} else
-			return results;
-	}
-
 }

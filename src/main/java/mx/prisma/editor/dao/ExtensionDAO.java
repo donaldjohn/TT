@@ -1,6 +1,5 @@
 package mx.prisma.editor.dao;
 
-
 import java.util.List;
 
 import mx.prisma.bs.ReferenciaEnum.TipoSeccion;
@@ -10,12 +9,12 @@ import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Extension;
 
 import org.hibernate.HibernateException;
-import org.hibernate.SQLQuery;
+import org.hibernate.Query;
 
-public class ExtensionDAO extends GenericDAO{
+public class ExtensionDAO extends GenericDAO {
 
 	public ExtensionDAO() {
-		
+
 	}
 
 	public void registrarExtension(Extension extension) {
@@ -61,28 +60,26 @@ public class ExtensionDAO extends GenericDAO{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Integer> consultarReferenciasExtension(CasoUso casoUso) {
-		List<Integer> results = null;
-		SQLQuery query = null;
+	public List<Extension> consultarReferencias(CasoUso casoUso) {
+		List<Extension> results = null;
+		Query query = null;
 		String queryCadena = null;
-		
-		queryCadena = "SELECT id FROM Extension WHERE CasoUsoElementoid_destino = "+casoUso.getId()+";";
-	
+
+		queryCadena = "FROM Extension WHERE CasoUsoElementoid_destino = :idCasoUso";
+
 		try {
-		session.beginTransaction();
-		query = session.createSQLQuery(queryCadena);
-		results = query.list();
-		session.getTransaction().commit();
-		
+			session.beginTransaction();
+			query = session.createQuery(queryCadena);
+			query.setParameter("idCasoUso", casoUso.getId());
+			results = query.list();
+			session.getTransaction().commit();
 
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 			throw he;
 		}
-		if (results.isEmpty()) {
-			return null;
-		} else
-			return results;
+
+		return results;
 	}
 }

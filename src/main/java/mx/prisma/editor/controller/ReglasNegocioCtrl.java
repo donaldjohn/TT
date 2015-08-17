@@ -15,8 +15,6 @@ import mx.prisma.editor.bs.EntidadBs;
 import mx.prisma.editor.bs.ReglaNegocioBs;
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Atributo;
-import mx.prisma.editor.model.CasoUso;
-import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Operador;
 import mx.prisma.editor.model.ReglaNegocio;
@@ -82,7 +80,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	private int idAtributo1;
 	private int idAtributo2;
 	private int idOperador;
-	private List<Elemento> elementosReferencias;
+	private List<String> elementosReferencias;
 	
 	private boolean esEliminable;
 
@@ -410,11 +408,8 @@ public String edit() {
 	
 	public String verificarElementosReferencias() {
 		try {
-			elementosReferencias = new ArrayList<Elemento>();
-			List<CasoUso> listCasosUso = ReglaNegocioBs.verificarReferenciasCasoUso(model);
-			for(CasoUso cu : listCasosUso) {
-				elementosReferencias.add(cu);
-			}
+			elementosReferencias = new ArrayList<String>();
+			elementosReferencias = ReglaNegocioBs.verificarReferencias(model);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -614,11 +609,11 @@ public String edit() {
 		this.comentario = comentario;
 	}
 
-	public List<Elemento> getElementosReferencias() {
+	public List<String> getElementosReferencias() {
 		return elementosReferencias;
 	}
 
-	public void setElementosReferencias(List<Elemento> elementosReferencias) {
+	public void setElementosReferencias(List<String> elementosReferencias) {
 		this.elementosReferencias = elementosReferencias;
 	}
 

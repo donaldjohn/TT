@@ -5,39 +5,39 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.HibernateException;
-import org.hibernate.JDBCException;
-
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.bs.AnalisisEnum.CU_Actores;
 import mx.prisma.bs.AnalisisEnum.CU_Glosario;
 import mx.prisma.editor.bs.ElementoBs.Estado;
-import mx.prisma.editor.dao.ActorDAO;
-import mx.prisma.editor.dao.EstadoElementoDAO;
-import mx.prisma.editor.dao.PantallaDAO;
+import mx.prisma.editor.dao.EntradaDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.dao.ReglaNegocioDAO;
+import mx.prisma.editor.dao.SalidaDAO;
 import mx.prisma.editor.dao.TerminoGlosarioDAO;
-import mx.prisma.editor.model.Actor;
-import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.Entrada;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.ReferenciaParametro;
+import mx.prisma.editor.model.Salida;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
 
+import org.hibernate.HibernateException;
+import org.hibernate.JDBCException;
+
 public class TerminoGlosarioBs {
 	private static final String CLAVE = "GLS";
- 
-	public static void registrarTerminoGlosario(TerminoGlosario model) throws Exception {
+
+	public static void registrarTerminoGlosario(TerminoGlosario model)
+			throws Exception {
 		try {
 			validar(model);
 			model.setClave(CLAVE);
-			model.setNumero(new TerminoGlosarioDAO().siguienteNumeroTerminoGlosario(model
-					.getProyecto().getId()));
-			model.setEstadoElemento(ElementoBs.consultarEstadoElemento(Estado.EDICION));
+			model.setNumero(new TerminoGlosarioDAO()
+					.siguienteNumeroTerminoGlosario(model.getProyecto().getId()));
+			model.setEstadoElemento(ElementoBs
+					.consultarEstadoElemento(Estado.EDICION));
 			new TerminoGlosarioDAO().registrarTerminoGlosario(model);
 		} catch (JDBCException je) {
 			if (je.getErrorCode() == 1062) {
@@ -55,11 +55,13 @@ public class TerminoGlosarioBs {
 		}
 	}
 
-	public static List<TerminoGlosario> consultarTerminosGlosarioProyecto(Proyecto proyecto) {
+	public static List<TerminoGlosario> consultarTerminosGlosarioProyecto(
+			Proyecto proyecto) {
 		List<TerminoGlosario> listTerminosGlosario = new TerminoGlosarioDAO()
 				.consultarTerminosGlosario(proyecto.getId());
 		if (listTerminosGlosario == null) {
-			throw new PRISMAException("No se pueden consultar los terminos del glosario.",
+			throw new PRISMAException(
+					"No se pueden consultar los terminos del glosario.",
 					"MSG13");
 		}
 		return listTerminosGlosario;
@@ -70,8 +72,8 @@ public class TerminoGlosarioBs {
 		// Validaciones del nombre
 		if (Validador.esNuloOVacio(model.getNombre())) {
 			throw new PRISMAValidacionException(
-					"El usuario no ingresó el nombre del actor.", "MSG4",
-					null, "model.nombre");
+					"El usuario no ingresó el nombre del actor.", "MSG4", null,
+					"model.nombre");
 		}
 		if (Validador.validaLongitudMaxima(model.getNombre(), 200)) {
 			throw new PRISMAValidacionException(
@@ -86,22 +88,24 @@ public class TerminoGlosarioBs {
 		// Validaciones de la Descripción
 		if (Validador.esNuloOVacio(model.getDescripcion())) {
 			throw new PRISMAValidacionException(
-					"El usuario no ingresó la descripción del actor.",
-					"MSG4", null, "model.descripcion");
+					"El usuario no ingresó la descripción del actor.", "MSG4",
+					null, "model.descripcion");
 		}
 
 		if (Validador.validaLongitudMaxima(model.getDescripcion(), 999)) {
 			throw new PRISMAValidacionException(
 					"El usuario ingreso una descripcion muy larga.", "MSG6",
 					new String[] { "999", "caracteres" }, "model.descripcion");
-		}			
+		}
 	}
 
 	public static TerminoGlosario consultarTerminoGlosario(int idActor) {
 		TerminoGlosario terminoGlosario = null;
-		terminoGlosario = new TerminoGlosarioDAO().consultarTerminoGlosario(idActor);
+		terminoGlosario = new TerminoGlosarioDAO()
+				.consultarTerminoGlosario(idActor);
 		if (terminoGlosario == null) {
-			throw new PRISMAException("No se pueden consultar los terminos del glosario.",
+			throw new PRISMAException(
+					"No se pueden consultar los terminos del glosario.",
 					"MSG13");
 		}
 		return terminoGlosario;
@@ -112,69 +116,97 @@ public class TerminoGlosarioBs {
 			ElementoBs.verificarEstado(model, CU_Glosario.ELIMINARTERMINO10_3);
 			new ReglaNegocioDAO().eliminarElemento(model);
 		} catch (JDBCException je) {
-				if(je.getErrorCode() == 1451)
-				{
-					throw new PRISMAException("No se puede eliminar la regla de negocio.", "MSG14");
-				}
-				System.out.println("ERROR CODE " + je.getErrorCode());
-				je.printStackTrace();
-				throw new Exception();
-		} catch(HibernateException he) {
+			if (je.getErrorCode() == 1451) {
+				throw new PRISMAException(
+						"No se puede eliminar la regla de negocio.", "MSG14");
+			}
+			System.out.println("ERROR CODE " + je.getErrorCode());
+			je.printStackTrace();
+			throw new Exception();
+		} catch (HibernateException he) {
 			he.printStackTrace();
 			throw new Exception();
 		}
-		
+
 	}
 
 	public static List<String> verificarReferencias(TerminoGlosario model) {
-		List<Integer> ids_ReferenciaParametro = null; // Donde se referencia el model (destino de la referencia)
 
-		List<ReferenciaParametro> referenciasParametro = new ArrayList<ReferenciaParametro>();
-		
-		List<String> referenciasVista = new ArrayList<String>();
-		Set<String> cadenasReferencia = new HashSet<String>(0);
+		List<ReferenciaParametro> referenciasParametro;
+		List<Salida> referenciasSalida;
+		List<Entrada> referenciasEntrada;
 
-		PostPrecondicion postPrecondicion = null; //Origen de la referencia
-		Paso paso = null; //Origen de la referencia
-		String casoUso = ""; //Caso de uso que tiene la referencia
+		List<String> listReferenciasVista = new ArrayList<String>();
+		Set<String> setReferenciasVista = new HashSet<String>(0);
+		PostPrecondicion postPrecondicion = null;
+		Paso paso = null;
 
-		
-		ids_ReferenciaParametro = new PantallaDAO().consultarReferenciasParametro(model);
-		
-		if(ids_ReferenciaParametro != null) {
-			for (Integer id : ids_ReferenciaParametro) {	
-				referenciasParametro.add(new ReferenciaParametroDAO().consultarReferenciaParametro(id));
-			}
-		}
-		
+		String casoUso = "";
+
+		referenciasParametro = new ReferenciaParametroDAO()
+				.consultarReferenciasParametro(model);
+		referenciasSalida = new SalidaDAO().consultarReferencias(model);
+		referenciasEntrada = new EntradaDAO().consultarReferencias(model);
+
 		for (ReferenciaParametro referencia : referenciasParametro) {
 			String linea = "";
 			postPrecondicion = referencia.getPostPrecondicion();
 			paso = referencia.getPaso();
-			
+
 			if (postPrecondicion != null) {
-				casoUso =  postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
+				casoUso = postPrecondicion.getCasoUso().getClave()
+						+ postPrecondicion.getCasoUso().getNumero() + " "
+						+ postPrecondicion.getCasoUso().getNombre();
 				if (postPrecondicion.isPrecondicion()) {
-					 linea = "Precondiciones del caso de uso " + casoUso;
+					linea = "Precondiciones del caso de uso " + casoUso;
 				} else {
-					 linea = "Postcondiciones del caso de uso " + postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
+					linea = "Postcondiciones del caso de uso "
+							+ postPrecondicion.getCasoUso().getClave()
+							+ postPrecondicion.getCasoUso().getNumero() + " "
+							+ postPrecondicion.getCasoUso().getNombre();
 				}
-				 
+
 			} else if (paso != null) {
-				casoUso =  paso.getTrayectoria().getCasoUso().getClave()  + paso.getTrayectoria().getCasoUso().getNumero() + " " + paso.getTrayectoria().getCasoUso().getNombre();
-				linea = "Paso " + paso.getNumero() + " de la trayectoria " + ((paso.getTrayectoria().isAlternativa()) ? "alternativa " + paso.getTrayectoria().getClave() : "principal") + " del caso de uso " + casoUso;
+				casoUso = paso.getTrayectoria().getCasoUso().getClave()
+						+ paso.getTrayectoria().getCasoUso().getNumero() + " "
+						+ paso.getTrayectoria().getCasoUso().getNombre();
+				linea = "Paso "
+						+ paso.getNumero()
+						+ " de la trayectoria "
+						+ ((paso.getTrayectoria().isAlternativa()) ? "alternativa "
+								+ paso.getTrayectoria().getClave()
+								: "principal") + " del caso de uso " + casoUso;
 			}
-			
 			if (linea != "") {
-				cadenasReferencia.add(linea);
+				setReferenciasVista.add(linea);
 			}
 		}
 
-		
-			
-		referenciasVista.addAll(cadenasReferencia);
-		
-		return referenciasVista;
+		for (Salida salida : referenciasSalida) {
+			String linea = "";
+			casoUso = salida.getCasoUso().getClave()
+					+ salida.getCasoUso().getNumero() + " "
+					+ salida.getCasoUso().getNombre();
+			linea = "Salidas del caso de uso " + casoUso;
+			if (linea != "") {
+				setReferenciasVista.add(linea);
+			}
+		}
+
+		for (Entrada entrada : referenciasEntrada) {
+			String linea = "";
+			casoUso = entrada.getCasoUso().getClave()
+					+ entrada.getCasoUso().getNumero() + " "
+					+ entrada.getCasoUso().getNombre();
+			linea = "Entradas del caso de uso " + casoUso;
+			if (linea != "") {
+				setReferenciasVista.add(linea);
+			}
+		}
+
+		listReferenciasVista.addAll(setReferenciasVista);
+
+		return listReferenciasVista;
 	}
 
 }

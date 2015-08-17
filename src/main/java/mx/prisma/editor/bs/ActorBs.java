@@ -5,36 +5,30 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.HibernateException;
-import org.hibernate.JDBCException;
-
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AnalisisEnum.CU_Actores;
 import mx.prisma.bs.CatalogoBs;
-import mx.prisma.bs.AnalisisEnum.CU_ReglasNegocio;
-import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.ReferenciaEnum.TipoCatalogo;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.ActorDAO;
 import mx.prisma.editor.dao.ActualizacionDAO;
 import mx.prisma.editor.dao.CardinalidadDAO;
-import mx.prisma.editor.dao.EstadoElementoDAO;
-import mx.prisma.editor.dao.PantallaDAO;
+import mx.prisma.editor.dao.CasoUsoActorDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.dao.ReglaNegocioDAO;
-import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Cardinalidad;
-import mx.prisma.editor.model.CasoUso;
-import mx.prisma.editor.model.Pantalla;
+import mx.prisma.editor.model.CasoUsoActor;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.ReferenciaParametro;
-import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
+
+import org.hibernate.HibernateException;
+import org.hibernate.JDBCException;
 
 public class ActorBs {
 	private static final String CLAVE = "ACT";
@@ -166,54 +160,69 @@ public class ActorBs {
 	}
 
 	public static List<String> verificarReferencias(Actor model) {
-		List<Integer> ids_ReferenciaParametro = null; // Donde se referencia el model (destino de la referencia)
 
-		List<ReferenciaParametro> referenciasParametro = new ArrayList<ReferenciaParametro>();
-		
-		List<String> referenciasVista = new ArrayList<String>();
-		Set<String> cadenasReferencia = new HashSet<String>(0);
+		List<ReferenciaParametro> referenciasParametro;
+		List<CasoUsoActor> referenciasCasoUsoActor = new ArrayList<CasoUsoActor>();
 
-		PostPrecondicion postPrecondicion = null; //Origen de la referencia
-		Paso paso = null; //Origen de la referencia
-		String casoUso = ""; //Caso de uso que tiene la referencia
+		List<String> listReferenciasVista = new ArrayList<String>();
+		Set<String> setReferenciasVista = new HashSet<String>(0);
+		PostPrecondicion postPrecondicion = null;
+		Paso paso = null;
 
-		
-		ids_ReferenciaParametro = new PantallaDAO().consultarReferenciasParametro(model);
-		
-		if(ids_ReferenciaParametro != null) {
-			for (Integer id : ids_ReferenciaParametro) {	
-				referenciasParametro.add(new ReferenciaParametroDAO().consultarReferenciaParametro(id));
-			}
-		}
-		
+		String casoUso = "";
+
+		referenciasParametro = new ReferenciaParametroDAO()
+				.consultarReferenciasParametro(model);
+		referenciasCasoUsoActor = new CasoUsoActorDAO().consultarReferencias(model);
+
 		for (ReferenciaParametro referencia : referenciasParametro) {
 			String linea = "";
 			postPrecondicion = referencia.getPostPrecondicion();
 			paso = referencia.getPaso();
-			
+
 			if (postPrecondicion != null) {
-				casoUso =  postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
+				casoUso = postPrecondicion.getCasoUso().getClave()
+						+ postPrecondicion.getCasoUso().getNumero() + " "
+						+ postPrecondicion.getCasoUso().getNombre();
 				if (postPrecondicion.isPrecondicion()) {
-					 linea = "Precondiciones del caso de uso " + casoUso;
+					linea = "Precondiciones del caso de uso " + casoUso;
 				} else {
-					 linea = "Postcondiciones del caso de uso " + postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
+					linea = "Postcondiciones del caso de uso "
+							+ postPrecondicion.getCasoUso().getClave()
+							+ postPrecondicion.getCasoUso().getNumero() + " "
+							+ postPrecondicion.getCasoUso().getNombre();
 				}
-				 
+
 			} else if (paso != null) {
-				casoUso =  paso.getTrayectoria().getCasoUso().getClave()  + paso.getTrayectoria().getCasoUso().getNumero() + " " + paso.getTrayectoria().getCasoUso().getNombre();
-				linea = "Paso " + paso.getNumero() + " de la trayectoria " + ((paso.getTrayectoria().isAlternativa()) ? "alternativa " + paso.getTrayectoria().getClave() : "principal") + " del caso de uso " + casoUso;
+				casoUso = paso.getTrayectoria().getCasoUso().getClave()
+						+ paso.getTrayectoria().getCasoUso().getNumero() + " "
+						+ paso.getTrayectoria().getCasoUso().getNombre();
+				linea = "Paso "
+						+ paso.getNumero()
+						+ " de la trayectoria "
+						+ ((paso.getTrayectoria().isAlternativa()) ? "alternativa "
+								+ paso.getTrayectoria().getClave()
+								: "principal") + " del caso de uso " + casoUso;
 			}
-			
 			if (linea != "") {
-				cadenasReferencia.add(linea);
+				setReferenciasVista.add(linea);
 			}
 		}
 
-		
-			
-		referenciasVista.addAll(cadenasReferencia);
-		
-		return referenciasVista;
+		for (CasoUsoActor casoUsoActor : referenciasCasoUsoActor) {
+			String linea = "";
+			casoUso = casoUsoActor.getCasouso().getClave()
+					+ casoUsoActor.getCasouso().getNumero() + " "
+					+ casoUsoActor.getCasouso().getNombre();
+			linea = "Actores del caso de uso " + casoUso;
+			if (linea != "") {
+				setReferenciasVista.add(linea);
+			}
+		}
+
+		listReferenciasVista.addAll(setReferenciasVista);
+
+		return listReferenciasVista;
 	}
 
 }

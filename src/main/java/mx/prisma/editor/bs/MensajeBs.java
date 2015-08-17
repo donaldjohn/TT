@@ -6,13 +6,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.hibernate.HibernateException;
-import org.hibernate.JDBCException;
-
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AnalisisEnum.CU_Mensajes;
 import mx.prisma.editor.bs.ElementoBs.Estado;
-import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.MensajeDAO;
 import mx.prisma.editor.dao.ParametroDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
@@ -28,6 +24,9 @@ import mx.prisma.editor.model.Salida;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
+
+import org.hibernate.HibernateException;
+import org.hibernate.JDBCException;
 
 public class MensajeBs {
 	private static final String CLAVE = "MSG";
@@ -234,62 +233,68 @@ public class MensajeBs {
 	}
 
 	public static List<String> verificarReferencias(Mensaje model) {
-		List<Integer> ids_ReferenciaParametro = null;
 
-		List<ReferenciaParametro> referenciasParametro = new ArrayList<ReferenciaParametro>();
-		List<Salida> referenciasSalida = new ArrayList<Salida>();
-		
+		List<ReferenciaParametro> referenciasParametro;
+		List<Salida> referenciasSalida;
+
 		List<String> listReferenciasVista = new ArrayList<String>();
 		Set<String> setReferenciasVista = new HashSet<String>(0);
 		PostPrecondicion postPrecondicion = null;
 		Paso paso = null;
-		
+
 		String casoUso = "";
-		
-		ids_ReferenciaParametro = new CasoUsoDAO().consultarReferenciasParametro(model);
+
+		referenciasParametro = new ReferenciaParametroDAO()
+				.consultarReferenciasParametro(model);
 		referenciasSalida = new SalidaDAO().consultarReferencias(model);
-		
-		if(ids_ReferenciaParametro != null) {
-			for (Integer id : ids_ReferenciaParametro) {	
-				referenciasParametro.add(new ReferenciaParametroDAO().consultarReferenciaParametro(id));
-			}
-		}
-		
+
 		for (ReferenciaParametro referencia : referenciasParametro) {
 			String linea = "";
 			postPrecondicion = referencia.getPostPrecondicion();
 			paso = referencia.getPaso();
-			
+
 			if (postPrecondicion != null) {
-				casoUso =  postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
+				casoUso = postPrecondicion.getCasoUso().getClave()
+						+ postPrecondicion.getCasoUso().getNumero() + " "
+						+ postPrecondicion.getCasoUso().getNombre();
 				if (postPrecondicion.isPrecondicion()) {
-					 linea = "Precondiciones del caso de uso " + casoUso;
+					linea = "Precondiciones del caso de uso " + casoUso;
 				} else {
-					 linea = "Postcondiciones del caso de uso " + postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
+					linea = "Postcondiciones del caso de uso "
+							+ postPrecondicion.getCasoUso().getClave()
+							+ postPrecondicion.getCasoUso().getNumero() + " "
+							+ postPrecondicion.getCasoUso().getNombre();
 				}
-				 
+
 			} else if (paso != null) {
-				casoUso =  paso.getTrayectoria().getCasoUso().getClave()  + paso.getTrayectoria().getCasoUso().getNumero() + " " + paso.getTrayectoria().getCasoUso().getNombre();
-				linea = "Paso " + paso.getNumero() + " de la trayectoria " + ((paso.getTrayectoria().isAlternativa()) ? "alternativa " + paso.getTrayectoria().getClave() : "principal") + " del caso de uso " + casoUso;
-			} 
+				casoUso = paso.getTrayectoria().getCasoUso().getClave()
+						+ paso.getTrayectoria().getCasoUso().getNumero() + " "
+						+ paso.getTrayectoria().getCasoUso().getNombre();
+				linea = "Paso "
+						+ paso.getNumero()
+						+ " de la trayectoria "
+						+ ((paso.getTrayectoria().isAlternativa()) ? "alternativa "
+								+ paso.getTrayectoria().getClave()
+								: "principal") + " del caso de uso " + casoUso;
+			}
 			if (linea != "") {
 				setReferenciasVista.add(linea);
 			}
 		}
-		
+
 		for (Salida salida : referenciasSalida) {
 			String linea = "";
-			casoUso = salida.getCasoUso().getClave() + salida.getCasoUso().getNumero() + " " + salida.getCasoUso().getNombre();
+			casoUso = salida.getCasoUso().getClave()
+					+ salida.getCasoUso().getNumero() + " "
+					+ salida.getCasoUso().getNombre();
 			linea = "Salidas del caso de uso " + casoUso;
 			if (linea != "") {
 				setReferenciasVista.add(linea);
-			}		
+			}
 		}
-		
-		
-			
+
 		listReferenciasVista.addAll(setReferenciasVista);
-		
+
 		return listReferenciasVista;
 	}
 }
