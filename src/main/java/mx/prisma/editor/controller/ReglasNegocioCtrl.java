@@ -12,7 +12,6 @@ import mx.prisma.bs.TipoReglaNegocioEnum;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.bs.EntidadBs;
-import mx.prisma.editor.bs.PantallaBs;
 import mx.prisma.editor.bs.ReglaNegocioBs;
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Atributo;
