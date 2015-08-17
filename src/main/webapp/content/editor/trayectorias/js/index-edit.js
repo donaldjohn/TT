@@ -61,7 +61,7 @@ $(document).ready(function() {
 									"<a button='true'>" +
 									"<img class='icon'  id='icon' src='" + window.contextPath + 
 									"/resources/images/icons/editar.png' title='Modificar Paso'/></a>" +
-									"<a onclick='return verificarEliminacionPaso("+ item.id +");' button='true'>" +
+									"<a onclick='return verificarEliminacionPaso("+ item.id +", this);' button='true'>" +
 									"<img class='icon'  id='icon' src='" + window.contextPath + 
 									"/resources/images/icons/eliminar.png' title='Eliminar Paso'/></a>" +
 								"</center>" ];
@@ -235,6 +235,8 @@ function ocultarColumnas(tabla) {
 	dataTable.api().column(3).visible(false);
 	dataTable.api().column(4).visible(false);
 	dataTable.api().column(5).visible(false);
+	dataTable.api().column(6).visible(false);
+
 
 }
 
@@ -273,28 +275,20 @@ function cancelarRegistroComentarios() {
 	document.getElementById("comentario").value = "";
 	$('#mensajeConfirmacion').dialog('close');
 }
-function confirmarEliminacion(urlEliminar) {
-	console.log(urlEliminar);
-	$('#confirmarEliminacionDialog').dialog('close');
-	window.location.href = urlEliminar;
-}
 
-function cancelarConfirmarEliminacion() {
-	$('#confirmarEliminacionDialog').dialog('close');
-}
 
-function verificarEliminacionPaso(idElemento) {
-	rutaVerificarReferencias = contextPath + '/trayectorias!verificarElementosReferencias';
+function verificarEliminacionPaso(idPaso, dom) {
+	rutaVerificarReferencias = contextPath + '/trayectorias!verificarElementosReferenciasPaso';
 
 	$.ajax({
 		dataType : 'json',
 		url : rutaVerificarReferencias,
 		type: "POST",
 		data : {
-			idPasoBorrar : idElemento
+			idSelPaso : idPaso
 		},
 		success : function(data) {
-			mostrarMensajeEliminacion(data, idElemento);
+			mostrarMensajeEliminacion(data, idPaso, dom);
 		},
 		error : function(err) {
 			alert("AJAX error in request: " + JSON.stringify(err, null, 2));
@@ -305,7 +299,7 @@ function verificarEliminacionPaso(idElemento) {
 	
 }
 
-function mostrarMensajeEliminacion(json, id) {
+function mostrarMensajeEliminacion(json, id, dom) {
 	var elementos = document.createElement("ul");
 	var elementosReferencias = document.getElementById("elementosReferencias");
 	var urlEliminar = contextPath + "/trayectorias/" +id+ "?_method=delete";
@@ -325,8 +319,7 @@ function mostrarMensajeEliminacion(json, id) {
 		
 		$('#mensajeReferenciasDialog').dialog('open');
 	} else {	
-		document.getElementById("btnConfirmarEliminacion").onclick = function(){ confirmarEliminacion(urlEliminar);};
-		$('#confirmarEliminacionDialog').dialog('open');
+		dataTableCDT.deleteRowPasos(tablaPaso, dom);	
 	}
 }
 function cerrarMensajeReferencias() {
