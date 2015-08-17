@@ -29,7 +29,7 @@
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
 	<br />
-<s:set var="obs" value="observaciones" />
+	<s:set var="obs" value="observaciones" />
 
 	<s:if test="%{#obs != null}">
 		<div class="formulario">
@@ -182,8 +182,6 @@
 				<div class="seccion">
 					<p class="instrucciones">Ingrese un comentario referente a la
 						modificación realizada.</p>
-				
-
 				<table>
 					<tr>
 						<td class="label obligatorio"><s:text name="labelComentarios" /></td>
@@ -198,6 +196,7 @@
 				<input type="button" onclick="enviarComentarios()" value="Aceptar" />
 				<input type="button" onclick="cancelarRegistroComentarios()"
 					value="Cancelar" />
+			</div>
 			</div>
 		</s:form>
 	</sj:dialog>

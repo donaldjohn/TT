@@ -42,46 +42,115 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 	// Proyecto y módulo
 	private Proyecto proyecto;
 	private Modulo modulo;
-	private CasoUso casoUso;
+	private CasoUso casoUsoActivo;
 
 	private Extension model;
 	private List<Extension> listPtosExtension;
 	private int idCU;
 	private List<CasoUso> catalogoCasoUso;
-	private int claveCasoUsoDestino;
+	private int idCasoUsoDestino;
 	// Elementos disponibles
 	private List<CasoUso> listCasoUso;
 	private String jsonPasos;
 
-	private char tokenCodificada = '$';
 
-	private void buscaCatalogos() throws Exception {
-		catalogoCasoUso = new ArrayList<CasoUso>();
-		for (CasoUso casoUso : listCasoUso) {
-			if (casoUso.getId() != idCU) {
-				catalogoCasoUso.add(casoUso);
+	public String index() throws Exception {
+		try {
+			// Se consulta el módulo en sesión
+			modulo = SessionManager.consultarModuloActivo();
+
+			// Se agrega a la sesión el caso de uso con base en el identificador
+			// del caso de uso
+			if (idCU != 0) {
+				SessionManager.agregarIDCasoUso(idCU);
 			}
-		}
 
-		if (catalogoCasoUso.isEmpty()) {
-			throw new PRISMAException(
-					"No hay casos de uso para seleccionar como punto de extensión.",
-					"MSG22");
+			// Se consulta el caso de uso activo
+			casoUsoActivo = SessionManager.consultarCasoUsoActivo();
+
+			listPtosExtension = new ArrayList<Extension>();
+			Set<Extension> extensiones = casoUsoActivo.getExtiende();
+			for (Extension extension : extensiones) {
+					extension.setRegion(TokenBs
+							.decodificarCadenasToken(extension.getRegion()));
+				listPtosExtension.add(extension);
+			}
+			@SuppressWarnings("unchecked")
+			Collection<String> msjs = (Collection<String>) SessionManager
+					.get("mensajesAccion");
+			this.setActionMessages(msjs);
+			SessionManager.delete("mensajesAccion");
+
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
 		}
+		return INDEX;
 	}
+	
+	public String editNew() throws Exception {
+		String resultado = null;
+		try {
+			casoUsoActivo = SessionManager.consultarCasoUsoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			proyecto = modulo.getProyecto();
+			buscaElementos();
+			buscaCatalogos();
+			resultado = EDITNEW;
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			return index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			return index();
+		}
+		return resultado;
+	}
+	
+	public String create() throws Exception {
+		String resultado = null;
+		try {
+			if (idCasoUsoDestino == -1) {
+				throw new PRISMAValidacionException(
+						"El usuario no seleccionó el caso de uso destino.",
+						"MSG4", null, "claveCasoUsoDestino");
+			} else {
+				model.setCasoUsoDestino(new CasoUsoDAO()
+						.consultarCasoUso(idCasoUsoDestino));
+			}
+			casoUsoActivo = SessionManager.consultarCasoUsoActivo();
+			model.setCasoUsoOrigen(casoUsoActivo);
+			ExtensionBs.registrarExtension(model);
+			resultado = SUCCESS;
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"Punto de extensión", "registrado" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = editNew();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+	
 	private void buscaElementos() {
 
 		List<Paso> listPasos = new ArrayList<Paso>();
 		listCasoUso = CuBs.consultarCasosUso(proyecto);
-		CasoUso casoUsoActivo = SessionManager.consultarCasoUsoActivo();
 		Modulo moduloAux = new Modulo();
 		moduloAux.setId(modulo.getId());
 		moduloAux.setNombre(modulo.getNombre());
 
 		if (listCasoUso != null && !listCasoUso.isEmpty()) {
 			for (CasoUso casoUso : listCasoUso) {
-				if (casoUso.getId() == casoUsoActivo.getId()) {
+				if (casoUsoActivo.getId() != casoUso.getId()) {
 					CasoUso casoUsoAux = new CasoUso();
 					casoUsoAux.setClave(casoUso.getClave());
 					casoUsoAux.setNumero(casoUso.getNumero());
@@ -108,71 +177,32 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 					}
 				}
 			}
+			
 
 			// Se convierte en json los Pasos
 			if (listPasos != null) {
 				this.jsonPasos = JsonUtil.mapListToJSON(listPasos);
 			}
 		}
-	}
-
-	public String create() throws Exception {
-		String resultado = null;
-		try {
-			if (claveCasoUsoDestino == -1) {
-				throw new PRISMAValidacionException(
-						"El usuario no seleccionó el caso de uso destino.",
-						"MSG4", null, "claveCasoUsoDestino");
-			} else {
-				model.setCasoUsoDestino(new CasoUsoDAO()
-						.consultarCasoUso(claveCasoUsoDestino));
+		
+	}	
+	private void buscaCatalogos() throws Exception {
+		catalogoCasoUso = new ArrayList<CasoUso>();
+		for (CasoUso casoUso : listCasoUso) {
+			if (casoUso.getId() != casoUsoActivo.getId()) {
+				catalogoCasoUso.add(casoUso);
 			}
-			casoUso = SessionManager.consultarCasoUsoActivo();
-			model.setCasoUsoOrigen(casoUso);
-			ExtensionBs.registrarExtension(model);
-			resultado = SUCCESS;
-			addActionMessage(getText("MSG1", new String[] { "El",
-					"Punto de extensión", "registrado" }));
-			SessionManager.set(this.getActionMessages(), "mensajesAccion");
-
-		} catch (PRISMAValidacionException pve) {
-			ErrorManager.agregaMensajeError(this, pve);
-			resultado = editNew();
-		} catch (PRISMAException pe) {
-			ErrorManager.agregaMensajeError(this, pe);
-			resultado = index();
-		} catch (Exception e) {
-			ErrorManager.agregaMensajeError(this, e);
-			resultado = index();
 		}
-		return resultado;
-	}
 
-	public String editNew() throws Exception {
-		String resultado = null;
-		try {
-			casoUso = SessionManager.consultarCasoUsoActivo();
-			modulo = SessionManager.consultarModuloActivo();
-			proyecto = modulo.getProyecto();
-			buscaElementos();
-			buscaCatalogos();
-			resultado = EDITNEW;
-		} catch (PRISMAException pe) {
-			ErrorManager.agregaMensajeError(this, pe);
-			return index();
-		} catch (Exception e) {
-			ErrorManager.agregaMensajeError(this, e);
-			return index();
+		if (catalogoCasoUso.isEmpty()) {
+			throw new PRISMAException(
+					"No hay casos de uso para seleccionar como punto de extensión.",
+					"MSG22");
 		}
-		return resultado;
 	}
 
 	public List<CasoUso> getCatalogoCasoUso() {
 		return catalogoCasoUso;
-	}
-
-	public int getClaveCasoUsoDestino() {
-		return claveCasoUsoDestino;
 	}
 
 	public int getIdCU() {
@@ -191,50 +221,18 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 		return (this.model == null) ? model = new Extension() : this.model;
 	}
 
-	public String index() throws Exception {
-		try {
-			// Se consulta el módulo en sesión
-			modulo = SessionManager.consultarModuloActivo();
-
-			// Se agrega a la sesión el caso de uso con base en el identificador
-			// del caso de uso
-			if (idCU != 0) {
-				SessionManager.agregarIDCasoUso(idCU);
-			}
-
-			// Se consulta el caso de uso activo
-			casoUso = SessionManager.consultarCasoUsoActivo();
-
-			model.setCasoUsoOrigen(casoUso);
-			listPtosExtension = new ArrayList<Extension>();
-			Set<Extension> extensiones = casoUso.getExtendidoDe();
-			for (Extension extension : extensiones) {
-				if (extension.getRegion().charAt(0) == tokenCodificada) {
-					extension.setRegion(TokenBs
-							.decodificarCadenasToken(extension.getRegion()));
-				}
-				listPtosExtension.add(extension);
-			}
-			@SuppressWarnings("unchecked")
-			Collection<String> msjs = (Collection<String>) SessionManager
-					.get("mensajesAccion");
-			this.setActionMessages(msjs);
-			SessionManager.delete("mensajesAccion");
-
-		} catch (PRISMAException pe) {
-			ErrorManager.agregaMensajeError(this, pe);
-		} catch (Exception e) {
-			ErrorManager.agregaMensajeError(this, e);
-		}
-		return INDEX;
-	}
-
 	public void setCatalogoCasoUso(List<CasoUso> catalogoCasoUso) {
 		this.catalogoCasoUso = catalogoCasoUso;
 	}
 
-	public void setClaveCasoUsoDestino(int claveCasoUsoDestino) {
-		this.claveCasoUsoDestino = claveCasoUsoDestino;
+	
+
+	public int getIdCasoUsoDestino() {
+		return idCasoUsoDestino;
+	}
+
+	public void setIdCasoUsoDestino(int idCasoUsoDestino) {
+		this.idCasoUsoDestino = idCasoUsoDestino;
 	}
 
 	public void setIdCU(int idCU) {
@@ -256,11 +254,11 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 	public void setSession(Map<String, Object> arg0) {
 	}
 
-	public CasoUso getCasoUso() {
-		return casoUso;
+	public CasoUso getCasoUsoActivo() {
+		return casoUsoActivo;
 	}
 
-	public void setCasoUso(CasoUso casoUso) {
-		this.casoUso = casoUso;
+	public void setCasoUsoActivo(CasoUso casoUsoActivo) {
+		this.casoUsoActivo = casoUsoActivo;
 	}
 }

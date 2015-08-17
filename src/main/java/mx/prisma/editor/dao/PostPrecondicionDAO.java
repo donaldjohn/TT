@@ -2,18 +2,17 @@ package mx.prisma.editor.dao;
 
 import java.util.List;
 
+import mx.prisma.dao.GenericDAO;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.PostPrecondicion;
-import mx.prisma.util.HibernateUtil;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.Session;
 
-public class PostPrecondicionDAO {
-	Session session = null;
+public class PostPrecondicionDAO extends GenericDAO{
 
 	public PostPrecondicionDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		super();
 	}
 
 	public void registrarPostPrecondicion(PostPrecondicion postprecondicion) {

@@ -13,10 +13,9 @@ import mx.prisma.util.HibernateUtil;
 import org.hibernate.Session;
 
 public class EntidadDAO extends ElementoDAO {
-	Session session = null;
 
 	public EntidadDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		super();
 	}
 	public void registrarEntidad(Entidad entidad) {
 		super.registrarElemento(entidad);

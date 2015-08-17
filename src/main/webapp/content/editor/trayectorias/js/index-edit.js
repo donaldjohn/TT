@@ -1,6 +1,4 @@
 var contextPath = "prisma";
-
-
 $(document).ready(function() {
 	contextPath = $("#rutaContexto").val();
 	$('table.tablaGestion').DataTable();

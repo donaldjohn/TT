@@ -5,19 +5,16 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
-import org.hibernate.Session;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Modulo;
-import mx.prisma.util.HibernateUtil;
 
 public class CasoUsoDAO extends ElementoDAO {
-	private Session session = null;
 
 	public CasoUsoDAO() {
-		this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+		super();
 	}
 
 	public void cleanRelaciones(CasoUso casodeuso) {
