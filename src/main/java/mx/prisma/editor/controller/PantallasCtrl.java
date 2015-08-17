@@ -63,7 +63,6 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	private String pantallaB64;
 	private List<String> imagenesAcciones;
 	private List<String> elementosReferencias;
-	private String observaciones;
 	private String comentario;
 	private int idAccion;
 	
@@ -507,14 +506,6 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 
 	public void setElementosReferencias(List<String> elementosReferencias) {
 		this.elementosReferencias = elementosReferencias;
-	}
-
-	public String getObservaciones() {
-		return observaciones;
-	}
-
-	public void setObservaciones(String observaciones) {
-		this.observaciones = observaciones;
 	}
 
 	public String getComentario() {

@@ -23,17 +23,6 @@
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
 	<br />
-	
-	<s:set var="obs" value="observaciones" />
-
-	<s:if test="%{#obs != null}">
-		<div class="formulario">
-			<div class="tituloObservaciones">Observaciones</div>
-			<div class="observaciones">
-				<s:property value="#obs" />
-			</div>
-		</div>
-	</s:if>
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 	<s:form autocomplete="off" id="frmPantalla" theme="simple"
