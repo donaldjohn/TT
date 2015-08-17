@@ -351,13 +351,7 @@ function esValidoPaso(idTabla, realiza, verbo, redaccion) {
 }
 
 function prepararEnvio() {
-	try {
-		$('#mensajeConfirmacion').dialog('open');
-		return true;
-	} catch(err) {
-		alert("Ocurrió un error: " + err);
-		return false;
-	}
+	$('#mensajeConfirmacion').dialog('open');
 }
 
 function calcularNumeroPaso() {

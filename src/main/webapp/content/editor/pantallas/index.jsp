@@ -50,7 +50,7 @@
 								</s:a> 
 								<s:url var="urlEditar" value="%{#pageContext.request.contextPath}/pantallas/%{#pantalla.id}/edit"/>			
 								<s:a href="%{urlEditar}">
-									<img id="" class="button" title="Modificar pantalla"
+									<img id="" class="button" title="Modificar Pantalla"
 											src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
 								</s:a>
 								<s:a onclick="return verificarEliminacionElemento(%{#pantalla.id});">

@@ -1,6 +1,8 @@
 package mx.prisma.editor.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -10,11 +12,19 @@ import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
 
 import com.opensymphony.xwork2.ModelDriven;
- 
+
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.AnalisisEnum.CU_Actores;
+import mx.prisma.bs.AnalisisEnum.CU_Pantallas;
 import mx.prisma.editor.bs.ActorBs;
+import mx.prisma.editor.bs.ElementoBs;
+import mx.prisma.editor.bs.PantallaBs;
+import mx.prisma.editor.bs.ReglaNegocioBs;
 import mx.prisma.editor.model.Actor;
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Cardinalidad;
+import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.Elemento;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
 import mx.prisma.util.PRISMAException;
@@ -23,7 +33,11 @@ import mx.prisma.util.SessionManager;
 
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "actores" }), })
+		"actionName", "actores" }),
+		@Result(name = "referencias", type = "json", params = {
+				"root",
+				"elementosReferencias"})
+})
 public class ActoresCtrl extends ActionSupportPRISMA implements
 		ModelDriven<Actor>, SessionAware {
 	/** 
@@ -37,6 +51,8 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	private List<Cardinalidad> listCardinalidad;
 	private Integer cardinalidadSeleccionada;
 	private int idSel;
+	private String comentario;
+	private List<String> elementosReferencias;
 
 	public String index() throws Exception {
 		try {
@@ -125,8 +141,84 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 		}
 		return resultado;
 	}
+	
+	public String destroy() throws Exception {
+		String resultado = null;
+		try {
+			ActorBs.eliminarActor(model);
+			resultado = index();
+			addActionMessage(getText("MSG1", new String[] { "La",
+					"Regla de negocio", "eliminada" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+	
+	public String edit() throws Exception {
+		String resultado = null;
+		try {
 
+			proyecto = SessionManager.consultarProyectoActivo();
+			ElementoBs.verificarEstado(model, CU_Actores.MODIFICARACTOR7_2);
 
+			buscaCatalogos();
+
+			resultado = EDIT;
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+
+		return resultado;
+		
+	}
+	
+	public String update() throws Exception {
+		String resultado = null;
+		try {
+
+			Actualizacion actualizacion = new Actualizacion(new Date(),
+					comentario, model,
+					SessionManager.consultarColaboradorActivo());
+			System.out.println("comentario: " + comentario);
+			//ActorBs.modificarActor(model, actualizacion);
+			resultado = SUCCESS;
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"Actor", "modificado" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = edit();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+
+	public String verificarElementosReferencias() {
+		try {
+			elementosReferencias = new ArrayList<String>();
+			elementosReferencias = ActorBs.verificarReferencias(model);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "referencias";
+	}
+	
 	public Actor getModel() {
 		return (model == null) ? model = new Actor() : model;
 	}
@@ -187,7 +279,26 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 
 	public void setIdSel(int idSel) {
 		this.idSel = idSel;
+		model = ActorBs.consultarActor(idSel);
 	}
+
+	public String getComentario() {
+		return comentario;
+	}
+
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
+	}
+
+	public List<String> getElementosReferencias() {
+		return elementosReferencias;
+	}
+
+	public void setElementosReferencias(List<String> elementosReferencias) {
+		this.elementosReferencias = elementosReferencias;
+	}
+
+	
 	
 	
 }

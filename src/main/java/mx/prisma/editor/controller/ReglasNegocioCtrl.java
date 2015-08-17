@@ -322,9 +322,6 @@ public String edit() {
 			addActionMessage(getText("MSG1", new String[] { "La",
 					"Regla de negocio", "eliminada" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
-		} catch (PRISMAValidacionException pve) {
-			ErrorManager.agregaMensajeError(this, pve);
-			resultado = edit();
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();

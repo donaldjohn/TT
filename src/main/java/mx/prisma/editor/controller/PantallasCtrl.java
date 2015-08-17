@@ -244,9 +244,6 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 			prepararVista();
 
 			resultado = EDIT;
-		} catch (PRISMAValidacionException pve) {
-			ErrorManager.agregaMensajeError(this, pve);
-			resultado = edit();
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();

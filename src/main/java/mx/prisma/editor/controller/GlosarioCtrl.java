@@ -1,6 +1,8 @@
 package mx.prisma.editor.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -12,8 +14,17 @@ import org.apache.struts2.interceptor.SessionAware;
 import com.opensymphony.xwork2.ModelDriven;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.AnalisisEnum.CU_Actores;
+import mx.prisma.bs.AnalisisEnum.CU_Glosario;
+import mx.prisma.editor.bs.ActorBs;
 import mx.prisma.editor.bs.CuBs;
+import mx.prisma.editor.bs.ElementoBs;
+import mx.prisma.editor.bs.PantallaBs;
+import mx.prisma.editor.bs.ReglaNegocioBs;
 import mx.prisma.editor.bs.TerminoGlosarioBs;
+import mx.prisma.editor.model.Actualizacion;
+import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
@@ -23,7 +34,11 @@ import mx.prisma.util.SessionManager;
 
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "glosario" }), })
+		"actionName", "glosario" }),
+		@Result(name = "referencias", type = "json", params = {
+				"root",
+				"elementosReferencias"})
+})
 public class GlosarioCtrl extends ActionSupportPRISMA implements
 		ModelDriven<TerminoGlosario>, SessionAware {
 	/** 
@@ -35,6 +50,8 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 	private TerminoGlosario model;
 	private List<TerminoGlosario> listTerminosGlosario;
 	private Integer idSel;
+	private List<String> elementosReferencias;
+	private String comentario;
 	public String index() throws Exception {
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
@@ -114,6 +131,81 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 		}
 		return resultado;
 	}
+	
+	public String destroy() throws Exception {
+		String resultado = null;
+		try {
+			TerminoGlosarioBs.eliminarTermino(model);
+			resultado = index();
+			addActionMessage(getText("MSG1", new String[] { "La",
+					"Regla de negocio", "eliminada" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+	
+	public String edit() throws Exception {
+		String resultado = null;
+		try {
+
+			proyecto = SessionManager.consultarProyectoActivo();
+			ElementoBs.verificarEstado(model, CU_Glosario.MODIFICARTERMINO10_2);
+
+			resultado = EDIT;
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+
+		return resultado;
+		
+	}
+	
+	public String update() throws Exception {
+		String resultado = null;
+		try {
+
+			Actualizacion actualizacion = new Actualizacion(new Date(),
+					comentario, model,
+					SessionManager.consultarColaboradorActivo());
+			System.out.println("comentario: " + comentario);
+			//TerminoGlosarioBs.modificarTerminoGlosario(model, actualizacion);
+			resultado = SUCCESS;
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"Actor", "modificado" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = edit();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+	
+	public String verificarElementosReferencias() {
+		try {
+			elementosReferencias = new ArrayList<String>();
+			elementosReferencias = TerminoGlosarioBs.verificarReferencias(model);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "referencias";
+	}
 
 	public TerminoGlosario getModel() {
 		return (model == null) ? model = new TerminoGlosario() : model;
@@ -159,7 +251,26 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 
 	public void setIdSel(Integer idSel) {
 		this.idSel = idSel;
+		model = TerminoGlosarioBs.consultarTerminoGlosario(idSel);
 	}
+
+	public List<String> getElementosReferencias() {
+		return elementosReferencias;
+	}
+
+	public void setElementosReferencias(List<String> elementosReferencias) {
+		this.elementosReferencias = elementosReferencias;
+	}
+
+	public String getComentario() {
+		return comentario;
+	}
+
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
+	}
+
+	
 
 	
 
