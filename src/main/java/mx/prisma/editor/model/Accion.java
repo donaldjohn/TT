@@ -27,7 +27,7 @@ public class Accion implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int id;
+	private Integer id;
 	private Pantalla pantalla;
 	private String nombre;
 	private TipoAccion tipoAccion;
@@ -48,11 +48,11 @@ public class Accion implements java.io.Serializable {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

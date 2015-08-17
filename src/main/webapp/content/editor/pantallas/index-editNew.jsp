@@ -111,9 +111,11 @@
 						</tr>
 					</thead>
 				</table>
+				<br/>
 				<div align="center">
 					<sj:a onclick="solicitarRegistroAccion();" button="true">Registrar</sj:a>
 				</div>
+				
 			</div>
 		</div>
 

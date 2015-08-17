@@ -33,7 +33,7 @@ $(document).ready(function() {
 									"<a onclick='solicitarModificacionAccion(\"tablaAccion\", this);'button='true'>" +
 									"<img class='icon'  id='icon' src='" + window.contextPath + 
 									"/resources/images/icons/editar.png' title='Modificar Acción'/></a>" +
-									"<a onclick='dataTableCDT.deleteRowPasos(tablaAccion, this);' button='true'>" +
+									"<a onclick='dataTableCDT.deleteRow(tablaAccion, this);' button='true'>" +
 									"<img class='icon'  id='icon' src='" + window.contextPath + 
 									"/resources/images/icons/eliminar.png' title='Eliminar Acción'/></a>" +
 								"</center>" ];
@@ -70,11 +70,11 @@ function mostrarPrevisualizacionTabla(inputFile, nombre) {
         var reader = new FileReader();
         reader.readAsDataURL(inputFile.files[0])
         reader.onload = function (e) {
+        	console.log("reader.result: " + reader.result);
         	if(reader.result != "") {
-        		$('#' + idImg).attr('src', reader.result);
-        	} else {
-        		dataTableCDT.insertarValorCelda("tablaAccion", "max", 0, "Sin imagen");
-        	}	    	
+        		img = "<center><img src = '" + reader.result + "'/></center>";
+        		dataTableCDT.insertarValorCelda("tablaAccion", "max", 0, img);
+        	}     	
         }
     }
 }
@@ -116,7 +116,7 @@ function registrarAccion() {
 
 	if (esValidaAccion("tablaAccion", nombre, descripcion, imagen, selectTipoAccion, selectPantallaDestino)) { 
 		var row = [
-				"<center><img src='#' id='" + nombre.replace(/\s/g, "_") + "'/></center>",
+				"Sin imagen",
 				nombre,
 				"",
 				descripcion, 
@@ -313,6 +313,7 @@ function solicitarModificacionAccion(idTabla, registro) {
 	if(cells[2] != "") {
 		document.getElementById("accion").src = cells[2];
 		document.getElementById("marco-accion").style.display = '';
+		document.getElementById("fila-accion").style.display = 'none';
 	}
 		
 	document.getElementById("accion.descripcion").value = cells[3];

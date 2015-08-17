@@ -5,12 +5,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import mx.prisma.editor.dao.AccionDAO;
 import mx.prisma.editor.dao.PantallaDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.ReferenciaParametro;
+import mx.prisma.util.PRISMAException;
 
 public class AccionBs {
 
@@ -62,6 +64,14 @@ public class AccionBs {
 		referenciasVista.addAll(cadenasReferencia);
 		
 		return referenciasVista;
+	}
+	
+	public static Accion consultarAccion(Integer id) {
+		Accion accion = new AccionDAO().consultarAccion(id);
+		if(accion == null) {
+			throw new PRISMAException("No se puede consultar la acción por el id.");
+		}
+		return accion;
 	}
 
 }

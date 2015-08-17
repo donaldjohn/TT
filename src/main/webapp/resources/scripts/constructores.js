@@ -139,12 +139,13 @@ function Parametro(nombre, descripcion) {
 /*
  * Constructor del objeto Accion
  */
-function Accion(nombre, imagen, descripcion, idTipoAccion, idPantallaDestino) {
+function Accion(nombre, imagen, descripcion, idTipoAccion, idPantallaDestino, id) {
 	this.nombre = nombre;
 	this.imagen = imagen;
 	this.descripcion = descripcion;
 	this.tipoAccion = new TipoAccion(idTipoAccion);
 	this.pantallaDestino = new Pantalla(null, null, null, idPantallaDestino);
+	this.id = id;
 }
 
 function TipoAccion(id, nombre) {

@@ -216,8 +216,10 @@ public class PantallaBs {
 				casoUso =  paso.getTrayectoria().getCasoUso().getClave()  + paso.getTrayectoria().getCasoUso().getNumero() + " " + paso.getTrayectoria().getCasoUso().getNombre();
 				linea = "Paso " + paso.getNumero() + " de la trayectoria " + ((paso.getTrayectoria().isAlternativa()) ? "alternativa " + paso.getTrayectoria().getClave() : "principal") + " del caso de uso " + casoUso;
 			} else if (accion != null) {
-				pantalla =  accion.getPantalla().getClave()  + accion.getPantalla().getNumero() + " " + accion.getPantalla().getNombre();
-				linea = "Acción " + accion.getNombre() + " de la pantalla " + pantalla;
+				if(accion.getPantalla() != model) {
+					pantalla =  accion.getPantalla().getClave()  + accion.getPantalla().getNumero() + " " + accion.getPantalla().getNombre();
+					linea = "Acción " + accion.getNombre() + " de la pantalla " + pantalla;
+				}
 			}
 			
 			if (linea != "") {

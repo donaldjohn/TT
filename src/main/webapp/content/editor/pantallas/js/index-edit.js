@@ -17,8 +17,9 @@ $(document).ready(function() {
 				.each(
 						parsedJson,
 						function(i, item) {
-							var img = "Sin imagen"; 
-					    	if(parsedJsonImg[i] != "") {
+							var img = "Sin imagen";
+							console.log("parsedJsonImg[i]: " + parsedJsonImg[i]);
+					    	if(parsedJsonImg[i] != null && parsedJsonImg[i] != "") {
 					    		img = "<center><img src = '" + parsedJsonImg[i] + "'/></center>";
 					    	}
 					    		
@@ -29,11 +30,12 @@ $(document).ready(function() {
 								item.descripcion,
 								item.tipoAccion.id,
 								item.pantallaDestino.id,
+								item.id,
 								"<center>" +
-									"<a onclick='solicitarModificacionAccion(\"tablaAccion\", this);'button='true'>" +
+									"<a onclick='solicitarModificacionAccion(this);' button='true'>" +
 									"<img class='icon'  id='icon' src='" + window.contextPath + 
 									"/resources/images/icons/editar.png' title='Modificar Acción'/></a>" +
-									"<a onclick='dataTableCDT.deleteRowPasos(tablaAccion, this);' button='true'>" +
+									"<a onclick='verificarEliminacionAccion(" + item.id +", this);' button='true'>" +
 									"<img class='icon'  id='icon' src='" + window.contextPath + 
 									"/resources/images/icons/eliminar.png' title='Eliminar Acción'/></a>" +
 								"</center>" ];
@@ -48,6 +50,7 @@ function ocultarColumnas(tabla) {
 	dataTable.api().column(3).visible(false);
 	dataTable.api().column(4).visible(false);
 	dataTable.api().column(5).visible(false);
+	dataTable.api().column(6).visible(false);
 }
 
 function mostrarPrevisualizacion(inputFile, nombre) {
@@ -70,11 +73,11 @@ function mostrarPrevisualizacionTabla(inputFile, nombre) {
         var reader = new FileReader();
         reader.readAsDataURL(inputFile.files[0])
         reader.onload = function (e) {
+        	console.log("reader.result: " + reader.result);
         	if(reader.result != "") {
-        		$('#' + idImg).attr('src', reader.result);
-        	} else {
-        		dataTableCDT.insertarValorCelda("tablaAccion", "max", 0, "Sin imagen");
-        	}	    	
+        		img = "<center><img src = '" + reader.result + "'/></center>";
+        		dataTableCDT.insertarValorCelda("tablaAccion", "max", 0, img);
+        	}     	
         }
     }
 }
@@ -116,14 +119,15 @@ function registrarAccion() {
 
 	if (esValidaAccion("tablaAccion", nombre, descripcion, imagen, selectTipoAccion, selectPantallaDestino)) { 
 		var row = [
-				"<center><img src='#' id='" + nombre.replace(/\s/g, "_") + "'/></center>",
+				"Sin imagen",
 				nombre,
 				"",
 				descripcion, 
 				tipoAccion,
 				idPantallaDestino,
+				"",
 				"<center>"
-						+ "<a onclick='solicitarModificacionAccion(\"tablaAccion\", this);' button='true'>"
+						+ "<a onclick='solicitarModificacionAccion(this);' button='true'>"
 						+ "<img class='icon'  id='icon' src='"
 						+ window.contextPath
 						+ "/resources/images/icons/editar.png' title='Modificar Acción'/></a>"
@@ -251,14 +255,12 @@ function tablaToJson(idTable) {
 		var descripcion = table.fnGetData(i, 3);
 		var tipoAccion = table.fnGetData(i, 4);
 		var pantallaDestino = table.fnGetData(i, 5);
+		var id = table.fnGetData(i, 6);
 		
 		var imagen = [];
-		/*for (var i = 0; i < imagenCadena.length; ++i) {
-		    imagen.push(imagenCadena.charCodeAt(i));
-		}*/
 		
 		arregloAcciones.push(new Accion(nombre, imagen, descripcion, tipoAccion,
-				pantallaDestino));
+				pantallaDestino, id));
 		
 		arregloImagenesAcciones[arregloImagenesAcciones.length] = imagenCadena;
 	}
@@ -302,18 +304,19 @@ function agregarListaSelect(select, cadena) {
 	}
 }
 
-function solicitarModificacionAccion(idTabla, registro) {
-	var row = $("#" + idTabla).DataTable().row($(registro).parents('tr'));
+function solicitarModificacionAccion(registro) {
+	var row = $("#tablaAccion").DataTable().row($(registro).parents('tr'));
 	
 	document.getElementById("filaAccion").value = row.index();
 	
 	var cells = row.data();
-
+	console.log("cells: " + cells);
 	document.getElementById("accion.nombre").value = cells[1];
 	
 	if(cells[2] != "") {
 		document.getElementById("accion").src = cells[2];
 		document.getElementById("marco-accion").style.display = '';
+		document.getElementById("fila-accion").style.display = 'none';
 	}
 		
 	document.getElementById("accion.descripcion").value = cells[3];
@@ -332,7 +335,6 @@ function solicitarRegistroAccion() {
 function eliminarImagen(idImg, idFileUpload) {
 	var img = document.getElementById(idImg);
 	img.src = "";
-	console.log("idImg: " + idImg);
 	document.getElementById("marco-" + idImg).style.display = 'none';
 	
 	var fileUpload = document.getElementById(idFileUpload);
@@ -359,8 +361,61 @@ function enviarComentarios(){
 	document.getElementById("comentario").value = redaccionDialogo;
 	document.getElementById("frmPantalla").submit();
 
-	}
+}
+
 function cancelarRegistroComentarios() {
 	document.getElementById("comentario").value = "";
 	$('#mensajeConfirmacion').dialog('close');
+}
+
+function verificarEliminacionAccion(idElemento, registro) {
+	
+	rutaVerificarReferencias = contextPath + '/pantallas!verificarElementosReferenciasAccion';
+		
+	$.ajax({
+		dataType : 'json',
+		url : rutaVerificarReferencias,
+		type: "POST",
+		data : {
+			idAccion : idElemento
+		},
+		success : function(data) {
+			mostrarMensajeEliminacion(data, registro);
+		},
+		error : function(err) {
+			alert("AJAX error in request: " + JSON.stringify(err, null, 2));
+		}
+	});
+	return false;
+}
+
+function mostrarMensajeEliminacion(json, registro) {
+	var elementos = document.createElement("ul");
+	var elementosReferencias = document.getElementById("elementosReferencias");
+	while (elementosReferencias.firstChild) {
+		elementosReferencias.removeChild(elementosReferencias.firstChild);
+	}
+	if (json != "") {
+		$
+				.each(
+						json,
+						function(i, item) {
+							var elemento = document.createElement("li");
+							elemento.appendChild(document.createTextNode(item));
+							elementos.appendChild(elemento);
+						});
+		document.getElementById("elementosReferencias").appendChild(elementos);
+		
+		$('#mensajeReferenciasDialog').dialog('open');
+	} else {	
+		dataTableCDT.deleteRow(tablaAccion, registro);
+	}
+}
+
+function cancelarConfirmarEliminacion() {
+	$('#confirmarEliminacionDialog').dialog('close');
+}
+
+function cerrarMensajeReferencias() {
+	$('#mensajeReferenciasDialog').dialog('close');
 }

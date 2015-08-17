@@ -75,8 +75,13 @@ public class Convertidor {
 	}
 
 	public static byte[] convertStringPNGB64ToBytes(String string) {
-		int index = string.indexOf("base64") + 7;
-		return string.substring(index).getBytes();
+		if(string != null && !string.equals("")) {
+			int index = string.indexOf("base64") + 7;
+			return string.substring(index).getBytes();
+		} else {
+			System.err.println("No se puede convertir una cadena nula a byte array");
+		}
+		return null;
 	}
 
 	public static String convertBytesToStringPNGB64(byte[] bytes) {
@@ -85,7 +90,7 @@ public class Convertidor {
 			string = new String(bytes);
 			string = "data:image/png;base64,".concat(string);
 		} else {
-			System.err.println("No se puede convertir un byte array a cadena");
+			System.err.println("No se puede convertir un byte array nulo a cadena");
 		}
 		
 		return string;

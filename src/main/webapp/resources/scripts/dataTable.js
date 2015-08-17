@@ -192,9 +192,8 @@ var dataTableCDT = function() {
 		if(row == "max") {
 			row = tabla.fnSettings().fnRecordsTotal() - 1;
 		}
-		console.log("column, row: " + column + "," + row);
+		console.log("row, column: " + row + ", " + column);
 		tabla.api().cell(row, column).data(data);
-		console.log("data: " + tabla.api().cell( row, column ).data());
 		tabla.api().draw();
 	}
 
