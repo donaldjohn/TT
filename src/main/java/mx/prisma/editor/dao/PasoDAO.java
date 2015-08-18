@@ -8,7 +8,7 @@ import org.hibernate.HibernateException;
 public class PasoDAO extends GenericDAO{
 
 	public PasoDAO() {
-		
+		super();
 	}
 	public Paso consultarPaso(int id) {
 		Paso paso = null;
@@ -16,6 +16,7 @@ public class PasoDAO extends GenericDAO{
 		try {
 			session.beginTransaction();
 			paso = (Paso) session.get(Paso.class, id);
+			paso.getReferencias().size();
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();

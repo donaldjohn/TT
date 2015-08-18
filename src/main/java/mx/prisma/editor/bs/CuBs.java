@@ -6,13 +6,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.hibernate.HibernateException;
-import org.hibernate.JDBCException;
-
 import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
+import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.ReferenciaEnum.TipoSeccion;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.AccionDAO;
@@ -50,6 +47,9 @@ import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
+
+import org.hibernate.HibernateException;
+import org.hibernate.JDBCException;
 
 public class CuBs {
 	private static final String CLAVE = "CU";

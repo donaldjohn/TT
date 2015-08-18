@@ -17,7 +17,7 @@ import mx.prisma.editor.model.MensajeParametro;
 public class MensajeDAO extends ElementoDAO {
 	
 	public MensajeDAO() {
-		
+		super();
 	}
 
 	public void registrarMensaje(Mensaje mensaje) throws Exception {

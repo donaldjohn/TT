@@ -72,7 +72,7 @@ public class Parametro implements java.io.Serializable {
 		this.descripcion = descripcion;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Proyectoid", referencedColumnName ="id", nullable = false)
 	public Proyecto getProyecto() {
 		return proyecto;

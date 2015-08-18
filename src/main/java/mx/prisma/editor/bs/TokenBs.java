@@ -835,6 +835,9 @@ public class TokenBs {
 
 		for (String token : tokens) {
 			segmentos = segmentarToken(token);
+			for (String s : segmentos) {
+				System.out.println(s);
+			}
 			switch (ReferenciaEnum.getTipoReferencia(segmentos.get(0))) {
 			case ACCION: // ACC.IUM.NUM:PANTALLA:NOMBRE_ACC =
 							// ACC.IUSF.7:Registrar_incendio:Aceptar
@@ -946,7 +949,7 @@ public class TokenBs {
 				if (reglaNegocio == null) {
 					cadenaDecodificada = "";
 				}
-				cadenaDecodificada = cadenaDecodificada.replace(token, tokenRN
+				cadenaDecodificada = cadenaDecodificada.replaceAll(token + "(,|\\\\.|\\s)", tokenRN
 						+ reglaNegocio.getNumero() + tokenSeparator2
 						+ reglaNegocio.getNombre().replace(" ", "_"));
 				break;
@@ -1101,7 +1104,6 @@ public class TokenBs {
 				if (paso == null) {
 					redaccion = "";
 				}
-				System.out.println("-----" + redaccion + "-----" + paso.getId());
 				redaccion = redaccion.replace(token, paso.getNumero() + "");
 				break;
 

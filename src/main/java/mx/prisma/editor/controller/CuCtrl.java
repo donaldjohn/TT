@@ -507,8 +507,10 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 				.getRedaccionEntradas())));
 		model.setRedaccionSalidas((TokenBs.decodificarCadenasToken(model
 				.getRedaccionSalidas())));
+		System.out.println("A: " + model.getRedaccionReglasNegocio());
 		model.setRedaccionReglasNegocio((TokenBs.decodificarCadenasToken(model
 				.getRedaccionReglasNegocio())));
+		System.out.println("B: " + model.getRedaccionReglasNegocio());
 
 		for (Revision rev : model.getRevisiones()) {
 			if (!rev.isRevisado()

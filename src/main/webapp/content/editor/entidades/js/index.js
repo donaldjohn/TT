@@ -5,7 +5,6 @@ $(document).ready(function() {
 
 
 function confirmarEliminacion(urlEliminar) {
-	console.log(urlEliminar);
 	$('#confirmarEliminacionDialog').dialog('close');
 	window.location.href = urlEliminar;
 }
@@ -15,7 +14,7 @@ function cancelarConfirmarEliminacion() {
 }
 
 function verificarEliminacionElemento(idElemento) {
-	rutaVerificarReferencias = contextPath + '/cu!verificarElementosReferencias';
+	rutaVerificarReferencias = contextPath + '/entidades!verificarElementosReferencias';
 	$.ajax({
 		dataType : 'json',
 		url : rutaVerificarReferencias,
@@ -38,7 +37,7 @@ function verificarEliminacionElemento(idElemento) {
 function mostrarMensajeEliminacion(json, id) {
 	var elementos = document.createElement("ul");
 	var elementosReferencias = document.getElementById("elementosReferencias");
-	var urlEliminar = contextPath + "/cu/" +id+ "?_method=delete";
+	var urlEliminar = contextPath + "/entidades/" +id+ "?_method=delete";
 	while (elementosReferencias.firstChild) {
 		elementosReferencias.removeChild(elementosReferencias.firstChild);
 	}

@@ -9,8 +9,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
 public class ParametroDAO extends GenericDAO{
+	
 	public ParametroDAO() {
-		
+		super();
 	}
 
 	public Parametro consultarParametro(int identificador) {

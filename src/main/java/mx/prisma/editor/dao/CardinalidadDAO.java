@@ -12,7 +12,7 @@ import mx.prisma.editor.model.TipoDato;
 public class CardinalidadDAO extends GenericDAO{
 
 	public CardinalidadDAO() {
-		
+		super();
 	}
 
 	public Cardinalidad consultarCardinalidad(int idCardinalidad) {

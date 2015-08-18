@@ -15,7 +15,7 @@ import org.hibernate.Session;
 public class EntidadDAO extends ElementoDAO {
 
 	public EntidadDAO() {
-		
+		super();
 	}
 	public void registrarEntidad(Entidad entidad) {
 		super.registrarElemento(entidad);

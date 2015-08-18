@@ -11,7 +11,7 @@ import mx.prisma.util.HibernateUtil;
 public class ActualizacionDAO extends GenericDAO {
 
 	public ActualizacionDAO() {
-		
+		super();
 	}
 
 	public void registrarActualizacion(Actualizacion actualizacion) throws Exception {

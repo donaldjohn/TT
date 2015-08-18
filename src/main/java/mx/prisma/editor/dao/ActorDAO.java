@@ -12,6 +12,10 @@ import mx.prisma.editor.model.Elemento;
 
 
 public class ActorDAO extends ElementoDAO {
+	
+	public ActorDAO() {
+		super();
+	}
 
     public void registrarActor(Actor actor) throws Exception {
     	super.registrarElemento(actor);

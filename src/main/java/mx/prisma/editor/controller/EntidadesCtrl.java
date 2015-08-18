@@ -1,10 +1,12 @@
 package mx.prisma.editor.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.EntidadBs;
 import mx.prisma.editor.dao.TipoDatoDAO;
 import mx.prisma.editor.dao.UnidadTamanioDAO;
@@ -43,6 +45,7 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 	private List<TipoDato> listTipoDato;
 	private List<UnidadTamanio> listUnidadTamanio;
 	private Integer idSel;
+	private List<String> elementosReferencias;
 
 	public String index() throws Exception {
 		try {
@@ -81,19 +84,6 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 			resultado = index();
 		}
 		return resultado;
-	}
-
-	private void buscaCatalogos() {
-		listTipoDato = EntidadBs.consultarTiposDato();
-		listUnidadTamanio = EntidadBs.consultarUnidadesTamanio();
-		if (listUnidadTamanio == null || listUnidadTamanio.isEmpty()) {
-			throw new PRISMAException(
-					"No hay unidades para registrar el atributo.", "MSG25");
-		}
-		if (listTipoDato == null || listTipoDato.isEmpty()) {
-			throw new PRISMAException(
-					"No hay tipos de dato para registrar el atributo.", "MSG25");
-		}
 	}
 
 	public String create() throws Exception {
@@ -140,6 +130,19 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 		return resultado;
 	}
 
+	private void buscaCatalogos() {
+		listTipoDato = EntidadBs.consultarTiposDato();
+		listUnidadTamanio = EntidadBs.consultarUnidadesTamanio();
+		if (listUnidadTamanio == null || listUnidadTamanio.isEmpty()) {
+			throw new PRISMAException(
+					"No hay unidades para registrar el atributo.", "MSG25");
+		}
+		if (listTipoDato == null || listTipoDato.isEmpty()) {
+			throw new PRISMAException(
+					"No hay tipos de dato para registrar el atributo.", "MSG25");
+		}
+	}
+
 	private void agregarAtributos() {
 		if (jsonAtributosTabla != null && !jsonAtributosTabla.equals("")) {
 			model.setAtributos(JsonUtil.mapJSONToSet(jsonAtributosTabla,
@@ -170,6 +173,17 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 		}
 	}
 
+	public String verificarElementosReferencias() {
+		try {
+			elementosReferencias = new ArrayList<String>();
+			elementosReferencias = EntidadBs.verificarReferencias(model);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "referencias";
+	}
+	
 	public Entidad getModel() {
 		return (model == null) ? model = new Entidad() : this.model;
 	}
@@ -238,6 +252,16 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 	public void setIdSel(Integer idSel) {
 		this.idSel = idSel;
 	}
+
+	
+	public List<String> getElementosReferencias() {
+		return elementosReferencias;
+	}
+
+	public void setElementosReferencias(List<String> elementosReferencias) {
+		this.elementosReferencias = elementosReferencias;
+	}
+	
 	
 	
 }

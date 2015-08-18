@@ -1,6 +1,7 @@
 package mx.prisma.editor.bs;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,11 +14,20 @@ import mx.prisma.bs.ReferenciaEnum.TipoCatalogo;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.AtributoDAO;
 import mx.prisma.editor.dao.EntidadDAO;
+import mx.prisma.editor.dao.ExtensionDAO;
+import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.dao.TipoDatoDAO;
 import mx.prisma.editor.dao.UnidadTamanioDAO;
 import mx.prisma.editor.model.Atributo;
+import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Entidad;
+import mx.prisma.editor.model.Extension;
+import mx.prisma.editor.model.Paso;
+import mx.prisma.editor.model.PostPrecondicion;
+import mx.prisma.editor.model.ReferenciaParametro;
+import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TipoDato;
+import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.editor.model.UnidadTamanio;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
@@ -223,4 +233,62 @@ public class EntidadBs {
 		return atributo;
 	}	
 
+	public static List<String> verificarReferencias(Entidad model) {
+		
+		List<ReferenciaParametro> referenciasParametro;
+		List<ReglaNegocio> referenciasReglaNegocio = null;
+		
+		List<String> listReferenciasVista = new ArrayList<String>();
+		Set<String> setReferenciasVista = new HashSet<String>(0);
+		PostPrecondicion postPrecondicion = null;
+		Paso paso = null;
+		
+		String casoUso = "";
+		Integer idSelf = null;
+		
+		referenciasParametro = new ReferenciaParametroDAO().consultarReferenciasParametro(model);
+		//referenciasReglaNegocio = new ReglaNegocioDAO().consultarReferencias(model);
+		
+		for (ReferenciaParametro referencia : referenciasParametro) {
+			String linea = "";
+			postPrecondicion = referencia.getPostPrecondicion();
+			paso = referencia.getPaso();
+			
+			if (postPrecondicion != null) {
+				idSelf = postPrecondicion.getCasoUso().getId();
+				casoUso =  postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
+				if (postPrecondicion.isPrecondicion()) {
+					 linea = "Precondiciones del caso de uso " + casoUso;
+				} else {
+					 linea = "Postcondiciones del caso de uso " + postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
+				}
+				 
+			} else if (paso != null) {
+				idSelf = paso.getTrayectoria().getCasoUso().getId();
+				casoUso =  paso.getTrayectoria().getCasoUso().getClave()  + paso.getTrayectoria().getCasoUso().getNumero() + " " + paso.getTrayectoria().getCasoUso().getNombre();
+				linea = "Paso " + paso.getNumero() + " de la trayectoria " + ((paso.getTrayectoria().isAlternativa()) ? "alternativa " + paso.getTrayectoria().getClave() : "principal") + " del caso de uso " + casoUso;
+			} 
+			if (linea != "" && idSelf != model.getId()) {
+				setReferenciasVista.add(linea);
+			}
+		}
+		
+		for (ReglaNegocio reglaNegocio : referenciasReglaNegocio) {
+			/*String linea = "";
+			idSelf = referenciaExtension.getCasoUsoOrigen().getId();
+			casoUso = referenciaExtension.getCasoUsoOrigen().getClave() + referenciaExtension.getCasoUsoOrigen().getNumero() + " " + referenciaExtension.getCasoUsoOrigen().getNombre();
+			linea = "Puntos de extensión del caso de uso " + casoUso;
+			if (linea != "" && idSelf != model.getId()) {
+				setReferenciasVista.add(linea);
+			}	*/	
+		}
+		
+		for (Atributo atributo : model.getAtributos()) {
+			setReferenciasVista.addAll(AtributoBs.verificarReferencias(atributo));
+		}
+			
+		listReferenciasVista.addAll(setReferenciasVista);
+		
+		return listReferenciasVista;
+	}
 }

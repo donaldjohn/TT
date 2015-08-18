@@ -10,6 +10,11 @@ import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.TerminoGlosario;
 
 public class TerminoGlosarioDAO extends ElementoDAO{
+	
+	public TerminoGlosarioDAO () {
+		super();
+	}
+	
 	public TerminoGlosario consultarTerminoGlosario(String nombre, Proyecto proyecto) {
 		return (TerminoGlosario) super.consultarElemento(nombre, proyecto, ReferenciaEnum.getTabla(TipoReferencia.TERMINOGLS));
 	}

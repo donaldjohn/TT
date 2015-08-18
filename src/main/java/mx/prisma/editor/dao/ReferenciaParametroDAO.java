@@ -20,7 +20,7 @@ import org.hibernate.Query;
 public class ReferenciaParametroDAO extends GenericDAO {
 
 	public ReferenciaParametroDAO() {
-		
+		super();
 	}
 	
 	public ReferenciaParametro consultarReferenciaParametro(int id) {

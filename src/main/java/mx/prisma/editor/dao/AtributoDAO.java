@@ -14,7 +14,7 @@ import mx.prisma.util.HibernateUtil;
 public class AtributoDAO extends GenericDAO {
 
 	public AtributoDAO() {
-		
+		super();
 	}
 
 	public void registrarAtributo(Atributo atributo) throws Exception {

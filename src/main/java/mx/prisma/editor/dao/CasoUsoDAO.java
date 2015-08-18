@@ -2,19 +2,21 @@ package mx.prisma.editor.dao;
 
 import java.util.List;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.SQLQuery;
-
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Modulo;
+import mx.prisma.editor.model.Paso;
+import mx.prisma.editor.model.Trayectoria;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 
 public class CasoUsoDAO extends ElementoDAO {
 
 	public CasoUsoDAO() {
-		
+		super();
 	}
 
 	public void cleanRelaciones(CasoUso casodeuso) {
@@ -106,6 +108,15 @@ public class CasoUsoDAO extends ElementoDAO {
 	}
 
 	@SuppressWarnings("unchecked")
+	/* El siguiente segmento de código, inicializa los objetos LAZY para el paso.
+	 * 
+	 * if (casosdeuso != null)
+				for (Trayectoria trayectoria : casosdeuso.get(0).getTrayectorias()) {
+					for (Paso paso : trayectoria.getPasos()) {
+						paso.getReferencias().size();
+					}
+				}
+	 */
 	public CasoUso consultarCasoUso(String clave, String numero, Proyecto proyecto) {
 		List<CasoUso> casosdeuso = null;
 
@@ -117,6 +128,14 @@ public class CasoUsoDAO extends ElementoDAO {
 			query.setParameter("numero", numero);
 			query.setParameter("clave", clave);
 			casosdeuso = query.list();
+			
+			if (casosdeuso != null)
+				for (Trayectoria trayectoria : casosdeuso.get(0).getTrayectorias()) {
+					for (Paso paso : trayectoria.getPasos()) {
+						paso.getReferencias().size();
+					}
+				}
+			
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
@@ -132,14 +151,14 @@ public class CasoUsoDAO extends ElementoDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<CasoUso> consultarCasosUso(Integer id) {
+	public List<CasoUso> consultarCasosUso(Integer proyectoId) {
 
 		List<CasoUso> casosdeuso = null;
 
 		try {
 			session.beginTransaction();
 			SQLQuery query = session.createSQLQuery("SELECT * FROM Elemento INNER JOIN CasoUso ON Elemento.id = CasoUso.Elementoid WHERE Elemento.Proyectoid = :proyecto").addEntity(CasoUso.class);
-			query.setParameter("proyecto", id);
+			query.setParameter("proyecto", proyectoId);
 			casosdeuso = query.list();
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
@@ -156,5 +175,4 @@ public class CasoUsoDAO extends ElementoDAO {
 				return casosdeuso;
 			}
 	}
-
 }

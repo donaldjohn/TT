@@ -12,8 +12,6 @@ import mx.prisma.editor.model.TerminoGlosario;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
-
-
 public class SalidaDAO extends GenericDAO{
 	
 	public SalidaDAO() {

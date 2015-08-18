@@ -5,9 +5,8 @@ import mx.prisma.editor.model.EstadoElemento;
 
 import org.hibernate.HibernateException;
 
-public class EstadoElementoDAO extends GenericDAO{
+public class EstadoElementoDAO extends GenericDAO {
 	
-
 	public EstadoElementoDAO() {
 		super();
 	}
