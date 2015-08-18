@@ -271,8 +271,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 						"MSG4", null, "alternativaPrincipal");
 			}
 
-			model.getPasos().clear();
-
 			agregarPasos();
 			TrayectoriaBs.preAlmacenarObjetosToken(model);
 			Actualizacion actualizacion = new Actualizacion(new Date(),

@@ -56,7 +56,7 @@ $(document).ready(function() {
 									"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"down\");' button='true'>" +
 									"<img class='icon'  id='icon' src='" + window.contextPath + 
 									"/resources/images/icons/flechaAbajo.png' title='Bajar Paso'/></a>" +
-									"<a button='true'>" +
+									"<a button='true' onclick='solicitarModificacionAccion(this);'>" +
 									"<img class='icon'  id='icon' src='" + window.contextPath + 
 									"/resources/images/icons/editar.png' title='Modificar Paso'/></a>" +
 									"<a onclick='return verificarEliminacionPaso("+ item.id +", this);' button='true'>" +
@@ -97,7 +97,6 @@ function cambiarElementosAlternativaPrincipal() {
 }
 
 function registrarPaso(){
-	var numero = calcularNumeroPaso();
 	var realiza = document.forms["frmPasoName"]["paso.realizaActor"].value;
 	var redaccion = document.forms["frmPasoName"]["paso.redaccion"].value;
 	var verbo = document.forms["frmPasoName"]["paso.verbo"].value;
@@ -124,7 +123,7 @@ function registrarPaso(){
     		verboAux = verbo;
     	}
     	var row = [
-    	           	numero,
+    	           	0,
     	            realizaImg + " " + verboAux + " " +redaccion,
     	            realizaActor,
     	            verbo, 
@@ -138,14 +137,21 @@ function registrarPaso(){
 						"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"down\");' button='true'>" +
 						"<img class='icon'  id='icon' src='" + window.contextPath + 
 						"/resources/images/icons/flechaAbajo.png' title='Bajar Paso'/></a>" +
-						"<a button='true'>" +
+						"<a button='true' onclick='solicitarModificacionAccion(this);'>" +
 						"<img class='icon'  id='icon' src='" + window.contextPath + 
 						"/resources/images/icons/editar.png' title='Modificar Paso'/></a>" +
 						"<a onclick='dataTableCDT.deleteRowPasos(tablaPaso, this);' button='true'>" +
 						"<img class='icon'  id='icon' src='" + window.contextPath + 
 						"/resources/images/icons/eliminar.png' title='Eliminar Paso'/></a>" +
 					"</center>" ];
-    	dataTableCDT.addRow("tablaPaso", row);
+    	var indexFilaAccion = document.getElementById("filaPaso").value;
+    	if(indexFilaAccion == -1) {
+    		row[0] = calcularNumeroPaso();
+			dataTableCDT.addRow("tablaPaso", row);
+		} else {
+			row[0] = document.getElementById("numeroPaso").value;
+			dataTableCDT.editRow("tablaPaso", indexFilaAccion, row);
+		}
     	
     	//Se limpian los campos
     	document.getElementById("inputor").value = "";
@@ -180,7 +186,6 @@ function agregarMensaje(mensaje) {
  * Verifica que la redacción sea válida
  */
 function esValidoPaso(idTabla, realiza, verbo, otroVerbo, redaccion) {
-	console.log(realiza);
 	if(vaciaONula(redaccion) || realiza == -1 || verbo == -1) {
 		agregarMensaje("Agregue todos los campos obligatorios.");
 		return false;
@@ -192,7 +197,6 @@ function esValidoPaso(idTabla, realiza, verbo, otroVerbo, redaccion) {
 			return false;			
 		}
 	}
-	console.log("longitud de redaccione " + redaccion.length);
 	if(redaccion.length > 999) {
 		agregarMensaje("Ingrese menos de 999 caracteres.");
 		return false;
@@ -255,6 +259,7 @@ function verificarOtro() {
 	if (verboTexto == 'Otro' || verboTexto == 'Otra') {
 		document.getElementById("otroVerbo").style.display = '';
 	} else {
+		document.getElementById("paso.otroVerbo").value = "";
 		document.getElementById("otroVerbo").style.display = 'none';
 	}
 }
@@ -322,4 +327,32 @@ function mostrarMensajeEliminacion(json, id, dom) {
 }
 function cerrarMensajeReferencias() {
 	$('#mensajeReferenciasDialog').dialog('close');
+}
+
+function solicitarModificacionAccion(registro) {
+	var row = $("#tablaPaso").DataTable().row($(registro).parents('tr'));
+	
+	document.getElementById("filaPaso").value = row.index();
+	
+	var cells = row.data();
+	
+	document.getElementById("numeroPaso").value = cells[0];
+	var realizaActor = cells[2];
+	
+	if(realizaActor) {
+		document.getElementById("realiza").value = "Actor";
+	} else {
+		document.getElementById("realiza").value = "Sistema";
+	}
+	
+	document.getElementById("paso.verbo").value = cells[3];
+	document.getElementById("paso.otroVerbo").value = cells[4];
+	document.getElementById("inputor").value = cells[5];
+	verificarOtro();
+	$('#pasoDialog').dialog('open');
+}
+
+function solicitarRegistroPaso() {
+	document.getElementById("filaPaso").value = -1;
+	$('#pasoDialog').dialog('open');
 }

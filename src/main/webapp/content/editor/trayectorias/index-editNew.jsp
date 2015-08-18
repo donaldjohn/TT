@@ -87,7 +87,7 @@
 					
 				</table>
 				<div align="center">
-					<sj:a openDialog="pasoDialog" button="true">Registrar</sj:a>
+					<sj:a onclick="solicitarRegistroPaso();" button="true">Registrar</sj:a>
 				</div>
 			</div>
 		</div>
@@ -111,6 +111,8 @@
    	<sj:dialog id="pasoDialog" title="Registrar Paso" autoOpen="false" 
    	minHeight="300" minWidth="800" modal="true" draggable="true" >
 	   	<s:form autocomplete="off" id="frmPaso" name="frmPasoName" theme="simple">
+	   		<s:hidden id="filaPaso" />
+	   		<s:hidden id="numeroPaso" />
 			<div class="formulario">
 				<div class="tituloFormulario">Información del Paso</div>
 				<table class="seccion">
