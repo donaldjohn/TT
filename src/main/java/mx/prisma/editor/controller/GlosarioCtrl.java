@@ -174,7 +174,7 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 			TerminoGlosarioBs.modificarTerminoGlosario(model, actualizacion);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",
-					"Actor", "modificado" }));
+					"Término", "modificado" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
