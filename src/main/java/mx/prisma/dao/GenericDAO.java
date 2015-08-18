@@ -12,7 +12,6 @@ public class GenericDAO {
 			session = HibernateUtil.getSessionFactory().openSession();
 		} else {
 			session.flush();
-			session.clear();
 		}
 	}
 }

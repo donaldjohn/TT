@@ -60,7 +60,7 @@ public class CasoUsoReglaNegocio implements java.io.Serializable {
 		this.numeroToken = numeroToken;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "CasoUsoElementoid", referencedColumnName = "Elementoid")
 	public CasoUso getCasoUso() {
 		return casoUso;
@@ -70,7 +70,7 @@ public class CasoUsoReglaNegocio implements java.io.Serializable {
 		this.casoUso = casoUso;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ReglaNegocioElementoid", referencedColumnName = "Elementoid")
 	public ReglaNegocio getReglaNegocio() {
 		return reglaNegocio;
