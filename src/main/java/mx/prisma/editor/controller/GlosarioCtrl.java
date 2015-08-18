@@ -171,7 +171,7 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 					comentario, model,
 					SessionManager.consultarColaboradorActivo());
 			System.out.println("comentario: " + comentario);
-			//TerminoGlosarioBs.modificarTerminoGlosario(model, actualizacion);
+			TerminoGlosarioBs.modificarTerminoGlosario(model, actualizacion);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",
 					"Actor", "modificado" }));

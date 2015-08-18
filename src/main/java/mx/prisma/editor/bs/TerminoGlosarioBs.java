@@ -6,13 +6,16 @@ import java.util.List;
 import java.util.Set;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.AnalisisEnum.CU_Actores;
 import mx.prisma.bs.AnalisisEnum.CU_Glosario;
 import mx.prisma.editor.bs.ElementoBs.Estado;
+import mx.prisma.editor.dao.ActorDAO;
 import mx.prisma.editor.dao.EntradaDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.dao.SalidaDAO;
 import mx.prisma.editor.dao.TerminoGlosarioDAO;
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Entrada;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
@@ -207,6 +210,29 @@ public class TerminoGlosarioBs {
 		listReferenciasVista.addAll(setReferenciasVista);
 
 		return listReferenciasVista;
+	}
+
+	public static void modificarTerminoGlosario(TerminoGlosario model,
+			Actualizacion actualizacion) throws Exception {
+		try {
+			validar(model);
+			ElementoBs
+					.verificarEstado(model, CU_Glosario.MODIFICARTERMINO10_2);
+			model.setEstadoElemento(ElementoBs
+					.consultarEstadoElemento(Estado.EDICION));
+			model.setNombre(model.getNombre().trim());
+
+			new TerminoGlosarioDAO().modificarElemento(model, actualizacion);
+
+		} catch (JDBCException je) {
+			System.out.println("ERROR CODE " + je.getErrorCode());
+			je.printStackTrace();
+			throw new Exception();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			throw new Exception();
+		}
+		
 	}
 
 }

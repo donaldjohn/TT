@@ -7,6 +7,7 @@ import java.util.Set;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AnalisisEnum.CU_Actores;
+import mx.prisma.bs.AnalisisEnum.CU_Pantallas;
 import mx.prisma.bs.CatalogoBs;
 import mx.prisma.bs.ReferenciaEnum.TipoCatalogo;
 import mx.prisma.editor.bs.ElementoBs.Estado;
@@ -14,6 +15,7 @@ import mx.prisma.editor.dao.ActorDAO;
 import mx.prisma.editor.dao.ActualizacionDAO;
 import mx.prisma.editor.dao.CardinalidadDAO;
 import mx.prisma.editor.dao.CasoUsoActorDAO;
+import mx.prisma.editor.dao.PantallaDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.model.Actor;
@@ -223,6 +225,28 @@ public class ActorBs {
 		listReferenciasVista.addAll(setReferenciasVista);
 
 		return listReferenciasVista;
+	}
+
+	public static void modificarActor(Actor model, Actualizacion actualizacion) throws Exception {
+		try {
+			validar(model);
+			ElementoBs
+					.verificarEstado(model, CU_Actores.MODIFICARACTOR7_2);
+			model.setEstadoElemento(ElementoBs
+					.consultarEstadoElemento(Estado.EDICION));
+			model.setNombre(model.getNombre().trim());
+
+			new ActorDAO().modificarElemento(model, actualizacion);
+
+		} catch (JDBCException je) {
+			System.out.println("ERROR CODE " + je.getErrorCode());
+			je.printStackTrace();
+			throw new Exception();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			throw new Exception();
+		}
+		
 	}
 
 }
