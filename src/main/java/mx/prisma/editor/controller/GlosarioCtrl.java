@@ -130,7 +130,7 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 		String resultado = null;
 		try {
 			TerminoGlosarioBs.eliminarTermino(model);
-			resultado = index();
+			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",
 					"Término", "eliminado" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");

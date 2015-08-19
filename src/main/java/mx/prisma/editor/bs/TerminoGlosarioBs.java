@@ -115,11 +115,11 @@ public class TerminoGlosarioBs {
 	public static void eliminarTermino(TerminoGlosario model) throws Exception {
 		try {
 			ElementoBs.verificarEstado(model, CU_Glosario.ELIMINARTERMINO10_3);
-			new ReglaNegocioDAO().eliminarElemento(model);
+			new TerminoGlosarioDAO().eliminarElemento(model);
 		} catch (JDBCException je) {
 			if (je.getErrorCode() == 1451) {
 				throw new PRISMAException(
-						"No se puede eliminar la regla de negocio.", "MSG14");
+						"No se puede eliminar el término.", "MSG14");
 			}
 			System.out.println("ERROR CODE " + je.getErrorCode());
 			je.printStackTrace();

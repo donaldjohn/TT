@@ -6,7 +6,10 @@ import java.util.List;
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.dao.GenericDAO;
 import mx.prisma.editor.model.Accion;
+import mx.prisma.editor.model.Actor;
+import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.Paso;
@@ -52,14 +55,20 @@ public class ReferenciaParametroDAO extends GenericDAO {
 			queryCadena = "FROM ReferenciaParametro WHERE accionDestino.id = " + accion.getId();
 			break;
 		case ACTOR:
+			Actor actor = (Actor) objeto;
+			queryCadena = "FROM ReferenciaParametro WHERE elementoDestino.id = " + actor.getId();
 			break;
 		case ATRIBUTO:
+			Atributo atributo = (Atributo) objeto;
+			queryCadena = "FROM ReferenciaParametro WHERE atributo.id = " + atributo.getId();
 			break;
 		case CASOUSO:
 			CasoUso casoUso = (CasoUso) objeto;
 			queryCadena = "FROM ReferenciaParametro WHERE elementoDestino.id = " + casoUso.getId();
 			break;
 		case ENTIDAD:
+			Entidad entidad = (Entidad) objeto;
+			queryCadena = "FROM ReferenciaParametro WHERE elementoDestino.id = " + entidad.getId();
 			break;
 		case MENSAJE:
 			Mensaje mensaje = (Mensaje) objeto;

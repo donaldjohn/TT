@@ -41,11 +41,11 @@
 									src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
 						</s:a>
 						${blanks}		
-							<!-- Eliminar término del glosario -->			
-							<!--<s:url var="urlEliminar" value="%{#pageContext.request.contextPath}/glosario/%{#termino.id}?_method=delete" method="post"/>-->
-							<s:a onclick="return verificarEliminacionElemento(%{#termino.id});">
-							<img id="" class="button" title="Eliminar Término"
-									src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" /></s:a>		
+						<!-- Eliminar término del glosario -->			
+						<!--<s:url var="urlEliminar" value="%{#pageContext.request.contextPath}/glosario/%{#termino.id}?_method=delete" method="post"/>-->
+						<s:a onclick="return verificarEliminacionElemento(%{#termino.id});">
+						<img id="" class="button" title="Eliminar Término"
+								src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" /></s:a>		
 					</td>
 				</tr>
 			</s:iterator>

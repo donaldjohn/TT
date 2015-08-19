@@ -6,13 +6,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.ResultPath;
-import org.apache.struts2.convention.annotation.Results;
-import org.apache.struts2.interceptor.SessionAware;
-
-import com.opensymphony.xwork2.ModelDriven;
-
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AnalisisEnum.CU_Actores;
 import mx.prisma.editor.bs.ActorBs;
@@ -25,6 +18,13 @@ import mx.prisma.util.ErrorManager;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.SessionManager;
+
+import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.ResultPath;
+import org.apache.struts2.convention.annotation.Results;
+import org.apache.struts2.interceptor.SessionAware;
+
+import com.opensymphony.xwork2.ModelDriven;
 
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
@@ -141,9 +141,9 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 		String resultado = null;
 		try {
 			ActorBs.eliminarActor(model);
-			resultado = index();
-			addActionMessage(getText("MSG1", new String[] { "La",
-					"Regla de negocio", "eliminada" }));
+			resultado = SUCCESS;
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"Actor", "eliminado" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
@@ -229,7 +229,6 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	public void setUserSession(Map<String, Object> userSession) {
 		this.userSession = userSession;
 	}
-
 
 	public void setSession(Map<String, Object> arg0) {
 		// TODO Auto-generated method stub

@@ -7,7 +7,6 @@ import java.util.Set;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AnalisisEnum.CU_Actores;
-import mx.prisma.bs.AnalisisEnum.CU_Pantallas;
 import mx.prisma.bs.CatalogoBs;
 import mx.prisma.bs.ReferenciaEnum.TipoCatalogo;
 import mx.prisma.editor.bs.ElementoBs.Estado;
@@ -15,9 +14,7 @@ import mx.prisma.editor.dao.ActorDAO;
 import mx.prisma.editor.dao.ActualizacionDAO;
 import mx.prisma.editor.dao.CardinalidadDAO;
 import mx.prisma.editor.dao.CasoUsoActorDAO;
-import mx.prisma.editor.dao.PantallaDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
-import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Cardinalidad;
@@ -145,11 +142,11 @@ public class ActorBs {
 	public static void eliminarActor(Actor model) throws Exception {
 		try {
 			ElementoBs.verificarEstado(model, CU_Actores.ELIMINARACTOR7_3);
-			new ReglaNegocioDAO().eliminarElemento(model);
+			new ActorDAO().eliminarElemento(model);
 		} catch (JDBCException je) {
 				if(je.getErrorCode() == 1451)
 				{
-					throw new PRISMAException("No se puede eliminar la regla de negocio.", "MSG14");
+					throw new PRISMAException("No se puede eliminar el actor.", "MSG14");
 				}
 				System.out.println("ERROR CODE " + je.getErrorCode());
 				je.printStackTrace();

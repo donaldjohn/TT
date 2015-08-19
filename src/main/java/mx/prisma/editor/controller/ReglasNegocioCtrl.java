@@ -316,7 +316,7 @@ public String edit() {
 		String resultado = null;
 		try {
 			ReglaNegocioBs.eliminarReglaNegocio(model);
-			resultado = index();
+			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "La",
 					"Regla de negocio", "eliminada" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
