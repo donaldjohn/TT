@@ -131,8 +131,6 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	}
 
 	private void agregarAcciones() throws Exception{
-		System.out.println("jsonAccionesTabla: " + jsonAccionesTabla);
-		System.out.println("jsonImagenesAcciones: " + jsonImagenesAcciones);
 		Set<Accion> accionesModelo = new HashSet<Accion>(0);
 		Set<Accion> accionesVista = new HashSet<Accion>(0);
 		Accion accionBD = null; 
@@ -260,6 +258,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	public String update() throws Exception {
 		String resultado = null;
 		try {
+			model.getAcciones().clear();
 			agregarAcciones();
 			agregarImagen();
 

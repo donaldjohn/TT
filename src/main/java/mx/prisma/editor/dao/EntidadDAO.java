@@ -46,10 +46,8 @@ public class EntidadDAO extends ElementoDAO {
 	}
 	public void modificarEntidad(Entidad model, Actualizacion actualizacion) {
 		try {
-			session.beginTransaction();
-			
-			
-			session.update(model);
+			session.beginTransaction();			
+ 			session.saveOrUpdate(model);
 			session.save(actualizacion);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {

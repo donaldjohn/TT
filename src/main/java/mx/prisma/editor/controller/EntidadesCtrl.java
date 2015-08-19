@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.EntidadBs;
 import mx.prisma.editor.dao.TipoDatoDAO;
 import mx.prisma.editor.dao.UnidadTamanioDAO;
@@ -162,6 +161,7 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 		String resultado = null;
 
 		try {
+			model.getAtributos().clear();
 			agregarAtributos();
 			System.out.println("comentario: " + comentario);
 			Actualizacion actualizacion = new Actualizacion(new Date(),
@@ -237,58 +237,60 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 	}
 
 	private void agregarAtributos() {
-		
 		Set<Atributo> atributosModelo = new HashSet<Atributo>(0);
 		Set<Atributo> atributosVista = new HashSet<Atributo>(0);
-		Atributo atributoBD = null; 
 		
+		Atributo atributoBD = null; 
+		System.out.println("json: " + jsonAtributosTabla);
 		if (jsonAtributosTabla != null && !jsonAtributosTabla.equals("")) {
 			atributosVista = JsonUtil.mapJSONToSet(jsonAtributosTabla,
 					Atributo.class);
 			
 			if(atributosVista != null) {
+				
 				for (Atributo atributoVista : atributosVista) {
+					TipoDato tipoDato = new TipoDatoDAO()
+					.consultarTipoDato(atributoVista.getTipoDato().getNombre());
+					
+					System.out.println("Nombre atributo: " + atributoVista.getNombre());
+					System.out.println("tipo: " + atributoVista.getTipoDato().getNombre());
 					if(atributoVista.getId() != null && atributoVista.getId() != 0) {
 						atributoBD = EntidadBs.consultarAtributo(atributoVista.getId());
-						TipoDato tipoDato = new TipoDatoDAO()
-						.consultarTipoDato(atributoVista.getTipoDato().getNombre());
+						atributoBD.setTipoDato(tipoDato);
+						atributoBD.setNombre(atributoVista.getNombre());
+						atributoBD.setDescripcion(atributoVista.getDescripcion());
+						atributoBD.setObligatorio(atributoVista.isObligatorio());
 				
 						if (tipoDato.getNombre().equals("Archivo")) {
 							UnidadTamanio unidadTamanio = new UnidadTamanioDAO()
 								.consultarUnidadTamanioAbreviatura(atributoVista
 										.getUnidadTamanio().getAbreviatura());
 							atributoBD.setUnidadTamanio(unidadTamanio);
-							atributoBD.setLongitud(null);
-						} else {
-							atributoBD.setUnidadTamanio(null);
-							atributoBD.setFormatoArchivo(null);
-						} 
-						
-						if (tipoDato.getNombre().equals("Fecha") || tipoDato.getNombre().equals("Booleano")) {
-							atributoBD.setLongitud(null);
-						}	
-						atributoBD.setTipoDato(tipoDato);
+							atributoBD.setTamanioArchivo(atributoVista.getTamanioArchivo());
+							atributoBD.setFormatoArchivo(atributoVista.getFormatoArchivo());
+						} else if (tipoDato.getNombre().equals("Cadena") || tipoDato.getNombre().equals("Entero") || tipoDato.getNombre().equals("Flotante")) {
+							atributoBD.setLongitud(atributoVista.getLongitud());
+						} else if(tipoDato.getNombre().equals("Otro")) {
+							atributoBD.setOtroTipoDato(atributoVista.getOtroTipoDato());
+						} 						
 						atributosModelo.add(atributoBD);
 					} else {
-						TipoDato tipoDato = new TipoDatoDAO()
-								.consultarTipoDato(atributoVista.getTipoDato().getNombre());
-						
+						atributoVista.setTipoDato(tipoDato);
 						if (tipoDato.getNombre().equals("Archivo")) {
 							UnidadTamanio unidadTamanio = new UnidadTamanioDAO()
 								.consultarUnidadTamanioAbreviatura(atributoVista
 										.getUnidadTamanio().getAbreviatura());
 							atributoVista.setUnidadTamanio(unidadTamanio);
-							atributoVista.setLongitud(null);
-						} else {
-							atributoVista.setUnidadTamanio(null);
-							atributoVista.setFormatoArchivo(null);
+							atributoVista.setTamanioArchivo(atributoVista.getTamanioArchivo());
+							atributoVista.setFormatoArchivo(atributoVista.getFormatoArchivo());
+						} else if (tipoDato.getNombre().equals("Cadena") || tipoDato.getNombre().equals("Entero") || tipoDato.getNombre().equals("Flotante")) {
+							atributoVista.setLongitud(atributoVista.getLongitud());
+						} else if(tipoDato.getNombre().equals("Otro")) {
+							atributoVista.setOtroTipoDato(atributoVista.getOtroTipoDato());
 						} 
 						
-						if (tipoDato.getNombre().equals("Fecha") || tipoDato.getNombre().equals("Booleano")) {
-							atributoVista.setLongitud(null);
-						}	
-						atributoVista.setTipoDato(tipoDato);
 						atributoVista.setEntidad(model);
+						
 						atributosModelo.add(atributoVista);
 					}
 				}

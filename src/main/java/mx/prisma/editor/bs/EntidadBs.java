@@ -234,7 +234,7 @@ public class EntidadBs {
 	public static Atributo consultarAtributo(int idAtributo1) {
 		Atributo atributo = new AtributoDAO().consultarAtributo(idAtributo1);
 		if(atributo == null) {
-			
+			System.out.println("No se puede consultar el atributo por el id");
 		}
 		return atributo;
 	}	
