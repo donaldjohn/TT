@@ -315,7 +315,7 @@ function solicitarModificacionAccion(registro) {
 	console.log("cells: " + cells);
 	document.getElementById("accion.nombre").value = cells[1];
 	
-	if(cells[2] != "") {
+	if(cells[2] != null && cells[2] != "") {
 		document.getElementById("accion").src = cells[2];
 		document.getElementById("marco-accion").style.display = '';
 		document.getElementById("fila-accion").style.display = 'none';

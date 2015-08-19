@@ -258,6 +258,8 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	public String update() throws Exception {
 		String resultado = null;
 		try {
+			System.out.println("idModel: " + idSel);
+			System.out.println("x: " + model.getNombre());
 			model.getAcciones().clear();
 			agregarAcciones();
 			agregarImagen();
