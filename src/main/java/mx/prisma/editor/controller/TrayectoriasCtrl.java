@@ -270,7 +270,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 						"El usuario no seleccionó el tipo de la trayectoria.",
 						"MSG4", null, "alternativaPrincipal");
 			}
-
+			model.getPasos().clear();
 			agregarPasos();
 			TrayectoriaBs.preAlmacenarObjetosToken(model);
 			Actualizacion actualizacion = new Actualizacion(new Date(),

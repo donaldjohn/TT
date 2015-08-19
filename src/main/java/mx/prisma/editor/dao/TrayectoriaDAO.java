@@ -1,14 +1,11 @@
 package mx.prisma.editor.dao;
 
 
-import java.util.List;
-
 import mx.prisma.dao.GenericDAO;
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Trayectoria;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 
 public class TrayectoriaDAO extends GenericDAO {
 
@@ -30,10 +27,9 @@ public class TrayectoriaDAO extends GenericDAO {
 	}
 	
 	public void modificarTrayectoria(Trayectoria trayectoria, Actualizacion actualizacion) {
-			
 		try {
 			session.beginTransaction();			
- 			session.update(trayectoria);
+ 			session.saveOrUpdate(trayectoria);
 			session.save(actualizacion);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
@@ -43,28 +39,19 @@ public class TrayectoriaDAO extends GenericDAO {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Trayectoria consultarTrayectoria(int id) throws HibernateException {		
-		List<Trayectoria> results = null;
+		Trayectoria trayectoria = null;
 
 		try {
 			session.beginTransaction();
-			Query query = session
-					.createQuery("from Trayectoria where id = :id");
- 			query.setParameter("id", id);
-			results = query.list();
+			trayectoria = (Trayectoria)session.get(Trayectoria.class, id);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}
 		
-		if(results!=null){
-			if (results.get(0) != null){
-				return results.get(0);
-			}
-		}
-		return null;
+		return trayectoria;
 
 	}
 	

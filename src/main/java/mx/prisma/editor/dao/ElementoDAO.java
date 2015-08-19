@@ -50,6 +50,7 @@ public class ElementoDAO extends GenericDAO{
 
 		try {
 			session.beginTransaction();
+			//Elemento elementoPersistido = (Elemento) session.get(Elemento.class, elemento.getId());
 			session.delete(elemento);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {

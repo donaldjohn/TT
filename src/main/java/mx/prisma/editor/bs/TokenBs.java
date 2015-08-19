@@ -835,9 +835,6 @@ public class TokenBs {
 
 		for (String token : tokens) {
 			segmentos = segmentarToken(token);
-			for (String s : segmentos) {
-				System.out.println(s);
-			}
 			switch (ReferenciaEnum.getTipoReferencia(segmentos.get(0))) {
 			case ACCION: // ACC.IUM.NUM:PANTALLA:NOMBRE_ACC =
 							// ACC.IUSF.7:Registrar_incendio:Aceptar
@@ -949,7 +946,7 @@ public class TokenBs {
 				if (reglaNegocio == null) {
 					cadenaDecodificada = "";
 				}
-				cadenaDecodificada = cadenaDecodificada.replaceAll(token + "(,|\\\\.|\\s)", tokenRN
+				cadenaDecodificada = cadenaDecodificada.replace(token, tokenRN
 						+ reglaNegocio.getNumero() + tokenSeparator2
 						+ reglaNegocio.getNombre().replace(" ", "_"));
 				break;
@@ -1640,7 +1637,6 @@ public class TokenBs {
 	public static void almacenarObjetosToken(ArrayList<Object> objetos,
 			TipoSeccion tipoSeccion,
 			Paso paso) {
-
 		int numeroTokenAccion = 0;
 		int numeroTokenActor = 0;
 		int numeroTokenAtributo = 0;
@@ -1666,6 +1662,7 @@ public class TokenBs {
 		ReglaNegocio reglaNegocio;
 		TerminoGlosario terminoGlosario;
 		Trayectoria trayectoria; 
+		Paso pasoDestino;
 		for (Object objeto : objetos) {
 			switch (ReferenciaEnum.getTipoRelacion(
 					ReferenciaEnum.getTipoReferencia(objeto), tipoSeccion)) {
@@ -1730,11 +1727,11 @@ public class TokenBs {
 
 				break;
 			case PASO_PASOS:
-				paso = (Paso) objeto;
+				pasoDestino = (Paso) objeto;
 				tipoParametro = new TipoParametroDAO()
 						.consultarTipoParametro("Paso");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
-				referenciaParametro.setPasoDestino(paso);
+				referenciaParametro.setPasoDestino(pasoDestino);
 				referenciaParametro.setNumerToken(numeroTokenPaso++);
 				break;
 			case REGLANEGOCIO_PASOS:

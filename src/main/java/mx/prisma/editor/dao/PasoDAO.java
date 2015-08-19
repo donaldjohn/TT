@@ -16,7 +16,9 @@ public class PasoDAO extends GenericDAO{
 		try {
 			session.beginTransaction();
 			paso = (Paso) session.get(Paso.class, id);
-			paso.getReferencias().size();
+			if (paso != null) {
+				paso.getReferencias().size();
+			}
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
