@@ -306,7 +306,7 @@ public class EntidadBs {
 					.consultarEstadoElemento(Estado.EDICION));
 			model.setNombre(model.getNombre().trim());
 
-			new EntidadDAO().modificarEntidad(model, actualizacion);;
+			new EntidadDAO().modificarEntidad(model, actualizacion);
 
 		} catch (JDBCException je) {
 			System.out.println("ERROR CODE " + je.getErrorCode());

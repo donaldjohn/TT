@@ -316,12 +316,14 @@ function disablefromTipoDato() {
 	}
 }
 
-function preparaEnvio() {
+function prepararEnvio() {
 	try {
 		tablaToJson("tablaAtributo");
+		$('#mensajeConfirmacion').dialog('open');
 		return true;
 	} catch (err) {
-		alert("Ocurrió un error.");
+		alert("Ocurrió un error: " + err);
+		return false;
 	}
 }
 
@@ -385,4 +387,20 @@ function solicitarModificacionAtributo(registro) {
 function solicitarRegistroAtributo() {
 	document.getElementById("filaAtributo").value = -1;
 	$('#atributoDialog').dialog('open');
+}
+
+function enviarComentarios(){
+	var redaccionDialogo = document.getElementById("comentarioDialogo").value;
+	if(vaciaONula(redaccionDialogo)) {
+		agregarMensaje("Agregue todos los campos obligatorios.");
+		return false;
+	}
+	document.getElementById("comentario").value = redaccionDialogo;
+	document.getElementById("frmEntidad").submit();
+
+}
+
+function cancelarRegistroComentarios() {
+	document.getElementById("comentario").value = "";
+	$('#mensajeConfirmacion').dialog('close');
 }

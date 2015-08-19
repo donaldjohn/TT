@@ -27,7 +27,7 @@
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 	<s:form autocomplete="off" id="frmEntidad" theme="simple"
 		action="%{#pageContext.request.contextPath}/entidades/%{idSel}" method="post"
-		onsubmit="return preparaEnvio();">
+		onsubmit="return false;">
 		<s:hidden name="_method" value="put" />
 		<div class="formulario">
 			<div class="tituloFormulario">Información general de la Entidad</div>
@@ -85,7 +85,7 @@
 
 		<br />
 		<div align="center">
-			<s:submit class="boton" value="Aceptar" />
+			<s:submit class="boton" value="Aceptar" onclick="prepararEnvio();"/>
 
 			<s:url var="urlGestionarEntidades"
 				value="%{#pageContext.request.contextPath}/entidades">
@@ -167,6 +167,36 @@
 			<div align="center">
 				<input type="button" onclick="registrarAtributo()" value="Aceptar" /> <input
 					type="button" onclick="cancelarRegistrarAtributo()" value="Cancelar" />
+			</div>
+		</s:form>
+	</sj:dialog>
+	<!-- COMENTARIOS DE LA ACTUALIZACIÓN -->
+	<sj:dialog id="mensajeConfirmacion" title="Confirmación"
+		autoOpen="false" minHeight="300" minWidth="800" modal="true"
+		draggable="true">
+		<s:form autocomplete="off" id="frmComentario"
+			name="frmComentario" theme="simple">
+			<div class="formulario">
+				<div class="tituloFormulario">Comentarios de la modificación</div>
+				<div class="seccion">
+					<p class="instrucciones">Ingrese un comentario referente a la
+						modificación realizada.</p>
+
+				<table>
+					<tr>
+						<td class="label obligatorio"><s:text name="labelComentarios" /></td>
+						<td><s:textarea rows="5" name="comentarioDialogo"
+								id="comentarioDialogo" maxlength="999"
+								cssErrorClass="input-error" cssClass="inputFormulario ui-widget" /></td>
+					</tr>
+				</table>
+				</div>
+			</div>
+			<br />
+			<div align="center">
+				<input type="button" onclick="enviarComentarios()" value="Aceptar" />
+				<input type="button" onclick="cancelarRegistroComentarios()"
+					value="Cancelar" />
 			</div>
 		</s:form>
 	</sj:dialog>

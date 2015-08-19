@@ -162,7 +162,7 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 
 		try {
 			agregarAtributos();
-			
+			System.out.println("comentario: " + comentario);
 			Actualizacion actualizacion = new Actualizacion(new Date(),
 					comentario, model,
 					SessionManager.consultarColaboradorActivo());
