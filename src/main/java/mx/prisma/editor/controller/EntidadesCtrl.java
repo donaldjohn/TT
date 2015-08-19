@@ -252,8 +252,6 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 					TipoDato tipoDato = new TipoDatoDAO()
 					.consultarTipoDato(atributoVista.getTipoDato().getNombre());
 					
-					System.out.println("Nombre atributo: " + atributoVista.getNombre());
-					System.out.println("tipo: " + atributoVista.getTipoDato().getNombre());
 					if(atributoVista.getId() != null && atributoVista.getId() != 0) {
 						atributoBD = EntidadBs.consultarAtributo(atributoVista.getId());
 						atributoBD.setTipoDato(tipoDato);
@@ -275,6 +273,7 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 						} 						
 						atributosModelo.add(atributoBD);
 					} else {
+						atributoVista.setId(null);
 						atributoVista.setTipoDato(tipoDato);
 						if (tipoDato.getNombre().equals("Archivo")) {
 							UnidadTamanio unidadTamanio = new UnidadTamanioDAO()

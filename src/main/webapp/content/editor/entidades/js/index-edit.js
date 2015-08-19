@@ -342,6 +342,8 @@ function tablaToJson(idTable) {
 		var formatoArchivo = table.fnGetData(i, 7);		
 		var tamanioArchivo = table.fnGetData(i, 8);		
 		var unidadTamanio = table.fnGetData(i, 9);
+		var id = table.fnGetData(i, 10);
+		console.log("id: " + id);
 		
 		if (obligatorio == 'Sí') {
 			obligatorio = true;
@@ -349,7 +351,7 @@ function tablaToJson(idTable) {
 			obligatorio = false;
 		}
 
-		arregloAtributos.push(new Atributo(nombre, descripcion, obligatorio, longitud, tipoDato, otroTipoDato, formatoArchivo, tamanioArchivo, unidadTamanio));
+		arregloAtributos.push(new Atributo(nombre, descripcion, obligatorio, longitud, tipoDato, otroTipoDato, formatoArchivo, tamanioArchivo, unidadTamanio, id));
 	}
 	var jsonAtributos = JSON.stringify(arregloAtributos);
 	document.getElementById("jsonAtributosTabla").value = jsonAtributos;
