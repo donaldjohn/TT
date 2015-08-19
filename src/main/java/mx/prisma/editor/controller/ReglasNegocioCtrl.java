@@ -16,6 +16,7 @@ import mx.prisma.editor.bs.ReglaNegocioBs;
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Entidad;
+import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Operador;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TipoReglaNegocio;
@@ -39,8 +40,8 @@ import com.opensymphony.xwork2.ModelDriven;
 				"root",
 				"listAtributos" }),
 		@Result(name = "entidades", type = "json", params = {
-				"root",
-				"listEntidades"}),
+				"includeProperties",
+				"^listEntidades\\[\\d+\\]\\.nombre,^listEntidades\\[\\d+\\]\\.id"}),
 		@Result(name = "operadores", type = "json", params = {
 				"root",
 				"listOperadores"}),
@@ -615,6 +616,22 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 
 	public void setElementosReferencias(List<String> elementosReferencias) {
 		this.elementosReferencias = elementosReferencias;
+	}
+
+	public List<Entidad> getListEntidades2() {
+		return listEntidades2;
+	}
+
+	public void setListEntidades2(List<Entidad> listEntidades2) {
+		this.listEntidades2 = listEntidades2;
+	}
+
+	public List<Atributo> getListAtributos2() {
+		return listAtributos2;
+	}
+
+	public void setListAtributos2(List<Atributo> listAtributos2) {
+		this.listAtributos2 = listAtributos2;
 	}
 
 	
