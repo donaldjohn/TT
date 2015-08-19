@@ -111,7 +111,7 @@ function mostrarCamposTipoRN() {
 	} 
 	
 }
-//UNICIDAD DE PARÁMETROS
+//UNICIDAD DE PARÁMETROS, COMPARACIÓN DE ATRIBUTOS
 function cargarEntidades(idSelect) {
 	var idTipoRN = document.getElementById("idTipoRN").value;
 	var select = document.getElementById(idSelect);
@@ -124,6 +124,7 @@ function cargarEntidades(idSelect) {
 			idTipoRN : idTipoRN
 		},
 		success : function(data) {
+			alert(data);
 			agregarListaSelect(select, data);
 		},
 		error : function(err) {
@@ -132,11 +133,9 @@ function cargarEntidades(idSelect) {
 	});
 }
 
-//UNICIDAD DE PARÁMETROS
+//UNICIDAD DE PARÁMETROS, COMPARACIÓN DE ATRIBUTOS
 function cargarAtributos(select, idSelectAtributos) {
 	limpiarCamposDependientes(select.id);
-	console.log("id entidad: " + select.id);
-	console.log("id selectAtributos: " + idSelectAtributos);
 	var idEntidad = select.value;
 	rutaCargarAtributos = contextPath + '/reglas-negocio!cargarAtributos';
 	$.ajax({
@@ -147,6 +146,7 @@ function cargarAtributos(select, idSelectAtributos) {
 			idEntidad : idEntidad,
 		},
 		success : function(data) {
+			alert(data);
 			agregarListaSelect(document.getElementById(idSelectAtributos), data);
 		},
 		error : function(err) {
