@@ -93,7 +93,7 @@
 							id="entidadFormato" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
 							listKey="id" onchange="cargarAtributos(this, 'atributoFormato');"
-							value="defaultIdEntidadFormato"></s:select> <s:fielderror
+							value="model.atributoExpReg.entidad.id"></s:select> <s:fielderror
 							fieldName="idEntidadFormato" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr id="filaAtributoFormato" class="oculto">
@@ -102,7 +102,7 @@
 							cssClass="inputFormulario ui-widget" name="idAtributoFormato"
 							id="atributoFormato" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
-							listKey="id" value="defaultIdAtributoFormato"></s:select> <s:fielderror
+							listKey="id" value="model.atributoExpReg.id"></s:select> <s:fielderror
 							fieldName="idAtributoFormato" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr id="filaExpresionRegular">
@@ -143,7 +143,7 @@
 							id="entidad1" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
 							listKey="id" onchange="cargarAtributos(this, 'atributo1');"
-							value="defaultIdEntidad1"></s:select> <s:fielderror
+							value="model.atributoComp1.entidad.id"></s:select> <s:fielderror
 							fieldName="idEntidad1" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr id="filaAtributo1" class="oculto">
@@ -154,7 +154,7 @@
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
 							listKey="id"
 							onchange="cargarOperadores(this);cargarEntidadesDependientes(this, 'entidad2');"
-							value="defaultIdAtributo1"></s:select> <s:fielderror
+							value="model.atributoComp1.id"></s:select> <s:fielderror
 							fieldName="idAtributo1" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr id="filaOperador" class="oculto">
@@ -164,26 +164,26 @@
 							cssClass="inputFormulario ui-widget" name="idOperador"
 							id="operador" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="simbolo"
-							listKey="id" value="defaultIdOperador"></s:select></td>
+							listKey="id" value="model.operadorComp.id"></s:select></td>
 				</tr>
 				<tr id="filaEntidad2" class="oculto">
 					<td class="label obligatorio"><s:text name="labelEntidad2" /></td>
-					<td><s:select list="listEntidades"
+					<td><s:select list="listEntidades2"
 							cssClass="inputFormulario ui-widget" name="idEntidad2"
 							id="entidad2" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
 							listKey="id"
 							onchange="cargarAtributosDependientes(this, 'atributo2');"
-							value="defaultIdEntidad2"></s:select> <s:fielderror
+							value="model.atributoComp2.entidad.id"></s:select> <s:fielderror
 							fieldName="idEntidad2" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr id="filaAtributo2" class="oculto">
 					<td class="label obligatorio"><s:text name="labelAtributo2" /></td>
-					<td><s:select list="listAtributos"
+					<td><s:select list="listAtributos2"
 							cssClass="inputFormulario ui-widget" name="idAtributo2"
 							id="atributo2" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
-							listKey="id" value="defaultIdAtributo2"></s:select> <s:fielderror
+							listKey="id" value="model.atributoComp2.id"></s:select> <s:fielderror
 							fieldName="idAtributo2" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr id="filaResultado" class="oculto">

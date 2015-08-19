@@ -40,8 +40,10 @@ import com.opensymphony.xwork2.ModelDriven;
 				"root",
 				"listAtributos" }),
 		@Result(name = "entidades", type = "json", params = {
-				"includeProperties",
-				"^listEntidades\\[\\d+\\]\\.nombre,^listEntidades\\[\\d+\\]\\.id"}),
+				"root",
+				"listEntidades"}),
+				//"includeProperties",
+				//"^listEntidades\\[\\d+\\]\\.nombre,^listEntidades\\[\\d+\\]\\.id"}),
 		@Result(name = "operadores", type = "json", params = {
 				"root",
 				"listOperadores"}),
@@ -221,7 +223,8 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 			this.listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
 			this.listAtributos = new ArrayList<Atributo>(model.getAtributoComp1().getEntidad().getAtributos());
 			this.listEntidades2 = ReglaNegocioBs.consultarEntidadesTipoDato(proyecto, model.getAtributoComp2().getTipoDato().getNombre());
-			this.listAtributos2 = listAtributos = ReglaNegocioBs.consultarAtributosTipoDato(idEntidad, model.getAtributoComp2().getTipoDato().getNombre());
+			idEntidad = model.getAtributoComp2().getEntidad().getId();
+			this.listAtributos2 = ReglaNegocioBs.consultarAtributosTipoDato(idEntidad, model.getAtributoComp2().getTipoDato().getNombre());
 			
 			listOperadores = ReglaNegocioBs.consultarOperadoresDisponibles(model.getAtributoComp1().getTipoDato().getNombre());
 			
@@ -334,7 +337,12 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	public String cargarEntidades() {
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
-			listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
+			List<Entidad> listEntidadesAux = EntidadBs.consultarEntidadesProyecto(proyecto);
+			listEntidades = new ArrayList<Entidad>();
+			for(Entidad en : listEntidadesAux) {
+				en.setProyecto(null);
+				listEntidades.add(en);
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -345,7 +353,12 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
 			Atributo atributo = EntidadBs.consultarAtributo(this.idAtributo);
-			listEntidades = ReglaNegocioBs.consultarEntidadesTipoDato(proyecto, atributo.getTipoDato().getNombre());
+			List<Entidad> listEntidadesAux = ReglaNegocioBs.consultarEntidadesTipoDato(proyecto, atributo.getTipoDato().getNombre());
+			listEntidades = new ArrayList<Entidad>();
+			for(Entidad en : listEntidadesAux) {
+				en.setProyecto(null);
+				listEntidades.add(en);
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -355,7 +368,12 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	public String cargarAtributos() {
 		try {
 			Entidad entidad = EntidadBs.consultarEntidad(this.idEntidad);
-			this.listAtributos = new ArrayList<Atributo>(entidad.getAtributos());
+			ArrayList<Atributo> listAtributosAux = new ArrayList<Atributo>(entidad.getAtributos());
+			listAtributos = new ArrayList<Atributo>();
+			for(Atributo at : listAtributosAux) {
+				at.setEntidad(null);
+				listAtributos.add(at);
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -366,26 +384,12 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		try {
 			Atributo atributo = EntidadBs.consultarAtributo(this.idAtributo);
 			String tipoDato = atributo.getTipoDato().getNombre();
-			listAtributos = ReglaNegocioBs.consultarAtributosTipoDato(idEntidad, tipoDato);
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return "atributos";
-	}
-	
-	public String cargarEntidadesFecha() {
-		try {
-			proyecto = SessionManager.consultarProyectoActivo();
-			listEntidades = EntidadBs.consultarEntidadesProyectoConFecha(proyecto);
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return "entidades";
-	}
-	
-	public String cargarAtributosFecha() {
-		try {
-			this.listAtributos = EntidadBs.consultarAtributosTipoFecha(this.idEntidad);
+			ArrayList<Atributo> listAtributosAux = new ArrayList<Atributo>(ReglaNegocioBs.consultarAtributosTipoDato(idEntidad, tipoDato));
+			listAtributos = new ArrayList<Atributo>();
+			for(Atributo at : listAtributosAux) {
+				at.setEntidad(null);
+				listAtributos.add(at);
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -396,6 +400,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		try {
 			Atributo atributo = EntidadBs.consultarAtributo(this.idAtributo);
 			listOperadores = ReglaNegocioBs.consultarOperadoresDisponibles(atributo.getTipoDato().getNombre());
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

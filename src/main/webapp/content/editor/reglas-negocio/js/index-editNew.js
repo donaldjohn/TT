@@ -124,7 +124,6 @@ function cargarEntidades(idSelect) {
 			idTipoRN : idTipoRN
 		},
 		success : function(data) {
-			alert(data);
 			agregarListaSelect(select, data);
 		},
 		error : function(err) {
@@ -146,7 +145,6 @@ function cargarAtributos(select, idSelectAtributos) {
 			idEntidad : idEntidad,
 		},
 		success : function(data) {
-			alert(data);
 			agregarListaSelect(document.getElementById(idSelectAtributos), data);
 		},
 		error : function(err) {
@@ -232,8 +230,6 @@ function agregarListaSelect(select, json) {
 				.each(
 						json,
 						function(i, item) {
-							console.log("nombre: " + item.nombre);
-							console.log("id: " + item.id);
 							option = document.createElement("option");
 							option.text = item.nombre;
 							option.index = i;
