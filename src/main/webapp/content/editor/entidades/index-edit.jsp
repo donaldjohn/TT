@@ -107,6 +107,7 @@
 		<s:form autocomplete="off" id="frmAtributo" name="frmAtributoName" theme="simple">
 			<div class="formulario">
 			<s:hidden id="filaAtributo" />
+			<s:hidden id="idAtributo" />
 				<div class="tituloFormulario">Información del Atributo</div>
 				<table class="seccion">
 					<tr>

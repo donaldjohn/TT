@@ -125,7 +125,7 @@ function registrarAccion() {
 				descripcion, 
 				tipoAccion,
 				idPantallaDestino,
-				"",
+				0,
 				"<center>"
 						+ "<a onclick='solicitarModificacionAccion(this);' button='true'>"
 						+ "<img class='icon'  id='icon' src='"
@@ -138,8 +138,10 @@ function registrarAccion() {
 						+ "</center>" ];
 		var indexFilaAccion = document.getElementById("filaAccion").value;
 		if(indexFilaAccion == -1) {
+			row[6] = 0;
 			dataTableCDT.addRow("tablaAccion", row);
 		} else {
+			row[6] = document.getElementById("idAccion").value;
 			dataTableCDT.editRow("tablaAccion", indexFilaAccion, row);
 		}
 		

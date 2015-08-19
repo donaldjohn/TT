@@ -40,6 +40,7 @@ function Paso(numero, realizaActor, verbo, otroVerbo, redaccion, id) {
 	this.verbo = new Verbo(verbo);
 	this.otroVerbo = otroVerbo;
 	this.redaccion = redaccion;
+	alert("id desde const: " + id);
 	this.id = id;
 }
 

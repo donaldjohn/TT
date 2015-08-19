@@ -121,8 +121,10 @@ function registrarAtributo() {
 		console.log("desde edit, index: " + indexFilaAtributo);
 		if(indexFilaAtributo == -1) {
 			dataTableCDT.addRow("tablaAtributo", row);
+			row[10] = 0;
 		} else {
 			dataTableCDT.editRow("tablaAtributo", indexFilaAtributo, row);
+			row[10] = document.getElementById("idAtributo").value;
 		}
 
 		document.getElementById("atributo.nombre").value = null;
@@ -343,7 +345,6 @@ function tablaToJson(idTable) {
 		var tamanioArchivo = table.fnGetData(i, 8);		
 		var unidadTamanio = table.fnGetData(i, 9);
 		var id = table.fnGetData(i, 10);
-		console.log("id: " + id);
 		
 		if (obligatorio == 'Sí') {
 			obligatorio = true;
@@ -376,7 +377,7 @@ function solicitarModificacionAtributo(registro) {
 	document.getElementById("atributo.formatoArchivo").value = cells[7];
 	document.getElementById("atributo.tamanioArchivo").value = cells[8];
 	document.getElementById("atributo.unidadTamanio").value = cells[9];
-
+	document.getElementById("idAtributo").value = cells[10];
 	if(cells[2] == "No") {
 		document.getElementById("atributo.obligatorio").checked = false;
 	} else {

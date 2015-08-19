@@ -154,6 +154,7 @@
 			<div class="tituloFormulario">Información general de la
 				Acción</div>
 				<s:hidden id="filaAccion" />
+				<s:hidden id="idAccion" />
 				<table class="seccion">
 					<tr>
 						<td class="label obligatorio"><s:text name="labelNombre" /></td>

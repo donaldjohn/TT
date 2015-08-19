@@ -135,6 +135,7 @@
 			theme="simple">
 			<s:hidden id="filaPaso" />
 			<s:hidden id="numeroPaso" />
+			<s:hidden id="idPaso"/>
 			<div class="formulario">
 				<div class="tituloFormulario">Información del Paso</div>
 				<table class="seccion">

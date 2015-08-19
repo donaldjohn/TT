@@ -147,9 +147,11 @@ function registrarPaso(){
     	var indexFilaAccion = document.getElementById("filaPaso").value;
     	if(indexFilaAccion == -1) {
     		row[0] = calcularNumeroPaso();
+    		row[6] = 0;
 			dataTableCDT.addRow("tablaPaso", row);
 		} else {
 			row[0] = document.getElementById("numeroPaso").value;
+			row[6] = document.getElementById("idPaso").value;
 			dataTableCDT.editRow("tablaPaso", indexFilaAccion, row);
 		}
     	
@@ -336,6 +338,7 @@ function solicitarModificacionAccion(registro) {
 	
 	var cells = row.data();
 	
+	
 	document.getElementById("numeroPaso").value = cells[0];
 	var realizaActor = cells[2];
 	
@@ -348,6 +351,7 @@ function solicitarModificacionAccion(registro) {
 	document.getElementById("paso.verbo").value = cells[3];
 	document.getElementById("paso.otroVerbo").value = cells[4];
 	document.getElementById("inputor").value = cells[5];
+	document.getElementById("idPaso").value = cells[6];
 	verificarOtro();
 	$('#pasoDialog').dialog('open');
 }
