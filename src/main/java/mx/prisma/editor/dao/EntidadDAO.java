@@ -6,10 +6,12 @@ import java.util.List;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.util.HibernateUtil;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 public class EntidadDAO extends ElementoDAO {
@@ -41,5 +43,20 @@ public class EntidadDAO extends ElementoDAO {
 	
 	public String siguienteNumeroEntidad(int idProyecto) {
 		return super.siguienteNumero(TipoReferencia.ENTIDAD, idProyecto);
+	}
+	public void modificarEntidad(Entidad model, Actualizacion actualizacion) {
+		try {
+			session.beginTransaction();
+			
+			
+			session.update(model);
+			session.save(actualizacion);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
+		
 	}
 }

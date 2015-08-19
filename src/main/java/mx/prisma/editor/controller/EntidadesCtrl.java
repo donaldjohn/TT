@@ -2,14 +2,17 @@ package mx.prisma.editor.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.EntidadBs;
 import mx.prisma.editor.dao.TipoDatoDAO;
 import mx.prisma.editor.dao.UnidadTamanioDAO;
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.TipoDato;
@@ -46,6 +49,7 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 	private List<UnidadTamanio> listUnidadTamanio;
 	private Integer idSel;
 	private List<String> elementosReferencias;
+	private String comentario;
 
 	public String index() throws Exception {
 		try {
@@ -114,6 +118,76 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 		return resultado;
 	}
 	
+	public String edit() throws Exception {
+
+		String resultado = null;
+		try {
+			prepararVista();
+			buscaCatalogos();
+			resultado = EDIT;
+		} catch (PRISMAException pe) {
+			System.err.println(pe.getMessage());
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			e.printStackTrace();
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+
+	private void prepararVista() {
+		List<Atributo> listAtributos = new ArrayList<Atributo>();
+		for(Atributo atributo : model.getAtributos()) {
+			Atributo atAux = new Atributo();
+			atAux.setNombre(atributo.getNombre());
+			atAux.setDescripcion(atributo.getDescripcion());
+			atAux.setId(atributo.getId());
+			atAux.setFormatoArchivo(atributo.getFormatoArchivo());
+			atAux.setLongitud(atributo.getLongitud());
+			atAux.setObligatorio(atributo.isObligatorio());
+			atAux.setOtroTipoDato(atributo.getOtroTipoDato());
+			atAux.setTamanioArchivo(atributo.getTamanioArchivo());
+			atAux.setTipoDato(atributo.getTipoDato());
+			atAux.setUnidadTamanio(atributo.getUnidadTamanio());
+			listAtributos.add(atAux);
+		}
+		jsonAtributosTabla = JsonUtil.mapListToJSON(listAtributos); 
+		
+	}
+
+	public String update() throws Exception {
+		String resultado = null;
+
+		try {
+			agregarAtributos();
+			
+			Actualizacion actualizacion = new Actualizacion(new Date(),
+					comentario, model,
+					SessionManager.consultarColaboradorActivo());
+
+			EntidadBs.modificarEntidad(model, actualizacion);
+
+			resultado = SUCCESS;
+			addActionMessage(getText("MSG1", new String[] { "La",
+					"Entidad", "modificada" }));
+
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = edit();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			e.printStackTrace();
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+	
 	public String show() throws Exception{
 		String resultado = null;
 		try {
@@ -144,33 +218,66 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 	}
 
 	private void agregarAtributos() {
+		
+		Set<Atributo> atributosModelo = new HashSet<Atributo>(0);
+		Set<Atributo> atributosVista = new HashSet<Atributo>(0);
+		Atributo atributoBD = null; 
+		
 		if (jsonAtributosTabla != null && !jsonAtributosTabla.equals("")) {
-			model.setAtributos(JsonUtil.mapJSONToSet(jsonAtributosTabla,
-					Atributo.class));
-			for (Atributo atributo : model.getAtributos()) {
-				TipoDato tipoDato = new TipoDatoDAO()
-						.consultarTipoDato(atributo.getTipoDato().getNombre());
+			atributosVista = JsonUtil.mapJSONToSet(jsonAtributosTabla,
+					Atributo.class);
+			
+			if(atributosVista != null) {
+				for (Atributo atributoVista : atributosVista) {
+					if(atributoVista.getId() != null && atributoVista.getId() != 0) {
+						atributoBD = EntidadBs.consultarAtributo(atributoVista.getId());
+						TipoDato tipoDato = new TipoDatoDAO()
+						.consultarTipoDato(atributoVista.getTipoDato().getNombre());
 				
-				if (tipoDato.getNombre().equals("Archivo")) {
-					UnidadTamanio unidadTamanio = new UnidadTamanioDAO()
-						.consultarUnidadTamanioAbreviatura(atributo
-								.getUnidadTamanio().getAbreviatura());
-					atributo.setUnidadTamanio(unidadTamanio);
-					atributo.setLongitud(null);
-				} else {
-					atributo.setUnidadTamanio(null);
-					atributo.setFormatoArchivo(null);
-				} 
-				
-				if (tipoDato.getNombre().equals("Fecha") || tipoDato.getNombre().equals("Booleano")) {
-					atributo.setLongitud(null);
-				}	
-				
-				atributo.setTipoDato(tipoDato);
-				atributo.setEntidad(model);
-				model.getAtributos().add(atributo);
+						if (tipoDato.getNombre().equals("Archivo")) {
+							UnidadTamanio unidadTamanio = new UnidadTamanioDAO()
+								.consultarUnidadTamanioAbreviatura(atributoVista
+										.getUnidadTamanio().getAbreviatura());
+							atributoBD.setUnidadTamanio(unidadTamanio);
+							atributoBD.setLongitud(null);
+						} else {
+							atributoBD.setUnidadTamanio(null);
+							atributoBD.setFormatoArchivo(null);
+						} 
+						
+						if (tipoDato.getNombre().equals("Fecha") || tipoDato.getNombre().equals("Booleano")) {
+							atributoBD.setLongitud(null);
+						}	
+						atributoBD.setTipoDato(tipoDato);
+						atributosModelo.add(atributoBD);
+					} else {
+						TipoDato tipoDato = new TipoDatoDAO()
+								.consultarTipoDato(atributoVista.getTipoDato().getNombre());
+						
+						if (tipoDato.getNombre().equals("Archivo")) {
+							UnidadTamanio unidadTamanio = new UnidadTamanioDAO()
+								.consultarUnidadTamanioAbreviatura(atributoVista
+										.getUnidadTamanio().getAbreviatura());
+							atributoVista.setUnidadTamanio(unidadTamanio);
+							atributoVista.setLongitud(null);
+						} else {
+							atributoVista.setUnidadTamanio(null);
+							atributoVista.setFormatoArchivo(null);
+						} 
+						
+						if (tipoDato.getNombre().equals("Fecha") || tipoDato.getNombre().equals("Booleano")) {
+							atributoVista.setLongitud(null);
+						}	
+						atributoVista.setTipoDato(tipoDato);
+						atributoVista.setEntidad(model);
+						atributosModelo.add(atributoVista);
+					}
+				}
+				model.setAtributos(atributosModelo);
 			}
+			
 		}
+		
 	}
 
 	public String verificarElementosReferencias() {
@@ -251,6 +358,7 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 
 	public void setIdSel(Integer idSel) {
 		this.idSel = idSel;
+		model = EntidadBs.consultarEntidad(idSel);
 	}
 
 	
@@ -260,6 +368,14 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 
 	public void setElementosReferencias(List<String> elementosReferencias) {
 		this.elementosReferencias = elementosReferencias;
+	}
+
+	public String getComentario() {
+		return comentario;
+	}
+
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
 	}
 	
 	

@@ -9,15 +9,19 @@ import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.AnalisisEnum.CU_Entidades;
 import mx.prisma.bs.CatalogoBs;
+import mx.prisma.bs.AnalisisEnum.CU_Pantallas;
 import mx.prisma.bs.ReferenciaEnum.TipoCatalogo;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.AtributoDAO;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.ExtensionDAO;
+import mx.prisma.editor.dao.PantallaDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.dao.TipoDatoDAO;
 import mx.prisma.editor.dao.UnidadTamanioDAO;
+import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Entidad;
@@ -290,5 +294,29 @@ public class EntidadBs {
 		listReferenciasVista.addAll(setReferenciasVista);
 		
 		return listReferenciasVista;
+	}
+
+	public static void modificarEntidad(Entidad model,
+			Actualizacion actualizacion) throws Exception {
+		try {
+			validar(model);
+			ElementoBs
+					.verificarEstado(model, CU_Entidades.MODIFICARENTIDAD11_2);
+			model.setEstadoElemento(ElementoBs
+					.consultarEstadoElemento(Estado.EDICION));
+			model.setNombre(model.getNombre().trim());
+
+			new EntidadDAO().modificarEntidad(model, actualizacion);;
+
+		} catch (JDBCException je) {
+			System.out.println("ERROR CODE " + je.getErrorCode());
+			je.printStackTrace();
+			throw new Exception();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			throw new Exception();
+		}
+
+		
 	}
 }

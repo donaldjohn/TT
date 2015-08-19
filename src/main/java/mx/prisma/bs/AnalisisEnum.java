@@ -24,4 +24,7 @@ public class AnalisisEnum {
 	public enum CU_Glosario {
 		MODIFICARTERMINO10_2, ELIMINARTERMINO10_3  
 	}
+	public enum CU_Entidades {
+		MODIFICARENTIDAD11_2, ELIMINARENTIDAD11_3  
+	}
 }

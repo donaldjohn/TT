@@ -178,6 +178,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 						
 						i++;
 					}
+					model.setAcciones(accionesModelo);
 				}
 			}
 		} catch (Exception e) {

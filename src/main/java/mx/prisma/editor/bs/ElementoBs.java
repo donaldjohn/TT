@@ -2,6 +2,7 @@ package mx.prisma.editor.bs;
 
 import mx.prisma.bs.AnalisisEnum.CU_Actores;
 import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
+import mx.prisma.bs.AnalisisEnum.CU_Entidades;
 import mx.prisma.bs.AnalisisEnum.CU_Glosario;
 import mx.prisma.bs.AnalisisEnum.CU_Mensajes;
 import mx.prisma.bs.AnalisisEnum.CU_Pantallas;
@@ -9,6 +10,7 @@ import mx.prisma.bs.AnalisisEnum.CU_ReglasNegocio;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Elemento;
+import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.util.PRISMAException;
@@ -174,6 +176,24 @@ public class ElementoBs {
 			}
 			break;
 		case ELIMINARTERMINO10_3:
+			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION)) {
+				throw new PRISMAException("El estado del término es inválido.", "MSG13");
+			}
+			break;
+		default:
+			break;
+		}
+		
+	}
+	
+	public static void verificarEstado(Entidad elemento, CU_Entidades entidadAnalisis) {
+		switch(entidadAnalisis) {
+		case MODIFICARENTIDAD11_2:
+			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION)) {
+				throw new PRISMAException("El estado del término es inválido.", "MSG13");
+			}
+			break;
+		case ELIMINARENTIDAD11_3:
 			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION)) {
 				throw new PRISMAException("El estado del término es inválido.", "MSG13");
 			}

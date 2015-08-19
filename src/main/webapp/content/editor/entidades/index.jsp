@@ -38,7 +38,7 @@
 						${blanks}
 							<!-- Modificar Entidad -->		
 							<s:url var="urlEditar" value="%{#pageContext.request.contextPath}/entidades/%{#entidad.id}/edit"/>			
-							<s:a href="%{urlEditar}">
+								<s:a href="%{urlEditar}">
 								<img id="" class="button" title="Modificar Entidad"
 										src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
 							</s:a>

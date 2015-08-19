@@ -103,6 +103,7 @@
 		minHeight="300" minWidth="800" modal="true" draggable="true">
 		<s:form autocomplete="off" id="frmAtributo" name="frmAtributoName" theme="simple">
 			<div class="formulario">
+			<s:hidden id="filaAtributo" />
 				<div class="tituloFormulario">Información del Atributo</div>
 				<table class="seccion">
 					<tr>
@@ -117,7 +118,7 @@
 					</tr>
 					<tr>
 						<td class="label obligatorio"><s:text name="labelTipoDato"/></td>
-						<td><s:select list="listTipoDato" cssClass="inputFormulario" name="atributo.tipoDato" id="atributo.tipoDato"
+						<td><s:select list="listTipoDato" cssClass="inputFormulario" name="atributo.tipoDato" id="atributo.tipoDato" listKey="nombre"
        						cssErrorClass="input-error" headerValue="Seleccione" headerKey="0" listValue="nombre" onchange="disablefromTipoDato();"></s:select></td>
 					</tr>
 					<tr id = 'trOtro' style="display: none;">
@@ -147,7 +148,7 @@
 						<td class="label obligatorio"><s:text name="labelTamanioArchivo" /></td>
 						<td><s:textfield name="atributo.tamanioArchivo" id="atributo.tamanioArchivo"
 								cssErrorClass="input-error" ></s:textfield>${blanks}
-						<s:select list="listUnidadTamanio"  name="atributo.unidadTamanio" id="atributo.unidadTamanio"
+						<s:select list="listUnidadTamanio"  name="atributo.unidadTamanio" id="atributo.unidadTamanio" listKey="abreviatura"
        						cssErrorClass="input-error" headerValue="Seleccione" headerKey="0" listValue="abreviatura"></s:select></td>
 					</tr>
 					

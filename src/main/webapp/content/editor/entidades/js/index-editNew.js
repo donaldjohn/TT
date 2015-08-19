@@ -14,7 +14,7 @@ $(document)
 					} else {
 						document.getElementById("trOtro").style.display = 'none';
 					}
-					ocultarColumnas("tablaAtributo");
+					
 					var json = $("#jsonAtributosTabla").val();
 					if (json !== "") {
 						var parsedJson = JSON.parse(json);
@@ -23,7 +23,7 @@ $(document)
 										parsedJson,
 										function(i, item) {
 											var obligatorio;
-											var tipoDato;
+											var tipoDato = item.tipoDato.nombre;
 											if (item.obligatorio == true) {
 												obligatorio = 'Sí';
 											} else {
@@ -32,6 +32,12 @@ $(document)
 											
 											if (item.tipoDato.nombre == 'Otro') {
 												tipoDato = item.otroTipoDato;
+											}
+											
+											if(item.unidadTamanio != null) {
+												abreviatura = item.unidadTamanio.abreviatura;
+											} else {
+												abreviatura = null;
 											}
 											var atributo = [
 													item.nombre,
@@ -43,9 +49,9 @@ $(document)
 													item.longitud,
 													item.formatoArchivo,
 													item.tamanioArchivo,
-													item.unidadTamanio.abreviatura,
+													abreviatura,
 													"<center>"
-															+ "<a button='true'>"
+															+ "<a button='true' onclick='solicitarModificacionAtributo(this);'>"
 															+ "<img class='icon'  id='icon' src='"
 															+ window.contextPath
 															+ "/resources/images/icons/editar.png' title='Modificar Atributo'/></a>"
@@ -58,6 +64,7 @@ $(document)
 													"tablaAtributo", atributo);
 										});
 					}
+					ocultarColumnas("tablaAtributo");
 				});
 
 function registrarAtributo() {
@@ -99,7 +106,7 @@ function registrarAtributo() {
 				tamanioArchivo,
 				unidadTamanio.options[unidadTamanio.selectedIndex].text,
 				"<center>"
-						+ "<a button='true'>"
+						+ "<a button='true' onclick='solicitarModificacionAtributo(this);'>"
 						+ "<img class='icon'  id='icon' src='"
 						+ window.contextPath
 						+ "/resources/images/icons/editar.png' title='Modificar Atributo'/></a>"
@@ -335,4 +342,46 @@ function tablaToJson(idTable) {
 	}
 	var jsonAtributos = JSON.stringify(arregloAtributos);
 	document.getElementById("jsonAtributosTabla").value = jsonAtributos;
+}
+
+function solicitarModificacionAtributo(registro) {
+	
+	/*
+	 * item.nombre,0
+													tipoDato,1
+													obligatorio,2
+													item.tipoDato.nombre,3	
+													item.otroTipoDato,4
+													item.descripcion,5
+													item.longitud,6
+													item.formatoArchivo,7
+													item.tamanioArchivo,8
+													abreviatura,9
+	 */
+	var row = $("#tablaAtributo").DataTable().row($(registro).parents('tr'));
+	
+	document.getElementById("filaAtributo").value = row.index();
+	
+	var cells = row.data();
+	console.log("cells: " + cells);
+	
+	document.getElementById("atributo.tipoDato").value = cells[3];
+	disablefromTipoDato();
+	
+	document.getElementById("atributo.nombre").value = cells[0];
+	document.getElementById("atributo.descripcion").value = cells[5];
+	document.getElementById("atributo.otroTipoDato").value = cells[4];
+	document.getElementById("atributo.longitud").value = cells[6];
+	document.getElementById("atributo.formatoArchivo").value = cells[7];
+	document.getElementById("atributo.tamanioArchivo").value = cells[8];
+	document.getElementById("atributo.unidadTamanio").value = cells[9];
+
+	if(cells[2] == "No") {
+		document.getElementById("atributo.obligatorio").checked = false;
+	} else {
+		document.getElementById("atributo.obligatorio").checked = true;
+	}
+	
+	
+	$('#atributoDialog').dialog('open');
 }

@@ -12,13 +12,13 @@
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/validaciones.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.caret.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.atwho.js"></script>
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/entidades/js/index-editNew.js"></script>	
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/entidades/js/index-edit.js"></script>	
 ]]>
 
 </head>
 <body>
 
-	<h1>Registrar Entidad</h1>
+	<h1>Modificar Entidad</h1>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
@@ -26,8 +26,9 @@
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 	<s:form autocomplete="off" id="frmEntidad" theme="simple"
-		action="%{#pageContext.request.contextPath}/entidades" method="post"
+		action="%{#pageContext.request.contextPath}/entidades/%{idSel}" method="post"
 		onsubmit="return preparaEnvio();">
+		<s:hidden name="_method" value="put" />
 		<div class="formulario">
 			<div class="tituloFormulario">Información general de la Entidad</div>
 			<table class="seccion">
@@ -68,6 +69,7 @@
 							<th style="width: 0%;"><s:text name="colFormatoArchivo" /></th>
 							<th style="width: 0%;"><s:text name="colTamanioArchivo" /></th>
 							<th style="width: 0%;"><s:text name="colUnidadTamanio" /></th>	
+							<th style="width: 0%;"><!-- id --></th>
 							
 							<th style="width: 20%;"><s:text name="colAcciones" /></th>
 							
@@ -76,7 +78,7 @@
 
 				</table>
 				<div align="center">
-					<sj:a openDialog="atributoDialog" button="true">Registrar</sj:a>
+					<sj:a onclick="solicitarRegistroAtributo();" button="true">Registrar</sj:a>
 				</div>
 			</div>
 		</div>
@@ -95,6 +97,7 @@
 		
 		<s:hidden id="jsonAtributosTabla" name="jsonAtributosTabla"
 			value="%{jsonAtributosTabla}" />
+		<s:hidden name="comentario" id="comentario" value="%{comentario}" />
 	</s:form>
 
 
@@ -103,6 +106,7 @@
 		minHeight="300" minWidth="800" modal="true" draggable="true">
 		<s:form autocomplete="off" id="frmAtributo" name="frmAtributoName" theme="simple">
 			<div class="formulario">
+			<s:hidden id="filaAtributo" />
 				<div class="tituloFormulario">Información del Atributo</div>
 				<table class="seccion">
 					<tr>
@@ -117,7 +121,7 @@
 					</tr>
 					<tr>
 						<td class="label obligatorio"><s:text name="labelTipoDato"/></td>
-						<td><s:select list="listTipoDato" cssClass="inputFormulario" name="atributo.tipoDato" id="atributo.tipoDato"
+						<td><s:select list="listTipoDato" cssClass="inputFormulario" name="atributo.tipoDato" id="atributo.tipoDato" listKey="nombre"
        						cssErrorClass="input-error" headerValue="Seleccione" headerKey="0" listValue="nombre" onchange="disablefromTipoDato();"></s:select></td>
 					</tr>
 					<tr id = 'trOtro' style="display: none;">
@@ -147,7 +151,7 @@
 						<td class="label obligatorio"><s:text name="labelTamanioArchivo" /></td>
 						<td><s:textfield name="atributo.tamanioArchivo" id="atributo.tamanioArchivo"
 								cssErrorClass="input-error" ></s:textfield>${blanks}
-						<s:select list="listUnidadTamanio"  name="atributo.unidadTamanio" id="atributo.unidadTamanio"
+						<s:select list="listUnidadTamanio"  name="atributo.unidadTamanio" id="atributo.unidadTamanio" listKey="abreviatura"
        						cssErrorClass="input-error" headerValue="Seleccione" headerKey="0" listValue="abreviatura"></s:select></td>
 					</tr>
 					
