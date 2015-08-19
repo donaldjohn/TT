@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.EntidadBs;
 import mx.prisma.editor.dao.TipoDatoDAO;
 import mx.prisma.editor.dao.UnidadTamanioDAO;
@@ -200,6 +201,24 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 		} catch(Exception e) {
 			ErrorManager.agregaMensajeError(this, e);
 			return index();
+		}
+		return resultado;
+	}
+
+	public String destroy() throws Exception {
+		String resultado = null;
+		try {
+			EntidadBs.eliminarEntidad(model);
+			resultado = SUCCESS;
+			addActionMessage(getText("MSG1", new String[] { "La",
+					"Entidad", "eliminada" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
 		}
 		return resultado;
 	}

@@ -1,6 +1,38 @@
 $(document).ready(function() {
 	$('#gestion').DataTable();
+	contextPath = $("#rutaContexto").val();
+
 } );
+
+function confirmarEliminacion(urlEliminar) {
+	$('#confirmarEliminacionDialog').dialog('close');
+	window.location.href = urlEliminar;
+}
+
+function cancelarConfirmarEliminacion() {
+	$('#confirmarEliminacionDialog').dialog('close');
+}
+
+function verificarEliminacionElemento(idElemento) {
+	rutaVerificarReferencias = contextPath + '/glosario!verificarElementosReferencias';
+	$.ajax({
+		dataType : 'json',
+		url : rutaVerificarReferencias,
+		type: "POST",
+		data : {
+			idSel : idElemento
+		},
+		success : function(data) {
+			mostrarMensajeEliminacion(data, idElemento);
+		},
+		error : function(err) {
+			alert("AJAX error in request: " + JSON.stringify(err, null, 2));
+		}
+	});
+	
+	return false;
+	
+}
 
 function mostrarMensajeEliminacion(json, id) {
 	var elementos = document.createElement("ul");

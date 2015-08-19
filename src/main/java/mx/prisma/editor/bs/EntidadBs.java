@@ -9,12 +9,14 @@ import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
 import mx.prisma.bs.AnalisisEnum.CU_Entidades;
 import mx.prisma.bs.CatalogoBs;
 import mx.prisma.bs.AnalisisEnum.CU_Pantallas;
 import mx.prisma.bs.ReferenciaEnum.TipoCatalogo;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.AtributoDAO;
+import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.ExtensionDAO;
 import mx.prisma.editor.dao.PantallaDAO;
@@ -315,8 +317,26 @@ public class EntidadBs {
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			throw new Exception();
+		}	
+	}
+	
+
+	public static void eliminarEntidad(Entidad model) throws Exception {
+		try {
+			ElementoBs.verificarEstado(model, CU_CasosUso.ELIMINARCASOUSO5_3);
+			new EntidadDAO().eliminarElemento(model);
+		} catch (JDBCException je) {
+			if (je.getErrorCode() == 1451) {
+				throw new PRISMAException(
+						"No se puede eliminar la entidad", "MSG14");
+			}
+			System.out.println("ERROR CODE " + je.getErrorCode());
+			je.printStackTrace();
+			throw new Exception();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			throw new Exception();
 		}
 
-		
 	}
 }

@@ -12,6 +12,7 @@ import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.ReferenciaParametro;
 import mx.prisma.editor.model.ReglaNegocio;
+import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.editor.model.Trayectoria;
 
 import org.hibernate.HibernateException;
@@ -78,6 +79,8 @@ public class ReferenciaParametroDAO extends GenericDAO {
 
 			break;
 		case TERMINOGLS:
+			TerminoGlosario terminoGlosario = (TerminoGlosario) objeto;
+			queryCadena = "FROM ReferenciaParametro WHERE elementoDestino.id = "+terminoGlosario.getId();
 			break;
 		case TRAYECTORIA:
 			Trayectoria trayectoria = (Trayectoria) objeto;

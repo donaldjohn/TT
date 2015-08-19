@@ -45,6 +45,7 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 	private Integer idSel;
 	private List<String> elementosReferencias;
 	private String comentario;
+	
 	public String index() throws Exception {
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
@@ -130,8 +131,8 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 		try {
 			TerminoGlosarioBs.eliminarTermino(model);
 			resultado = index();
-			addActionMessage(getText("MSG1", new String[] { "La",
-					"Regla de negocio", "eliminada" }));
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"Término", "eliminado" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
@@ -215,7 +216,6 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 	public void setUserSession(Map<String, Object> userSession) {
 		this.userSession = userSession;
 	}
-
 
 	public void setSession(Map<String, Object> arg0) {
 		// TODO Auto-generated method stub
