@@ -58,7 +58,7 @@ public class Mensaje extends Elemento implements java.io.Serializable {
 		this.parametrizado = parametrizado;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mensaje")	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "mensaje")	
 	public Set<MensajeParametro> getParametros() {
 		return parametros;
 	}

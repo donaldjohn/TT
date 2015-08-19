@@ -186,7 +186,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		return resultado;
 	}
 	
-public String edit() {
+	public String edit() {
 		
 		String resultado = null;
 		try {

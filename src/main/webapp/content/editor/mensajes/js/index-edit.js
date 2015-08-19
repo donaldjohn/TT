@@ -62,7 +62,6 @@ function habilitarEdicionRedaccion() {
 }
 
 function mostrarCamposParametros() {
-	console.log("desde mostrarcampos");
 	var seccionParametros = document.getElementById("seccionParametros");
 	var parametrizado = document.getElementById("idParametrizado");
 	var form = document.getElementById("frmParametros");
@@ -77,12 +76,11 @@ function mostrarCamposParametros() {
 function prepararEnvio() {
 	try {
 		tablaToJson("parametros");
-		if (document.getElementById("cambioRedaccion").value == false) {
+		if (document.getElementById("cambioRedaccion").value == "false") {
 			$('#mensajeComentarios').dialog('open');
 			return false;
-		} else {
+		} else 
 			return true;
-		}
 		
 	} catch (err) {
 		alert("Ocurrió un error.");
@@ -132,6 +130,12 @@ function abrirEmergente() {
 	$('#mensajeConfirmacion').dialog('open');
 }
 
+/*
+ * Agrega un mensaje en la pantalla
+ */
+function agregarMensaje(mensaje) {
+	alert(mensaje);
+};
 
 function enviarComentarios(){
 	var redaccionDialogo = document.getElementById("comentarioDialogo").value;

@@ -10,7 +10,6 @@ import mx.prisma.bs.AnalisisEnum.CU_Glosario;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.EntradaDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
-import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.dao.SalidaDAO;
 import mx.prisma.editor.dao.TerminoGlosarioDAO;
 import mx.prisma.editor.model.Actualizacion;

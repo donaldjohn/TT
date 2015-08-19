@@ -97,7 +97,7 @@
 		<br />
 		<div align="center">
 			
-			<s:submit class="boton" value="Aceptar" />
+			<s:submit class="boton" value="Aceptar"/>
 			<input class="boton" type="button"
 				onclick="location.href='${pageContext.request.contextPath}/mensajes'"
 				value="Cancelar" />

@@ -33,11 +33,12 @@ public class AtributoBs {
 		Paso paso = null;
 
 		String casoUso = "";
+		String reglaN = "";
 
 		referenciasParametro = new ReferenciaParametroDAO().consultarReferenciasParametro(atributo);
 		referenciasEntrada = new EntradaDAO().consultarReferencias(atributo);
 		referenciasSalida = new SalidaDAO().consultarReferencias(atributo);
-		//referenciasReglaNegocio = new ReglaNegocioDAO().consultarReferencias(atributo);
+		referenciasReglaNegocio = new ReglaNegocioDAO().consultarReferencias(atributo);
 		
 		for (ReferenciaParametro referencia : referenciasParametro) {
 			String linea = "";
@@ -80,9 +81,8 @@ public class AtributoBs {
 					+ salida.getCasoUso().getNumero() + " "
 					+ salida.getCasoUso().getNombre();
 			linea = "Salidas del caso de uso " + casoUso;
-			if (linea != "") {
 				setReferenciasVista.add(linea);
-			}
+			
 		}
 		
 		for (Entrada entrada : referenciasEntrada) {
@@ -91,9 +91,18 @@ public class AtributoBs {
 					+ entrada.getCasoUso().getNumero() + " "
 					+ entrada.getCasoUso().getNombre();
 			linea = "Entradas del caso de uso " + casoUso;
-			if (linea != "") {
 				setReferenciasVista.add(linea);
-			}
+			
+		}
+		
+		for (ReglaNegocio reglaNegocio : referenciasReglaNegocio) {
+			String linea = "";
+			reglaN = reglaNegocio.getClave()
+					+ reglaNegocio.getNumero() + " "
+					+ reglaNegocio.getNombre();
+			linea = "Regla de negocio " + reglaN;
+				setReferenciasVista.add(linea);
+			
 		}
 		
 		listReferenciasVista.addAll(setReferenciasVista);

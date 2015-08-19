@@ -31,7 +31,6 @@ import org.hibernate.JDBCException;
 
 public class ActorBs {
 	private static final String CLAVE = "ACT";
-	private Actualizacion actualizacion;
 	public static void registrarActor(Actor model) throws Exception {
 		try {
 			model.setCardinalidad(new CardinalidadDAO().consultarCardinalidad(model.getCardinalidad().getId()));	

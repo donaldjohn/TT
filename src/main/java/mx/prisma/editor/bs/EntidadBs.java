@@ -5,50 +5,43 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.HibernateException;
-import org.hibernate.JDBCException;
-
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
 import mx.prisma.bs.AnalisisEnum.CU_Entidades;
 import mx.prisma.bs.CatalogoBs;
-import mx.prisma.bs.AnalisisEnum.CU_Pantallas;
 import mx.prisma.bs.ReferenciaEnum.TipoCatalogo;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.AtributoDAO;
-import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.EntidadDAO;
-import mx.prisma.editor.dao.ExtensionDAO;
-import mx.prisma.editor.dao.PantallaDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.dao.TipoDatoDAO;
 import mx.prisma.editor.dao.UnidadTamanioDAO;
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Atributo;
-import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Entidad;
-import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.ReferenciaParametro;
-import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TipoDato;
-import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.editor.model.UnidadTamanio;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
 
+import org.hibernate.HibernateException;
+import org.hibernate.JDBCException;
+
 public class EntidadBs {
 	private static final String CLAVE = "ENT";
- 
+
 	public static void registrarEntidad(Entidad model) throws Exception {
 		try {
 			validar(model);
 			model.setClave(CLAVE);
 			model.setNumero(new EntidadDAO().siguienteNumeroEntidad(model
 					.getProyecto().getId()));
-			model.setEstadoElemento(ElementoBs.consultarEstadoElemento(Estado.EDICION));
+			model.setEstadoElemento(ElementoBs
+					.consultarEstadoElemento(Estado.EDICION));
 			model.setNombre(model.getNombre().trim());
 			new EntidadDAO().registrarEntidad(model);
 		} catch (JDBCException je) {
@@ -169,7 +162,8 @@ public class EntidadBs {
 					}
 				} else if (!atributo.getTipoDato().getNombre()
 						.equals("Booleano")
-						&& !atributo.getTipoDato().getNombre().equals("Fecha") && !atributo.getTipoDato().getNombre().equals("Otro")) {
+						&& !atributo.getTipoDato().getNombre().equals("Fecha")
+						&& !atributo.getTipoDato().getNombre().equals("Otro")) {
 					if (Validador.esNulo(atributo.getLongitud())) {
 						throw new PRISMAValidacionException(
 								"El usuario no ingresó la longitud.", "MSG4",
@@ -178,8 +172,8 @@ public class EntidadBs {
 				} else if (atributo.getTipoDato().getNombre().equals("Otro")) {
 					if (Validador.esNuloOVacio(atributo.getOtroTipoDato())) {
 						throw new PRISMAValidacionException(
-								"El usuario no especificó el tipo de dato.", "MSG4",
-								null, "model.atributos");
+								"El usuario no especificó el tipo de dato.",
+								"MSG4", null, "model.atributos");
 					}
 				}
 			}
@@ -192,28 +186,29 @@ public class EntidadBs {
 		if (entidad == null) {
 			throw new PRISMAException("No se puede consultar la entidad.",
 					"MSG13");
-		} 
+		}
 		return entidad;
 	}
 
 	public static List<Entidad> consultarEntidadesProyectoConFecha(
 			Proyecto proyecto) {
-			List<Entidad> listEntidadesAux = new EntidadDAO()
-					.consultarEntidades(proyecto.getId());
-			List<Entidad> listEntidades = new ArrayList<Entidad>();
-			for(Entidad entidad : listEntidadesAux) {
-				if(contieneAtributoTipoFecha(entidad)) {
-					listEntidades.add(entidad);
-				}
+		List<Entidad> listEntidadesAux = new EntidadDAO()
+				.consultarEntidades(proyecto.getId());
+		List<Entidad> listEntidades = new ArrayList<Entidad>();
+		for (Entidad entidad : listEntidadesAux) {
+			if (contieneAtributoTipoFecha(entidad)) {
+				listEntidades.add(entidad);
 			}
-			return listEntidades;
+		}
+		return listEntidades;
 	}
 
 	private static boolean contieneAtributoTipoFecha(Entidad entidad) {
 		Set<Atributo> atributos = entidad.getAtributos();
-		for(Atributo atributo : atributos) {
-			if(atributo.getTipoDato().getNombre().equals("Fecha")) {
-				System.out.println("tipoDato " + atributo.getTipoDato().getNombre());
+		for (Atributo atributo : atributos) {
+			if (atributo.getTipoDato().getNombre().equals("Fecha")) {
+				System.out.println("tipoDato "
+						+ atributo.getTipoDato().getNombre());
 				return true;
 			}
 		}
@@ -221,10 +216,11 @@ public class EntidadBs {
 	}
 
 	public static List<Atributo> consultarAtributosTipoFecha(int idEntidad) {
-		Set<Atributo> atributos = new EntidadDAO().consultarEntidad(idEntidad).getAtributos();
+		Set<Atributo> atributos = new EntidadDAO().consultarEntidad(idEntidad)
+				.getAtributos();
 		List<Atributo> listAtributos = new ArrayList<Atributo>();
-		for(Atributo atributo : atributos) {
-			if(atributo.getTipoDato().getNombre().equals("Fecha")){
+		for (Atributo atributo : atributos) {
+			if (atributo.getTipoDato().getNombre().equals("Fecha")) {
 				listAtributos.add(atributo);
 			}
 		}
@@ -233,68 +229,68 @@ public class EntidadBs {
 
 	public static Atributo consultarAtributo(int idAtributo1) {
 		Atributo atributo = new AtributoDAO().consultarAtributo(idAtributo1);
-		if(atributo == null) {
+		if (atributo == null) {
 			System.out.println("No se puede consultar el atributo por el id");
 		}
 		return atributo;
-	}	
+	}
 
 	public static List<String> verificarReferencias(Entidad model) {
-		
+
 		List<ReferenciaParametro> referenciasParametro;
-		List<ReglaNegocio> referenciasReglaNegocio = null;
-		
+
 		List<String> listReferenciasVista = new ArrayList<String>();
 		Set<String> setReferenciasVista = new HashSet<String>(0);
 		PostPrecondicion postPrecondicion = null;
 		Paso paso = null;
-		
+
 		String casoUso = "";
-		Integer idSelf = null;
-		
-		referenciasParametro = new ReferenciaParametroDAO().consultarReferenciasParametro(model);
-		//referenciasReglaNegocio = new ReglaNegocioDAO().consultarReferencias(model);
-		
+
+		referenciasParametro = new ReferenciaParametroDAO()
+				.consultarReferenciasParametro(model);
+
 		for (ReferenciaParametro referencia : referenciasParametro) {
 			String linea = "";
 			postPrecondicion = referencia.getPostPrecondicion();
 			paso = referencia.getPaso();
-			
+
 			if (postPrecondicion != null) {
-				idSelf = postPrecondicion.getCasoUso().getId();
-				casoUso =  postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
+				casoUso = postPrecondicion.getCasoUso().getClave()
+						+ postPrecondicion.getCasoUso().getNumero() + " "
+						+ postPrecondicion.getCasoUso().getNombre();
 				if (postPrecondicion.isPrecondicion()) {
-					 linea = "Precondiciones del caso de uso " + casoUso;
+					linea = "Precondiciones del caso de uso " + casoUso;
 				} else {
-					 linea = "Postcondiciones del caso de uso " + postPrecondicion.getCasoUso().getClave()  + postPrecondicion.getCasoUso().getNumero() + " " + postPrecondicion.getCasoUso().getNombre();
+					linea = "Postcondiciones del caso de uso "
+							+ postPrecondicion.getCasoUso().getClave()
+							+ postPrecondicion.getCasoUso().getNumero() + " "
+							+ postPrecondicion.getCasoUso().getNombre();
 				}
-				 
+
 			} else if (paso != null) {
-				idSelf = paso.getTrayectoria().getCasoUso().getId();
-				casoUso =  paso.getTrayectoria().getCasoUso().getClave()  + paso.getTrayectoria().getCasoUso().getNumero() + " " + paso.getTrayectoria().getCasoUso().getNombre();
-				linea = "Paso " + paso.getNumero() + " de la trayectoria " + ((paso.getTrayectoria().isAlternativa()) ? "alternativa " + paso.getTrayectoria().getClave() : "principal") + " del caso de uso " + casoUso;
-			} 
-			if (linea != "" && idSelf != model.getId()) {
+				casoUso = paso.getTrayectoria().getCasoUso().getClave()
+						+ paso.getTrayectoria().getCasoUso().getNumero() + " "
+						+ paso.getTrayectoria().getCasoUso().getNombre();
+				linea = "Paso "
+						+ paso.getNumero()
+						+ " de la trayectoria "
+						+ ((paso.getTrayectoria().isAlternativa()) ? "alternativa "
+								+ paso.getTrayectoria().getClave()
+								: "principal") + " del caso de uso " + casoUso;
+			}
+			
+			if (linea != "") {
 				setReferenciasVista.add(linea);
 			}
 		}
-		
-		for (ReglaNegocio reglaNegocio : referenciasReglaNegocio) {
-			/*String linea = "";
-			idSelf = referenciaExtension.getCasoUsoOrigen().getId();
-			casoUso = referenciaExtension.getCasoUsoOrigen().getClave() + referenciaExtension.getCasoUsoOrigen().getNumero() + " " + referenciaExtension.getCasoUsoOrigen().getNombre();
-			linea = "Puntos de extensión del caso de uso " + casoUso;
-			if (linea != "" && idSelf != model.getId()) {
-				setReferenciasVista.add(linea);
-			}	*/	
-		}
-		
+
 		for (Atributo atributo : model.getAtributos()) {
-			setReferenciasVista.addAll(AtributoBs.verificarReferencias(atributo));
+			setReferenciasVista.addAll(AtributoBs
+					.verificarReferencias(atributo));
 		}
-			
+
 		listReferenciasVista.addAll(setReferenciasVista);
-		
+
 		return listReferenciasVista;
 	}
 
@@ -317,9 +313,8 @@ public class EntidadBs {
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			throw new Exception();
-		}	
+		}
 	}
-	
 
 	public static void eliminarEntidad(Entidad model) throws Exception {
 		try {
@@ -327,8 +322,8 @@ public class EntidadBs {
 			new EntidadDAO().eliminarElemento(model);
 		} catch (JDBCException je) {
 			if (je.getErrorCode() == 1451) {
-				throw new PRISMAException(
-						"No se puede eliminar la entidad", "MSG14");
+				throw new PRISMAException("No se puede eliminar la entidad",
+						"MSG14");
 			}
 			System.out.println("ERROR CODE " + je.getErrorCode());
 			je.printStackTrace();
