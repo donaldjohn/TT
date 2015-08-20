@@ -44,7 +44,7 @@ public void modificarMensaje(Mensaje mensaje, Actualizacion actualizacion) throw
 		query1.executeUpdate();
 		
 		for (MensajeParametro parametro : mensaje.getParametros()) {
-			session.saveOrUpdate(parametro);
+			session.saveOrUpdate(parametro.getParametro());
 		}
 		session.update(mensaje);
 		session.save(actualizacion);

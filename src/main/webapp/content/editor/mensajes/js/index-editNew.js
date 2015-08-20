@@ -130,6 +130,16 @@ function abrirEmergente() {
 }
 
 function verificarEsParametrizado() {
+	var redaccion = document.getElementById("inputor").value;
+	if(/PARAM·[a-zA-Z0-9]+(\s|\.\s|,\s|$)/m.test(redaccion)) {
+		verificarParametros();
+	} else {
+		console.log("no contiene parametros");
+	}
+	
+}
+
+function verificarParametros() {
 	rutaVerificarParametros = contextPath + '/mensajes!verificarParametros';
 	var redaccion = document.getElementById("inputor").value;
 	$.ajax({
