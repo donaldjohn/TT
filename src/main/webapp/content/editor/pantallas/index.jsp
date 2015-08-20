@@ -43,16 +43,19 @@
 							<td align="center">
 								<s:url var="urlConsultar"
 									value="%{#pageContext.request.contextPath}/pantallas/%{#pantalla.id}" />
+								${blanks}	
 								<s:a href="%{urlConsultar}">
 									<img id="" class="button" title="Consultar Pantalla"
 										src="${pageContext.request.contextPath}/resources/images/icons/ver.png" />
 								
 								</s:a> 
+								${blanks}
 								<s:url var="urlEditar" value="%{#pageContext.request.contextPath}/pantallas/%{#pantalla.id}/edit"/>			
 								<s:a href="%{urlEditar}">
 									<img id="" class="button" title="Modificar Pantalla"
 											src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
 								</s:a>
+								${blanks}
 								<s:a onclick="return verificarEliminacionElemento(%{#pantalla.id});">
 									<img id="" class="button" title="Eliminar Pantalla"
 										src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" />

@@ -1,12 +1,10 @@
 package mx.prisma.editor.dao;
 
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-
 import mx.prisma.dao.GenericDAO;
 import mx.prisma.editor.model.Actualizacion;
-import mx.prisma.util.HibernateUtil;
+
+import org.hibernate.HibernateException;
 
 public class ActualizacionDAO extends GenericDAO {
 

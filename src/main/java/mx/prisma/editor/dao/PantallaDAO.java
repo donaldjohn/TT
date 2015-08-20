@@ -94,11 +94,20 @@ public class PantallaDAO extends ElementoDAO {
 		}
 		return pantallas;
 	}
+	
+	/*
+	 * 
+	 * public void modificarPantalla (@model, @actualizacion)
+	 * NOTA: Se accede a los miembros de la pantalla porque en alguna parte superior del trazado
+	 * se asigna la pantalla de la sesión a otro objeto, el cual es el que llega aquí bajo
+	 * el nombre "model", lo que provoca una excepción nounique.
+	 * 
+	 */
 
 	public void modificarPantalla(Pantalla model, Actualizacion actualizacion) {
 		try {
-			session.beginTransaction();			
- 			session.saveOrUpdate(model);
+			session.beginTransaction();
+ 			session.update(model);
 			session.save(actualizacion);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {

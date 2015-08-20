@@ -72,12 +72,12 @@ public class PantallaBs {
 		// Validaciones del número
 		if (Validador.esNuloOVacio(model.getNumero())) {
 			throw new PRISMAValidacionException(
-					"El usuario no ingresó el número del cu.", "MSG4", null,
+					"El usuario no ingresó el número de la pantalla.", "MSG4", null,
 					"model.numero");
 		}
 		if (!Pattern.matches("[0-9]+(\\.[0-9]+)*", model.getNumero())) {
 			throw new PRISMAValidacionException(
-					"El usuario no ingresó el número del cu.", "MSG5",
+					"El usuario no ingresó el número de la pantalla.", "MSG5",
 					new String[] { "un", "número" }, "model.numero");
 		}
 		// Se asegura la unicidad del nombre y del numero
@@ -86,14 +86,14 @@ public class PantallaBs {
 			if (p.getId() != model.getId()) {
 				if (p.getNombre().equals(model.getNombre())) {
 					throw new PRISMAValidacionException(
-							"El nombre del caso de uso ya existe.", "MSG7",
-							new String[] { "El", "Caso de uso",
+							"El nombre de la pantalla ya existe.", "MSG7",
+							new String[] { "La", "Pantalla",
 									model.getNombre() }, "model.nombre");
 				}
 				if (p.getNumero().equals(model.getNumero())) {
 					throw new PRISMAValidacionException(
 							"El numero del caso de uso ya existe.", "MSG7",
-							new String[] { "El", "Caso de uso",
+							new String[] { "La", "Pantalla",
 									model.getNumero() }, "model.numero");
 				}
 			}

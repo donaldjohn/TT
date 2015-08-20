@@ -17,7 +17,7 @@ public class TrayectoriaDAO extends GenericDAO {
 	public void registrarTrayectoria(Trayectoria trayectoria) {
 		try {
 			session.beginTransaction();
-			session.saveOrUpdate(trayectoria);
+			session.save(trayectoria);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
@@ -29,7 +29,7 @@ public class TrayectoriaDAO extends GenericDAO {
 	public void modificarTrayectoria(Trayectoria trayectoria, Actualizacion actualizacion) {
 		try {
 			session.beginTransaction();			
- 			session.saveOrUpdate(trayectoria);
+ 			session.update(trayectoria);
 			session.save(actualizacion);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
@@ -41,7 +41,6 @@ public class TrayectoriaDAO extends GenericDAO {
 	
 	public Trayectoria consultarTrayectoria(int id) throws HibernateException {		
 		Trayectoria trayectoria = null;
-
 		try {
 			session.beginTransaction();
 			trayectoria = (Trayectoria)session.get(Trayectoria.class, id);

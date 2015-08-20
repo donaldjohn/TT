@@ -334,7 +334,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 		Set<Paso> pasosVista = new HashSet<Paso>(0);
 
 		Paso pasoBD = null;
-		System.out.println("jsonPasosTabla: " + jsonPasosTabla);
 		if (jsonPasosTabla != null && !jsonPasosTabla.equals("")) {
 			pasosVista = JsonUtil.mapJSONToSet(jsonPasosTabla, Paso.class);
 			for (Paso pasoVista : pasosVista) {
@@ -358,7 +357,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 
 				}
 			}
-			model.setPasos(pasosModelo);
+			model.getPasos().addAll(pasosModelo);
 		}
 	}
 

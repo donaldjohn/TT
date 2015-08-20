@@ -131,7 +131,7 @@ public class Trayectoria implements java.io.Serializable {
 		this.finCasoUso = finCasoUso;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "trayectoria", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "trayectoria", cascade = CascadeType.ALL, orphanRemoval = true)
 	public Set<Paso> getPasos() {
 		return pasos;
 	}

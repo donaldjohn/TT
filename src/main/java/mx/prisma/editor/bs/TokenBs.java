@@ -446,13 +446,13 @@ public class TokenBs {
 	
 	
 	/*
-	 * El método ArrayList<Object> convertirToken_Objeto(String P1, Proyecto P2) se encarga de generar objetos con base en los tokens 
+	 * El método ArrayList<Object> convertirToken_Objeto(String redaccion, Proyecto proyecto) se encarga de generar objetos con base en los tokens 
 	 * contenidos en una cadena.
 	 * 
 	 * Parámetros:
-	 * 	@P1: Cadena cuyo contenido incluye los tokens en su versión visual, por ejemplo: ATR.Escuela:Nombre. Se utilizará para 
+	 * 	@redaccion: Cadena cuyo contenido incluye los tokens en su versión visual, por ejemplo: ATR.Escuela:Nombre. Se utilizará para 
 	 * 		procesar los tokens y convertirlos a objetos.
-	 * 	@P2: Proyecto en cuestión. Se utilizará para únicamente entregar como respuesta una lista de objetos, presentes para el proyecto actual.
+	 * 	@proyecto: Proyecto en cuestión. Se utilizará para únicamente entregar como respuesta una lista de objetos, presentes para el proyecto actual.
 	 * 
 	 * 
 	 * Ejemplo: 

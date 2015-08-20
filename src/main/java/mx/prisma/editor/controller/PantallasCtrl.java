@@ -176,7 +176,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 						
 						i++;
 					}
-					model.setAcciones(accionesModelo);
+					model.getAcciones().addAll(accionesModelo);
 				}
 			}
 		} catch (Exception e) {
@@ -223,6 +223,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 		return resultado;
 	}
 	
+	
 	private void agregarImagen() throws IOException {
 		byte[] bImagen = Convertidor.convertFileToByteArray(this.imagenPantalla);
 		byte[] bImagenB64 = Convertidor.encodeByteArrayB64(bImagen);
@@ -238,10 +239,10 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 			modulo = SessionManager.consultarModuloActivo();
 			model.setModulo(modulo);
 			ElementoBs.verificarEstado(model, CU_Pantallas.MODIFICARPANTALLA6_2);
-
+			
 			buscaCatalogos();
 			prepararVista();
-
+			
 			resultado = EDIT;
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
@@ -255,6 +256,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 		
 	}
 	
+
 	public String update() throws Exception {
 		String resultado = null;
 		try {
@@ -333,6 +335,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	}
 
 	
+
 	private void prepararVista() {
 		pantallaB64 = Convertidor.convertBytesToStringPNGB64(model.getImagen());
 		List<Accion> listAcciones = new ArrayList<Accion>();

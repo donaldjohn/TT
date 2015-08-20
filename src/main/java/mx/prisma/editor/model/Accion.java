@@ -56,7 +56,7 @@ public class Accion implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "PantallaElementoid", referencedColumnName = "Elementoid")
 	public Pantalla getPantalla() {
 		return pantalla;
@@ -75,7 +75,7 @@ public class Accion implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "TipoAccionid", referencedColumnName = "id")
 	public TipoAccion getTipoAccion() {
 		return tipoAccion;
@@ -85,7 +85,7 @@ public class Accion implements java.io.Serializable {
 		this.tipoAccion = tipoAccion;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "PantallaElementoidDestino", referencedColumnName = "Elementoid")
 	public Pantalla getPantallaDestino() {
 		return pantallaDestino;
