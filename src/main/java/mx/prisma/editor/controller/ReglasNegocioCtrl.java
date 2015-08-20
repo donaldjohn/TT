@@ -193,7 +193,6 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		
 		String resultado = null;
 		try {
-			//model = ReglaNegocioBs.consultaReglaNegocio(idSel);
 			ElementoBs.verificarEstado(model, CU_ReglasNegocio.MODIFICARREGLANEGOCIO8_2);
 			proyecto = SessionManager.consultarProyectoActivo();
 			
@@ -237,8 +236,6 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 			this.listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
 			this.listAtributos = new ArrayList<Atributo>(model.getAtributoUnicidad().getEntidad().getAtributos());
 			break;
-		case VERFCATALOGOS:
-			break;
 		default:
 			break;
 		
@@ -250,6 +247,8 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	private void buscarEntidades() {
 		this.listAtributos = new ArrayList<Atributo>();		
 		this.listEntidades = new ArrayList<Entidad>();
+		this.listAtributos2 = new ArrayList<Atributo>();		
+		this.listEntidades2 = new ArrayList<Entidad>();
 	}
 
 	

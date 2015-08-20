@@ -65,8 +65,8 @@
 							cssClass="inputFormulario ui-widget" name="idTipoRN"
 							id="idTipoRN" listKey="id" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
-							onchange="mostrarCamposTipoRN();" value="idTipoRN"></s:select> <s:param
-							value="" /> <s:fielderror fieldName="idTipoRN" cssClass="error"
+							onchange="mostrarCamposTipoRN();" value="idTipoRN"></s:select>
+							<s:fielderror fieldName="idTipoRN" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
 				<tr id="filaTextoAyudaTipoRN" class="oculto">
@@ -121,8 +121,7 @@
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
 							listKey="id"
 							onchange="cargarAtributos(this, 'atributoUnicidad');"
-							value="defaultIdEntidadUnicidad"></s:select> <s:param
-							value="defaultIdEntidadUnicidad" /> <s:fielderror
+							value="model.atributoUnicidad.entidad.id"></s:select> <s:fielderror
 							fieldName="idEntidadUnicidad" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr id="filaAtributoUnicidad" class="oculto">
@@ -131,7 +130,7 @@
 							cssClass="inputFormulario ui-widget" name="idAtributoUnicidad"
 							id="atributoUnicidad" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
-							listKey="id" value="defaultIdAtributoUnicidad"></s:select> <s:fielderror
+							listKey="id" value="model.atributoUnicidad.id"></s:select> <s:fielderror
 							fieldName="idAtributoUnicidad" cssClass="error" theme="jquery" /></td>
 				</tr>
 
