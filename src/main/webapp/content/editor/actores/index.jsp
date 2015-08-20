@@ -30,7 +30,7 @@
 			<s:iterator value="listActores" var="actor">
 				<tr>
 					<td><s:property value="%{#actor.nombre}"/></td>
-					<td><s:if test="%{#actor.otraCardinalidad != null}"><s:property value="%{#actor.otraCardinalidad}"/></s:if>
+					<td><s:if test="%{#actor.cardinalidad.nombre == 'Otra'}"><s:property value="%{#actor.otraCardinalidad}"/></s:if>
 					<s:else><s:property value="%{#actor.cardinalidad.nombre}"/></s:else>
 					</td>
 					
