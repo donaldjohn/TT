@@ -34,6 +34,9 @@ import com.opensymphony.xwork2.ModelDriven;
 @Results({
 		@Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 				"actionName", "mensajes" }),
+		@Result(name = "parametros", type = "json", params = {
+				"root",
+				"listParametros" }),
 		@Result(name = "referencias", type = "json", params = { "root",
 				"elementosReferencias" }) })
 public class MensajesCtrl extends ActionSupportPRISMA implements
@@ -54,6 +57,8 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 	private boolean existenParametros;
 	private String comentario;
 	private List<String> elementosReferencias;
+	private String redaccionMensaje;
+	private List<Parametro> listParametros;
 
 	public String index() {
 		try {
@@ -104,21 +109,6 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
 
-			if (MensajeBs.esParametrizado(model.getRedaccion())) {
-				List<Parametro> listParametros = JsonUtil.mapJSONToArrayList(
-						jsonParametros, Parametro.class);
-				if (listParametros.isEmpty()
-						|| this.cambioRedaccion.equals("true")) {
-					cambioRedaccion = "true";
-					listParametros = MensajeBs.obtenerParametros(
-							model.getRedaccion(), proyecto.getId());
-
-					this.jsonParametros = JsonUtil
-							.mapListToJSON(listParametros);
-					return editNew();
-				}
-
-			}
 			model.setProyecto(proyecto);
 			model.setEstadoElemento(ElementoBs
 					.consultarEstadoElemento((Estado.EDICION)));
@@ -173,20 +163,7 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 		String resultado = null;
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
-			if (MensajeBs.esParametrizado(model.getRedaccion())) {
-				List<Parametro> listParametros = JsonUtil.mapJSONToArrayList(
-						jsonParametros, Parametro.class);
-				if (listParametros.isEmpty()
-						|| this.cambioRedaccion.equals("true")) {
-					cambioRedaccion = "true";
-					listParametros = MensajeBs.obtenerParametros(
-							model.getRedaccion(), proyecto.getId());
-					this.jsonParametros = JsonUtil
-							.mapListToJSON(listParametros);
-					return edit();
-				}
-
-			}
+			
 			model.setProyecto(proyecto);
 			model.setEstadoElemento(ElementoBs
 					.consultarEstadoElemento((Estado.EDICION)));
@@ -304,6 +281,7 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 
 	private void agregarParametros() throws Exception {
 		model.setParametrizado(true);
+		System.out.println("jsonParametros: " + jsonParametros);
 		if (jsonParametros != null && !jsonParametros.equals("")) {
 			Set<Parametro> parametros = JsonUtil.mapJSONToSet(jsonParametros,
 					Parametro.class);
@@ -319,10 +297,27 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 							new MensajeParametro(model, parametroAux));
 				} else {
 					p.setProyecto(proyecto);
-					model.getParametros().add(new MensajeParametro(model, p));
+					MensajeParametro nuevoParametro = new MensajeParametro(model, p);
+					nuevoParametro.setId(null);
+					model.getParametros().add(nuevoParametro);
 				}
 			}
 		}
+		System.out.println("Model params size: " + model.getParametros().size());
+	}
+	
+	public String verificarParametros() {
+		listParametros = new ArrayList<Parametro>();
+		try {
+			proyecto = SessionManager.consultarProyectoActivo(); 
+			if (MensajeBs.esParametrizado(redaccionMensaje)) {
+				listParametros = MensajeBs.obtenerParametros(
+						redaccionMensaje, proyecto.getId());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "parametros";
 	}
 
 	public void setSession(Map<String, Object> session) {
@@ -412,5 +407,23 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 	public void setElementosReferencias(List<String> elementosReferencias) {
 		this.elementosReferencias = elementosReferencias;
 	}
+	
+	public List<Parametro> getListParametros() {
+		return listParametros;
+	}
+
+	public void setListParametros(List<Parametro> listParametros) {
+		this.listParametros = listParametros;
+	}
+
+	public String getRedaccionMensaje() {
+		return redaccionMensaje;
+	}
+
+	public void setRedaccionMensaje(String redaccionMensaje) {
+		this.redaccionMensaje = redaccionMensaje;
+	}
+	
+	
 
 }

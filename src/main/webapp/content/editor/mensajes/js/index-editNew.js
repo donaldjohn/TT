@@ -29,9 +29,9 @@ $(document)
 										});
 						// Se hace visible la sección de parámetros
 						document.getElementById("seccionParametros").style.display = '';
-						document.getElementById("inputor").readOnly = true;
+						/*document.getElementById("inputor").readOnly = true;
 						document.getElementById("inputor").id = "inputorreadOnly";
-						document.getElementById("botonEditar").style.display = '';
+						document.getElementById("botonEditar").style.display = '';*/
 					} else {
 						document.getElementById("seccionParametros").style.display = 'none';
 					}
@@ -44,7 +44,7 @@ $(document)
 					// Fin de la creación de la tabla de parámetros
 				});
 
-$(window).load(function(){
+/*$(window).load(function(){
 	var cambioRedaccion = document.getElementById("cambioRedaccion").value;
 	console.log(cambioRedaccion);
 	if(cambioRedaccion == "true") {
@@ -52,7 +52,7 @@ $(window).load(function(){
 		console.log(cambioRedaccion);
 		alert("Escriba la descripción de cada parámetro.");
 	}
-})
+})*/
 
 function habilitarEdicionRedaccion() {
 	document.getElementById("inputorreadOnly").readOnly = false;
@@ -63,7 +63,7 @@ function habilitarEdicionRedaccion() {
 	token.cargarListasToken();
 }
 
-function mostrarCamposParametros() {
+/*function mostrarCamposParametros() {
 	console.log("desde mostrarcampos");
 	var seccionParametros = document.getElementById("seccionParametros");
 	var parametrizado = document.getElementById("idParametrizado");
@@ -74,7 +74,7 @@ function mostrarCamposParametros() {
 	// PENDIENTE verificar si contiene "PARAM." para no enviar la peticion
 	// siempre
 	form.submit();
-}
+}*/
 
 function prepararEnvio() {
 	try {
@@ -88,7 +88,7 @@ function prepararEnvio() {
 function tablaToJson(idTable) {
 	var tabla = document.getElementById("parametros");
 	var arregloParametros = [];
-	var tam = tabla.rows.length - 1;
+	var tam = tabla.rows.length;
 	for (var i = 0; i < tam; i++) {
 		var nombre = tabla.rows[i].cells[0].innerHTML;
 		var descripcion = document.getElementById("idDescripcionParametro" + i).value;
@@ -127,4 +127,53 @@ function cerrarEmergente() {
 
 function abrirEmergente() {
 	$('#mensajeConfirmacion').dialog('open');
+}
+
+function verificarEsParametrizado() {
+	rutaVerificarParametros = contextPath + '/mensajes!verificarParametros';
+	var redaccion = document.getElementById("inputor").value;
+	$.ajax({
+		dataType : 'json',
+		url : rutaVerificarParametros,
+		type: "POST",
+		data : {
+			redaccionMensaje : redaccion
+		},
+		success : function(data) {
+			mostrarCamposParametros(data);
+			
+		},
+		error : function(err) {
+			alert("AJAX error in request: " + JSON.stringify(err, null, 2));
+		}
+	});
+}
+
+function mostrarCamposParametros(json) {
+	
+	document.getElementById("parametros").innerHTML = "";
+		if(json != null && json.length > 0) {
+			
+			$
+					.each(
+							json,
+							function(i, item) {
+								var parametro = [
+										item.nombre,
+										"<textarea rows='2' class='inputFormulario ui-widget' id='idDescripcionParametro"
+												+ i
+												+ "'"
+												+ "maxlength='500'>"
+												+ item.descripcion
+												+ "</textarea> " ];
+								agregarFila(parametro);
+							});
+			
+			document.getElementById("seccionParametros").style.display = '';
+			/*document.getElementById("inputor").readOnly = true;
+			document.getElementById("inputor").id = "inputorreadOnly";
+			document.getElementById("botonEditar").style.display = '';*/
+		} else {
+			document.getElementById("seccionParametros").style.display = 'none';
+		}
 }

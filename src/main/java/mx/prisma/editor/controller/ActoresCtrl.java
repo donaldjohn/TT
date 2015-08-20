@@ -185,6 +185,8 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 					comentario, model,
 					SessionManager.consultarColaboradorActivo());
 			System.out.println("comentario: " + comentario);
+			System.out.println("otraC: " + model.getOtraCardinalidad());
+			System.out.println("cardinalidad: " + model.getCardinalidad().getId() + ", " + model.getCardinalidad().getNombre());
 			ActorBs.modificarActor(model, actualizacion);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",

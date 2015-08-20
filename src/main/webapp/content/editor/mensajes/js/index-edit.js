@@ -29,9 +29,9 @@ $(document)
 										});
 						// Se hace visible la sección de parámetros
 						document.getElementById("seccionParametros").style.display = '';
-						document.getElementById("inputor").readOnly = true;
+						/*document.getElementById("inputor").readOnly = true;
 						document.getElementById("inputor").id = "inputorreadOnly";
-						document.getElementById("botonEditar").style.display = '';
+						document.getElementById("botonEditar").style.display = '';*/
 					} else {
 						document.getElementById("seccionParametros").style.display = 'none';
 					}
@@ -44,13 +44,13 @@ $(document)
 					// Fin de la creación de la tabla de parámetros
 				});
 
-$(window).load(function(){
+/*$(window).load(function(){
 	var cambioRedaccion = document.getElementById("cambioRedaccion").value;
 	if(cambioRedaccion == "true") {
 		document.getElementById("cambioRedaccion").value = "false";
 		alert("Escriba la descripción de cada parámetro.");
 	}
-})
+})*/
 
 function habilitarEdicionRedaccion() {
 	document.getElementById("inputorreadOnly").readOnly = false;
@@ -61,7 +61,10 @@ function habilitarEdicionRedaccion() {
 	token.cargarListasToken();
 }
 
-function mostrarCamposParametros() {
+function mostrarCamposParametrosX() {
+	
+	
+	
 	var seccionParametros = document.getElementById("seccionParametros");
 	var parametrizado = document.getElementById("idParametrizado");
 	var form = document.getElementById("frmParametros");
@@ -76,20 +79,36 @@ function mostrarCamposParametros() {
 function prepararEnvio() {
 	try {
 		tablaToJson("parametros");
-		if (document.getElementById("cambioRedaccion").value == "false") {
-			$('#mensajeComentarios').dialog('open');
-			return false;
-		} else 
-			return true;
-		
+		$('#mensajeComentarios').dialog('open');
 	} catch (err) {
-		alert("Ocurrió un error.");
+		alert("Ocurrió un error: " + err);
 	}
+}
+
+function verificarEsParametrizado() {
+	rutaVerificarParametros = contextPath + '/mensajes!verificarParametros';
+	var redaccion = document.getElementById("inputor").value;
+	$.ajax({
+		dataType : 'json',
+		url : rutaVerificarParametros,
+		type: "POST",
+		data : {
+			redaccionMensaje : redaccion
+		},
+		success : function(data) {
+			mostrarCamposParametros(data);
+			
+		},
+		error : function(err) {
+			alert("AJAX error in request: " + JSON.stringify(err, null, 2));
+		}
+	});
 }
 function tablaToJson(idTable) {
 	var tabla = document.getElementById("parametros");
 	var arregloParametros = [];
-	var tam = tabla.rows.length - 1;
+	var tam = tabla.rows.length;
+	console.log("tam: " + tam);
 	for (var i = 0; i < tam; i++) {
 		var nombre = tabla.rows[i].cells[0].innerHTML;
 		var descripcion = document.getElementById("idDescripcionParametro" + i).value;
@@ -151,3 +170,33 @@ function cancelarRegistroComentarios() {
 	document.getElementById("comentario").value = "";
 	$('#mensajeComentarios').dialog('close');
 }
+
+function mostrarCamposParametros(json) {
+	
+	document.getElementById("parametros").innerHTML = "";
+		if(json != null && json.length > 0) {
+			
+			$
+					.each(
+							json,
+							function(i, item) {
+								var parametro = [
+										item.nombre,
+										"<textarea rows='2' class='inputFormulario ui-widget' id='idDescripcionParametro"
+												+ i
+												+ "'"
+												+ "maxlength='500'>"
+												+ item.descripcion
+												+ "</textarea> " ];
+								agregarFila(parametro);
+							});
+			
+			document.getElementById("seccionParametros").style.display = '';
+			/*document.getElementById("inputor").readOnly = true;
+			document.getElementById("inputor").id = "inputorreadOnly";
+			document.getElementById("botonEditar").style.display = '';*/
+		} else {
+			document.getElementById("seccionParametros").style.display = 'none';
+		}
+}
+
