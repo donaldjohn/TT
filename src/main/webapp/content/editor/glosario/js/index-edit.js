@@ -17,3 +17,7 @@ function cancelarRegistroComentarios() {
 	document.getElementById("comentario").value = "";
 	$('#mensajeConfirmacion').dialog('close');
 }
+
+function agregarMensaje(mensaje) {
+	alert(mensaje);
+};

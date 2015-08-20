@@ -220,11 +220,6 @@ function esValidaAccion(idTabla, nombre, descripcion, imagen, tipoAccion, pantal
 	 * Finaliza la validación del nombre y descripción
 	 */
 
-	if (dataTableCDT.exist(idTabla, nombre, 0, "", "Accion")) {
-		agregarMensaje("Esta Acción ya está en la Pantalla.");
-		return false;
-	}
-	
 	var tamMaximo = 2000000;
 	if(imagen.files.length == 1) {
 		var img = imagen.files[0];

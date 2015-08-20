@@ -20,7 +20,7 @@
 		<div class="seccion">
 			<h4><s:property value="%{model.clave + ' ' + model.numero + ' ' + model.nombre}" /></h4>
 			<h5>
-				<s:text name="labelDescripcion"></s:text>
+				<s:text name="labelResumen"></s:text>
 			</h5>
 			<p class="instrucciones">
 				<s:text name="model.descripcion"></s:text>
@@ -30,6 +30,10 @@
 				<tr>
 					<td colspan="2" class="encabezadoTabla">Información general
 						del Caso de uso</td>
+				</tr>
+				<tr>
+					<td class="label consulta"><s:text name="labelEstado" /></td>
+					<td class="ui-widget inputFormulario">${model.estadoElemento.nombre}</td>
 				</tr>
 				<tr>
 					<td class="label consulta"><s:text name="labelActores" /></td>
@@ -133,6 +137,7 @@
 						<s:set var="breakLoop" value="%{true}" />
 					</s:if>
 				</s:iterator>
+				
 				<s:iterator value="model.trayectorias" var="tray">
 					<s:if test="#tray.alternativa">
 						<h6>
@@ -140,6 +145,12 @@
 							<s:text name="labelTrayectoriaAlternativa" />
 							<s:property value="' ' + #tray.clave" />
 						</h6>
+						<div>
+						<span class="ui-widget " >
+						<span class="labelIzq consulta"><s:text name="labelCondicion"/></span>
+						${blanks}<s:property value="#tray.condicion"/>
+						</span>
+						</div>
 						<ol>
 							<s:iterator value="#tray.pasos" var="paso">
 								<li class="ui-widget"><s:if test="#paso.realizaActor">
