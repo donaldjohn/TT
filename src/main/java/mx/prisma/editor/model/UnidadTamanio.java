@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "UnidadTamanio", catalog = "PRISMA")
+@Table(name = "UnidadTamanio", catalog ="PRISMA")
 public class UnidadTamanio implements java.io.Serializable {
 
 	/**
