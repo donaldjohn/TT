@@ -167,6 +167,22 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 		try {
 			model.getAtributos().clear();
 			agregarAtributos();
+			for (Atributo a : model.getAtributos()) {
+				System.out.println("-" + a.getNombre() + "-");
+				System.out.println("-" + a.getTipoDato().getNombre() + "-");
+				System.out.println("-" + a.getLongitud() + "-");
+				System.out.println("-" + a.getTamanioArchivo() + "-");
+				if (a.getUnidadTamanio() != null)
+				System.out.println("-" + a.getUnidadTamanio().getNombre() + "-");
+				else 
+					System.out.println("-null-" );
+				System.out.println("-" + a.getFormatoArchivo() + "-");
+				System.out.println("-" + a.getOtroTipoDato() + "-");
+
+
+
+
+			}
 			Actualizacion actualizacion = new Actualizacion(new Date(),
 					comentario, model,
 					SessionManager.consultarColaboradorActivo());
@@ -284,16 +300,20 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 								|| tipoDato.getNombre().equals("Flotante")) {
 							atributoBD.setLongitud(atributoVista.getLongitud());
 							atributoBD.setTamanioArchivo(null);
+							atributoBD.setUnidadTamanio(null);
 							atributoBD.setFormatoArchivo(null);
 							atributoBD.setOtroTipoDato(null);
+							
 						} else if (tipoDato.getNombre().equals("Otro")) {
 							atributoBD.setOtroTipoDato(atributoVista
 									.getOtroTipoDato());
 							atributoBD.setTamanioArchivo(null);
+							atributoBD.setUnidadTamanio(null);
 							atributoBD.setFormatoArchivo(null);
 							atributoBD.setLongitud(null);
 						} else if (tipoDato.getNombre().equals("Booleano") || tipoDato.getNombre().equals("Fecha")) {
 							atributoBD.setTamanioArchivo(null);
+							atributoBD.setUnidadTamanio(null);
 							atributoBD.setFormatoArchivo(null);
 							atributoBD.setLongitud(null);
 							atributoBD.setOtroTipoDato(null);
@@ -312,27 +332,30 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 									.getTamanioArchivo());
 							atributoVista.setFormatoArchivo(atributoVista
 									.getFormatoArchivo());
-							atributoBD.setLongitud(null);
-							atributoBD.setOtroTipoDato(null);
+							atributoVista.setLongitud(null);
+							atributoVista.setOtroTipoDato(null);
 						} else if (tipoDato.getNombre().equals("Cadena")
 								|| tipoDato.getNombre().equals("Entero")
 								|| tipoDato.getNombre().equals("Flotante")) {
 							atributoVista.setLongitud(atributoVista
 									.getLongitud());
-							atributoBD.setTamanioArchivo(null);
-							atributoBD.setFormatoArchivo(null);
-							atributoBD.setOtroTipoDato(null);
+							atributoVista.setTamanioArchivo(null);
+							atributoVista.setUnidadTamanio(null);
+							atributoVista.setFormatoArchivo(null);
+							atributoVista.setOtroTipoDato(null);
 						} else if (tipoDato.getNombre().equals("Otro")) {
 							atributoVista.setOtroTipoDato(atributoVista
 									.getOtroTipoDato());
-							atributoBD.setTamanioArchivo(null);
-							atributoBD.setFormatoArchivo(null);
-							atributoBD.setLongitud(null);
-						} else if (tipoDato.getNombre().equals("Boooleano") || tipoDato.getNombre().equals("Fecha")) {
-							atributoBD.setTamanioArchivo(null);
-							atributoBD.setFormatoArchivo(null);
-							atributoBD.setLongitud(null);
-							atributoBD.setOtroTipoDato(null);
+							atributoVista.setTamanioArchivo(null);
+							atributoVista.setUnidadTamanio(null);
+							atributoVista.setFormatoArchivo(null);
+							atributoVista.setLongitud(null);
+						} else if (tipoDato.getNombre().equals("Booleano") || tipoDato.getNombre().equals("Fecha")) {
+							atributoVista.setTamanioArchivo(null);
+							atributoVista.setUnidadTamanio(null);
+							atributoVista.setFormatoArchivo(null);
+							atributoVista.setLongitud(null);
+							atributoVista.setOtroTipoDato(null);
 						}
 
 						atributoVista.setEntidad(model);
