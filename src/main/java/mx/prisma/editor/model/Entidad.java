@@ -39,7 +39,7 @@ public class Entidad extends Elemento implements java.io.Serializable {
 
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "entidad", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "entidad", cascade = CascadeType.ALL,  orphanRemoval = true)
 	public Set<Atributo> getAtributos() {
 		return atributos;
 	}

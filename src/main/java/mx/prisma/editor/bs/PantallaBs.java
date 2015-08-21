@@ -92,7 +92,7 @@ public class PantallaBs {
 				}
 				if (p.getNumero().equals(model.getNumero())) {
 					throw new PRISMAValidacionException(
-							"El numero del caso de uso ya existe.", "MSG7",
+							"El numero de la pantalla ya existe.", "MSG7",
 							new String[] { "La", "Pantalla",
 									model.getNumero() }, "model.numero");
 				}

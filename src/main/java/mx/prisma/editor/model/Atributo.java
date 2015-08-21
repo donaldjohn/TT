@@ -4,17 +4,15 @@ package mx.prisma.editor.model;
  * Sergio Ramírez Camacho 07/06/2015
  */
 
-import javax.persistence.CascadeType;
+import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import static javax.persistence.GenerationType.IDENTITY;
-
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -80,7 +78,7 @@ public class Atributo implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "EntidadElementoid", referencedColumnName = "Elementoid")
 	public Entidad getEntidad() {
 		return entidad;
