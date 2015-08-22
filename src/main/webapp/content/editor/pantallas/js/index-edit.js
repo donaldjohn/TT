@@ -18,7 +18,6 @@ $(document).ready(function() {
 						parsedJson,
 						function(i, item) {
 							var img = "Sin imagen";
-							console.log("parsedJsonImg[i]: " + parsedJsonImg[i]);
 					    	if(parsedJsonImg[i] != null && parsedJsonImg[i] != "") {
 					    		img = "<center><img src = '" + parsedJsonImg[i] + "'/></center>";
 					    	}
@@ -44,6 +43,7 @@ $(document).ready(function() {
 	}
 });
 
+
 function ocultarColumnas(tabla) {
 	var dataTable = $("#" + tabla).dataTable();
 	dataTable.api().column(2).visible(false);
@@ -67,47 +67,19 @@ function mostrarPrevisualizacion(inputFile, nombre) {
     }
 }
 
-function mostrarPrevisualizacionTabla(inputFile, nombre) {
-	var idImg = nombre.replace(/\s/g, "_");
-	if (inputFile.files && inputFile.files[0]) {
-        var reader = new FileReader();
-        reader.readAsDataURL(inputFile.files[0])
-        reader.onload = function (e) {
-        	console.log("reader.result: " + reader.result);
-        	if(reader.result != "") {
-        		img = "<center><img src = '" + reader.result + "'/></center>";
-        		dataTableCDT.insertarValorCelda("tablaAccion", "max", 0, img);
-        	}     	
-        }
-    }
-}
-
-function obtenerImagenTextoPantalla(inputFile) {
-	if (inputFile.files && inputFile.files[0]) {
-        var reader = new FileReader();
-        reader.readAsDataURL(inputFile.files[0]);
-        reader.onload = function (e) {
-            document.getElementById("pantallaB64").value = reader.result;
-        }
-    } else {
-    	return "";
-    }
-}
-
-function obtenerImagenTextoAccion(inputFile) {
-	if (inputFile.files && inputFile.files[0]) {
-        var reader = new FileReader();
-        reader.readAsDataURL(inputFile.files[0]);
-        reader.onload = function (e) {
-            dataTableCDT.insertarValorCelda("tablaAccion", "max", 2, reader.result);
-        }
-    } else {
-    	return "";
-    }
+function verificarRegistroModificacion() {
+	var indexFilaAccion = document.getElementById("filaAccion").value;
+	if(indexFilaAccion == -1) {
+		console.log("registro");
+		registrarAccion();
+	} else {
+		console.log("modificacion");
+		modificarAccion();
+	}
 }
 
 function registrarAccion() {
-
+	
 	var nombre = document.getElementById("accion.nombre").value;
 	var descripcion = document.getElementById("accion.descripcion").value;
 	var imagen = document.getElementById("accion.imagen");
@@ -117,8 +89,79 @@ function registrarAccion() {
 	var idPantallaDestino = selectPantallaDestino.options[selectPantallaDestino.selectedIndex].value;
 	
 
-	if (esValidaAccion("tablaAccion", nombre, descripcion, imagen, selectTipoAccion, selectPantallaDestino)) { 
-		var row = [
+	if (esValidaAccion("tablaAccion", nombre, descripcion, imagen, selectTipoAccion, selectPantallaDestino)) {
+		var row = construirFila(nombre, descripcion, imagen, tipoAccion, idPantallaDestino);
+		dataTableCDT.addRow("tablaAccion", row);
+		actualizarImagenAccion(imagen);
+		limpiarCamposEmergente();
+		$('#accionDialog').dialog('close');
+	} else {
+		return false;
+	}
+}
+
+function modificarAccion() {
+	
+	var nombre = document.getElementById("accion.nombre").value;
+	var descripcion = document.getElementById("accion.descripcion").value;
+	var imagen = document.getElementById("accion.imagen");
+	var selectTipoAccion = document.getElementById("accion.tipoAccion");
+	var selectPantallaDestino = document.getElementById("accion.pantallaDestino");
+	var tipoAccion = selectTipoAccion.options[selectTipoAccion.selectedIndex].value;
+	var idPantallaDestino = selectPantallaDestino.options[selectPantallaDestino.selectedIndex].value;
+	
+
+	if (esValidaAccion("tablaAccion", nombre, descripcion, imagen, selectTipoAccion, selectPantallaDestino)) {
+		var indexFilaAccion = document.getElementById("filaAccion").value;
+		console.log("indexFilaAccion: " + indexFilaAccion); 
+		
+		var rowSelData = $("#tablaAccion").DataTable().row(indexFilaAccion).data();
+		rowNewData = construirFila(nombre, descripcion, imagen, tipoAccion, idPantallaDestino);
+		rowSelData[0] = rowNewData[0];
+		rowSelData[1] = rowNewData[1];
+		rowSelData[2] = rowNewData[2];
+		rowSelData[3] = rowNewData[3];
+		rowSelData[4] = rowNewData[4];
+		rowSelData[5] = rowNewData[5];
+		dataTableCDT.editRow("tablaAccion", indexFilaAccion, rowSelData);
+		actualizarImagenAccion(imagen, indexFilaAccion);
+		limpiarCamposEmergente();
+		$('#accionDialog').dialog('close');
+	} else {
+		return false;
+	}
+}
+
+function actualizarImagenAccion(inputFile, indexFilaAccion) {
+	if(indexFilaAccion == null) { 
+		indexFilaAccion = "max";
+	}
+	if (inputFile.files && inputFile.files[0]) {
+        var reader = new FileReader();
+        reader.readAsDataURL(inputFile.files[0])
+        reader.onload = function (e) {
+        	if(reader.result != "") {
+        		dataTableCDT.insertarValorCelda("tablaAccion", "max", 2, reader.result);
+        		img = "<center><img src = '" + reader.result + "'/></center>";
+        		dataTableCDT.insertarValorCelda("tablaAccion", indexFilaAccion, 0, img);
+        	}     	
+        }
+    } 
+}
+
+function obtenerImagenTextoPantalla(inputFile) {
+	if (inputFile.files && inputFile.files[0]) {
+        var reader = new FileReader();
+        reader.readAsDataURL(inputFile.files[0]);
+        reader.onload = function (e) {
+            document.getElementById("src-pantalla").value = reader.result;
+        }
+    }
+}
+
+function construirFila(nombre, descripcion, inputFile, tipoAccion, idPantallaDestino) {
+	var srcAccion = document.getElementById("src-accion").value;
+	var row = [
 				"Sin imagen",
 				nombre,
 				"",
@@ -127,7 +170,7 @@ function registrarAccion() {
 				idPantallaDestino,
 				0,
 				"<center>"
-						+ "<a onclick='solicitarModificacionAccion(this);' button='true'>"
+						+ "<a onclick='solicitarModificacionAccion(\"tablaAccion\", this);' button='true'>"
 						+ "<img class='icon'  id='icon' src='"
 						+ window.contextPath
 						+ "/resources/images/icons/editar.png' title='Modificar Acción'/></a>"
@@ -136,36 +179,17 @@ function registrarAccion() {
 						+ window.contextPath
 						+ "/resources/images/icons/eliminar.png' title='Eliminar Acción'/></a>"
 						+ "</center>" ];
-		var indexFilaAccion = document.getElementById("filaAccion").value;
-		if(indexFilaAccion == -1) {
-			row[6] = 0;
-			dataTableCDT.addRow("tablaAccion", row);
-		} else {
-			row[6] = document.getElementById("idAccion").value;
-			dataTableCDT.editRow("tablaAccion", indexFilaAccion, row);
-		}
-		
-		
-		mostrarPrevisualizacionTabla(imagen, nombre);
-		obtenerImagenTextoAccion(imagen, nombre);
-		
-		
-		document.getElementById("accion.nombre").value = null;
-		document.getElementById("accion.descripcion").value = null;
-		document.getElementById("accion.imagen").value = null;
-		document.getElementById("accion.tipoAccion").selectedIndex = 0;
-		document.getElementById("accion.pantallaDestino").selectedIndex = 0;
-		document.getElementById("marco-accion").style.display = 'none';
-		document.getElementById("fila-accion").style.display = '';
+	
+	if(srcAccion != "") {
+    	row[0] = "<center><img src = '" + srcAccion + "'/></center>";
+		row[2] = srcAccion;
+    }
+	
+	console.log("desde construirFila row: " + row);
+	return row;
+}
 
-		$('#accionDialog').dialog('close');
-	} else {
-		return false;
-	}
-};
-
-function cancelarRegistrarAccion() {
-	// Se limpian los campos
+function limpiarCamposEmergente() {
 	document.getElementById("accion.nombre").value = null;
 	document.getElementById("accion.descripcion").value = null;
 	document.getElementById("accion.imagen").value = null;
@@ -173,9 +197,14 @@ function cancelarRegistrarAccion() {
 	document.getElementById("accion.pantallaDestino").selectedIndex = 0;
 	document.getElementById("marco-accion").style.display = 'none';
 	document.getElementById("fila-accion").style.display = '';
-	// Se cierra la emergente
+	document.getElementById("accion").src = "";
+	document.getElementById("src-accion").value = "";
+}
+
+function cancelarRegistrarAccion() {
+	limpiarCamposEmergente();
 	$('#accionDialog').dialog('close');
-};
+}
 
 function agregarMensaje(mensaje) {
 	alert(mensaje);
@@ -282,12 +311,6 @@ function agregarListaSelect(select, cadena) {
 		option.index = -1;
 		option.value = -1;
 		select.add(option);
-		//Se agrega la pantalla actual
-		var option = document.createElement("option");
-		option.text = "Pantalla actual";
-		option.index = 0;
-		option.value = 0;
-		select.add(option);
 		$
 				.each(
 						json,
@@ -303,24 +326,21 @@ function agregarListaSelect(select, cadena) {
 
 function solicitarModificacionAccion(registro) {
 	var row = $("#tablaAccion").DataTable().row($(registro).parents('tr'));
-	
 	document.getElementById("filaAccion").value = row.index();
+	var rowData = row.data();
+	console.log("row: " + rowData);
 	
-	var cells = row.data();
-	console.log("cells: " + cells);
-	document.getElementById("accion.nombre").value = cells[1];
-	
-	if(cells[2] != null && cells[2] != "") {
-		document.getElementById("accion").src = cells[2];
+	document.getElementById("accion.nombre").value = rowData[1];
+	if(rowData[2] != null && rowData[2] != "") {
+		//si tiene imagen la accion
+		document.getElementById("accion").src = rowData[2];
 		document.getElementById("marco-accion").style.display = '';
 		document.getElementById("fila-accion").style.display = 'none';
-	}
-		
-	document.getElementById("accion.descripcion").value = cells[3];
-	document.getElementById("accion.tipoAccion").value = cells[4];
-	document.getElementById("accion.pantallaDestino").value = cells[5];
-	document.getElementById("filaAccion").value = registro;
-	$('#accionDialog').title = "Modificar Acción";
+		document.getElementById("src-accion").value = rowData[2];
+	}	
+	document.getElementById("accion.descripcion").value = rowData[3];
+	document.getElementById("accion.tipoAccion").value = rowData[4];
+	document.getElementById("accion.pantallaDestino").value = rowData[5];
 	$('#accionDialog').dialog('open');
 }
 
@@ -330,18 +350,16 @@ function solicitarRegistroAccion() {
 }
 
 function eliminarImagen(idImg, idFileUpload) {
-	var img = document.getElementById(idImg);
-	img.src = "";
+	document.getElementById("src-" + idImg).value = "";
+	document.getElementById(idImg).src = "";
 	document.getElementById("marco-" + idImg).style.display = 'none';
-	
-	var fileUpload = document.getElementById(idFileUpload);
-	fileUpload.value = null;
+	document.getElementById(idFileUpload).value = null;
 	document.getElementById("fila-" + idImg).style.display = '';
 
 }
 
 function cargarImagenPantalla() {
-	var imgPantalla = document.getElementById("pantallaB64").value;
+	var imgPantalla = document.getElementById("src-pantalla").value;
 	if(imgPantalla != "") {
 		document.getElementById("pantalla").src = imgPantalla;
 		document.getElementById("fila-pantalla").style.display = 'none';

@@ -359,22 +359,24 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 					Set<Trayectoria> trayectorias = ((CasoUso) el)
 							.getTrayectorias();
 					for (Trayectoria tray : trayectorias) {
-						Trayectoria auxTrayectoria = new Trayectoria();
-						auxTrayectoria.setClave(tray.getClave());
-						auxTrayectoria.setCasoUso(auxCasoUso);
-						listTrayectorias.add(auxTrayectoria);
-						// Se obtienen los Pasos
-						for (Paso paso : tray.getPasos()) {
-							Paso auxPaso = new Paso();
-							auxPaso.setTrayectoria(auxTrayectoria);
-							auxPaso.setNumero(paso.getNumero());
-							auxPaso.setRealizaActor(paso.isRealizaActor());
-							auxPaso.setVerbo(paso.getVerbo());
-							auxPaso.setOtroVerbo(paso.getOtroVerbo());
-							auxPaso.setRedaccion(TokenBs
-									.decodificarCadenaSinToken(paso
-											.getRedaccion()));
-							listPasos.add(auxPaso);
+						if (tray.getCasoUso().getId() == model.getId()) {
+							Trayectoria auxTrayectoria = new Trayectoria();
+							auxTrayectoria.setClave(tray.getClave());
+							auxTrayectoria.setCasoUso(auxCasoUso);
+							listTrayectorias.add(auxTrayectoria);
+							// Se obtienen los Pasos
+							for (Paso paso : tray.getPasos()) {
+								Paso auxPaso = new Paso();
+								auxPaso.setTrayectoria(auxTrayectoria);
+								auxPaso.setNumero(paso.getNumero());
+								auxPaso.setRealizaActor(paso.isRealizaActor());
+								auxPaso.setVerbo(paso.getVerbo());
+								auxPaso.setOtroVerbo(paso.getOtroVerbo());
+								auxPaso.setRedaccion(TokenBs
+										.decodificarCadenaSinToken(paso
+												.getRedaccion()));
+								listPasos.add(auxPaso);
+							}
 						}
 					}
 					break;

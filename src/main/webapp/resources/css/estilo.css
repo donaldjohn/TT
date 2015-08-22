@@ -439,7 +439,7 @@ a.referencia:hover {
 .marcoImagen {
 	border-style: dashed;
 	border-color: #e5e5e5;
-	margin: 20px;
+	margin: 10px;
 	padding: 5px;
 }
 
@@ -470,4 +470,17 @@ a.referencia:hover {
 
 .tablaConsulta {
 	min-width: 100%;
+	
+}
+
+.tablaConsulta th,td {
+	
+}
+
+.imagenAccion {
+	width: 200px;
+}
+
+.descripcionAccion {
+	padding-top: 10px;
 }

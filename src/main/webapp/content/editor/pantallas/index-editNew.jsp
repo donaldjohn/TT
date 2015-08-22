@@ -135,7 +135,7 @@
 			value="%{jsonAccionesTabla}" />
 		<s:hidden id="jsonImagenesAcciones" name="jsonImagenesAcciones"
 			value="%{jsonImagenesAcciones}" />
-		<s:hidden id="pantallaB64" name="pantallaB64"
+		<s:hidden id="src-pantalla" name="pantallaB64"
 			value="%{pantallaB64}" />
 		<s:hidden name="jsonPantallasDestino" id="jsonPantallasDestino"
 			value="%{jsonPantallasDestino}" />
@@ -150,6 +150,7 @@
 			<div class="tituloFormulario">Información general de la
 				Acción</div>
 				<s:hidden id="filaAccion" />
+				<s:hidden id="src-accion" />
 				<table class="seccion">
 					<tr>
 						<td class="label obligatorio"><s:text name="labelNombre" /></td>
@@ -204,7 +205,7 @@
 			</div>
 			<br />
 			<div align="center">
-				<input type="button" onclick="registrarAccion()" value="Aceptar" />
+				<input type="button" onclick="verificarRegistroModificacion()" value="Aceptar" />
 				<input type="button" onclick="cancelarRegistrarAccion()"
 					value="Cancelar" />
 			</div>

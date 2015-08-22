@@ -102,11 +102,9 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 			buscaCatalogos();
 			resultado = EDITNEW;
 		} catch (PRISMAException pe) {
-			System.err.println(pe.getMessage());
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
 		} catch (Exception e) {
-			e.printStackTrace();
 			ErrorManager.agregaMensajeError(this, e);
 			resultado = index();
 		}
@@ -132,7 +130,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 
 	private void agregarAcciones() throws Exception{
 		Set<Accion> accionesModelo = new HashSet<Accion>(0);
-		Set<Accion> accionesVista = new HashSet<Accion>(0);
+		List<Accion> accionesVista = new ArrayList<Accion>();
 		Accion accionBD = null; 
 		Pantalla pantallaDestino = null;
 		TipoAccion tipoAccion = null;
@@ -144,18 +142,14 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 					imagenesAccionesTexto = JsonUtil.mapJSONToArrayList(jsonImagenesAcciones, String.class);
 				}				
 	
-				accionesVista = JsonUtil.mapJSONToSet(jsonAccionesTabla, Accion.class);
+				accionesVista = JsonUtil.mapJSONToArrayList(jsonAccionesTabla, Accion.class);
 				
 				if(accionesVista != null) {
+					
 					int i = 0;
 					for (Accion accionVista : accionesVista) {
-						
-						if(accionVista.getPantallaDestino().getId() == 0) {
-							pantallaDestino = model;
-						} else {
-							pantallaDestino = PantallaBs.consultarPantalla(accionVista.getPantallaDestino().getId());
-						}
-						
+						pantallaDestino = PantallaBs.consultarPantalla(accionVista.getPantallaDestino().getId());
+
 						byte[] imgDecodificada = Convertidor.convertStringPNGB64ToBytes(imagenesAccionesTexto.get(i));
 						
 						tipoAccion = PantallaBs.consultarTipoAccion(accionVista.getTipoAccion().getId());
@@ -171,6 +165,9 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 						} else {
 							accionVista.setId(null);
 							accionVista.setPantalla(model);
+							accionVista.setImagen(imgDecodificada);
+							accionVista.setPantallaDestino(pantallaDestino);
+							accionVista.setTipoAccion(tipoAccion);
 							accionesModelo.add(accionVista);
 						}
 						
@@ -186,7 +183,6 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 
 	public String create() throws Exception {
 		String resultado = null;
-		System.out.println("desde create");
 		try {
 			agregarAcciones();
 			agregarImagen();
@@ -195,12 +191,6 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 			
 			model.setModulo(modulo);
 			model.setProyecto(proyecto);
-			/*System.out.println("imagen contentType " + this.imagenPantallaContentType);
-			System.out.println("imagen fileName " + this.imagenPantallaFileName);
-			System.out.println("imagen image " + this.imagenPantalla);
-			
-			System.out.println("imagen name " + this.imagenPantalla.getName());
-			System.out.println("imagen path " + this.imagenPantalla.getPath());*/
 			
 			PantallaBs.registrarPantalla(model);
 			
@@ -225,14 +215,13 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	
 	
 	private void agregarImagen() throws IOException {
-		byte[] bImagen = Convertidor.convertFileToByteArray(this.imagenPantalla);
-		byte[] bImagenB64 = Convertidor.encodeByteArrayB64(bImagen);
-		model.setImagen(bImagenB64);
+		byte[] imgDecodificada = Convertidor.convertStringPNGB64ToBytes(pantallaB64);
+		model.setImagen(imgDecodificada);
 	}
 	
 	public String edit() throws Exception {
 		String resultado = null;
-		prepararVista();
+		
 		try {
 
 			proyecto = SessionManager.consultarProyectoActivo();
@@ -260,8 +249,6 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	public String update() throws Exception {
 		String resultado = null;
 		try {
-			System.out.println("idModel: " + idSel);
-			System.out.println("x: " + model.getNombre());
 			model.getAcciones().clear();
 			agregarAcciones();
 			agregarImagen();
@@ -315,7 +302,6 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 			String nombre = model.getClave() + model.getNombre() + model.getNumero() + ".png";
 			@SuppressWarnings("deprecation")
 			String ruta = request.getRealPath("/") + "/tmp/images/" + nombre;
-			System.out.println("ruta " + ruta);
 			
 			this.imagenPantalla = Convertidor.convertByteArrayToFile(ruta, model.getImagen());
 			this.imagenPantallaContentType = "image/png";
@@ -352,6 +338,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 			pAux.setClave(pant.getClave());
 			pAux.setNumero(pant.getNumero());
 			pAux.setNombre(pant.getNombre());
+			pAux.setId(pant.getId());
 			
 			accAux.setPantallaDestino(pAux);
 			listAcciones.add(accAux);

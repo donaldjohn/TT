@@ -154,5 +154,8 @@ function TipoAccion(id, nombre) {
 	this.nombre = nombre;
 }
 
-
+function ImagenAccion(imagen, id) {
+	this.imagen = imagen;
+	this.id = id;
+}
 

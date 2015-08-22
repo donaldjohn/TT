@@ -40,47 +40,42 @@
 				<s:iterator value="model.acciones" var="accion">
 				<table class="tablaConsulta">
 						<tr>
-							<td class="definicion">
+							<td class="imagenAccion">
+								<div class="marcoImagen" id="marco-accion${accion.id}" style="display: none;">
+									<center><img src="#" id="accion${accion.id}"/></center>
+								</div>
+							</td>
+							<td class="descripcionAccion">
 								<a name="accion-${accion.id}"><!-- accion --></a>
 								<span class="labelIzq consulta"><s:property value="%{#accion.nombre}"/></span>
 											<span class="ui-widget "> 
 											${blanks} <s:property value="%{#accion.descripcion}"/>
 											${blanks}
 											</span>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="marcoImagen" id="marco-accion${accion.id}" style="display: none;">
-									<center><img src="#" id="accion${accion.id}"/></center>
+								<div>
+									<span class="labelIzq consulta"><s:text name="labelTipoAccion" /></span>
+									<span class="ui-widget "> 
+												${blanks} <s:property value="#accion.tipoAccion.nombre"/>
+												${blanks}
+									</span>
 								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<span class="labelIzq consulta"><s:text name="labelTipoAccion" /></span>
-								<span class="ui-widget "> 
-											${blanks} <s:property value="#accion.tipoAccion.nombre"/>
-											${blanks}
-								</span>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<span class="labelIzq consulta"><s:text name="labelPantallaDestino" /></span>
-								<span class="ui-widget "> 
-											${blanks}
-											<s:if test="#accion.pantallaDestino.id == model.id">
-												<s:text name="labelPantallaActual"/>
-											</s:if> <s:else>
-											<a class="referencia"
-												href='${pageContext.request.contextPath}/pantallas/${accion.pantallaDestino.id}'>
-													${accion.pantallaDestino.clave}
-													${accion.pantallaDestino.numero} ${blanks}
-													${accion.pantallaDestino.nombre}</a>
-											</s:else> 
-											
-								</span>
+								<div>
+									<span class="labelIzq consulta"><s:text name="labelPantallaDestino" /></span>
+									<span class="ui-widget "> 
+												${blanks}
+												<s:if test="#accion.pantallaDestino.id == model.id">
+													<s:text name="labelPantallaActual"/>
+												</s:if> <s:else>
+												<a class="referencia"
+													href='${pageContext.request.contextPath}/pantallas/${accion.pantallaDestino.id}'>
+														${accion.pantallaDestino.clave}
+														${accion.pantallaDestino.numero} ${blanks}
+														${accion.pantallaDestino.nombre}</a>
+												</s:else> 
+												
+									</span>
+								</div>
+								
 							</td>
 						</tr>
 					</table>

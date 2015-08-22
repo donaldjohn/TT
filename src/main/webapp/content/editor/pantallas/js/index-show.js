@@ -22,7 +22,7 @@ $(document).ready(function() {
 			.each(
 					parsedJson,
 					function(i, item) {
-				    	if(parsedJsonImg[i] != "") {
+				    	if(parsedJsonImg[i] != null && parsedJsonImg[i] != "") {
 				    		console.log("accion" + item.id);
 				    		console.log("marco-accion" + item.id);
 				    		document.getElementById("accion" + item.id).src = parsedJsonImg[i];
