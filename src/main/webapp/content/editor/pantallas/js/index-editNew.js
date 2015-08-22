@@ -17,26 +17,7 @@ $(document).ready(function() {
 				.each(
 						parsedJson,
 						function(i, item) {
-							var img = "Sin imagen"; 
-					    	if(parsedJsonImg[i] != "") {
-					    		img = "<center><img src = '" + parsedJsonImg[i] + "'/></center>";
-					    	}
-					    		
-							var accion = [
-								img,
-								item.nombre, 
-								parsedJsonImg[i],
-								item.descripcion,
-								item.tipoAccion.id,
-								item.pantallaDestino.id,
-								"<center>" +
-									"<a onclick='solicitarModificacionAccion(this);'button='true'>" +
-									"<img class='icon'  id='icon' src='" + window.contextPath + 
-									"/resources/images/icons/editar.png' title='Modificar Acción'/></a>" +
-									"<a onclick='dataTableCDT.deleteRow(tablaAccion, this);' button='true'>" +
-									"<img class='icon'  id='icon' src='" + window.contextPath + 
-									"/resources/images/icons/eliminar.png' title='Eliminar Acción'/></a>" +
-								"</center>" ];
+							var accion = construirFila(parsedJsonImg[i], item.nombre, item.descripcion, item.tipoAccion.id, item.pantallaDestino.id);
 							dataTableCDT.addRow("tablaAccion", accion); 
 						}); 
 	}
@@ -85,10 +66,9 @@ function registrarAccion() {
 	var selectPantallaDestino = document.getElementById("accion.pantallaDestino");
 	var tipoAccion = selectTipoAccion.options[selectTipoAccion.selectedIndex].value;
 	var idPantallaDestino = selectPantallaDestino.options[selectPantallaDestino.selectedIndex].value;
-	
 
 	if (esValidaAccion("tablaAccion", nombre, descripcion, imagen, selectTipoAccion, selectPantallaDestino)) {
-		var row = construirFila(nombre, descripcion, imagen, tipoAccion, idPantallaDestino);
+		var row = construirFila("", nombre, descripcion, tipoAccion, idPantallaDestino);
 		dataTableCDT.addRow("tablaAccion", row);
 		actualizarImagenAccion(imagen);
 		limpiarCamposEmergente();
@@ -107,14 +87,14 @@ function modificarAccion() {
 	var selectPantallaDestino = document.getElementById("accion.pantallaDestino");
 	var tipoAccion = selectTipoAccion.options[selectTipoAccion.selectedIndex].value;
 	var idPantallaDestino = selectPantallaDestino.options[selectPantallaDestino.selectedIndex].value;
-	
+	var srcAccion = document.getElementById("src-accion").value;
 
 	if (esValidaAccion("tablaAccion", nombre, descripcion, imagen, selectTipoAccion, selectPantallaDestino)) {
 		var indexFilaAccion = document.getElementById("filaAccion").value;
 		console.log("indexFilaAccion: " + indexFilaAccion); 
 		
 		var rowSelData = $("#tablaAccion").DataTable().row(indexFilaAccion).data();
-		rowNewData = construirFila(nombre, descripcion, imagen, tipoAccion, idPantallaDestino);
+		rowNewData = construirFila(srcAccion, nombre, descripcion, tipoAccion, idPantallaDestino);
 		rowSelData[0] = rowNewData[0];
 		rowSelData[1] = rowNewData[1];
 		rowSelData[2] = rowNewData[2];
@@ -157,8 +137,7 @@ function obtenerImagenTextoPantalla(inputFile) {
     }
 }
 
-function construirFila(nombre, descripcion, inputFile, tipoAccion, idPantallaDestino) {
-	var srcAccion = document.getElementById("src-accion").value;
+function construirFila(srcAccion, nombre, descripcion, tipoAccion, idPantallaDestino) {
 	var row = [
 				"Sin imagen",
 				nombre,
@@ -181,8 +160,6 @@ function construirFila(nombre, descripcion, inputFile, tipoAccion, idPantallaDes
     	row[0] = "<center><img src = '" + srcAccion + "'/></center>";
 		row[2] = srcAccion;
     }
-	
-	console.log("desde construirFila row: " + row);
 	return row;
 }
 

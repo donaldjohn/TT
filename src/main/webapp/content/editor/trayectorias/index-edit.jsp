@@ -134,8 +134,6 @@
 		<s:form autocomplete="off" id="frmPaso" name="frmPasoName"
 			theme="simple">
 			<s:hidden id="filaPaso" />
-			<s:hidden id="numeroPaso" />
-			<s:hidden id="idPaso"/>
 			<div class="formulario">
 				<div class="tituloFormulario">Información del Paso</div>
 				<table class="seccion">
@@ -168,7 +166,7 @@
 			</div>
 			<br />
 			<div align="center">
-				<input type="button" onclick="registrarPaso()" value="Aceptar" /> <input
+				<input type="button" onclick="verificarRegistroModificacion()" value="Aceptar" /> <input
 					type="button" onclick="cancelarRegistrarPaso()" value="Cancelar" />
 			</div>
 		</s:form>

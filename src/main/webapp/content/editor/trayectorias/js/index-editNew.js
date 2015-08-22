@@ -26,45 +26,9 @@ $(document).ready(function() {
 				.each(
 						parsedJson,
 						function(i, item) {
-							var realizaImg;
-							var verboAux;
-					    	//Se agrega la imagen referente a quien realiza el paso
-					    	if(item.realizaActor == true) {
-					    		realizaImg = "<img src='" + window.contextPath + 
-								"/resources/images/icons/actor.png' title='Actor' style='vertical-align: middle;'/>";
-					    	} else if(item.realizaActor == false) {
-					    		realizaImg = "<img src='" + window.contextPath + 
-								"/resources/images/icons/uc.png' title='Sistema' style='vertical-align: middle;'/>";
-					    	}
-					    	
-					    	if (item.verbo.nombre == 'Otro') {
-					    		verboAux = item.otroVerbo;
-					    	} else {
-					    		verboAux = item.verbo.nombre;
-					    	}
-					    	
-							var paso = [
-								item.numero,
-								realizaImg + " " + verboAux + " " + item.redaccion,
-								item.realizaActor,
-								item.verbo.nombre, 
-								item.otroVerbo,
-								item.redaccion,
-								"<center>" +
-									"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"up\");' button='true'>" +
-									"<img class='icon'  id='icon' src='" + window.contextPath + 
-									"/resources/images/icons/flechaArriba.png' title='Subir Paso'/></a>" +
-									"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"down\");' button='true'>" +
-									"<img class='icon'  id='icon' src='" + window.contextPath + 
-									"/resources/images/icons/flechaAbajo.png' title='Bajar Paso'/></a>" +
-									"<a button='true' onclick='solicitarModificacionAccion(this);'>" +
-									"<img class='icon'  id='icon' src='" + window.contextPath + 
-									"/resources/images/icons/editar.png' title='Modificar Paso'/></a>" +
-									"<a onclick='dataTableCDT.deleteRowPasos(tablaPaso, this);' button='true'>" +
-									"<img class='icon'  id='icon' src='" + window.contextPath + 
-									"/resources/images/icons/eliminar.png' title='Eliminar Paso'/></a>" +
-								"</center>" ];
-							dataTableCDT.addRow("tablaPaso",paso); 
+							var row = construirFila(item.numero, item.realizaActor, item.redaccion, 
+									item.verbo.nombre, item.otroVerbo);
+							dataTableCDT.addRow("tablaPaso", row); 
 						}); 
 	}
 } );
@@ -98,82 +62,108 @@ function cambiarElementosAlternativaPrincipal() {
 	}
 }
 
+function verificarRegistroModificacion() {
+	var indexFilaPaso = document.getElementById("filaPaso").value;
+	if(indexFilaPaso == -1) {
+		registrarPaso();
+	} else {
+		modificarPaso();
+	}
+}
+
 function registrarPaso(){
-	
 	var realiza = document.forms["frmPasoName"]["paso.realizaActor"].value;
 	var redaccion = document.forms["frmPasoName"]["paso.redaccion"].value;
 	var verbo = document.forms["frmPasoName"]["paso.verbo"].value;
 	var otroVerbo = document.forms["frmPasoName"]["paso.otroVerbo"].value;
-	var verboAux;
-	var up = "up";
+	var noPaso = calcularNumeroPaso();
     if (esValidoPaso("tablaPaso", realiza, verbo, otroVerbo ,redaccion)) {
-    	var realizaImg;
-    	//Se agrega la imagen referente a quien realiza el paso
-    	if(realiza == "Actor") {
-    		var realizaActor = true;
-    		realizaImg = "<img src='" + window.contextPath + 
-			"/resources/images/icons/actor.png' title='Actor' style='vertical-align: middle;'/>";
-    	} else if(realiza == "Sistema") {
-    		realizaActor = false;
-    		realizaImg = "<img src='" + window.contextPath + 
-			"/resources/images/icons/uc.png' title='Sistema' style='vertical-align: middle;'/>";
-    	}
-    	
-    	//Se construye la fila 
-    	if (verbo == 'Otro') {
-    		verboAux = otroVerbo;
-    	} else {
-    		verboAux = verbo;
-    	}
-    	var row = [
-    	           	0,
-    	            realizaImg + " " + verboAux + " " +redaccion,
-    	            realizaActor,
-    	            verbo, 
-    	            otroVerbo,
-    	            redaccion,
-					"<center>" +
-						"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"up\");' button='true'>" +
-						"<img class='icon'  id='icon' src='" + window.contextPath + 
-						"/resources/images/icons/flechaArriba.png' title='Subir Paso'/></a>" +
-						"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"down\");' button='true'>" +
-						"<img class='icon'  id='icon' src='" + window.contextPath + 
-						"/resources/images/icons/flechaAbajo.png' title='Bajar Paso'/></a>" +
-						"<a button='true' onclick='solicitarModificacionAccion(this);'>" +
-						"<img class='icon'  id='icon' src='" + window.contextPath + 
-						"/resources/images/icons/editar.png' title='Modificar Paso'/></a>" +
-						"<a onclick='dataTableCDT.deleteRowPasos(tablaPaso, this);' button='true'>" +
-						"<img class='icon'  id='icon' src='" + window.contextPath + 
-						"/resources/images/icons/eliminar.png' title='Eliminar Paso'/></a>" +
-					"</center>" ];
-    	var indexFilaAccion = document.getElementById("filaPaso").value;
-    	if(indexFilaAccion == -1) {
-    		row[0] = calcularNumeroPaso();
-			dataTableCDT.addRow("tablaPaso", row);
-		} else {
-			row[0] = document.getElementById("numeroPaso").value;
-			dataTableCDT.editRow("tablaPaso", indexFilaAccion, row);
-		}
-    	
-    	//Se limpian los campos
-    	document.getElementById("inputor").value = "";
-    	document.getElementById("realiza").selectedIndex = 0;
-    	document.getElementById("paso.verbo").selectedIndex = 0;
-    	
+    	var row = construirFila(noPaso, realiza, redaccion, verbo, otroVerbo);
+    	dataTableCDT.addRow("tablaPaso", row);
+    	limpiarCamposEmergente();
     	//Se cierra la emergente
     	$('#pasoDialog').dialog('close');
     } else {
     	return false;
     }
-};
+}
+
+function modificarPaso(){
+	var realiza = document.forms["frmPasoName"]["paso.realizaActor"].value;
+	var redaccion = document.forms["frmPasoName"]["paso.redaccion"].value;
+	var verbo = document.forms["frmPasoName"]["paso.verbo"].value;
+	var otroVerbo = document.forms["frmPasoName"]["paso.otroVerbo"].value;
+	var noPaso = 0;
+    if (esValidoPaso("tablaPaso", realiza, verbo, otroVerbo ,redaccion)) {
+    	var indexFilaPaso = document.getElementById("filaPaso").value;
+    	var rowSelData = $("#tablaPaso").DataTable().row(indexFilaPaso).data();
+    	var rowNewData = construirFila(noPaso, realiza, redaccion, verbo, otroVerbo);
+		rowSelData[1] = rowNewData[1];
+		rowSelData[2] = rowNewData[2];
+		rowSelData[3] = rowNewData[3];
+		rowSelData[4] = rowNewData[4];
+		rowSelData[5] = rowNewData[5];
+		dataTableCDT.editRow("tablaPaso", indexFilaPaso, rowSelData);
+    	limpiarCamposEmergente();
+    	$('#pasoDialog').dialog('close');
+    } else {
+    	return false;
+    }
+}
+
+function construirFila(noPaso, realiza, redaccion, verbo, otroVerbo) {
+	var verboAux;
+	var realizaImg;
+	//Se agrega la imagen referente a quien realiza el paso
+	if(realiza == "Actor" || realiza == true) {
+		var realizaActor = true;
+		realizaImg = "<img src='" + window.contextPath + 
+		"/resources/images/icons/actor.png' title='Actor' style='vertical-align: middle;'/>";
+	} else if(realiza == "Sistema" || realiza == false) {
+		realizaActor = false;
+		realizaImg = "<img src='" + window.contextPath + 
+		"/resources/images/icons/uc.png' title='Sistema' style='vertical-align: middle;'/>";
+	}
+	
+	//Se construye la fila 
+	if (verbo == 'Otro') {
+		verboAux = otroVerbo;
+	} else {
+		verboAux = verbo;
+	}
+	var row = [
+	           	noPaso,
+	            realizaImg + " " + verboAux + " " +redaccion,
+	            realizaActor,
+	            verbo, 
+	            otroVerbo,
+	            redaccion,
+				"<center>" +
+					"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"up\");' button='true'>" +
+					"<img class='icon'  id='icon' src='" + window.contextPath + 
+					"/resources/images/icons/flechaArriba.png' title='Subir Paso'/></a>" +
+					"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"down\");' button='true'>" +
+					"<img class='icon'  id='icon' src='" + window.contextPath + 
+					"/resources/images/icons/flechaAbajo.png' title='Bajar Paso'/></a>" +
+					"<a button='true' onclick='solicitarModificacionPaso(this);'>" +
+					"<img class='icon'  id='icon' src='" + window.contextPath + 
+					"/resources/images/icons/editar.png' title='Modificar Paso'/></a>" +
+					"<a onclick='dataTableCDT.deleteRowPasos(tablaPaso, this);' button='true'>" +
+					"<img class='icon'  id='icon' src='" + window.contextPath + 
+					"/resources/images/icons/eliminar.png' title='Eliminar Paso'/></a>" +
+				"</center>" ];
+	console.log("row: " + row);
+	return row;
+}
   
-function cancelarRegistrarPaso() {
-	//Se limpian los campos
+function limpiarCamposEmergente() {
 	document.getElementById("inputor").value = "";
 	document.getElementById("realiza").selectedIndex = 0;
 	document.getElementById("paso.verbo").selectedIndex = 0;
-	
-	//Se cierra la emergente
+}
+
+function cancelarRegistrarPaso() {
+	limpiarCamposEmergente();
 	$('#pasoDialog').dialog('close');
 };
 
@@ -265,22 +255,16 @@ function verificarOtro() {
 }
 
 
-function solicitarModificacionAccion(registro) {
+function solicitarModificacionPaso(registro) {
 	var row = $("#tablaPaso").DataTable().row($(registro).parents('tr'));
-	
 	document.getElementById("filaPaso").value = row.index();
-	
 	var cells = row.data();
-	
-	document.getElementById("numeroPaso").value = cells[0];
 	var realizaActor = cells[2];
-	
 	if(realizaActor) {
 		document.getElementById("realiza").value = "Actor";
 	} else {
 		document.getElementById("realiza").value = "Sistema";
 	}
-	
 	document.getElementById("paso.verbo").value = cells[3];
 	document.getElementById("paso.otroVerbo").value = cells[4];
 	document.getElementById("inputor").value = cells[5];

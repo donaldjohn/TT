@@ -118,17 +118,19 @@ var dataTableCDT = function() {
 	*          falso en caso contrario
 	* 
 	*/
-	function exist(idTable, value, index, idMessage, message) {
+	function exist(idTable, value, index, idMessage, message, indexRowExclude) {
 		var table = $("#" + idTable).dataTable();
 		for (var i = 0; i < table.fnSettings().fnRecordsTotal(); i++) {
-			if (value === table.fnGetData(i, index)) {
-				if (idMessage != undefined && message != undefined
-						&& idMessage !== null && idMessage !== '') {
-					$("#" + idMessage).text(message.format({
-						4 : value
-					}));
+			if(indexRowExclude != i) {
+				if (value === table.fnGetData(i, index)) {
+					if (idMessage != undefined && message != undefined
+							&& idMessage !== null && idMessage !== '') {
+						$("#" + idMessage).text(message.format({
+							4 : value
+						}));
+					}
+					return true;
 				}
-				return true;
 			}
 		}
 		return false;

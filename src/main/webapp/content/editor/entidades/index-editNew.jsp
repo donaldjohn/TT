@@ -76,7 +76,7 @@
 
 				</table>
 				<div align="center">
-					<sj:a openDialog="atributoDialog" button="true">Registrar</sj:a>
+					<sj:a onclick="solicitarRegistroAtributo();" button="true">Registrar</sj:a>
 				</div>
 			</div>
 		</div>
@@ -162,7 +162,7 @@
 			</div>
 			<br />
 			<div align="center">
-				<input type="button" onclick="registrarAtributo()" value="Aceptar" /> <input
+				<input type="button" onclick="verificarRegistroModificacion()" value="Aceptar" /> <input
 					type="button" onclick="cancelarRegistrarAtributo()" value="Cancelar" />
 			</div>
 		</s:form>

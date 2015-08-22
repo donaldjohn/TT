@@ -6,14 +6,14 @@ $(document)
 					window.scrollTo(0, 0);
 					contextPath = $("#rutaContexto").val();
 					$('table.tablaGestion').DataTable();
-					var tipoDato = document.getElementById("atributo.tipoDato");
+					/*var tipoDato = document.getElementById("atributo.tipoDato");
 					var tipoDatoTexto = tipoDato.options[tipoDato.selectedIndex].text;
 					
 					if (tipoDatoTexto == 'Otro') {
 						document.getElementById("trOtro").style.display = '';
 					} else {
 						document.getElementById("trOtro").style.display = 'none';
-					}
+					}*/
 					ocultarColumnas("tablaAtributo");
 					var json = $("#jsonAtributosTabla").val();
 					if (json !== "") {
@@ -22,63 +22,93 @@ $(document)
 								.each(
 										parsedJson,
 										function(i, item) {
-											var obligatorio;
-											var tipoDato = item.tipoDato.nombre;
-											if (item.obligatorio == true) {
-												obligatorio = 'Sí';
-											} else {
-												obligatorio = 'No';
-											}
-											
-											if (item.tipoDato.nombre == 'Otro') {
-												tipoDato = item.otroTipoDato;
-											}
-											
 											if(item.unidadTamanio != null) {
-												var abreviatura = item.unidadTamanio.abreviatura;
+												abreviatura = item.unidadTamanio.abreviatura;
 											} else {
-												var abreviatura = null;
+												abreviatura = null;
 											}
 											
-											var atributo = [
-													item.nombre,
-													tipoDato,
-													obligatorio,
-													item.tipoDato.nombre,	
-													item.otroTipoDato,
-													item.descripcion,
-													item.longitud,
-													item.formatoArchivo,
-													item.tamanioArchivo,
-													abreviatura,
-													item.id,
-													"<center>"
-															+ "<a button='true' onclick='solicitarModificacionAtributo(this);'>"
-															+ "<img class='icon'  id='icon' src='"
-															+ window.contextPath
-															+ "/resources/images/icons/editar.png' title='Modificar Atributo'/></a>"
-															+ "<a onclick='dataTableCDT.deleteRow(tablaAtributo, this);' button='true'>"
-															+ "<img class='icon'  id='icon' src='"
-															+ window.contextPath
-															+ "/resources/images/icons/eliminar.png' title='Eliminar Atributo'/></a>"
-															+ "</center>" ];
-											dataTableCDT.addRow(
-													"tablaAtributo", atributo);
+											var atributo = construirFila(item.nombre, item.descripcion, item.tipoDato.nombre,
+													item.otroTipoDato, item.longitud, item.formatoArchivo,
+													item.tamanioArchivo, abreviatura, item.obligatorio, item.id);
+											dataTableCDT.addRow("tablaAtributo", atributo);
 										});
 					}
 				});
 
-function registrarAtributo() {
+function verificarRegistroModificacion() {
+	var indexFilaAtributo = document.getElementById("filaAtributo").value;
+	if(indexFilaAtributo == -1) {
+		registrarAtributo();
+	} else {
+		modificarAtributo();
+	}
+}
 
+function registrarAtributo() {
 	var nombre = document.getElementById("atributo.nombre").value;
 	var descripcion = document.getElementById("atributo.descripcion").value;
-	var tipoDato = document.getElementById("atributo.tipoDato");
+	var tipoDatoSelect = document.getElementById("atributo.tipoDato");
 	var otroTipoDato = document.getElementById("atributo.otroTipoDato").value;
 	var longitud = document.getElementById("atributo.longitud").value;
 	var formatoArchivo = document.getElementById("atributo.formatoArchivo").value;
 	var tamanioArchivo = document.getElementById("atributo.tamanioArchivo").value;
-	var unidadTamanio = document.getElementById("atributo.unidadTamanio");
+	var unidadTamanioSelect = document.getElementById("atributo.unidadTamanio");
 	var obligatorio = document.getElementById("atributo.obligatorio").checked;
+	var tipoDato = tipoDatoSelect.options[tipoDatoSelect.selectedIndex].text;
+	var unidadTamanio = unidadTamanioSelect.options[unidadTamanioSelect.selectedIndex].text;
+	
+	if (esValidoAtributo("tablaAtributo", nombre, descripcion, tipoDatoSelect, otroTipoDato,
+			longitud, formatoArchivo, tamanioArchivo, unidadTamanioSelect)) {
+		var row = construirFila(nombre, descripcion, tipoDato, otroTipoDato, longitud, formatoArchivo,
+				tamanioArchivo, unidadTamanio, obligatorio, 0);
+		dataTableCDT.addRow("tablaAtributo", row);
+		limpiarCamposEmergente();
+		$('#atributoDialog').dialog('close');
+	} else {
+		return false;
+	}
+}
+
+function modificarAtributo() {
+	var nombre = document.getElementById("atributo.nombre").value;
+	var descripcion = document.getElementById("atributo.descripcion").value;
+	var tipoDatoSelect = document.getElementById("atributo.tipoDato");
+	var otroTipoDato = document.getElementById("atributo.otroTipoDato").value;
+	var longitud = document.getElementById("atributo.longitud").value;
+	var formatoArchivo = document.getElementById("atributo.formatoArchivo").value;
+	var tamanioArchivo = document.getElementById("atributo.tamanioArchivo").value;
+	var unidadTamanioSelect = document.getElementById("atributo.unidadTamanio");
+	var obligatorio = document.getElementById("atributo.obligatorio").checked;
+	var tipoDato = tipoDatoSelect.options[tipoDatoSelect.selectedIndex].text;
+	var unidadTamanio = unidadTamanioSelect.options[unidadTamanioSelect.selectedIndex].text;
+	var indexFilaAtributo = document.getElementById("filaAtributo").value;
+	
+	if (esValidoAtributo("tablaAtributo", nombre, descripcion, tipoDatoSelect, otroTipoDato,
+			longitud, formatoArchivo, tamanioArchivo, unidadTamanioSelect, indexFilaAtributo)) {
+    	var rowSelData = $("#tablaAtributo").DataTable().row(indexFilaAtributo).data();
+    	var rowNewData = construirFila(nombre, descripcion, tipoDato, otroTipoDato, longitud, formatoArchivo,
+				tamanioArchivo, unidadTamanio, obligatorio, 0);
+    	rowSelData[0] = rowNewData[0];
+		rowSelData[1] = rowNewData[1];
+		rowSelData[2] = rowNewData[2];
+		rowSelData[3] = rowNewData[3];
+		rowSelData[4] = rowNewData[4];
+		rowSelData[5] = rowNewData[5];
+		rowSelData[6] = rowNewData[6];
+		rowSelData[7] = rowNewData[7];
+		rowSelData[8] = rowNewData[8];
+		rowSelData[9] = rowNewData[9];
+		dataTableCDT.editRow("tablaAtributo", indexFilaAtributo, rowSelData);
+		limpiarCamposEmergente();
+		$('#atributoDialog').dialog('close');
+	} else {
+		return false;
+	}
+}
+
+function construirFila(nombre, descripcion, tipoDato, otroTipoDato, longitud, formatoArchivo,
+		tamanioArchivo, unidadTamanio, obligatorio, id) {
 	var tipoDatoAux;
 	if (obligatorio == true) {
 		obligatorio = "Sí";
@@ -86,27 +116,23 @@ function registrarAtributo() {
 		obligatorio = "No";
 	}
 
-	if (tipoDato.options[tipoDato.selectedIndex].text == 'Otro') {
+	if (tipoDato == 'Otro') {
 		tipoDatoAux = otroTipoDato;
 	} else {
-		tipoDatoAux = tipoDato.options[tipoDato.selectedIndex].text;
+		tipoDatoAux = tipoDato;
 	}
-	if (esValidoAtributo("tablaAtributo", nombre, descripcion, tipoDato, otroTipoDato,
-			longitud, formatoArchivo, tamanioArchivo, unidadTamanio)) {
-		// Se construye la fila
-		
-		var row = [
+	var row = [
 				nombre,
 				tipoDatoAux,				
 				obligatorio,
-				tipoDato.options[tipoDato.selectedIndex].text,				
+				tipoDato,				
 				otroTipoDato,
 				descripcion,
 				longitud,
 				formatoArchivo,
 				tamanioArchivo,
-				unidadTamanio.options[unidadTamanio.selectedIndex].text,
-				0,
+				unidadTamanio,
+				id,
 				"<center>"
 						+ "<a button='true' onclick='solicitarModificacionAtributo(this);'>"
 						+ "<img class='icon'  id='icon' src='"
@@ -117,38 +143,10 @@ function registrarAtributo() {
 						+ window.contextPath
 						+ "/resources/images/icons/eliminar.png' title='Eliminar Atributo'/></a>"
 						+ "</center>" ];
-		var indexFilaAtributo = document.getElementById("filaAtributo").value;
-		console.log("desde edit, index: " + indexFilaAtributo);
-		if(indexFilaAtributo == -1) {
-			dataTableCDT.addRow("tablaAtributo", row);
-			row[10] = 0;
-		} else {
-			dataTableCDT.editRow("tablaAtributo", indexFilaAtributo, row);
-			row[10] = document.getElementById("idAtributo").value;
-		}
+	return row;
+}
 
-		document.getElementById("atributo.nombre").value = null;
-		document.getElementById("atributo.descripcion").value = null;
-		document.getElementById("atributo.tipoDato").selectedIndex = 0;
-		document.getElementById("atributo.otroTipoDato").value = null;
-		document.getElementById("atributo.longitud").value = null;
-		document.getElementById("atributo.formatoArchivo").value = null;
-		document.getElementById("atributo.tamanioArchivo").value = null;
-		document.getElementById("atributo.unidadTamanio").selectedIndex = 0;
-		document.getElementById("atributo.obligatorio").checked = false;
-		
-		document.getElementById("trOtro").style.display = 'none';
-		document.getElementById("trLongitud").style.display = 'none';
-		document.getElementById("trFormatoArchivo").style.display = 'none';
-		document.getElementById("trTamanioArchivo").style.display = 'none';
-		$('#atributoDialog').dialog('close');
-	} else {
-		return false;
-	}
-};
-
-function cancelarRegistrarAtributo() {
-	// Se limpian los campos
+function limpiarCamposEmergente() {
 	document.getElementById("atributo.nombre").value = null;
 	document.getElementById("atributo.descripcion").value = null;
 	document.getElementById("atributo.tipoDato").selectedIndex = 0;
@@ -159,16 +157,16 @@ function cancelarRegistrarAtributo() {
 	document.getElementById("atributo.unidadTamanio").selectedIndex = 0;
 	document.getElementById("atributo.obligatorio").checked = false;
 	
+	document.getElementById("trOtro").style.display = 'none';
 	document.getElementById("trLongitud").style.display = 'none';
 	document.getElementById("trFormatoArchivo").style.display = 'none';
 	document.getElementById("trTamanioArchivo").style.display = 'none';
-	document.getElementById("trOtro").style.display = 'none';
+}
 
-
-	// Se cierra la emergente
+function cancelarRegistrarAtributo() {
+	limpiarCamposEmergente();
 	$('#atributoDialog').dialog('close');
-};
-
+}
 
 
 
@@ -177,7 +175,7 @@ function agregarMensaje(mensaje) {
 };
 
 function esValidoAtributo(idTabla, nombre, descripcion, tipoDato, otroTipoDato,
-		longitud, formatoArchivo, tamanioArchivo, unidadTamanio) {
+		longitud, formatoArchivo, tamanioArchivo, unidadTamanio, indexRow) {
 	
 	var tipoDatoTexto = tipoDato.options[tipoDato.selectedIndex].text;
 	
@@ -253,7 +251,7 @@ function esValidoAtributo(idTabla, nombre, descripcion, tipoDato, otroTipoDato,
 		}
 	}
 	
-	if (dataTableCDT.exist(idTabla, nombre, 0, "", "Atributo")) {
+	if (dataTableCDT.exist(idTabla, nombre, 0, "", "Atributo", indexRow)) {
 		agregarMensaje("Este atributo ya está en la entidad.");
 		return false;
 	}

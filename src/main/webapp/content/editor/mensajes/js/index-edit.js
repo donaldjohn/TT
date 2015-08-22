@@ -7,34 +7,7 @@ $(document)
 					// Se oculta el botón de editar de la redacción
 					document.getElementById("botonEditar").style.display = 'none';
 
-					// Se construye la tabla de los parámetros
-					var json = $("#jsonParametros").val();
-					console.log("json: " + json);
-					if (json !== "" && json !== "[]") {
-						var parsedJson = JSON.parse(json);
-
-						$
-								.each(
-										parsedJson,
-										function(i, item) {
-											var parametro = [
-													item.nombre,
-													"<textarea rows='2' class='inputFormulario ui-widget' id='idDescripcionParametro"
-															+ i
-															+ "'"
-															+ "maxlength='500'>"
-															+ item.descripcion
-															+ "</textarea> " ];
-											agregarFila(parametro);
-										});
-						// Se hace visible la sección de parámetros
-						document.getElementById("seccionParametros").style.display = '';
-						/*document.getElementById("inputor").readOnly = true;
-						document.getElementById("inputor").id = "inputorreadOnly";
-						document.getElementById("botonEditar").style.display = '';*/
-					} else {
-						document.getElementById("seccionParametros").style.display = 'none';
-					}
+					cargarParametros();
 					try {
 						token.cargarListasToken();
 					} catch (err) {
@@ -91,6 +64,7 @@ function verificarEsParametrizado() {
 		verificarParametros();
 	} else {
 		console.log("no contiene parametros");
+		limpiarParametros();
 	}
 	
 }
@@ -114,11 +88,11 @@ function verificarParametros() {
 		}
 	});
 }
+
 function tablaToJson(idTable) {
 	var tabla = document.getElementById("parametros");
 	var arregloParametros = [];
 	var tam = tabla.rows.length;
-	console.log("tam: " + tam);
 	for (var i = 0; i < tam; i++) {
 		var nombre = tabla.rows[i].cells[0].innerHTML;
 		var descripcion = document.getElementById("idDescripcionParametro" + i).value;
@@ -138,7 +112,7 @@ function agregarFila(fila) {
 	var totalFilas = tabla.rows.length;
 
 	// Se crea un <tr> vacío y se agrega en la última posición
-	var row = tabla.insertRow(totalFilas - 1);
+	var row = tabla.insertRow(totalFilas);
 
 	// Se agregan las celdas vacías en la primer y última posición
 	var cell1 = row.insertCell(0);
@@ -182,32 +156,56 @@ function cancelarRegistroComentarios() {
 }
 
 function mostrarCamposParametros(json) {
-	
-	document.getElementById("parametros").innerHTML = "";
-		if(json != null && json.length > 0) {
-			
-			$
-					.each(
-							json,
-							function(i, item) {
-								var parametro = [
-										item.nombre,
-										"<textarea rows='2' class='inputFormulario ui-widget' id='idDescripcionParametro"
-												+ i
-												+ "'"
-												+ "maxlength='500'>"
-												+ item.descripcion
-												+ "</textarea> " ];
-								agregarFila(parametro);
-							});
-			
-			document.getElementById("seccionParametros").style.display = '';
-			/*document.getElementById("inputor").readOnly = true;
-			document.getElementById("inputor").id = "inputorreadOnly";
-			document.getElementById("botonEditar").style.display = '';*/
-		} else {
-			document.getElementById("seccionParametros").style.display = 'none';
-		}
+	limpiarParametros();
+	if(json != null && json.length > 0) {
+		
+		$
+				.each(
+						json,
+						function(i, item) {
+							var parametro = [
+									item.nombre,
+									"<textarea rows='2' class='inputFormulario ui-widget' id='idDescripcionParametro"
+											+ i
+											+ "'"
+											+ "maxlength='500'>"
+											+ item.descripcion
+											+ "</textarea> " ];
+							agregarFila(parametro);
+						});
+		
+		document.getElementById("seccionParametros").style.display = '';
+	}
 }
 
+function limpiarParametros() {
+	document.getElementById("parametros").innerHTML = "";
+	document.getElementById("seccionParametros").style.display = 'none';
+}
 
+function cargarParametros() {
+	// Se construye la tabla de los parámetros
+	var json = $("#jsonParametros").val();
+	if (json !== "" && json !== "[]") {
+		var parsedJson = JSON.parse(json);
+
+		$
+				.each(
+						parsedJson,
+						function(i, item) {
+							var parametro = [
+									item.nombre,
+									"<textarea rows='2' class='inputFormulario ui-widget' id='idDescripcionParametro"
+											+ i
+											+ "'"
+											+ "maxlength='500'>"
+											+ item.descripcion
+											+ "</textarea> " ];
+							agregarFila(parametro);
+						});
+		// Se hace visible la sección de parámetros
+		document.getElementById("seccionParametros").style.display = '';
+	} else {
+		document.getElementById("seccionParametros").style.display = 'none';
+	}
+}

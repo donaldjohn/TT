@@ -166,7 +166,7 @@
 			</div>
 			<br />
 			<div align="center">
-				<input type="button" onclick="registrarAtributo()" value="Aceptar" /> <input
+				<input type="button" onclick="verificarRegistroModificacion()" value="Aceptar" /> <input
 					type="button" onclick="cancelarRegistrarAtributo()" value="Cancelar" />
 			</div>
 		</s:form>
