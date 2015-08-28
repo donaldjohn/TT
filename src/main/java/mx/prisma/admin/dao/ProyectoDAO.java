@@ -82,5 +82,26 @@ public class ProyectoDAO extends GenericDAO {
 			return proyectos.get(0);
 		}
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<Proyecto> consultarProyectos() {
+		List<Proyecto> proyectos = null;
+		try {
+			session.beginTransaction();
+			Query query = session
+					.createQuery("from Proyecto");
+			proyectos = query.list();
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
+		if (proyectos == null) {
+			return null;
+		} else {
+			return proyectos;
+		}
+	}
 }
 

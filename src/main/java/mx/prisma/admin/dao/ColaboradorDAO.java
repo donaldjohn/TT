@@ -7,7 +7,6 @@ import mx.prisma.dao.GenericDAO;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 
 public class ColaboradorDAO extends GenericDAO {
 	
