@@ -6,7 +6,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.dao.ColaboradorDAO;
+import mx.prisma.admin.dao.EstadoProyectoDAO;
 import mx.prisma.admin.dao.ProyectoDAO;
+import mx.prisma.admin.model.EstadoProyecto;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
@@ -75,6 +77,15 @@ public class ProyectoBs {
 					new String[] { "50", "caracteres" }, "model.nombre");
 		}
 				
+	}
+
+	public static List<EstadoProyecto> consultarEstadosProyecto() {
+		List<EstadoProyecto> estados = new EstadoProyectoDAO().consultarEstadosProyecto();
+		if(estados == null) {
+			throw new PRISMAException("No se pueden consultar los estados de proyectos.",
+					"MSG13");
+		}
+		return estados;
 	}
 
 }

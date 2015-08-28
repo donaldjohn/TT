@@ -4,9 +4,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import mx.prisma.admin.bs.ColaboradorBs;
 import mx.prisma.admin.bs.ProyectoBs;
-import mx.prisma.admin.model.Colaborador;
+import mx.prisma.admin.dao.EstadoProyectoDAO;
+import mx.prisma.admin.model.EstadoProyecto;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
@@ -31,12 +31,12 @@ ModelDriven<Proyecto>, SessionAware{
 	private static final long serialVersionUID = 1L;
 	private Map<String, Object> userSession;
 	private List<Proyecto> listProyectos;
+	private List<EstadoProyecto> listEstadosProyecto;
 	private Integer idSel;
 	
 	public String index() throws Exception {
 		try {
 			listProyectos = ProyectoBs.consultarProyectos();
-			System.out.println("proy: " + listProyectos.get(0).getClave());
 			@SuppressWarnings("unchecked")
 			Collection<String> msjs = (Collection<String>) SessionManager
 					.get("mensajesAccion");
@@ -55,6 +55,7 @@ ModelDriven<Proyecto>, SessionAware{
 
 		String resultado = null;
 		try {
+			buscarCatalogos();
 			resultado = EDITNEW;
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
@@ -68,9 +69,18 @@ ModelDriven<Proyecto>, SessionAware{
 		return resultado;
 	}
 	
+	private void buscarCatalogos() {
+		listEstadosProyecto = ProyectoBs.consultarEstadosProyecto();
+		
+	}
+
 	public String create() throws Exception {
 		String resultado = null;
 		try {
+			System.out.println("estado: " + model.getEstadoProyecto().getNombre());
+			EstadoProyecto estado = new EstadoProyectoDAO().consultarEstadoProyecto(model.getEstadoProyecto().getId());
+			model.setEstadoProyecto(estado);
+			
 			ProyectoBs.registrarProyecto(model);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",
@@ -80,6 +90,49 @@ ModelDriven<Proyecto>, SessionAware{
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			resultado = editNew();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+	
+	public String edit() throws Exception {
+
+		String resultado = null;
+		try {
+			buscarCatalogos();
+			resultado = EDIT;
+		} catch (PRISMAException pe) {
+			System.err.println(pe.getMessage());
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			e.printStackTrace();
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+
+	public String update() throws Exception {
+		String resultado = null;
+		try {
+			EstadoProyecto estado = new EstadoProyectoDAO().consultarEstadoProyecto(model.getEstadoProyecto().getId());
+			model.setEstadoProyecto(estado);
+			
+			//ProyectoBs.registrarProyecto(model);
+			resultado = SUCCESS;
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"Proyecto", "modificado" }));
+
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = edit();
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
@@ -118,6 +171,15 @@ ModelDriven<Proyecto>, SessionAware{
 	public void setSession(Map<String, Object> session) {
 		
 	}
+
+	public List<EstadoProyecto> getListEstadosProyecto() {
+		return listEstadosProyecto;
+	}
+
+	public void setListEstadosProyecto(List<EstadoProyecto> listEstadosProyecto) {
+		this.listEstadosProyecto = listEstadosProyecto;
+	}
+	
 	
 
 }

@@ -21,9 +21,13 @@
 	includeContext="true" />
 <sj:head debug="false" jqueryui="true" jquerytheme="smoothness-prisma"
 	customBasepath="%{urlRutaContexto}" locale="es" />
-
+<![CDATA[
+	<script src="${pageContext.request.contextPath}/resources/template/themes/smoothness-prisma/external/jquery/jquery.js"></script>
+  	<script src="${pageContext.request.contextPath}/resources/template/themes/smoothness-prisma/jquery-ui.js"></script>
+]]>
 <decorator:head />
 <![CDATA[
+	
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/menu.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/dataTable.js"></script>

@@ -38,7 +38,7 @@
 					</s:iterator>		
 					</td>
 					<td align="center">
-						<s:url var="urlEditar" value="%{#pageContext.request.contextPath}/personal/%{#proyecto.id}/edit"/>			
+						<s:url var="urlEditar" value="%{#pageContext.request.contextPath}/proyectos/%{#proyecto.id}/edit"/>			
 						<s:a href="%{urlEditar}">
 							<img id="" class="button" title="Modificar Proyecto"
 									src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
@@ -58,7 +58,7 @@
 	<br />
 	<div align="center">
 		<button class="boton" formmethod="post"
-			onclick="location.href='${pageContext.request.contextPath}/personal/new'">
+			onclick="location.href='${pageContext.request.contextPath}/proyectos/new'">
 			<s:text name="Registrar"></s:text>
 		</button>
 	</div>
@@ -77,20 +77,6 @@
 			</div>
 		</s:form>
 	</sj:dialog>
-	<!-- EMERGENTE ERROR REFERENCIAS -->
-	<sj:dialog id="mensajeReferenciasDialog" title="Confirmación" autoOpen="false"
-		minHeight="100" minWidth="700" modal="true" draggable="true">
-		<s:form autocomplete="off" id="frmConfirmarEliminacion" name="frmConfirmarEliminacionName" theme="simple">
-				<div class="seccion">
-				<s:text name="MSG14"/>
-				<div id="elementosReferencias"></div>
-				</div>
-			<br />
-			<div align="center">
-				<input type="button" onclick="cerrarMensajeReferencias()" value="Aceptar"/> 
-			</div>
-		</s:form>
-	</sj:dialog>	
 </body>
 </html>
 </jsp:root>
