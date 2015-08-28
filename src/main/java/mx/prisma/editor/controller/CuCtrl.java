@@ -229,7 +229,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			CuBs.preAlmacenarObjetosToken(model);
 			Actualizacion actualizacion = new Actualizacion(new Date(),
 					comentario, model,
-					SessionManager.consultarColaboradorActivo());
+					SessionManager.consultarColaboradorProyectoActivo());
 
 			CuBs.modificarCasoUso(model, actualizacion);
 			resultado = SUCCESS;

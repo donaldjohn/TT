@@ -185,7 +185,7 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 			}
 			Actualizacion actualizacion = new Actualizacion(new Date(),
 					comentario, model,
-					SessionManager.consultarColaboradorActivo());
+					SessionManager.consultarColaboradorProyectoActivo());
 
 			EntidadBs.modificarEntidad(model, actualizacion);
 

@@ -173,7 +173,7 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 
 			Actualizacion actualizacion = new Actualizacion(new Date(),
 					comentario, model,
-					SessionManager.consultarColaboradorActivo());
+					SessionManager.consultarColaboradorProyectoActivo());
 			MensajeBs.modificarMensaje(model, actualizacion);
 			resultado = SUCCESS;
 

@@ -278,7 +278,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 			
 			Actualizacion actualizacion = new Actualizacion(new Date(),
 					comentario, model,
-					SessionManager.consultarColaboradorActivo());
+					SessionManager.consultarColaboradorProyectoActivo());
 
 			ReglaNegocioBs.modificarReglaNegocio(model, actualizacion);
 			resultado = SUCCESS;

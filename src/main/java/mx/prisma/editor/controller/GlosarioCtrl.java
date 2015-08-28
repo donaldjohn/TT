@@ -170,7 +170,7 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 
 			Actualizacion actualizacion = new Actualizacion(new Date(),
 					comentario, model,
-					SessionManager.consultarColaboradorActivo());
+					SessionManager.consultarColaboradorProyectoActivo());
 			System.out.println("comentario: " + comentario);
 			TerminoGlosarioBs.modificarTerminoGlosario(model, actualizacion);
 			resultado = SUCCESS;

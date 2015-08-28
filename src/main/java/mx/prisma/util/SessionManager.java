@@ -5,15 +5,20 @@ import java.util.Deque;
 import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import mx.prisma.admin.dao.ColaboradorDAO;
 import mx.prisma.admin.dao.ColaboradorProyectoDAO;
 import mx.prisma.admin.dao.ProyectoDAO;
+import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.ColaboradorProyecto;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Modulo;
+
+import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionContext;
 
@@ -93,7 +98,7 @@ public class SessionManager {
 		return modulo;
 	}
 	
-	public static ColaboradorProyecto consultarColaboradorActivo() throws Exception{
+	public static ColaboradorProyecto consultarColaboradorProyectoActivo() throws Exception{
 		Integer idColaboradorProyecto = 1; //Se debe obtener de sesión
 		ColaboradorProyecto colaboradorProyecto;
 
@@ -102,6 +107,21 @@ public class SessionManager {
 			throw new PRISMAException("No se puede consultar el colaborador", "MSG13");
 		}
 		return colaboradorProyecto;
+	}
+	
+	public static Colaborador consultarColaboradorActivo() throws Exception{
+		HttpSession session = ServletActionContext.getRequest().getSession(false); 
+		Colaborador colaborador = null;
+		String curpColaborador = "";
+		if (session != null && session.getAttribute("colaboradorCURP") != null) {
+			curpColaborador = (String)  session.getAttribute("colaboradorCURP");
+		}
+		
+		colaborador = new ColaboradorDAO().consultarColaborador(curpColaborador);
+		if(colaborador == null) {
+			throw new PRISMAException("No se puede consultar el colaborador", "MSG13");
+		}
+		return colaborador;
 	}
 
 	public static CasoUso consultarCasoUsoActivo() {
