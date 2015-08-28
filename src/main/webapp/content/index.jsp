@@ -17,7 +17,7 @@
 	<s:actionerror theme="jquery" />
 		
 	<p class="instrucciones">Ingrese la información solicitada.</p>
-	<s:form autocomplete="off" theme="simple" action = "%{pageContext.request.contextPath}/login!verificar">
+	<s:form autocomplete="off" theme="simple" action = "%{pageContext.request.contextPath}/acces!login">
 	<div class="formulario">
 			<div class="tituloFormulario">Iniciar sesión</div>
 			<table class="seccion">

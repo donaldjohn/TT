@@ -7,7 +7,7 @@ import mx.prisma.admin.model.Colaborador;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
 
-public class LoginBs {
+public class AccesBs {
 
 	public static Colaborador verificarLogin(String userName, String password) {
 		Colaborador colaborador = null;

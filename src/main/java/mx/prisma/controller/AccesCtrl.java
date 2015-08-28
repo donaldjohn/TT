@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import mx.prisma.admin.model.Colaborador;
-import mx.prisma.bs.LoginBs;
+import mx.prisma.bs.AccesBs;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
 import mx.prisma.util.PRISMAException;
@@ -18,10 +18,13 @@ import org.apache.struts2.interceptor.SessionAware;
 import com.opensymphony.xwork2.ActionContext;
 
 
-@Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "proyectos" } )
+@Results({ 
+	@Result(name = "ADMINISTRADOR", type = "redirectAction", params = {
+		"actionName", "proyectos" } ),
+	@Result(name = "COLABORADOR", type = "redirectAction", params = {
+				"actionName", "editor/proyectos" } )	
 })
-public class LoginCtrl extends ActionSupportPRISMA implements SessionAware {
+public class AccesCtrl extends ActionSupportPRISMA implements SessionAware {
 	/** 
 	 * 
 	 */
@@ -31,10 +34,14 @@ public class LoginCtrl extends ActionSupportPRISMA implements SessionAware {
 	private String password;
 	
 	public String index() {
-		System.out.println("index");
+		String resultado = INDEX;
 		try {
-			if (LoginBs.isLogged(userSession)) {
-				return SUCCESS;
+			if (AccesBs.isLogged(userSession)) {
+				if (SessionManager.consultarColaboradorActivo().isAdministrador()) {
+					resultado = "ADMINISTRADOR"; 
+				} else {
+					resultado =  "COLABORADOR";
+				}
 			}
 			@SuppressWarnings("unchecked")
 			Collection<String> msjs = (Collection<String>) SessionManager
@@ -47,12 +54,10 @@ public class LoginCtrl extends ActionSupportPRISMA implements SessionAware {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return INDEX;
+		return resultado;
 	}
 	
-	public String verificar() throws Exception {
-		System.out.println("login");
-
+	public String login() throws Exception {
 		String resultado = null;
 		Colaborador colaborador = null;
 		Map<String, Object> session = null;
@@ -60,29 +65,39 @@ public class LoginCtrl extends ActionSupportPRISMA implements SessionAware {
 			if (userSession != null) {
 				userSession.clear();
 			}
-			colaborador = LoginBs.verificarLogin(userName, password);
+			colaborador = AccesBs.verificarLogin(userName, password);
 			session = ActionContext.getContext().getSession();		
 			session.put("login", true);
 			session.put("colaboradorCURP", colaborador.getCurp());
 			setSession(session);
-			resultado = SUCCESS;
+			if (SessionManager.consultarColaboradorActivo().isAdministrador()) {
+				resultado = "ADMINISTRADOR"; 
+			} else {
+				resultado = "COLABORADOR";
+			}
 			
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			resultado = index();
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
-			resultado = SUCCESS;
+			resultado = index();
 		} catch (Exception e) {
 			ErrorManager.agregaMensajeError(this, e);
-			resultado = SUCCESS;
+			resultado = index();
 		}
 		return resultado;
 	}
+	
+	public String logout() throws Exception {
+		if (userSession != null) {
+			userSession.clear();
+		}
+		return index();
+	}
 
 	public void setSession(Map<String, Object> session) {
-		this.userSession = session;
-		
+		this.userSession = session;	
 	}
 
 	public Map<String, Object> getUserSession() {
