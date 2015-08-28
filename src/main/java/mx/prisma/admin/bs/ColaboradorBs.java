@@ -117,15 +117,17 @@ public class ColaboradorBs {
 
 	public static void enviarCorreo(Colaborador model,
 			String contrasenaAnterior, String correoAnterior) throws AddressException, MessagingException {
+		System.out.println(contrasenaAnterior.length() + ", " + model.getContrasenia().length());
+		System.out.println(correoAnterior + ", " + model.getCorreoElectronico());
 		if(contrasenaAnterior == null || correoAnterior == null) {
-			Correo.enviarCorreo(model, 0);
-			System.out.println("Se envia correo caso 1");
-		} else if(contrasenaAnterior != model.getContrasenia()) {
-			Correo.enviarCorreo(model, 0);
-			System.out.println("Se envia correo caso 2");
-		} else if(correoAnterior != model.getCorreoElectronico()) {
-			Correo.enviarCorreo(model, 0);
-			System.out.println("Se envia correo caso 3");
+			//Correo.enviarCorreo(model, 0);
+			System.out.println("Se envia correo porque es registro");
+		} else if(!contrasenaAnterior.equals(model.getContrasenia())) {
+			//Correo.enviarCorreo(model, 0);
+			System.out.println("Se envia correo porque cambio la contrasena");
+		} else if(!correoAnterior.equals(model.getCorreoElectronico())) {
+			//Correo.enviarCorreo(model, 0);
+			System.out.println("Se envia correo porque cambio el correo electronico");
 		}
 	}
 
@@ -174,9 +176,9 @@ public class ColaboradorBs {
 	}
 
 	private static boolean esLiderProyecto(Colaborador model) {
-		List<ColaboradorProyecto> colaboradorProyecto = null;
-		colaboradorProyecto = new ColaboradorProyectoDAO().consultarLiderColaboradoresProyecto(model);
-		return colaboradorProyecto == null ? true : false;
+		Set<ColaboradorProyecto> colaboradoresProyecto = null;
+		colaboradoresProyecto = model.getColaborador_proyectos();
+		return colaboradoresProyecto == null ? true : false;
 	}
 
 	public static List<String> verificarProyectosLider(Colaborador model) {
@@ -189,7 +191,7 @@ public class ColaboradorBs {
 		for(ColaboradorProyecto cp : colaboradoresProyecto) {
 			String linea = "";
 			String proyecto = cp.getProyecto().getClave() + " " + cp.getProyecto().getNombre();
-			linea = "Es líder del Proyecto " + proyecto;
+			linea = "Esta persona es líder del Proyecto " + proyecto + ".";
 			setProyectos.add(linea);
 		}
 		

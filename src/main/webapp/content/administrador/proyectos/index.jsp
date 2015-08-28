@@ -5,14 +5,14 @@
 		contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" />
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Personal</title>
+<title>Proyectos</title>
 <![CDATA[
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/administrador/personal/js/index.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/administrador/proyectos/js/index.js"></script>
 ]]>
 </head>
 
 <body>
-	<h1>Gestionar Personal</h1>
+	<h1>Gestionar Proyectos</h1>
 	<s:actionmessage theme="jquery"/>
 	<s:actionerror theme="jquery"/>
 	
@@ -21,24 +21,31 @@
 	<div class="form">
 		<table id="gestion" class="tablaGestion" cellspacing="0" width="100%">
 			<thead>
-				<th style="width: 30%;"><s:text name="colCURP"/></th>
-				<th style="width: 50%;"><s:text name="colNombre"/></th>
+				<th style="width: 40%;"><s:text name="colProyecto"/></th>
+				<th style="width: 40%;"><s:text name="colLiderProyecto"/></th>
 				<th style="width: 20%;"><s:text name="colAcciones"/></th>
 			</thead>
 			<tbody>
-			<s:iterator value="listPersonal" var="persona">
+			<s:iterator value="listProyectos" var="proyecto">
 				<tr>
-					<td><s:property value="%{#persona.curp}"/></td>		
-					<td><s:property value="%{#persona.nombre + ' ' + #persona.apellidoPaterno + ' ' + #persona.apellidoMaterno}"/></td>
+					<td><s:property value="%{#proyecto.clave + ' ' + #proyecto.nombre}"/></td>
+					<td>
+					<s:iterator value="%{#proyecto.proyecto_colaboradores}" var="proy_col">
+						<s:if test="%{#proy_col.rol.nombre == 'Líder'}">
+							<s:property value="%{#proy_col.colaborador.nombre + ' ' + #proy_col.colaborador.apellidoPaterno + ' ' + #proy_col.colaborador.apellidoMaterno}"/>
+							<s:set var="breakLoop" value="%{true}" />
+						</s:if>
+					</s:iterator>		
+					</td>
 					<td align="center">
-						<s:url var="urlEditar" value="%{#pageContext.request.contextPath}/personal/%{#persona.curp}/edit"/>			
+						<s:url var="urlEditar" value="%{#pageContext.request.contextPath}/personal/%{#proyecto.id}/edit"/>			
 						<s:a href="%{urlEditar}">
-							<img id="" class="button" title="Modificar Persona"
+							<img id="" class="button" title="Modificar Proyecto"
 									src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
 						</s:a>
 						${blanks}
-						<s:a onclick="return verificarEliminacion('%{#persona.curp}');">
-						<img id="" class="button" title="Eliminar Persona"
+						<s:a onclick="return verificarEliminacion(%{#proyecto.id});">
+						<img id="" class="button" title="Eliminar Proyecto"
 								src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" /></s:a>		
 					</td>
 				</tr>

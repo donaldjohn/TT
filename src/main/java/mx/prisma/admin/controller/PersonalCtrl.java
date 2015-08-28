@@ -28,8 +28,6 @@ import com.opensymphony.xwork2.ModelDriven;
 public class PersonalCtrl extends ActionSupportPRISMA implements
 ModelDriven<Colaborador>, SessionAware{
 	private Colaborador model;
-	
-
 	private static final long serialVersionUID = 1L;
 	private Map<String, Object> userSession;
 	private List<Colaborador> listPersonal;
@@ -157,7 +155,6 @@ ModelDriven<Colaborador>, SessionAware{
 	
 	public String verificarProyectosLider() {
 		try {
-			System.out.println("curp: " + model.getCurp());
 			proyectosLider = ColaboradorBs.verificarProyectosLider(model);
 		} catch (Exception e) {
 			e.printStackTrace();

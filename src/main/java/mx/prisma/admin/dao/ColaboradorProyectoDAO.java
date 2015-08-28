@@ -50,7 +50,7 @@ public class ColaboradorProyectoDAO extends GenericDAO {
 			session.beginTransaction();
 			Query query = session
 					.createQuery("from ColaboradorProyecto"
-							+ " where colaborador.curp = :curp AND rol.id = : idLider");
+							+ " where colaborador.curp = :curp AND rol.id = :idLider");
 			query.setParameter("curp", colaborador.getCurp());
 			query.setParameter("idLider", RolEnum.consultarIdRol(RolEnum.Rol.LIDER));
 			colaboradoresProyecto = query.list();
