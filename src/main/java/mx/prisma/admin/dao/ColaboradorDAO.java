@@ -1,9 +1,13 @@
 package mx.prisma.admin.dao;
 
+import java.util.List;
+
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.dao.GenericDAO;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 
 public class ColaboradorDAO extends GenericDAO {
 	
@@ -59,5 +63,26 @@ public class ColaboradorDAO extends GenericDAO {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 		}		
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Colaborador> consultarColaboradores() {
+		List<Colaborador> colaboradores = null;
+		try {
+			session.beginTransaction();
+			Query query = session
+					.createQuery("from Colaborador");
+			colaboradores = query.list();
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
+		if (colaboradores == null) {
+			return null;
+		} else {
+			return colaboradores;
+		}
 	}
 }

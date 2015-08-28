@@ -113,10 +113,10 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 			resultado = editNew();
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
-			resultado = SUCCESS;
+			resultado = index();
 		} catch (Exception e) {
 			ErrorManager.agregaMensajeError(this, e);
-			resultado = SUCCESS;
+			resultado = index();
 		}
 		return resultado;
 	}
