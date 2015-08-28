@@ -84,4 +84,25 @@ public class ColaboradorDAO extends GenericDAO {
 			return colaboradores;
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	public Colaborador consultarColaboradorCorreo(String correo) {
+		List<Colaborador> colaboradores = null;
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("FROM Colaborador WHERE correoElectronico = :correo");
+			query.setParameter("correo", correo);
+			colaboradores = query.list();
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
+		if (colaboradores == null || colaboradores.isEmpty()) {
+			return null;
+		} else {
+			return colaboradores.get(0);
+		} 
+	}
 }

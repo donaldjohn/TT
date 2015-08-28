@@ -3,22 +3,22 @@
     "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
     "http://struts.apache.org/dtds/struts-2.0.dtd">
 
-<struts>	
+<struts>
 	<!-- Permite utilizar los recursos de global.properties -->
 	<constant name="struts.custom.i18n.resources" value="global" />
-	
+
 	<!-- Activa el modo desarrollador -->
 	<constant name="struts.devMode" value="false" />
-	
-	<!-- Permite definir mas de un ActionMapper, si el primero no obtiene una respuesta correcta, se utilizará
-	el siguiente mapper -->
+
+	<!-- Permite definir mas de un ActionMapper, si el primero no obtiene una 
+		respuesta correcta, se utilizará el siguiente mapper -->
 	<constant name="struts.mapper.class" value="rest" />
 	<!-- <constant name="struts.mapper.composite" value="rest,struts" /> -->
 
 	<!-- struts2 busca paquetes que terminen, en su nombre, con las siguientes 
 		cadenas en busca de acciones -->
 	<constant name="struts.convention.package.locators" value="controller" />
-	
+
 	<!-- Indica el sufijo del nombre de los archivos para las acciones no mapeadas 
 		explicitamente -->
 	<constant name="struts.convention.action.suffix" value="Ctrl" />
@@ -26,17 +26,18 @@
 	<!-- Mapea todas las acciones encontradas aun y cuando no exista la anotacion 
 		correspondiente -->
 	<constant name="struts.convention.action.mapAllMatches" value="true" />
-	
-	<constant name="struts.convention.default.parent.package" value="prisma"/>
-	
+
+	<constant name="struts.convention.default.parent.package"
+		value="prisma" />
+
 	<!-- Ruta donde buscara los resultados -->
 	<constant name="struts.convention.result.path" value="/content" />
-	
+
 	<!-- Se habilita el DMI -->
 	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
-	
+
 	<constant name="struts.mapper.idParameterName" value="idSel" />
-	
+
 	<package name="prisma" extends="rest-default,json-default">
 		<interceptors>
 
@@ -58,8 +59,8 @@
 				<!-- Configura el idioma especificado en una sesión como el de la petición. 
 					Además, también buscará el parámetro request_locale para el cambio de idioma -->
 				<interceptor-ref name="i18n" />
-				
-				<interceptor-ref name="fileUpload"/>
+
+				<interceptor-ref name="fileUpload" />
 
 				<!-- Permite la ejecución del método prepare -->
 				<interceptor-ref name="prepare" />
@@ -67,10 +68,10 @@
 				<!-- Hace disponibles todas las propiedades del action previo al action 
 					actual. -->
 				<interceptor-ref name="chain" />
-				
-				<interceptor-ref name="profiling"/>
-				
-				<interceptor-ref name="actionMappingParams"/>
+
+				<interceptor-ref name="profiling" />
+
+				<interceptor-ref name="actionMappingParams" />
 
 				<!-- Almacena los mensajes, mensajes de error y de error de campos en 
 					la sesión de HTTP, tal que permite que sean recuperables en un momento posterior. 
@@ -103,7 +104,7 @@
 				</interceptor-ref>
 
 				<interceptor-ref name="rest" />
-				
+
 				<!-- Agrega mensajes de error a aquellos campos donde haya error de conversion 
 					de tipos -->
 				<interceptor-ref name="conversionError" />
@@ -129,6 +130,6 @@
 		</interceptors>
 
 		<default-interceptor-ref name="stack" />
-		
+
 	</package>
 </struts>

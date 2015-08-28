@@ -30,6 +30,7 @@ public class Colaborador implements java.io.Serializable {
 	private String apellidoMaterno;
 	private String correoElectronico;
 	private String contrasenia;
+	private boolean administrador;
 	private Set<ColaboradorProyecto> colaborador_proyectos = new HashSet<ColaboradorProyecto>(0);
 	private Set<Telefono> telefonos = new HashSet<Telefono>(0);
 	
@@ -37,13 +38,14 @@ public class Colaborador implements java.io.Serializable {
 	}
 
 	public Colaborador(String curp, String nombre, String apellidoPaterno,
-			String apellidoMaterno, String correoElectronico, String contrasenia) {
+			String apellidoMaterno, String correoElectronico, String contrasenia, boolean administrador) {
 		this.curp = curp;
 		this.nombre = nombre;
 		this.apellidoPaterno = apellidoPaterno;
 		this.apellidoMaterno = apellidoMaterno;
 		this.correoElectronico = correoElectronico;
 		this.contrasenia = contrasenia;
+		this.administrador = administrador;
 	}
 
 	@Id
@@ -101,7 +103,7 @@ public class Colaborador implements java.io.Serializable {
 		this.contrasenia = contrasenia;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "colaborador", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "colaborador", cascade = CascadeType.ALL)
 	public Set<ColaboradorProyecto> getColaborador_proyectos() {
 		return colaborador_proyectos;
 	}
@@ -119,5 +121,15 @@ public class Colaborador implements java.io.Serializable {
 	public void setTelefonos(Set<Telefono> telefonos) {
 		this.telefonos = telefonos;
 	}
+	
+	@Column(name = "administrador", nullable = false, length = 20)
+	public boolean isAdministrador() {
+		return administrador;
+	}
 
+	public void setAdministrador(boolean administrador) {
+		this.administrador = administrador;
+	}
+
+	
 }

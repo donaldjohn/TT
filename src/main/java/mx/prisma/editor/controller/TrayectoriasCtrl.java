@@ -275,7 +275,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 			TrayectoriaBs.preAlmacenarObjetosToken(model);
 			Actualizacion actualizacion = new Actualizacion(new Date(),
 					comentario, model.getCasoUso(),
-					SessionManager.consultarColaboradorActivo());
+					SessionManager.consultarColaboradorProyectoActivo());
 
 			TrayectoriaBs.modificarTrayectoria(model, actualizacion);
 			resultado = SUCCESS;

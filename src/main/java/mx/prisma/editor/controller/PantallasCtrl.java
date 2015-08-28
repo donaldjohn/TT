@@ -255,7 +255,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 
 			Actualizacion actualizacion = new Actualizacion(new Date(),
 					comentario, model,
-					SessionManager.consultarColaboradorActivo());
+					SessionManager.consultarColaboradorProyectoActivo());
 
 			PantallaBs.modificarPantalla(model, actualizacion);
 			resultado = SUCCESS;
