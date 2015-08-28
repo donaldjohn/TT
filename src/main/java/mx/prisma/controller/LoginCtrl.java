@@ -19,7 +19,7 @@ import com.opensymphony.xwork2.ActionContext;
 
 
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "proyectos" })
+		"actionName", "proyectos" } )
 })
 public class LoginCtrl extends ActionSupportPRISMA implements SessionAware {
 	/** 
