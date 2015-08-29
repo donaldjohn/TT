@@ -2,8 +2,12 @@ package mx.prisma.bs;
 
 import java.util.Map;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+
 import mx.prisma.admin.dao.ColaboradorDAO;
 import mx.prisma.admin.model.Colaborador;
+import mx.prisma.util.Correo;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
 
@@ -46,6 +50,29 @@ public class AccesBs {
 			}
 		} 
 		return false;
+	}
+
+	public static void recuperarContrasenia(String userName) throws AddressException, MessagingException {
+		Colaborador colaborador = null;
+		if (Validador.esNuloOVacio(userName)) {
+			throw new PRISMAValidacionException(
+					"El usuario no ingresó el correo electrónico", "MSG4", null,
+					"userName");
+		}
+		if (!Validador.esCorreo(userName)) {
+			throw new PRISMAValidacionException("Colaborador no encontrado", "MSG33");
+
+		}
+		try {
+			colaborador = new ColaboradorDAO().consultarColaboradorCorreo(userName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (colaborador == null) {
+			throw new PRISMAValidacionException("Colaborador no encontrado", "MSG33");
+		}
+		Correo.enviarCorreo(colaborador, 1);
+		
 	}
 	
 }

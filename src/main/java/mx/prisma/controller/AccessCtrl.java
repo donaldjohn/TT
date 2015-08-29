@@ -16,15 +16,14 @@ import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
 
 import com.opensymphony.xwork2.ActionContext;
-
-
-@Results({ 
-	@Result(name = "ADMINISTRADOR", type = "redirectAction", params = {
-		"actionName", "proyectos" } ),
-	@Result(name = "COLABORADOR", type = "redirectAction", params = {
-				"actionName", "editor/proyectos" } )	
-})
-public class AccesCtrl extends ActionSupportPRISMA implements SessionAware {
+@Results({
+		@Result(name = "administrador", type = "redirectAction", params = {
+				"actionName", "proyectos" }),
+		@Result(name = "colaborador", type = "redirectAction", params = {
+				"actionName", "editor/proyectos" }),
+		@Result(name = "recover", type = "dispatcher", location = "recover.jsp")
+		})
+public class AccessCtrl extends ActionSupportPRISMA implements SessionAware {
 	/** 
 	 * 
 	 */
@@ -32,15 +31,16 @@ public class AccesCtrl extends ActionSupportPRISMA implements SessionAware {
 	private Map<String, Object> userSession;
 	private String userName;
 	private String password;
-	
+
 	public String index() {
 		String resultado = INDEX;
 		try {
-			if (AccesBs.isLogged(userSession)) {
-				if (SessionManager.consultarColaboradorActivo().isAdministrador()) {
-					resultado = "ADMINISTRADOR"; 
+			if (SessionManager.isLogged()) {
+				if (SessionManager.consultarColaboradorActivo()
+						.isAdministrador()) {
+					resultado = "administrador";
 				} else {
-					resultado =  "COLABORADOR";
+					resultado = "colaborador";
 				}
 			}
 			@SuppressWarnings("unchecked")
@@ -56,7 +56,7 @@ public class AccesCtrl extends ActionSupportPRISMA implements SessionAware {
 		}
 		return resultado;
 	}
-	
+
 	public String login() throws Exception {
 		String resultado = null;
 		Colaborador colaborador = null;
@@ -66,19 +66,41 @@ public class AccesCtrl extends ActionSupportPRISMA implements SessionAware {
 				userSession.clear();
 			}
 			colaborador = AccesBs.verificarLogin(userName, password);
-			session = ActionContext.getContext().getSession();		
+			session = ActionContext.getContext().getSession();
 			session.put("login", true);
 			session.put("colaboradorCURP", colaborador.getCurp());
 			setSession(session);
 			if (SessionManager.consultarColaboradorActivo().isAdministrador()) {
-				resultado = "ADMINISTRADOR"; 
+				resultado = "administrador";
 			} else {
-				resultado = "COLABORADOR";
+				resultado = "colaborador";
 			}
-			
+
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
-			resultado = index();
+			return index();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+		}
+		return resultado;
+	}
+
+	public String logout() {
+		if (userSession != null) {
+			userSession.clear();
+		}
+		return index();
+	}
+
+	public String recover() {
+		String resultado = null;
+		try {
+			resultado = "recover";
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = recover();
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
@@ -88,16 +110,31 @@ public class AccesCtrl extends ActionSupportPRISMA implements SessionAware {
 		}
 		return resultado;
 	}
-	
-	public String logout() throws Exception {
-		if (userSession != null) {
-			userSession.clear();
+
+	public String sendPassword() {
+		String resultado = null;
+		try {
+			AccesBs.recuperarContrasenia(userName);
+			resultado = INDEX;
+			addActionMessage(getText("MSG32"));
+
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = recover();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
 		}
-		return index();
+		return resultado;
 	}
 
 	public void setSession(Map<String, Object> session) {
-		this.userSession = session;	
+		this.userSession = session;
 	}
 
 	public Map<String, Object> getUserSession() {
@@ -123,7 +160,5 @@ public class AccesCtrl extends ActionSupportPRISMA implements SessionAware {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
-	
+
 }

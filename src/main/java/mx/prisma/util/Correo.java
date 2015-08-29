@@ -75,7 +75,7 @@ public class Correo {
 
             }
             if (sub == 1) {
-                message.setSubject("PRISMA: Contraseña nueva");
+                message.setSubject("PRISMA: Recuperación de contraseña");
                 contenido = "<center><div style=\"color: #084B8A; border: 1px dotted black;\"><table>"
                         + "<tr>"
                         + "<td>"

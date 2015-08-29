@@ -2,6 +2,7 @@ package mx.prisma.util;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -137,6 +138,18 @@ public class SessionManager {
 
 	public static void agregarIDCasoUso(int idCU) {
 		SessionManager.set(idCU, "idCU");
+	}
+	
+	public static boolean isLogged() {
+		HttpSession session = ServletActionContext.getRequest().getSession(false); 
+		boolean logged = false;
+		if (session != null) {
+			if (session.getAttribute("login") != null) {
+				logged = (Boolean) session.getAttribute("login");
+				return logged;
+			}
+		} 
+		return false;
 	}
 
 	public static void pushURL(HttpServletRequest request) throws Exception{
