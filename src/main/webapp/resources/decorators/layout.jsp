@@ -21,10 +21,7 @@
 	includeContext="true" />
 <sj:head debug="false" jqueryui="true" jquerytheme="smoothness-prisma"
 	customBasepath="%{urlRutaContexto}" locale="es" />
-<![CDATA[
-	<script src="${pageContext.request.contextPath}/resources/template/themes/smoothness-prisma/external/jquery/jquery.js"></script>
-  	<script src="${pageContext.request.contextPath}/resources/template/themes/smoothness-prisma/jquery-ui.js"></script>
-]]>
+
 <decorator:head />
 <![CDATA[
 	

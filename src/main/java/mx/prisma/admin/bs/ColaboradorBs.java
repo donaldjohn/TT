@@ -15,6 +15,7 @@ import mx.prisma.admin.dao.ColaboradorDAO;
 import mx.prisma.admin.dao.ColaboradorProyectoDAO;
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.ColaboradorProyecto;
+import mx.prisma.bs.RolEnum;
 import mx.prisma.util.Correo;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
@@ -175,13 +176,19 @@ public class ColaboradorBs {
 		
 	}
 
-	private static boolean esLiderProyecto(Colaborador model) {
-		Set<ColaboradorProyecto> colaboradoresProyecto = null;
-		colaboradoresProyecto = model.getColaborador_proyectos();
-		return colaboradoresProyecto == null ? true : false;
+	public static boolean esLiderProyecto(Colaborador model) {
+		Set<ColaboradorProyecto> colaboradoresProyecto = model.getColaborador_proyectos();
+		int idLider = RolEnum.consultarIdRol(RolEnum.Rol.LIDER);
+		for(ColaboradorProyecto cp : colaboradoresProyecto) {
+			if(cp.getRol().getId() == idLider) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public static List<String> verificarProyectosLider(Colaborador model) {
+		int idLider = RolEnum.consultarIdRol(RolEnum.Rol.LIDER);
 		List<String> proyectos = new ArrayList<String>();
 		Set<String> setProyectos = new HashSet<String>(0);
 		
@@ -189,10 +196,12 @@ public class ColaboradorBs {
 		colaboradoresProyecto = new ColaboradorProyectoDAO().consultarLiderColaboradoresProyecto(model);
 		
 		for(ColaboradorProyecto cp : colaboradoresProyecto) {
-			String linea = "";
-			String proyecto = cp.getProyecto().getClave() + " " + cp.getProyecto().getNombre();
-			linea = "Esta persona es líder del Proyecto " + proyecto + ".";
-			setProyectos.add(linea);
+			if(cp.getRol().getId() == idLider) {
+				String linea = "";
+				String proyecto = cp.getProyecto().getClave() + " " + cp.getProyecto().getNombre();
+				linea = "Esta persona es líder del Proyecto " + proyecto + ".";
+				setProyectos.add(linea);
+			}
 		}
 		
 		proyectos.addAll(setProyectos);

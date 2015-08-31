@@ -103,5 +103,18 @@ public class ProyectoDAO extends GenericDAO {
 			return proyectos;
 		}
 	}
+
+	public void eliminarProyecto(Proyecto model) {
+		try {
+			session.beginTransaction();
+			session.delete(model);
+			
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}	
+		
+	}
 }
 
