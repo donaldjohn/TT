@@ -43,6 +43,8 @@ public class ColaboradorDAO extends GenericDAO {
 		try {
 			session.beginTransaction();
 			colaborador = (Colaborador) session.get(Colaborador.class, curp);
+			if (colaborador != null)
+				colaborador.getColaborador_proyectos().size();
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();

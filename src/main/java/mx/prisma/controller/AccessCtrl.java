@@ -4,18 +4,21 @@ import java.util.Collection;
 import java.util.Map;
 
 import mx.prisma.admin.model.Colaborador;
-import mx.prisma.bs.AccesBs;
+import mx.prisma.bs.AccessBs;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.SessionManager;
 
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
 
 import com.opensymphony.xwork2.ActionContext;
+
+@InterceptorRef(value="defaultStack")
 @Results({
 		@Result(name = "administrador", type = "redirectAction", params = {
 				"actionName", "proyectos" }),
@@ -65,7 +68,7 @@ public class AccessCtrl extends ActionSupportPRISMA implements SessionAware {
 			if (userSession != null) {
 				userSession.clear();
 			}
-			colaborador = AccesBs.verificarLogin(userName, password);
+			colaborador = AccessBs.verificarLogin(userName, password);
 			session = ActionContext.getContext().getSession();
 			session.put("login", true);
 			session.put("colaboradorCURP", colaborador.getCurp());
@@ -114,7 +117,7 @@ public class AccessCtrl extends ActionSupportPRISMA implements SessionAware {
 	public String sendPassword() {
 		String resultado = null;
 		try {
-			AccesBs.recuperarContrasenia(userName);
+			AccessBs.recuperarContrasenia(userName);
 			resultado = INDEX;
 			addActionMessage(getText("MSG32"));
 

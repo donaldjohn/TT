@@ -10,14 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.ResultPath;
-import org.apache.struts2.convention.annotation.Results;
-import org.apache.struts2.interceptor.SessionAware;
-
-import com.opensymphony.xwork2.ModelDriven;
-
+import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.AccessBs;
 import mx.prisma.bs.AnalisisEnum.CU_Pantallas;
 import mx.prisma.editor.bs.AccionBs;
 import mx.prisma.editor.bs.ElementoBs;
@@ -35,6 +30,13 @@ import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.SessionManager;
 
+import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.ResultPath;
+import org.apache.struts2.convention.annotation.Results;
+import org.apache.struts2.interceptor.SessionAware;
+
+import com.opensymphony.xwork2.ModelDriven;
+
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 		"actionName", "pantallas" }),
@@ -50,6 +52,8 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	private Proyecto proyecto;
 	private Modulo modulo;
 	private Pantalla model;
+	private Colaborador colaborador;
+	
 	private List<Pantalla> listPantallas;
 	private List<TipoAccion> listTipoAccion;
 	private String jsonPantallasDestino;
@@ -72,6 +76,8 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 			// Se consulta el módulo
 			modulo = SessionManager.consultarModuloActivo();
 			proyecto = modulo.getProyecto();
+			colaborador = SessionManager.consultarColaboradorActivo();
+			AccessBs.verificarPermisos(proyecto, colaborador);
 			// Se agrega el módulo a la pantalla
 			model.setModulo(modulo);
 			listPantallas = PantallaBs.consultarPantallasModulo(modulo);
@@ -255,7 +261,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 
 			Actualizacion actualizacion = new Actualizacion(new Date(),
 					comentario, model,
-					SessionManager.consultarColaboradorProyectoActivo());
+					SessionManager.consultarColaboradorActivo());
 
 			PantallaBs.modificarPantalla(model, actualizacion);
 			resultado = SUCCESS;

@@ -6,14 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.ResultPath;
-import org.apache.struts2.convention.annotation.Results;
-import org.apache.struts2.interceptor.SessionAware;
-
-import com.opensymphony.xwork2.ModelDriven;
-
+import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.AccessBs;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ExtensionBs;
 import mx.prisma.editor.bs.TokenBs;
@@ -30,6 +25,13 @@ import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.SessionManager;
 
+import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.ResultPath;
+import org.apache.struts2.convention.annotation.Results;
+import org.apache.struts2.interceptor.SessionAware;
+
+import com.opensymphony.xwork2.ModelDriven;
+
 @ResultPath("/content/editor")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 		"actionName", "extensiones", "idCU", "%{idCU}" }) })
@@ -42,6 +44,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 	// Proyecto y módulo
 	private Proyecto proyecto;
 	private Modulo modulo;
+	private Colaborador colaborador;
 	private CasoUso casoUsoActivo;
 
 	private Extension model;
@@ -57,7 +60,10 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 	public String index() throws Exception {
 		try {
 			// Se consulta el módulo en sesión
+			proyecto = SessionManager.consultarProyectoActivo();
 			modulo = SessionManager.consultarModuloActivo();
+			colaborador = SessionManager.consultarColaboradorActivo();
+			//AccessBs.verificarPermisos(proyecto, colaborador);
 
 			// Se agrega a la sesión el caso de uso con base en el identificador
 			// del caso de uso

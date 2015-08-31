@@ -6,14 +6,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.ResultPath;
-import org.apache.struts2.convention.annotation.Results;
-import org.apache.struts2.interceptor.SessionAware;
-
-import com.opensymphony.xwork2.ModelDriven;
-
+import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.AccessBs;
 import mx.prisma.bs.AnalisisEnum.CU_Glosario;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.TerminoGlosarioBs;
@@ -24,6 +19,13 @@ import mx.prisma.util.ErrorManager;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.SessionManager;
+
+import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.ResultPath;
+import org.apache.struts2.convention.annotation.Results;
+import org.apache.struts2.interceptor.SessionAware;
+
+import com.opensymphony.xwork2.ModelDriven;
 
 @ResultPath("/content/editor/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
@@ -41,6 +43,7 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 	private Map<String, Object> userSession;
 	private Proyecto proyecto;
 	private TerminoGlosario model;
+	private Colaborador colaborador;
 	private List<TerminoGlosario> listTerminosGlosario;
 	private Integer idSel;
 	private List<String> elementosReferencias;
@@ -49,6 +52,8 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 	public String index() throws Exception {
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
+			colaborador = SessionManager.consultarColaboradorActivo();
+			AccessBs.verificarPermisos(proyecto, colaborador);
 			listTerminosGlosario = TerminoGlosarioBs.consultarTerminosGlosarioProyecto(proyecto);
 			model.setProyecto(proyecto);
 			@SuppressWarnings("unchecked")
@@ -170,7 +175,7 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 
 			Actualizacion actualizacion = new Actualizacion(new Date(),
 					comentario, model,
-					SessionManager.consultarColaboradorProyectoActivo());
+					SessionManager.consultarColaboradorActivo());
 			System.out.println("comentario: " + comentario);
 			TerminoGlosarioBs.modificarTerminoGlosario(model, actualizacion);
 			resultado = SUCCESS;

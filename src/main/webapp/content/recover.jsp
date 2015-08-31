@@ -5,21 +5,22 @@
 		contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" />
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Iniciar sesión</title>
+<title>Recuperar contraseña</title>
 <![CDATA[
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/index.js"></script>
 ]]>
 </head>
 <body>
-	<h1>Iniciar sesión</h1>
+	<h1>Recuperar contraseña</h1>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 	<s:form autocomplete="off" theme="simple"
-		action="%{pageContext.request.contextPath}/access!login">
+		action="%{pageContext.request.contextPath}/access!sendPassword">
 		<div class="formulario">
-			<div class="tituloFormulario">Iniciar sesión</div>
+			<div class="tituloFormulario">Recuperar contraseña</div>
 			<table class="seccion">
 
 				<tr>
@@ -28,26 +29,16 @@
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
 						<s:fielderror fieldName="userName" cssClass="error" theme="jquery" /></td>
 				</tr>
-				<tr>
-					<td class="label obligatorio"><s:text name="labelContrasenia" /></td>
-					<td><s:password name="password" maxlength="20"
-							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
-						<s:fielderror fieldName="password" cssClass="error" theme="jquery" /></td>
-				</tr>
 			</table>
-			<div align="right">
-				<a class="link"
-					href="${pageContext.request.contextPath}/access!recover">Recuperar
-					contraseña</a>
-
-			</div>
-
 		</div>
-
-		<br />
 
 		<div align="center">
 			<s:submit class="boton" value="Aceptar" />
+			<s:url var="urlAccess"
+				value="%{#pageContext.request.contextPath}/access">
+			</s:url>
+			<input class="boton" type="button"
+				onclick="location.href='${urlAccess}'" value="Cancelar" />
 		</div>
 	</s:form>
 </body>

@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.AccessBs;
 import mx.prisma.bs.AnalisisEnum.CU_Mensajes;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.ElementoBs.Estado;
@@ -46,6 +48,7 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 	// Proyecto y módulo
 	private Proyecto proyecto;
 	private Mensaje model;
+	private Colaborador colaborador;
 	private List<Mensaje> listMensajes;
 
 	// private List<Parametro> listParametros;
@@ -64,7 +67,8 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 		try {
 			// Se consulta el proyecto activo
 			proyecto = SessionManager.consultarProyectoActivo();
-
+			colaborador = SessionManager.consultarColaboradorActivo();
+			AccessBs.verificarPermisos(proyecto, colaborador);
 			model.setProyecto(proyecto);
 			listMensajes = MensajeBs.consultarMensajesProyecto(proyecto);
 
@@ -173,7 +177,7 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 
 			Actualizacion actualizacion = new Actualizacion(new Date(),
 					comentario, model,
-					SessionManager.consultarColaboradorProyectoActivo());
+					SessionManager.consultarColaboradorActivo());
 			MensajeBs.modificarMensaje(model, actualizacion);
 			resultado = SUCCESS;
 

@@ -7,11 +7,15 @@ import javax.mail.internet.AddressException;
 
 import mx.prisma.admin.dao.ColaboradorDAO;
 import mx.prisma.admin.model.Colaborador;
+import mx.prisma.admin.model.ColaboradorProyecto;
+import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.model.Elemento;
 import mx.prisma.util.Correo;
+import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
 
-public class AccesBs {
+public class AccessBs {
 
 	public static Colaborador verificarLogin(String userName, String password) {
 		Colaborador colaborador = null;
@@ -75,4 +79,21 @@ public class AccesBs {
 		
 	}
 	
+	public static void verificarPermisos(Elemento elemento, Colaborador colaborador) {
+		
+	}
+	
+	public static void verificarPermisos(Proyecto proyecto, Colaborador colaborador) {
+		boolean acceso = false;
+		for (ColaboradorProyecto colaboradorProyecto : colaborador.getColaborador_proyectos()) {
+			if (colaboradorProyecto.getProyecto().getId() == proyecto.getId()) {
+				acceso = true;
+				break;
+			}
+		}
+		
+		if (!acceso) {
+			throw new PRISMAException("Acceso denegado", "MSG13");
+		}
+	}
 }

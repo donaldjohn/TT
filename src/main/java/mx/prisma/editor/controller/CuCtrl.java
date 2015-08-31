@@ -1,19 +1,21 @@
 package mx.prisma.editor.controller;
 
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.AccessBs;
+import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
+import mx.prisma.bs.ReferenciaEnum;
+import mx.prisma.bs.TipoSeccionEnum;
+import mx.prisma.bs.TipoSeccionEnum.TipoSeccionENUM;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.ElementoBs.Estado;
-import mx.prisma.bs.ReferenciaEnum;
-import mx.prisma.bs.TipoSeccionEnum;
-import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
-import mx.prisma.bs.TipoSeccionEnum.TipoSeccionENUM;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
@@ -61,6 +63,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	// Proyecto y módulo
 	private Proyecto proyecto;
 	private Modulo modulo;
+	private Colaborador colaborador;
 
 	// Modelo
 	private CasoUso model;
@@ -103,7 +106,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 			// Se consulta el proyecto
 			proyecto = modulo.getProyecto();
-
+			colaborador = SessionManager.consultarColaboradorActivo();
+			AccessBs.verificarPermisos(proyecto, colaborador);
 			// Se agrega el módulo al caso de uso
 			model.setModulo(modulo);
 
@@ -229,7 +233,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			CuBs.preAlmacenarObjetosToken(model);
 			Actualizacion actualizacion = new Actualizacion(new Date(),
 					comentario, model,
-					SessionManager.consultarColaboradorProyectoActivo());
+					SessionManager.consultarColaboradorActivo());
 
 			CuBs.modificarCasoUso(model, actualizacion);
 			resultado = SUCCESS;

@@ -6,7 +6,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.AccessBs;
 import mx.prisma.bs.AnalisisEnum.CU_Actores;
 import mx.prisma.editor.bs.ActorBs;
 import mx.prisma.editor.bs.ElementoBs;
@@ -23,6 +25,7 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import com.opensymphony.xwork2.ModelDriven;
 
@@ -41,6 +44,7 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	private static final long serialVersionUID = 1L;
 	private Map<String, Object> userSession;
 	private Proyecto proyecto;
+	private Colaborador colaborador;
 	private Actor model;
 	private List<Actor> listActores;
 	private List<Cardinalidad> listCardinalidad;
@@ -49,10 +53,15 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	private String comentario;
 	private List<String> elementosReferencias;
 
+	@SkipValidation
 	public String index() throws Exception {
 		try {
+			
 			//Se consulta el proyecto activo
 			proyecto = SessionManager.consultarProyectoActivo();
+			colaborador = SessionManager.consultarColaboradorActivo();
+			AccessBs.verificarPermisos(proyecto, colaborador);
+			
 			model.setProyecto(proyecto);
 			listActores = ActorBs.consultarActoresProyecto(proyecto);
 
@@ -182,10 +191,7 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 		try {
 			Actualizacion actualizacion = new Actualizacion(new Date(),
 					comentario, model,
-					SessionManager.consultarColaboradorProyectoActivo());
-			System.out.println("comentario: " + comentario);
-			System.out.println("otraC: " + model.getOtraCardinalidad());
-			System.out.println("cardinalidad: " + model.getCardinalidad().getId() + ", " + model.getCardinalidad().getNombre());
+					SessionManager.consultarColaboradorActivo());
 			ActorBs.modificarActor(model, actualizacion);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",

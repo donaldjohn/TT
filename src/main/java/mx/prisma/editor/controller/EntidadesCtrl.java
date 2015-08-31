@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.AccessBs;
 import mx.prisma.editor.bs.EntidadBs;
 import mx.prisma.editor.dao.TipoDatoDAO;
 import mx.prisma.editor.dao.UnidadTamanioDAO;
@@ -47,6 +49,8 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 	private Map<String, Object> userSession;
 	private Proyecto proyecto;
 	private Entidad model;
+	private Colaborador colaborador;
+	
 	private List<Entidad> listEntidades;
 	private String jsonAtributosTabla;
 	private List<TipoDato> listTipoDato;
@@ -58,6 +62,8 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 	public String index() throws Exception {
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
+			colaborador = SessionManager.consultarColaboradorActivo();
+			AccessBs.verificarPermisos(proyecto, colaborador);
 			listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
 			model.setProyecto(proyecto);
 
@@ -185,7 +191,7 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 			}
 			Actualizacion actualizacion = new Actualizacion(new Date(),
 					comentario, model,
-					SessionManager.consultarColaboradorProyectoActivo());
+					SessionManager.consultarColaboradorActivo());
 
 			EntidadBs.modificarEntidad(model, actualizacion);
 

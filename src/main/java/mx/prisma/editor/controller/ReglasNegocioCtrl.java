@@ -6,8 +6,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AnalisisEnum.CU_ReglasNegocio;
+import mx.prisma.bs.AccessBs;
 import mx.prisma.bs.TipoReglaNegocioEnum;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.ElementoBs.Estado;
@@ -16,7 +18,6 @@ import mx.prisma.editor.bs.ReglaNegocioBs;
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Entidad;
-import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Operador;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TipoReglaNegocio;
@@ -58,6 +59,8 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	private static final long serialVersionUID = 1L;
 	private Proyecto proyecto;
 	private ReglaNegocio model;
+	private Colaborador colaborador;
+	
 	private List<ReglaNegocio> listReglasNegocio;
 	private List<TipoReglaNegocio> listTipoRN;
 	private int idTipoRN;
@@ -97,6 +100,8 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		try {
 			//Se consulta el proyecto activo
 			proyecto = SessionManager.consultarProyectoActivo();
+			colaborador = SessionManager.consultarColaboradorActivo();
+			AccessBs.verificarPermisos(proyecto, colaborador);
 			model.setProyecto(proyecto);
 			listReglasNegocio = ReglaNegocioBs.consultarReglasNegocioProyecto(proyecto);
 			
@@ -278,7 +283,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 			
 			Actualizacion actualizacion = new Actualizacion(new Date(),
 					comentario, model,
-					SessionManager.consultarColaboradorProyectoActivo());
+					SessionManager.consultarColaboradorActivo());
 
 			ReglaNegocioBs.modificarReglaNegocio(model, actualizacion);
 			resultado = SUCCESS;

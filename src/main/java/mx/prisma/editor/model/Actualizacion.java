@@ -2,15 +2,14 @@ package mx.prisma.editor.model;
 
 // Generated 07-jun-2015 17:10:34 by Hibernate Tools 4.0.0
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-
-import static javax.persistence.GenerationType.IDENTITY;
-
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -18,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.ColaboradorProyecto;
 
 /**
@@ -35,17 +35,17 @@ public class Actualizacion implements java.io.Serializable {
 	private Date fecha;
 	private String comentario;
 	private Elemento elemento;
-	private ColaboradorProyecto colaboradorProyecto;
+	private Colaborador colaborador;
 
 	public Actualizacion() {
 	}
 
 	public Actualizacion(Date fecha, String comentario,
-			Elemento elemento, ColaboradorProyecto colaboradorProyecto) {
+			Elemento elemento, Colaborador colaborador) {
 		this.fecha = fecha;
 		this.comentario = comentario;
 		this.elemento = elemento;
-		this.colaboradorProyecto = colaboradorProyecto;
+		this.colaborador = colaborador;
 	}
 
 	@Id
@@ -89,13 +89,13 @@ public class Actualizacion implements java.io.Serializable {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "Colaborador_Proyectoid",referencedColumnName="id", nullable = false)
-	public ColaboradorProyecto getColaboradorProyecto() {
-		return colaboradorProyecto;
+	@JoinColumn(name = "ColaboradorCURP",referencedColumnName="CURP", nullable = false)
+	public Colaborador getColaborador() {
+		return colaborador;
 	}
 
-	public void setColaboradorProyecto(ColaboradorProyecto colaboradorProyecto) {
-		this.colaboradorProyecto = colaboradorProyecto;
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
 	}
 
 	

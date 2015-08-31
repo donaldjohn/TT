@@ -40,16 +40,15 @@
 
 	<package name="prisma" extends="rest-default,json-default">
 		<interceptors>
-
-			<interceptor name="workflow"
-				class="org.apache.struts2.rest.RestWorkflowInterceptor" />
+			<interceptor class="mx.prisma.controller.AccessInterceptor" name="loginInterceptor"/>
+			<interceptor name="workflow" class="org.apache.struts2.rest.RestWorkflowInterceptor" />
 
 			<!-- Define la pila de interceptores a ser aplicada a cada acción invocada -->
 			<interceptor-stack name="stack">
-
+				
 				<!-- Permite el mapeo de una excepción hacia un result code, es recomendado 
 					que sea el primer interceptor -->
-				<interceptor-ref name="exception" />
+				<interceptor-ref name="exception" />	
 
 				<!-- Establece todas las propiedades de un action basada en las interfaces 
 					que esta implementa. Está diseñado para establecer todas las propiedades 
@@ -124,12 +123,18 @@
 					se activa cuando la constante devMode está habilitada en la configuración 
 					de struts -->
 				<interceptor-ref name="debugging" />
-
-
+				
+				<interceptor-ref name="loginInterceptor"/>
 			</interceptor-stack>
 		</interceptors>
 
 		<default-interceptor-ref name="stack" />
 
+	
+	<global-results>
+   		<result name="login" type="redirect">access/</result>
+	</global-results>
+	
 	</package>
+
 </struts>
