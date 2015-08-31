@@ -42,7 +42,7 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 	private static final long serialVersionUID = 1L;
 	private Map<String, Object> userSession;
 	private Proyecto proyecto;
-	private TerminoGlosario model;
+	private TerminoGlosario model; 
 	private Colaborador colaborador;
 	private List<TerminoGlosario> listTerminosGlosario;
 	private Integer idSel;
