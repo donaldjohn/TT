@@ -44,7 +44,7 @@
 									src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
 						</s:a>
 						${blanks}
-						<s:a onclick="return verificarEliminacion(%{#proyecto.id});">
+						<s:a onclick="return mostrarMensajeEliminacion(%{#proyecto.id});">
 						<img id="" class="button" title="Eliminar Proyecto"
 								src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" /></s:a>		
 					</td>

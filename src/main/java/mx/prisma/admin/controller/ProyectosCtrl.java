@@ -4,8 +4,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import mx.prisma.admin.bs.ColaboradorBs;
 import mx.prisma.admin.bs.ProyectoBs;
 import mx.prisma.admin.dao.EstadoProyectoDAO;
+import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.EstadoProyecto;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.util.ActionSupportPRISMA;
@@ -32,7 +34,10 @@ ModelDriven<Proyecto>, SessionAware{
 	private Map<String, Object> userSession;
 	private List<Proyecto> listProyectos;
 	private List<EstadoProyecto> listEstadosProyecto;
+	private List<Colaborador> listPersonas;
 	private Integer idSel;
+	private int idEstadoProyecto;
+	private String curpLider;
 	
 	public String index() throws Exception {
 		try {
@@ -70,16 +75,27 @@ ModelDriven<Proyecto>, SessionAware{
 	}
 	
 	private void buscarCatalogos() {
+		listEstadosProyecto = ProyectoBs.consultarEstadosProyectoRegistro();
+		listPersonas = ColaboradorBs.consultarPersonal();
+	}
+	
+	private void buscarCatalogosModificacion() {
 		listEstadosProyecto = ProyectoBs.consultarEstadosProyecto();
-		
+		listPersonas = ColaboradorBs.consultarPersonal();
 	}
 
 	public String create() throws Exception {
 		String resultado = null;
 		try {
-			System.out.println("estado: " + model.getEstadoProyecto().getNombre());
-			EstadoProyecto estado = new EstadoProyectoDAO().consultarEstadoProyecto(model.getEstadoProyecto().getId());
-			model.setEstadoProyecto(estado);
+			if(curpLider.equals("-1")) {
+				throw new PRISMAValidacionException("El usuario no seleccionó el lider del proyecto.", "MSG4", null, "curpLider");
+			}
+			if(idEstadoProyecto == -1) {
+				throw new PRISMAValidacionException("El usuario no seleccionó el estado del proyecto.", "MSG4", null, "idEstadoProyecto");
+			}
+			
+			ProyectoBs.agregarEstado(model, idEstadoProyecto);
+			ProyectoBs.agregarLider(model, curpLider);
 			
 			ProyectoBs.registrarProyecto(model);
 			resultado = SUCCESS;
@@ -104,7 +120,8 @@ ModelDriven<Proyecto>, SessionAware{
 
 		String resultado = null;
 		try {
-			buscarCatalogos();
+			buscarCatalogosModificacion();
+			prepararVista();
 			resultado = EDIT;
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
@@ -118,13 +135,25 @@ ModelDriven<Proyecto>, SessionAware{
 		return resultado;
 	}
 
+	private void prepararVista() {
+		idEstadoProyecto = model.getEstadoProyecto().getId();
+		curpLider = ProyectoBs.consultarLider(model).getCurp();
+	}
+
 	public String update() throws Exception {
 		String resultado = null;
 		try {
-			EstadoProyecto estado = new EstadoProyectoDAO().consultarEstadoProyecto(model.getEstadoProyecto().getId());
-			model.setEstadoProyecto(estado);
+			if(curpLider.equals("-1")) {
+				throw new PRISMAValidacionException("El usuario no seleccionó el lider del proyecto.", "MSG4", null, "curpLider");
+			}
+			if(idEstadoProyecto == -1) {
+				throw new PRISMAValidacionException("El usuario no seleccionó el estado del proyecto.", "MSG4", null, "idEstadoProyecto");
+			}
 			
-			//ProyectoBs.registrarProyecto(model);
+			ProyectoBs.agregarEstado(model, idEstadoProyecto);
+			ProyectoBs.agregarLider(model, curpLider);
+			
+			ProyectoBs.modificarProyecto(model);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",
 					"Proyecto", "modificado" }));
@@ -133,6 +162,24 @@ ModelDriven<Proyecto>, SessionAware{
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			resultado = edit();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+	
+	public String destroy() throws Exception {
+		String resultado = null;
+		try {
+			ProyectoBs.eliminarProyecto(model);
+			resultado = SUCCESS;
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"Proyecto", "eliminado" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
@@ -178,6 +225,30 @@ ModelDriven<Proyecto>, SessionAware{
 
 	public void setListEstadosProyecto(List<EstadoProyecto> listEstadosProyecto) {
 		this.listEstadosProyecto = listEstadosProyecto;
+	}
+
+	public int getIdEstadoProyecto() {
+		return idEstadoProyecto;
+	}
+
+	public void setIdEstadoProyecto(int idEstadoProyecto) {
+		this.idEstadoProyecto = idEstadoProyecto;
+	}
+
+	public String getCurpLider() {
+		return curpLider;
+	}
+
+	public void setCurpLider(String curpLider) {
+		this.curpLider = curpLider;
+	}
+
+	public List<Colaborador> getListPersonas() {
+		return listPersonas;
+	}
+
+	public void setListPersonas(List<Colaborador> listPersonas) {
+		this.listPersonas = listPersonas;
 	}
 	
 	
