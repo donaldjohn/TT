@@ -72,7 +72,7 @@ public class TerminoGlosarioBs {
 		// Validaciones del nombre
 		if (Validador.esNuloOVacio(model.getNombre())) {
 			throw new PRISMAValidacionException(
-					"El usuario no ingresó el nombre del actor.", "MSG4", null,
+					"El usuario no ingresó el nombre del término.", "MSG4", null,
 					"model.nombre");
 		}
 		if (Validador.validaLongitudMaxima(model.getNombre(), 200)) {
@@ -88,7 +88,7 @@ public class TerminoGlosarioBs {
 		// Validaciones de la Descripción
 		if (Validador.esNuloOVacio(model.getDescripcion())) {
 			throw new PRISMAValidacionException(
-					"El usuario no ingresó la descripción del actor.", "MSG4",
+					"El usuario no ingresó la descripción del término.", "MSG4",
 					null, "model.descripcion");
 		}
 

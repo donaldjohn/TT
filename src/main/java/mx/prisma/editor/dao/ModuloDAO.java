@@ -1,9 +1,11 @@
 package mx.prisma.editor.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.dao.GenericDAO;
+import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Modulo;
 
 import org.hibernate.HibernateException;
@@ -54,5 +56,55 @@ public class ModuloDAO extends GenericDAO {
 		
 		return modulo;
 
+	}
+	public void registrarModulo(Modulo modulo) {
+		try {
+			session.beginTransaction();
+			session.save(modulo);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
+		
+	}
+	@SuppressWarnings("unchecked")
+	public List<Modulo> consultarModulos(Integer idProyecto) {
+		List<Modulo> results = null;
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("from Modulo as mod where mod.proyecto.id = :id");
+			query.setParameter("id", idProyecto);
+			results = (ArrayList<Modulo>) query.list();
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
+		return results;
+	}
+	public void eliminarModulo(Modulo modulo) {
+		try {
+			session.beginTransaction();
+			session.delete(modulo);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			session.getTransaction().rollback();
+			throw he;
+		}
+		
+	}
+	public void modificarModulo(Modulo modulo) {
+		try {
+			session.beginTransaction();
+			session.update(modulo);
+			session.getTransaction().commit();
+		} catch(HibernateException he) {
+			session.getTransaction().rollback();
+			throw he;
+		}
+		
 	}
 }

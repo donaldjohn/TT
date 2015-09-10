@@ -11,13 +11,13 @@
   	<script src="${pageContext.request.contextPath}/resources/template/themes/smoothness-prisma/jquery-ui.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/constructores.js"></script>
 	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/validaciones.js"></script>
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/administrador/proyectos/js/index-edit.js"></script>	
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/administrador/proyectos-admin/js/index-editNew.js"></script>	
 ]]>
 
 </head>
 <body>
 
-	<h1>Modificar Proyecto</h1>
+	<h1>Registrar Proyecto</h1>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
@@ -25,8 +25,7 @@
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 	<s:form autocomplete="off" id="frmProyecto" theme="simple"
-		action="%{#pageContext.request.contextPath}/proyectos/%{idSel}" method="post">
-		<s:hidden name="_method" value="put" />
+		action="%{#pageContext.request.contextPath}/proyectos-admin" method="post">
 		<div class="formulario">
 			<div class="tituloFormulario">Información general del Proyecto</div>
 			<div class="seccion">
@@ -125,7 +124,7 @@
 			<s:submit class="boton" value="Aceptar" />
 
 			<s:url var="urlGestionarProyectos"
-				value="%{#pageContext.request.contextPath}/proyectos">
+				value="%{#pageContext.request.contextPath}/proyectos-admin">
 			</s:url>
 			<input class="boton" type="button"
 				onclick="location.href='${urlGestionarProyectos}'"

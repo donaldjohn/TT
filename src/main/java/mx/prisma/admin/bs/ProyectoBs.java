@@ -122,32 +122,27 @@ public class ProyectoBs {
 	}
 
 	public static void agregarLider(Proyecto model, String curpLider) {
+		
+		
 		Colaborador liderAnterior = consultarLider(model);
 		Colaborador lider = new ColaboradorDAO().consultarColaborador(curpLider);
 		Set<ColaboradorProyecto> colaboradores_proyectoAux = model.getProyecto_colaboradores();
+		
 		Set<ColaboradorProyecto> colaboradores_proyecto = new HashSet<ColaboradorProyecto>(0);
-		Boolean existeColaborador = false;
+		
 		model.getProyecto_colaboradores().clear();
+		
 		int idLider = RolEnum.consultarIdRol(RolEnum.Rol.LIDER);
 		Rol rolLider = new RolDAO().consultarRol(idLider);
-		int idAnalista = RolEnum.consultarIdRol(RolEnum.Rol.ANALISTA);
-		Rol rolAnalista = new RolDAO().consultarRol(idAnalista);
+
 		
 		for(ColaboradorProyecto cp : colaboradores_proyectoAux) {
-			if(cp.getColaborador().equals(liderAnterior)) {
-				cp.setRol(rolAnalista);
+			if(!cp.getColaborador().equals(liderAnterior)) {
+				colaboradores_proyecto.add(cp);
 			}
-			if(cp.getColaborador().equals(lider)) {
-				cp.setRol(rolLider);
-				existeColaborador = true;
-			}
-			colaboradores_proyecto.add(cp);
 		}
-		
-		if(!existeColaborador) {
-			ColaboradorProyecto colaboradorProyectoLider = new ColaboradorProyecto(lider, rolLider, model);
-			colaboradores_proyecto.add(colaboradorProyectoLider);
-		}
+		ColaboradorProyecto colaboradorProyectoLider = new ColaboradorProyecto(lider, rolLider, model);
+		colaboradores_proyecto.add(colaboradorProyectoLider);
 		
 		model.setProyecto_colaboradores(colaboradores_proyecto);
 	}
