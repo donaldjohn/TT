@@ -25,9 +25,9 @@ import com.opensymphony.xwork2.ModelDriven;
 
 @ResultPath("/content/administrador/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "proyectos" })
+		"actionName", "proyectos-admin" })
 })
-public class ProyectosCtrl extends ActionSupportPRISMA implements
+public class ProyectosAdminCtrl extends ActionSupportPRISMA implements
 ModelDriven<Proyecto>, SessionAware{
 	private Proyecto model;
 	private static final long serialVersionUID = 1L;

@@ -6,19 +6,15 @@
 		contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" />
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Glosario</title>
+<title>Módulo</title>
 <![CDATA[
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/constructores.js"></script>
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/validaciones.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.caret.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.atwho.js"></script>
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/glosario/js/index-editNew.js"></script>	
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/modulos/js/index-editNew.js"></script>	
 ]]>
 
 </head>
 <body>
 
-	<h1>Registrar Término del Glosario</h1>
+	<h1>Registrar Módulo</h1>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
@@ -26,13 +22,20 @@
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 	<s:form autocomplete="off" id="frmActor" theme="simple"
-		action="%{#pageContext.request.contextPath}/glosario" method="post">
+		action="%{#pageContext.request.contextPath}/modulos" method="post">
 		<div class="formulario">
-			<div class="tituloFormulario">Información general del Término</div>
+			<div class="tituloFormulario">Información general del Módulo</div>
 			<table class="seccion">
 				<tr>
+					<td class="label obligatorio"><s:text name="labelClave" /></td>
+					<td><s:textfield name="model.clave" maxlength="10"
+							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
+						<s:fielderror fieldName ="model.clave" cssClass="error"
+							theme="jquery" /></td>
+				</tr>
+				<tr>
 					<td class="label obligatorio"><s:text name="labelNombre" /></td>
-					<td><s:textfield name="model.nombre" maxlength="200"
+					<td><s:textfield name="model.nombre" maxlength="45"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
 						<s:fielderror fieldName ="model.nombre" cssClass="error"
 							theme="jquery" /></td>
@@ -51,11 +54,11 @@
 		<div align="center">
 			<s:submit class="boton" value="Aceptar" />
 
-			<s:url var="urlGestionarGlosario"
-				value="%{#pageContext.request.contextPath}/glosario">
+			<s:url var="urlGestion"
+				value="%{#pageContext.request.contextPath}/modulos">
 			</s:url>
 			<input class="boton" type="button"
-				onclick="location.href='${urlGestionarGlosario}'"
+				onclick="location.href='${urlGestion}'"
 				value="Cancelar" />
 		</div>
 	</s:form>

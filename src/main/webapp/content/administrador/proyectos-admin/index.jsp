@@ -7,7 +7,7 @@
 <head>
 <title>Proyectos</title>
 <![CDATA[
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/administrador/proyectos/js/index.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/administrador/proyectos-admin/js/index.js"></script>
 ]]>
 </head>
 
@@ -38,7 +38,7 @@
 					</s:iterator>		
 					</td>
 					<td align="center">
-						<s:url var="urlEditar" value="%{#pageContext.request.contextPath}/proyectos/%{#proyecto.id}/edit"/>			
+						<s:url var="urlEditar" value="%{#pageContext.request.contextPath}/proyectos-admin/%{#proyecto.id}/edit"/>			
 						<s:a href="%{urlEditar}">
 							<img id="" class="button" title="Modificar Proyecto"
 									src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
@@ -58,7 +58,7 @@
 	<br />
 	<div align="center">
 		<button class="boton" formmethod="post"
-			onclick="location.href='${pageContext.request.contextPath}/proyectos/new'">
+			onclick="location.href='${pageContext.request.contextPath}/proyectos-admin/new'">
 			<s:text name="Registrar"></s:text>
 		</button>
 	</div>
