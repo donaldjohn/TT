@@ -34,10 +34,17 @@
 <body>
 	<div class="container">
 		<div class="banner"><jsp:include page="/resources/decorators/banner.jsp" /></div>
-		<div class="menuPrincipal"><jsp:include page="/content/editor/menus/menuProyecto.jsp" /></div>
-		<div class="menuSecundario">
-			<jsp:include page="/resources/decorators/menus/menuSecundario.jsp" />
+		<div class="menuPrincipal">
+			<s:if test="#session != null">
+				<s:if test="#session.login == true">
+					<s:set name="id" value="#session.id"></s:set>
+					<s:set var="perfil">/content/<s:property
+							value="@mx.prisma.controller.AccessCtrl@getMenu()"/>.jsp</s:set>
+					<jsp:include page="${perfil}" />
+				</s:if>
+			</s:if>	
 		</div>
+
 		<!-- <div class="infoProyecto" style="font-size: 10px;">
 				<table>
 					<tr><td align="right">ID:</td><td>SGE</td></tr>

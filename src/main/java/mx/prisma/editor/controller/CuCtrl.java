@@ -44,6 +44,7 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 
@@ -99,15 +100,20 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	private List<String> elementosReferencias;
 
 	public String index() {
+		String resultado;
 		try {
 			
 			// Se consulta el módulo
 			modulo = SessionManager.consultarModuloActivo();
 
 			// Se consulta el proyecto
-			proyecto = modulo.getProyecto();
 			colaborador = SessionManager.consultarColaboradorActivo();
-			AccessBs.verificarPermisos(proyecto, colaborador);
+			proyecto = SessionManager.consultarProyectoActivo();
+
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
 			// Se agrega el módulo al caso de uso
 			model.setModulo(modulo);
 

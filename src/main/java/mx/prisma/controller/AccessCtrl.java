@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import mx.prisma.admin.model.Colaborador;
+import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AccessBs;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
@@ -135,7 +136,21 @@ public class AccessCtrl extends ActionSupportPRISMA implements SessionAware {
 		}
 		return resultado;
 	}
-
+	
+	
+	public static String getMenu() throws Exception {
+		Proyecto proyecto = SessionManager.consultarProyectoActivo();
+		Colaborador colaborador = SessionManager.consultarColaboradorActivo();
+		
+		if (colaborador.isAdministrador()) {
+			return "administrador/menuAdministrador";
+		} else if (proyecto == null) {
+			return "editor/menuAnalista";
+		} else {
+			return "editor/menuAnalistaProyecto";
+		}
+	}
+	
 	public void setSession(Map<String, Object> session) {
 		this.userSession = session;
 	}

@@ -25,8 +25,8 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
-import org.apache.struts2.interceptor.validation.SkipValidation;
 
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ModelDriven;
 
 @ResultPath("/content/editor/")
@@ -53,18 +53,18 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	private String comentario;
 	private List<String> elementosReferencias;
 
-	@SkipValidation
+	
 	public String index() throws Exception {
+		String resultado;
 		try {
-			
-			//Se consulta el proyecto activo
-			proyecto = SessionManager.consultarProyectoActivo();
 			colaborador = SessionManager.consultarColaboradorActivo();
-			AccessBs.verificarPermisos(proyecto, colaborador);
-			
-			model.setProyecto(proyecto);
-			listActores = ActorBs.consultarActoresProyecto(proyecto);
+			proyecto = SessionManager.consultarProyectoActivo();
 
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			listActores = ActorBs.consultarActoresProyecto(proyecto);
 			@SuppressWarnings("unchecked")
 			Collection<String> msjs = (Collection<String>) SessionManager
 					.get("mensajesAccion");

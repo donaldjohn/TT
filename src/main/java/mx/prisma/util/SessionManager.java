@@ -81,9 +81,7 @@ public class SessionManager {
 		Integer idProy = 1;//Se debe obtener de sesión
 		Proyecto proyecto = null;
 		proyecto = new ProyectoDAO().consultarProyecto(idProy);
-		if(proyecto == null) {
-			throw new PRISMAException("No se puede consultar el proyecto", "MSG13");
-		}
+
 		return proyecto;
 	}
 

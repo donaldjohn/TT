@@ -79,11 +79,7 @@ public class AccessBs {
 		
 	}
 	
-	public static void verificarPermisos(Elemento elemento, Colaborador colaborador) {
-		
-	}
-	
-	public static void verificarPermisos(Proyecto proyecto, Colaborador colaborador) {
+	public static boolean verificarPermisos(Proyecto proyecto, Colaborador colaborador) {
 		boolean acceso = false;
 		for (ColaboradorProyecto colaboradorProyecto : colaborador.getColaborador_proyectos()) {
 			if (colaboradorProyecto.getProyecto().getId() == proyecto.getId()) {
@@ -91,9 +87,6 @@ public class AccessBs {
 				break;
 			}
 		}
-		
-		if (!acceso) {
-			throw new PRISMAException("Acceso denegado", "MSG13");
-		}
+		return acceso;
 	}
 }
