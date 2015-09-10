@@ -30,11 +30,13 @@ import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ModelDriven;
 
 @ResultPath("/content/editor/")
-@Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "actores" }),
-		@Result(name = "referencias", type = "json", params = {
-				"root",
-				"elementosReferencias"})
+@Results({
+		@Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
+				"actionName", "actores" }),
+		@Result(name = "referencias", type = "json", params = { "root",
+				"elementosReferencias" }),
+		@Result(name = "proyectos", type = "redirectAction", params = {
+				"actionName", "proyectos" })		
 })
 public class ActoresCtrl extends ActionSupportPRISMA implements
 		ModelDriven<Actor>, SessionAware {
@@ -53,13 +55,15 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	private String comentario;
 	private List<String> elementosReferencias;
 
-	
 	public String index() throws Exception {
 		String resultado;
 		try {
 			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
-
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
 			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
 				resultado = Action.LOGIN;
 				return resultado;
@@ -103,8 +107,9 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 
 		if (listCardinalidad == null || listCardinalidad.isEmpty()) {
 			throw new PRISMAException(
-					"No hay cardinalidades para registrar el atributo.", "MSG25");
-		}		
+					"No hay cardinalidades para registrar el atributo.",
+					"MSG25");
+		}
 	}
 
 	public String create() throws Exception {
@@ -112,9 +117,10 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 		try {
 			Proyecto proyecto = SessionManager.consultarProyectoActivo();
 			model.setProyecto(proyecto);
-			ActorBs.registrarActor(model);resultado = SUCCESS;
-			addActionMessage(getText("MSG1", new String[] { "El",
-					"Actor", "registrado" }));
+			ActorBs.registrarActor(model);
+			resultado = SUCCESS;
+			addActionMessage(getText("MSG1", new String[] { "El", "Actor",
+					"registrado" }));
 
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAValidacionException pve) {
@@ -129,7 +135,7 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 		}
 		return resultado;
 	}
-	
+
 	public String show() throws Exception {
 		String resultado = null;
 		try {
@@ -139,20 +145,20 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 			pe.setIdMensaje("MSG26");
 			ErrorManager.agregaMensajeError(this, pe);
 			return index();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			ErrorManager.agregaMensajeError(this, e);
 			return index();
 		}
 		return resultado;
 	}
-	
+
 	public String destroy() throws Exception {
 		String resultado = null;
 		try {
 			ActorBs.eliminarActor(model);
 			resultado = SUCCESS;
-			addActionMessage(getText("MSG1", new String[] { "El",
-					"Actor", "eliminado" }));
+			addActionMessage(getText("MSG1", new String[] { "El", "Actor",
+					"eliminado" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
@@ -163,7 +169,7 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 		}
 		return resultado;
 	}
-	
+
 	public String edit() throws Exception {
 		String resultado = null;
 		try {
@@ -183,9 +189,9 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 		}
 
 		return resultado;
-		
+
 	}
-	
+
 	public String update() throws Exception {
 		String resultado = null;
 		try {
@@ -194,8 +200,8 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 					SessionManager.consultarColaboradorActivo());
 			ActorBs.modificarActor(model, actualizacion);
 			resultado = SUCCESS;
-			addActionMessage(getText("MSG1", new String[] { "El",
-					"Actor", "modificado" }));
+			addActionMessage(getText("MSG1", new String[] { "El", "Actor",
+					"modificado" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
@@ -214,13 +220,13 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 		try {
 			elementosReferencias = new ArrayList<String>();
 			elementosReferencias = ActorBs.verificarReferencias(model);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "referencias";
 	}
-	
+
 	public Actor getModel() {
 		return (model == null) ? model = new Actor() : model;
 	}
@@ -241,7 +247,7 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	public List<Actor> getListActores() {
 		return listActores;
 	}
@@ -299,7 +305,4 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 		this.elementosReferencias = elementosReferencias;
 	}
 
-	
-	
-	
 }

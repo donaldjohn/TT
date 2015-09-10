@@ -16,6 +16,7 @@ public class ColaboradorProyectoDAO extends GenericDAO {
 	public ColaboradorProyectoDAO() {
 		super();
 	}	
+	
 	public void registrarColaboradorProyecto(ColaboradorProyecto colaborador) {
 		try {
 			session.beginTransaction();

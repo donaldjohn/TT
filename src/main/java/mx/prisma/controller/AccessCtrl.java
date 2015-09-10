@@ -22,9 +22,9 @@ import com.opensymphony.xwork2.ActionContext;
 @InterceptorRef(value="defaultStack")
 @Results({
 		@Result(name = "administrador", type = "redirectAction", params = {
-				"actionName", "proyectos" }),
+				"actionName", "proyectosAdmin" }),
 		@Result(name = "colaborador", type = "redirectAction", params = {
-				"actionName", "editor/proyectos" }),
+				"actionName", "proyectos" }),
 		@Result(name = "recover", type = "dispatcher", location = "recover.jsp")
 		})
 public class AccessCtrl extends ActionSupportPRISMA implements SessionAware {
@@ -141,13 +141,12 @@ public class AccessCtrl extends ActionSupportPRISMA implements SessionAware {
 	public static String getMenu() throws Exception {
 		Proyecto proyecto = SessionManager.consultarProyectoActivo();
 		Colaborador colaborador = SessionManager.consultarColaboradorActivo();
-		
 		if (colaborador.isAdministrador()) {
-			return "administrador/menuAdministrador";
+			return "administrador/menus/menuAdministrador";
 		} else if (proyecto == null) {
-			return "editor/menuAnalista";
+			return "editor/menus/menuAnalista";
 		} else {
-			return "editor/menuAnalistaProyecto";
+			return "editor/menus/menuAnalistaProyecto";
 		}
 	}
 	

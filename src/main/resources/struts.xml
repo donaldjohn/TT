@@ -4,6 +4,8 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
+	<constant name="struts.ognl.allowStaticMethodAccess" value="true"/> 
+	
 	<!-- Permite utilizar los recursos de global.properties -->
 	<constant name="struts.custom.i18n.resources" value="global" />
 

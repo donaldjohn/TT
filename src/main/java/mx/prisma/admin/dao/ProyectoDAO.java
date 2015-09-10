@@ -121,7 +121,8 @@ public class ProyectoDAO extends GenericDAO {
 	public List<Proyecto> findByColaborador(String idColaborador) {
 		List<Proyecto> proyectos = null;
 		Query queryObject = null;
-		String queryString = "from Proyecto as proy where proy.proyecto_colaboradores.colaborador.curp = :idColaborador";
+		String queryString = "select proy from Proyecto as proy, IN (proy.proyecto_colaboradores) AS colab WHERE colab.colaborador.id = :idColaborador";
+
 		proyectos = new ArrayList<Proyecto>();
 		
 		try {
