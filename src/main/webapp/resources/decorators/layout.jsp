@@ -44,18 +44,21 @@
 				</s:if>
 			</s:if>	
 		</div>
+		<div class="menuSecundario"><!--  --></div>
 
-		<!-- <div class="infoProyecto" style="font-size: 10px;">
+		<div class="areaTrabajo" id ="idAreaTrabajo">
+			<div class = "info">
+			<!--<s:if test="#session.idProyecto != null">-->
 				<table>
-					<tr><td align="right">ID:</td><td>SGE</td></tr>
+					<tr><td align="right">Proyecto:</td><td>SGE</td></tr>
 					<tr><td align="right">Líder del proyecto:</td><td>Gabriel Barra Carrillo</td></tr>
 					<tr><td align="right">Fecha de inicio programada:</td><td>10/05/2015</td></tr>
 					<tr><td align="right">Fecha de término programada:</td><td>10/10/2015</td></tr>
 				</table>
-			</div>
-		 -->
-		<div class="areaTrabajo" id ="idAreaTrabajo">
-			<decorator:body /> 
+			<!--</s:if>-->
+			</div> 
+		
+			<decorator:body />
 		</div>
 	</div>
 	<input type="text" style="display: none;" id="rutaContexto"

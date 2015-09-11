@@ -25,9 +25,9 @@
 		<div class="form">
 			<table id="gestion" class="tablaGestion" cellspacing="0" width="100%">
 				<thead>
-					<th style="width: 80%;"><s:text name="colProyecto" /></th>
-					<th style="width: 80%;"><s:text name="colLider" /></th>
-					<th style="width: 20%;"><s:text name="colAcciones" /></th>
+					<th style="width: 50%;"><s:text name="colProyecto" /></th>
+					<th style="width: 40%;"><s:text name="colLider" /></th>
+					<th style="width: 10%;"><s:text name="colAcciones" /></th>
 				</thead>
 				<tbody>
 					<s:iterator value="listProyectos" var="proyecto">
@@ -40,7 +40,7 @@
 						</s:iterator>
 						<tr>
 							<td><s:property
-									value="%{#proyecto.clave} + ' ' + ' ' + %{#proyecto.nombr}" /></td>
+									value="%{#proyecto.clave + ' ' + '-' + ' ' + #proyecto.nombre}" /></td>
 							<td><s:property
 									value="%{#lider.nombre + ' ' + #lider.apellidoPaterno + ' ' + #lider.apellidoMaterno}" /></td>
 
@@ -49,7 +49,7 @@
 								<s:if test="%{#lider.id == #session.id}">
 									<!-- Elegir colaboradores -->
 									<s:url var="urlEntrar"
-										value="%{#pageContext.request.contextPath}/proyectos!elegir?idSel = #proyecto.id" />
+										value="%{#pageContext.request.contextPath}/proyectos!elegir?idSel=%{#proyecto.id}" />
 									<s:a href="%{urlElegir}">
 										<img id="" class="button" title="Elegir"
 											src="${pageContext.request.contextPath}/resources/images/icons/elegir.png" />										
@@ -57,14 +57,14 @@
 								</s:if>
 								<!-- Entrar -->
 								<s:url var="urlEntrar"
-										value="%{#pageContext.request.contextPath}/proyectos!entrar?idSel = #proyecto.id" />
+										value="%{#pageContext.request.contextPath}/proyectos!entrar?idSel=%{#proyecto.id}" />
 								<s:a href="%{urlEntrar}">
 										<img id="" class="button" title="Entrar"
 											src="${pageContext.request.contextPath}/resources/images/icons/entrar.png" />										
 								</s:a> 
 								<!-- Descargar documento -->
 								<s:url var="urlDescargar"
-										value="%{#pageContext.request.contextPath}/proyectos!descargar?idSel = #proyecto.id" />
+										value="%{#pageContext.request.contextPath}/proyectos!descargar?idSel=%{#proyecto.id}" />
 								<s:a href="#">
 										<img id="" class="button" title="Descargar"
 											src="${pageContext.request.contextPath}/resources/images/icons/descargar.png" />										

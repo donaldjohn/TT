@@ -137,11 +137,10 @@ public class AccessCtrl extends ActionSupportPRISMA implements SessionAware {
 		return resultado;
 	}
 	
-	
 	public static String getMenu() throws Exception {
 		Proyecto proyecto = SessionManager.consultarProyectoActivo();
 		Colaborador colaborador = SessionManager.consultarColaboradorActivo();
-		if (colaborador.isAdministrador()) {
+		if (colaborador != null && colaborador.isAdministrador()) {
 			return "administrador/menus/menuAdministrador";
 		} else if (proyecto == null) {
 			return "editor/menus/menuAnalista";

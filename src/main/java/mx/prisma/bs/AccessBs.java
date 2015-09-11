@@ -9,9 +9,7 @@ import mx.prisma.admin.dao.ColaboradorDAO;
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.ColaboradorProyecto;
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.editor.model.Elemento;
 import mx.prisma.util.Correo;
-import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
 
