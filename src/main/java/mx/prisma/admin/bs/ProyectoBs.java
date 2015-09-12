@@ -152,11 +152,8 @@ public class ProyectoBs {
 			// se elimina el líder anterior
 			if(proyecto.getProyecto_colaboradores().remove(colaboradorPoryectoLiderBD)) {
 				System.out.println("Se elimina: " + colaboradorPoryectoLiderBD.getColaborador().getCurp());
-			} else {
-				System.out.println("no se eliminó");
 			}
-		} 
-		System.out.println("size colProy: " + proyecto.getProyecto_colaboradores().size());
+		}
 	}
 
 	public static ColaboradorProyecto consultarColaboradorProyectoLider(Proyecto model) {
