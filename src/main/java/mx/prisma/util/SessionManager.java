@@ -78,12 +78,14 @@ public class SessionManager {
 	}
 	
 	public static Proyecto consultarProyectoActivo() throws Exception{
-		Integer idProy = 1;//Se debe obtener de sesión
+		HttpSession session = ServletActionContext.getRequest().getSession(false); 
 		Proyecto proyecto = null;
-		proyecto = new ProyectoDAO().consultarProyecto(idProy);
-		if(proyecto == null) {
-			throw new PRISMAException("No se puede consultar el proyecto", "MSG13");
+		Integer idProyecto = null;
+		if (session != null && session.getAttribute("idProyecto") != null) {
+			idProyecto = (Integer)  session.getAttribute("idProyecto");	
+			proyecto = new ProyectoDAO().consultarProyecto(idProyecto);
 		}
+
 		return proyecto;
 	}
 
@@ -112,15 +114,12 @@ public class SessionManager {
 	public static Colaborador consultarColaboradorActivo() throws Exception{
 		HttpSession session = ServletActionContext.getRequest().getSession(false); 
 		Colaborador colaborador = null;
-		String curpColaborador = "";
+		String curpColaborador = null;
 		if (session != null && session.getAttribute("colaboradorCURP") != null) {
 			curpColaborador = (String)  session.getAttribute("colaboradorCURP");
+			colaborador = new ColaboradorDAO().consultarColaborador(curpColaborador);
 		}
-		
-		colaborador = new ColaboradorDAO().consultarColaborador(curpColaborador);
-		if(colaborador == null) {
-			throw new PRISMAException("No se puede consultar el colaborador", "MSG13");
-		}
+	
 		return colaborador;
 	}
 

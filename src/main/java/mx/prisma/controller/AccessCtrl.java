@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import mx.prisma.admin.model.Colaborador;
+import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AccessBs;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
@@ -21,9 +22,9 @@ import com.opensymphony.xwork2.ActionContext;
 @InterceptorRef(value="defaultStack")
 @Results({
 		@Result(name = "administrador", type = "redirectAction", params = {
-				"actionName", "proyectos" }),
+				"actionName", "proyectosAdmin" }),
 		@Result(name = "colaborador", type = "redirectAction", params = {
-				"actionName", "editor/proyectos" }),
+				"actionName", "proyectos" }),
 		@Result(name = "recover", type = "dispatcher", location = "recover.jsp")
 		})
 public class AccessCtrl extends ActionSupportPRISMA implements SessionAware {
@@ -135,7 +136,19 @@ public class AccessCtrl extends ActionSupportPRISMA implements SessionAware {
 		}
 		return resultado;
 	}
-
+	
+	public static String getMenu() throws Exception {
+		Proyecto proyecto = SessionManager.consultarProyectoActivo();
+		Colaborador colaborador = SessionManager.consultarColaboradorActivo();
+		if (colaborador != null && colaborador.isAdministrador()) {
+			return "administrador/menus/menuAdministrador";
+		} else if (proyecto == null) {
+			return "editor/menus/menuAnalista";
+		} else {
+			return "editor/menus/menuAnalistaProyecto";
+		}
+	}
+	
 	public void setSession(Map<String, Object> session) {
 		this.userSession = session;
 	}

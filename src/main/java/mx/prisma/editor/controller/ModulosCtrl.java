@@ -20,12 +20,15 @@ import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
 
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ModelDriven;
 
 @ResultPath("/content/editor/")
-@Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "modulos" })
-})
+@Results({
+		@Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
+				"actionName", "modulos" }),
+		@Result(name = "proyectos", type = "redirectAction", params = {
+				"actionName", "proyectos" }) })
 public class ModulosCtrl extends ActionSupportPRISMA implements
 		ModelDriven<Modulo>, SessionAware {
 	/** 
@@ -34,16 +37,24 @@ public class ModulosCtrl extends ActionSupportPRISMA implements
 	private static final long serialVersionUID = 1L;
 	private Map<String, Object> userSession;
 	private Proyecto proyecto;
-	private Modulo model; 
+	private Modulo model;
 	private Colaborador colaborador;
 	private List<Modulo> listModulos;
 	private Integer idSel;
-	
+
 	public String index() throws Exception {
+		String resultado = null;
 		try {
-			proyecto = SessionManager.consultarProyectoActivo();
 			colaborador = SessionManager.consultarColaboradorActivo();
-			AccessBs.verificarPermisos(proyecto, colaborador);
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
 			listModulos = ModuloBs.consultarModulosProyecto(proyecto);
 			model.setProyecto(proyecto);
 			@SuppressWarnings("unchecked")
@@ -64,7 +75,16 @@ public class ModulosCtrl extends ActionSupportPRISMA implements
 
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
 			resultado = EDITNEW;
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
@@ -81,13 +101,22 @@ public class ModulosCtrl extends ActionSupportPRISMA implements
 	public String create() throws Exception {
 		String resultado = null;
 		try {
-			Proyecto proyecto = SessionManager.consultarProyectoActivo();
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
 			model.setProyecto(proyecto);
 			ModuloBs.registrarModulo(model);
 
 			resultado = SUCCESS;
-			addActionMessage(getText("MSG1", new String[] { "El",
-					"Módulo", "registrado" }));
+			addActionMessage(getText("MSG1", new String[] { "El", "Módulo",
+					"registrado" }));
 
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAValidacionException pve) {
@@ -103,14 +132,24 @@ public class ModulosCtrl extends ActionSupportPRISMA implements
 		}
 		return resultado;
 	}
-	
+
 	public String destroy() throws Exception {
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
 			ModuloBs.eliminarModulo(model);
 			resultado = SUCCESS;
-			addActionMessage(getText("MSG1", new String[] { "El",
-					"Módulo", "eliminado" }));
+			addActionMessage(getText("MSG1", new String[] { "El", "Módulo",
+					"eliminado" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
@@ -121,12 +160,20 @@ public class ModulosCtrl extends ActionSupportPRISMA implements
 		}
 		return resultado;
 	}
-	
+
 	public String edit() throws Exception {
 		String resultado = null;
 		try {
-
+			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
 			resultado = EDIT;
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
@@ -137,16 +184,26 @@ public class ModulosCtrl extends ActionSupportPRISMA implements
 		}
 
 		return resultado;
-		
+
 	}
-	
+
 	public String update() throws Exception {
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
 			ModuloBs.modificarModulo(model);
 			resultado = SUCCESS;
-			addActionMessage(getText("MSG1", new String[] { "El",
-					"Módulo", "modificado" }));
+			addActionMessage(getText("MSG1", new String[] { "El", "Módulo",
+					"modificado" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
@@ -189,6 +246,7 @@ public class ModulosCtrl extends ActionSupportPRISMA implements
 	public void setProyecto(Proyecto proyecto) {
 		this.proyecto = proyecto;
 	}
+
 	public Integer getIdSel() {
 		return idSel;
 	}
@@ -214,8 +272,4 @@ public class ModulosCtrl extends ActionSupportPRISMA implements
 		this.colaborador = colaborador;
 	}
 
-	
-	
-
-	
 }

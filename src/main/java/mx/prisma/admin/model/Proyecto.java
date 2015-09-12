@@ -51,7 +51,6 @@ public class Proyecto implements java.io.Serializable {
 	private EstadoProyecto estadoProyecto;
 	private Set<ColaboradorProyecto> proyecto_colaboradores = new HashSet<ColaboradorProyecto>(0);
 
-
 	public Proyecto() {
 	}
 

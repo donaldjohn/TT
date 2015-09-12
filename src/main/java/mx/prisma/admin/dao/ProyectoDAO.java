@@ -1,5 +1,6 @@
 package mx.prisma.admin.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import mx.prisma.admin.model.ColaboradorProyecto;
@@ -120,5 +121,29 @@ public class ProyectoDAO extends GenericDAO {
 		}	
 		
 	}
+
+	public List<Proyecto> findByColaborador(String idColaborador) {
+		List<Proyecto> proyectos = null;
+		Query queryObject = null;
+		String queryString = "select proy from Proyecto as proy, IN (proy.proyecto_colaboradores) AS colab WHERE colab.colaborador.id = :idColaborador";
+
+		proyectos = new ArrayList<Proyecto>();
+		
+		try {
+			session.beginTransaction();
+			queryObject = session.createQuery(queryString);
+			queryObject.setParameter("idColaborador", idColaborador);
+			for (Object object : queryObject.list()) {
+				proyectos.add((Proyecto) object);
+			}
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
+		return proyectos;
+	}
+
 }
 

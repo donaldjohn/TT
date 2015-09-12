@@ -5,9 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.HibernateException;
-import org.hibernate.JDBCException;
-
 import mx.prisma.admin.dao.ColaboradorDAO;
 import mx.prisma.admin.dao.ColaboradorProyectoDAO;
 import mx.prisma.admin.dao.EstadoProyectoDAO;
@@ -23,6 +20,9 @@ import mx.prisma.bs.RolEnum;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
+
+import org.hibernate.HibernateException;
+import org.hibernate.JDBCException;
 
 public class ProyectoBs {
 
@@ -203,4 +203,15 @@ public class ProyectoBs {
 		
 	}
 
+	public static List<Proyecto> findByColaborador(Colaborador colaborador) throws Exception {
+		List<Proyecto> proyectos = new ArrayList<Proyecto>();
+		try {
+			proyectos = new ProyectoDAO().findByColaborador(colaborador.getCurp());
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			throw new Exception();
+		}
+
+		return proyectos;
+	}
 }

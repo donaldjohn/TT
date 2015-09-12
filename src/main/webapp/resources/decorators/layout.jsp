@@ -34,21 +34,31 @@
 <body>
 	<div class="container">
 		<div class="banner"><jsp:include page="/resources/decorators/banner.jsp" /></div>
-		<div class="menuPrincipal"><jsp:include page="/content/editor/menus/menuProyecto.jsp" /></div>
-		<div class="menuSecundario">
-			<jsp:include page="/resources/decorators/menus/menuSecundario.jsp" />
+		<div class="menuPrincipal">
+			<s:if test="#session != null">
+				<s:if test="#session.login == true">
+					<s:set name="id" value="#session.id"></s:set>
+					<s:set var="perfil">/content/<s:property
+							value="@mx.prisma.controller.AccessCtrl@getMenu()"/>.jsp</s:set>
+					<jsp:include page="${perfil}" />
+				</s:if>
+			</s:if>	
 		</div>
-		<!-- <div class="infoProyecto" style="font-size: 10px;">
+		<div class="menuSecundario"><!--  --></div>
+
+		<div class="areaTrabajo" id ="idAreaTrabajo">
+			<div class = "info">
+			<!--<s:if test="#session.idProyecto != null">-->
 				<table>
-					<tr><td align="right">ID:</td><td>SGE</td></tr>
+					<tr><td align="right">Proyecto:</td><td>SGE</td></tr>
 					<tr><td align="right">Líder del proyecto:</td><td>Gabriel Barra Carrillo</td></tr>
 					<tr><td align="right">Fecha de inicio programada:</td><td>10/05/2015</td></tr>
 					<tr><td align="right">Fecha de término programada:</td><td>10/10/2015</td></tr>
 				</table>
-			</div>
-		 -->
-		<div class="areaTrabajo" id ="idAreaTrabajo">
-			<decorator:body /> 
+			<!--</s:if>-->
+			</div> 
+		
+			<decorator:body />
 		</div>
 	</div>
 	<input type="text" style="display: none;" id="rutaContexto"
