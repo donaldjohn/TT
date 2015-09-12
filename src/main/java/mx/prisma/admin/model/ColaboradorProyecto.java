@@ -63,7 +63,7 @@ public class ColaboradorProyecto implements java.io.Serializable {
 		this.colaborador = colaborador;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Rolid", nullable = false)
 	public Rol getRol() {
 		return rol;
@@ -73,7 +73,7 @@ public class ColaboradorProyecto implements java.io.Serializable {
 		this.rol = rol;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Proyectoid")
 	public Proyecto getProyecto() {
 		return proyecto;

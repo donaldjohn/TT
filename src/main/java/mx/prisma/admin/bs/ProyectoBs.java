@@ -9,6 +9,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 
 import mx.prisma.admin.dao.ColaboradorDAO;
+import mx.prisma.admin.dao.ColaboradorProyectoDAO;
 import mx.prisma.admin.dao.EstadoProyectoDAO;
 import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.dao.RolDAO;
@@ -121,38 +122,49 @@ public class ProyectoBs {
 		model.setEstadoProyecto(estado);
 	}
 
-	public static void agregarLider(Proyecto model, String curpLider) {
-		
-		
-		Colaborador liderAnterior = consultarLider(model);
-		Colaborador lider = new ColaboradorDAO().consultarColaborador(curpLider);
-		Set<ColaboradorProyecto> colaboradores_proyectoAux = model.getProyecto_colaboradores();
-		
-		Set<ColaboradorProyecto> colaboradores_proyecto = new HashSet<ColaboradorProyecto>(0);
-		
-		model.getProyecto_colaboradores().clear();
+	public static void agregarLider(Proyecto proyecto, String curpLider) {
+		Colaborador liderVista = new ColaboradorDAO().consultarColaborador(curpLider);
+		ColaboradorProyecto colaboradorPoryectoLiderBD = consultarColaboradorProyectoLider(proyecto);
+		ColaboradorProyecto colaboradorproyecto = new ColaboradorProyectoDAO().findByColaborador_Proyecto(liderVista, proyecto);
 		
 		int idLider = RolEnum.consultarIdRol(RolEnum.Rol.LIDER);
 		Rol rolLider = new RolDAO().consultarRol(idLider);
-
 		
-		for(ColaboradorProyecto cp : colaboradores_proyectoAux) {
-			if(!cp.getColaborador().equals(liderAnterior)) {
-				colaboradores_proyecto.add(cp);
+		System.out.println("size colProy antes: " + proyecto.getProyecto_colaboradores().size());
+		
+		if(colaboradorproyecto == null) {
+			// Si el colaborador no está asociado al proyecto
+			System.out.println("el colaborador no está asociado al proyecto");
+			ColaboradorProyecto colaboradorProyectoLider = new ColaboradorProyecto(liderVista, rolLider, proyecto);
+			proyecto.getProyecto_colaboradores().add(colaboradorProyectoLider);
+			
+			// se elimina el líder anterior
+			if(proyecto.getProyecto_colaboradores().remove(colaboradorPoryectoLiderBD)) {
+				System.out.println("Se elimina: " + colaboradorPoryectoLiderBD.getColaborador().getCurp());
+			} else {
+				System.out.println("no se eliminó");
 			}
-		}
-		ColaboradorProyecto colaboradorProyectoLider = new ColaboradorProyecto(lider, rolLider, model);
-		colaboradores_proyecto.add(colaboradorProyectoLider);
-		
-		model.setProyecto_colaboradores(colaboradores_proyecto);
+		} else if(!colaboradorPoryectoLiderBD.getColaborador().getCurp().equals(colaboradorproyecto.getColaborador().getCurp())) {
+			// Si el colaborador está asociado al proyecto y no es líder
+			System.out.println("el colaborador está asociado al proyecto y no es líder");
+			colaboradorproyecto.setRol(rolLider);
+			
+			// se elimina el líder anterior
+			if(proyecto.getProyecto_colaboradores().remove(colaboradorPoryectoLiderBD)) {
+				System.out.println("Se elimina: " + colaboradorPoryectoLiderBD.getColaborador().getCurp());
+			} else {
+				System.out.println("no se eliminó");
+			}
+		} 
+		System.out.println("size colProy: " + proyecto.getProyecto_colaboradores().size());
 	}
 
-	public static Colaborador consultarLider(Proyecto model) {
+	public static ColaboradorProyecto consultarColaboradorProyectoLider(Proyecto model) {
 		Set<ColaboradorProyecto> colaboradores_proyecto = model.getProyecto_colaboradores();
 		int idLider = RolEnum.consultarIdRol(RolEnum.Rol.LIDER);
 		for(ColaboradorProyecto cp : colaboradores_proyecto) {
 			if(cp.getRol().getId() == idLider) {
-				return cp.getColaborador();
+				return cp;
 			}
 		}
 		return null;
@@ -181,10 +193,6 @@ public class ProyectoBs {
 			validar(model);
 			new ProyectoDAO().modificarProyecto(model);
 		} catch (JDBCException je) {
-			if (je.getErrorCode() == 1062) {
-				throw new PRISMAValidacionException("El Proyecto"
-						+ model.getClave() + " " + model.getNombre() + " ya existe.", "MSG7");
-			}
 			System.out.println("ERROR CODE " + je.getErrorCode());
 			je.printStackTrace();
 			throw new Exception();

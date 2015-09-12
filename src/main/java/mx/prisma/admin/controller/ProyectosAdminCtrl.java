@@ -86,6 +86,7 @@ ModelDriven<Proyecto>, SessionAware{
 
 	public String create() throws Exception {
 		String resultado = null;
+		System.out.println("desde crete");
 		try {
 			if(curpLider.equals("-1")) {
 				throw new PRISMAValidacionException("El usuario no seleccionó el lider del proyecto.", "MSG4", null, "curpLider");
@@ -137,11 +138,12 @@ ModelDriven<Proyecto>, SessionAware{
 
 	private void prepararVista() {
 		idEstadoProyecto = model.getEstadoProyecto().getId();
-		curpLider = ProyectoBs.consultarLider(model).getCurp();
+		curpLider = ProyectoBs.consultarColaboradorProyectoLider(model).getColaborador().getCurp();
 	}
 
 	public String update() throws Exception {
 		String resultado = null;
+		System.out.println("desde update");
 		try {
 			if(curpLider.equals("-1")) {
 				throw new PRISMAValidacionException("El usuario no seleccionó el lider del proyecto.", "MSG4", null, "curpLider");
@@ -150,6 +152,7 @@ ModelDriven<Proyecto>, SessionAware{
 				throw new PRISMAValidacionException("El usuario no seleccionó el estado del proyecto.", "MSG4", null, "idEstadoProyecto");
 			}
 			
+			System.out.println("curpLider: " + curpLider);
 			ProyectoBs.agregarEstado(model, idEstadoProyecto);
 			ProyectoBs.agregarLider(model, curpLider);
 			

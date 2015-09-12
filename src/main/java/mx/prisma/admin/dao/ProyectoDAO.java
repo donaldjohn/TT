@@ -27,6 +27,7 @@ public class ProyectoDAO extends GenericDAO {
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
+			throw he;
 		}
 	}
 	
@@ -34,13 +35,14 @@ public class ProyectoDAO extends GenericDAO {
 		try {
 			session.beginTransaction();
 			session.update(proyecto);
-			for(ColaboradorProyecto colaborador : proyecto.getProyecto_colaboradores()){
+			/*for(ColaboradorProyecto colaborador : proyecto.getProyecto_colaboradores()){
 				session.saveOrUpdate(colaborador);
-			}
+			}*/
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
+			throw he;
 		}	
 	}
 
@@ -54,6 +56,7 @@ public class ProyectoDAO extends GenericDAO {
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
+			throw he;
 		}
 		
 		return proyecto;
@@ -74,6 +77,7 @@ public class ProyectoDAO extends GenericDAO {
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
+			throw he;
 		}
 		
 		if(proyectos.isEmpty()){
@@ -108,11 +112,11 @@ public class ProyectoDAO extends GenericDAO {
 		try {
 			session.beginTransaction();
 			session.delete(model);
-			
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
+			throw he;
 		}	
 		
 	}

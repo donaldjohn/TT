@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -188,7 +189,7 @@ public class Proyecto implements java.io.Serializable {
 		this.estadoProyecto = estadoProyecto;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "proyecto")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "proyecto", cascade = CascadeType.ALL, orphanRemoval = true)
 	public Set<ColaboradorProyecto> getProyecto_colaboradores() {
 		return proyecto_colaboradores;
 	}

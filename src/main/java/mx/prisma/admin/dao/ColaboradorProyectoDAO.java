@@ -1,9 +1,11 @@
 package mx.prisma.admin.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.ColaboradorProyecto;
+import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.RolEnum;
 import mx.prisma.dao.GenericDAO;
 
@@ -66,4 +68,32 @@ public class ColaboradorProyectoDAO extends GenericDAO {
 			return colaboradoresProyecto;
 		}
 	}
+	public ColaboradorProyecto findByColaborador_Proyecto(
+			Colaborador colaborador, Proyecto proyecto) {
+		
+		List<ColaboradorProyecto> results = null;
+		
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("from ColaboradorProyecto as colProy where colProy.proyecto.id = :id  and colProy.colaborador.curp = :curp");
+			query.setParameter("id", proyecto.getId());
+			query.setParameter("curp", colaborador.getCurp());
+			results = new ArrayList<ColaboradorProyecto>();
+			for(Object o : query.list()) {
+				results.add((ColaboradorProyecto) o);
+			}
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			session.getTransaction().rollback();
+			throw he;
+		}
+		
+		
+		if(results.isEmpty()) {
+			return null;
+		} else {
+			return results.get(0);
+		}
+	}
+	
 }
