@@ -31,6 +31,7 @@ import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
 
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ModelDriven;
 
 @ResultPath("/content/editor/")
@@ -38,7 +39,10 @@ import com.opensymphony.xwork2.ModelDriven;
 		@Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 				"actionName", "entidades" }),
 		@Result(name = "referencias", type = "json", params = { "root",
-				"elementosReferencias" }) })
+				"elementosReferencias" }),
+		@Result(name = "proyectos", type = "redirectAction", params = {
+						"actionName", "proyectos" })
+})
 
 public class EntidadesCtrl extends ActionSupportPRISMA implements
 		ModelDriven<Entidad>, SessionAware {
@@ -60,12 +64,20 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 	private String comentario;
 
 	public String index() throws Exception {
+		String resultado;
 		try {
-			proyecto = SessionManager.consultarProyectoActivo();
 			colaborador = SessionManager.consultarColaboradorActivo();
-			AccessBs.verificarPermisos(proyecto, colaborador);
-			listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
 			model.setProyecto(proyecto);
+			listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
 
 			@SuppressWarnings("unchecked")
 			Collection<String> msjs = (Collection<String>) SessionManager
@@ -82,10 +94,19 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 	}
 
 	public String editNew() throws Exception {
-
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			buscaCatalogos();
 			resultado = EDITNEW;
 		} catch (PRISMAException pe) {
@@ -102,8 +123,18 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 
 	public String create() throws Exception {
 		String resultado = null;
-
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			agregarAtributos();
 			Proyecto proyecto = SessionManager.consultarProyectoActivo();
 			model.setProyecto(proyecto);
@@ -129,9 +160,19 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 	}
 
 	public String edit() throws Exception {
-
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			prepararVista();
 			buscaCatalogos();
 			resultado = EDIT;
@@ -169,8 +210,18 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 
 	public String update() throws Exception {
 		String resultado = null;
-
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			model.getAtributos().clear();
 			agregarAtributos();
 			for (Atributo a : model.getAtributos()) {
@@ -217,7 +268,19 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 	public String show() throws Exception {
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			model = EntidadBs.consultarEntidad(idSel);
+			model.setProyecto(proyecto);
 			resultado = SHOW;
 		} catch (PRISMAException pe) {
 			pe.setIdMensaje("MSG26");
@@ -233,6 +296,17 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 	public String destroy() throws Exception {
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			EntidadBs.eliminarEntidad(model);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "La", "Entidad",

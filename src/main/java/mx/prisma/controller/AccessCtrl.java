@@ -6,6 +6,7 @@ import java.util.Map;
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AccessBs;
+import mx.prisma.editor.model.Modulo;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
 import mx.prisma.util.PRISMAException;
@@ -19,14 +20,13 @@ import org.apache.struts2.interceptor.SessionAware;
 
 import com.opensymphony.xwork2.ActionContext;
 
-@InterceptorRef(value="defaultStack")
+@InterceptorRef(value = "defaultStack")
 @Results({
 		@Result(name = "administrador", type = "redirectAction", params = {
 				"actionName", "proyectosAdmin" }),
 		@Result(name = "colaborador", type = "redirectAction", params = {
 				"actionName", "proyectos" }),
-		@Result(name = "recover", type = "dispatcher", location = "recover.jsp")
-		})
+		@Result(name = "recover", type = "dispatcher", location = "recover.jsp") })
 public class AccessCtrl extends ActionSupportPRISMA implements SessionAware {
 	/** 
 	 * 
@@ -136,7 +136,7 @@ public class AccessCtrl extends ActionSupportPRISMA implements SessionAware {
 		}
 		return resultado;
 	}
-	
+
 	public static String getMenu() throws Exception {
 		Proyecto proyecto = SessionManager.consultarProyectoActivo();
 		Colaborador colaborador = SessionManager.consultarColaboradorActivo();
@@ -147,6 +147,18 @@ public class AccessCtrl extends ActionSupportPRISMA implements SessionAware {
 		} else {
 			return "editor/menus/menuAnalistaProyecto";
 		}
+	}
+
+	public static Proyecto getInfoProyecto() throws Exception {
+		Proyecto proyecto = null;
+		proyecto = SessionManager.consultarProyectoActivo();
+		return proyecto;
+	}
+
+	public static Modulo getInfoModulo() throws Exception {
+		Modulo modulo = null;
+		modulo = SessionManager.consultarModuloActivo();
+		return modulo;
 	}
 	
 	public void setSession(Map<String, Object> session) {

@@ -12,8 +12,7 @@
 </head>
 
 <body>
-	<h1><s:property value="%{proyecto.clave + ' - ' + proyecto.nombre}"/></h1>
-	<h3>Gestionar Módulos</h3>
+	<h1>Gestionar Módulos</h1>
 	<s:actionmessage theme="jquery"/>
 	<s:actionerror theme="jquery"/>
 	
@@ -30,30 +29,26 @@
 				<tr>
 					<td><s:property value="%{#modulo.clave + ' ' + #modulo.nombre}"/></td>		
 					<td align="center">
-						<s:url var="urlConsultar" value="%{#pageContext.request.contextPath}/modulos/%{#modulo.id}"/>
-						<s:a href="%{urlConsultar}">
-							<img id="" class="button" title="Consultar Módulo"
-									src="${pageContext.request.contextPath}/resources/images/icons/ver.png" />
-						</s:a>
+						${blanks}
+						<s:url var="urlCU" value="%{#pageContext.request.contextPath}/modulos!entrarCU?idSel=%{#modulo.id}"/>
+						<s:a href="%{urlCU}">
+						<img id="" class="button" title="Gestionar Casos de uso"
+								src="${pageContext.request.contextPath}/resources/images/icons/uc.png" /></s:a>
+						${blanks}
+						<s:url var="urlIU" value="%{#pageContext.request.contextPath}/modulos!entrarIU?idSel=%{#modulo.id}"/>
+						<s:a href="%{urlIU}">
+						<img id="" class="button" title="Gestionar Pantallas"
+								src="${pageContext.request.contextPath}/resources/images/icons/iu.png" /></s:a>
+						${blanks}
 						<s:url var="urlEditar" value="%{#pageContext.request.contextPath}/modulos/%{#modulo.id}/edit"/>			
 						<s:a href="%{urlEditar}">
 							<img id="" class="button" title="Modificar Módulo"
 									src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
 						</s:a>
-						${blanks}
-						<s:url var="urlCU" value="%{#pageContext.request.contextPath}/modulos/%{#modulo.id}"/>
-						<s:a href="%{urlCU}">
-						<img id="" class="button" title="Gestionar Casos de uso"
-								src="${pageContext.request.contextPath}/resources/images/icons/uc.png" /></s:a>
-						${blanks}
-						<s:url var="urlIU" value="%{#pageContext.request.contextPath}/modulos/%{#modulo.id}"/>
-						<s:a href="%{urlIU}">
-						<img id="" class="button" title="Gestionar Pantallas"
-								src="${pageContext.request.contextPath}/resources/images/icons/iu.png" /></s:a>
-						${blanks}
 						<s:a onclick="return mostrarMensajeEliminacion(%{#modulo.id});">
 						<img id="" class="button" title="Eliminar Módulo"
 								src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" /></s:a>
+						${blanks}
 					</td>
 				</tr>
 			</s:iterator>

@@ -90,13 +90,14 @@ public class SessionManager {
 	}
 
 	public static Modulo consultarModuloActivo() throws Exception{
-		Integer idMod = 1; //Se debe obtener de sesión
+		HttpSession session = ServletActionContext.getRequest().getSession(false); 
 		Modulo modulo = null;
-		
-		modulo = new ModuloDAO().consultarModulo(idMod);
-		if(modulo == null) {
-			throw new PRISMAException("No se puede consultar el módulo", "MSG13");
+		Integer idModulo = null;
+		if (session != null && session.getAttribute("idModulo") != null) {
+			idModulo = (Integer)  session.getAttribute("idModulo");	
+			modulo = new ModuloDAO().consultarModulo(idModulo);
 		}
+
 		return modulo;
 	}
 	

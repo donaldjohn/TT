@@ -36,10 +36,9 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 	private Map<String, Object> userSession;
 	private Colaborador colaborador;
 	private Proyecto model;
+	private Proyecto proyecto;
 	private List<Proyecto> listProyectos;
 	private Integer idSel;
-	private String comentario;
-	private List<String> elementosReferencias;
 
 	public String index() throws Exception {
 		Map<String, Object> session = null;
@@ -68,12 +67,12 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 		Map<String, Object> session = null;
 		String resultado = null;
 		try {
-			if (idSel == null || colaborador == null || !AccessBs.verificarPermisos(ProyectoBs.consultarProyecto(idSel), colaborador)) {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			if (idSel == null || colaborador == null || !AccessBs.verificarPermisos(model, colaborador)) {
 				resultado = LOGIN;
 				return resultado;
 			}
 			resultado = "modulos";
-			colaborador = SessionManager.consultarColaboradorActivo();
 			session = ActionContext.getContext().getSession();
 			session.put("idProyecto", idSel);
 			
@@ -82,7 +81,6 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 					.get("mensajesAccion");
 			this.setActionMessages(msjs);
 			SessionManager.delete("mensajesAccion");
-
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 		} catch (Exception e) {
@@ -111,22 +109,6 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 		// TODO Auto-generated method stub
 	}
 
-	public String getComentario() {
-		return comentario;
-	}
-
-	public void setComentario(String comentario) {
-		this.comentario = comentario;
-	}
-
-	public List<String> getElementosReferencias() {
-		return elementosReferencias;
-	}
-
-	public void setElementosReferencias(List<String> elementosReferencias) {
-		this.elementosReferencias = elementosReferencias;
-	}
-
 	public List<Proyecto> getListProyectos() {
 		return listProyectos;
 	}
@@ -141,5 +123,20 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 
 	public void setIdSel(Integer idSel) {
 		this.idSel = idSel;
+		model = ProyectoBs.consultarProyecto(idSel);
+		this.proyecto = model;
+	}
+
+	
+	public Proyecto getProyecto() {
+		return proyecto;
+	}
+
+	
+	
+	public void setProyecto(Proyecto proyecto) {
+		this.proyecto = proyecto;
 	}	
+
+	
 }

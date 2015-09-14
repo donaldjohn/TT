@@ -21,6 +21,7 @@ import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
 
 import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 
 @ResultPath("/content/editor/")
@@ -28,7 +29,13 @@ import com.opensymphony.xwork2.ModelDriven;
 		@Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 				"actionName", "modulos" }),
 		@Result(name = "proyectos", type = "redirectAction", params = {
-				"actionName", "proyectos" }) })
+				"actionName", "proyectos" }),
+		@Result(name = "cu", type = "redirectAction", params = { "actionName",
+				"cu" }),
+		@Result(name = "pantallas", type = "redirectAction", params = { "actionName",
+				"pantallas" })
+
+})
 public class ModulosCtrl extends ActionSupportPRISMA implements
 		ModelDriven<Modulo>, SessionAware {
 	/** 
@@ -44,7 +51,8 @@ public class ModulosCtrl extends ActionSupportPRISMA implements
 
 	public String index() throws Exception {
 		String resultado = null;
-		try {
+		Map<String, Object> session = null;
+		try {			
 			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
 			if (proyecto == null) {
@@ -55,6 +63,8 @@ public class ModulosCtrl extends ActionSupportPRISMA implements
 				resultado = Action.LOGIN;
 				return resultado;
 			}
+			session = ActionContext.getContext().getSession();
+			session.remove("idModulo");
 			listModulos = ModuloBs.consultarModulosProyecto(proyecto);
 			model.setProyecto(proyecto);
 			@SuppressWarnings("unchecked")
@@ -72,7 +82,6 @@ public class ModulosCtrl extends ActionSupportPRISMA implements
 	}
 
 	public String editNew() throws Exception {
-
 		String resultado = null;
 		try {
 			colaborador = SessionManager.consultarColaboradorActivo();
@@ -85,6 +94,7 @@ public class ModulosCtrl extends ActionSupportPRISMA implements
 				resultado = Action.LOGIN;
 				return resultado;
 			}
+			model.setProyecto(proyecto);
 			resultado = EDITNEW;
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
@@ -142,7 +152,7 @@ public class ModulosCtrl extends ActionSupportPRISMA implements
 				resultado = "proyectos";
 				return resultado;
 			}
-			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
 				resultado = Action.LOGIN;
 				return resultado;
 			}
@@ -170,7 +180,7 @@ public class ModulosCtrl extends ActionSupportPRISMA implements
 				resultado = "proyectos";
 				return resultado;
 			}
-			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
 				resultado = Action.LOGIN;
 				return resultado;
 			}
@@ -196,7 +206,7 @@ public class ModulosCtrl extends ActionSupportPRISMA implements
 				resultado = "proyectos";
 				return resultado;
 			}
-			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
 				resultado = Action.LOGIN;
 				return resultado;
 			}
@@ -214,6 +224,66 @@ public class ModulosCtrl extends ActionSupportPRISMA implements
 		} catch (Exception e) {
 			ErrorManager.agregaMensajeError(this, e);
 			resultado = index();
+		}
+		return resultado;
+	}
+
+	public String entrarCU() throws Exception {
+		Map<String, Object> session = null;
+		String resultado = null;
+		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			if (idSel == null
+					|| colaborador == null
+					|| !AccessBs.verificarPermisos(model.getProyecto(),
+							colaborador)) {
+				resultado = LOGIN;
+				return resultado;
+			}
+
+			resultado = "cu";
+			session = ActionContext.getContext().getSession();
+			session.put("idModulo", idSel);
+
+			@SuppressWarnings("unchecked")
+			Collection<String> msjs = (Collection<String>) SessionManager
+					.get("mensajesAccion");
+			this.setActionMessages(msjs);
+			SessionManager.delete("mensajesAccion");
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultado;
+	}
+
+	public String entrarIU() throws Exception {
+		Map<String, Object> session = null;
+		String resultado = null;
+		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			if (idSel == null
+					|| colaborador == null
+					|| !AccessBs.verificarPermisos(model.getProyecto(),
+							colaborador)) {
+				resultado = LOGIN;
+				return resultado;
+			}
+
+			resultado = "pantallas";
+			session = ActionContext.getContext().getSession();
+			session.put("idModulo", idSel);
+
+			@SuppressWarnings("unchecked")
+			Collection<String> msjs = (Collection<String>) SessionManager
+					.get("mensajesAccion");
+			this.setActionMessages(msjs);
+			SessionManager.delete("mensajesAccion");
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return resultado;
 	}

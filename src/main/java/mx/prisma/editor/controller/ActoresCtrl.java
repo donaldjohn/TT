@@ -68,6 +68,7 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 				resultado = Action.LOGIN;
 				return resultado;
 			}
+			model.setProyecto(proyecto);
 			listActores = ActorBs.consultarActoresProyecto(proyecto);
 			@SuppressWarnings("unchecked")
 			Collection<String> msjs = (Collection<String>) SessionManager
@@ -87,7 +88,17 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			buscaCatalogos();
 			resultado = EDITNEW;
 		} catch (PRISMAException pe) {
@@ -115,7 +126,16 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	public String create() throws Exception {
 		String resultado = null;
 		try {
-			Proyecto proyecto = SessionManager.consultarProyectoActivo();
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
 			model.setProyecto(proyecto);
 			ActorBs.registrarActor(model);
 			resultado = SUCCESS;
@@ -139,7 +159,18 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	public String show() throws Exception {
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}		
 			model = ActorBs.consultarActor(idSel);
+			model.setProyecto(proyecto);
 			resultado = SHOW;
 		} catch (PRISMAException pe) {
 			pe.setIdMensaje("MSG26");
@@ -155,6 +186,17 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	public String destroy() throws Exception {
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			ActorBs.eliminarActor(model);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El", "Actor",
@@ -173,8 +215,17 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	public String edit() throws Exception {
 		String resultado = null;
 		try {
-
+			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			ElementoBs.verificarEstado(model, CU_Actores.MODIFICARACTOR7_2);
 
 			buscaCatalogos();
@@ -195,6 +246,17 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	public String update() throws Exception {
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			Actualizacion actualizacion = new Actualizacion(new Date(),
 					comentario, model,
 					SessionManager.consultarColaboradorActivo());

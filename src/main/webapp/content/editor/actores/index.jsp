@@ -12,8 +12,7 @@
 </head>
 
 <body>
-	<h1><s:property value="%{proyecto.clave + ' - ' + proyecto.nombre}"/></h1>
-	<h3>Gestionar Actores</h3>
+	<h1>Gestionar Actores</h1>
 	<s:actionmessage theme="jquery"/>
 	<s:actionerror theme="jquery"/>
 	

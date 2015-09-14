@@ -12,10 +12,7 @@
 </head>
 
 <body>
-	<h1>
-		<s:property value="%{proyecto.clave + ' - ' + proyecto.nombre}" />
-	</h1>
-	<h3>Gestionar Proyectos</h3>
+	<h1>Gestionar Proyectos</h1>
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
 
@@ -77,12 +74,6 @@
 		</div>
 		<br />
 		<br />
-		<div align="center">
-			<button class="boton" formmethod="post"
-				onclick="location.href='${pageContext.request.contextPath}/proyectos/new'">
-				<s:text name="Registrar"></s:text>
-			</button>
-		</div>
 	</s:form>
 </body>
 	</html>
