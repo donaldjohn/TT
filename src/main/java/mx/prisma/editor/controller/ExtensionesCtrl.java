@@ -8,7 +8,6 @@ import java.util.Set;
 
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.bs.AccessBs;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ExtensionBs;
 import mx.prisma.editor.bs.TokenBs;
@@ -67,10 +66,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 
 			// Se agrega a la sesión el caso de uso con base en el identificador
 			// del caso de uso
-			if (idCU != 0) {
-				SessionManager.agregarIDCasoUso(idCU);
-			}
-
+	
 			// Se consulta el caso de uso activo
 			casoUsoActivo = SessionManager.consultarCasoUsoActivo();
 
@@ -192,6 +188,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 		}
 		
 	}	
+	
 	private void buscaCatalogos() throws Exception {
 		catalogoCasoUso = new ArrayList<CasoUso>();
 		for (CasoUso casoUso : listCasoUso) {
@@ -230,8 +227,6 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 	public void setCatalogoCasoUso(List<CasoUso> catalogoCasoUso) {
 		this.catalogoCasoUso = catalogoCasoUso;
 	}
-
-	
 
 	public int getIdCasoUsoDestino() {
 		return idCasoUsoDestino;

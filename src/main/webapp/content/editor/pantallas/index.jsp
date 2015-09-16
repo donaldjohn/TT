@@ -12,18 +12,10 @@
 </head>
 
 <body>
-	<h1>
-		<s:property value="%{model.modulo.clave + ' ' + model.modulo.nombre}" />
-	</h1>
+	<h1>Gestionar Pantallas</h1>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
-
-	<p class="instrucciones">
-		<s:property value="%{modulo.descripcion}" />
-	</p>
-
-	<h3>Gestionar Pantallas</h3>
 
 	<s:form autocomplete="off" theme="simple" onsubmit="return false;">
 		<div class="form">

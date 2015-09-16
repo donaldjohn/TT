@@ -30,28 +30,28 @@ import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
 
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ModelDriven;
 
 @ResultPath("/content/editor/")
 @Results({
 		@Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 				"actionName", "mensajes" }),
-		@Result(name = "parametros", type = "json", params = {
-				"root",
+		@Result(name = "parametros", type = "json", params = { "root",
 				"listParametros" }),
 		@Result(name = "referencias", type = "json", params = { "root",
-				"elementosReferencias" }) })
+				"elementosReferencias" }),
+		@Result(name = "proyectos", type = "redirectAction", params = {
+				"actionName", "proyectos" }) })
 public class MensajesCtrl extends ActionSupportPRISMA implements
 		ModelDriven<Mensaje>, SessionAware {
 	private static final long serialVersionUID = 1L;
 
-	// Proyecto y módulo
 	private Proyecto proyecto;
 	private Mensaje model;
 	private Colaborador colaborador;
 	private List<Mensaje> listMensajes;
 
-	// private List<Parametro> listParametros;
 	private String jsonParametros;
 	private String jsonParametrosGuardados;
 	private String cambioRedaccion;
@@ -64,11 +64,18 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 	private List<Parametro> listParametros;
 
 	public String index() {
+		String resultado;
 		try {
-			// Se consulta el proyecto activo
-			proyecto = SessionManager.consultarProyectoActivo();
 			colaborador = SessionManager.consultarColaboradorActivo();
-			AccessBs.verificarPermisos(proyecto, colaborador);
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
 			model.setProyecto(proyecto);
 			listMensajes = MensajeBs.consultarMensajesProyecto(proyecto);
 
@@ -89,9 +96,18 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 	public String editNew() {
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			buscarParametrosDisponibles(proyecto.getId());
-			// Creación del modelo
 			model.setClave("MSG");
 			resultado = EDITNEW;
 		} catch (PRISMAValidacionException pve) {
@@ -111,8 +127,16 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 	public String create() {
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
-
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
 			model.setProyecto(proyecto);
 			model.setEstadoElemento(ElementoBs
 					.consultarEstadoElemento((Estado.EDICION)));
@@ -143,9 +167,18 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 	public String edit() {
 		String resultado = null;
 		try {
-
-			ElementoBs.verificarEstado(model, CU_Mensajes.MODIFICARMENSAJE9_2);
+			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
+			ElementoBs.verificarEstado(model, CU_Mensajes.MODIFICARMENSAJE9_2);
 			buscarParametrosDisponibles(proyecto.getId());
 			prepararVista();
 
@@ -166,8 +199,16 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 	public String update() {
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
-			
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
 			model.setProyecto(proyecto);
 			model.setEstadoElemento(ElementoBs
 					.consultarEstadoElemento((Estado.EDICION)));
@@ -202,7 +243,17 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 	public String show() throws Exception {
 		String resultado = null;
 		try {
-			model = MensajeBs.consultarMensaje(idSel);
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			this.existenParametros = model.getParametros().size() > 0 ? true
 					: false;
 			resultado = SHOW;
@@ -220,6 +271,17 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 	public String destroy() throws Exception {
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			MensajeBs.eliminarMensaje(model);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El", "Mensaje",
@@ -301,22 +363,24 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 							new MensajeParametro(model, parametroAux));
 				} else {
 					p.setProyecto(proyecto);
-					MensajeParametro nuevoParametro = new MensajeParametro(model, p);
+					MensajeParametro nuevoParametro = new MensajeParametro(
+							model, p);
 					nuevoParametro.setId(null);
 					model.getParametros().add(nuevoParametro);
 				}
 			}
 		}
-		System.out.println("Model params size: " + model.getParametros().size());
+		System.out
+				.println("Model params size: " + model.getParametros().size());
 	}
-	
+
 	public String verificarParametros() {
 		listParametros = new ArrayList<Parametro>();
 		try {
-			proyecto = SessionManager.consultarProyectoActivo(); 
+			proyecto = SessionManager.consultarProyectoActivo();
 			if (MensajeBs.esParametrizado(redaccionMensaje)) {
-				listParametros = MensajeBs.obtenerParametros(
-						redaccionMensaje, proyecto.getId());
+				listParametros = MensajeBs.obtenerParametros(redaccionMensaje,
+						proyecto.getId());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -411,7 +475,7 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 	public void setElementosReferencias(List<String> elementosReferencias) {
 		this.elementosReferencias = elementosReferencias;
 	}
-	
+
 	public List<Parametro> getListParametros() {
 		return listParametros;
 	}
@@ -427,7 +491,5 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 	public void setRedaccionMensaje(String redaccionMensaje) {
 		this.redaccionMensaje = redaccionMensaje;
 	}
-	
-	
 
 }

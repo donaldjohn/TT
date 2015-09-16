@@ -25,15 +25,17 @@ import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
 
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ModelDriven;
 
 @ResultPath("/content/editor/")
-@Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "glosario" }),
-		@Result(name = "referencias", type = "json", params = {
-				"root",
-				"elementosReferencias"})
-})
+@Results({
+		@Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
+				"actionName", "glosario" }),
+		@Result(name = "referencias", type = "json", params = { "root",
+				"elementosReferencias" }),
+		@Result(name = "proyectos", type = "redirectAction", params = {
+				"actionName", "proyectos" }) })
 public class GlosarioCtrl extends ActionSupportPRISMA implements
 		ModelDriven<TerminoGlosario>, SessionAware {
 	/** 
@@ -42,20 +44,29 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 	private static final long serialVersionUID = 1L;
 	private Map<String, Object> userSession;
 	private Proyecto proyecto;
-	private TerminoGlosario model; 
+	private TerminoGlosario model;
 	private Colaborador colaborador;
 	private List<TerminoGlosario> listTerminosGlosario;
 	private Integer idSel;
 	private List<String> elementosReferencias;
 	private String comentario;
-	
+
 	public String index() throws Exception {
+		String resultado;
 		try {
-			proyecto = SessionManager.consultarProyectoActivo();
 			colaborador = SessionManager.consultarColaboradorActivo();
-			AccessBs.verificarPermisos(proyecto, colaborador);
-			listTerminosGlosario = TerminoGlosarioBs.consultarTerminosGlosarioProyecto(proyecto);
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
 			model.setProyecto(proyecto);
+			listTerminosGlosario = TerminoGlosarioBs
+					.consultarTerminosGlosarioProyecto(proyecto);
 			@SuppressWarnings("unchecked")
 			Collection<String> msjs = (Collection<String>) SessionManager
 					.get("mensajesAccion");
@@ -71,10 +82,19 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 	}
 
 	public String editNew() throws Exception {
-
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			resultado = EDITNEW;
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
@@ -91,13 +111,22 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 	public String create() throws Exception {
 		String resultado = null;
 		try {
-			Proyecto proyecto = SessionManager.consultarProyectoActivo();
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
 			model.setProyecto(proyecto);
 			TerminoGlosarioBs.registrarTerminoGlosario(model);
 
 			resultado = SUCCESS;
-			addActionMessage(getText("MSG1", new String[] { "El",
-					"Término", "registrado" }));
+			addActionMessage(getText("MSG1", new String[] { "El", "Término",
+					"registrado" }));
 
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAValidacionException pve) {
@@ -116,28 +145,48 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 
 	public String show() throws Exception {
 		String resultado = null;
-		
 		try {
-			model = TerminoGlosarioBs.consultarTerminoGlosario(idSel);			
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			resultado = SHOW;
 		} catch (PRISMAException pe) {
 			pe.setIdMensaje("MSG26");
 			ErrorManager.agregaMensajeError(this, pe);
 			return index();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			ErrorManager.agregaMensajeError(this, e);
 			return index();
 		}
 		return resultado;
 	}
-	
+
 	public String destroy() throws Exception {
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			TerminoGlosarioBs.eliminarTermino(model);
 			resultado = SUCCESS;
-			addActionMessage(getText("MSG1", new String[] { "El",
-					"Término", "eliminado" }));
+			addActionMessage(getText("MSG1", new String[] { "El", "Término",
+					"eliminado" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
@@ -148,12 +197,21 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 		}
 		return resultado;
 	}
-	
+
 	public String edit() throws Exception {
 		String resultado = null;
 		try {
-
+			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			ElementoBs.verificarEstado(model, CU_Glosario.MODIFICARTERMINO10_2);
 
 			resultado = EDIT;
@@ -164,23 +222,30 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 			ErrorManager.agregaMensajeError(this, e);
 			resultado = index();
 		}
-
 		return resultado;
-		
 	}
-	
+
 	public String update() throws Exception {
 		String resultado = null;
 		try {
-
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			Actualizacion actualizacion = new Actualizacion(new Date(),
 					comentario, model,
 					SessionManager.consultarColaboradorActivo());
-			System.out.println("comentario: " + comentario);
 			TerminoGlosarioBs.modificarTerminoGlosario(model, actualizacion);
 			resultado = SUCCESS;
-			addActionMessage(getText("MSG1", new String[] { "El",
-					"Término", "modificado" }));
+			addActionMessage(getText("MSG1", new String[] { "El", "Término",
+					"modificado" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
@@ -194,12 +259,13 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 		}
 		return resultado;
 	}
-	
+
 	public String verificarElementosReferencias() {
 		try {
 			elementosReferencias = new ArrayList<String>();
-			elementosReferencias = TerminoGlosarioBs.verificarReferencias(model);
-			
+			elementosReferencias = TerminoGlosarioBs
+					.verificarReferencias(model);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -239,7 +305,8 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 		return listTerminosGlosario;
 	}
 
-	public void setListTerminosGlosario(List<TerminoGlosario> listTerminosGlosario) {
+	public void setListTerminosGlosario(
+			List<TerminoGlosario> listTerminosGlosario) {
 		this.listTerminosGlosario = listTerminosGlosario;
 	}
 
@@ -268,9 +335,4 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 		this.comentario = comentario;
 	}
 
-	
-
-	
-
-	
 }

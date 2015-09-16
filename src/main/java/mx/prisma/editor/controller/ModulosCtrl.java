@@ -63,10 +63,10 @@ public class ModulosCtrl extends ActionSupportPRISMA implements
 				resultado = Action.LOGIN;
 				return resultado;
 			}
+			model.setProyecto(proyecto);
 			session = ActionContext.getContext().getSession();
 			session.remove("idModulo");
-			listModulos = ModuloBs.consultarModulosProyecto(proyecto);
-			model.setProyecto(proyecto);
+			listModulos = ModuloBs.consultarModulosProyecto(proyecto);			
 			@SuppressWarnings("unchecked")
 			Collection<String> msjs = (Collection<String>) SessionManager
 					.get("mensajesAccion");

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import mx.prisma.admin.model.Colaborador;
@@ -45,6 +46,7 @@ import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 
 import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 
@@ -53,8 +55,10 @@ import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 		@Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 				"actionName", "cu" }),
 		@Result(name = "referencias", type = "json", params = { "root",
-				"elementosReferencias" }) })
-
+				"elementosReferencias" }),
+		@Result(name = "modulos", type = "redirectAction", params = {
+				"actionName", "modulos" })
+		})
 public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> {
 	/**
 	 * 
@@ -101,23 +105,23 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 	public String index() {
 		String resultado;
+		Map<String, Object> session = null;
 		try {
-			
-			// Se consulta el módulo
-			modulo = SessionManager.consultarModuloActivo();
-
-			// Se consulta el proyecto
 			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
-
-			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+			modulo = SessionManager.consultarModuloActivo();
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(modulo.getProyecto(), colaborador)) {
 				resultado = Action.LOGIN;
 				return resultado;
 			}
-			// Se agrega el módulo al caso de uso
+			model.setProyecto(proyecto);
 			model.setModulo(modulo);
-
-			// Se consultan todos los casos de uso para mostrarlos en la gestión
+			session = ActionContext.getContext().getSession();
+			session.remove("idCU");
 			listCU = CuBs.consultarCasosUsoModulo(modulo);
 
 			@SuppressWarnings("unchecked")
@@ -137,12 +141,20 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	public String editNew() {
 		String resultado = null;
 		try {
-
-			// Creación del modelo
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
 			modulo = SessionManager.consultarModuloActivo();
-			proyecto = modulo.getProyecto();
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(modulo.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
+			model.setModulo(modulo);
 
-			// Se buscan los elementos disponibles para referenciar
 			buscaElementos();
 
 			model.setClave(CuBs.calcularClave(modulo.getClave()));
@@ -164,10 +176,17 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	public String create() throws PRISMAException, Exception {
 		String resultado = null;
 		try {
-			// Creación del modelo
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
 			modulo = SessionManager.consultarModuloActivo();
-			proyecto = modulo.getProyecto();
-
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(modulo.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
 			model.setProyecto(proyecto);
 			model.setModulo(modulo);
 			model.setEstadoElemento(ElementoBs
@@ -196,14 +215,22 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	}
 
 	public String edit() {
-
-		
 		String resultado = null;
 		try {
-
+			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
 			modulo = SessionManager.consultarModuloActivo();
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			model.setModulo(modulo);
+			
 			ElementoBs.verificarEstado(model, CU_CasosUso.MODIFICARCASOUSO5_2);
 
 			buscaElementos();
@@ -226,8 +253,19 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	public String update() throws Exception {
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
 			modulo = SessionManager.consultarModuloActivo();
-			proyecto = modulo.getProyecto();
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
+			model.setModulo(modulo);
 
 			model.getActores().clear();
 			model.getEntradas().clear();
@@ -262,7 +300,20 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	public String show() throws Exception {
 		String resultado = null;
 		try {
-			model = CuBs.consultarCasoUso(idSel);
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
+			model.setModulo(modulo);
+
 			this.existenPrecondiciones = CuBs.existenPrecondiciones(model
 					.getPostprecondiciones());
 			this.existenPostcondiciones = CuBs.existenPostcondiciones(model
@@ -289,6 +340,19 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	public String destroy() throws Exception {
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
+			model.setModulo(modulo);
 			CuBs.eliminarCasoUso(model);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",
@@ -303,7 +367,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		}
 		return resultado;
 	}
-	
+
 	private void agregarPostPrecondiciones(CasoUso casoUso) {
 		// Se agregan precondiciones al caso de uso
 		if (jsonPrecondiciones != null && !jsonPrecondiciones.equals("")) {
@@ -539,7 +603,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		try {
 			elementosReferencias = new ArrayList<String>();
 			elementosReferencias = CuBs.verificarReferencias(model);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -742,7 +806,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	public void setComentario(String comentario) {
 		this.comentario = comentario;
 	}
-	
+
 	public List<String> getElementosReferencias() {
 		return elementosReferencias;
 	}
@@ -751,5 +815,4 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		this.elementosReferencias = elementosReferencias;
 	}
 
-	
 }

@@ -32,27 +32,25 @@ import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
 
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ModelDriven;
 
 @ResultPath("/content/editor/")
-@Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "reglas-negocio"}),
-		@Result(name = "atributos", type = "json", params = {
-				"root",
+@Results({
+		@Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
+				"actionName", "reglas-negocio" }),
+		@Result(name = "atributos", type = "json", params = { "root",
 				"listAtributos" }),
-		@Result(name = "entidades", type = "json", params = {
-				"root",
-				"listEntidades"}),
-				//"includeProperties",
-				//"^listEntidades\\[\\d+\\]\\.nombre,^listEntidades\\[\\d+\\]\\.id"}),
-		@Result(name = "operadores", type = "json", params = {
-				"root",
-				"listOperadores"}),
-		@Result(name = "referencias", type = "json", params = {
-				"root",
-				"elementosReferencias"})
-})
-public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDriven<ReglaNegocio>, SessionAware{
+		@Result(name = "entidades", type = "json", params = { "root",
+				"listEntidades" }),
+		@Result(name = "operadores", type = "json", params = { "root",
+				"listOperadores" }),
+		@Result(name = "referencias", type = "json", params = { "root",
+				"elementosReferencias" }),
+		@Result(name = "proyectos", type = "redirectAction", params = {
+				"actionName", "proyectos" }) })
+public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
+		ModelDriven<ReglaNegocio>, SessionAware {
 	/**
 	 * 
 	 */
@@ -60,7 +58,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	private Proyecto proyecto;
 	private ReglaNegocio model;
 	private Colaborador colaborador;
-	
+
 	private List<ReglaNegocio> listReglasNegocio;
 	private List<TipoReglaNegocio> listTipoRN;
 	private int idTipoRN;
@@ -71,45 +69,52 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	private List<Entidad> listEntidades2;
 	private List<Atributo> listAtributos2;
 	private List<Operador> listOperadores;
-	
+
 	private int idAtributo;
 	private int idEntidad;
-	
+
 	private int idEntidadUnicidad;
 	private int idAtributoUnicidad;
-	
+
 	private int idAtributoFormato;
-	
+
 	private int idAtributoFI;
 	private int idAtributoFT;
-	
+
 	private int idAtributo1;
 	private int idAtributo2;
 	private int idOperador;
 	private List<String> elementosReferencias;
-	
+
 	private boolean esEliminable;
 
 	private String comentario;
-	
+
 	private Integer idSel;
-	
-	
-	
+
 	public String index() {
+		String resultado;
 		try {
-			//Se consulta el proyecto activo
-			proyecto = SessionManager.consultarProyectoActivo();
 			colaborador = SessionManager.consultarColaboradorActivo();
-			AccessBs.verificarPermisos(proyecto, colaborador);
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
 			model.setProyecto(proyecto);
-			listReglasNegocio = ReglaNegocioBs.consultarReglasNegocioProyecto(proyecto);
-			
+			listReglasNegocio = ReglaNegocioBs
+					.consultarReglasNegocioProyecto(proyecto);
+
 			@SuppressWarnings("unchecked")
-			Collection<String> msjs = (Collection<String>) SessionManager.get("mensajesAccion");
+			Collection<String> msjs = (Collection<String>) SessionManager
+					.get("mensajesAccion");
 			this.setActionMessages(msjs);
 			SessionManager.delete("mensajesAccion");
-			
+
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 		} catch (Exception e) {
@@ -117,12 +122,21 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		}
 		return INDEX;
 	}
-	
+
 	public String editNew() {
 		String resultado = null;
 		try {
-
+			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			buscaCatalogos();
 			buscarEntidades();
 			model.setClave("RN");
@@ -144,43 +158,61 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	public String create() {
 		String resultado = null;
 		try {
-			if(idTipoRN == -1) {
-				throw new PRISMAValidacionException("El usuario no seleccionó el tipo de regla de negocio.", "MSG4", null, "idTipoRN");
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
 			}
-			model.setTipoReglaNegocio(ReglaNegocioBs.consultaTipoReglaNegocio(idTipoRN));
-			
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
+			if (idTipoRN == -1) {
+				throw new PRISMAValidacionException(
+						"El usuario no seleccionó el tipo de regla de negocio.",
+						"MSG4", null, "idTipoRN");
+			}
+			model.setTipoReglaNegocio(ReglaNegocioBs
+					.consultaTipoReglaNegocio(idTipoRN));
+
 			TipoReglaNegocio trn = model.getTipoReglaNegocio();
 
-			switch(TipoReglaNegocioEnum.getTipoReglaNegocio(trn)) {
+			switch (TipoReglaNegocioEnum.getTipoReglaNegocio(trn)) {
 			case COMPATRIBUTOS:
-				model = ReglaNegocioBs.agregarElementosComparacion(model, idAtributo1, idOperador, idAtributo2);
+				model = ReglaNegocioBs.agregarElementosComparacion(model,
+						idAtributo1, idOperador, idAtributo2);
 				break;
 			case FORMATOCAMPO:
-				model = ReglaNegocioBs.agregarElementosFormatoCampo(model, idAtributoFormato);
+				model = ReglaNegocioBs.agregarElementosFormatoCampo(model,
+						idAtributoFormato);
 				break;
 			case UNICIDAD:
-				model = ReglaNegocioBs.agregarElementosUnicidad(model, idEntidadUnicidad, idAtributoUnicidad);
+				model = ReglaNegocioBs.agregarElementosUnicidad(model,
+						idEntidadUnicidad, idAtributoUnicidad);
 				break;
 			default:
 				break;
 			}
-			
-			//Se prepara el modelo para el registro 
+
+			// Se prepara el modelo para el registro
 			proyecto = SessionManager.consultarProyectoActivo();
 			model.setProyecto(proyecto);
-			model.setEstadoElemento(ElementoBs.consultarEstadoElemento(Estado.EDICION));
-			
-			//Se registra el mensaje
+			model.setEstadoElemento(ElementoBs
+					.consultarEstadoElemento(Estado.EDICION));
+
+			// Se registra el mensaje
 			ReglaNegocioBs.registrarReglaNegocio(model);
 			resultado = SUCCESS;
-			
-			//Se agrega mensaje de éxito
+
+			// Se agrega mensaje de éxito
 			addActionMessage(getText("MSG1", new String[] { "La",
 					"Regla de negocio", "registrada" }));
-			
-			//Se agrega el mensaje a la sesión
+
+			// Se agrega el mensaje a la sesión
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
-			
+
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			resultado = editNew();
@@ -193,23 +225,34 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		}
 		return resultado;
 	}
-	
+
 	public String edit() {
-		
+
 		String resultado = null;
 		try {
-			ElementoBs.verificarEstado(model, CU_ReglasNegocio.MODIFICARREGLANEGOCIO8_2);
+			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
-			
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
+			ElementoBs.verificarEstado(model,
+					CU_ReglasNegocio.MODIFICARREGLANEGOCIO8_2);
+
 			buscaCatalogos();
 			buscarEntidades();
 			prepararVista();
-			
+
 			resultado = EDIT;
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			resultado = edit();
-		}catch (PRISMAException pe) {
+		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
 		} catch (Exception e) {
@@ -222,65 +265,90 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	private void prepararVista() {
 		TipoReglaNegocio trn = model.getTipoReglaNegocio();
 		idTipoRN = trn.getId();
-		switch(TipoReglaNegocioEnum.getTipoReglaNegocio(trn)) {
+		switch (TipoReglaNegocioEnum.getTipoReglaNegocio(trn)) {
 		case COMPATRIBUTOS:
 			this.listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
-			this.listAtributos = new ArrayList<Atributo>(model.getAtributoComp1().getEntidad().getAtributos());
-			this.listEntidades2 = ReglaNegocioBs.consultarEntidadesTipoDato(proyecto, model.getAtributoComp2().getTipoDato().getNombre());
+			this.listAtributos = new ArrayList<Atributo>(model
+					.getAtributoComp1().getEntidad().getAtributos());
+			this.listEntidades2 = ReglaNegocioBs.consultarEntidadesTipoDato(
+					proyecto, model.getAtributoComp2().getTipoDato()
+							.getNombre());
 			idEntidad = model.getAtributoComp2().getEntidad().getId();
-			this.listAtributos2 = ReglaNegocioBs.consultarAtributosTipoDato(idEntidad, model.getAtributoComp2().getTipoDato().getNombre());
-			
-			listOperadores = ReglaNegocioBs.consultarOperadoresDisponibles(model.getAtributoComp1().getTipoDato().getNombre());
-			
+			this.listAtributos2 = ReglaNegocioBs.consultarAtributosTipoDato(
+					idEntidad, model.getAtributoComp2().getTipoDato()
+							.getNombre());
+
+			listOperadores = ReglaNegocioBs
+					.consultarOperadoresDisponibles(model.getAtributoComp1()
+							.getTipoDato().getNombre());
+
 			break;
 		case FORMATOCAMPO:
 			this.listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
-			this.listAtributos = new ArrayList<Atributo>(model.getAtributoExpReg().getEntidad().getAtributos());
+			this.listAtributos = new ArrayList<Atributo>(model
+					.getAtributoExpReg().getEntidad().getAtributos());
 			break;
 		case UNICIDAD:
 			this.listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
-			this.listAtributos = new ArrayList<Atributo>(model.getAtributoUnicidad().getEntidad().getAtributos());
+			this.listAtributos = new ArrayList<Atributo>(model
+					.getAtributoUnicidad().getEntidad().getAtributos());
 			break;
 		default:
 			break;
-		
+
 		}
-		
-		
+
 	}
 
 	private void buscarEntidades() {
-		this.listAtributos = new ArrayList<Atributo>();		
+		this.listAtributos = new ArrayList<Atributo>();
 		this.listEntidades = new ArrayList<Entidad>();
-		this.listAtributos2 = new ArrayList<Atributo>();		
+		this.listAtributos2 = new ArrayList<Atributo>();
 		this.listEntidades2 = new ArrayList<Entidad>();
 	}
 
-	
 	public String update() {
 		String resultado = null;
 		try {
-			if(idTipoRN == -1) {
-				throw new PRISMAValidacionException("El usuario no seleccionó el tipo de regla de negocio.", "MSG4", null, "idTipoRN");
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
 			}
-			
-			model.setTipoReglaNegocio(ReglaNegocioBs.consultaTipoReglaNegocio(idTipoRN));
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
+
+			if (idTipoRN == -1) {
+				throw new PRISMAValidacionException(
+						"El usuario no seleccionó el tipo de regla de negocio.",
+						"MSG4", null, "idTipoRN");
+			}
+
+			model.setTipoReglaNegocio(ReglaNegocioBs
+					.consultaTipoReglaNegocio(idTipoRN));
 			TipoReglaNegocio trn = model.getTipoReglaNegocio();
-			
-			switch(TipoReglaNegocioEnum.getTipoReglaNegocio(trn)) {
+
+			switch (TipoReglaNegocioEnum.getTipoReglaNegocio(trn)) {
 			case COMPATRIBUTOS:
-				model = ReglaNegocioBs.agregarElementosComparacion(model, idAtributo1, idOperador, idAtributo2);
+				model = ReglaNegocioBs.agregarElementosComparacion(model,
+						idAtributo1, idOperador, idAtributo2);
 				break;
 			case FORMATOCAMPO:
-				model = ReglaNegocioBs.agregarElementosFormatoCampo(model, idAtributoFormato);
+				model = ReglaNegocioBs.agregarElementosFormatoCampo(model,
+						idAtributoFormato);
 				break;
 			case UNICIDAD:
-				model = ReglaNegocioBs.agregarElementosUnicidad(model, idEntidadUnicidad, idAtributoUnicidad);
+				model = ReglaNegocioBs.agregarElementosUnicidad(model,
+						idEntidadUnicidad, idAtributoUnicidad);
 				break;
 			default:
 				break;
 			}
-			
+
 			Actualizacion actualizacion = new Actualizacion(new Date(),
 					comentario, model,
 					SessionManager.consultarColaboradorActivo());
@@ -291,7 +359,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 			addActionMessage(getText("MSG1", new String[] { "La",
 					"Regla de negocio", "modificada" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
-			
+
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			resultado = edit();
@@ -304,25 +372,47 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		}
 		return resultado;
 	}
-	
-	public String show() throws Exception{
+
+	public String show() throws Exception {
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			resultado = SHOW;
 		} catch (PRISMAException pe) {
 			pe.setIdMensaje("MSG26");
 			ErrorManager.agregaMensajeError(this, pe);
 			return index();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			ErrorManager.agregaMensajeError(this, e);
 			return index();
 		}
 		return resultado;
 	}
-	
+
 	public String destroy() {
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null) {
+				resultado = "proyectos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			ReglaNegocioBs.eliminarReglaNegocio(model);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "La",
@@ -337,85 +427,94 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		}
 		return resultado;
 	}
-	
+
 	public String cargarEntidades() {
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
-			List<Entidad> listEntidadesAux = EntidadBs.consultarEntidadesProyecto(proyecto);
+			List<Entidad> listEntidadesAux = EntidadBs
+					.consultarEntidadesProyecto(proyecto);
 			listEntidades = new ArrayList<Entidad>();
-			for(Entidad en : listEntidadesAux) {
+			for (Entidad en : listEntidadesAux) {
 				en.setProyecto(null);
 				listEntidades.add(en);
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "entidades";
 	}
-	
+
 	public String cargarEntidadesDependientes() {
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
 			Atributo atributo = EntidadBs.consultarAtributo(this.idAtributo);
-			List<Entidad> listEntidadesAux = ReglaNegocioBs.consultarEntidadesTipoDato(proyecto, atributo.getTipoDato().getNombre());
+			List<Entidad> listEntidadesAux = ReglaNegocioBs
+					.consultarEntidadesTipoDato(proyecto, atributo
+							.getTipoDato().getNombre());
 			listEntidades = new ArrayList<Entidad>();
-			for(Entidad en : listEntidadesAux) {
+			for (Entidad en : listEntidadesAux) {
 				en.setProyecto(null);
 				listEntidades.add(en);
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "entidades";
 	}
-	
+
 	public String cargarAtributos() {
 		try {
 			Entidad entidad = EntidadBs.consultarEntidad(this.idEntidad);
-			ArrayList<Atributo> listAtributosAux = new ArrayList<Atributo>(entidad.getAtributos());
+			ArrayList<Atributo> listAtributosAux = new ArrayList<Atributo>(
+					entidad.getAtributos());
 			listAtributos = new ArrayList<Atributo>();
-			for(Atributo at : listAtributosAux) {
+			for (Atributo at : listAtributosAux) {
 				at.setEntidad(null);
 				listAtributos.add(at);
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "atributos";
 	}
-	
+
 	public String cargarAtributosDependientes() {
 		try {
 			Atributo atributo = EntidadBs.consultarAtributo(this.idAtributo);
 			String tipoDato = atributo.getTipoDato().getNombre();
-			ArrayList<Atributo> listAtributosAux = new ArrayList<Atributo>(ReglaNegocioBs.consultarAtributosTipoDato(idEntidad, tipoDato));
+			ArrayList<Atributo> listAtributosAux = new ArrayList<Atributo>(
+					ReglaNegocioBs.consultarAtributosTipoDato(idEntidad,
+							tipoDato));
 			listAtributos = new ArrayList<Atributo>();
-			for(Atributo at : listAtributosAux) {
+			for (Atributo at : listAtributosAux) {
 				at.setEntidad(null);
 				listAtributos.add(at);
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "atributos";
 	}
-	
+
 	public String cargarOperadores() {
 		try {
 			Atributo atributo = EntidadBs.consultarAtributo(this.idAtributo);
-			listOperadores = ReglaNegocioBs.consultarOperadoresDisponibles(atributo.getTipoDato().getNombre());
-			
-		} catch(Exception e) {
+			listOperadores = ReglaNegocioBs
+					.consultarOperadoresDisponibles(atributo.getTipoDato()
+							.getNombre());
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "operadores";
 	}
 
-	private void buscaCatalogos() { 
-		listTipoRN = ReglaNegocioBs.consultarTipoRNDisponibles(proyecto, model.getTipoReglaNegocio());
+	private void buscaCatalogos() {
+		listTipoRN = ReglaNegocioBs.consultarTipoRNDisponibles(proyecto,
+				model.getTipoReglaNegocio());
 		listOperadores = new ArrayList<Operador>();
 	}
-	
+
 	public String verificarElementosReferencias() {
 		try {
 			elementosReferencias = new ArrayList<String>();
@@ -426,11 +525,11 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		return "referencias";
 	}
 
-	public void setSession(Map<String, Object> session) {		
+	public void setSession(Map<String, Object> session) {
 	}
 
 	public ReglaNegocio getModel() {
-		if(model == null) {
+		if (model == null) {
 			model = new ReglaNegocio();
 		}
 		return model;
@@ -592,11 +691,11 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 		this.idSel = idSel;
 		this.model = ReglaNegocioBs.consultaReglaNegocio(this.idSel);
 	}
-	
+
 	public int getDefaultIdEntidadUnicidad() {
 		return model.getAtributoUnicidad().getEntidad().getId();
 	}
-	
+
 	public int getDefaultIdAtributoUnicidad() {
 		return model.getAtributoUnicidad().getId();
 	}
@@ -608,8 +707,6 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	public void setEsEliminable(boolean esEliminable) {
 		this.esEliminable = esEliminable;
 	}
-
-	
 
 	public String getComentario() {
 		return comentario;
@@ -642,8 +739,5 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements ModelDrive
 	public void setListAtributos2(List<Atributo> listAtributos2) {
 		this.listAtributos2 = listAtributos2;
 	}
-
-	
-	
 
 }

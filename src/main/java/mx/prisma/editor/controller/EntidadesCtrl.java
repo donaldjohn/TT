@@ -224,22 +224,6 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 			model.setProyecto(proyecto);
 			model.getAtributos().clear();
 			agregarAtributos();
-			for (Atributo a : model.getAtributos()) {
-				System.out.println("-" + a.getNombre() + "-");
-				System.out.println("-" + a.getTipoDato().getNombre() + "-");
-				System.out.println("-" + a.getLongitud() + "-");
-				System.out.println("-" + a.getTamanioArchivo() + "-");
-				if (a.getUnidadTamanio() != null)
-				System.out.println("-" + a.getUnidadTamanio().getNombre() + "-");
-				else 
-					System.out.println("-null-" );
-				System.out.println("-" + a.getFormatoArchivo() + "-");
-				System.out.println("-" + a.getOtroTipoDato() + "-");
-
-
-
-
-			}
 			Actualizacion actualizacion = new Actualizacion(new Date(),
 					comentario, model,
 					SessionManager.consultarColaboradorActivo());
@@ -278,8 +262,6 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 				resultado = Action.LOGIN;
 				return resultado;
 			}
-			model.setProyecto(proyecto);
-			model = EntidadBs.consultarEntidad(idSel);
 			model.setProyecto(proyecto);
 			resultado = SHOW;
 		} catch (PRISMAException pe) {
@@ -527,8 +509,6 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 	}
 
 	public void setIdSel(Integer idSel) {
-		
-		System.out.println("ajax");
 		this.idSel = idSel;
 		model = EntidadBs.consultarEntidad(idSel);
 	}

@@ -13,10 +13,14 @@ import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
 
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 
+import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.bs.CuBs;
+import mx.prisma.bs.AccessBs;
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.TipoSeccionEnum;
 import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
@@ -53,8 +57,9 @@ import mx.prisma.util.SessionManager;
 		@Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 				"actionName", "trayectorias" }),
 		@Result(name = "referencias", type = "json", params = { "root",
-				"elementosReferencias" }) })
-
+				"elementosReferencias" }),
+		@Result(name = "cu", type = "redirectAction", params = { "actionName",
+				"cu" }) })
 public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 		ModelDriven<Trayectoria>, SessionAware {
 	/**
@@ -66,12 +71,13 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 	// Proyecto y módulo
 	private Proyecto proyecto;
 	private Modulo modulo;
+	private Colaborador colaborador;
 
 	private CasoUso casoUso;
 	private Trayectoria model;
 	private List<Trayectoria> listTrayectorias;
 	private String jsonPasosTabla;
-	private int idCU;
+	private Integer idCU;
 	private List<String> listRealiza;
 	private List<String> listVerbos;
 
@@ -100,19 +106,32 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 	private List<String> elementosReferencias;
 
 	public String index() throws Exception {
+		String resultado;
+		Map<String, Object> session = null;
 		try {
-			// Se consulta el módulo en sesión
-			modulo = SessionManager.consultarModuloActivo();
 
-			// Se agrega a la sesión el caso de uso con base en el identificador
-			// del caso de uso
-			if (idCU != 0) {
-				SessionManager.agregarIDCasoUso(idCU);
+			if (SessionManager.consultarCasoUsoActivo() == null) {
+				session = ActionContext.getContext().getSession();
+				session.put("idCU", idCU);
 			}
 
-			// Se consulta el caso de uso activo
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
 			casoUso = SessionManager.consultarCasoUsoActivo();
+
+			if (casoUso == null) {
+				resultado = "cu";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(casoUso.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+
 			model.setCasoUso(casoUso);
+			session = ActionContext.getContext().getSession();
+			session.remove("idTrayectoria");
 			listTrayectorias = new ArrayList<Trayectoria>();
 			for (Trayectoria t : casoUso.getTrayectorias()) {
 				listTrayectorias.add(t);
@@ -584,11 +603,12 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 		}
 		return "referencias";
 	}
-	
+
 	public String verificarElementosReferenciasPaso() {
 		try {
 			elementosReferencias = new ArrayList<String>();
-			elementosReferencias = PasoBs.verificarReferencias(PasoBs.consultarPaso(idSelPaso));
+			elementosReferencias = PasoBs.verificarReferencias(PasoBs
+					.consultarPaso(idSelPaso));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -615,11 +635,11 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 		this.listTrayectorias = listTrayectorias;
 	}
 
-	public int getIdCU() {
+	public Integer getIdCU() {
 		return idCU;
 	}
 
-	public void setIdCU(int idCU) {
+	public void setIdCU(Integer idCU) {
 		this.idCU = idCU;
 	}
 
@@ -805,15 +825,38 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 		this.elementosReferencias = elementosReferencias;
 	}
 
-	
 	public Integer getIdSelPaso() {
 		return idSelPaso;
 	}
 
-	
 	public void setIdSelPaso(Integer idSelPaso) {
 		this.idSelPaso = idSelPaso;
 	}
 
+	public Proyecto getProyecto() {
+		return proyecto;
+	}
+
+	public void setProyecto(Proyecto proyecto) {
+		this.proyecto = proyecto;
+	}
+
+	public Modulo getModulo() {
+		return modulo;
+	}
+
+	public void setModulo(Modulo modulo) {
+		this.modulo = modulo;
+	}
+
+	public CasoUso getCasoUso() {
+		return casoUso;
+	}
+
+	public void setCasoUso(CasoUso casoUso) {
+		this.casoUso = casoUso;
+	}
 	
+	
+
 }

@@ -46,6 +46,7 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 		try {
 			session = ActionContext.getContext().getSession();
 			session.remove("idProyecto");
+			session.remove("idModulo");
 			colaborador = SessionManager.consultarColaboradorActivo();
 			listProyectos = ProyectoBs.findByColaborador(colaborador);
 			resultado = INDEX;

@@ -13,7 +13,7 @@ import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.ColaboradorProyecto;
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.editor.bs.CuBs;
+import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Modulo;
@@ -125,18 +125,14 @@ public class SessionManager {
 	}
 
 	public static CasoUso consultarCasoUsoActivo() {
-		int idCU = (Integer)SessionManager.get("idCU");
-		
-		//set(idCU, "idCU");
-		CasoUso cu = CuBs.consultarCasoUso(idCU);
-		if(cu == null) {
-			throw new PRISMAException("No se puede consultar el caso de uso", "MSG13");
+		HttpSession session = ServletActionContext.getRequest().getSession(false); 
+		CasoUso casoUso = null;
+		Integer idCU = null;
+		if (session != null && session.getAttribute("idCU") != null) {
+			idCU = (Integer)  session.getAttribute("idCU");
+			casoUso = new CasoUsoDAO().consultarCasoUso(idCU);
 		}
-		return cu;
-	}
-
-	public static void agregarIDCasoUso(int idCU) {
-		SessionManager.set(idCU, "idCU");
+		return casoUso;
 	}
 	
 	public static boolean isLogged() {

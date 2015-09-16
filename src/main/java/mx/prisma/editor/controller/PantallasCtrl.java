@@ -35,6 +35,7 @@ import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
 
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ModelDriven;
 
 @ResultPath("/content/editor/")
@@ -72,16 +73,22 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	
 
 	public String index() throws Exception {
+		String resultado;
 		try {
-			// Se consulta el módulo
-			modulo = SessionManager.consultarModuloActivo();
-			proyecto = modulo.getProyecto();
 			colaborador = SessionManager.consultarColaboradorActivo();
-			AccessBs.verificarPermisos(proyecto, colaborador);
-			// Se agrega el módulo a la pantalla
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(modulo.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			model.setModulo(modulo);
 			listPantallas = PantallaBs.consultarPantallasModulo(modulo);
-			model.setProyecto(proyecto);
 
 			@SuppressWarnings("unchecked")
 			Collection<String> msjs = (Collection<String>) SessionManager
@@ -101,9 +108,19 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 
 		String resultado = null;
 		try {
-			// Se consulta el módulo
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
 			modulo = SessionManager.consultarModuloActivo();
-			proyecto = modulo.getProyecto();
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(modulo.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
+			model.setModulo(modulo);
 			model.setClave("IU" + modulo.getClave());
 			buscaCatalogos();
 			resultado = EDITNEW;
@@ -190,13 +207,21 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	public String create() throws Exception {
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(modulo.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
+			model.setModulo(modulo);
 			agregarAcciones();
 			agregarImagen();
-			modulo = SessionManager.consultarModuloActivo();
-			proyecto = modulo.getProyecto();
-			
-			model.setModulo(modulo);
-			model.setProyecto(proyecto);
 			
 			PantallaBs.registrarPantalla(model);
 			
@@ -219,7 +244,6 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 		return resultado;
 	}
 	
-	
 	private void agregarImagen() throws IOException {
 		byte[] imgDecodificada = Convertidor.convertStringPNGB64ToBytes(pantallaB64);
 		model.setImagen(imgDecodificada);
@@ -229,9 +253,18 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 		String resultado = null;
 		
 		try {
-
+			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
 			modulo = SessionManager.consultarModuloActivo();
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
 			model.setModulo(modulo);
 			ElementoBs.verificarEstado(model, CU_Pantallas.MODIFICARPANTALLA6_2);
 			
@@ -251,10 +284,22 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 		
 	}
 	
-
 	public String update() throws Exception {
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
+			model.setModulo(modulo);
 			model.getAcciones().clear();
 			agregarAcciones();
 			agregarImagen();
@@ -284,6 +329,19 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	public String destroy() throws Exception {
 		String resultado =  null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
+			model.setModulo(modulo);
 			PantallaBs.eliminarPantalla(model);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "La",
@@ -303,7 +361,19 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	public String show() throws Exception{
 		String resultado = null;
 		try {
-			
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
+			model.setModulo(modulo);			
 			prepararVista();
 			String nombre = model.getClave() + model.getNombre() + model.getNumero() + ".png";
 			@SuppressWarnings("deprecation")
@@ -325,9 +395,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 		}
 		return resultado;
 	}
-
 	
-
 	private void prepararVista() {
 		pantallaB64 = Convertidor.convertBytesToStringPNGB64(model.getImagen());
 		List<Accion> listAcciones = new ArrayList<Accion>();
