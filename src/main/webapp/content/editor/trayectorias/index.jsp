@@ -12,7 +12,7 @@
 ]]>
 </head>
 
-<body>
+<body> 
 	<h1>
 		<s:property
 			value="%{model.casoUso.clave + ' ' + model.casoUso.numero + ' ' + model.casoUso.nombre}" />
