@@ -68,7 +68,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 	private static final long serialVersionUID = 1L;
 	private Map<String, Object> userSession;
 
-	// Proyecto y módulo
 	private Proyecto proyecto;
 	private Modulo modulo;
 	private Colaborador colaborador;
@@ -81,7 +80,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 	private List<String> listRealiza;
 	private List<String> listVerbos;
 
-	// Elementos disponibles
 	private String jsonReglasNegocio;
 	private String jsonEntidades;
 	private String jsonCasosUsoProyecto;
@@ -109,7 +107,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 		String resultado;
 		Map<String, Object> session = null;
 		try {
-
 			if (SessionManager.consultarCasoUsoActivo() == null) {
 				session = ActionContext.getContext().getSession();
 				session.put("idCU", idCU);
@@ -130,8 +127,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 			}
 
 			model.setCasoUso(casoUso);
-			session = ActionContext.getContext().getSession();
-			session.remove("idTrayectoria");
+
 			listTrayectorias = new ArrayList<Trayectoria>();
 			for (Trayectoria t : casoUso.getTrayectorias()) {
 				listTrayectorias.add(t);
@@ -161,18 +157,23 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 		return INDEX;
 	}
 
-	/**
-	 * Método para preparar la pantalla de registro de una trayectoria.
-	 * 
-	 * @throws Exception
-	 * */
 	public String editNew() throws Exception {
 
 		String resultado = null;
 		try {
-			// Se consulta el caso de uso para mostrar la informacion en
-			// pantalla
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
 			casoUso = SessionManager.consultarCasoUsoActivo();
+
+			if (casoUso == null) {
+				resultado = "cu";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(casoUso.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
 			model.setCasoUso(casoUso);
 
 			existeTPrincipal = TrayectoriaBs.existeTrayectoriaPrincipal(casoUso
@@ -193,45 +194,45 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 		return resultado;
 	}
 
-	/**
-	 * Método para registrar una trayectoria, si la operación es exitosa muestra
-	 * el mensaje MSG1 en caso contrario redirige a la pantalla de registro.
-	 * */
 	public String create() throws Exception {
 		String resultado = null;
-		idCU = (Integer) SessionManager.get("idCU");
-
 		try {
-			// Se verifica si es alternativa
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			casoUso = SessionManager.consultarCasoUsoActivo();
+
+			if (casoUso == null) {
+				resultado = "cu";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(casoUso.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			
 			if (alternativaPrincipal == null
 					|| alternativaPrincipal.equals("Alternativa")) {
 				model.setAlternativa(true);
 			} else if (alternativaPrincipal.equals("Principal")) {
 				model.setAlternativa(false);
 			} else {
-				// Validaciones del tipo de trayectoria
 				throw new PRISMAValidacionException(
 						"El usuario no seleccionó el tipo de la trayectoria.",
 						"MSG4", null, "alternativaPrincipal");
 			}
 
-			// Se llama al método que convierte los json a pasos de la
-			// trayectoria
-			CasoUso casoUso = CuBs.consultarCasoUso(idCU);
 			model.setCasoUso(casoUso);
 			agregarPasos();
 			TrayectoriaBs.preAlmacenarObjetosToken(model);
 
-			// Se registra la trayectoria
 			TrayectoriaBs.registrarTrayectoria(model);
 
 			resultado = SUCCESS;
 
-			// Se agrega mensaje de éxito
 			addActionMessage(getText("MSG1", new String[] { "La",
 					"Trayectoria", "registrada" }));
 
-			// Se agrega el mensaje a la sesión
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
@@ -249,8 +250,20 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 	public String edit() throws Exception {
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			casoUso = SessionManager.consultarCasoUsoActivo();
 
-			casoUso = model.getCasoUso();
+			if (casoUso == null) {
+				resultado = "cu";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getCasoUso().getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setCasoUso(casoUso);
 
 			ElementoBs.verificarEstado(casoUso,
 					CU_CasosUso.MODIFICARTRAYECTORIA5_1_1_2);
@@ -279,6 +292,20 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 		String resultado = null;
 
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			casoUso = SessionManager.consultarCasoUsoActivo();
+
+			if (casoUso == null) {
+				resultado = "cu";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getCasoUso().getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			
 			if (alternativaPrincipal == null
 					|| alternativaPrincipal.equals("Alternativa")) {
 				model.setAlternativa(true);
@@ -318,6 +345,19 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 	public String destroy() throws Exception {
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			casoUso = SessionManager.consultarCasoUsoActivo();
+
+			if (casoUso == null) {
+				resultado = "cu";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getCasoUso().getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
 			TrayectoriaBs.eliminarTrayectoria(model);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "La",

@@ -108,7 +108,10 @@ public class CasoUsoDAO extends ElementoDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	/* El siguiente segmento de código, inicializa los objetos LAZY para el paso.
+	/* 
+	 * consultarCasoUso(@clave, @numero, @proyecto)
+	 * 
+	 * El siguiente segmento de código, inicializa los objetos LAZY para el paso.
 	 * 
 	 * if (casosdeuso != null)
 				for (Trayectoria trayectoria : casosdeuso.get(0).getTrayectorias()) {

@@ -13,11 +13,7 @@
 </head>
 
 <body> 
-	<h1>
-		<s:property
-			value="%{model.casoUso.clave + ' ' + model.casoUso.numero + ' ' + model.casoUso.nombre}" />
-	</h1>
-	<h3>Gestionar Trayectorias</h3>
+	<h1>Gestionar Trayectorias</h1>
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
 

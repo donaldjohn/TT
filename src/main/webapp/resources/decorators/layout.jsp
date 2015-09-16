@@ -62,13 +62,20 @@
 					</table>
 				</s:if>
 				<s:if test="#session.idModulo != null">
-					<s:set var="modulo"
-						value="@mx.prisma.controller.AccessCtrl@getInfoModulo()" />
 					<table class = "info">
 						<tr>
 							<td align="right">Módulo:
 							<s:property value="modulo.clave" /> - <s:property
 									value="modulo.nombre" /></td>
+						</tr>
+					</table>
+				</s:if>
+				<s:if test="#session.idCU != null">
+					<table class = "info">
+						<tr>
+							<td align="right">Caso de uso:
+							<s:property value="casoUso.clave + casoUso.numero" /> - <s:property
+									value="casoUso.nombre" /></td>
 						</tr>
 					</table>
 				</s:if>

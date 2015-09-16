@@ -12,9 +12,7 @@
 </head>
 
 <body>
-	
-	<h1><s:property value="%{model.casoUsoOrigen.clave + model.casoUsoOrigen.numero + ' ' + model.casoUsoOrigen.nombre}"/></h1>
-	<h3>Gestionar Puntos de extensión</h3>
+	<h1>Gestionar Puntos de extensión</h1>
 	<s:actionmessage theme="jquery"/>
 	<s:actionerror theme="jquery"/>
 	
@@ -60,7 +58,7 @@
 			<s:text name="Regresar"></s:text>
 		</button>
 		<button class="boton" formmethod="post"
-			onclick="location.href='${pageContext.request.contextPath}/extensiones/new?idCU=${idCU}'">
+			onclick="location.href='${pageContext.request.contextPath}/extensiones/new'">
 			<s:text name="Registrar"></s:text>
 		</button>
 	</div>

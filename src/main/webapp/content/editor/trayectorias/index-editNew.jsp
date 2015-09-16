@@ -19,9 +19,7 @@
 
 </head>
 <body>
-	
-	<h1><s:property value="%{model.casoUso.clave + ' ' + model.casoUso.numero + ' ' + model.casoUso.nombre}"/></h1>
-	<h3>Registrar Trayectoria</h3>
+	<h1>Registrar Trayectoria</h1>
 	
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />

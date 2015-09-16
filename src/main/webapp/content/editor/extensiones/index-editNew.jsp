@@ -19,8 +19,7 @@
 
 </head>
 <body>
-	<h1><s:property value="%{casoUso.clave + casoUso.numero + ' ' + casoUso.nombre}"/></h1>
-	<h3>Registrar Punto de extensión</h3>
+	<h1>Registrar Punto de extensión</h1>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />

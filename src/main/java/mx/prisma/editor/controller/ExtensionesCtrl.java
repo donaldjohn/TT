@@ -8,6 +8,7 @@ import java.util.Set;
 
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.bs.AccessBs;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ExtensionBs;
 import mx.prisma.editor.bs.TokenBs;
@@ -29,52 +30,65 @@ import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
 
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 
 @ResultPath("/content/editor")
-@Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "extensiones", "idCU", "%{idCU}" }) })
+@Results({
+		@Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
+				"actionName", "extensiones"}),
+		@Result(name = "cu", type = "redirectAction", params = { "actionName",
+				"cu" }) })
 public class ExtensionesCtrl extends ActionSupportPRISMA implements
 		ModelDriven<Extension>, SessionAware {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	// Proyecto y módulo
+	private Map<String, Object> userSession;
 	private Proyecto proyecto;
 	private Modulo modulo;
 	private Colaborador colaborador;
-	private CasoUso casoUsoActivo;
+	private CasoUso casoUso;
 
 	private Extension model;
 	private List<Extension> listPtosExtension;
-	private int idCU;
+	private Integer idCU;
 	private List<CasoUso> catalogoCasoUso;
 	private int idCasoUsoDestino;
-	// Elementos disponibles
+
 	private List<CasoUso> listCasoUso;
 	private String jsonPasos;
 
-
 	public String index() throws Exception {
+		String resultado;
+		Map<String, Object> session = null;
 		try {
-			// Se consulta el módulo en sesión
+			if (SessionManager.consultarCasoUsoActivo() == null) {
+				session = ActionContext.getContext().getSession();
+				session.put("idCU", idCU);
+			}
+
+			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
 			modulo = SessionManager.consultarModuloActivo();
-			colaborador = SessionManager.consultarColaboradorActivo();
-			//AccessBs.verificarPermisos(proyecto, colaborador);
+			casoUso = SessionManager.consultarCasoUsoActivo();
 
-			// Se agrega a la sesión el caso de uso con base en el identificador
-			// del caso de uso
-	
-			// Se consulta el caso de uso activo
-			casoUsoActivo = SessionManager.consultarCasoUsoActivo();
+			if (casoUso == null) {
+				resultado = "cu";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(casoUso.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
 
 			listPtosExtension = new ArrayList<Extension>();
-			Set<Extension> extensiones = casoUsoActivo.getExtiende();
+			Set<Extension> extensiones = casoUso.getExtiende();
 			for (Extension extension : extensiones) {
-					extension.setRegion(TokenBs
-							.decodificarCadenasToken(extension.getRegion()));
+				extension.setRegion(TokenBs.decodificarCadenasToken(extension
+						.getRegion()));
 				listPtosExtension.add(extension);
 			}
 			@SuppressWarnings("unchecked")
@@ -90,13 +104,24 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 		}
 		return INDEX;
 	}
-	
+
 	public String editNew() throws Exception {
 		String resultado = null;
 		try {
-			casoUsoActivo = SessionManager.consultarCasoUsoActivo();
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
 			modulo = SessionManager.consultarModuloActivo();
-			proyecto = modulo.getProyecto();
+			casoUso = SessionManager.consultarCasoUsoActivo();
+
+			if (casoUso == null) {
+				resultado = "cu";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(casoUso.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+
 			buscaElementos();
 			buscaCatalogos();
 			resultado = EDITNEW;
@@ -109,10 +134,24 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 		}
 		return resultado;
 	}
-	
+
 	public String create() throws Exception {
 		String resultado = null;
 		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			casoUso = SessionManager.consultarCasoUsoActivo();
+
+			if (casoUso == null) {
+				resultado = "cu";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(casoUso.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+
 			if (idCasoUsoDestino == -1) {
 				throw new PRISMAValidacionException(
 						"El usuario no seleccionó el caso de uso destino.",
@@ -121,8 +160,8 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 				model.setCasoUsoDestino(new CasoUsoDAO()
 						.consultarCasoUso(idCasoUsoDestino));
 			}
-			casoUsoActivo = SessionManager.consultarCasoUsoActivo();
-			model.setCasoUsoOrigen(casoUsoActivo);
+			casoUso = SessionManager.consultarCasoUsoActivo();
+			model.setCasoUsoOrigen(casoUso);
 			ExtensionBs.registrarExtension(model);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",
@@ -141,9 +180,8 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 		}
 		return resultado;
 	}
-	
-	private void buscaElementos() {
 
+	private void buscaElementos() {
 		List<Paso> listPasos = new ArrayList<Paso>();
 		listCasoUso = CuBs.consultarCasosUso(proyecto);
 		Modulo moduloAux = new Modulo();
@@ -151,14 +189,14 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 		moduloAux.setNombre(modulo.getNombre());
 
 		if (listCasoUso != null && !listCasoUso.isEmpty()) {
-			for (CasoUso casoUso : listCasoUso) {
-				if (casoUsoActivo.getId() != casoUso.getId()) {
+			for (CasoUso casoUsoi : listCasoUso) {
+				if (casoUsoi.getId() != casoUso.getId()) {
 					CasoUso casoUsoAux = new CasoUso();
-					casoUsoAux.setClave(casoUso.getClave());
-					casoUsoAux.setNumero(casoUso.getNumero());
-					casoUsoAux.setNombre(casoUso.getNombre());
+					casoUsoAux.setClave(casoUsoi.getClave());
+					casoUsoAux.setNumero(casoUsoi.getNumero());
+					casoUsoAux.setNombre(casoUsoi.getNombre());
 					casoUsoAux.setModulo(moduloAux);
-					Set<Trayectoria> trayectorias = casoUso.getTrayectorias();
+					Set<Trayectoria> trayectorias = casoUsoi.getTrayectorias();
 					for (Trayectoria trayectoria : trayectorias) {
 						Trayectoria trayectoriaAux = new Trayectoria();
 						trayectoriaAux.setClave(trayectoria.getClave());
@@ -171,29 +209,29 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 							pasoAuxiliar.setRealizaActor(paso.isRealizaActor());
 							pasoAuxiliar.setVerbo(paso.getVerbo());
 							pasoAuxiliar.setOtroVerbo(paso.getOtroVerbo());
-							pasoAuxiliar.setRedaccion(TokenBs.decodificarCadenaSinToken(paso
+							pasoAuxiliar.setRedaccion(TokenBs
+									.decodificarCadenaSinToken(paso
 											.getRedaccion()));
-							
+
 							listPasos.add(pasoAuxiliar);
 						}
 					}
 				}
 			}
-			
 
 			// Se convierte en json los Pasos
 			if (listPasos != null) {
 				this.jsonPasos = JsonUtil.mapListToJSON(listPasos);
 			}
 		}
-		
-	}	
-	
+
+	}
+
 	private void buscaCatalogos() throws Exception {
 		catalogoCasoUso = new ArrayList<CasoUso>();
-		for (CasoUso casoUso : listCasoUso) {
-			if (casoUso.getId() != casoUsoActivo.getId()) {
-				catalogoCasoUso.add(casoUso);
+		for (CasoUso casoUsoi : listCasoUso) {
+			if (casoUsoi.getId() != casoUso.getId()) {
+				catalogoCasoUso.add(casoUsoi);
 			}
 		}
 
@@ -208,7 +246,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 		return catalogoCasoUso;
 	}
 
-	public int getIdCU() {
+	public Integer getIdCU() {
 		return idCU;
 	}
 
@@ -236,7 +274,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 		this.idCasoUsoDestino = idCasoUsoDestino;
 	}
 
-	public void setIdCU(int idCU) {
+	public void setIdCU(Integer idCU) {
 		this.idCU = idCU;
 	}
 
@@ -255,11 +293,42 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 	public void setSession(Map<String, Object> arg0) {
 	}
 
-	public CasoUso getCasoUsoActivo() {
-		return casoUsoActivo;
+	public CasoUso getCasoUso() {
+		return casoUso;
 	}
 
-	public void setCasoUsoActivo(CasoUso casoUsoActivo) {
-		this.casoUsoActivo = casoUsoActivo;
+	public void setCasoUso(CasoUso casoUso) {
+		this.casoUso = casoUso;
 	}
+
+	
+	public Map<String, Object> getUserSession() {
+		return userSession;
+	}
+
+	
+	public void setUserSession(Map<String, Object> userSession) {
+		this.userSession = userSession;
+	}
+
+	
+	public Proyecto getProyecto() {
+		return proyecto;
+	}
+
+	
+	public void setProyecto(Proyecto proyecto) {
+		this.proyecto = proyecto;
+	}
+
+	
+	public Modulo getModulo() {
+		return modulo;
+	}
+
+	
+	public void setModulo(Modulo modulo) {
+		this.modulo = modulo;
+	}
+
 }
