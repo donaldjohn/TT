@@ -1,7 +1,6 @@
 package mx.prisma.admin.bs;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -16,7 +15,8 @@ import mx.prisma.admin.model.EstadoProyecto;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.admin.model.Rol;
 import mx.prisma.bs.EstadoProyectoEnum;
-import mx.prisma.bs.RolEnum;
+import mx.prisma.bs.RolBs;
+import mx.prisma.bs.RolBs.Rol_Enum;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
@@ -127,7 +127,7 @@ public class ProyectoBs {
 		ColaboradorProyecto colaboradorPoryectoLiderBD = consultarColaboradorProyectoLider(proyecto);
 		ColaboradorProyecto colaboradorproyecto = new ColaboradorProyectoDAO().findByColaborador_Proyecto(liderVista, proyecto);
 		
-		int idLider = RolEnum.consultarIdRol(RolEnum.Rol.LIDER);
+		int idLider = RolBs.consultarIdRol(Rol_Enum.LIDER);
 		Rol rolLider = new RolDAO().consultarRol(idLider);
 		
 		System.out.println("size colProy antes: " + proyecto.getProyecto_colaboradores().size());
@@ -158,7 +158,7 @@ public class ProyectoBs {
 
 	public static ColaboradorProyecto consultarColaboradorProyectoLider(Proyecto model) {
 		Set<ColaboradorProyecto> colaboradores_proyecto = model.getProyecto_colaboradores();
-		int idLider = RolEnum.consultarIdRol(RolEnum.Rol.LIDER);
+		int idLider = RolBs.consultarIdRol(Rol_Enum.LIDER);
 		for(ColaboradorProyecto cp : colaboradores_proyecto) {
 			if(cp.getRol().getId() == idLider) {
 				return cp;

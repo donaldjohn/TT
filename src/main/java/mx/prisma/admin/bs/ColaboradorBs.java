@@ -8,18 +8,18 @@ import java.util.Set;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
-import org.hibernate.HibernateException;
-import org.hibernate.JDBCException;
-
 import mx.prisma.admin.dao.ColaboradorDAO;
 import mx.prisma.admin.dao.ColaboradorProyectoDAO;
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.ColaboradorProyecto;
-import mx.prisma.bs.RolEnum;
-import mx.prisma.util.Correo;
+import mx.prisma.bs.RolBs;
+import mx.prisma.bs.RolBs.Rol_Enum;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
+
+import org.hibernate.HibernateException;
+import org.hibernate.JDBCException;
 
 public class ColaboradorBs {
 
@@ -178,7 +178,7 @@ public class ColaboradorBs {
 
 	public static boolean esLiderProyecto(Colaborador model) {
 		Set<ColaboradorProyecto> colaboradoresProyecto = model.getColaborador_proyectos();
-		int idLider = RolEnum.consultarIdRol(RolEnum.Rol.LIDER);
+		int idLider = RolBs.consultarIdRol(Rol_Enum.LIDER);
 		for(ColaboradorProyecto cp : colaboradoresProyecto) {
 			if(cp.getRol().getId() == idLider) {
 				return true;
@@ -188,7 +188,7 @@ public class ColaboradorBs {
 	}
 
 	public static List<String> verificarProyectosLider(Colaborador model) {
-		int idLider = RolEnum.consultarIdRol(RolEnum.Rol.LIDER);
+		int idLider = RolBs.consultarIdRol(Rol_Enum.LIDER);
 		List<String> proyectos = new ArrayList<String>();
 		Set<String> setProyectos = new HashSet<String>(0);
 		

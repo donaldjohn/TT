@@ -137,6 +137,9 @@ function Parametro(nombre, descripcion) {
 	this.descripcion = descripcion;
 }
 
+function Colaborador(curp) {
+	this.curp = curp;
+}
 /*
  * Constructor del objeto Accion
  */
@@ -158,4 +161,6 @@ function ImagenAccion(imagen, id) {
 	this.imagen = imagen;
 	this.id = id;
 }
+
+
 
