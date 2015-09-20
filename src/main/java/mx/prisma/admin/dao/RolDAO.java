@@ -11,7 +11,7 @@ public class RolDAO extends GenericDAO {
 	public RolDAO() {
 		super();
 	}
-	public Rol consultarRol(int id) {
+	public Rol consultarRol(Integer id) {
 		Rol rol = null;
 
 		try {
@@ -21,6 +21,7 @@ public class RolDAO extends GenericDAO {
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
+			throw he;
 		}
 		
 		return rol;

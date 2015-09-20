@@ -6,7 +6,8 @@ import java.util.List;
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.ColaboradorProyecto;
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.bs.RolEnum;
+import mx.prisma.bs.RolBs;
+import mx.prisma.bs.RolBs.Rol_Enum;
 import mx.prisma.dao.GenericDAO;
 
 import org.hibernate.HibernateException;
@@ -55,7 +56,7 @@ public class ColaboradorProyectoDAO extends GenericDAO {
 					.createQuery("from ColaboradorProyecto"
 							+ " where colaborador.curp = :curp AND rol.id = :idLider");
 			query.setParameter("curp", colaborador.getCurp());
-			query.setParameter("idLider", RolEnum.consultarIdRol(RolEnum.Rol.LIDER));
+			query.setParameter("idLider", RolBs.consultarIdRol(Rol_Enum.LIDER));
 			colaboradoresProyecto = query.list();
 			session.getTransaction().commit();
 		} catch (HibernateException he) {

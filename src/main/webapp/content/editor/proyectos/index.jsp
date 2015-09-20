@@ -43,16 +43,18 @@
 
 							<!-- Si es Líder de análisis podrá elegir los colaboradores del proyecto-->
 							<td align="center">
-								<s:if test="%{#lider.id == #session.id}">
+								<s:if test="%{#lider.curp == #session.colaboradorCURP}">
 									<!-- Elegir colaboradores -->
-									<s:url var="urlEntrar"
-										value="%{#pageContext.request.contextPath}/proyectos!elegir?idSel=%{#proyecto.id}" />
+									${blanks}
+									<s:url var="urlElegir"
+										value="%{#pageContext.request.contextPath}/proyectos!elegirColaboradores?idSel=%{#proyecto.id}"/>
 									<s:a href="%{urlElegir}">
 										<img id="" class="button" title="Elegir"
-											src="${pageContext.request.contextPath}/resources/images/icons/elegir.png" />										
+											src="${pageContext.request.contextPath}/resources/images/icons/colaboradores.png" />										
 									</s:a> 						
 								</s:if>
 								<!-- Entrar -->
+								${blanks}
 								<s:url var="urlEntrar"
 										value="%{#pageContext.request.contextPath}/proyectos!entrar?idSel=%{#proyecto.id}" />
 								<s:a href="%{urlEntrar}">
@@ -60,6 +62,7 @@
 											src="${pageContext.request.contextPath}/resources/images/icons/entrar.png" />										
 								</s:a> 
 								<!-- Descargar documento -->
+								${blanks}
 								<s:url var="urlDescargar"
 										value="%{#pageContext.request.contextPath}/proyectos!descargar?idSel=%{#proyecto.id}" />
 								<s:a href="#">

@@ -1,15 +1,24 @@
 package mx.prisma.editor.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import mx.prisma.admin.bs.ColaboradorBs;
 import mx.prisma.admin.bs.ProyectoBs;
 import mx.prisma.admin.model.Colaborador;
+import mx.prisma.admin.model.ColaboradorProyecto;
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.admin.model.Rol;
 import mx.prisma.bs.AccessBs;
+import mx.prisma.bs.RolBs;
+import mx.prisma.bs.RolBs.Rol_Enum;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
+import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.SessionManager;
 
@@ -22,11 +31,12 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 
 @ResultPath("/content/editor/")
-@Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-		"actionName", "proyectos" }),
+@Results({
+		@Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
+				"actionName", "proyectos" }),
 		@Result(name = "modulos", type = "redirectAction", params = {
-				"actionName", "modulos" })
-})
+				"actionName", "modulos" }),
+		@Result(name = "colaboradores", type = "dispatcher", location = "proyectos/colaboradores.jsp") })
 public class ProyectosCtrl extends ActionSupportPRISMA implements
 		ModelDriven<Proyecto>, SessionAware {
 	/** 
@@ -37,7 +47,10 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 	private Colaborador colaborador;
 	private Proyecto model;
 	private Proyecto proyecto;
+
 	private List<Proyecto> listProyectos;
+	private List<Colaborador> listColaboradores;
+	private String jsonColaboradoresTabla;
 	private Integer idSel;
 
 	public String index() throws Exception {
@@ -63,20 +76,21 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 		}
 		return resultado;
 	}
-	
+
 	public String entrar() throws Exception {
 		Map<String, Object> session = null;
 		String resultado = null;
 		try {
 			colaborador = SessionManager.consultarColaboradorActivo();
-			if (idSel == null || colaborador == null || !AccessBs.verificarPermisos(model, colaborador)) {
+			if (idSel == null || colaborador == null
+					|| !AccessBs.verificarPermisos(model, colaborador)) {
 				resultado = LOGIN;
 				return resultado;
 			}
 			resultado = "modulos";
 			session = ActionContext.getContext().getSession();
 			session.put("idProyecto", idSel);
-			
+
 			@SuppressWarnings("unchecked")
 			Collection<String> msjs = (Collection<String>) SessionManager
 					.get("mensajesAccion");
@@ -89,9 +103,162 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 		}
 		return resultado;
 	}
-	
+
+	public String elegirColaboradores() throws Exception {
+		Map<String, Object> session = null;
+		String resultado = null;
+		Colaborador colaboradorSelf = null;
+		try {
+
+			colaborador = SessionManager.consultarColaboradorActivo();
+			if (idSel == null || colaborador == null
+					|| !AccessBs.verificarPermisos(model, colaborador)) {
+				resultado = LOGIN;
+				return resultado;
+			}
+			resultado = "colaboradores";
+			listColaboradores = ColaboradorBs.consultarPersonal();
+			for (Colaborador colaboradori : listColaboradores) {
+				if (colaboradori.getCurp().equals(colaborador.getCurp()))
+					colaboradorSelf = colaboradori;
+			}
+			listColaboradores.remove(colaboradorSelf);
+
+			session = ActionContext.getContext().getSession();
+			session.put("idProyecto", idSel);
+			proyecto = SessionManager.consultarProyectoActivo();
+			prepararVista();
+			@SuppressWarnings("unchecked")
+			Collection<String> msjs = (Collection<String>) SessionManager
+					.get("mensajesAccion");
+			this.setActionMessages(msjs);
+			SessionManager.delete("mensajesAccion");
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return resultado;
+	}
+
+	public String guardarColaboradores() throws Exception {
+		String resultado = null;
+		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			if (proyecto == null || colaborador == null
+					|| !AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = LOGIN;
+				return resultado;
+			}
+			resultado = SUCCESS;
+			agregarColaboradores();
+
+			addActionMessage(getText("MSG1", new String[] { "Los", "Colaboradores",
+			"registrados" }));
+			ProyectoBs.modificarProyecto(model);
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultado;
+	}
+
+	public void prepararVista() {
+		List<Colaborador> colaboradoresSeleccionados = new ArrayList<Colaborador>();
+		Colaborador colaboradorJSON = null;
+		for (ColaboradorProyecto colaboradorProyecto : model
+				.getProyecto_colaboradores()) {
+			if (!colaboradorProyecto.getColaborador().getCurp()
+					.equals(colaborador.getCurp())) {
+				colaboradorJSON = colaboradorProyecto.getColaborador();
+				colaboradorJSON.setColaborador_proyectos(null);
+				colaboradoresSeleccionados.add(colaboradorProyecto
+						.getColaborador());
+			}
+
+		}
+		jsonColaboradoresTabla = JsonUtil
+				.mapListToJSON(colaboradoresSeleccionados);
+	}
+
+	private void agregarColaboradores() throws Exception {
+		Set<Colaborador> colaboradoresSeleccionados = new HashSet<Colaborador>(
+				0);
+		Set<ColaboradorProyecto> colaboradoresProyectoAdd = new HashSet<ColaboradorProyecto>(
+				0);
+		Set<ColaboradorProyecto> colaboradoresProyectoRemove = new HashSet<ColaboradorProyecto>(
+				0);
+		Rol rol;
+		Colaborador colaborador;
+
+		if (jsonColaboradoresTabla != null
+				&& !jsonColaboradoresTabla.equals("")) {
+			colaboradoresSeleccionados = JsonUtil.mapJSONToSet(
+					jsonColaboradoresTabla, Colaborador.class);
+		}
+
+		for (ColaboradorProyecto colaboradorProyectoOld : model
+				.getProyecto_colaboradores()) {
+			if (!isContained(colaboradorProyectoOld, colaboradoresSeleccionados) && colaboradorProyectoOld.getRol().getId() != RolBs.consultarIdRol(Rol_Enum.LIDER)){
+				colaboradoresProyectoRemove.add(colaboradorProyectoOld);
+			}
+		}
+
+		for (Colaborador colaboradorSeleccionado : colaboradoresSeleccionados) {
+			if (!isContained(colaboradorSeleccionado,
+					model.getProyecto_colaboradores())) {
+				rol = RolBs.findById(RolBs.consultarIdRol(Rol_Enum.ANALISTA));
+				colaborador = ColaboradorBs
+						.consultarPersona(colaboradorSeleccionado.getCurp());
+				colaboradoresProyectoAdd.add(new ColaboradorProyecto(
+						colaborador, rol, model));
+			}
+		}
+
+		for (ColaboradorProyecto colaboradorToRemove : colaboradoresProyectoRemove) {
+			model.getProyecto_colaboradores().remove(colaboradorToRemove);
+		}
+
+		for (ColaboradorProyecto colaboradorToAdd : colaboradoresProyectoAdd) {
+			model.getProyecto_colaboradores().add(colaboradorToAdd);
+		}
+
+	}
+
+	private boolean isContained(Colaborador colaborador,
+			Set<ColaboradorProyecto> colaboradores) {
+		for (ColaboradorProyecto colaboradorProyecto : colaboradores) {
+			if (colaboradorProyecto.getColaborador().getCurp()
+					.equals(colaborador.getCurp())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isContained(ColaboradorProyecto colaboradorProyecto,
+			Set<Colaborador> colaboradores) {
+		for (Colaborador colaborador : colaboradores) {
+			if (colaborador.getCurp().equals(
+					colaboradorProyecto.getColaborador().getCurp())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public Proyecto getModel() {
-		return (model == null) ? model = new Proyecto() : model;
+		try {
+			return (model == null) ? model = SessionManager.consultarProyectoActivo(): model;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return model;
 	}
 
 	public void setModel(Proyecto model) {
@@ -128,16 +295,28 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 		this.proyecto = model;
 	}
 
-	
 	public Proyecto getProyecto() {
 		return proyecto;
 	}
 
-	
-	
 	public void setProyecto(Proyecto proyecto) {
 		this.proyecto = proyecto;
-	}	
+	}
 
-	
+	public List<Colaborador> getListColaboradores() {
+		return listColaboradores;
+	}
+
+	public void setListColaboradores(List<Colaborador> listColaboradores) {
+		this.listColaboradores = listColaboradores;
+	}
+
+	public String getJsonColaboradoresTabla() {
+		return jsonColaboradoresTabla;
+	}
+
+	public void setJsonColaboradoresTabla(String jsonColaboradoresTabla) {
+		this.jsonColaboradoresTabla = jsonColaboradoresTabla;
+	}
+
 }
