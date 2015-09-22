@@ -10,7 +10,8 @@
 *.toc
 *.bbl
 *.blg
-*reporte.pdf
+*.jasper
+*.pdf
 /target/
 
 # OSX generated files #

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="acciones" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="64d0e8c2-2102-4dc6-b269-f23153af1ef3">
+	<property name="ireport.zoom" value="1.6105100000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ENTIDAD_ELEMENTO_ID" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select * from Atributo where EntidadElementoid = $P{ENTIDAD_ELEMENTO_ID};]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="obligatorio" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="longitud" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="formatoArchivo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tamanioArchivo" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="UnidadTamanioid" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="EntidadElementoid" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TipoDatoid" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="otroTipoDato" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="DESCRIPCION_TIPO" class="java.lang.String">
+		<variableExpression><![CDATA[$F{TipoDatoid}.equals(1) ?
+"Es una frase o enunciado de " + $F{longitud}.toString() + " caracteres como máximo"
+: $F{TipoDatoid}.equals(2) ?
+"Es un número con decimales de " + $F{longitud} + " dígitos como máximo (tomando en cuenta los decimales)"
+: "Error"]]></variableExpression>
+	</variable>
+	<title>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="d1176cb5-abda-4161-b662-624bda230fc6"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Atributos]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement positionType="Float" x="0" y="0" width="100" height="86" uuid="ea84ba29-011f-43e6-84b8-fa11d2e347d2"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{nombre} + ":"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="472" height="86" uuid="e4c5a49a-c203-4b83-92d8-2aaf82d938a9"/>
+				<textElement textAlignment="Justified"/>
+				<textFieldExpression><![CDATA[$F{descripcion} + " " + $V{DESCRIPCION_TIPO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4e67c746-4b2f-4cf9-a5d5-85d37e075565">
-	<property name="ireport.zoom" value="1.0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="500" leftMargin="56" rightMargin="56" topMargin="56" bottomMargin="56" uuid="4e67c746-4b2f-4cf9-a5d5-85d37e075565">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<style name="style1"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["/home/lorena/git/AplicacionTTB064/src/main/webapp/resources/ireport/elementos/"]]></defaultValueExpression>
 	</parameter>
@@ -46,27 +47,25 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch">
+		<band height="40" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="11" width="100" height="20" uuid="1ab7cbd1-2d57-47cd-97cf-edcd45b66f50"/>
-				<textFieldExpression><![CDATA[$F{clave}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="113" y="11" width="100" height="20" uuid="247fbc7f-7fa5-4838-b529-84bb3b7389d3"/>
-				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+				<reportElement x="0" y="11" width="500" height="20" uuid="1ab7cbd1-2d57-47cd-97cf-edcd45b66f50"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{clave} + " " + $F{nombre}]]></textFieldExpression>
+				<hyperlinkAnchorExpression><![CDATA["title"]]></hyperlinkAnchorExpression>
 			</textField>
 		</band>
 	</title>
 	<pageHeader>
 		<band height="35" splitType="Stretch"/>
 	</pageHeader>
-	<columnHeader>
-		<band height="61" splitType="Stretch"/>
-	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch">
+		<band height="48" splitType="Stretch">
 			<subreport>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="572" height="46" uuid="04554bc5-4cad-4163-b732-a3a03ab11dd9"/>
+				<reportElement x="0" y="0" width="500" height="48" uuid="62c014f1-a440-47f4-9b8b-27c23630768a"/>
+				<subreportParameter name="SUBREPORT_DIR"/>
 				<subreportParameter name="p_proyectoId">
 					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -74,14 +73,19 @@
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "entidades.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
+		<band height="50">
+			<subreport>
+				<reportElement x="0" y="0" width="500" height="50" uuid="49edc4a5-8f25-4156-89e4-ca0d15561976"/>
+				<subreportParameter name="SUBREPORT_DIR"/>
+				<subreportParameter name="p_proyectoId">
+					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "glosario.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
 	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
 		<band height="54" splitType="Stretch"/>
 	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>
