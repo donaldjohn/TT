@@ -31,7 +31,7 @@ import com.opensymphony.xwork2.ActionContext;
 public class AccessCtrl extends ActionSupportPRISMA implements SessionAware {
 	/** 
 	 * 
-	 */
+	 */ 
 	private static final long serialVersionUID = 1L;
 	private Map<String, Object> userSession;
 	private String userName;
