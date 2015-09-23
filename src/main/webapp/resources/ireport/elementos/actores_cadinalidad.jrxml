@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="actores_cadinalidad" language="groovy" pageWidth="572" pageHeight="752" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ddda6e3f-d7f2-4713-bbfa-cafc99d18d01">
+	<property name="ireport.zoom" value="1.3310000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="p_elementoId" class="java.lang.Integer"/>
+	<parameter name="p_nombreCardinalidad" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/lorena/git/AplicacionTTB064/src/main/webapp/resources/ireport/elementos/"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from Actor where Elementoid = $P{p_elementoId};]]>
+	</queryString>
+	<field name="otraCardinalidad" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Elementoid" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Cardinalidadid" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="v_cardinalidad" class="java.lang.String">
+		<variableExpression><![CDATA[$F{otraCardinalidad}.equals( null ) ?
+$F{otraCardinalidad}
+: $P{p_nombreCardinalidad}]]></variableExpression>
+	</variable>
+	<variable name="v_cardinalidadId" class="java.lang.Integer" calculation="System"/>
+	<detail>
+		<band height="46" splitType="Stretch">
+			<textField>
+				<reportElement positionType="Float" x="0" y="0" width="572" height="22" isPrintWhenDetailOverflows="true" uuid="7ba61aef-4844-496e-8ace-fefeed8f4b0f"/>
+				<textFieldExpression><![CDATA[$V{v_cardinalidad}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="22" width="347" height="22" uuid="98c014fc-f2b8-4a6f-af2f-0af34340c8e9"/>
+				<subreportParameter name="p_cardinalidadId">
+					<subreportParameterExpression><![CDATA[$F{Cardinalidadid}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="v_cardinalidadId" toVariable="v_cardinalidadId"/>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "cadinalidades.jasper"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="370" y="2" width="202" height="20" uuid="4d98c7db-534f-45ed-bd69-a7b51b7ba804"/>
+				<textFieldExpression><![CDATA[$V{v_cardinalidadId}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
