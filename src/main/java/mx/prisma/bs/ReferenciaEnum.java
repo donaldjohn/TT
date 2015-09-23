@@ -14,6 +14,7 @@ import mx.prisma.editor.model.Operador;
 import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.Parametro;
 import mx.prisma.editor.model.Paso;
+import mx.prisma.editor.model.ReferenciaParametro;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.editor.model.TipoAccion;
@@ -26,6 +27,25 @@ import mx.prisma.editor.model.UnidadTamanio;
 import mx.prisma.editor.model.Verbo;
 
 public class ReferenciaEnum {
+	
+	private static String ACCION = "Acción";
+	private static String ACTOR = "Actor";
+	private static String ATRIBUTO = "Atributo";
+	private static String CASOUSO = "Caso de uso";
+	private static String ENTIDAD = "Entidad";
+	private static String MENSAJE = "Mensaje";
+	private static String PANTALLA = "Pantalla";
+	private static String PASO = "Paso";
+	private static String REGLANEGOCIO = "Regla de negocio";
+	private static String TERMINO = "Término del glosario";
+	private static String TRAYECTORIA = "Trayectoria";
+
+
+
+
+
+
+
 	
 	public enum TipoReferencia {
 	    ACTOR, ENTIDAD, CASOUSO, PANTALLA, PASO, ATRIBUTO,
@@ -294,7 +314,7 @@ public class ReferenciaEnum {
 	public static String getTabla(TipoReferencia referencia) {
 		switch(referencia){
 		case ACCION:
-			return "Accion";
+			return "Acción";
 		case ACTOR:
 			return "Actor";
 		case ATRIBUTO:
@@ -389,5 +409,46 @@ public class ReferenciaEnum {
 		}
 		return null;
 
+	}
+
+	public static TipoReferencia getTipoReferenciaParametro(
+			ReferenciaParametro referenciaParametro) {
+		if (referenciaParametro.getTipoParametro().getNombre().equals(ACCION)){
+			return TipoReferencia.ACCION;
+		}
+		if (referenciaParametro.getTipoParametro().getNombre().equals(ACTOR)){
+			return TipoReferencia.ACTOR;
+		}
+		if (referenciaParametro.getTipoParametro().getNombre().equals(ATRIBUTO)){
+			return TipoReferencia.ATRIBUTO;
+		}
+		if (referenciaParametro.getTipoParametro().getNombre().equals(CASOUSO)){
+			return TipoReferencia.CASOUSO;
+		}
+		if (referenciaParametro.getTipoParametro().getNombre().equals(ENTIDAD)){
+			return TipoReferencia.ENTIDAD;
+		}
+		if (referenciaParametro.getTipoParametro().getNombre().equals(MENSAJE)){
+			return TipoReferencia.MENSAJE;
+		}
+		if (referenciaParametro.getTipoParametro().getNombre().equals(PANTALLA)){
+			return TipoReferencia.PANTALLA;
+		}
+		if (referenciaParametro.getTipoParametro().getNombre().equals(PASO)){
+			return TipoReferencia.PASO;
+		}
+		if (referenciaParametro.getTipoParametro().getNombre().equals(REGLANEGOCIO)){
+			return TipoReferencia.REGLANEGOCIO;
+		}
+		if (referenciaParametro.getTipoParametro().getNombre().equals(TERMINO)){
+			return TipoReferencia.TERMINOGLS;
+		}
+		if (referenciaParametro.getTipoParametro().getNombre().equals(TRAYECTORIA)){
+			return TipoReferencia.TRAYECTORIA;
+		}
+		
+		System.out.println("No es instancia de ninguna clase ID: " + referenciaParametro.getId());
+		
+		return null;
 	}
 }

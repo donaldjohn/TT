@@ -57,7 +57,9 @@ import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 		@Result(name = "referencias", type = "json", params = { "root",
 				"elementosReferencias" }),
 		@Result(name = "modulos", type = "redirectAction", params = {
-				"actionName", "modulos" })
+				"actionName", "modulos" }),
+		@Result(name = "restricciones", type = "json", params = { "root",
+				"restriccionesTermino" }),
 		})
 public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> {
 	/**
@@ -102,6 +104,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	private String observaciones;
 	private String comentario;
 	private List<String> elementosReferencias;
+	private List<String> restriccionesTermino;
+	
 
 	public String index() {
 		String resultado;
@@ -609,6 +613,48 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		}
 		return "referencias";
 	}
+		
+	public String verificarTermino() {
+		try {
+			restriccionesTermino = new ArrayList<String>();
+			restriccionesTermino = CuBs.verificarRestriccionesTermino(model);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "restricciones";
+	}
+		
+	public String terminar() throws Exception {
+		String resultado = null;
+		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
+			model.setModulo(modulo);
+			resultado = SUCCESS;
+			CuBs.terminar(model);
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"Caso de uso", "terminado" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
 
 	@VisitorFieldValidator
 	public CasoUso getModel() {
@@ -815,4 +861,13 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		this.elementosReferencias = elementosReferencias;
 	}
 
+	public List<String> getRestriccionesTermino() {
+		return restriccionesTermino;
+	}
+
+	public void setRestriccionesTermino(List<String> restriccionesTermino) {
+		this.restriccionesTermino = restriccionesTermino;
+	}
+
+	
 }

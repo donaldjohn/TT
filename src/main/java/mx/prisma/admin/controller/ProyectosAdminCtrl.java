@@ -6,7 +6,6 @@ import java.util.Map;
 
 import mx.prisma.admin.bs.ColaboradorBs;
 import mx.prisma.admin.bs.ProyectoBs;
-import mx.prisma.admin.dao.EstadoProyectoDAO;
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.EstadoProyecto;
 import mx.prisma.admin.model.Proyecto;

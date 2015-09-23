@@ -1400,7 +1400,7 @@ public class TokenBs {
 				entrada = new Entrada(
 						numeroTokenTermino_Entradas++,
 						new TipoParametroDAO()
-								.consultarTipoParametro("Termino del glosario"),
+								.consultarTipoParametro("Término del glosario"),
 						casouso);
 				entrada.setTerminoGlosario(termino);
 				if (!TokenBs.duplicadoTermino_Entradas(casouso.getEntradas(),
@@ -1413,7 +1413,7 @@ public class TokenBs {
 				salida = new Salida(
 						numeroTokenTermino_Salidas++,
 						new TipoParametroDAO()
-								.consultarTipoParametro("Termino del glosario"),
+								.consultarTipoParametro("Término del glosario"),
 						casouso);
 				salida.setTerminoGlosario(termino);
 				if (!TokenBs.duplicadoTermino_Salidas(casouso.getSalidas(),
@@ -1499,7 +1499,7 @@ public class TokenBs {
 			case ACCION_POSTPRECONDICIONES:
 				accion = (Accion) objeto;
 				tipoParametro = new TipoParametroDAO()
-						.consultarTipoParametro("Accion");
+						.consultarTipoParametro("Acción");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setAccionDestino(accion);
 				referenciaParametro.setNumerToken(numeroTokenAccion++);
@@ -1575,7 +1575,7 @@ public class TokenBs {
 			case TERMINOGLS_POSTPRECONDICIONES:
 				terminoGlosario = (TerminoGlosario) objeto;
 				tipoParametro = new TipoParametroDAO()
-						.consultarTipoParametro("Termino del glosario");
+						.consultarTipoParametro("Término del glosario");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setElementoDestino(terminoGlosario);
 				referenciaParametro.setNumerToken(numeroTokenTerminoGlosario++);
@@ -1670,7 +1670,7 @@ public class TokenBs {
 			case ACCION_PASOS:
 				accion = (Accion) objeto;
 				tipoParametro = new TipoParametroDAO()
-						.consultarTipoParametro("Accion");
+						.consultarTipoParametro("Acción");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setAccionDestino(accion);
 				referenciaParametro.setNumerToken(numeroTokenAccion++);
@@ -1746,7 +1746,7 @@ public class TokenBs {
 			case TERMINOGLS_PASOS:
 				terminoGlosario = (TerminoGlosario) objeto;
 				tipoParametro = new TipoParametroDAO()
-						.consultarTipoParametro("Termino del glosario");
+						.consultarTipoParametro("Término del glosario");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setElementoDestino(terminoGlosario);
 				referenciaParametro.setNumerToken(numeroTokenTerminoGlosario++);

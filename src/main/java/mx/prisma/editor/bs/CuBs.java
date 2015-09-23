@@ -32,8 +32,11 @@ import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.CasoUsoActor;
+import mx.prisma.editor.model.CasoUsoReglaNegocio;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entidad;
+import mx.prisma.editor.model.Entrada;
 import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Modulo;
@@ -42,6 +45,7 @@ import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.ReferenciaParametro;
 import mx.prisma.editor.model.ReglaNegocio;
+import mx.prisma.editor.model.Salida;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.util.PRISMAException;
@@ -127,6 +131,26 @@ public class CuBs {
 		}
 	}
 
+	public static void terminar(CasoUso model)
+			throws Exception {
+		try {
+			validar(model);
+			ElementoBs.verificarEstado(model, CU_CasosUso.MODIFICARCASOUSO5_2);
+			model.setEstadoElemento(ElementoBs
+					.consultarEstadoElemento(Estado.REVISION));
+
+			new CasoUsoDAO().modificarCasoUso(model);
+
+		} catch (JDBCException je) {
+			System.out.println("ERROR CODE " + je.getErrorCode());
+			je.printStackTrace();
+			throw new Exception();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			throw new Exception();
+		}
+	}
+	
 	private static void validar(CasoUso cu) throws PRISMAValidacionException {
 		// Validaciones del número
 		if (Validador.esNuloOVacio(cu.getNumero())) {
@@ -712,6 +736,212 @@ public class CuBs {
 		listReferenciasVista.addAll(setReferenciasVista);
 
 		return listReferenciasVista;
+	}
+	
+	public static List<String> verificarRestriccionesTermino(CasoUso model) {
+		Set<String> restriccionesSet = new HashSet<String>(0);
+		List<String> restricciones = new ArrayList<String>();
+		List<String> listRestricciones = new ArrayList<String>();
+		String restriccion;
+		Atributo atributo;
+		TerminoGlosario termino;
+		Mensaje mensaje;
+		ReglaNegocio reglaNegocio;
+				
+		for (Entrada entrada : model.getEntradas()) {
+			termino = entrada.getTerminoGlosario();
+			atributo = entrada.getAtributo();
+			
+			if (agregarRestriccion(termino, model)) {
+				restricciones.add("Término " + termino.getNombre());
+			}
+			if (agregarRestriccion(atributo, model)) {
+				restricciones.add("Atributo " + atributo.getNombre());
+			}
+
+		}
+		
+		for (Salida salida : model.getSalidas()) {
+			termino = salida.getTerminoGlosario();
+			atributo = salida.getAtributo();
+			mensaje =  salida.getMensaje();
+			if (agregarRestriccion(termino, model)) {
+				restricciones.add("Término " + termino.getNombre());
+			}
+			if (agregarRestriccion           (atributo, model)) {
+				restricciones.add("Atributo " + atributo.getNombre());
+			}
+			if (agregarRestriccion(mensaje, model)) {
+				restricciones.add("Mensaje " + mensaje.getClave() + mensaje.getNumero() + " " + mensaje.getNombre());
+			}
+
+		}
+		
+		for (CasoUsoReglaNegocio casoUsoReglaNegocio : model.getReglas()) {
+			reglaNegocio = casoUsoReglaNegocio.getReglaNegocio();
+			if (agregarRestriccion(reglaNegocio, model)) {
+				restricciones.add("Regla de negocio " + reglaNegocio.getClave() + reglaNegocio.getNumero() + " " + reglaNegocio.getNombre());
+			}
+		}
+		
+		for (Trayectoria trayectoria : model.getTrayectorias()) {
+			for (Paso paso : trayectoria.getPasos()) {
+				for (ReferenciaParametro referenciaParametro : new PasoDAO().consultarPaso(paso.getId()).getReferencias()) {
+					if (agregarRestriccion(referenciaParametro, model)) {
+						restriccion = construirRestriccion(referenciaParametro);
+						if (restriccion != null) {
+							restricciones.add(restriccion);
+						}
+					}
+				}
+			}
+		}
+		
+		restriccionesSet.addAll(restricciones);
+		listRestricciones.addAll(restriccionesSet);
+		return listRestricciones;
+	}
+
+	private static String construirRestriccion(
+			ReferenciaParametro referenciaParametro) {
+		switch(ReferenciaEnum.getTipoReferenciaParametro(referenciaParametro)) {
+		case ACTOR:
+			Actor actor = (Actor)referenciaParametro.getElementoDestino();
+			return "Actor " + actor.getNombre();
+		case ATRIBUTO:
+			Atributo atributo = (Atributo)referenciaParametro.getAtributo();
+			return "Atributo " + atributo.getNombre();
+		case ENTIDAD:
+			Entidad entidad = (Entidad)referenciaParametro.getElementoDestino();
+			return "Entidad " + entidad.getNombre();
+		case MENSAJE:
+			Mensaje mensaje = (Mensaje)referenciaParametro.getElementoDestino();
+			return "Mensaje " + mensaje.getClave() + mensaje.getNumero() + " " + mensaje.getNombre();
+		case TERMINOGLS:
+			TerminoGlosario termino = (TerminoGlosario)referenciaParametro.getElementoDestino();
+			return "Término " + termino.getNombre();
+		case REGLANEGOCIO:
+			ReglaNegocio reglaNegocio = (ReglaNegocio)referenciaParametro.getElementoDestino();
+			return "Regla de Negocio " + reglaNegocio.getClave() + reglaNegocio.getNumero() + " " + reglaNegocio.getNombre();
+		default:
+			break;
+		}
+		
+		return null;
+	}
+
+	private static boolean agregarRestriccion(
+			ReferenciaParametro referenciaParametro, CasoUso model) {
+		
+		switch(ReferenciaEnum.getTipoReferenciaParametro(referenciaParametro)) {
+		case ACTOR:
+			for (CasoUsoActor casoUsoActor : model.getActores()) {
+				if (casoUsoActor.getActor().getId() == referenciaParametro.getElementoDestino().getId()) {
+					return false;
+				}
+			}
+			return true;
+			
+		case ATRIBUTO:
+			for (Entrada entrada : model.getEntradas()) {
+				if (entrada.getAtributo() != null && entrada.getAtributo().getId() == referenciaParametro.getAtributo().getId()) {
+					return false;
+				}
+			}
+			
+			for (Salida salida : model.getSalidas()) {
+				if (salida.getAtributo() != null && salida.getAtributo().getId() == referenciaParametro.getAtributo().getId()) {
+					return false;
+				}
+			}
+			return true;
+		case ENTIDAD:
+			for (Entrada entrada : model.getEntradas()) {
+				if (entrada.getAtributo() != null && entrada.getAtributo().getEntidad().getId() == referenciaParametro.getElementoDestino().getId()) {
+					return false;
+				}
+			}
+			
+			for (Salida salida : model.getSalidas()) {
+				if (salida.getAtributo() != null && salida.getAtributo().getEntidad().getId() == referenciaParametro.getElementoDestino().getId()) {
+					return false;
+				}
+			}
+			return true;
+
+		case MENSAJE:
+			for (Salida salida : model.getSalidas()) {
+				if (salida.getMensaje() != null && salida.getMensaje().getId() == referenciaParametro.getElementoDestino().getId()) {
+					return false;
+				}
+			}
+			return true;
+
+		case TERMINOGLS:
+			for (Entrada entrada : model.getEntradas()) {
+				if (entrada.getTerminoGlosario() != null && entrada.getTerminoGlosario().getId() == referenciaParametro.getElementoDestino().getId()) {
+					return false;
+				}
+			}
+			
+			for (Salida salida : model.getSalidas()) {
+				if (salida.getTerminoGlosario() != null && salida.getTerminoGlosario().getId() == referenciaParametro.getElementoDestino().getId()) {
+					return false;
+				}
+			}
+			return true;
+
+		case REGLANEGOCIO:
+			for (CasoUsoReglaNegocio casoUsoReglaNegocio : model.getReglas()) {
+				if (casoUsoReglaNegocio.getReglaNegocio().getId() == referenciaParametro.getElementoDestino().getId()) {
+					return false;
+				}
+			}
+			return true;
+			
+		default:
+			break;
+		}
+
+		
+		return false;
+	}
+
+	private static boolean agregarRestriccion(Atributo atributo,
+			CasoUso model) {
+		if (atributo == null) {
+			return false;
+		}
+		for (Trayectoria trayectoria : model.getTrayectorias()) {
+			for (Paso paso : trayectoria.getPasos()) {
+				for (ReferenciaParametro referenciaParametro : new PasoDAO().consultarPaso(paso.getId()).getReferencias()) {
+					Atributo atr = referenciaParametro.getAtributo();
+					if (atr != null && atr.getId() == atributo.getId()) {
+						return false;
+					}
+				}
+			}
+		}
+		
+		return true;
+	}
+
+	private static boolean agregarRestriccion(Elemento elemento,
+			CasoUso model) {
+		if (elemento == null) {
+			return false;
+		}
+		for (Trayectoria trayectoria : model.getTrayectorias()) {
+			for (Paso paso : trayectoria.getPasos()) {
+				for (ReferenciaParametro referenciaParametro : new PasoDAO().consultarPaso(paso.getId()).getReferencias()) {
+					Elemento elem = referenciaParametro.getElementoDestino();
+					if (elem != null && elem.getId() == elem.getId()) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
 	}
 
 	public static boolean isListado(List<Integer> enteros, Integer entero) {

@@ -18,14 +18,13 @@ import mx.prisma.util.PRISMAException;
 public class ElementoBs {
 	
 	private final static int ID_EDICION = 1;
-	private final static int ID_TERMINADO = 2;
+	private final static int ID_REVISION = 2;
 	private final static int ID_PENDIENTECORRECCION = 3;
-	private final static int ID_REVISION = 4;
-	private final static int ID_PORLIBERAR = 5;
-	private final static int ID_LIBERADO = 6;
+	private final static int ID_PORLIBERAR = 4;
+	private final static int ID_LIBERADO = 5;
 	
 	public enum Estado {
-	    EDICION, TERMINADO, REVISION, PENDIENTECORRECCION, PORLIBERAR, LIBERADO
+	    EDICION, REVISION, PENDIENTECORRECCION, PORLIBERAR, LIBERADO
 	}
 	
 	public static EstadoElemento consultarEstadoElemento(Estado estado) throws Exception{
@@ -45,9 +44,6 @@ public class ElementoBs {
 			break;
 		case REVISION:
 			estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(ID_REVISION);
-			break;
-		case TERMINADO:
-			estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(ID_TERMINADO);
 			break;
 		default:
 			break;
@@ -70,8 +66,6 @@ public class ElementoBs {
 			return ID_PORLIBERAR;
 		case REVISION:
 			return ID_REVISION;
-		case TERMINADO:
-			return ID_TERMINADO;
 		default:
 			return 0;
 		}

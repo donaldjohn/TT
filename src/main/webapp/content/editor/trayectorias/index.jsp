@@ -106,7 +106,7 @@
 			</button>
 		</div>
 	</s:form>
-
+	<div class = "invisible">
 	<!-- EMERGENTE CONFIRMAR ELIMINACIÓN -->
 	<sj:dialog id="confirmarEliminacionDialog" title="Confirmación"
 		autoOpen="false" minHeight="100" minWidth="400" modal="true"
@@ -141,6 +141,7 @@
 			</div>
 		</s:form>
 	</sj:dialog>
+	</div>
 </body>
 	</html>
 </jsp:root>

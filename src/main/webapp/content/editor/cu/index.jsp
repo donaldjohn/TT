@@ -7,8 +7,8 @@
 <head>
 <title>Casos de uso</title>
 <![CDATA[
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/index.js"></script>
-]]>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/index.js"></script>	
+]]> 
 </head>
 <body>
 	<h1>Gestionar Casos de uso</h1>
@@ -39,36 +39,66 @@
 										src="${pageContext.request.contextPath}/resources/images/icons/ver.png" />
 							</s:a>	
 							${blanks}
-							<!-- Modificar caso de uso -->		
-							<s:url var="urlEditar" value="%{#pageContext.request.contextPath}/cu/%{#cu.id}/edit"/>			
-							<s:a href="%{urlEditar}">
-								<img id="" class="button" title="Modificar Caso de uso"
-										src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
-							</s:a>	
-							${blanks}	
-							<!-- Gestionar trayectorias -->			
-							<s:url var="urlGestionarTrayectorias" value="%{#pageContext.request.contextPath}/trayectorias">
-								<s:param name="idCU" value="%{#cu.id}"/>
-							</s:url>
-							<s:a href="%{urlGestionarTrayectorias}"><img
-										id="" class="button"
-										title="Gestionar Trayectorias"
-										src="${pageContext.request.contextPath}/resources/images/icons/T.png" /></s:a>	
-							${blanks}		
-							<!-- Gestionar puntos de extensión -->				
-							<s:url var="urlGestionarPuntosExtension" value="%{#pageContext.request.contextPath}/extensiones">
-								<s:param name="idCU" value="%{#cu.id}"/>
-							</s:url>
-							<s:a href="%{urlGestionarPuntosExtension}"><img
-										id="" class="button"
-										title="Gestionar Puntos de extensión" 
-										src="${pageContext.request.contextPath}/resources/images/icons/P.png" /></s:a>	
-							${blanks}		
-							<!-- Eliminar caso de uso -->			
-							<!--<s:url var="urlEliminar" value="%{#pageContext.request.contextPath}/cu/%{#cu.id}?_method=delete" method="post"/>-->
-							<s:a onclick="return verificarEliminacionElemento(%{#cu.id});">
-							<img id="" class="button" title="Eliminar Caso de uso"
-									src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" /></s:a>					
+							<s:if test="%{#cu.estadoElemento.id == 1 || #cu.estadoElemento.id == 3}">
+								<!-- Modificar caso de uso -->		
+								<s:url var="urlEditar" value="%{#pageContext.request.contextPath}/cu/%{#cu.id}/edit"/>			
+								<s:a href="%{urlEditar}">
+									<img id="" class="button" title="Modificar Caso de uso"
+											src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
+								</s:a>	
+								
+								${blanks}	
+								<!-- Gestionar trayectorias -->			
+								<s:url var="urlGestionarTrayectorias" value="%{#pageContext.request.contextPath}/trayectorias">
+									<s:param name="idCU" value="%{#cu.id}"/>
+								</s:url>
+								<s:a href="%{urlGestionarTrayectorias}"><img
+											id="" class="button"
+											title="Gestionar Trayectorias"
+											src="${pageContext.request.contextPath}/resources/images/icons/T.png" /></s:a>	
+								${blanks}		
+								<!-- Gestionar puntos de extensión -->				
+								<s:url var="urlGestionarPuntosExtension" value="%{#pageContext.request.contextPath}/extensiones">
+									<s:param name="idCU" value="%{#cu.id}"/>
+								</s:url>
+								<s:a href="%{urlGestionarPuntosExtension}"><img
+											id="" class="button"
+											title="Gestionar Puntos de extensión" 
+											src="${pageContext.request.contextPath}/resources/images/icons/P.png" /></s:a>	
+								${blanks}	
+															
+								<!-- Terminar caso de uso -->			
+								<s:a onclick="return verificarTerminarCasoUso(%{#cu.id});">
+								<img id="" class="button" title="Terminar Caso de uso"
+										src="${pageContext.request.contextPath}/resources/images/icons/terminar.png" /></s:a>	
+										
+								${blanks}	
+									
+								<!-- Eliminar caso de uso -->			
+								<!--<s:url var="urlEliminar" value="%{#pageContext.request.contextPath}/cu/%{#cu.id}?_method=delete" method="post"/>-->
+								<s:a onclick="return verificarEliminacionElemento(%{#cu.id});">
+								<img id="" class="button" title="Eliminar Caso de uso"
+										src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" /></s:a>	
+								${blanks}
+							</s:if>				
+							<s:if test="%{#cu.estadoElemento.id == 2}">	
+								<!-- Revisar caso de uso -->			
+								<s:url var="urlRevisar" value="%{#pageContext.request.contextPath}/cu!revisar?idSel=%{#cu.id}" method="post"/>
+								<s:a href="%{urlRevisar}">
+								<img id="" class="button" title="Revisar Caso de uso"
+										src="${pageContext.request.contextPath}/resources/images/icons/revisar.png" /></s:a>	
+								${blanks}	
+							</s:if>
+							
+							<s:set var="rol"><s:property value="@mx.prisma.controller.AccessCtrl@getRol()" /></s:set>
+							<s:if test="%{#cu.estadoElemento.id == 4 and #rol == 1}">	
+							<!-- Liberar caso de uso -->			
+								<s:url var="urlLiberar" value="%{#pageContext.request.contextPath}/cu!liberar?idSel=%{#cu.id}" method="post"/>
+								<s:a href="%{urlLiberar}">
+								<img id="" class="button" title="Liberar Caso de uso"
+										src="${pageContext.request.contextPath}/resources/images/icons/liberar.png" /></s:a>	
+								${blanks}	
+							</s:if>
 					</td>
 					
 					
@@ -87,7 +117,7 @@
 		</button>
 	</div>
 	</s:form>
-	
+	<div class = "invisible">
 	<!-- EMERGENTE CONFIRMAR ELIMINACIÓN -->
 	<sj:dialog id="confirmarEliminacionDialog" title="Confirmación" autoOpen="false"
 		minHeight="100" minWidth="400" modal="true" draggable="true">
@@ -116,6 +146,25 @@
 			</div>
 		</s:form>
 	</sj:dialog>	
+	
+	<!-- EMERGENTE TERMINAR -->
+	<sj:dialog id="mensajeTerminarDialog" title="Confirmación" autoOpen="false"
+		minHeight="100" minWidth="550" modal="true" draggable="true">
+		<s:form autocomplete="off" id="frmConfirmarEliminacion" name="frmConfirmarEliminacionName" theme="simple">
+				
+				<div class="seccion">
+				<div align="center">
+				<div id = "mensajeRestricciones"></div>
+				<div id="restriccionesTermino"></div>
+				</div>
+			<br />
+			
+				<input id="btnConfirmarTermino" type="button" value="Aceptar"/> 
+				 <input type="button" onclick="cancelarConfirmarTermino();" value="Cancelar" />
+			</div>
+		</s:form>
+	</sj:dialog>
+</div>
 </body>
 </html>
 </jsp:root>

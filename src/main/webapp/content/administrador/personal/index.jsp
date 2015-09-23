@@ -56,6 +56,7 @@
 		</button>
 	</div>
 	</s:form>
+	<div class="invisible">
 	<!-- EMERGENTE CONFIRMAR ELIMINACIÓN -->
 	<sj:dialog id="confirmarEliminacionDialog" title="Confirmación" autoOpen="false"
 		minHeight="100" minWidth="400" modal="true" draggable="true">
@@ -83,7 +84,8 @@
 				<input type="button" onclick="cerrarMensajeReferencias()" value="Aceptar"/> 
 			</div>
 		</s:form>
-	</sj:dialog>	
+	</sj:dialog>
+	</div>	
 </body>
 </html>
 </jsp:root>
