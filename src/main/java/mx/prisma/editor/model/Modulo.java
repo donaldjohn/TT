@@ -60,7 +60,7 @@ public class Modulo implements java.io.Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
+	} 
 
 	@Column(name = "clave", unique = true, nullable = false, length = 10)
 	public String getClave() {
