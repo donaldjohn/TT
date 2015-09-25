@@ -42,6 +42,7 @@
 								
 								</s:a> 
 								${blanks}
+								<s:if test="%{#pantalla.estadoElemento.id == 1}">
 								<s:url var="urlEditar" value="%{#pageContext.request.contextPath}/pantallas/%{#pantalla.id}/edit"/>			
 								<s:a href="%{urlEditar}">
 									<img id="" class="button" title="Modificar Pantalla"
@@ -52,7 +53,8 @@
 									<img id="" class="button" title="Eliminar Pantalla"
 										src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" />
 								</s:a></td>
-
+								${blanks}
+								</s:if>
 
 						</tr>
 					</s:iterator>

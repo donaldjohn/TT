@@ -39,6 +39,7 @@
 										src="${pageContext.request.contextPath}/resources/images/icons/ver.png" />
 							</s:a>		
 						${blanks}
+						<s:if test="%{#msj.estadoElemento.id == 1}">
 							<!-- Modificar caso de uso -->		
 							<s:url var="urlEditar" value="%{#pageContext.request.contextPath}/mensajes/%{#msj.id}/edit"/>			
 							<s:a href="%{urlEditar}">
@@ -50,7 +51,9 @@
 						<!--<s:url var="urlEliminar" value="%{#pageContext.request.contextPath}/cu/%{#msj.id}?_method=delete" method="post"/>-->
 						<s:a onclick="return verificarEliminacionElemento(%{#msj.id});">
 						<img id="" class="button" title="Eliminar Mensaje"
-								src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" /></s:a>						
+								src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" /></s:a>		
+						${blanks}
+						</s:if>				
 					</td>
 				</tr>
 			</s:iterator>

@@ -39,6 +39,8 @@
 							<img id="" class="button" title="Consultar Actor"
 									src="${pageContext.request.contextPath}/resources/images/icons/ver.png" />
 						</s:a>
+						${blanks}
+						<s:if test="%{#actor.estadoElemento.id == 1}">
 						<s:url var="urlEditar" value="%{#pageContext.request.contextPath}/actores/%{#actor.id}/edit"/>			
 						<s:a href="%{urlEditar}">
 							<img id="" class="button" title="Modificar Actor"
@@ -50,6 +52,8 @@
 						<s:a onclick="return verificarEliminacionElemento(%{#actor.id});">
 						<img id="" class="button" title="Eliminar Actor"
 								src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" /></s:a>
+						${blanks}	
+						</s:if>
 						
 					</td>
 				</tr>

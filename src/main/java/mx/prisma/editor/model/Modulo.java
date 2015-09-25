@@ -99,7 +99,7 @@ public class Modulo implements java.io.Serializable {
 		this.proyecto = proyecto;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "modulo")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "modulo", orphanRemoval = true)
 	public Set<CasoUso> getCasosdeuso() {
 		return casosdeuso;
 	}
@@ -108,7 +108,7 @@ public class Modulo implements java.io.Serializable {
 		this.casosdeuso = casosdeuso;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "modulo")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "modulo", orphanRemoval = true)
 	public Set<Pantalla> getPantallas() {
 		return pantallas;
 	}

@@ -54,7 +54,8 @@ function prepararEnvio() {
 		tablaToJson("parametros");
 		$('#mensajeComentarios').dialog('open');
 	} catch (err) {
-		alert("Ocurrió un error: " + err);
+		console.log("Ocurrió un error: " + err);
+		
 	}
 }
 
@@ -95,8 +96,11 @@ function tablaToJson(idTable) {
 	var tam = tabla.rows.length;
 	for (var i = 0; i < tam; i++) {
 		var nombre = tabla.rows[i].cells[0].innerHTML;
-		var descripcion = document.getElementById("idDescripcionParametro" + i).value;
-		arregloParametros.push(new Parametro(nombre, descripcion));
+		var elem = document.getElementById("idDescripcionParametro" + i);
+		if (elem != null) {
+			var descripcion = elem.value;
+			arregloParametros.push(new Parametro(nombre, descripcion));
+		}
 	}
 
 		var jsonParametros = JSON.stringify(arregloParametros);

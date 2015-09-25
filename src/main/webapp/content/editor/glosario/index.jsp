@@ -34,6 +34,8 @@
 							<img id="" class="button" title="Consultar Término"
 									src="${pageContext.request.contextPath}/resources/images/icons/ver.png" />
 						</s:a>
+						${blanks}
+						<s:if test="%{#termino.estadoElemento.id == 1}">	
 						<s:url var="urlEditar" value="%{#pageContext.request.contextPath}/glosario/%{#termino.id}/edit"/>			
 						<s:a href="%{urlEditar}">
 							<img id="" class="button" title="Modificar Término"
@@ -45,6 +47,8 @@
 						<s:a onclick="return verificarEliminacionElemento(%{#termino.id});">
 						<img id="" class="button" title="Eliminar Término"
 								src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" /></s:a>		
+						${blanks}	
+						</s:if>
 					</td>
 				</tr>
 			</s:iterator>
