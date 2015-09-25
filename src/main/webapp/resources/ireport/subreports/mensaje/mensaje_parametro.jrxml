@@ -14,18 +14,19 @@ WHERE menpar.MensajeElementoid = $P{p_mensajeElementoId};]]>
 	<title>
 		<band height="20">
 			<staticText>
-				<reportElement x="0" y="0" width="100" height="20" uuid="30f9c2a2-4b16-4ba1-93aa-141870b89666"/>
+				<reportElement x="0" y="0" width="100" height="15" uuid="30f9c2a2-4b16-4ba1-93aa-141870b89666"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Parámetros]]></text>
 			</staticText>
 		</band>
 	</title>
 	<detail>
-		<band height="44" splitType="Stretch">
+		<band height="21" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="10" width="469" height="20" uuid="16784c38-1831-4975-91bf-5b81367534f0"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="469" height="20" uuid="16784c38-1831-4975-91bf-5b81367534f0"/>
+				<textElement markup="html"/>
 				<textFieldExpression><![CDATA["<b>" + $F{nombre} + ".</b> " + $F{descripcion}]]></textFieldExpression>
 			</textField>
 		</band>
