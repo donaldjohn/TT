@@ -57,8 +57,8 @@
 		<band height="27" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
 				<reportElement positionType="Float" x="18" y="13" width="469" height="14" uuid="377c9e6d-94ba-4be0-a530-1cf6539df464"/>
-				<textElement textAlignment="Justified"/>
-				<textFieldExpression><![CDATA[$F{nombre} + ". " + $F{descripcion}]]></textFieldExpression>
+				<textElement textAlignment="Justified" markup="html"/>
+				<textFieldExpression><![CDATA["<b>" + $F{nombre} + ".</b> " + $F{descripcion}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

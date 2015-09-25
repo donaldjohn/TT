@@ -7,44 +7,23 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["/home/lorena/git/AplicacionTTB064/src/main/webapp/resources/ireport/elementos/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["/home/lorena/git/AplicacionTTB064/src/main/webapp/resources/ireport/subreports/"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select * from Atributo where EntidadElementoId = $P{p_entidadElementoId};]]>
+		<![CDATA[SELECT atr.nombre as atributoNombre, atr.descripcion, atr.obligatorio, atr.longitud, atr.formatoArchivo, atr.tamanioArchivo, atr.otroTipoDato, atr.TipoDatoid, atr.UnidadTamanioid, unitam.abreviatura FROM Atributo atr
+LEFT JOIN UnidadTamanio unitam ON atr.UnidadTamanioid =  unitam.id
+WHERE atr.EntidadElementoId = $P{p_entidadElementoId};]]>
 	</queryString>
-	<field name="id" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="nombre" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="descripcion" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="obligatorio" class="java.lang.Boolean">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="longitud" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="formatoArchivo" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="tamanioArchivo" class="java.lang.Float">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="UnidadTamanioid" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="EntidadElementoid" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="TipoDatoid" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="otroTipoDato" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="atributoNombre" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="obligatorio" class="java.lang.Boolean"/>
+	<field name="longitud" class="java.lang.Integer"/>
+	<field name="formatoArchivo" class="java.lang.String"/>
+	<field name="tamanioArchivo" class="java.lang.Float"/>
+	<field name="otroTipoDato" class="java.lang.String"/>
+	<field name="TipoDatoid" class="java.lang.Integer"/>
+	<field name="UnidadTamanioid" class="java.lang.Integer"/>
+	<field name="abreviatura" class="java.lang.String"/>
 	<variable name="v_descripcionTipo" class="java.lang.String">
 		<variableExpression><![CDATA[$F{TipoDatoid}.equals( 1 ) ?
 "Es una frase o enunciado de " + $F{longitud} + " caracteres como máximo"
@@ -57,7 +36,7 @@
 : $F{TipoDatoid}.equals( 5 ) ?
 "Es una fecha"
 : $F{TipoDatoid}.equals( 6 ) ?
-"Es un documento digital en formato " + $F{formatoArchivo} + " de " + $F{tamanioArchivo} + " " + $V{v_abreviaturaUnidadTamanio}
+"Es un documento digital en formato " + $F{formatoArchivo} + " de " + $F{tamanioArchivo} + " " + $F{abreviatura}
 : $F{TipoDatoid}.equals( 7 ) ?
 "Es un atributo de tipo " + $F{otroTipoDato}
 : "Error"]]></variableExpression>
@@ -83,18 +62,9 @@
 		<band height="24" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
 				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="469" height="19" uuid="d2b9a2c8-ccbc-45f1-9b3e-914e4c37e2ae"/>
-				<textElement textAlignment="Justified" markup="styled"/>
-				<textFieldExpression><![CDATA[$F{nombre} + ". " + $F{descripcion} + " " + $V{v_descripcionTipo} + " " + $V{v_descripcionObligatorio}]]></textFieldExpression>
+				<textElement textAlignment="Justified" markup="html"/>
+				<textFieldExpression><![CDATA["<b>" + $F{atributoNombre} + ".</b> " + $F{descripcion} + " " + $V{v_descripcionTipo} + " " + $V{v_descripcionObligatorio}]]></textFieldExpression>
 			</textField>
-			<subreport>
-				<reportElement x="0" y="3" width="384" height="21" uuid="8e6aefda-ff33-4bd3-8f95-26214dc843bc"/>
-				<subreportParameter name="p_unidadTamanioId">
-					<subreportParameterExpression><![CDATA[$F{UnidadTamanioid}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<returnValue subreportVariable="v_abreviaturaUnidad" toVariable="v_abreviaturaUnidadTamanio"/>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "unidadTamano.jasper"]]></subreportExpression>
-			</subreport>
 		</band>
 	</detail>
 </jasperReport>

@@ -2,10 +2,10 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="500" leftMargin="56" rightMargin="56" topMargin="56" bottomMargin="56" uuid="4e67c746-4b2f-4cf9-a5d5-85d37e075565">
 	<property name="ireport.zoom" value="1.4641000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="247"/>
 	<style name="style1"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["/home/lorena/git/AplicacionTTB064/src/main/webapp/resources/ireport/elementos/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["/home/lorena/git/AplicacionTTB064/src/main/webapp/resources/ireport/subreports/"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[select * from Proyecto;]]>
@@ -62,26 +62,54 @@
 		<band height="35" splitType="Stretch"/>
 	</pageHeader>
 	<detail>
-		<band height="48" splitType="Stretch">
+		<band height="60" splitType="Stretch">
 			<subreport>
-				<reportElement x="0" y="0" width="500" height="48" uuid="62c014f1-a440-47f4-9b8b-27c23630768a"/>
+				<reportElement x="0" y="10" width="500" height="40" uuid="49edc4a5-8f25-4156-89e4-ca0d15561976"/>
 				<subreportParameter name="SUBREPORT_DIR"/>
 				<subreportParameter name="p_proyectoId">
 					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "entidades.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "terminoGlosario/terminoGlosario.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
-		<band height="50">
+		<band height="60">
 			<subreport>
-				<reportElement x="0" y="0" width="500" height="50" uuid="49edc4a5-8f25-4156-89e4-ca0d15561976"/>
+				<reportElement x="0" y="10" width="500" height="40" uuid="62c014f1-a440-47f4-9b8b-27c23630768a"/>
 				<subreportParameter name="SUBREPORT_DIR"/>
 				<subreportParameter name="p_proyectoId">
 					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "glosario.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "actor/actor.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="60">
+			<subreport>
+				<reportElement x="0" y="10" width="500" height="40" uuid="a6d783f9-97d8-4dbc-8144-4d06afbdb94d"/>
+				<subreportParameter name="p_proyectoId">
+					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "mensaje/mensaje.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="60">
+			<subreport>
+				<reportElement x="0" y="10" width="500" height="40" uuid="3a7dd622-f38d-4a99-854f-5f2b1836ad0f"/>
+				<subreportParameter name="SUBREPORT_DIR"/>
+				<subreportParameter name="p_proyectoId">
+					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "entidad/entidad.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="60">
+			<subreport>
+				<reportElement x="0" y="10" width="500" height="40" uuid="de5a14ea-c8d6-41bf-9aa2-7d23952e85ea"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "reglaNegocio/reglaNegocio.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
