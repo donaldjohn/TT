@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="500" leftMargin="56" rightMargin="56" topMargin="56" bottomMargin="56" uuid="4e67c746-4b2f-4cf9-a5d5-85d37e075565">
 	<property name="ireport.zoom" value="1.4641000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="247"/>
+	<property name="ireport.y" value="262"/>
 	<style name="style1"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["/home/lorena/git/AplicacionTTB064/src/main/webapp/resources/ireport/subreports/"]]></defaultValueExpression>
@@ -108,12 +108,32 @@
 		<band height="60">
 			<subreport>
 				<reportElement x="0" y="10" width="500" height="40" uuid="de5a14ea-c8d6-41bf-9aa2-7d23952e85ea"/>
+				<subreportParameter name="p_proyectoId">
+					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "reglaNegocio/reglaNegocio.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
+		<band height="60">
+			<subreport>
+				<reportElement x="0" y="10" width="500" height="40" uuid="92c0fc8e-d1b7-44a3-9f93-8f4fd0c6b190"/>
+				<subreportParameter name="p_proyectoId">
+					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "pantalla/pantalla.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="50"/>
 	</detail>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="34" width="500" height="20" uuid="333eef06-a803-4e80-b24c-0081051df8fa"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageFooter>
 </jasperReport>

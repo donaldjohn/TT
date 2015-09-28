@@ -32,30 +32,26 @@
 						<tr>
 							<td><s:property
 									value="%{#pantalla.clave + ' ' + #pantalla.numero + ' ' +#pantalla.nombre}" /></td>
-							<td align="center">
-								<s:url var="urlConsultar"
+							<td align="center"><s:url var="urlConsultar"
 									value="%{#pageContext.request.contextPath}/pantallas/%{#pantalla.id}" />
-								${blanks}	
-								<s:a href="%{urlConsultar}">
+								${blanks} <s:a href="%{urlConsultar}">
 									<img id="" class="button" title="Consultar Pantalla"
 										src="${pageContext.request.contextPath}/resources/images/icons/ver.png" />
-								
-								</s:a> 
-								${blanks}
-								<s:if test="%{#pantalla.estadoElemento.id == 1}">
-								<s:url var="urlEditar" value="%{#pageContext.request.contextPath}/pantallas/%{#pantalla.id}/edit"/>			
-								<s:a href="%{urlEditar}">
-									<img id="" class="button" title="Modificar Pantalla"
-											src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
-								</s:a>
-								${blanks}
-								<s:a onclick="return verificarEliminacionElemento(%{#pantalla.id});">
-									<img id="" class="button" title="Eliminar Pantalla"
-										src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" />
-								</s:a></td>
-								${blanks}
-								</s:if>
 
+								</s:a> ${blanks} <s:if test="%{#pantalla.estadoElemento.id == 1}">
+									<s:url var="urlEditar"
+										value="%{#pageContext.request.contextPath}/pantallas/%{#pantalla.id}/edit" />
+									<s:a href="%{urlEditar}">
+										<img id="" class="button" title="Modificar Pantalla"
+											src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
+									</s:a>
+									${blanks}
+									<s:a
+										onclick="return verificarEliminacionElemento(%{#pantalla.id});">
+										<img id="" class="button" title="Eliminar Pantalla"
+											src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" />
+									</s:a>
+								</s:if></td>
 						</tr>
 					</s:iterator>
 				</tbody>
@@ -71,41 +67,41 @@
 			</button>
 		</div>
 	</s:form>
-	<div class = "invisible">
-	<!-- EMERGENTE CONFIRMAR ELIMINACIÓN -->
-	<sj:dialog id="confirmarEliminacionDialog" title="Confirmación"
-		autoOpen="false" minHeight="100" minWidth="400" modal="true"
-		draggable="true">
-		<s:form autocomplete="off" id="frmConfirmarEliminacion"
-			name="frmConfirmarEliminacionName" theme="simple">
-			<div class="seccion">
-				<s:text name="MSG11"></s:text>
-			</div>
-			<br />
-			<div align="center">
-				<input id="btnConfirmarEliminacion" type="button" onclick=""
-					value="Aceptar" /> <input type="button"
-					onclick="cancelarConfirmarEliminacion();" value="Cancelar" />
-			</div>
-		</s:form>
-	</sj:dialog>
-	<!-- EMERGENTE ERROR REFERENCIAS -->
-	<sj:dialog id="mensajeReferenciasDialog" title="Confirmación"
-		autoOpen="false" minHeight="200" minWidth="700" modal="true"
-		draggable="true">
-		<s:form autocomplete="off" id="frmConfirmarEliminacion"
-			name="frmConfirmarEliminacionName" theme="simple">
-			<div class="seccion">
-				<s:text name="MSG14" />
-				<div id="elementosReferencias"></div>
-			</div>
-			<br />
-			<div align="center">
-				<input type="button" onclick="cerrarMensajeReferencias()"
-					value="Aceptar" />
-			</div>
-		</s:form>
-	</sj:dialog>
+	<div class="invisible">
+		<!-- EMERGENTE CONFIRMAR ELIMINACIÓN -->
+		<sj:dialog id="confirmarEliminacionDialog" title="Confirmación"
+			autoOpen="false" minHeight="100" minWidth="400" modal="true"
+			draggable="true">
+			<s:form autocomplete="off" id="frmConfirmarEliminacion"
+				name="frmConfirmarEliminacionName" theme="simple">
+				<div class="seccion">
+					<s:text name="MSG11"></s:text>
+				</div>
+				<br />
+				<div align="center">
+					<input id="btnConfirmarEliminacion" type="button" onclick=""
+						value="Aceptar" /> <input type="button"
+						onclick="cancelarConfirmarEliminacion();" value="Cancelar" />
+				</div>
+			</s:form>
+		</sj:dialog>
+		<!-- EMERGENTE ERROR REFERENCIAS -->
+		<sj:dialog id="mensajeReferenciasDialog" title="Confirmación"
+			autoOpen="false" minHeight="200" minWidth="700" modal="true"
+			draggable="true">
+			<s:form autocomplete="off" id="frmConfirmarEliminacion"
+				name="frmConfirmarEliminacionName" theme="simple">
+				<div class="seccion">
+					<s:text name="MSG14" />
+					<div id="elementosReferencias"></div>
+				</div>
+				<br />
+				<div align="center">
+					<input type="button" onclick="cerrarMensajeReferencias()"
+						value="Aceptar" />
+				</div>
+			</s:form>
+		</sj:dialog>
 	</div>
 </body>
 	</html>
