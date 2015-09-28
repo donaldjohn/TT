@@ -1,6 +1,8 @@
 package mx.prisma.util;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import mx.prisma.dao.GenericDAO;
 import net.sf.jasperreports.engine.JRException;
@@ -20,7 +22,11 @@ public class ReportUtil {
 		
 		@SuppressWarnings("deprecation")
 		JasperReport reporte = (JasperReport) JRLoader.loadObject(rutaJasper);
-		JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, new GenericDAO().getConnection());
+		
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("autor", "Juan");
+		
+		JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, param, new GenericDAO().getConnection());
 		
 		JRExporter exporter = null;
 		
@@ -32,7 +38,7 @@ public class ReportUtil {
 		
 		//Configuración genérica (no importa del formato)
 		exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
-		exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("reportePDF." + extension));
+		exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("/home/lorena/git/AplicacionTTB064/src/main/webapp/resources/ireport/reporteGENERADO." + extension));
 		exporter.exportReport();
 
 	}

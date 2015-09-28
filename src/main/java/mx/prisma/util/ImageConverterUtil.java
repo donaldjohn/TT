@@ -38,4 +38,12 @@ public class ImageConverterUtil {
 		
 		return string;
 	}
+	public static String parseBytesToB64String(byte[] bytes) {
+		String string = null;
+		if(bytes != null) {
+			string = new String(bytes);
+		} 
+		
+		return string;
+	}
 }

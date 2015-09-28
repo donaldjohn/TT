@@ -89,7 +89,6 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 			model.setProyecto(proyecto);
 			model.setModulo(modulo);
 			listPantallas = PantallaBs.consultarPantallasModulo(modulo);
-			System.out.println("size pantallas: " + listPantallas.size());
 
 			@SuppressWarnings("unchecked")
 			Collection<String> msjs = (Collection<String>) SessionManager
@@ -102,7 +101,6 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 		} catch (Exception e) {
 			ErrorManager.agregaMensajeError(this, e);
 		}
-		System.out.println("INDEX");
 		return INDEX;
 	}
 
@@ -156,7 +154,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	private void agregarAcciones() throws Exception{
 		Set<Accion> accionesModelo = new HashSet<Accion>(0);
 		List<Accion> accionesVista = new ArrayList<Accion>();
-		Accion accionBD = null; 
+		Accion accionBD = null;
 		Pantalla pantallaDestino = null;
 		TipoAccion tipoAccion = null;
 		

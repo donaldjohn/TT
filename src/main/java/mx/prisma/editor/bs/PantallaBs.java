@@ -116,7 +116,7 @@ public class PantallaBs {
 					"MSG23", new String[] { "El", "nombre" }, "model.nombre");
 		}
 		// Validaciones de la Descripción
-		if (model.getDescripcion() != null
+		if (Validador.esNuloOVacio(model.getDescripcion())
 				&& Validador.validaLongitudMaxima(model.getDescripcion(), 999)) {
 			throw new PRISMAValidacionException(
 					"El usuario ingreso una descripcion muy larga.", "MSG6",

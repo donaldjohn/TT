@@ -54,7 +54,7 @@
 							theme="jquery" /></td>
 				</tr>
 				<tr>
-					<td class="label"><s:text name="labelDescripcion" /></td>
+					<td class="label obligatorio"><s:text name="labelDescripcion" /></td>
 					<td><s:textarea rows="5" name="model.descripcion"
 							cssClass="inputFormulario ui-widget" maxlength="999"
 							cssErrorClass="input-error"></s:textarea> <s:fielderror
