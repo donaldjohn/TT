@@ -249,7 +249,6 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	
 	public String edit() throws Exception {
 		String resultado = null;
-		
 		try {
 			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
