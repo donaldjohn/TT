@@ -37,7 +37,7 @@ public class AccessBs {
 		if (colaborador == null || !colaborador.getContrasenia().equals(password)) {
 			throw new PRISMAValidacionException("Colaborador no encontrado o contraseña incorrecta", "MSG31");
 		}
-		return colaborador;
+		return colaborador; 
 		
 	}
 
