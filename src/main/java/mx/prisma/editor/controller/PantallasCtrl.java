@@ -23,7 +23,7 @@ import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.TipoAccion;
 import mx.prisma.util.ActionSupportPRISMA;
-import mx.prisma.util.Convertidor;
+import mx.prisma.util.ImageConverterUtil;
 import mx.prisma.util.ErrorManager;
 import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
@@ -99,7 +99,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 		} catch (Exception e) {
-			e.printStackTrace();
+			ErrorManager.agregaMensajeError(this, e);
 		}
 		return INDEX;
 	}
@@ -154,54 +154,51 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	private void agregarAcciones() throws Exception{
 		Set<Accion> accionesModelo = new HashSet<Accion>(0);
 		List<Accion> accionesVista = new ArrayList<Accion>();
-		Accion accionBD = null; 
+		Accion accionBD = null;
 		Pantalla pantallaDestino = null;
 		TipoAccion tipoAccion = null;
 		
 		List<String> imagenesAccionesTexto = null;
-		try {
-			if (jsonAccionesTabla != null && !jsonAccionesTabla.equals("")) {
-				if(jsonImagenesAcciones != null && !jsonImagenesAcciones.equals("")) {
-					imagenesAccionesTexto = JsonUtil.mapJSONToArrayList(jsonImagenesAcciones, String.class);
-				}				
-	
-				accionesVista = JsonUtil.mapJSONToArrayList(jsonAccionesTabla, Accion.class);
-				
-				if(accionesVista != null) {
-					
-					int i = 0;
-					for (Accion accionVista : accionesVista) {
-						pantallaDestino = PantallaBs.consultarPantalla(accionVista.getPantallaDestino().getId());
+		if (jsonAccionesTabla != null && !jsonAccionesTabla.equals("")) {
+			if(jsonImagenesAcciones != null && !jsonImagenesAcciones.equals("")) {
+				imagenesAccionesTexto = JsonUtil.mapJSONToArrayList(jsonImagenesAcciones, String.class);
+			}				
 
-						byte[] imgDecodificada = Convertidor.convertStringPNGB64ToBytes(imagenesAccionesTexto.get(i));
-						
-						tipoAccion = PantallaBs.consultarTipoAccion(accionVista.getTipoAccion().getId());
-						
-						if(accionVista.getId() != null && accionVista.getId() != 0) {
-							accionBD = AccionBs.consultarAccion(accionVista.getId());
-							accionBD.setNombre(accionVista.getNombre());
-							accionBD.setDescripcion(accionVista.getDescripcion());
-							accionBD.setImagen(imgDecodificada);
-							accionBD.setPantallaDestino(pantallaDestino);
-							accionBD.setTipoAccion(tipoAccion);
-							accionesModelo.add(accionBD);
-						} else {
-							accionVista.setId(null);
-							accionVista.setPantalla(model);
-							accionVista.setImagen(imgDecodificada);
-							accionVista.setPantallaDestino(pantallaDestino);
-							accionVista.setTipoAccion(tipoAccion);
-							accionesModelo.add(accionVista);
-						}
-						
-						i++;
+			accionesVista = JsonUtil.mapJSONToArrayList(jsonAccionesTabla, Accion.class);
+			
+			if(accionesVista != null) {
+				
+				int i = 0;
+				for (Accion accionVista : accionesVista) {
+					pantallaDestino = PantallaBs.consultarPantalla(accionVista.getPantallaDestino().getId());
+
+					byte[] imgDecodificada = ImageConverterUtil.parsePNGB64StringToBytes(imagenesAccionesTexto.get(i));
+					
+					tipoAccion = PantallaBs.consultarTipoAccion(accionVista.getTipoAccion().getId());
+					
+					if(accionVista.getId() != null && accionVista.getId() != 0) {
+						accionBD = AccionBs.consultarAccion(accionVista.getId());
+						accionBD.setNombre(accionVista.getNombre());
+						accionBD.setDescripcion(accionVista.getDescripcion());
+						accionBD.setImagen(imgDecodificada);
+						accionBD.setPantallaDestino(pantallaDestino);
+						accionBD.setTipoAccion(tipoAccion);
+						accionesModelo.add(accionBD);
+					} else {
+						accionVista.setId(null);
+						accionVista.setPantalla(model);
+						accionVista.setImagen(imgDecodificada);
+						accionVista.setPantallaDestino(pantallaDestino);
+						accionVista.setTipoAccion(tipoAccion);
+						accionesModelo.add(accionVista);
 					}
-					model.getAcciones().addAll(accionesModelo);
+					
+					i++;
 				}
+				model.getAcciones().addAll(accionesModelo);
 			}
-		} catch (Exception e) {
-			throw e;
 		}
+		
 	}
 
 	public String create() throws Exception {
@@ -237,7 +234,6 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
 		} catch (Exception e) {
-			e.printStackTrace();
 			ErrorManager.agregaMensajeError(this, e);
 			resultado = index();
 		}
@@ -245,13 +241,12 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	}
 	
 	private void agregarImagen() throws IOException {
-		byte[] imgDecodificada = Convertidor.convertStringPNGB64ToBytes(pantallaB64);
+		byte[] imgDecodificada = ImageConverterUtil.parsePNGB64StringToBytes(pantallaB64);
 		model.setImagen(imgDecodificada);
 	}
 	
 	public String edit() throws Exception {
 		String resultado = null;
-		
 		try {
 			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
@@ -375,13 +370,13 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 			model.setProyecto(proyecto);
 			model.setModulo(modulo);			
 			prepararVista();
-			String nombre = model.getClave() + model.getNombre() + model.getNumero() + ".png";
-			@SuppressWarnings("deprecation")
-			String ruta = request.getRealPath("/") + "/tmp/images/" + nombre;
+			//String nombre = model.getClave() + model.getNombre() + model.getNumero() + ".png";
+			//@SuppressWarnings("deprecation")
+			//String ruta = request.getRealPath("/") + "/tmp/images/" + nombre;
 			
-			this.imagenPantalla = Convertidor.convertByteArrayToFile(ruta, model.getImagen());
+			/*this.imagenPantalla = ImageConverterUtil.convertByteArrayToFile(ruta, model.getImagen());
 			this.imagenPantallaContentType = "image/png";
-			this.imagenPantallaFileName = nombre;
+			this.imagenPantallaFileName = nombre;*/
 			
 			
 			resultado = SHOW;
@@ -397,7 +392,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	}
 	
 	private void prepararVista() {
-		pantallaB64 = Convertidor.convertBytesToStringPNGB64(model.getImagen());
+		pantallaB64 = ImageConverterUtil.parseBytesToPNGB64String(model.getImagen());
 		List<Accion> listAcciones = new ArrayList<Accion>();
 		List<String> listImagenesAcciones = new ArrayList<String>();
 		for(Accion acc : model.getAcciones()) {
@@ -417,7 +412,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 			accAux.setPantallaDestino(pAux);
 			listAcciones.add(accAux);
 			
-			listImagenesAcciones.add(Convertidor.convertBytesToStringPNGB64(acc.getImagen()));
+			listImagenesAcciones.add(ImageConverterUtil.parseBytesToPNGB64String(acc.getImagen()));
 		}
 		jsonAccionesTabla = JsonUtil.mapListToJSON(listAcciones);
 		jsonImagenesAcciones = JsonUtil.mapListToJSON(listImagenesAcciones);
