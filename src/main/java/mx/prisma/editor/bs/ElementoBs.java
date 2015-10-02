@@ -79,7 +79,22 @@ public class ElementoBs {
 			}
 			
 		case ELIMINARCASOUSO5_3:
-			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION))
+			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION) && elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.PENDIENTECORRECCION)) {
+				throw new PRISMAException("El estado del caso de uso es inválido.", "MSG13");
+		}			break;
+		case REVISARCASOUSO5_5:
+			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.REVISION)) {
+				throw new PRISMAException("El estado del caso de uso es inválido.", "MSG13");
+		}
+			break;
+		case TERMINARCASOUSO5_6:
+			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION) && elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.PENDIENTECORRECCION)) {
+				throw new PRISMAException("El estado del caso de uso es inválido.", "MSG13");
+		}
+		case LIBERARCASOUSO4_3:
+			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION) && elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.PENDIENTECORRECCION)) {
+				throw new PRISMAException("El estado del caso de uso es inválido.", "MSG13");
+		}
 			break;
 		default:
 			break;

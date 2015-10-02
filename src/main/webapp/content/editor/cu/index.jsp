@@ -83,7 +83,7 @@
 							</s:if>				
 							<s:if test="%{#cu.estadoElemento.id == 2}">	
 								<!-- Revisar caso de uso -->			
-								<s:url var="urlRevisar" value="%{#pageContext.request.contextPath}/cu!revisar?idSel=%{#cu.id}" method="post"/>
+								<s:url var="urlRevisar" value="%{#pageContext.request.contextPath}/cu!revision?idSel=%{#cu.id}" method="post"/>
 								<s:a href="%{urlRevisar}">
 								<img id="" class="button" title="Revisar Caso de uso"
 										src="${pageContext.request.contextPath}/resources/images/icons/revisar.png" /></s:a>	

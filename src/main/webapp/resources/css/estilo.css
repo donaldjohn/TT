@@ -508,3 +508,8 @@ a.referencia:hover {
 .invisible {
 	display: none;
 }
+
+.genericFont {
+	font-family: Verdana,Arial,sans-serif;
+    font-size: 12px;
+}

@@ -10,7 +10,7 @@ import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.service.jdbc.connections.spi.ConnectionProvider;
 
 public class GenericDAO {
-	protected static Session session = null;
+	protected Session session = null;
 
 	public GenericDAO() {
 			session = HibernateUtil.getSessionFactory().getCurrentSession();

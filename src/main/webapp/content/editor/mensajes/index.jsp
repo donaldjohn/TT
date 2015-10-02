@@ -35,7 +35,7 @@
 						<!-- Consultar caso de uso -->			
 						<s:url var="urlConsultar" value="%{#pageContext.request.contextPath}/mensajes/%{#msj.id}"/>
 							<s:a href="%{urlConsultar}">
-								<img id="" class="button" title="Consultar Mensaje"
+					 			<img id="" class="button" title="Consultar Mensaje"
 										src="${pageContext.request.contextPath}/resources/images/icons/ver.png" />
 							</s:a>		
 						${blanks}

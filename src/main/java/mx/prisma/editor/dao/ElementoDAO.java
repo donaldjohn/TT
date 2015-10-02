@@ -15,7 +15,6 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 
 public class ElementoDAO extends GenericDAO{
-
 	public ElementoDAO() {
 		super();
 	}

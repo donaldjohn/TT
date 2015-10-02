@@ -60,7 +60,7 @@ import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 				"actionName", "modulos" }),
 		@Result(name = "restricciones", type = "json", params = { "root",
 				"restriccionesTermino" }),
-		})
+		@Result(name = "revision", type = "dispatcher", location = "cu/revision.jsp") })
 public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> {
 	/**
 	 * 
@@ -102,10 +102,16 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	private boolean existenTrayectorias;
 	private boolean existenExtensiones;
 	private String observaciones;
+	private String observacionesResumen;
+	private String observacionesTrayectoria;
+	private String observacionesPuntosExt;
+	private Integer esCorrectoResumen = null;
+	private Integer esCorrectoTrayectoria = null;
+	private Integer esCorrectoPuntosExt = null;
+
 	private String comentario;
 	private List<String> elementosReferencias;
 	private List<String> restriccionesTermino;
-	
 
 	public String index() {
 		String resultado;
@@ -234,7 +240,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			}
 			model.setProyecto(proyecto);
 			model.setModulo(modulo);
-			
+
 			ElementoBs.verificarEstado(model, CU_CasosUso.MODIFICARCASOUSO5_2);
 
 			buscaElementos();
@@ -597,7 +603,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 					&& rev.getSeccion()
 							.getNombre()
 							.equals(TipoSeccionEnum
-									.getNombre(TipoSeccionENUM.GENERAL))) {
+									.getNombre(TipoSeccionENUM.RESUMEN))) {
 				this.observaciones = rev.getObservaciones();
 			}
 		}
@@ -613,7 +619,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		}
 		return "referencias";
 	}
-		
+
 	public String verificarTermino() {
 		try {
 			restriccionesTermino = new ArrayList<String>();
@@ -624,7 +630,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		}
 		return "restricciones";
 	}
-		
+
 	public String terminar() throws Exception {
 		String resultado = null;
 		try {
@@ -641,8 +647,112 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			}
 			model.setProyecto(proyecto);
 			model.setModulo(modulo);
+			ElementoBs.verificarEstado(model, CU_CasosUso.TERMINARCASOUSO5_6);
 			resultado = SUCCESS;
 			CuBs.terminar(model);
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"Caso de uso", "terminado" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+
+	public String guardarRevision() throws Exception {
+		String resultado = null;
+		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
+			model.setModulo(modulo);
+
+			ElementoBs.verificarEstado(model, CU_CasosUso.REVISARCASOUSO5_5);
+
+			resultado = SUCCESS;
+			CuBs.guardarRevisiones(esCorrectoResumen, observacionesResumen,
+					esCorrectoTrayectoria, observacionesTrayectoria,
+					esCorrectoPuntosExt, observacionesPuntosExt, model);
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"Caso de uso", "terminado" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+
+	public String revision() {
+		String resultado = null;
+		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
+			model.setModulo(modulo);
+
+			ElementoBs.verificarEstado(model, CU_CasosUso.REVISARCASOUSO5_5);
+
+			buscaElementos();
+			prepararVista();
+
+			resultado = "revision";
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = edit();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+
+	public String revisar() throws Exception {
+		String resultado = null;
+		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
+			model.setModulo(modulo);
+			resultado = SUCCESS;
+			// CuBs.terminar(model);
 			addActionMessage(getText("MSG1", new String[] { "El",
 					"Caso de uso", "terminado" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
@@ -869,5 +979,52 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		this.restriccionesTermino = restriccionesTermino;
 	}
 
-	
+	public String getObservacionesResumen() {
+		return observacionesResumen;
+	}
+
+	public void setObservacionesResumen(String observacionesResumen) {
+		this.observacionesResumen = observacionesResumen;
+	}
+
+	public String getObservacionesTrayectoria() {
+		return observacionesTrayectoria;
+	}
+
+	public void setObservacionesTrayectoria(String observacionesTrayectoria) {
+		this.observacionesTrayectoria = observacionesTrayectoria;
+	}
+
+	public String getObservacionesPtosExt() {
+		return observacionesPuntosExt;
+	}
+
+	public void setObservacionesPtosExt(String observacionesPtosExt) {
+		this.observacionesPuntosExt = observacionesPtosExt;
+	}
+
+	public Integer getEsCorrectoResumen() {
+		return esCorrectoResumen;
+	}
+
+	public void setEsCorrectoResumen(Integer esCorrectoResumen) {
+		this.esCorrectoResumen = esCorrectoResumen;
+	}
+
+	public Integer getEsCorrectoTrayectoria() {
+		return esCorrectoTrayectoria;
+	}
+
+	public void setEsCorrectoTrayectoria(Integer esCorrectoTrayectoria) {
+		this.esCorrectoTrayectoria = esCorrectoTrayectoria;
+	}
+
+	public Integer getEsCorrectoPuntosExt() {
+		return esCorrectoPuntosExt;
+	}
+
+	public void setEsCorrectoPuntosExt(Integer esCorrectoPuntosExt) {
+		this.esCorrectoPuntosExt = esCorrectoPuntosExt;
+	}
+
 }

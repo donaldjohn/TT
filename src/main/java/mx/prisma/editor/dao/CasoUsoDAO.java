@@ -14,7 +14,6 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 
 public class CasoUsoDAO extends ElementoDAO {
-
 	public CasoUsoDAO() {
 		super();
 	}
