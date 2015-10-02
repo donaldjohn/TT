@@ -43,7 +43,7 @@ public class AccessBs {
 
 	public static boolean isLogged(Map<String, Object> userSession) {
 		boolean logged = false;
-		System.out.println(userSession);
+		System.out.println(userSession); 
 		if (userSession != null) {
 			if (userSession.get("login") != null) {
 				logged = (Boolean) userSession.get("login");
