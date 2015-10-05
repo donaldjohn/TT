@@ -102,7 +102,7 @@ public class PantallaBs {
 		// Validaciones del nombre
 		if (Validador.esNuloOVacio(model.getNombre())) {
 			throw new PRISMAValidacionException(
-					"El usuario no ingresó el nombre del cu.", "MSG4", null,
+					"El usuario no ingresó el nombre de la pantalla.", "MSG4", null,
 					"model.nombre");
 		}
 		if (Validador.validaLongitudMaxima(model.getNombre(), 200)) {
@@ -116,10 +116,14 @@ public class PantallaBs {
 					"MSG23", new String[] { "El", "nombre" }, "model.nombre");
 		}
 		// Validaciones de la Descripción
-		if (Validador.esNuloOVacio(model.getDescripcion())
-				&& Validador.validaLongitudMaxima(model.getDescripcion(), 999)) {
+		if(Validador.esNuloOVacio(model.getDescripcion())) {
 			throw new PRISMAValidacionException(
-					"El usuario ingreso una descripcion muy larga.", "MSG6",
+					"El usuario no ingresó la descripción de la pantalla.", "MSG4", null,
+					"model.descripcion");
+		}
+		if (Validador.validaLongitudMaxima(model.getDescripcion(), 999)) {
+			throw new PRISMAValidacionException(
+					"El usuario ingreso una descripción muy larga.", "MSG6",
 					new String[] { "999", "caracteres" }, "model.descripcion");
 		}
 

@@ -1,5 +1,9 @@
 package mx.prisma.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 import org.apache.commons.codec.binary.Base64;
 
 public class ImageConverterUtil {
@@ -38,12 +42,16 @@ public class ImageConverterUtil {
 		
 		return string;
 	}
-	public static String parseBytesToB64String(byte[] bytes) {
+	public static String parseBytesToB64String(Object obj) {
 		String string = null;
-		if(bytes != null) {
-			string = new String(bytes);
-		} 
-		
+		try { 
+			byte[] bytes = (byte[])obj;
+			if(bytes != null) {
+				string = new String(bytes);
+			} 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return string;
 	}
 }

@@ -77,12 +77,12 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 	private int idAtributoUnicidad;
 
 	private int idAtributoFormato;
-
-	private int idAtributoFI;
-	private int idAtributoFT;
-
+	private int idEntidadFormato;
+	
 	private int idAtributo1;
+	private int idEntidad1;
 	private int idAtributo2;
+	private int idEntidad2;
 	private int idOperador;
 	private List<String> elementosReferencias;
 
@@ -181,20 +181,25 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 
 			switch (TipoReglaNegocioEnum.getTipoReglaNegocio(trn)) {
 			case COMPATRIBUTOS:
+				ReglaNegocioBs.validarReglaCompAtributos(idEntidad1, idAtributo1, idOperador, idEntidad2, idAtributo2);
 				model = ReglaNegocioBs.agregarElementosComparacion(model,
 						idAtributo1, idOperador, idAtributo2);
 				break;
 			case FORMATOCAMPO:
+				ReglaNegocioBs.validarReglaNegocioFormatoCampo(idEntidadFormato, idAtributoFormato);
 				model = ReglaNegocioBs.agregarElementosFormatoCampo(model,
 						idAtributoFormato);
 				break;
 			case UNICIDAD:
+				ReglaNegocioBs.validarReglaNegocioUnicidad(idEntidadUnicidad, idAtributoUnicidad);
 				model = ReglaNegocioBs.agregarElementosUnicidad(model,
 						idEntidadUnicidad, idAtributoUnicidad);
 				break;
 			default:
 				break;
 			}
+			
+			System.out.println("ids: " + this.idEntidadUnicidad + ", " + this.idAtributoUnicidad);
 
 			// Se prepara el modelo para el registro
 			proyecto = SessionManager.consultarProyectoActivo();
@@ -202,7 +207,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 			model.setEstadoElemento(ElementoBs
 					.consultarEstadoElemento(Estado.EDICION));
 
-			// Se registra el mensaje
+			// Se registra la regla de negocio
 			ReglaNegocioBs.registrarReglaNegocio(model);
 			resultado = SUCCESS;
 
@@ -334,14 +339,17 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 
 			switch (TipoReglaNegocioEnum.getTipoReglaNegocio(trn)) {
 			case COMPATRIBUTOS:
+				ReglaNegocioBs.validarReglaCompAtributos(idEntidad1, idAtributo1, idOperador, idEntidad2, idAtributo2);
 				model = ReglaNegocioBs.agregarElementosComparacion(model,
 						idAtributo1, idOperador, idAtributo2);
 				break;
 			case FORMATOCAMPO:
+				ReglaNegocioBs.validarReglaNegocioFormatoCampo(idEntidadFormato, idAtributoFormato);
 				model = ReglaNegocioBs.agregarElementosFormatoCampo(model,
 						idAtributoFormato);
 				break;
 			case UNICIDAD:
+				ReglaNegocioBs.validarReglaNegocioUnicidad(idEntidadUnicidad, idAtributoUnicidad);
 				model = ReglaNegocioBs.agregarElementosUnicidad(model,
 						idEntidadUnicidad, idAtributoUnicidad);
 				break;
@@ -465,6 +473,8 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 	public String cargarAtributos() {
 		try {
 			Entidad entidad = EntidadBs.consultarEntidad(this.idEntidad);
+			Atributo atributo = EntidadBs.consultarAtributo(6);
+			System.out.println("atr: " + atributo.getNombre());
 			ArrayList<Atributo> listAtributosAux = new ArrayList<Atributo>(
 					entidad.getAtributos());
 			listAtributos = new ArrayList<Atributo>();
@@ -498,7 +508,9 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 
 	public String cargarOperadores() {
 		try {
+			System.out.println("Desde cargar op: " + this.idAtributo);
 			Atributo atributo = EntidadBs.consultarAtributo(this.idAtributo);
+			System.out.println("Desde cargar op 2: " + atributo.getNombre());
 			listOperadores = ReglaNegocioBs
 					.consultarOperadoresDisponibles(atributo.getTipoDato()
 							.getNombre());
@@ -643,22 +655,6 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 		this.idAtributoFormato = idAtributoFormato;
 	}
 
-	public int getIdAtributoFI() {
-		return idAtributoFI;
-	}
-
-	public void setIdAtributoFI(int idAtributoFI) {
-		this.idAtributoFI = idAtributoFI;
-	}
-
-	public int getIdAtributoFT() {
-		return idAtributoFT;
-	}
-
-	public void setIdAtributoFT(int idAtributoFT) {
-		this.idAtributoFT = idAtributoFT;
-	}
-
 	public int getIdAtributo2() {
 		return idAtributo2;
 	}
@@ -740,4 +736,30 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 		this.listAtributos2 = listAtributos2;
 	}
 
+	public int getIdEntidad1() {
+		return idEntidad1;
+	}
+
+	public void setIdEntidad1(int idEntidad1) {
+		this.idEntidad1 = idEntidad1;
+	}
+
+	public int getIdEntidad2() {
+		return idEntidad2;
+	}
+
+	public void setIdEntidad2(int idEntidad2) {
+		this.idEntidad2 = idEntidad2;
+	}
+
+	public int getIdEntidadFormato() {
+		return idEntidadFormato;
+	}
+
+	public void setIdEntidadFormato(int idEntidadFormato) {
+		this.idEntidadFormato = idEntidadFormato;
+	}
+	
+	
+	
 }

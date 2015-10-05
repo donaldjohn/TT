@@ -12,6 +12,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 
 public class ReportUtil {
@@ -33,6 +34,9 @@ public class ReportUtil {
 		if(formato.equals("pdf")) {
 			extension = "pdf";
 			exporter = new JRPdfExporter();
+		} else if(formato.equals("docx")) {
+			extension = "docx";
+			exporter = new JRDocxExporter();
 		}
 		
 		

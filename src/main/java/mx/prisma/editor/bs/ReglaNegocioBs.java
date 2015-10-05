@@ -137,40 +137,35 @@ public class ReglaNegocioBs {
 					"MSG23", new String[] { "El", "nombre" }, "model.nombre");
 		}
 		// Validaciones de la Descripción
-		if (model.getDescripcion() != null
-				&& Validador.validaLongitudMaxima(model.getDescripcion(), 999)) {
+		if(Validador.esNuloOVacio(model.getDescripcion())) {
+			throw new PRISMAValidacionException(
+					"El usuario no ingresó la desripción de la regla de negocio.", "MSG4",
+					null, "model.descripcion");
+		}
+		if (Validador.validaLongitudMaxima(model.getDescripcion(), 999)) {
 			throw new PRISMAValidacionException(
 					"El usuario ingreso una descripcion muy larga.", "MSG6",
 					new String[] { "999", "caracteres" }, "model.descripcion");
 		}
+		
 		// Validaciones de la Redacción
 		if (Validador.esNuloOVacio(model.getRedaccion())) {
 			throw new PRISMAValidacionException(
-					"El usuario no ingresó la redaccion del mensaje.", "MSG4",
+					"El usuario no ingresó la redaccion de la regla de negocio.", "MSG4",
 					null, "model.redaccion");
 		}
-		if (model.getRedaccion() != null
-				&& Validador.validaLongitudMaxima(model.getRedaccion(), 999)) {
+		if (Validador.validaLongitudMaxima(model.getRedaccion(), 999)) {
 			throw new PRISMAValidacionException(
 					"El usuario ingreso una redaccion muy larga.", "MSG6",
 					new String[] { "999", "caracteres" }, "model.redaccion");
 		}
-		// Validaciones específicas por tipo de RN
-		/*
-		 * String tipoRN = model.getTipoReglaNegocio().getNombre();
-		 * if(tipoRN.equals(VERFCATALOGOS)) { System.out.println("1"); } else
-		 * if(tipoRN.equals(COMPATRIBUTOS)) { System.out.println("2"); } else
-		 * if(tipoRN.equals(UNICIDAD)) { System.out.println("3"); } else
-		 * if(tipoRN.equals(OBLIGATORIOS)) { System.out.println("4"); } else
-		 * if(tipoRN.equals(LONGITUD)) { System.out.println("5"); } else
-		 * if(tipoRN.equals(DATOCORRECTO)) { System.out.println("6"); } else
-		 * if(tipoRN.equals(FORMATOARCH)) { System.out.println("7"); } else
-		 * if(tipoRN.equals(TAMANOARCH)) { System.out.println("8"); } else
-		 * if(tipoRN.equals(INTERVALOFECH)) { System.out.println("9"); } else
-		 * if(tipoRN.equals(FORMATOCAMPO)) { System.out.println("10"); } else
-		 * if(tipoRN.equals(OTRO)) { System.out.println("11"); }
-		 */
-
+		if(TipoReglaNegocioEnum.getTipoReglaNegocio(model.getTipoReglaNegocio()).equals(TipoReglaNegocioEnum.TipoReglaNegocioENUM.FORMATOCAMPO)) {
+			if(Validador.esNuloOVacio(model.getExpresionRegular())) {
+				throw new PRISMAValidacionException(
+						"El usuario no ingresó la expresión regular.", "MSG4",
+						null, "model.expresionRegular");
+			}
+		}
 	}
 
 	public static TipoReglaNegocio consultaTipoReglaNegocio(int idTipoRN) {
@@ -320,6 +315,12 @@ public class ReglaNegocioBs {
 
 	public static ReglaNegocio agregarElementosComparacion(ReglaNegocio model,
 			int idAtributo1, int idOperador, int idAtributo2) {
+		if(idAtributo1 == -1) {
+			throw new PRISMAValidacionException(
+					"El usuario no seleccionó el atributo 1 de la comparación.",
+					"MSG4", null, "model.numero");
+		}
+		
 		model.setAtributoComp1(EntidadBs.consultarAtributo(idAtributo1));
 		model.setOperadorComp(consultarOperador(idOperador));
 		model.setAtributoComp2(EntidadBs.consultarAtributo(idAtributo2));
@@ -465,5 +466,66 @@ public class ReglaNegocioBs {
 		listReferenciasVista.addAll(setReferenciasVista);
 
 		return listReferenciasVista;
+	}
+
+	public static void validarReglaCompAtributos(int idEntidad1, int idAtributo1,
+			int idOperador, int idEntidad2, int idAtributo2) {
+		if(idEntidad1 == -1) {
+			throw new PRISMAValidacionException(
+					"El usuario no seleccionó la entidad 1 de la comparación.", "MSG4",
+					null, "idEntidad1");
+		}
+		if(idAtributo1 == -1) {
+			throw new PRISMAValidacionException(
+					"El usuario no seleccionó el atributo 1 de la comparación.", "MSG4",
+					null, "idAtributo1");
+		}
+		if(idOperador == -1) {
+			throw new PRISMAValidacionException(
+					"El usuario no seleccionó el operador de la comparación.", "MSG4",
+					null, "idOperador");
+		}
+		if(idEntidad1 == -1) {
+			throw new PRISMAValidacionException(
+					"El usuario no seleccionó la entidad 2 de la comparación.", "MSG4",
+					null, "idEntidad2");
+		}
+		if(idEntidad1 == -1) {
+			throw new PRISMAValidacionException(
+					"El usuario no seleccionó el atributo 2 de la comparación.", "MSG4",
+					null, "idAtributo2");
+		}
+		
+		
+	}
+
+	public static void validarReglaNegocioFormatoCampo(int idEntidadFormato,
+			int idAtributoFormato) {
+		if(idEntidadFormato == -1) {
+			throw new PRISMAValidacionException(
+					"El usuario no seleccionó la entidad del formato correcto.", "MSG4",
+					null, "idEntidadFormato");
+		}
+		if(idAtributoFormato == -1) {
+			throw new PRISMAValidacionException(
+					"El usuario no seleccionó el atributo del formato correcto.", "MSG4",
+					null, "idAtributoFormato");
+		}
+		
+	}
+
+	public static void validarReglaNegocioUnicidad(int idEntidadUnicidad,
+			int idAtributoUnicidad) {
+		if(idEntidadUnicidad == -1) {
+			throw new PRISMAValidacionException(
+					"El usuario no seleccionó la entidad de la unicidad.", "MSG4",
+					null, "idEntidadUnicidad");
+		}
+		if(idAtributoUnicidad == -1) {
+			throw new PRISMAValidacionException(
+					"El usuario no seleccionó el atributo de la unicidad.", "MSG4",
+					null, "idAtributoUnicidad");
+		}
+		
 	}
 }

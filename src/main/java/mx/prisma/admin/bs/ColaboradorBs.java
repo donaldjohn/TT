@@ -118,7 +118,6 @@ public class ColaboradorBs {
 
 	public static void enviarCorreo(Colaborador model,
 			String contrasenaAnterior, String correoAnterior) throws AddressException, MessagingException {
-		System.out.println(contrasenaAnterior.length() + ", " + model.getContrasenia().length());
 		System.out.println(correoAnterior + ", " + model.getCorreoElectronico());
 		if(contrasenaAnterior == null || correoAnterior == null) {
 			//Correo.enviarCorreo(model, 0);

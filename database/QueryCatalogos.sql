@@ -86,3 +86,5 @@ INSERT INTO PRISMA.Operador (nombre, simbolo) VALUES ('Diferente', '!=');
 INSERT INTO PRISMA.Seccion (nombre) VALUES ('General');
 INSERT INTO PRISMA.Seccion (nombre) VALUES ('Trayectorias');
 INSERT INTO PRISMA.Seccion (nombre) VALUES ('Puntos de extensión');
+
+INSERT INTO PRISMA.Colaborador (CURP, nombre, apellidoPaterno, apellidoMaterno, correoElectronico, contrasenia) VALUES ('------------------', 'Administrador', '', '', 'admin', 'admin');

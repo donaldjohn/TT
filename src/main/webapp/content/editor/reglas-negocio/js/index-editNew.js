@@ -65,7 +65,6 @@ function mostrarCamposTipoRN() {
 		document.getElementById("filaAtributo2").className = "";
 		
 	} else if(tipoRN == "Unicidad de parámetros"){
-		console.log("3");
 		cargarEntidades("entidadUnicidad");
 		document.getElementById("instrucciones").innerHTML = "Permite indicar los atributos que hacen única una entidad dentro del sistema.";
 		document.getElementById("filaTextoAyudaTipoRN").className = "";
@@ -238,6 +237,7 @@ function agregarListaSelect(select, json) {
 						});
 		select.value = opcSeleccionada;
 	}
+	
 } 
 
 function agregarListaSelectOperador(select, json) {

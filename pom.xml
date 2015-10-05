@@ -150,7 +150,6 @@
 			<artifactId>jasperreports</artifactId>
 			<version>5.0.1</version>
 		</dependency>
-		
 	</dependencies>
 	<build>
 		<finalName>prisma</finalName>
