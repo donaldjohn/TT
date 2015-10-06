@@ -101,7 +101,7 @@
 			<h5>
 				<s:text name="labelTrayectorias"></s:text>
 			</h5>
-			<s:if test="!existenTrayectorias">
+			<s:if test="model.trayectorias.size == 0">
 				<p class="instrucciones">
 					<s:text name="labelSinTrayectorias" />
 				</p>
@@ -116,7 +116,8 @@
 						<ol>
 							<s:iterator value="#tray.pasos" var="paso">
 								<a name="paso-${#paso.id}"></a>
-								<li class="ui-widget"><s:if test="#paso.realizaActor">
+								<li class="ui-widget">
+								<s:if test="#paso.realizaActor">
 										<img
 											src="${pageContext.request.contextPath}/resources/images/icons/actor.png" />
 									</s:if> <s:else>
@@ -176,11 +177,10 @@
 			</s:else>
 		</div>
 	</div>
-	<s:if test="existenExtensiones">
+	<s:if test="model.extiende == 0">
 		<div class="formulario">
 			<div class="tituloFormulario">
-				<img
-					src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
+				${blanks}
 			</div>
 			<div class="seccion">
 				<h5>

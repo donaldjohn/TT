@@ -88,11 +88,11 @@
 						<tr>
 							<th style="width: 5%;"><s:text name="colNumero" /></th>
 							<th style="width: 55%;"><s:text name="colRedaccion" /></th>
-							<th style="width: 0;"><s:text name="" /></th>
-							<th style="width: 0;"><s:text name="" /></th>
-							<th style="width: 0;"><s:text name="" /></th>
-							<th style="width: 0;"><s:text name="" /></th>
-							<th style="width: 0;"><s:text name="" /></th>
+							<th style="width: 0;"><!-- Realiza actor --></th>
+							<th style="width: 0;"><!-- Verbo --></th>
+							<th style="width: 0;"><!-- OtroVerbo --></th>
+							<th style="width: 0;"><!-- Redacción --></th>
+							<th style="width: 0;"><!-- Id --></th>
 							<th style="width: 10%;"><s:text name="colAcciones" /></th>
 						</tr>
 					</thead>
@@ -188,11 +188,11 @@
 				</table>
 			</div>
 			<br />
+			</div>
 			<div align="center">
 				<input type="button" onclick="enviarComentarios()" value="Aceptar" />
 				<input type="button" onclick="cancelarRegistroComentarios()"
 					value="Cancelar" />
-			</div>
 			</div>
 		</s:form>
 	</sj:dialog>

@@ -26,7 +26,7 @@ import javax.persistence.UniqueConstraint;
 @Entity
 @Table(name = "Paso", catalog = "PRISMA", uniqueConstraints = @UniqueConstraint(columnNames = {
 		"numero", "Trayectoriaid" }))
-public class Paso implements java.io.Serializable {
+public class Paso implements java.io.Serializable, Comparable<Paso> {
 
 	/**
 	 * 
@@ -131,6 +131,10 @@ public class Paso implements java.io.Serializable {
 
 	public void setOtroVerbo(String otroVerbo) {
 		this.otroVerbo = otroVerbo;
+	}
+
+	public int compareTo(Paso o) {
+		return Integer.compare(this.numero, o.getNumero());
 	}
 
 

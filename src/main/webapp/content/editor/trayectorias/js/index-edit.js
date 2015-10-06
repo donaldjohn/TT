@@ -25,7 +25,7 @@ $(document).ready(function() {
 						parsedJson,
 						function(i, item) {
 							var row = construirFila(item.numero, item.realizaActor, item.redaccion, 
-									item.verbo.nombre, item.otroVerbo);
+									item.verbo.nombre, item.otroVerbo, item.id);
 							dataTableCDT.addRow("tablaPaso", row); 
 						}); 
 	}
@@ -75,7 +75,7 @@ function registrarPaso(){
 	var otroVerbo = document.forms["frmPasoName"]["paso.otroVerbo"].value;
 	var noPaso = calcularNumeroPaso();
     if (esValidoPaso("tablaPaso", realiza, verbo, otroVerbo ,redaccion)) {
-    	var row = construirFila(noPaso, realiza, redaccion, verbo, otroVerbo);
+    	var row = construirFila(noPaso, realiza, redaccion, verbo, otroVerbo, 0);
     	dataTableCDT.addRow("tablaPaso", row);
     	limpiarCamposEmergente();
     	//Se cierra la emergente
@@ -108,7 +108,7 @@ function modificarPaso(){
     }
 }
 
-function construirFila(noPaso, realiza, redaccion, verbo, otroVerbo) {
+function construirFila(noPaso, realiza, redaccion, verbo, otroVerbo, id) {
 	var realizaImg;
 	//Se agrega la imagen referente a quien realiza el paso
 	if(realiza == "Actor" || realiza == true) {
@@ -134,7 +134,7 @@ function construirFila(noPaso, realiza, redaccion, verbo, otroVerbo) {
 	            verbo, 
 	            otroVerbo,
 	            redaccion,
-	            0,
+	            id,
 				"<center>" +
 					"<a onclick='dataTableCDT.moveRow(tablaPaso, this, \"up\");' button='true'>" +
 					"<img class='icon'  id='icon' src='" + window.contextPath + 

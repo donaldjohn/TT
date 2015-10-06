@@ -15,12 +15,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import org.hibernate.annotations.Sort;
+import org.hibernate.annotations.SortType;
 
 import com.opensymphony.xwork2.validator.annotations.IntRangeFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
@@ -33,7 +37,7 @@ import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 @Entity
 @Table(name = "Trayectoria", catalog = "PRISMA", uniqueConstraints = @UniqueConstraint(columnNames = {
 		"clave", "CasoUsoElementoid" }))
-public class Trayectoria implements java.io.Serializable {
+public class Trayectoria implements java.io.Serializable, Comparable<Trayectoria> {
 
 	/**
 	 * 
@@ -132,12 +136,17 @@ public class Trayectoria implements java.io.Serializable {
 	}
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "trayectoria", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OrderBy("numero")
 	public Set<Paso> getPasos() {
 		return pasos;
 	}
 
 	public void setPasos(Set<Paso> pasos) {
 		this.pasos = pasos;
+	}
+
+	public int compareTo(Trayectoria o) {
+		return this.clave.compareTo(o.getClave());
 	}
 
 }

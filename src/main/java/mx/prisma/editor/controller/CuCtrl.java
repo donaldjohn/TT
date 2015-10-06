@@ -99,8 +99,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 	private boolean existenPrecondiciones;
 	private boolean existenPostcondiciones;
-	private boolean existenTrayectorias;
-	private boolean existenExtensiones;
+	
 	private String observaciones;
 	private String observacionesResumen;
 	private String observacionesTrayectoria;
@@ -321,17 +320,11 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 				resultado = Action.LOGIN;
 				return resultado;
 			}
-			model.setProyecto(proyecto);
-			model.setModulo(modulo);
 
 			this.existenPrecondiciones = CuBs.existenPrecondiciones(model
 					.getPostprecondiciones());
 			this.existenPostcondiciones = CuBs.existenPostcondiciones(model
 					.getPostprecondiciones());
-			this.existenTrayectorias = model.getTrayectorias().size() > 0 ? true
-					: false;
-			this.existenExtensiones = model.getExtiende().size() > 0 ? true
-					: false;
 
 			CuBs.agregarReferencias(request.getContextPath(), this.model);
 
@@ -593,10 +586,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 				.getRedaccionEntradas())));
 		model.setRedaccionSalidas((TokenBs.decodificarCadenasToken(model
 				.getRedaccionSalidas())));
-		System.out.println("A: " + model.getRedaccionReglasNegocio());
 		model.setRedaccionReglasNegocio((TokenBs.decodificarCadenasToken(model
 				.getRedaccionReglasNegocio())));
-		System.out.println("B: " + model.getRedaccionReglasNegocio());
 
 		for (Revision rev : model.getRevisiones()) {
 			if (!rev.isRevisado()
@@ -929,22 +920,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 	public void setExistenPostcondiciones(boolean existenPostcondiciones) {
 		this.existenPostcondiciones = existenPostcondiciones;
-	}
-
-	public boolean isExistenTrayectorias() {
-		return existenTrayectorias;
-	}
-
-	public void setExistenTrayectorias(boolean existenTrayectorias) {
-		this.existenTrayectorias = existenTrayectorias;
-	}
-
-	public boolean isExistenExtensiones() {
-		return existenExtensiones;
-	}
-
-	public void setExistenExtensiones(boolean existenExtensiones) {
-		this.existenExtensiones = existenExtensiones;
 	}
 
 	public String getObservaciones() {

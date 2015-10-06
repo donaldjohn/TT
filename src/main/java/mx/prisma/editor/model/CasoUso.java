@@ -14,8 +14,12 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Sort;
+import org.hibernate.annotations.SortType;
 
 import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
 
@@ -164,7 +168,8 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.postprecondiciones = postprecondiciones;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso")	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso")
+	@OrderBy("clave")
 	public Set<Trayectoria> getTrayectorias() {
 		return trayectorias;
 	}

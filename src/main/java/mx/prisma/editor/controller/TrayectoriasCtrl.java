@@ -183,7 +183,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 
 			resultado = EDITNEW;
 		} catch (PRISMAException pe) {
-			System.err.println(pe.getMessage());
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
 		} catch (Exception e) {
@@ -277,7 +276,6 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 
 			resultado = EDIT;
 		} catch (PRISMAException pe) {
-			System.err.println(pe.getMessage());
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
 		} catch (Exception e) {
@@ -402,7 +400,11 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 					pasoBD.setRealizaActor(pasoVista.isRealizaActor());
 					pasoBD.setVerbo(TrayectoriaBs.consultaVerbo(pasoVista
 							.getVerbo().getNombre()));
-					pasoBD.setOtroVerbo(pasoVista.getOtroVerbo());
+					if(pasoVista.getOtroVerbo() != null && pasoVista.getOtroVerbo().isEmpty()) {
+						pasoVista.setOtroVerbo(null);
+					} else {
+						pasoBD.setOtroVerbo(pasoVista.getOtroVerbo());
+					}
 					pasoBD.setRedaccion(pasoVista.getRedaccion());
 					pasoBD.getReferencias().clear();
 					pasosModelo.add(pasoBD);
@@ -411,6 +413,9 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 					pasoVista.setId(null);
 					pasoVista.setVerbo(TrayectoriaBs.consultaVerbo(pasoVista
 							.getVerbo().getNombre()));
+					if(pasoVista.getOtroVerbo() != null && pasoVista.getOtroVerbo().isEmpty()) {
+						pasoVista.setOtroVerbo(null);
+					}
 					pasoVista.setTrayectoria(model);
 					pasosModelo.add(pasoVista);
 

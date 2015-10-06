@@ -29,7 +29,7 @@ public class TrayectoriaDAO extends GenericDAO {
 	public void modificarTrayectoria(Trayectoria trayectoria, Actualizacion actualizacion) {
 		try {
 			session.beginTransaction();			
- 			session.update(trayectoria);
+ 			session.saveOrUpdate(trayectoria);
 			session.save(actualizacion);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {

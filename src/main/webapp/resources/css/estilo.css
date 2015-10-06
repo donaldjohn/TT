@@ -451,6 +451,10 @@ a.referencia:hover {
 	text-align: justify;
 }
 
+.paso {
+	text-indent: 0em;
+}
+
 .imagen {
 	max-width: 80%;
 	margin: 20px;
