@@ -49,7 +49,7 @@
 				<text><![CDATA[Entidades]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement mode="Opaque" x="0" y="39" width="500" height="3" forecolor="#5F5F5F" backcolor="#5F5F5F" uuid="22db6210-e03e-464b-b9d7-1952705d3d92"/>
+				<reportElement mode="Opaque" x="0" y="39" width="500" height="1" forecolor="#5F5F5F" backcolor="#5F5F5F" uuid="22db6210-e03e-464b-b9d7-1952705d3d92"/>
 			</rectangle>
 		</band>
 	</title>

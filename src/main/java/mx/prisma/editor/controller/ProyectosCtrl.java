@@ -270,6 +270,9 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 	
 	public String descargarDocumento() {
 		String extension = "pdf";
+		@SuppressWarnings("deprecation")
+		String ruta = request.getRealPath("/") + "/resources/ireport/";
+		
 		if(extension.equals("pdf")) {
 			filename = this.model.getNombre().replace(' ', '_');
 			type = "application/pdf";
@@ -279,10 +282,8 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 		}
 				
 		try {
-				ReportUtil.crearReporte(extension, filename, model.getId());
-				@SuppressWarnings("deprecation")
-				String ruta = request.getRealPath("/") + "/resources/ireport/" + filename + "." + extension;
-		        File doc = new File(ruta);
+				ReportUtil.crearReporte(extension, filename, model.getId(), ruta);
+		        File doc = new File(ruta + filename + "." + extension);
 		        this.fileInputStream = new FileInputStream(doc); 
 	        } catch (Exception e) {
 	        	ErrorManager.agregaMensajeError(this, e);
