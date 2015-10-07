@@ -10,25 +10,17 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select Elemento.nombre as elementoNombre, Elemento.descripcion, Actor.otraCardinalidad, Actor.Cardinalidadid, Cardinalidad.nombre as cardinalidadNombre, Cardinalidad.id from Actor
-INNER JOIN Elemento ON Elemento.id = Actor.Elementoid
-INNER JOIN Cardinalidad ON Actor.Cardinalidadid = Cardinalidad.id
-where Elemento.clave = 'ACT';]]>
+		<![CDATA[select ele.nombre as elementoNombre, ele.descripcion, act.otraCardinalidad, act.Cardinalidadid, car.nombre as cardinalidadNombre, car.id from Actor act
+INNER JOIN Elemento ele ON ele.id = act.Elementoid
+INNER JOIN Cardinalidad car ON act.Cardinalidadid = car.id
+where ele.clave = 'ACT' AND ele.Proyectoid = $P{p_proyectoId};]]>
 	</queryString>
 	<field name="elementoNombre" class="java.lang.String"/>
-	<field name="descripcion" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="otraCardinalidad" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Cardinalidadid" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="otraCardinalidad" class="java.lang.String"/>
+	<field name="Cardinalidadid" class="java.lang.Integer"/>
 	<field name="cardinalidadNombre" class="java.lang.String"/>
-	<field name="id" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="id" class="java.lang.Integer"/>
 	<variable name="v_cardinalidad" class="java.lang.String">
 		<variableExpression><![CDATA[$F{Cardinalidadid}.equals( 3 ) ?
 $F{otraCardinalidad}
@@ -47,7 +39,7 @@ $F{otraCardinalidad}
 				<text><![CDATA[Actores]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement mode="Opaque" x="0" y="39" width="500" height="3" forecolor="#5F5F5F" backcolor="#5F5F5F" uuid="22db6210-e03e-464b-b9d7-1952705d3d92"/>
+				<reportElement mode="Opaque" x="0" y="39" width="500" height="1" forecolor="#5F5F5F" backcolor="#5F5F5F" uuid="22db6210-e03e-464b-b9d7-1952705d3d92"/>
 			</rectangle>
 		</band>
 	</title>

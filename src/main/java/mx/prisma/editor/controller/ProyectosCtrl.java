@@ -1,5 +1,10 @@
 package mx.prisma.editor.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -20,7 +25,9 @@ import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
 import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
+import mx.prisma.util.ReportUtil;
 import mx.prisma.util.SessionManager;
+import net.sf.jasperreports.engine.JRException;
 
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
@@ -36,7 +43,13 @@ import com.opensymphony.xwork2.ModelDriven;
 				"actionName", "proyectos" }),
 		@Result(name = "modulos", type = "redirectAction", params = {
 				"actionName", "modulos" }),
-		@Result(name = "colaboradores", type = "dispatcher", location = "proyectos/colaboradores.jsp") })
+		@Result(name = "colaboradores", type = "dispatcher", location = "proyectos/colaboradores.jsp"), 
+		@Result(name = "documento", type = "stream", params = { 
+		        "contentType", "${type}", 
+		        "inputName", "fileInputStream", 
+		        "bufferSize", "1024", 
+		        "contentDisposition", "attachment;filename=\"${filename}\""})
+		})
 public class ProyectosCtrl extends ActionSupportPRISMA implements
 		ModelDriven<Proyecto>, SessionAware {
 	/** 
@@ -52,8 +65,12 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 	private List<Colaborador> listColaboradores;
 	private String jsonColaboradoresTabla;
 	private Integer idSel;
+	
+	private InputStream fileInputStream;
+	private String type;
+    private String filename; 
 
-	public String index() throws Exception {
+	public String index() {
 		Map<String, Object> session = null;
 		String resultado = null;
 		try {
@@ -72,7 +89,7 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 		} catch (Exception e) {
-			e.printStackTrace();
+			ErrorManager.agregaMensajeError(this, e);
 		}
 		return resultado;
 	}
@@ -136,7 +153,7 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 		} catch (Exception e) {
-			e.printStackTrace();
+			ErrorManager.agregaMensajeError(this, e);
 		}
 		
 		return resultado;
@@ -162,7 +179,7 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 		} catch (Exception e) {
-			e.printStackTrace();
+			ErrorManager.agregaMensajeError(this, e);
 		}
 		return resultado;
 	}
@@ -250,12 +267,35 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 		}
 		return false;
 	}
+	
+	public String descargarDocumento() {
+		String extension = "pdf";
+		if(extension.equals("pdf")) {
+			filename = this.model.getNombre().replace(' ', '_');
+			type = "application/pdf";
+		} else {
+			filename = this.model.getNombre().replace(' ', '_');
+			type = "application/pdf";
+		}
+				
+		try {
+				ReportUtil.crearReporte(extension, filename, model.getId());
+				@SuppressWarnings("deprecation")
+				String ruta = request.getRealPath("/") + "/resources/ireport/" + filename + "." + extension;
+		        File doc = new File(ruta);
+		        this.fileInputStream = new FileInputStream(doc); 
+	        } catch (Exception e) {
+	        	ErrorManager.agregaMensajeError(this, e);
+	        	return index();
+	        }
+			
+	    return "documento";
+	}
 
 	public Proyecto getModel() {
 		try {
 			return (model == null) ? model = SessionManager.consultarProyectoActivo(): model;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return model;
@@ -318,5 +358,15 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 	public void setJsonColaboradoresTabla(String jsonColaboradoresTabla) {
 		this.jsonColaboradoresTabla = jsonColaboradoresTabla;
 	}
+
+	public InputStream getFileInputStream() {
+		return fileInputStream;
+	}
+
+	public void setFileInputStream(InputStream fileInputStream) {
+		this.fileInputStream = fileInputStream;
+	}
+	
+	
 
 }

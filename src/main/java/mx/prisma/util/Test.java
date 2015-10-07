@@ -12,13 +12,7 @@ import mx.prisma.editor.model.CasoUso;
 
 public class Test {
 	public static void main(String[] args) {
-		try {
-			ReportUtil.crearReporte("docx");
-		} catch (JRException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		
 	}
 
 	

@@ -23,7 +23,7 @@
 			<table id="gestion" class="tablaGestion" cellspacing="0" width="100%">
 				<thead>
 					<th style="width: 50%;"><s:text name="colProyecto" /></th>
-					<th style="width: 40%;"><s:text name="colLider" /></th>
+					<th style="width: 40%;"><s:text name="colLiderProyecto" /></th>
 					<th style="width: 10%;"><s:text name="colAcciones" /></th>
 				</thead>
 				<tbody>
@@ -49,7 +49,7 @@
 									<s:url var="urlElegir"
 										value="%{#pageContext.request.contextPath}/proyectos!elegirColaboradores?idSel=%{#proyecto.id}"/>
 									<s:a href="%{urlElegir}">
-										<img id="" class="button" title="Elegir"
+										<img id="" class="button" title="Elegir Colaboradores"
 											src="${pageContext.request.contextPath}/resources/images/icons/colaboradores.png" />										
 									</s:a> 						
 								</s:if>
@@ -58,15 +58,15 @@
 								<s:url var="urlEntrar"
 										value="%{#pageContext.request.contextPath}/proyectos!entrar?idSel=%{#proyecto.id}" />
 								<s:a href="%{urlEntrar}">
-										<img id="" class="button" title="Entrar"
+										<img id="" class="button" title="Entrar al Proyecto"
 											src="${pageContext.request.contextPath}/resources/images/icons/entrar.png" />										
 								</s:a> 
 								<!-- Descargar documento -->
 								${blanks}
 								<s:url var="urlDescargar"
-										value="%{#pageContext.request.contextPath}/proyectos!descargar?idSel=%{#proyecto.id}" />
-								<s:a href="#">
-										<img id="" class="button" title="Descargar"
+										value="%{#pageContext.request.contextPath}/proyectos!descargarDocumento?idSel=%{#proyecto.id}" />
+								<s:a href="%{urlDescargar}" method="post">
+										<img id="" class="button" title="Descargar Documento"
 											src="${pageContext.request.contextPath}/resources/images/icons/descargar.png" />										
 								</s:a>
 							</td>
