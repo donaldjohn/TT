@@ -29,7 +29,7 @@
 			<tbody>
 			<s:iterator value="listCU" var="cu">
 				<tr>
-					<td><s:property value="%{#cu.clave + ' ' + #cu.numero + ' ' +#cu.nombre}"/></td>
+					<td><s:property value="%{#cu.clave + #cu.numero + ' ' +#cu.nombre}"/></td>
 					<td><s:property value="%{#cu.estadoElemento.nombre}"/></td>
 					<td align="center">	
 							<!-- Consultar caso de uso -->		

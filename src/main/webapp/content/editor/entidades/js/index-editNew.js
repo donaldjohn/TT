@@ -6,15 +6,7 @@ $(document)
 					window.scrollTo(0, 0);
 					contextPath = $("#rutaContexto").val();
 					$('table.tablaGestion').DataTable();
-					/*var tipoDato = document.getElementById("atributo.tipoDato");
-					var tipoDatoTexto = tipoDato.options[tipoDato.selectedIndex].text;
-					
-					if (tipoDatoTexto == 'Otro') {
-						document.getElementById("trOtro").style.display = '';
-					} else {
-						document.getElementById("trOtro").style.display = 'none';
-					}*/
-					
+			
 					var json = $("#jsonAtributosTabla").val();
 					if (json !== "") {
 						var parsedJson = JSON.parse(json);
@@ -243,11 +235,6 @@ function esValidoAtributo(idTabla, nombre, descripcion, tipoDato, otroTipoDato,
 			agregarMensaje("Ingrese una longitud válida.");
 			return false;
 		}
-
-		if (longitud.length > 10) {
-			agregarMensaje("Ingrese menos de 10 dígitos.");
-			return false;
-		}
 	}
 	
 	if (dataTableCDT.exist(idTabla, nombre, 0, "", "Atributo", indexRow)) {
@@ -271,8 +258,22 @@ function ocultarColumnas(tabla) {
 }
 
 function esEntero(str) {
-	return /^([1-9]\d*)$/.test(str);
+	var i;
+	try {
+		if (isNaN(str)) {
+			return false
+		} 
+		i = parseInt(str)
+		
+		if (i < 0 || i > 2147483647) {
+			return false;
+		}
+		return true;
+	} catch (err) {
+		return false;
+	}
 }
+
 
 function esFloat(str) {
 	return /^(\.(\d+)([1-9]))|(\d+)(\.)(\d+)([1-9])$/.test(str);

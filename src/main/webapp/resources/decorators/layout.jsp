@@ -61,7 +61,7 @@
 						</tr>
 					</table>
 				</s:if>
-				<s:if test="#session.idModulo != null">
+				<s:if test="#session.idModulo != null and modulo!=null">
 					<table class = "info">
 						<tr>
 							<td align="right">Módulo:
@@ -74,7 +74,7 @@
 					<table class = "info">
 						<tr>
 							<td align="right">Caso de uso:
-							<s:property value="casoUso.clave + casoUso.numero" /> - <s:property
+							<s:property value="casoUso.clave + casoUso.numero + ' '" /><s:property
 									value="casoUso.nombre" /></td>
 						</tr>
 					</table>

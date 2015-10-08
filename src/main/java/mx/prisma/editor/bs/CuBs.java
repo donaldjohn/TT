@@ -14,24 +14,14 @@ import mx.prisma.bs.ReferenciaEnum.TipoSeccion;
 import mx.prisma.bs.TipoSeccionEnum;
 import mx.prisma.bs.TipoSeccionEnum.TipoSeccionENUM;
 import mx.prisma.editor.bs.ElementoBs.Estado;
-import mx.prisma.editor.dao.AccionDAO;
-import mx.prisma.editor.dao.ActorDAO;
-import mx.prisma.editor.dao.AtributoDAO;
 import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.ElementoDAO;
-import mx.prisma.editor.dao.EntidadDAO;
 import mx.prisma.editor.dao.ExtensionDAO;
-import mx.prisma.editor.dao.MensajeDAO;
 import mx.prisma.editor.dao.ModuloDAO;
-import mx.prisma.editor.dao.PantallaDAO;
 import mx.prisma.editor.dao.PasoDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
-import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.dao.RevisionDAO;
 import mx.prisma.editor.dao.SeccionDAO;
-import mx.prisma.editor.dao.TerminoGlosarioDAO;
-import mx.prisma.editor.dao.TrayectoriaDAO;
-import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Atributo;
@@ -44,7 +34,6 @@ import mx.prisma.editor.model.Entrada;
 import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Modulo;
-import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.ReferenciaParametro;
@@ -326,28 +315,28 @@ public class CuBs {
 		String redaccion = null;
 		// Descripción
 		redaccion = model.getDescripcion();
-		redaccion = agregarReferencias(actionContext, redaccion);
+		redaccion = TokenBs.agregarReferencias(actionContext, redaccion);
 		model.setDescripcion(redaccion);
 
 		// Información general del caso de uso
 		redaccion = model.getRedaccionActores();
 
-		redaccion = agregarReferencias(actionContext, redaccion);
+		redaccion = TokenBs.agregarReferencias(actionContext, redaccion);
 		model.setRedaccionActores(redaccion);
 
 		redaccion = model.getRedaccionEntradas();
 
-		redaccion = agregarReferencias(actionContext, redaccion);
+		redaccion = TokenBs.agregarReferencias(actionContext, redaccion);
 		model.setRedaccionEntradas(redaccion);
 
 		redaccion = model.getRedaccionSalidas();
 
-		redaccion = agregarReferencias(actionContext, redaccion);
+		redaccion = TokenBs.agregarReferencias(actionContext, redaccion);
 		model.setRedaccionSalidas(redaccion);
 
 		redaccion = model.getRedaccionReglasNegocio();
 
-		redaccion = agregarReferencias(actionContext, redaccion);
+		redaccion = TokenBs.agregarReferencias(actionContext, redaccion);
 		model.setRedaccionReglasNegocio(redaccion);
 
 		// Precondiciones y postcondiciones
@@ -359,7 +348,7 @@ public class CuBs {
 			for (PostPrecondicion pp : postprecondicionesAux) {
 				redaccion = pp.getRedaccion();
 				postprecondiciones.remove(pp);
-				redaccion = agregarReferencias(actionContext, redaccion);
+				redaccion = TokenBs.agregarReferencias(actionContext, redaccion);
 				pp.setRedaccion(redaccion);
 				postprecondiciones.add(pp);
 			}
@@ -376,7 +365,7 @@ public class CuBs {
 			for (Paso paso : pasosAux) {
 				pasos.remove(paso);
 				redaccion = paso.getRedaccion();
-				redaccion = agregarReferencias(actionContext, redaccion);
+				redaccion = TokenBs.agregarReferencias(actionContext, redaccion);
 				paso.setRedaccion(redaccion);
 				pasos.add(paso);
 			}
@@ -390,195 +379,13 @@ public class CuBs {
 		for (Extension extension : extensionesAux) {
 			extensiones.remove(extension);
 			region = extension.getRegion();
-			region = agregarReferencias(actionContext, region);
+			region = TokenBs.agregarReferencias(actionContext, region);
 			extension.setRegion(region);
 			extensiones.add(extension);
 		}
 	}
 
-	private static String agregarReferencias(String actionContext,
-			String redaccion) {
-		if (redaccion == null || redaccion.isEmpty()) {
-			return "Sin información";
-		}
-		if (redaccion.charAt(0) == '$') {
-			redaccion = redaccion.substring(1);
-		}
-		ArrayList<String> tokens = TokenBs.procesarTokenIpunt(redaccion);
-		for (String token : tokens) {
-			ArrayList<String> segmentos = TokenBs.segmentarToken(token);
-			String tokenReferencia = segmentos.get(0);
-			int id = Integer.parseInt(segmentos.get(1));
-			switch (ReferenciaEnum.getTipoReferencia(tokenReferencia)) {
-			case ACCION:
-				Accion accion = new AccionDAO().consultarAccion(Integer
-						.parseInt(segmentos.get(1)));
-				if (accion == null) {
-					redaccion = "";
-					break;
-				} else {
-					redaccion = redaccion.replace(
-							token,
-							"<a class='referencia' href='#'>"
-									+ accion.getNombre() + "</a>");
-				}
-				break;
-			case ACTOR:
-				Actor actor = new ActorDAO().consultarActor(Integer
-						.parseInt(segmentos.get(1)));
-				if (actor == null) {
-					redaccion = "";
-					break;
-				}
-				redaccion = redaccion.replace(token,
-						"<a class='referencia' href='" + actionContext
-								+ "/actores/" + id + "'>" + actor.getNombre()
-								+ "</a>");
-				break;
-			case ATRIBUTO:
-				Atributo atributo = new AtributoDAO().consultarAtributo(Integer
-						.parseInt(segmentos.get(1)));
-				if (atributo == null) {
-					redaccion = "";
-					break;
-				} else {
-					Entidad entidad = atributo.getEntidad();
-					redaccion = redaccion.replace(
-							token,
-							"<a class='referencia' href='" + actionContext
-									+ "/entidades/" + entidad.getId()
-									+ "#atributo-" + id + "'>"
-									+ atributo.getNombre() + "</a>");
-				}
-				break;
-			case CASOUSO:
-				CasoUso casoUso = new CasoUsoDAO().consultarCasoUso(Integer
-						.parseInt(segmentos.get(1)));
-				if (casoUso == null) {
-					redaccion = "";
-					break;
-				}
-				redaccion = redaccion.replace(
-						token,
-						"<a class='referencia' href='" + actionContext + "/cu/"
-								+ id + "'>" + casoUso.getClave() + " "
-								+ casoUso.getNumero() + " "
-								+ casoUso.getNombre() + "</a>");
-
-				break;
-			case ENTIDAD: // ENT.ID -> ENT.NOMBRE_ENT
-				Entidad entidad = new EntidadDAO().consultarEntidad(Integer
-						.parseInt(segmentos.get(1)));
-				if (entidad == null) {
-					redaccion = "";
-					break;
-				}
-				redaccion = redaccion.replace(
-						token,
-						"<a class='referencia' href='" + actionContext
-								+ "/entidades/" + id + "'>"
-								+ entidad.getNombre() + "</a>");
-
-				break;
-			case TERMINOGLS: // GLS.ID -> GLS.NOMBRE_GLS
-				TerminoGlosario terminoGlosario = new TerminoGlosarioDAO()
-						.consultarTerminoGlosario(Integer.parseInt(segmentos
-								.get(1)));
-				if (terminoGlosario == null) {
-					redaccion = "";
-					break;
-				} else {
-					redaccion = redaccion.replace(token,
-							"<a class='referencia' href='" + actionContext
-									+ "/glosario/" + id + "'>"
-									+ terminoGlosario.getNombre() + "</a>");
-				}
-				break;
-			case PANTALLA: // IU.ID -> // IU.MODULO.NUMERO:NOMBRE_IU
-				Pantalla pantalla = new PantallaDAO().consultarPantalla(Integer
-						.parseInt(segmentos.get(1)));
-				if (pantalla == null) {
-					redaccion = "";
-					break;
-				}
-				redaccion = redaccion.replace(
-						token,
-						"<a class='referencia' href='#'>" + pantalla.getClave()
-								+ " " + pantalla.getNumero() + " "
-								+ pantalla.getNombre() + "</a>");
-				break;
-
-			case MENSAJE: // GLS.ID -> MSG.NUMERO:NOMBRE_MSG
-				Mensaje mensaje = new MensajeDAO().consultarMensaje(Integer
-						.parseInt(segmentos.get(1)));
-				if (mensaje == null) {
-					redaccion = "";
-					break;
-				}
-				redaccion = redaccion.replace(
-						token,
-						"<a class='referencia' href='" + actionContext
-								+ "/mensajes/" + id + "'>" + mensaje.getClave()
-								+ " " + mensaje.getNumero() + " "
-								+ mensaje.getNombre() + "</a>");
-				break;
-			case REGLANEGOCIO: // RN.ID -> RN.NUMERO:NOMBRE_RN
-				ReglaNegocio reglaNegocio = new ReglaNegocioDAO()
-						.consultarReglaNegocio(Integer.parseInt(segmentos
-								.get(1)));
-				if (reglaNegocio == null) {
-					redaccion = "";
-					break;
-				}
-				redaccion = redaccion.replace(
-						token,
-						"<a class='referencia' href='" + actionContext
-								+ "/reglas-negocio/" + id + "'>"
-								+ reglaNegocio.getClave() + " "
-								+ reglaNegocio.getNumero() + " "
-								+ reglaNegocio.getNombre() + "</a>");
-				break;
-			case TRAYECTORIA: // TRAY.ID -> TRAY.CUMODULO.NUM:NOMBRECU:CLAVETRAY
-				Trayectoria trayectoria = new TrayectoriaDAO()
-						.consultarTrayectoria(Integer.parseInt(segmentos.get(1)));
-				if (trayectoria == null) {
-					redaccion = "";
-					break;
-				}
-				CasoUso cu = trayectoria.getCasoUso();
-				redaccion = redaccion.replace(token,
-						"<a class='referencia' href='" + actionContext + "/cu/"
-								+ cu.getId() + "#trayectoria-" + id + "'>"
-								+ trayectoria.getClave() + "</a>");
-				break;
-
-			case PASO: // P.CUMODULO.NUM:NOMBRECU:CLAVETRAY.NUMERO
-				Paso paso = new PasoDAO().consultarPaso(Integer
-						.parseInt(segmentos.get(1)));
-				if (paso == null) {
-					redaccion = "";
-					break;
-				}
-				CasoUso cup = paso.getTrayectoria().getCasoUso();
-				redaccion = redaccion.replace(
-						token,
-						"<a class='referencia' href='" + actionContext + "/cu/"
-								+ cup.getId() + "#paso-" + id + "'>"
-								+ paso.getNumero() + "</a>");
-				break;
-
-			default:
-				break;
-			}
-		}
-
-		redaccion = redaccion.replace("\r\n", "<br/>");
-		redaccion = redaccion.replace("\n", "<br/>");
-		redaccion = redaccion.replace("\r", "<br/>");
-
-		return redaccion;
-
-	}
+	
 
 	public static boolean existenPrecondiciones(
 			Set<PostPrecondicion> postprecondiciones) {

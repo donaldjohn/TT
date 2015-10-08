@@ -30,7 +30,7 @@
 			<tbody>
 			<s:iterator value="listReglasNegocio" var="rn">
 				<tr>
-					<td><s:property value="%{#rn.clave + ' ' + #rn.numero + ' ' + #rn.nombre}"/></td>
+					<td><s:property value="%{#rn.clave + #rn.numero + ' ' + #rn.nombre}"/></td>
 					<td align="center">				
 						<s:url var="urlConsultar" value="%{#pageContext.request.contextPath}/reglas-negocio/%{#rn.id}"/>
 							<s:a href="%{urlConsultar}">

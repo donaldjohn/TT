@@ -407,12 +407,9 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 		// Se consultan los elementos de todo el proyecto
 		listElementos = CuBs.consultarElementos(proyecto);
+		Modulo moduloAux = null;
+		
 
-		// Módulo auxiliar para la serialización
-		Modulo moduloAux = new Modulo();
-		moduloAux.setId(modulo.getId());
-		moduloAux.setNombre(modulo.getNombre());
-		moduloAux.setClave(modulo.getClave());
 		if (listElementos != null && !listElementos.isEmpty()) {
 			// Se clasifican los conjuntos
 			for (Elemento el : listElementos) {
@@ -425,10 +422,17 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 					listActores.add(auxActor);
 					break;
 				case CASOUSO:
+					CasoUso cu  = (CasoUso)el;
+					// Módulo auxiliar para la serialización
+					moduloAux = new Modulo();
+					moduloAux.setId(cu.getModulo().getId());
+					moduloAux.setNombre(cu.getModulo().getNombre());
+					moduloAux.setClave(cu.getModulo().getClave());
+					
 					CasoUso auxCasoUso = new CasoUso();
-					auxCasoUso.setClave(el.getClave());
-					auxCasoUso.setNumero(el.getNumero());
-					auxCasoUso.setNombre(el.getNombre());
+					auxCasoUso.setClave(cu.getClave());
+					auxCasoUso.setNumero(cu.getNumero());
+					auxCasoUso.setNombre(cu.getNombre());
 					auxCasoUso.setModulo(moduloAux);
 					listCasosUso.add(auxCasoUso);
 
@@ -478,6 +482,13 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 					listMensajes.add(auxMensaje);
 					break;
 				case PANTALLA:
+					Pantalla iu  = (Pantalla) el;
+					// Módulo auxiliar para la serialización
+					moduloAux = new Modulo();
+					moduloAux.setId(iu.getModulo().getId());
+					moduloAux.setNombre(iu.getModulo().getNombre());
+					moduloAux.setClave(iu.getModulo().getClave());
+					
 					Pantalla auxPantalla = new Pantalla();
 					auxPantalla.setClave(el.getClave());
 					auxPantalla.setNumero(el.getNumero());

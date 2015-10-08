@@ -30,7 +30,7 @@
 			<tbody>
 			<s:iterator value="listMensajes" var="msj">
 				<tr>
-					<td><s:property value="%{#msj.clave + ' ' + #msj.numero + ' ' + #msj.nombre}"/></td>
+					<td><s:property value="%{#msj.clave + #msj.numero + ' ' + #msj.nombre}"/></td>
 					<td align="center">	
 						<!-- Consultar caso de uso -->			
 						<s:url var="urlConsultar" value="%{#pageContext.request.contextPath}/mensajes/%{#msj.id}"/>

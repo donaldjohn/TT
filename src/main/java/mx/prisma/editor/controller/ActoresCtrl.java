@@ -15,6 +15,7 @@ import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Cardinalidad;
+import mx.prisma.editor.model.Modulo;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
 import mx.prisma.util.PRISMAException;
@@ -47,6 +48,8 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	private Map<String, Object> userSession;
 	private Proyecto proyecto;
 	private Colaborador colaborador;
+	private Modulo modulo;
+	
 	private Actor model;
 	private List<Actor> listActores;
 	private List<Cardinalidad> listCardinalidad;
@@ -54,6 +57,7 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	private int idSel;
 	private String comentario;
 	private List<String> elementosReferencias;
+
 
 	public String index() throws Exception {
 		String resultado;
@@ -366,5 +370,15 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 	public void setElementosReferencias(List<String> elementosReferencias) {
 		this.elementosReferencias = elementosReferencias;
 	}
+
+	public Modulo getModulo() {
+		return modulo;
+	}
+
+	public void setModulo(Modulo modulo) {
+		this.modulo = modulo;
+	}
+	
+	
 
 }

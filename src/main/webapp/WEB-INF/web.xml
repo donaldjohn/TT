@@ -30,6 +30,13 @@
 		<filter-name>sitemesh</filter-name>
 		<filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
 	</filter>
+	
+	
+	<error-page>
+    	<error-code>500</error-code>
+    	<location>/content/error.jsp</location>
+	</error-page>
+	
 
 	<filter-mapping>
 		<filter-name>struts2</filter-name>

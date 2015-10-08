@@ -31,7 +31,7 @@
 					<s:iterator value="listPantallas" var="pantalla">
 						<tr>
 							<td><s:property
-									value="%{#pantalla.clave + ' ' + #pantalla.numero + ' ' +#pantalla.nombre}" /></td>
+									value="%{#pantalla.clave + #pantalla.numero + ' ' +#pantalla.nombre}" /></td>
 							<td align="center"><s:url var="urlConsultar"
 									value="%{#pageContext.request.contextPath}/pantallas/%{#pantalla.id}" />
 								${blanks} <s:a href="%{urlConsultar}">

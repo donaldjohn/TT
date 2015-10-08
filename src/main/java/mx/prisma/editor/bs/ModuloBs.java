@@ -4,7 +4,6 @@ import java.util.List;
 
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.dao.ModuloDAO;
-import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
@@ -44,6 +43,24 @@ public class ModuloBs {
 	private static void validar(Modulo model) {
 
 		// Validaciones del nombre
+	
+		if (Validador.esNuloOVacio(model.getClave())) {
+			throw new PRISMAValidacionException(
+					"El usuario no ingresó la clave del módulo.", "MSG4", null,
+					"model.clave");
+		}
+		if (Validador.validaLongitudMaxima(model.getClave(), 10)) {
+			throw new PRISMAValidacionException(
+					"El usuario ingreso un nombre muy largo.", "MSG6",
+					new String[] { "200", "caracteres" }, "model.nombre");
+		}
+		
+		if (Validador.contieneCaracterInvalido(model.getClave())) {
+			throw new PRISMAValidacionException(
+					"El usuario ingreso una clave con caracter inválido.",
+					"MSG23", new String[] { "La", "clave" }, "model.clave");
+		}
+		
 		if (Validador.esNuloOVacio(model.getNombre())) {
 			throw new PRISMAValidacionException(
 					"El usuario no ingresó el nombre del módulo.", "MSG4", null,
