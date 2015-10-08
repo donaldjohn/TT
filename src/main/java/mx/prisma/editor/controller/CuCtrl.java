@@ -112,6 +112,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	private List<String> elementosReferencias;
 	private List<String> restriccionesTermino;
 
+	
 	public String index() {
 		String resultado;
 		Map<String, Object> session = null;
@@ -665,42 +666,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		return resultado;
 	}
 
-	public String guardarRevision() throws Exception {
-		String resultado = null;
-		try {
-			colaborador = SessionManager.consultarColaboradorActivo();
-			proyecto = SessionManager.consultarProyectoActivo();
-			modulo = SessionManager.consultarModuloActivo();
-			if (modulo == null) {
-				resultado = "modulos";
-				return resultado;
-			}
-			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
-				resultado = Action.LOGIN;
-				return resultado;
-			}
-			model.setProyecto(proyecto);
-			model.setModulo(modulo);
-
-			ElementoBs.verificarEstado(model, CU_CasosUso.REVISARCASOUSO5_5);
-
-			resultado = SUCCESS;
-			CuBs.guardarRevisiones(esCorrectoResumen, observacionesResumen,
-					esCorrectoTrayectoria, observacionesTrayectoria,
-					esCorrectoPuntosExt, observacionesPuntosExt, model);
-			addActionMessage(getText("MSG1", new String[] { "El",
-					"Caso de uso", "terminado" }));
-			SessionManager.set(this.getActionMessages(), "mensajesAccion");
-		} catch (PRISMAException pe) {
-			ErrorManager.agregaMensajeError(this, pe);
-			resultado = index();
-		} catch (Exception e) {
-			ErrorManager.agregaMensajeError(this, e);
-			resultado = index();
-		}
-		return resultado;
-	}
-
 	public String revision() {
 		String resultado = null;
 		try {
@@ -735,6 +700,54 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			resultado = index();
 		}
 		return resultado;
+	}
+	
+	public String guardar() throws Exception{
+		String resultado = null;
+		System.out.println("test");
+
+		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			model.setProyecto(proyecto);
+			model.setModulo(modulo);
+
+			ElementoBs.verificarEstado(model, CU_CasosUso.REVISARCASOUSO5_5);
+
+			resultado = SUCCESS;
+			CuBs.guardarRevisiones(esCorrectoResumen, observacionesResumen,
+					esCorrectoTrayectoria, observacionesTrayectoria,
+					esCorrectoPuntosExt, observacionesPuntosExt, model);
+			
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"Caso de uso", "terminado" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			System.out.println(e);
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+		
+	public String getObservacionesPuntosExt() {
+		return observacionesPuntosExt;
+	}
+
+	public void setObservacionesPuntosExt(String observacionesPuntosExt) {
+		this.observacionesPuntosExt = observacionesPuntosExt;
 	}
 
 	public String revisar() throws Exception {
