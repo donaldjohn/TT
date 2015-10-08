@@ -13,6 +13,7 @@ import mx.prisma.bs.AnalisisEnum.CU_Glosario;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.TerminoGlosarioBs;
 import mx.prisma.editor.model.Actualizacion;
+import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
@@ -46,6 +47,7 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 	private Proyecto proyecto;
 	private TerminoGlosario model;
 	private Colaborador colaborador;
+	private Modulo modulo;
 	private List<TerminoGlosario> listTerminosGlosario;
 	private Integer idSel;
 	private List<String> elementosReferencias;
@@ -335,4 +337,11 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 		this.comentario = comentario;
 	}
 
+	public Modulo getModulo() {
+		return modulo;
+	}
+
+	public void setModulo(Modulo modulo) {
+		this.modulo = modulo;
+	}
 }

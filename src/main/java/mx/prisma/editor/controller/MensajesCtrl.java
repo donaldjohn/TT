@@ -17,6 +17,7 @@ import mx.prisma.editor.bs.MensajeBs;
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.MensajeParametro;
+import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Parametro;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
@@ -48,6 +49,7 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 	private static final long serialVersionUID = 1L;
 
 	private Proyecto proyecto;
+	private Modulo modulo;
 	private Mensaje model;
 	private Colaborador colaborador;
 	private List<Mensaje> listMensajes;
@@ -492,4 +494,11 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 		this.redaccionMensaje = redaccionMensaje;
 	}
 
+	public Modulo getModulo() {
+		return modulo;
+	}
+
+	public void setModulo(Modulo modulo) {
+		this.modulo = modulo;
+	}
 }

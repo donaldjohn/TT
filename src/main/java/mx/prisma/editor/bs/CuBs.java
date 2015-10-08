@@ -815,6 +815,7 @@ public class CuBs {
 			}
 		}
 		if (esCorrectoResumen != null) {
+			System.out.println("ecr: "+esCorrectoResumen);
 			if (esCorrectoResumen == 2) {
 				if (Validador.esNuloOVacio(observacionesResumen)) {
 					throw new PRISMAValidacionException(

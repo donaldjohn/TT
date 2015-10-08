@@ -16,9 +16,8 @@
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
 	<br />
-	<s:form autocomplete="off" id="frmGuardar" theme="simple"
-		action="%{#pageContext.request.contextPath}/cu!guardarRevision"
-		method="post">
+	<s:form autocomplete="off" theme="simple"
+		action="%{pageContext.request.contextPath}/cu!guardar">
 	<div class="formulario">
 		<div class="tituloFormulario">${blanks}</div>
 		<div class="seccion">
@@ -304,18 +303,12 @@
 
 	<br />
 		<div align="center">
-			<s:url var="urlTerminarCU"
-				value="%{#pageContext.request.contextPath}/cu!terminarRevision">
-			</s:url>
-			<input type = "button" onclick="location.href='${urlTerminarCU}'" class="boton" value="Finalizar" />
-			<s:submit class="boton" value="Guardar" />
-
-			<s:url var="urlGestionarCasosdeUso"
+			<s:submit class="boton" value="Aceptar" />
+			<s:url var="urlCU"
 				value="%{#pageContext.request.contextPath}/cu">
 			</s:url>
 			<input class="boton" type="button"
-				onclick="location.href='${urlGestionarCasosdeUso}'"
-				value="Cancelar" />
+				onclick="location.href='${urlCU}'" value="Cancelar" />
 		</div>
 		
 		</s:form>

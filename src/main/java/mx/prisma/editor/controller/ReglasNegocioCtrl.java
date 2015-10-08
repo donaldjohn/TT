@@ -8,8 +8,8 @@ import java.util.Map;
 
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.bs.AnalisisEnum.CU_ReglasNegocio;
 import mx.prisma.bs.AccessBs;
+import mx.prisma.bs.AnalisisEnum.CU_ReglasNegocio;
 import mx.prisma.bs.TipoReglaNegocioEnum;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.ElementoBs.Estado;
@@ -18,6 +18,7 @@ import mx.prisma.editor.bs.ReglaNegocioBs;
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Entidad;
+import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Operador;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TipoReglaNegocio;
@@ -58,6 +59,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 	private Proyecto proyecto;
 	private ReglaNegocio model;
 	private Colaborador colaborador;
+	private Modulo modulo;
 
 	private List<ReglaNegocio> listReglasNegocio;
 	private List<TipoReglaNegocio> listTipoRN;
@@ -760,6 +762,12 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 		this.idEntidadFormato = idEntidadFormato;
 	}
 	
-	
+	public Modulo getModulo() {
+		return modulo;
+	}
+
+	public void setModulo(Modulo modulo) {
+		this.modulo = modulo;
+	}
 	
 }

@@ -17,6 +17,7 @@ import mx.prisma.editor.dao.UnidadTamanioDAO;
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Entidad;
+import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.TipoDato;
 import mx.prisma.editor.model.UnidadTamanio;
 import mx.prisma.util.ActionSupportPRISMA;
@@ -54,6 +55,7 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 	private Proyecto proyecto;
 	private Entidad model;
 	private Colaborador colaborador;
+	private Modulo modulo;
 	
 	private List<Entidad> listEntidades;
 	private String jsonAtributosTabla;
@@ -529,5 +531,11 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 		this.comentario = comentario;
 	}
 
-	
+	public Modulo getModulo() {
+		return modulo;
+	}
+
+	public void setModulo(Modulo modulo) {
+		this.modulo = modulo;
+	}
 }
