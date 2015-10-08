@@ -17,14 +17,15 @@ import net.sf.jasperreports.engine.util.JRLoader;
 
 public class ReportUtil {
 	
-	public static void crearReporte(String formato, String nombre, Integer idProyecto, String rutaJasper) throws JRException, SQLException {
+	public static void crearReporte(String formato, String nombre, Integer idProyecto, String rutaJasper, String rutaTarget) throws JRException, SQLException {
 		String extension = "";
 		
 		@SuppressWarnings("deprecation")
-		JasperReport reporte = (JasperReport) JRLoader.loadObject(rutaJasper + "prisma.jasper");
+		JasperReport reporte = (JasperReport) JRLoader.loadObject(rutaTarget + "prisma.jasper");
 		
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("idProyecto", idProyecto);
+		param.put("SUBREPORT_DIR", rutaTarget + "subreports/");
 		
 		JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, param, new GenericDAO().getConnection());
 		
@@ -41,7 +42,7 @@ public class ReportUtil {
 		
 		//Configuración genérica (no importa del formato)
 		exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
-		exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("/home/lorena/git/AplicacionTTB064/src/main/webapp/resources/ireport/" + nombre + "." + extension));
+		exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File(rutaTarget + nombre + "." + extension));
 		exporter.exportReport();
 
 	}

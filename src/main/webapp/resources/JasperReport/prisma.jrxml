@@ -2,10 +2,10 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="prisma" pageWidth="612" pageHeight="792" columnWidth="500" leftMargin="56" rightMargin="56" topMargin="56" bottomMargin="56" uuid="4e67c746-4b2f-4cf9-a5d5-85d37e075565">
 	<property name="ireport.zoom" value="1.4641000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="288"/>
+	<property name="ireport.y" value="0"/>
 	<style name="style1"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["/home/lorena/git/AplicacionTTB064/src/main/webapp/resources/ireport/subreports/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["/home/lorena/git/AplicacionTTB064/src/main/webapp/resources/JasperReport/subreports/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="idProyecto" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -62,13 +62,24 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="35" splitType="Stretch"/>
+		<band height="35" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="500" height="20" forecolor="#CFCFCF" uuid="fa9b04d1-032d-4b00-a155-b3b11886f30a"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{clave} + " " + $F{nombre}]]></textFieldExpression>
+				<hyperlinkAnchorExpression><![CDATA["title"]]></hyperlinkAnchorExpression>
+			</textField>
+		</band>
 	</pageHeader>
 	<detail>
 		<band height="60" splitType="Stretch">
 			<subreport>
 				<reportElement x="0" y="10" width="500" height="40" uuid="49edc4a5-8f25-4156-89e4-ca0d15561976"/>
-				<subreportParameter name="SUBREPORT_DIR"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="p_proyectoId">
 					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -79,7 +90,9 @@
 		<band height="60">
 			<subreport>
 				<reportElement x="0" y="10" width="500" height="40" uuid="62c014f1-a440-47f4-9b8b-27c23630768a"/>
-				<subreportParameter name="SUBREPORT_DIR"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="p_proyectoId">
 					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -90,6 +103,9 @@
 		<band height="60">
 			<subreport>
 				<reportElement x="0" y="10" width="500" height="40" uuid="a6d783f9-97d8-4dbc-8144-4d06afbdb94d"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="p_proyectoId">
 					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -100,7 +116,9 @@
 		<band height="60">
 			<subreport>
 				<reportElement x="0" y="10" width="500" height="40" uuid="3a7dd622-f38d-4a99-854f-5f2b1836ad0f"/>
-				<subreportParameter name="SUBREPORT_DIR"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="p_proyectoId">
 					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -111,6 +129,9 @@
 		<band height="60">
 			<subreport>
 				<reportElement x="0" y="10" width="500" height="40" uuid="de5a14ea-c8d6-41bf-9aa2-7d23952e85ea"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="p_proyectoId">
 					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -121,6 +142,9 @@
 		<band height="60">
 			<subreport>
 				<reportElement x="0" y="10" width="500" height="40" uuid="92c0fc8e-d1b7-44a3-9f93-8f4fd0c6b190"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="p_proyectoId">
 					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -128,12 +152,24 @@
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "pantalla/pantalla.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
-		<band height="50"/>
+		<band height="60">
+			<subreport>
+				<reportElement x="0" y="10" width="500" height="40" uuid="27b77c10-5614-4e51-973f-538d84fe898a"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="p_proyectoId">
+					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "casoUso/casoUso.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
 	</detail>
 	<pageFooter>
-		<band height="54" splitType="Stretch">
+		<band height="22" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="34" width="500" height="20" uuid="333eef06-a803-4e80-b24c-0081051df8fa"/>
+				<reportElement x="0" y="1" width="500" height="20" uuid="333eef06-a803-4e80-b24c-0081051df8fa"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>

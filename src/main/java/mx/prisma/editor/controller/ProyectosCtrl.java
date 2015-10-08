@@ -269,9 +269,14 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 	}
 	
 	public String descargarDocumento() {
+		System.out.println("desde descargar documento");
 		String extension = "pdf";
 		@SuppressWarnings("deprecation")
-		String ruta = request.getRealPath("/") + "/resources/ireport/";
+		String rutaSrc = request.getRealPath("/") + "/resources/JasperReport/";
+		@SuppressWarnings("deprecation")
+		String rutaTarget = request.getRealPath("/") + "/resources/JasperReport/";
+		System.out.println("RUTA TARGET: " + rutaTarget);
+		System.out.println("RUTA SRC: " + rutaSrc);
 		
 		if(extension.equals("pdf")) {
 			filename = this.model.getNombre().replace(' ', '_');
@@ -282,8 +287,8 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 		}
 				
 		try {
-				ReportUtil.crearReporte(extension, filename, model.getId(), ruta);
-		        File doc = new File(ruta + filename + "." + extension);
+				ReportUtil.crearReporte(extension, filename, model.getId(), rutaSrc, rutaTarget);
+		        File doc = new File(rutaTarget + filename + "." + extension);
 		        this.fileInputStream = new FileInputStream(doc); 
 	        } catch (Exception e) {
 	        	ErrorManager.agregaMensajeError(this, e);
