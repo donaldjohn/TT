@@ -32,7 +32,6 @@ import mx.prisma.admin.model.Proyecto;
 		"clave", "numero", "nombre", "Proyectoid" }))
 @Inheritance(strategy=InheritanceType.JOINED)
 public class Elemento implements java.io.Serializable {
-
 	/**
 	 * 
 	 */
