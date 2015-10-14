@@ -174,8 +174,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 
 					if(!imagenesAccionesTexto.get(i).contains("image/png")) {
 						throw new PRISMAValidacionException(
-								"El usuario seleccionó una imagen que no es PNG.", "MSG36", null,
-								"model.acciones");
+								"El usuario seleccionó una imagen que no es PNG.", "MSG36");
 					}
 					byte[] imgDecodificada = ImageConverterUtil.parsePNGB64StringToBytes(imagenesAccionesTexto.get(i));
 					

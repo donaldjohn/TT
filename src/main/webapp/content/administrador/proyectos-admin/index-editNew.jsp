@@ -46,30 +46,48 @@
 					</tr>
 					
 					<tr>
+
 						<td class="label"><s:text name="labelFechaInicio" /></td>
-						<td><s:textfield name="model.fechaInicio" id="fechaInicio" cssErrorClass="input-error" cssClass="inputFormulario ui-widget" readonly="true"/>
-							<s:fielderror fieldName ="model.fechaInicio" cssClass="error"
-								theme="jquery" /></td>
+						<td><s:date name="model.fechaInicio" var="fechaInicioFormato" />
+							<s:textfield name="model.fechaInicio" id="fechaInicio"
+								cssErrorClass="input-error" cssClass="inputFormulario ui-widget"
+								readonly="true" value="%{#fechaInicioFormato}" /> <s:fielderror
+								fieldName="model.fechaInicio" cssClass="error" theme="jquery" /></td>
 					</tr>
-					
+
 					<tr>
 						<td class="label"><s:text name="labelFechaTermino" /></td>
-						<td><s:textfield name="model.fechaTermino" id="fechaTermino" cssErrorClass="input-error" cssClass="inputFormulario ui-widget" readonly="true"/>
-							<s:fielderror fieldName ="model.fechaTermino" cssClass="error"
+						<td><s:date name="model.fechaTermino"
+								var="fechaTerminoFormato" /> <s:textfield
+								name="model.fechaTermino" id="fechaTermino"
+								cssErrorClass="input-error" cssClass="inputFormulario ui-widget"
+								readonly="true" value="%{#fechaTerminoFormato}" /> <s:fielderror
+								fieldName="model.fechaTermino" cssClass="error" theme="jquery" /></td>
+					</tr>
+
+					<tr>
+						<td class="label obligatorio"><s:text
+								name="labelFechaInicioProg" /></td>
+						<td><s:date name="model.fechaInicioProgramada"
+								var="fechaInicioProgramadaFormato" />
+							<s:textfield name="model.fechaInicioProgramada"
+								id="fechaInicioProgramada" cssErrorClass="input-error"
+								cssClass="inputFormulario ui-widget" readonly="true"
+								value="%{#fechaInicioProgramadaFormato}" /> <s:fielderror
+								fieldName="model.fechaInicioProgramada" cssClass="error"
 								theme="jquery" /></td>
 					</tr>
-					
+
 					<tr>
-						<td class="label obligatorio"><s:text name="labelFechaInicioProg" /></td>
-						<td><s:textfield name="model.fechaInicioProgramada" id="fechaInicioProgramada" cssErrorClass="input-error" cssClass="inputFormulario ui-widget" readonly="true"/>
-							<s:fielderror fieldName ="model.fechaInicioProgramada" cssClass="error"
-								theme="jquery" /></td>
-					</tr>
-					
-					<tr>
-						<td class="label obligatorio"><s:text name="labelFechaTerminoProg" /></td>
-						<td><s:textfield name="model.fechaTerminoProgramada" id="fechaTerminoProgramada" cssErrorClass="input-error" cssClass="inputFormulario ui-widget" readonly="true"/>
-							<s:fielderror fieldName ="model.fechaTerminoProgramada" cssClass="error"
+						<td class="label obligatorio"><s:text
+								name="labelFechaTerminoProg" /></td>
+						<td><s:date name="model.fechaTerminoProgramada"
+								var="fechaTerminoProgramadaFormato" />
+							<s:textfield name="model.fechaTerminoProgramada"
+								id="fechaTerminoProgramada" cssErrorClass="input-error"
+								cssClass="inputFormulario ui-widget" readonly="true"
+								value="%{#fechaTerminoProgramadaFormato}" /> <s:fielderror
+								fieldName="model.fechaTerminoProgramada" cssClass="error"
 								theme="jquery" /></td>
 					</tr>
 					

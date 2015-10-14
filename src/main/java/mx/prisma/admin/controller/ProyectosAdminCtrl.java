@@ -21,11 +21,22 @@ import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.SessionAware;
 
 import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.conversion.annotations.Conversion;
+import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 
 @ResultPath("/content/administrador/")
 @Results({ @Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
 		"actionName", "proyectos-admin" })
 })
+@Conversion(
+	    conversions = {
+	         // key must be the name of a property for which converter should be used
+	         @TypeConversion(key = "model.fechaInicio", converter = "mx.prisma.util.StrutsDateConverter"),
+	         @TypeConversion(key = "model.fechaTermino", converter = "mx.prisma.util.StrutsDateConverter"),
+	         @TypeConversion(key = "model.fechaInicioProgramada", converter = "mx.prisma.util.StrutsDateConverter"),
+	         @TypeConversion(key = "model.fechaTerminoProgramada", converter = "mx.prisma.util.StrutsDateConverter")
+	    }
+	)
 public class ProyectosAdminCtrl extends ActionSupportPRISMA implements
 ModelDriven<Proyecto>, SessionAware{
 	private Proyecto model;
@@ -94,7 +105,7 @@ ModelDriven<Proyecto>, SessionAware{
 			
 			ProyectoBs.agregarEstado(model, idEstadoProyecto);
 			ProyectoBs.agregarLider(model, curpLider);
-			
+			System.out.println("desde create, fecha: " + model.getFechaInicio().toString());
 			ProyectoBs.registrarProyecto(model);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",
@@ -121,6 +132,7 @@ ModelDriven<Proyecto>, SessionAware{
 			buscarCatalogosModificacion();
 			prepararVista();
 			resultado = EDIT;
+			System.out.println("desde edit, fecha: " + model.getFechaInicio().toString());
 		} catch (PRISMAException pe) {
 			System.err.println(pe.getMessage());
 			ErrorManager.agregaMensajeError(this, pe);
@@ -140,7 +152,7 @@ ModelDriven<Proyecto>, SessionAware{
 
 	public String update() throws Exception {
 		String resultado = null;
-		System.out.println("desde update");
+		System.out.println("desde update, fecha: " + model.getFechaInicio().toString());
 		try {
 			if(curpLider.equals("-1")) {
 				throw new PRISMAValidacionException("El usuario no seleccionó el lider del proyecto.", "MSG4", null, "curpLider");

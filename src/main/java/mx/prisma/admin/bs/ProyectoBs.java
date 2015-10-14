@@ -32,6 +32,18 @@ public class ProyectoBs {
 			throw new PRISMAException("No se puede consultar el proyecto.",
 					"MSG13");
 		}
+//		String OLD_FORMAT = "dd/MM/yyyy";
+//		String NEW_FORMAT = "yyyy/MM/dd";
+//
+//		// August 12, 2010
+//		String oldDateString = "12/08/2010";
+//		String newDateString;
+//
+//		SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
+//		Date d = sdf.parse(oldDateString);
+//		sdf.applyPattern(NEW_FORMAT);
+//		newDateString = sdf.format(d);
+		System.out.println("desde consultarProyecto, fecha: " + proyecto.getFechaInicio().toString());
 		return proyecto;
 	}
 
@@ -64,6 +76,7 @@ public class ProyectoBs {
 	}
 
 	private static void validar(Proyecto model) {
+		System.out.println("desde validar, fecha: " + model.getFechaInicio().toString());
 		// Validaciones de la clave
 		if (Validador.esNuloOVacio(model.getClave())) {
 			throw new PRISMAValidacionException(
