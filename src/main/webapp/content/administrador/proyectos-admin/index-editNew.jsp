@@ -54,21 +54,21 @@
 					
 					<tr>
 						<td class="label"><s:text name="labelFechaTermino" /></td>
-						<td><s:textfield name="model.fechaTermino" id="fechaTermino" cssErrorClass="input-error" cssClass="inputFormulario ui-widget" readonly="readonly"/>
+						<td><s:textfield name="model.fechaTermino" id="fechaTermino" cssErrorClass="input-error" cssClass="inputFormulario ui-widget" readonly="true"/>
 							<s:fielderror fieldName ="model.fechaTermino" cssClass="error"
 								theme="jquery" /></td>
 					</tr>
 					
 					<tr>
 						<td class="label obligatorio"><s:text name="labelFechaInicioProg" /></td>
-						<td><s:textfield name="model.fechaInicioProgramada" id="fechaInicioProgramada" cssErrorClass="input-error" cssClass="inputFormulario ui-widget" readonly="readonly"/>
+						<td><s:textfield name="model.fechaInicioProgramada" id="fechaInicioProgramada" cssErrorClass="input-error" cssClass="inputFormulario ui-widget" readonly="true"/>
 							<s:fielderror fieldName ="model.fechaInicioProgramada" cssClass="error"
 								theme="jquery" /></td>
 					</tr>
 					
 					<tr>
 						<td class="label obligatorio"><s:text name="labelFechaTerminoProg" /></td>
-						<td><s:textfield name="model.fechaTerminoProgramada" id="fechaTerminoProgramada" cssErrorClass="input-error" cssClass="inputFormulario ui-widget" readonly="readonly"/>
+						<td><s:textfield name="model.fechaTerminoProgramada" id="fechaTerminoProgramada" cssErrorClass="input-error" cssClass="inputFormulario ui-widget" readonly="true"/>
 							<s:fielderror fieldName ="model.fechaTerminoProgramada" cssClass="error"
 								theme="jquery" /></td>
 					</tr>
@@ -107,7 +107,7 @@
 					</tr>
 					
 					<tr>
-						<td class="label"><s:text name="labelEstado" /></td>
+						<td class="label obligatorio"><s:text name="labelEstado" /></td>
 						<td><s:select name="idEstadoProyecto" list="listEstadosProyecto" headerValue="Seleccione" headerKey="-1"
 								listKey="id" listValue="nombre" value="idEstadoProyecto"
 								cssErrorClass="select-error" cssClass="inputFormulario ui-widget" />

@@ -42,9 +42,8 @@ public class Validador {
 
 	}
 
-	public static boolean validarFecha(Date fechaInicio) {
-		// TODO Auto-generated method stub
-		return false;
+	public static boolean esInvalidoOrdenFechas(Date fechaInicio, Date fechaTermino) {
+		return fechaInicio.after(fechaTermino) ? true : false;
 	}
 
 }

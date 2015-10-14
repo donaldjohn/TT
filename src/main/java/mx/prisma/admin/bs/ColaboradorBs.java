@@ -64,6 +64,17 @@ public class ColaboradorBs {
 	}
 
 	private static void validar(Colaborador model) {
+		//Validaciones del CURP
+		if (Validador.esNuloOVacio(model.getCurp())) {
+			throw new PRISMAValidacionException(
+					"El usuario no ingresó la CURP del colaborador.", "MSG4",
+					null, "model.curp");
+		}
+		if (Validador.validaLongitudMaxima(model.getCurp(), 18)) {
+			throw new PRISMAValidacionException(
+					"El usuario ingreso una CURP muy larga.", "MSG6",
+					new String[] { "18", "caracteres" }, "model.curp");
+		}
 		// Validaciones del nombre
 		if (Validador.esNuloOVacio(model.getNombre())) {
 			throw new PRISMAValidacionException(
@@ -102,6 +113,15 @@ public class ColaboradorBs {
 					"El usuario ingreso un correo muy largo.", "MSG6",
 					new String[] { "45", "caracteres" }, "model.correoElectronico");
 		}
+		Colaborador colaboradorBD = new ColaboradorDAO().consultarColaboradorCorreo(model.getCorreoElectronico());
+		if(colaboradorBD != null && !colaboradorBD.getCurp().equals(model.getCurp())) {
+			throw new PRISMAValidacionException(
+					"El correo del colaborador ya existe.",
+					"MSG7",
+					new String[] { "El", "Correo electrónico", model.getCorreoElectronico() },
+					"model.correoElectronico");
+		}
+		
 		// Validaciones de la contraseña
 		if (Validador.esNuloOVacio(model.getContrasenia())) {
 			throw new PRISMAValidacionException(

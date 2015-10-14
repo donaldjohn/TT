@@ -70,8 +70,11 @@
 							cssClass="error" theme="jquery" /></td>
 				</tr>
 			</table>
+			<div class="fieldError-pantalla" >
+			<s:fielderror fieldName="pantallaB64" cssClass="error" theme="jquery" />
+			</div>
 			<div class="marcoImagen" id="marco-pantalla" style="display: none;">
-				
+					
 				<div class="btnEliminar">
 					<a onclick="eliminarImagen('pantalla', 'imagenPantalla');"><img
 						title="Eliminar"

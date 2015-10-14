@@ -326,7 +326,7 @@ function eliminarImagen(idImg, idFileUpload) {
 	document.getElementById("marco-" + idImg).style.display = 'none';
 	document.getElementById(idFileUpload).value = null;
 	document.getElementById("fila-" + idImg).style.display = '';
-
+	document.getElementById("fieldError-" + idImg).style.display = 'none';
 }
 
 function cargarImagenPantalla() {

@@ -183,16 +183,14 @@ public class CuBs {
 		List<CasoUso> casosUso = consultarCasosUsoModulo(cu.getModulo());
 		for (CasoUso c : casosUso) {
 			if (c.getId() != cu.getId()) {
-				if (c.getNombre().equals(cu.getNombre())
-						&& c.getId() != cu.getId()) {
+				if (c.getNombre().equals(cu.getNombre())) {
 					throw new PRISMAValidacionException(
 							"El nombre del caso de uso ya existe.",
 							"MSG7",
 							new String[] { "El", "Caso de uso", cu.getNombre() },
 							"model.nombre");
 				}
-				if (c.getNumero().equals(cu.getNumero())
-						&& c.getId() != cu.getId()) {
+				if (c.getNumero().equals(cu.getNumero())) {
 					throw new PRISMAValidacionException(
 							"El número del caso de uso ya existe.",
 							"MSG7",
