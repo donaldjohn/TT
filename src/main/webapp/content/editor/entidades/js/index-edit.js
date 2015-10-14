@@ -324,7 +324,7 @@ function disablefromTipoDato() {
 function prepararEnvio() {
 	try {
 		tablaToJson("tablaAtributo");
-		$('#mensajeConfirmacion').dialog('open');
+		//$('#mensajeConfirmacion').dialog('open');
 		return true;
 	} catch (err) {
 		alert("Ocurrió un error: " + err);

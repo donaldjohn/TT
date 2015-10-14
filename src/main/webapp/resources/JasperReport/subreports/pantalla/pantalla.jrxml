@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pantalla" pageWidth="500" pageHeight="432" columnWidth="500" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="d1849b9f-00df-401a-84c3-1265e9143528">
-	<property name="ireport.zoom" value="1.3310000000000006"/>
+	<property name="ireport.zoom" value="1.7715610000000017"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="8"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["/home/lorena/git/AplicacionTTB064/src/main/webapp/resources/ireport/subreports/"]]></defaultValueExpression>
 	</parameter>
@@ -14,8 +14,7 @@
 FROM Elemento ele
 INNER JOIN Pantalla pan ON ele.id = pan.Elementoid
 WHERE ele.clave LIKE 'IU%' AND ele.Proyectoid = $P{p_proyectoId}
-ORDER BY REPLACE(ele.numero,'.','') * 1 ASC;
-]]>
+ORDER BY REPLACE(ele.numero,'.','') * 1 ASC;]]>
 	</queryString>
 	<field name="id" class="java.lang.Integer"/>
 	<field name="clave" class="java.lang.String"/>
@@ -39,9 +38,9 @@ ORDER BY REPLACE(ele.numero,'.','') * 1 ASC;
 	<title>
 		<band height="50">
 			<staticText>
-				<reportElement x="18" y="12" width="100" height="20" forecolor="#5F5F5F" uuid="cc4d92ed-c545-4fef-a258-f1a8f214637a"/>
+				<reportElement x="18" y="0" width="141" height="29" forecolor="#5F5F5F" uuid="cc4d92ed-c545-4fef-a258-f1a8f214637a"/>
 				<textElement>
-					<font fontName="SansSerif" size="16" isBold="true"/>
+					<font fontName="SansSerif" size="20" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Pantallas]]></text>
 			</staticText>
@@ -66,7 +65,7 @@ ORDER BY REPLACE(ele.numero,'.','') * 1 ASC;
 				</textField>
 			</frame>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="18" y="11" width="464" height="19" uuid="30dbc923-50a4-40af-9e11-20035382712c"/>
+				<reportElement x="18" y="11" width="464" height="20" uuid="30dbc923-50a4-40af-9e11-20035382712c"/>
 				<textElement textAlignment="Left">
 					<font fontName="SansSerif" size="14" isBold="false"/>
 				</textElement>

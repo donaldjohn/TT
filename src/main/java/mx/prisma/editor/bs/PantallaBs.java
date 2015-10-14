@@ -268,8 +268,29 @@ public class PantallaBs {
 		return listReferenciasVista;
 	}
 
-	public static void modificarPantalla(Pantalla model,
-			Actualizacion actualizacion) throws Exception {
+//	public static void modificarPantalla(Pantalla model,
+//			Actualizacion actualizacion) throws Exception {
+//		try {
+//			validar(model);
+//			ElementoBs
+//					.verificarEstado(model, CU_Pantallas.MODIFICARPANTALLA6_2);
+//			model.setEstadoElemento(ElementoBs
+//					.consultarEstadoElemento(Estado.EDICION));
+//			model.setNombre(model.getNombre().trim());
+//
+//			new PantallaDAO().modificarPantalla(model, actualizacion);
+//
+//		} catch (JDBCException je) {
+//			System.out.println("ERROR CODE " + je.getErrorCode());
+//			je.printStackTrace();
+//			throw new Exception();
+//		} catch (HibernateException he) {
+//			he.printStackTrace();
+//			throw new Exception();
+//		}
+//
+//	}
+	public static void modificarPantalla(Pantalla model) throws Exception {
 		try {
 			validar(model);
 			ElementoBs
@@ -278,7 +299,7 @@ public class PantallaBs {
 					.consultarEstadoElemento(Estado.EDICION));
 			model.setNombre(model.getNombre().trim());
 
-			new PantallaDAO().modificarPantalla(model, actualizacion);
+			new PantallaDAO().modificarPantalla(model);
 
 		} catch (JDBCException je) {
 			System.out.println("ERROR CODE " + je.getErrorCode());

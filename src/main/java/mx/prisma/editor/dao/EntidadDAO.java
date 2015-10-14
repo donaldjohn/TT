@@ -42,11 +42,24 @@ public class EntidadDAO extends ElementoDAO {
 	public String siguienteNumeroEntidad(int idProyecto) {
 		return super.siguienteNumero(TipoReferencia.ENTIDAD, idProyecto);
 	}
-	public void modificarEntidad(Entidad model, Actualizacion actualizacion) {
+//	public void modificarEntidad(Entidad model, Actualizacion actualizacion) {
+//		try {
+//			session.beginTransaction();			
+// 			session.saveOrUpdate(model);
+//			session.save(actualizacion);
+//			session.getTransaction().commit();
+//		} catch (HibernateException he) {
+//			he.printStackTrace();
+//			session.getTransaction().rollback();
+//			throw he;
+//		}
+//		
+//	}
+	public void modificarEntidad(Entidad model) {
 		try {
 			session.beginTransaction();			
  			session.saveOrUpdate(model);
-			session.save(actualizacion);
+//			session.save(actualizacion);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();

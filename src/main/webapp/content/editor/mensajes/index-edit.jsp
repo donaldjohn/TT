@@ -30,7 +30,7 @@
 
 	<s:form autocomplete="off" id="frmMsj" theme="simple"
 		action="%{#pageContext.request.contextPath}/mensajes/%{idSel}"
-		onsubmit="return false;" method="post">
+		onsubmit="return prepararEnvio();" method="post">
 		<s:hidden name="_method" value="put" />
 		<div class="formulario">
 			<div class="tituloFormulario">Información general del Mensaje</div>
@@ -97,7 +97,7 @@
 		<br />
 		<div align="center">
 			
-			<s:submit class="boton" value="Aceptar" onclick="prepararEnvio();"/>
+			<s:submit class="boton" value="Aceptar"/>
 			<input class="boton" type="button"
 				onclick="location.href='${pageContext.request.contextPath}/mensajes'"
 				value="Cancelar" />

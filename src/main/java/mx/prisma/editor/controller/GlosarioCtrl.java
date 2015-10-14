@@ -241,10 +241,11 @@ public class GlosarioCtrl extends ActionSupportPRISMA implements
 				return resultado;
 			}
 			model.setProyecto(proyecto);
-			Actualizacion actualizacion = new Actualizacion(new Date(),
-					comentario, model,
-					SessionManager.consultarColaboradorActivo());
-			TerminoGlosarioBs.modificarTerminoGlosario(model, actualizacion);
+//			Actualizacion actualizacion = new Actualizacion(new Date(),
+//					comentario, model,
+//					SessionManager.consultarColaboradorActivo());
+//			TerminoGlosarioBs.modificarTerminoGlosario(model, actualizacion);
+			TerminoGlosarioBs.modificarTerminoGlosario(model);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El", "Término",
 					"modificado" }));

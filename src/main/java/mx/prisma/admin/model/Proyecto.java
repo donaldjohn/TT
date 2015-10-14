@@ -187,7 +187,8 @@ public class Proyecto implements java.io.Serializable {
 	public void setEstadoProyecto(EstadoProyecto estadoProyecto) {
 		this.estadoProyecto = estadoProyecto;
 	}
-
+	
+	//Cambio131015
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "proyecto", cascade = CascadeType.ALL, orphanRemoval = true)
 	public Set<ColaboradorProyecto> getProyecto_colaboradores() {
 		return proyecto_colaboradores;

@@ -28,7 +28,7 @@
 	<s:form autocomplete="off" id="frmPantalla" theme="simple"
 		enctype="multipart/form-data"
 		action="%{#pageContext.request.contextPath}/pantallas/%{idSel}" method="post"
-		onsubmit="return false;">
+		onsubmit="return prepararEnvio();">
 		<s:hidden name="_method" value="put" />
 		<div class="formulario">
 			<div class="tituloFormulario">Información general de la
@@ -124,7 +124,7 @@
 
 		<br />
 		<div align="center">
-			<s:submit class="boton" value="Aceptar" onclick="prepararEnvio();"/>
+			<s:submit class="boton" value="Aceptar"/>
 
 			<s:url var="urlGestionarPantallas"
 				value="%{#pageContext.request.contextPath}/pantallas">

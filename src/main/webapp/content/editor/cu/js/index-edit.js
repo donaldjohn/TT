@@ -129,9 +129,11 @@ function prepararEnvio() {
 	try {
 		tablaPrecondicionesToJson("tablaPrecondiciones");
 		tablaPostcondicionesToJson("tablaPostcondiciones");
-		$('#mensajeConfirmacion').dialog('open');
+		//$('#mensajeConfirmacion').dialog('open');
+		return true;
 	} catch(err) {
 		alert("Ocurrió un error.");
+		return false;
 	}
 }
 

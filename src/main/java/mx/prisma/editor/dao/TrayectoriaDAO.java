@@ -26,11 +26,23 @@ public class TrayectoriaDAO extends GenericDAO {
 		}
 	}
 	
-	public void modificarTrayectoria(Trayectoria trayectoria, Actualizacion actualizacion) {
+//	public void modificarTrayectoria(Trayectoria trayectoria, Actualizacion actualizacion) {
+//		try {
+//			session.beginTransaction();			
+// 			session.saveOrUpdate(trayectoria);
+//			session.save(actualizacion);
+//			session.getTransaction().commit();
+//		} catch (HibernateException he) {
+//			he.printStackTrace();
+//			session.getTransaction().rollback();
+//			throw he;
+//		}
+//	}
+	
+	public void modificarTrayectoria(Trayectoria trayectoria) {
 		try {
 			session.beginTransaction();			
  			session.saveOrUpdate(trayectoria);
-			session.save(actualizacion);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();

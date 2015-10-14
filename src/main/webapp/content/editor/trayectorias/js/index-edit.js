@@ -196,8 +196,8 @@ function esValidoPaso(idTabla, realiza, verbo, otroVerbo, redaccion) {
 function prepararEnvio() {
 	try {
 		tablaToJson("tablaPaso");
-		$('#mensajeConfirmacion').dialog('open');
-		return false;
+		//$('#mensajeConfirmacion').dialog('open');
+		return true;
 	} catch(err) {
 		alert("Ocurrió un error.");
 		return false;

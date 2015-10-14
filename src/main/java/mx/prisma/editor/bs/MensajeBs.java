@@ -62,7 +62,27 @@ public class MensajeBs {
 		
 	}
 
-	public static void modificarMensaje(Mensaje model, Actualizacion actualizacion) throws Exception{
+//	public static void modificarMensaje(Mensaje model, Actualizacion actualizacion) throws Exception{
+//		try {
+//				validar(model);
+//				ElementoBs.verificarEstado(model, CU_Mensajes.MODIFICARMENSAJE9_2);
+//				model.setEstadoElemento(ElementoBs
+//						.consultarEstadoElemento(Estado.EDICION));
+//				model.setNombre(model.getNombre().trim());
+//				
+//				new MensajeDAO().modificarMensaje(model, actualizacion);
+//		
+//		} catch (JDBCException je) {
+//			System.out.println("ERROR CODE " + je.getErrorCode());
+//			je.printStackTrace();
+//			throw new Exception();
+//		} catch(HibernateException he) {
+//			he.printStackTrace();
+//			throw new Exception();
+//		}
+//	}
+	
+	public static void modificarMensaje(Mensaje model) throws Exception{
 		try {
 				validar(model);
 				ElementoBs.verificarEstado(model, CU_Mensajes.MODIFICARMENSAJE9_2);
@@ -70,7 +90,7 @@ public class MensajeBs {
 						.consultarEstadoElemento(Estado.EDICION));
 				model.setNombre(model.getNombre().trim());
 				
-				new MensajeDAO().modificarMensaje(model, actualizacion);
+				new MensajeDAO().modificarMensaje(model);
 		
 		} catch (JDBCException je) {
 			System.out.println("ERROR CODE " + je.getErrorCode());

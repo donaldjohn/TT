@@ -294,8 +294,29 @@ public class EntidadBs {
 		return listReferenciasVista;
 	}
 
-	public static void modificarEntidad(Entidad model,
-			Actualizacion actualizacion) throws Exception {
+//	public static void modificarEntidad(Entidad model,
+//			Actualizacion actualizacion) throws Exception {
+//		try {
+//			validar(model);
+//			ElementoBs
+//					.verificarEstado(model, CU_Entidades.MODIFICARENTIDAD11_2);
+//			model.setEstadoElemento(ElementoBs
+//					.consultarEstadoElemento(Estado.EDICION));
+//			model.setNombre(model.getNombre().trim());
+//
+//			new EntidadDAO().modificarEntidad(model, actualizacion);
+//
+//		} catch (JDBCException je) {
+//			System.out.println("ERROR CODE " + je.getErrorCode());
+//			je.printStackTrace();
+//			throw new Exception();
+//		} catch (HibernateException he) {
+//			he.printStackTrace();
+//			throw new Exception();
+//		}
+//	}
+	
+	public static void modificarEntidad(Entidad model) throws Exception {
 		try {
 			validar(model);
 			ElementoBs
@@ -304,7 +325,7 @@ public class EntidadBs {
 					.consultarEstadoElemento(Estado.EDICION));
 			model.setNombre(model.getNombre().trim());
 
-			new EntidadDAO().modificarEntidad(model, actualizacion);
+			new EntidadDAO().modificarEntidad(model);
 
 		} catch (JDBCException je) {
 			System.out.println("ERROR CODE " + je.getErrorCode());

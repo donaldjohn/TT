@@ -104,11 +104,23 @@ public class PantallaDAO extends ElementoDAO {
 	 * 
 	 */
 
-	public void modificarPantalla(Pantalla model, Actualizacion actualizacion) {
+//	public void modificarPantalla(Pantalla model, Actualizacion actualizacion) {
+//		try {
+//			session.beginTransaction();
+// 			session.saveOrUpdate(model);
+//			session.save(actualizacion);
+//			session.getTransaction().commit();
+//		} catch (HibernateException he) {
+//			he.printStackTrace();
+//			session.getTransaction().rollback();
+//			throw he;
+//		}
+//		
+//	}
+	public void modificarPantalla(Pantalla model) {
 		try {
 			session.beginTransaction();
  			session.saveOrUpdate(model);
-			session.save(actualizacion);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();

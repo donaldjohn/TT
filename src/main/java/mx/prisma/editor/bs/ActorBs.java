@@ -223,7 +223,7 @@ public class ActorBs {
 		return listReferenciasVista;
 	}
 
-	public static void modificarActor(Actor model, Actualizacion actualizacion) throws Exception {
+	/*public static void modificarActor(Actor model, Actualizacion actualizacion) throws Exception {
 		try {
 			validar(model);
 			ElementoBs
@@ -233,6 +233,28 @@ public class ActorBs {
 			model.setNombre(model.getNombre().trim());
 
 			new ActorDAO().modificarElemento(model, actualizacion);
+
+		} catch (JDBCException je) {
+			System.out.println("ERROR CODE " + je.getErrorCode());
+			je.printStackTrace();
+			throw new Exception();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			throw new Exception();
+		}
+		
+	}*/
+	
+	public static void modificarActor(Actor model) throws Exception {
+		try {
+			validar(model);
+			ElementoBs
+					.verificarEstado(model, CU_Actores.MODIFICARACTOR7_2);
+			model.setEstadoElemento(ElementoBs
+					.consultarEstadoElemento(Estado.EDICION));
+			model.setNombre(model.getNombre().trim());
+
+			new ActorDAO().modificarElemento(model);
 
 		} catch (JDBCException je) {
 			System.out.println("ERROR CODE " + je.getErrorCode());

@@ -156,7 +156,7 @@ function construirFila(srcAccion, nombre, descripcion, tipoAccion, idPantallaDes
 						+ "/resources/images/icons/eliminar.png' title='Eliminar Acción'/></a>"
 						+ "</center>" ];
 	
-	if(srcAccion != "") {
+	if(srcAccion != "" && srcAccion != null) {
     	row[0] = "<center><img src = '" + srcAccion + "'/></center>";
 		row[2] = srcAccion;
     }
@@ -237,7 +237,7 @@ function esValidaAccion(idTabla, nombre, descripcion, imagen, tipoAccion, pantal
 function prepararEnvio() {
 	try {
 		tablaToJson("tablaAccion");
-		$('#mensajeConfirmacion').dialog('open');
+//		$('#mensajeConfirmacion').dialog('open');
 		return true;
 	} catch (err) {
 		alert("Ocurrió un error: " + err);

@@ -299,11 +299,12 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 			agregarAcciones();
 			agregarImagen();
 
-			Actualizacion actualizacion = new Actualizacion(new Date(),
-					comentario, model,
-					SessionManager.consultarColaboradorActivo());
-
-			PantallaBs.modificarPantalla(model, actualizacion);
+//			Actualizacion actualizacion = new Actualizacion(new Date(),
+//					comentario, model,
+//					SessionManager.consultarColaboradorActivo());
+//
+//			PantallaBs.modificarPantalla(model, actualizacion);
+			PantallaBs.modificarPantalla(model);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "La",
 					"Pantalla", "modificada" }));

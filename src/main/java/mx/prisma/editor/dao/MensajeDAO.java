@@ -15,13 +15,13 @@ import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.MensajeParametro;
 
 public class MensajeDAO extends ElementoDAO {
-	
+
 	public MensajeDAO() {
 		super();
 	}
 
 	public void registrarMensaje(Mensaje mensaje) throws Exception {
-		
+
 		try {
 			session.beginTransaction();
 			for (MensajeParametro parametro : mensaje.getParametros()) {
@@ -33,27 +33,51 @@ public class MensajeDAO extends ElementoDAO {
 			he.printStackTrace();
 			session.getTransaction().rollback();
 			throw he;
-		}	
-	}
-	
-public void modificarMensaje(Mensaje mensaje, Actualizacion actualizacion) throws Exception {
-	try {
-		session.beginTransaction();
-		Query query1 = session.createQuery("DELETE FROM MensajeParametro WHERE mensaje.id = :id");
-		query1.setParameter("id", mensaje.getId());
-		query1.executeUpdate();
-		
-		for (MensajeParametro parametro : mensaje.getParametros()) {
-			session.saveOrUpdate(parametro.getParametro());
 		}
-		session.update(mensaje);
-		session.save(actualizacion);
-		session.getTransaction().commit();
-	} catch (HibernateException he) {
-		he.printStackTrace();
-		session.getTransaction().rollback();
-		throw he;
 	}
+
+//	public void modificarMensaje(Mensaje mensaje, Actualizacion actualizacion)
+//			throws Exception {
+//		try {
+//			session.beginTransaction();
+//			Query query1 = session
+//					.createQuery("DELETE FROM MensajeParametro WHERE mensaje.id = :id");
+//			query1.setParameter("id", mensaje.getId());
+//			query1.executeUpdate();
+//
+//			for (MensajeParametro parametro : mensaje.getParametros()) {
+//				session.saveOrUpdate(parametro.getParametro());
+//			}
+//			session.update(mensaje);
+//			session.save(actualizacion);
+//			session.getTransaction().commit();
+//		} catch (HibernateException he) {
+//			he.printStackTrace();
+//			session.getTransaction().rollback();
+//			throw he;
+//		}
+//	}
+	
+	public void modificarMensaje(Mensaje mensaje)
+			throws Exception {
+		try {
+			session.beginTransaction();
+			Query query1 = session
+					.createQuery("DELETE FROM MensajeParametro WHERE mensaje.id = :id");
+			query1.setParameter("id", mensaje.getId());
+			query1.executeUpdate();
+
+			for (MensajeParametro parametro : mensaje.getParametros()) {
+				session.saveOrUpdate(parametro.getParametro());
+			}
+			session.update(mensaje);
+//			session.save(actualizacion);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
 	}
 
 	public Mensaje consultarMensaje(int id) {
@@ -67,9 +91,10 @@ public void modificarMensaje(Mensaje mensaje, Actualizacion actualizacion) throw
 
 	public List<Mensaje> consultarMensajes(int idProyecto) {
 		List<Mensaje> mensajes = new ArrayList<Mensaje>();
-		List<Elemento> elementos = super.consultarElementos(TipoReferencia.MENSAJE, idProyecto);
+		List<Elemento> elementos = super.consultarElementos(
+				TipoReferencia.MENSAJE, idProyecto);
 		for (Elemento elemento : elementos) {
-			mensajes.add((Mensaje)elemento);
+			mensajes.add((Mensaje) elemento);
 		}
 		return mensajes;
 	}

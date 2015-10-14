@@ -218,10 +218,11 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 			model.getParametros().clear();
 			agregarParametros();
 
-			Actualizacion actualizacion = new Actualizacion(new Date(),
-					comentario, model,
-					SessionManager.consultarColaboradorActivo());
-			MensajeBs.modificarMensaje(model, actualizacion);
+//			Actualizacion actualizacion = new Actualizacion(new Date(),
+//					comentario, model,
+//					SessionManager.consultarColaboradorActivo());
+//			MensajeBs.modificarMensaje(model, actualizacion);
+			MensajeBs.modificarMensaje(model);
 			resultado = SUCCESS;
 
 			addActionMessage(getText("MSG1", new String[] { "El", "Mensaje",

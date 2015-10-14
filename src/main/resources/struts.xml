@@ -44,6 +44,12 @@
 		<interceptors>
 			<interceptor class="mx.prisma.controller.AccessInterceptor" name="loginInterceptor"/>
 			<interceptor name="workflow" class="org.apache.struts2.rest.RestWorkflowInterceptor" />
+			
+			<interceptor name="breadCrumbs" class="org.softwareforge.struts2.breadcrumb.BreadCrumbInterceptor">
+				  <param name="trail.maxCrumbs">6</param>
+				  <param name="trail.rewindMode">AUTO</param>                                                   
+				  <param name="trail.comparator">org.softwareforge.struts2.breadcrumb.NameComparator</param>  
+			</interceptor>
 
 			<!-- Define la pila de interceptores a ser aplicada a cada acción invocada -->
 			<interceptor-stack name="stack">
@@ -132,6 +138,7 @@
 
 		<default-interceptor-ref name="stack" />
 
+	
 	
 	<global-results>
    		<result name="login" type="redirect">access/</result>

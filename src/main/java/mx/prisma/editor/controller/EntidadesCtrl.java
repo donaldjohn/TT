@@ -226,11 +226,12 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 			model.setProyecto(proyecto);
 			model.getAtributos().clear();
 			agregarAtributos();
-			Actualizacion actualizacion = new Actualizacion(new Date(),
-					comentario, model,
-					SessionManager.consultarColaboradorActivo());
+//			Actualizacion actualizacion = new Actualizacion(new Date(),
+//					comentario, model,
+//					SessionManager.consultarColaboradorActivo());
 
-			EntidadBs.modificarEntidad(model, actualizacion);
+//			EntidadBs.modificarEntidad(model, actualizacion);
+			EntidadBs.modificarEntidad(model);
 
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "La", "Entidad",

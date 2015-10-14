@@ -31,12 +31,25 @@ public class ElementoDAO extends GenericDAO{
 		}
 	}
 
-	public void modificarElemento(Elemento elemento, Actualizacion actualizacion) {
+	public void modificarElemento(Elemento elemento, String actualizacion) {
 
 		try {
 			session.beginTransaction();
 			session.update(elemento);
 			session.save(actualizacion);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
+	}
+	
+	public void modificarElemento(Elemento elemento) {
+
+		try {
+			session.beginTransaction();
+			session.update(elemento);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();

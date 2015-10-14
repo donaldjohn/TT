@@ -352,8 +352,35 @@ public class ReglaNegocioBs {
 		return reglaNegocio;
 	}
 
-	public static void modificarReglaNegocio(ReglaNegocio model,
-			Actualizacion actualizacion) throws Exception {
+//	public static void modificarReglaNegocio(ReglaNegocio model,
+//			Actualizacion actualizacion) throws Exception {
+//		try {
+//			validar(model);
+//			model.setClave(CLAVE);
+//			model.setEstadoElemento(ElementoBs
+//					.consultarEstadoElemento(Estado.EDICION));
+//			model.setNombre(model.getNombre().trim());
+//			ElementoBs.verificarEstado(model,
+//					CU_ReglasNegocio.MODIFICARREGLANEGOCIO8_2);
+//			new ReglaNegocioDAO().modificarReglaNegocio(model, actualizacion);
+//		} catch (JDBCException je) {
+//			if (je.getErrorCode() == 1062) {
+//				throw new PRISMAValidacionException(
+//						"El nombre de la regla de negocio ya existe.", "MSG7",
+//						new String[] { "La", "Regla de negocio",
+//								model.getNombre() }, "model.nombre");
+//			}
+//			System.out.println("ERROR CODE " + je.getErrorCode());
+//			je.printStackTrace();
+//			throw new Exception();
+//		} catch (HibernateException he) {
+//			he.printStackTrace();
+//			throw new Exception();
+//		}
+//
+//	}
+	
+	public static void modificarReglaNegocio(ReglaNegocio model) throws Exception {
 		try {
 			validar(model);
 			model.setClave(CLAVE);
@@ -362,7 +389,7 @@ public class ReglaNegocioBs {
 			model.setNombre(model.getNombre().trim());
 			ElementoBs.verificarEstado(model,
 					CU_ReglasNegocio.MODIFICARREGLANEGOCIO8_2);
-			new ReglaNegocioDAO().modificarReglaNegocio(model, actualizacion);
+			new ReglaNegocioDAO().modificarReglaNegocio(model);
 		} catch (JDBCException je) {
 			if (je.getErrorCode() == 1062) {
 				throw new PRISMAValidacionException(

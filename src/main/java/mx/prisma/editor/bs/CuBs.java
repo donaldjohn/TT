@@ -103,7 +103,7 @@ public class CuBs {
 		}
 	}
 
-	public static void modificarCasoUso(CasoUso cu, Actualizacion actualizacion)
+/*	public static void modificarCasoUso(CasoUso cu, Actualizacion actualizacion)
 			throws Exception {
 		try {
 			validar(cu);
@@ -123,7 +123,29 @@ public class CuBs {
 			he.printStackTrace();
 			throw new Exception();
 		}
+	}*/
+	public static void modificarCasoUso(CasoUso cu)
+			throws Exception {
+		try {
+			validar(cu);
+			ElementoBs.verificarEstado(cu, CU_CasosUso.MODIFICARCASOUSO5_2);
+			cu.setEstadoElemento(ElementoBs
+					.consultarEstadoElemento(Estado.EDICION));
+			// Se quitan los espacios iniciales y finales del nombre
+			cu.setNombre(cu.getNombre().trim());
+
+			new CasoUsoDAO().modificarCasoUso(cu);
+
+		} catch (JDBCException je) {
+			System.out.println("ERROR CODE " + je.getErrorCode());
+			je.printStackTrace();
+			throw new Exception();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			throw new Exception();
+		}
 	}
+
 
 	public static void terminar(CasoUso model) throws Exception {
 		try {
@@ -274,6 +296,21 @@ public class CuBs {
 		CasoUso cu = null;
 		try {
 			cu = new CasoUsoDAO().consultarCasoUso(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (cu == null) {
+			throw new PRISMAException(
+					"No se puede consultar el caso de uso por el id.", "MSG16",
+					new String[] { "El", "caso de uso" });
+		}
+		return cu;
+	}
+	
+	public static CasoUso consultarCasoUsoTrayLAZY(int id) {
+		CasoUso cu = null;
+		try {
+			cu = new CasoUsoDAO().consultarCasoUsoTrayLAZY(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

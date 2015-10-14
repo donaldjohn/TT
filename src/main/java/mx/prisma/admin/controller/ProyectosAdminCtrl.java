@@ -50,7 +50,7 @@ ModelDriven<Proyecto>, SessionAware{
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 		} catch (Exception e) {
-			e.printStackTrace();
+			ErrorManager.agregaMensajeError(this, e);
 		}
 		return INDEX;
 	}
@@ -62,11 +62,9 @@ ModelDriven<Proyecto>, SessionAware{
 			buscarCatalogos();
 			resultado = EDITNEW;
 		} catch (PRISMAException pe) {
-			System.err.println(pe.getMessage());
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
 		} catch (Exception e) {
-			e.printStackTrace();
 			ErrorManager.agregaMensajeError(this, e);
 			resultado = index();
 		}

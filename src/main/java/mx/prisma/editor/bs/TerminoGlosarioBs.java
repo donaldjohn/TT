@@ -209,8 +209,29 @@ public class TerminoGlosarioBs {
 		return listReferenciasVista;
 	}
 
-	public static void modificarTerminoGlosario(TerminoGlosario model,
-			Actualizacion actualizacion) throws Exception {
+//	public static void modificarTerminoGlosario(TerminoGlosario model,
+//			Actualizacion actualizacion) throws Exception {
+//		try {
+//			validar(model);
+//			ElementoBs
+//					.verificarEstado(model, CU_Glosario.MODIFICARTERMINO10_2);
+//			model.setEstadoElemento(ElementoBs
+//					.consultarEstadoElemento(Estado.EDICION));
+//			model.setNombre(model.getNombre().trim());
+//
+//			new TerminoGlosarioDAO().modificarElemento(model, actualizacion);
+//
+//		} catch (JDBCException je) {
+//			System.out.println("ERROR CODE " + je.getErrorCode());
+//			je.printStackTrace();
+//			throw new Exception();
+//		} catch (HibernateException he) {
+//			he.printStackTrace();
+//			throw new Exception();
+//		}
+//		
+//	}
+	public static void modificarTerminoGlosario(TerminoGlosario model) throws Exception {
 		try {
 			validar(model);
 			ElementoBs
@@ -219,7 +240,7 @@ public class TerminoGlosarioBs {
 					.consultarEstadoElemento(Estado.EDICION));
 			model.setNombre(model.getNombre().trim());
 
-			new TerminoGlosarioDAO().modificarElemento(model, actualizacion);
+			new TerminoGlosarioDAO().modificarElemento(model);
 
 		} catch (JDBCException je) {
 			System.out.println("ERROR CODE " + je.getErrorCode());

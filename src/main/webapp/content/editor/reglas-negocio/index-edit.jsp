@@ -26,7 +26,7 @@
 
 	<s:form autocomplete="off" id="frmReglasNegocio" theme="simple"
 		action="%{#pageContext.request.contextPath}/reglas-negocio/%{idSel}"
-		method="post" onsubmit="return false;">
+		method="post" onsubmit="return prepararEnvio();">
 		<s:hidden name="_method" value="put" />
 		<div class="formulario">
 			<div class="tituloFormulario">Información general de la Regla
@@ -194,7 +194,7 @@
 		</div>
 		<br />
 		<div align="center">
-			<s:submit class="boton" value="Aceptar" onclick="prepararEnvio();"/>
+			<s:submit class="boton" value="Aceptar"/>
 			<input class="boton" type="button"
 				onclick="location.href='${pageContext.request.contextPath}/reglas-negocio'"
 				value="Cancelar" />

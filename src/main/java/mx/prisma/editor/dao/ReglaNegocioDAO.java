@@ -46,14 +46,29 @@ public class ReglaNegocioDAO extends ElementoDAO {
 		return super.siguienteNumero(TipoReferencia.REGLANEGOCIO, idProyecto);
 	}
 
-	public void modificarReglaNegocio(ReglaNegocio model,
-			Actualizacion actualizacion) {
+//	public void modificarReglaNegocio(ReglaNegocio model,
+//			Actualizacion actualizacion) {
+//		try {
+//			session.beginTransaction();
+//			
+//			
+//			session.update(model);
+//			session.save(actualizacion);
+//			session.getTransaction().commit();
+//		} catch (HibernateException he) {
+//			he.printStackTrace();
+//			session.getTransaction().rollback();
+//			throw he;
+//		}
+//		
+//	}
+	
+	public void modificarReglaNegocio(ReglaNegocio model) {
 		try {
 			session.beginTransaction();
 			
 			
 			session.update(model);
-			session.save(actualizacion);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();

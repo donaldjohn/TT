@@ -1,5 +1,5 @@
 function prepararEnvio() {
-	$('#mensajeConfirmacion').dialog('open');
+	//$('#mensajeConfirmacion').dialog('open');
 }
 
 function enviarComentarios(){

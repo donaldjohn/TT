@@ -249,30 +249,57 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 	public String edit() throws Exception {
 		String resultado = null;
 		try {
+			Date date = new Date(97, 1, 23);
+			long t1 = date.getTime();
 			colaborador = SessionManager.consultarColaboradorActivo();
+			System.err.println("***********************************************Tiempo consultarColaboradorActivo: " + (t1-date.getTime()));
+			
+			t1 = date.getTime();
 			proyecto = SessionManager.consultarProyectoActivo();
+			System.err.println("***********************************************Tiempo consultarProyectoActivo: " + (t1-date.getTime()));
+			
+			t1 = date.getTime();
 			modulo = SessionManager.consultarModuloActivo();
+			System.err.println("***********************************************Tiempo consultarModuloActivo: " + (t1-date.getTime()));
+			
+			t1 = date.getTime();
 			casoUso = SessionManager.consultarCasoUsoActivo();
-
+			System.err.println("***********************************************Tiempo consultarCasoUsoActivo: " + (t1-date.getTime()));
+			
 			if (casoUso == null) {
 				resultado = "cu";
 				return resultado;
 			}
+			
+			t1 = date.getTime();
 			if (!AccessBs.verificarPermisos(model.getCasoUso().getProyecto(), colaborador)) {
 				resultado = Action.LOGIN;
 				return resultado;
 			}
 			model.setCasoUso(casoUso);
+			System.err.println("***********************************************Tiempo verificarPermisos: " + (t1-date.getTime()));
 
+			t1 = date.getTime();
 			ElementoBs.verificarEstado(casoUso,
 					CU_CasosUso.MODIFICARTRAYECTORIA5_1_1_2);
+			System.err.println("***********************************************Tiempo verificarEstado: " + (t1-date.getTime()));
 
+			t1 = date.getTime();
 			buscaElementos();
+			System.err.println("***********************************************Tiempo buscaElementos: " + (t1-date.getTime()));
+			
+			t1 = date.getTime();
 			buscaCatalogos();
+			System.err.println("***********************************************Tiempo buscaCatalogos: " + (t1-date.getTime()));
+			
+			t1 = date.getTime();
 			existeTPrincipal = TrayectoriaBs.existeTrayectoriaPrincipal(
 					casoUso.getId(), model.getId());
+			System.err.println("***********************************************Tiempo existeTrayectoriaPrincipal: " + (t1-date.getTime()));
 
+			t1 = date.getTime();
 			prepararVista();
+			System.err.println("***********************************************Tiempo prepararVista: " + (t1-date.getTime()));
 
 			resultado = EDIT;
 		} catch (PRISMAException pe) {
@@ -317,11 +344,12 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 			model.getPasos().clear();
 			agregarPasos();
 			TrayectoriaBs.preAlmacenarObjetosToken(model);
-			Actualizacion actualizacion = new Actualizacion(new Date(),
-					comentario, model.getCasoUso(),
-					SessionManager.consultarColaboradorActivo());
-
-			TrayectoriaBs.modificarTrayectoria(model, actualizacion);
+//			Actualizacion actualizacion = new Actualizacion(new Date(),
+//					comentario, model.getCasoUso(),
+//					SessionManager.consultarColaboradorActivo());
+//
+//			TrayectoriaBs.modificarTrayectoria(model, actualizacion);
+			TrayectoriaBs.modificarTrayectoria(model);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "La",
 					"Trayectoria", "modificada" }));
@@ -844,6 +872,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 	public void setIdSel(Integer idSel) {
 		this.idSel = idSel;
 		this.model = TrayectoriaBs.consultarTrayectoria(idSel);
+		System.err.println("***********************************************Desués de setIdSel");
 	}
 
 	public String getObservaciones() {

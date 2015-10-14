@@ -1,5 +1,6 @@
 package mx.prisma.util;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.mail.internet.AddressException;
@@ -39,6 +40,11 @@ public class Validador {
 		}
 		return correo;
 
+	}
+
+	public static boolean validarFecha(Date fechaInicio) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

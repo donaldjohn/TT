@@ -26,7 +26,7 @@
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 	<s:form autocomplete="off" id="frmActor" theme="simple"
-		action="%{#pageContext.request.contextPath}/actores/%{idSel}" method="post" onsubmit="return false;">
+		action="%{#pageContext.request.contextPath}/actores/%{idSel}" method="post">
 		<s:hidden name="_method" value="put" />
 		<div class="formulario">
 			<div class="tituloFormulario">Información general del Actor</div>
@@ -66,7 +66,7 @@
 		
 		<br />
 		<div align="center">
-			<s:submit class="boton" value="Aceptar" onclick="prepararEnvio();"/>
+			<s:submit class="boton" value="Aceptar"/>
 
 			<s:url var="urlGestionarActores"
 				value="%{#pageContext.request.contextPath}/actores">

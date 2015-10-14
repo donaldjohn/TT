@@ -228,23 +228,36 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		String resultado = null;
 		try {
 			colaborador = SessionManager.consultarColaboradorActivo();
+			System.err.println("**********************************************************Después de consultarColaboradorActivo");
+			
 			proyecto = SessionManager.consultarProyectoActivo();
+			System.err.println("**********************************************************Después de consultarProyectoActivo");
+			
 			modulo = SessionManager.consultarModuloActivo();
 			if (modulo == null) {
 				resultado = "modulos";
 				return resultado;
 			}
+			System.err.println("**********************************************************Después de consultarModuloActivo");
+			
 			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
 				resultado = Action.LOGIN;
 				return resultado;
 			}
+			System.err.println("**********************************************************Después de verificarPermisos");
+			
 			model.setProyecto(proyecto);
+			
 			model.setModulo(modulo);
 
 			ElementoBs.verificarEstado(model, CU_CasosUso.MODIFICARCASOUSO5_2);
+			System.err.println("**********************************************************Después de verificarEstado");
 
 			buscaElementos();
+			System.err.println("**********************************************************Después de buscaElementos");
+			
 			prepararVista();
+			System.err.println("**********************************************************Después de prepararVista");
 
 			resultado = EDIT;
 		} catch (PRISMAValidacionException pve) {
@@ -285,11 +298,12 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 			agregarPostPrecondiciones(model);
 			CuBs.preAlmacenarObjetosToken(model);
-			Actualizacion actualizacion = new Actualizacion(new Date(),
-					comentario, model,
-					SessionManager.consultarColaboradorActivo());
+//			Actualizacion actualizacion = new Actualizacion(new Date(),
+//					comentario, model,
+//					SessionManager.consultarColaboradorActivo());
 
-			CuBs.modificarCasoUso(model, actualizacion);
+			//CuBs.modificarCasoUso(model, actualizacion);
+			CuBs.modificarCasoUso(model);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",
 					"Caso de uso", "modificado" }));
@@ -704,7 +718,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	
 	public String guardar() throws Exception{
 		String resultado = null;
-		System.out.println("test");
+		System.err.println("**********************************************************test");
 
 		try {
 			colaborador = SessionManager.consultarColaboradorActivo();
@@ -735,7 +749,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
 		} catch (Exception e) {
-			System.out.println(e);
 			ErrorManager.agregaMensajeError(this, e);
 			resultado = index();
 		}

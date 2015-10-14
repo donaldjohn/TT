@@ -167,7 +167,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 	public void setPostprecondiciones(Set<PostPrecondicion> postprecondiciones) {
 		this.postprecondiciones = postprecondiciones;
 	}
-	
+
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso")
 	@OrderBy("clave")
 	public Set<Trayectoria> getTrayectorias() {

@@ -5,6 +5,7 @@ import java.util.List;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.Trayectoria;
@@ -47,6 +48,25 @@ public class CasoUsoDAO extends ElementoDAO {
 	public CasoUso consultarCasoUso(int id) {
 		return (CasoUso) super.consultarElemento(id);
 	}
+	
+	public CasoUso consultarCasoUsoTrayLAZY(int id) {
+		CasoUso elemento = null;
+
+		try {
+			session.beginTransaction();
+			elemento = (CasoUso) session.get(CasoUso.class, id);
+			for( Trayectoria tray : elemento.getTrayectorias()) {
+				tray.getPasos().size();
+			}
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
+		return elemento;
+
+	}
 
 	@SuppressWarnings("unchecked")
 	public CasoUso consultarCasoUso(Modulo modulo, String numero) {
@@ -72,7 +92,36 @@ public class CasoUsoDAO extends ElementoDAO {
 
 	}
 
-	public void modificarCasoUso(CasoUso casodeuso, Actualizacion actualizacion) {
+//	public void modificarCasoUso(CasoUso casodeuso, Actualizacion actualizacion) {
+//		try {
+//			session.beginTransaction();
+//			Query query1 = session.createQuery("DELETE FROM CasoUsoActor WHERE casouso.id = :id");
+//			query1.setParameter("id", casodeuso.getId());
+//			query1.executeUpdate();
+//			Query query2 = session.createQuery("DELETE FROM Entrada WHERE casoUso.id = :id");
+//			query2.setParameter("id", casodeuso.getId());
+//			query2.executeUpdate();
+//			Query query3 = session.createQuery("DELETE FROM Salida WHERE casoUso.id = :id");
+//			query3.setParameter("id", casodeuso.getId());
+//			query3.executeUpdate();
+//			Query query4 = session.createQuery("DELETE FROM CasoUsoReglaNegocio WHERE casoUso.id = :id");
+//			query4.setParameter("id", casodeuso.getId());
+//			query4.executeUpdate();
+//			Query query5 = session.createQuery("DELETE FROM PostPrecondicion WHERE casoUso.id = :id");
+//			query5.setParameter("id", casodeuso.getId());
+//			query5.executeUpdate();
+//			
+//			session.update(casodeuso);
+//			session.save(actualizacion);
+//			session.getTransaction().commit();
+//		} catch (HibernateException he) {
+//			he.printStackTrace();
+//			session.getTransaction().rollback();
+//			throw he;
+//		}	
+//	}
+	
+	public void modificarCasoUso(CasoUso casodeuso) {
 		try {
 			session.beginTransaction();
 			Query query1 = session.createQuery("DELETE FROM CasoUsoActor WHERE casouso.id = :id");
@@ -92,7 +141,6 @@ public class CasoUsoDAO extends ElementoDAO {
 			query5.executeUpdate();
 			
 			session.update(casodeuso);
-			session.save(actualizacion);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
@@ -101,17 +149,7 @@ public class CasoUsoDAO extends ElementoDAO {
 		}	
 	}
 	
-	public void modificarCasoUso(CasoUso model) {
-		try {
-			session.beginTransaction();
-			session.update(model);
-			session.getTransaction().commit();
-		} catch (HibernateException he) {
-			he.printStackTrace();
-			session.getTransaction().rollback();
-			throw he;
-		}	
-	}
+	
 
 	public void registrarCasoUso(CasoUso casodeuso) {
 		super.registrarElemento(casodeuso);

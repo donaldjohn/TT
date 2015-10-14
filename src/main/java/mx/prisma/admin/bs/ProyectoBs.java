@@ -86,6 +86,17 @@ public class ProyectoBs {
 					"El usuario ingreso un nombre muy largo.", "MSG6",
 					new String[] { "50", "caracteres" }, "model.nombre");
 		}
+		// Validaciones de las fechas opcionales
+		if (model.getFechaInicio() != null && Validador.validarFecha(model.getFechaInicio())) {
+			throw new PRISMAValidacionException(
+					"El usuario no ingresó el nombre del proyecto.", "MSG4",
+					null, "model.nombre");
+		}
+		if (Validador.validaLongitudMaxima(model.getNombre(), 50)) {
+			throw new PRISMAValidacionException(
+					"El usuario ingreso un nombre muy largo.", "MSG6",
+					new String[] { "50", "caracteres" }, "model.nombre");
+		}
 				
 	}
 

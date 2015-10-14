@@ -52,9 +52,11 @@ function mostrarCamposParametrosX() {
 function prepararEnvio() {
 	try {
 		tablaToJson("parametros");
-		$('#mensajeComentarios').dialog('open');
+		//$('#mensajeComentarios').dialog('open');
+		return true;
 	} catch (err) {
 		console.log("Ocurrió un error: " + err);
+		return false;
 		
 	}
 }

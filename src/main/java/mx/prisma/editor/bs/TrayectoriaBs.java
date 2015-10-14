@@ -51,8 +51,34 @@ public class TrayectoriaBs {
 		}
 	}
 
-	public static void modificarTrayectoria(Trayectoria model,
-			Actualizacion actualizacion) throws Exception {
+//	public static void modificarTrayectoria(Trayectoria model,
+//			Actualizacion actualizacion) throws Exception {
+//		try {
+//			validar(model);
+//			ElementoBs.verificarEstado(model.getCasoUso(),
+//					CU_CasosUso.MODIFICARTRAYECTORIA5_1_1_2);
+//			model.getCasoUso().setEstadoElemento(
+//					ElementoBs.consultarEstadoElemento(Estado.EDICION));
+//			model.setClave(model.getClave().trim());
+//
+//			new TrayectoriaDAO().modificarTrayectoria(model, actualizacion);
+//		} catch (JDBCException je) {
+//			if (je.getErrorCode() == 1062) {
+//				throw new PRISMAValidacionException(
+//						"La clave de la trayectoria ya existe.", "MSG7",
+//						new String[] { "La", "Trayectoria", model.getClave() },
+//						"model.clave");
+//			}
+//			System.out.println("ERROR CODE " + je.getErrorCode());
+//			je.printStackTrace();
+//			throw new Exception();
+//		} catch (HibernateException he) {
+//			he.printStackTrace();
+//			throw new Exception();
+//		}
+//	}
+	
+	public static void modificarTrayectoria(Trayectoria model) throws Exception {
 		try {
 			validar(model);
 			ElementoBs.verificarEstado(model.getCasoUso(),
@@ -61,7 +87,7 @@ public class TrayectoriaBs {
 					ElementoBs.consultarEstadoElemento(Estado.EDICION));
 			model.setClave(model.getClave().trim());
 
-			new TrayectoriaDAO().modificarTrayectoria(model, actualizacion);
+			new TrayectoriaDAO().modificarTrayectoria(model);
 		} catch (JDBCException je) {
 			if (je.getErrorCode() == 1062) {
 				throw new PRISMAValidacionException(

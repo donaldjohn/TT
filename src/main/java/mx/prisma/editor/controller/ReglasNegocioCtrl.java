@@ -359,11 +359,12 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 				break;
 			}
 
-			Actualizacion actualizacion = new Actualizacion(new Date(),
-					comentario, model,
-					SessionManager.consultarColaboradorActivo());
-
-			ReglaNegocioBs.modificarReglaNegocio(model, actualizacion);
+//			Actualizacion actualizacion = new Actualizacion(new Date(),
+//					comentario, model,
+//					SessionManager.consultarColaboradorActivo());
+//
+//			ReglaNegocioBs.modificarReglaNegocio(model, actualizacion);
+			ReglaNegocioBs.modificarReglaNegocio(model);
 			resultado = SUCCESS;
 
 			addActionMessage(getText("MSG1", new String[] { "La",

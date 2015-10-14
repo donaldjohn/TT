@@ -264,7 +264,8 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 			Actualizacion actualizacion = new Actualizacion(new Date(),
 					comentario, model,
 					SessionManager.consultarColaboradorActivo());
-			ActorBs.modificarActor(model, actualizacion);
+			//ActorBs.modificarActor(model, actualizacion);
+			ActorBs.modificarActor(model);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El", "Actor",
 					"modificado" }));
