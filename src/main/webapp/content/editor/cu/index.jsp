@@ -28,10 +28,10 @@
 			</thead>
 			<tbody>
 			<s:iterator value="listCU" var="cu">
-				<tr>
+				<tr class="${'filaCU'}${cu.estadoElemento.id}">
 					<td><s:property value="%{#cu.clave + #cu.numero + ' ' +#cu.nombre}"/></td>
 					<td><s:property value="%{#cu.estadoElemento.nombre}"/></td>
-					<td align="center">	
+					<td align="center">
 							<!-- Consultar caso de uso -->		
 							<s:url var="urlConsultar" value="%{#pageContext.request.contextPath}/cu/%{#cu.id}"/>
 							<s:a href="%{urlConsultar}">
@@ -100,8 +100,6 @@
 								${blanks}	
 							</s:if>
 					</td>
-					
-					
 				</tr>
 			</s:iterator>
 			</tbody>

@@ -19,6 +19,3 @@ function mostrarMensajeEliminacion(id) {
 	$('#confirmarEliminacionDialog').dialog('open');
 	return false;
 }
-function cerrarMensajeReferencias() {
-	$('#mensajeReferenciasDialog').dialog('close');
-}

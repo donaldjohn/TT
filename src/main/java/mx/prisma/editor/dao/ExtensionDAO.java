@@ -18,18 +18,6 @@ public class ExtensionDAO extends GenericDAO {
 	}
 
 	public void registrarExtension(Extension extension) {
-		/*
-		 * Se procesan las regiones del punto de extensión para crear las
-		 * relaciones con los respectivos pasos y codificar los tokens
-		 * encontrados.
-		 */
-
-		TokenBs.almacenarObjetosToken(TokenBs.convertirToken_Objeto(extension
-				.getRegion(), extension.getCasoUsoOrigen().getProyecto()),
-				TipoSeccion.EXTENSIONES, extension);
-
-		extension.setRegion(TokenBs.codificarCadenaToken(extension.getRegion(),
-				extension.getCasoUsoOrigen().getProyecto()));
 
 		try {
 			session.beginTransaction();
@@ -81,5 +69,31 @@ public class ExtensionDAO extends GenericDAO {
 		}
 
 		return results;
+	}
+
+	public void modificarExtension(Extension extension) {
+		try {
+			session.beginTransaction();
+			session.saveOrUpdate(extension);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
+		
+	}
+
+	public void eliminarExtension(Extension model) {
+		try {
+			session.beginTransaction();
+			session.delete(model);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}	
+		
 	}
 }

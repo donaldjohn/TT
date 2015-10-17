@@ -261,9 +261,9 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 				return resultado;
 			}
 			model.setProyecto(proyecto);
-			Actualizacion actualizacion = new Actualizacion(new Date(),
-					comentario, model,
-					SessionManager.consultarColaboradorActivo());
+//			Actualizacion actualizacion = new Actualizacion(new Date(),
+//					comentario, model,
+//					SessionManager.consultarColaboradorActivo());
 			//ActorBs.modificarActor(model, actualizacion);
 			ActorBs.modificarActor(model);
 			resultado = SUCCESS;

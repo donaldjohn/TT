@@ -16,7 +16,13 @@ $(document).ready(function() {
 	
 	verificarAlternativaPrincipal();
 	ocultarColumnas("tablaPaso");
-	token.cargarListasToken();
+	
+	try {
+		token.cargarListasToken();
+	} catch (err) {
+		alert("No existen elementos para referenciar con el token.");
+	}
+	
 	cambiarElementosAlternativaPrincipal();
 	var json = $("#jsonPasosTabla").val();
 	

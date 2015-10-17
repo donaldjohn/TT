@@ -23,6 +23,7 @@ public class ColaboradorDAO extends GenericDAO {
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
+			throw he;
 		}
 	}
 
@@ -34,6 +35,7 @@ public class ColaboradorDAO extends GenericDAO {
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			session.getTransaction().rollback();
+			throw he;
 		}		
 	}
 	

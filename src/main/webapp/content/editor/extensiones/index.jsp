@@ -35,11 +35,12 @@
 					<td><s:property value="%{#ext.casoUsoDestino.clave + #ext.casoUsoDestino.numero + ' ' + #ext.casoUsoDestino.nombre}"/></td>
 					
 					<td align="center">
-						<s:a href="#">
+						<s:url var="urlEditar" value="%{#pageContext.request.contextPath}/extensiones/%{#ext.id}/edit"/>			
+						<s:a href="%{urlEditar}">
 							<img id="" class="button" title="Modificar Punto de extensión"
 									src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
 						</s:a>
-						<s:a href="#">
+						<s:a onclick="return mostrarMensajeEliminacion(%{#ext.id});">
 							<img id="" class="button" title="Eliminar Punto de extensión"
 									src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" />
 						</s:a>
@@ -63,6 +64,22 @@
 		</button>
 	</div>
 	</s:form>
+	<div class = "invisible">
+	<!-- EMERGENTE CONFIRMAR ELIMINACIÓN -->
+	<sj:dialog id="confirmarEliminacionDialog" title="Confirmación" autoOpen="false"
+		minHeight="100" minWidth="400" modal="true" draggable="true">
+		<s:form autocomplete="off" id="frmConfirmarEliminacion" name="frmConfirmarEliminacionName" theme="simple">
+				<div class="seccion">
+				<s:text name="MSG11"></s:text>
+				</div>
+			<br />
+			<div align="center">
+				<input id = "btnConfirmarEliminacion" type="button" onclick="" value="Aceptar"/> <input
+					type="button" onclick="cancelarConfirmarEliminacion();" value="Cancelar" />
+			</div>
+		</s:form>
+	</sj:dialog>
+	</div>
 </body>
 </html>
 </jsp:root>

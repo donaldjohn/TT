@@ -94,7 +94,6 @@ ModelDriven<Proyecto>, SessionAware{
 
 	public String create() throws Exception {
 		String resultado = null;
-		System.out.println("desde crete");
 		try {
 			if(curpLider.equals("-1")) {
 				throw new PRISMAValidacionException("El usuario no seleccionó el lider del proyecto.", "MSG4", null, "curpLider");
@@ -105,7 +104,6 @@ ModelDriven<Proyecto>, SessionAware{
 			
 			ProyectoBs.agregarEstado(model, idEstadoProyecto);
 			ProyectoBs.agregarLider(model, curpLider);
-			System.out.println("desde create, fecha: " + model.getFechaInicio().toString());
 			ProyectoBs.registrarProyecto(model);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",
@@ -132,9 +130,7 @@ ModelDriven<Proyecto>, SessionAware{
 			buscarCatalogosModificacion();
 			prepararVista();
 			resultado = EDIT;
-			System.out.println("desde edit, fecha: " + model.getFechaInicio().toString());
 		} catch (PRISMAException pe) {
-			System.err.println(pe.getMessage());
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
 		} catch (Exception e) {
@@ -152,7 +148,6 @@ ModelDriven<Proyecto>, SessionAware{
 
 	public String update() throws Exception {
 		String resultado = null;
-		System.out.println("desde update, fecha: " + model.getFechaInicio().toString());
 		try {
 			if(curpLider.equals("-1")) {
 				throw new PRISMAValidacionException("El usuario no seleccionó el lider del proyecto.", "MSG4", null, "curpLider");
@@ -160,8 +155,7 @@ ModelDriven<Proyecto>, SessionAware{
 			if(idEstadoProyecto == -1) {
 				throw new PRISMAValidacionException("El usuario no seleccionó el estado del proyecto.", "MSG4", null, "idEstadoProyecto");
 			}
-			
-			System.out.println("curpLider: " + curpLider);
+
 			ProyectoBs.agregarEstado(model, idEstadoProyecto);
 			ProyectoBs.agregarLider(model, curpLider);
 			

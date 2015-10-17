@@ -32,18 +32,6 @@ public class ProyectoBs {
 			throw new PRISMAException("No se puede consultar el proyecto.",
 					"MSG13");
 		}
-//		String OLD_FORMAT = "dd/MM/yyyy";
-//		String NEW_FORMAT = "yyyy/MM/dd";
-//
-//		// August 12, 2010
-//		String oldDateString = "12/08/2010";
-//		String newDateString;
-//
-//		SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
-//		Date d = sdf.parse(oldDateString);
-//		sdf.applyPattern(NEW_FORMAT);
-//		newDateString = sdf.format(d);
-		System.out.println("desde consultarProyecto, fecha: " + proyecto.getFechaInicio().toString());
 		return proyecto;
 	}
 
@@ -76,7 +64,6 @@ public class ProyectoBs {
 	}
 
 	private static void validar(Proyecto model) {
-		System.out.println("desde validar, fecha: " + model.getFechaInicio().toString());
 		// Validaciones de la clave
 		if (Validador.esNuloOVacio(model.getClave())) {
 			throw new PRISMAValidacionException(
@@ -209,11 +196,8 @@ public class ProyectoBs {
 		int idLider = RolBs.consultarIdRol(Rol_Enum.LIDER);
 		Rol rolLider = new RolDAO().consultarRol(idLider);
 		
-		System.out.println("size colProy antes: " + proyecto.getProyecto_colaboradores().size());
-		
 		if(colaboradorproyecto == null) {
 			// Si el colaborador no está asociado al proyecto
-			System.out.println("el colaborador no está asociado al proyecto");
 			ColaboradorProyecto colaboradorProyectoLider = new ColaboradorProyecto(liderVista, rolLider, proyecto);
 			proyecto.getProyecto_colaboradores().add(colaboradorProyectoLider);
 			
@@ -225,7 +209,6 @@ public class ProyectoBs {
 			}
 		} else if(!colaboradorPoryectoLiderBD.getColaborador().getCurp().equals(colaboradorproyecto.getColaborador().getCurp())) {
 			// Si el colaborador está asociado al proyecto y no es líder
-			System.out.println("el colaborador está asociado al proyecto y no es líder");
 			colaboradorproyecto.setRol(rolLider);
 			
 			// se elimina el líder anterior

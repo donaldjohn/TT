@@ -2,9 +2,7 @@ $(document).ready(function() {
 	$('#gestion').DataTable();
 	ocultarColumnas("gestion");
 	contextPath = $("#rutaContexto").val();
-
 } );
-
 
 function ocultarColumnas(tabla) {
 	var dataTable = $("#" + tabla).dataTable();

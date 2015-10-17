@@ -2,7 +2,12 @@ var contextPath = "prisma";
 $(document).ready(function() {
 	contextPath = $("#rutaContexto").val();
 	$('table.tablaGestion').DataTable();
-	token.cargarListasToken();
+	try {
+		token.cargarListasToken();
+	} catch (err) {
+		alert("No existen elementos para referenciar con el token.");
+	}
+	
 	var json = $("#jsonPrecondiciones").val();
 	if (json !== "" && json != null) {
 		var parsedJson = JSON.parse(json);

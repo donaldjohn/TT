@@ -81,7 +81,7 @@ public class Extension implements java.io.Serializable {
 		this.region = region;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "CasoUsoElementoid_origen", referencedColumnName = "Elementoid")
 	public CasoUso getCasoUsoOrigen() {
 		return casoUsoOrigen;
@@ -91,7 +91,7 @@ public class Extension implements java.io.Serializable {
 		this.casoUsoOrigen = casoUsoOrigen;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "CasoUsoElementoid_destino", referencedColumnName = "Elementoid")
 	public CasoUso getCasoUsoDestino() {
 		return casoUsoDestino;

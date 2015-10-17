@@ -295,6 +295,7 @@ public class PantallaBs {
 			validar(model);
 			ElementoBs
 					.verificarEstado(model, CU_Pantallas.MODIFICARPANTALLA6_2);
+			model.setClave(CLAVE + model.getModulo().getClave());
 			model.setEstadoElemento(ElementoBs
 					.consultarEstadoElemento(Estado.EDICION));
 			model.setNombre(model.getNombre().trim());

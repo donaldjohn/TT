@@ -6,10 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import mx.prisma.admin.bs.ProyectoBs;
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AccessBs;
+import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
+import mx.prisma.bs.ReferenciaEnum.TipoSeccion;
 import mx.prisma.editor.bs.CuBs;
+import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.ExtensionBs;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.dao.CasoUsoDAO;
@@ -60,6 +64,8 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 
 	private List<CasoUso> listCasoUso;
 	private String jsonPasos;
+	
+	private Integer idSel;
 
 	public String index() throws Exception {
 		String resultado;
@@ -86,9 +92,10 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 
 			listPtosExtension = new ArrayList<Extension>();
 			Set<Extension> extensiones = casoUso.getExtiende();
+			String regionDecodificada = "";
 			for (Extension extension : extensiones) {
-				extension.setRegion(TokenBs.decodificarCadenasToken(extension
-						.getRegion()));
+				regionDecodificada = TokenBs.decodificarCadenasToken(extension.getRegion());
+				extension.setRegion(regionDecodificada);
 				listPtosExtension.add(extension);
 			}
 			@SuppressWarnings("unchecked")
@@ -162,6 +169,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 			}
 			casoUso = SessionManager.consultarCasoUsoActivo();
 			model.setCasoUsoOrigen(casoUso);
+			ExtensionBs.preAlmacenarObjetosToken(model);
 			ExtensionBs.registrarExtension(model);
 			resultado = SUCCESS;
 			addActionMessage(getText("MSG1", new String[] { "El",
@@ -180,7 +188,112 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 		}
 		return resultado;
 	}
+	
+	public String edit() throws Exception {
+		String resultado = null;
+		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			casoUso = SessionManager.consultarCasoUsoActivo();
 
+			if (casoUso == null) {
+				resultado = "cu";
+				return resultado;
+			}
+			
+			if (!AccessBs.verificarPermisos(casoUso.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			ElementoBs.verificarEstado(model.getCasoUsoOrigen(), CU_CasosUso.MODIFICARCASOUSO5_2);
+
+			buscaElementos();
+			buscaCatalogos();
+			prepararVista();
+			resultado = EDIT;
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			return index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			return index();
+		}
+		return resultado;
+	}
+
+	private void prepararVista() {
+		idCasoUsoDestino = model.getCasoUsoDestino().getId();
+		model.setRegion(TokenBs
+					.decodificarCadenasToken(model.getRegion()));
+	}
+
+	public String update() throws Exception {
+		String resultado = null;
+		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			casoUso = SessionManager.consultarCasoUsoActivo();
+
+			if (casoUso == null) {
+				resultado = "cu";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(casoUso.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+
+			if (idCasoUsoDestino == -1) {
+				throw new PRISMAValidacionException(
+						"El usuario no seleccionó el caso de uso destino.",
+						"MSG4", null, "claveCasoUsoDestino");
+			} else {
+				model.setCasoUsoDestino(new CasoUsoDAO()
+						.consultarCasoUso(idCasoUsoDestino));
+			}
+
+			model.setCasoUsoOrigen(casoUso);
+			
+			ExtensionBs.preAlmacenarObjetosToken(model);
+			ExtensionBs.modificarExtension(model);
+			resultado = SUCCESS;
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"Punto de extensión", "modificado" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = edit();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+
+	public String destroy() throws Exception {
+		String resultado = null;
+		try {
+			ExtensionBs.eliminarExtension(model);
+			resultado = SUCCESS;
+			addActionMessage(getText("MSG1", new String[] { "El",
+					"Punto de extensión", "eliminado" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+	
 	private void buscaElementos() {
 		List<Paso> listPasos = new ArrayList<Paso>();
 		listCasoUso = CuBs.consultarCasosUso(proyecto);
@@ -190,7 +303,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 
 		if (listCasoUso != null && !listCasoUso.isEmpty()) {
 			for (CasoUso casoUsoi : listCasoUso) {
-				if (casoUsoi.getId() != casoUso.getId()) {
+				if (casoUsoi.getId() == casoUso.getId()) {
 					CasoUso casoUsoAux = new CasoUso();
 					casoUsoAux.setClave(casoUsoi.getClave());
 					casoUsoAux.setNumero(casoUsoi.getNumero());
@@ -329,6 +442,15 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 	
 	public void setModulo(Modulo modulo) {
 		this.modulo = modulo;
+	}
+	
+	public Integer getIdSel() {
+		return idSel;
+	}
+
+	public void setIdSel(Integer idSel) {
+		this.idSel = idSel;
+		this.model = ExtensionBs.consultarExtension(idSel);
 	}
 
 }

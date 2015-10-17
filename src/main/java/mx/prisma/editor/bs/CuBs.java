@@ -129,11 +129,12 @@ public class CuBs {
 		try {
 			validar(cu);
 			ElementoBs.verificarEstado(cu, CU_CasosUso.MODIFICARCASOUSO5_2);
+			cu.setClave(calcularClave(cu.getModulo().getClave()));
 			cu.setEstadoElemento(ElementoBs
 					.consultarEstadoElemento(Estado.EDICION));
 			// Se quitan los espacios iniciales y finales del nombre
 			cu.setNombre(cu.getNombre().trim());
-
+			
 			new CasoUsoDAO().modificarCasoUso(cu);
 
 		} catch (JDBCException je) {
