@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import mx.prisma.editor.dao.AtributoDAO;
 import mx.prisma.editor.dao.EntradaDAO;
 import mx.prisma.editor.dao.PasoDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
@@ -20,6 +21,15 @@ import mx.prisma.editor.model.Salida;
 import mx.prisma.util.PRISMAException;
 
 public class AtributoBs {
+	
+	public static Atributo consultarAtributo(int idAtributo1) {
+		Atributo atributo = new AtributoDAO().consultarAtributo(idAtributo1);
+		if (atributo == null) {
+			System.out.println("No se puede consultar el atributo por el id");
+		}
+		return atributo;
+	}
+	
 	public static List<String> verificarReferencias(Atributo atributo) {
 
 		List<ReferenciaParametro> referenciasParametro;

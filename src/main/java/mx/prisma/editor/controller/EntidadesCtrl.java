@@ -11,6 +11,7 @@ import java.util.Set;
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AccessBs;
+import mx.prisma.editor.bs.AtributoBs;
 import mx.prisma.editor.bs.EntidadBs;
 import mx.prisma.editor.dao.TipoDatoDAO;
 import mx.prisma.editor.dao.UnidadTamanioDAO;
@@ -339,7 +340,7 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 
 					if (atributoVista.getId() != null
 							&& atributoVista.getId() != 0) {
-						atributoBD = EntidadBs.consultarAtributo(atributoVista
+						atributoBD = AtributoBs.consultarAtributo(atributoVista
 								.getId());
 						atributoBD.setTipoDato(tipoDato);
 						atributoBD.setNombre(atributoVista.getNombre());
