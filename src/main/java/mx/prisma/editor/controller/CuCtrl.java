@@ -422,6 +422,9 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 		// Se consultan los elementos de todo el proyecto
 		listElementos = CuBs.consultarElementos(proyecto);
+		
+		System.out.println("XD-Después de consultarElementos");
+		
 		Modulo moduloAux = null;
 		
 
@@ -605,15 +608,23 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		}
 		this.jsonPrecondiciones = JsonUtil.mapListToJSON(precondiciones);
 		this.jsonPostcondiciones = JsonUtil.mapListToJSON(postcondiciones);
+		System.out.println("despues postprecondiciones");
 
 		model.setRedaccionActores((TokenBs.decodificarCadenasToken(model
 				.getRedaccionActores())));
+		System.out.println("despues setRedaccionActores");
+		
 		model.setRedaccionEntradas((TokenBs.decodificarCadenasToken(model
 				.getRedaccionEntradas())));
+		System.out.println("despues setRedaccionEntradas");
+		
 		model.setRedaccionSalidas((TokenBs.decodificarCadenasToken(model
 				.getRedaccionSalidas())));
+		System.out.println("despues setRedaccionSalidas");
+		
 		model.setRedaccionReglasNegocio((TokenBs.decodificarCadenasToken(model
 				.getRedaccionReglasNegocio())));
+		System.out.println("despues setRedaccionReglasNegocio");
 
 		for (Revision rev : model.getRevisiones()) {
 			if (!rev.isRevisado()
@@ -624,6 +635,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 				this.observaciones = rev.getObservaciones();
 			}
 		}
+		System.out.println("despues getRevisiones");
 	}
 
 	public String verificarElementosReferencias() {

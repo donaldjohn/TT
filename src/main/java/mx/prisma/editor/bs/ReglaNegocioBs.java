@@ -265,10 +265,9 @@ public class ReglaNegocioBs {
 		return false;
 	}
 
-	public static List<Atributo> consultarAtributosTipoDato(int idEntidad,
+	public static List<Atributo> consultarAtributosTipoDato(Entidad entidad,
 			String tipoDato) {
-		Set<Atributo> atributos = EntidadBs.consultarEntidad(idEntidad)
-				.getAtributos();
+		Set<Atributo> atributos = entidad.getAtributos();
 		List<Atributo> listAtributos = new ArrayList<Atributo>();
 		for (Atributo at : atributos) {
 			if (at.getTipoDato().getNombre().equals(tipoDato)) {
@@ -321,9 +320,9 @@ public class ReglaNegocioBs {
 					"MSG4", null, "model.numero");
 		}
 		
-		model.setAtributoComp1(EntidadBs.consultarAtributo(idAtributo1));
+		model.setAtributoComp1(AtributoBs.consultarAtributo(idAtributo1));
 		model.setOperadorComp(consultarOperador(idOperador));
-		model.setAtributoComp2(EntidadBs.consultarAtributo(idAtributo2));
+		model.setAtributoComp2(AtributoBs.consultarAtributo(idAtributo2));
 		return model;
 	}
 
@@ -338,7 +337,7 @@ public class ReglaNegocioBs {
 
 	public static ReglaNegocio agregarElementosFormatoCampo(ReglaNegocio model,
 			int idAtributoFormato) {
-		model.setAtributoExpReg(EntidadBs.consultarAtributo(idAtributoFormato));
+		model.setAtributoExpReg(AtributoBs.consultarAtributo(idAtributoFormato));
 		return model;
 	}
 

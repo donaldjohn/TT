@@ -64,7 +64,7 @@
 							cssClass="inputFormulario ui-widget" name="idTipoRN"
 							id="idTipoRN" listKey="id" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
-							onchange="mostrarCamposTipoRN();" value="idTipoRN"></s:select>
+							onchange="mostrarCamposTipoRN(); cargarCamposTipoRN();" value="idTipoRN"></s:select>
 							<s:fielderror fieldName="idTipoRN" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
@@ -204,8 +204,36 @@
 			value="%{jsonAtributos}" />
 		<s:hidden name="jsonEntidades" id="jsonEntidades"
 			value="%{jsonEntidades}" />
+		<s:hidden name="jsonOperadores" id="jsonOperadores"
+			value="%{jsonOperadores}" />
+		<s:hidden name="jsonAtributos2" id="jsonAtributos2"
+			value="%{jsonAtributos2}" />
+		<s:hidden name="jsonEntidades2" id="jsonEntidades2"
+			value="%{jsonEntidades2}" />
+			
+		<s:hidden id="idEntidadFormato"
+			value="%{idEntidadFormato}" />
+		<s:hidden id="idAtributoFormato"
+			value="%{idAtributoFormato}" />
+		
 		<s:hidden id="idEntidadUnicidad"
 			value="%{idEntidadUnicidad}" />
+		<s:hidden id="idAtributoUnicidad"
+			value="%{idAtributoUnicidad}" />
+			
+		<s:hidden id="idEntidad1"
+			value="%{idEntidad1}" />
+		<s:hidden id="idAtributo1"
+			value="%{idAtributo1}" />
+		<s:hidden id="idEntidad2"
+			value="%{idEntidad2}" />
+		<s:hidden id="idAtributo2"
+			value="%{idAtributo2}" />
+			
+		<s:hidden id="idOperador"
+			value="%{idOperador}" />
+			
+			
 	</s:form>
 </body>
 	</html>

@@ -11,6 +11,7 @@ import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AccessBs;
 import mx.prisma.bs.AnalisisEnum.CU_ReglasNegocio;
 import mx.prisma.bs.TipoReglaNegocioEnum;
+import mx.prisma.editor.bs.AtributoBs;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.bs.EntidadBs;
@@ -24,6 +25,7 @@ import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TipoReglaNegocio;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
+import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.SessionManager;
@@ -66,6 +68,9 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 	private int idTipoRN;
 	private String jsonAtributos;
 	private String jsonEntidades;
+	private String jsonAtributos2;
+	private String jsonEntidades2;
+	private String jsonOperadores;
 	private List<Entidad> listEntidades;
 	private List<Atributo> listAtributos;
 	private List<Entidad> listEntidades2;
@@ -139,9 +144,8 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 				return resultado;
 			}
 			model.setProyecto(proyecto);
-			buscaCatalogos();
-			buscarEntidades();
 			model.setClave("RN");
+			buscaCatalogos();
 			resultado = EDITNEW;
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
@@ -178,6 +182,8 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 			}
 			model.setTipoReglaNegocio(ReglaNegocioBs
 					.consultaTipoReglaNegocio(idTipoRN));
+			
+			buscarElementosListas();
 
 			TipoReglaNegocio trn = model.getTipoReglaNegocio();
 
@@ -210,6 +216,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 					.consultarEstadoElemento(Estado.EDICION));
 
 			// Se registra la regla de negocio
+			
 			ReglaNegocioBs.registrarReglaNegocio(model);
 			resultado = SUCCESS;
 
@@ -252,8 +259,9 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 					CU_ReglasNegocio.MODIFICARREGLANEGOCIO8_2);
 
 			buscaCatalogos();
-			buscarEntidades();
 			prepararVista();
+			buscarElementosListas();
+			
 
 			resultado = EDIT;
 		} catch (PRISMAValidacionException pve) {
@@ -274,31 +282,19 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 		idTipoRN = trn.getId();
 		switch (TipoReglaNegocioEnum.getTipoReglaNegocio(trn)) {
 		case COMPATRIBUTOS:
-			this.listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
-			this.listAtributos = new ArrayList<Atributo>(model
-					.getAtributoComp1().getEntidad().getAtributos());
-			this.listEntidades2 = ReglaNegocioBs.consultarEntidadesTipoDato(
-					proyecto, model.getAtributoComp2().getTipoDato()
-							.getNombre());
-			idEntidad = model.getAtributoComp2().getEntidad().getId();
-			this.listAtributos2 = ReglaNegocioBs.consultarAtributosTipoDato(
-					idEntidad, model.getAtributoComp2().getTipoDato()
-							.getNombre());
-
-			listOperadores = ReglaNegocioBs
-					.consultarOperadoresDisponibles(model.getAtributoComp1()
-							.getTipoDato().getNombre());
-
+			idEntidad1 = model.getAtributoComp1().getEntidad().getId();
+			idAtributo1 = model.getAtributoComp1().getId();
+			idOperador = model.getOperadorComp().getId();
+			idEntidad2 = model.getAtributoComp2().getEntidad().getId();
+			idAtributo2 = model.getAtributoComp2().getId();
 			break;
 		case FORMATOCAMPO:
-			this.listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
-			this.listAtributos = new ArrayList<Atributo>(model
-					.getAtributoExpReg().getEntidad().getAtributos());
+			idEntidadFormato = model.getAtributoExpReg().getEntidad().getId();
+			idAtributoFormato = model.getAtributoExpReg().getId();
 			break;
 		case UNICIDAD:
-			this.listEntidades = EntidadBs.consultarEntidadesProyecto(proyecto);
-			this.listAtributos = new ArrayList<Atributo>(model
-					.getAtributoUnicidad().getEntidad().getAtributos());
+			idEntidadUnicidad = model.getAtributoUnicidad().getEntidad().getId();
+			idAtributoUnicidad = model.getAtributoUnicidad().getId();
 			break;
 		default:
 			break;
@@ -307,11 +303,136 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 
 	}
 
-	private void buscarEntidades() {
-		this.listAtributos = new ArrayList<Atributo>();
-		this.listEntidades = new ArrayList<Entidad>();
-		this.listAtributos2 = new ArrayList<Atributo>();
-		this.listEntidades2 = new ArrayList<Entidad>();
+	private void buscarElementosListas() {
+		TipoReglaNegocio trn = model.getTipoReglaNegocio();
+		idTipoRN = trn.getId();
+		List<Atributo> listAtributosAux = null;
+		List<Entidad> listEntidadesAux = null;
+		switch (TipoReglaNegocioEnum.getTipoReglaNegocio(trn)) {
+		case COMPATRIBUTOS:
+			Entidad entidad1 = null;
+			Atributo atributo1 = null;
+			Entidad entidad2 = null;
+			
+			if(idEntidad1 != 0 && idEntidad1 != -1) {
+				entidad1 = EntidadBs.consultarEntidad(idEntidad1);
+			}
+			
+			if(idAtributo1 != 0 && idAtributo1 != -1) {
+				atributo1 = AtributoBs.consultarAtributo(idAtributo1);
+			}
+			
+			if(idEntidad2 != 0 && idEntidad2 != -1) {
+				entidad2 = EntidadBs.consultarEntidad(idEntidad2);
+			}
+			
+			listEntidadesAux = EntidadBs.consultarEntidadesProyecto(proyecto);
+			listEntidades = new ArrayList<Entidad>();
+			for(Entidad e : listEntidadesAux) {
+				e.setAtributos(null);
+				e.setProyecto(null);
+				listEntidades.add(e);
+			}
+			jsonEntidades = JsonUtil.mapListToJSON(listEntidades);
+			
+			if(entidad1 != null) {
+				listAtributosAux = new ArrayList<Atributo>(entidad1.getAtributos());
+				listAtributos = new ArrayList<Atributo>();
+				for(Atributo a : listAtributosAux) {
+					a.setEntidad(null);
+					listAtributos.add(a);
+				}
+				jsonAtributos = JsonUtil.mapListToJSON(listAtributos);
+			}
+			
+			if(atributo1 != null) {
+				listOperadores = ReglaNegocioBs
+						.consultarOperadoresDisponibles(atributo1.getTipoDato()
+								.getNombre());
+				jsonOperadores = JsonUtil.mapListToJSON(listOperadores);
+				
+				List<Entidad> listEntidades2Aux = ReglaNegocioBs.consultarEntidadesTipoDato(
+						proyecto, atributo1.getTipoDato()
+								.getNombre());
+				listEntidades2 = new ArrayList<Entidad>();
+				for(Entidad e2 : listEntidades2Aux) {
+					e2.setAtributos(null);
+					e2.setProyecto(null);
+					listEntidades2.add(e2);
+				}
+				jsonEntidades2 = JsonUtil.mapListToJSON(listEntidades2);
+				
+			}
+			
+			if(entidad2 != null && atributo1 != null) {
+				List<Atributo> listAtributos2Aux = ReglaNegocioBs.consultarAtributosTipoDato(
+						entidad2, atributo1.getTipoDato()
+								.getNombre());
+				listAtributos2 = new ArrayList<Atributo>();
+				for(Atributo a2 : listAtributos2Aux) {
+					a2.setEntidad(null);
+					listAtributos2.add(a2);
+				}
+				
+			}
+			
+			break;
+		case FORMATOCAMPO:
+			Entidad entidadFormato = null;
+			
+			if(idEntidadFormato != 0 && idEntidadFormato != -1) {
+				entidadFormato = EntidadBs.consultarEntidad(idEntidadFormato);
+			}
+			
+			listEntidadesAux = EntidadBs.consultarEntidadesProyecto(proyecto);
+			listEntidades = new ArrayList<Entidad>();
+			for(Entidad e : listEntidadesAux) {
+				e.setAtributos(null);
+				e.setProyecto(null);
+				listEntidades.add(e);
+			}
+			jsonEntidades = JsonUtil.mapListToJSON(listEntidades);
+			
+			if(entidadFormato != null) {
+				listAtributosAux = new ArrayList<Atributo>(entidadFormato.getAtributos());
+				listAtributos = new ArrayList<Atributo>();
+				for(Atributo a : listAtributosAux) {
+					a.setEntidad(null);
+					listAtributos.add(a);
+				}
+				jsonAtributos = JsonUtil.mapListToJSON(listAtributos);
+			}
+			break;
+		case UNICIDAD:
+			Entidad entidadUnicidad = null;
+			
+			if(idEntidadUnicidad != 0 && idEntidadUnicidad != -1) {
+				entidadUnicidad = EntidadBs.consultarEntidad(idEntidadUnicidad);
+			}
+			
+			listEntidadesAux = EntidadBs.consultarEntidadesProyecto(proyecto);
+			listEntidades = new ArrayList<Entidad>();
+			for(Entidad e : listEntidadesAux) {
+				e.setAtributos(null);
+				e.setProyecto(null);
+				listEntidades.add(e);
+			}
+			jsonEntidades = JsonUtil.mapListToJSON(listEntidades);
+			
+			if(entidadUnicidad != null) {
+				listAtributosAux = new ArrayList<Atributo>(entidadUnicidad.getAtributos());
+				listAtributos = new ArrayList<Atributo>();
+				for(Atributo a : listAtributosAux) {
+					a.setEntidad(null);
+					listAtributos.add(a);
+				}
+				jsonAtributos = JsonUtil.mapListToJSON(listAtributos);
+			}
+			break;
+		default:
+			break;
+
+		}
 	}
 
 	public String update() {
@@ -458,7 +579,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 	public String cargarEntidadesDependientes() {
 		try {
 			proyecto = SessionManager.consultarProyectoActivo();
-			Atributo atributo = EntidadBs.consultarAtributo(this.idAtributo);
+			Atributo atributo = AtributoBs.consultarAtributo(this.idAtributo);
 			List<Entidad> listEntidadesAux = ReglaNegocioBs
 					.consultarEntidadesTipoDato(proyecto, atributo
 							.getTipoDato().getNombre());
@@ -476,8 +597,6 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 	public String cargarAtributos() {
 		try {
 			Entidad entidad = EntidadBs.consultarEntidad(this.idEntidad);
-			Atributo atributo = EntidadBs.consultarAtributo(6);
-			System.out.println("atr: " + atributo.getNombre());
 			ArrayList<Atributo> listAtributosAux = new ArrayList<Atributo>(
 					entidad.getAtributos());
 			listAtributos = new ArrayList<Atributo>();
@@ -493,10 +612,11 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 
 	public String cargarAtributosDependientes() {
 		try {
-			Atributo atributo = EntidadBs.consultarAtributo(this.idAtributo);
+			Atributo atributo = AtributoBs.consultarAtributo(this.idAtributo);
 			String tipoDato = atributo.getTipoDato().getNombre();
+			Entidad entidad = EntidadBs.consultarEntidad(idEntidad);
 			ArrayList<Atributo> listAtributosAux = new ArrayList<Atributo>(
-					ReglaNegocioBs.consultarAtributosTipoDato(idEntidad,
+					ReglaNegocioBs.consultarAtributosTipoDato(entidad,
 							tipoDato));
 			listAtributos = new ArrayList<Atributo>();
 			for (Atributo at : listAtributosAux) {
@@ -512,7 +632,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 	public String cargarOperadores() {
 		try {
 			System.out.println("Desde cargar op: " + this.idAtributo);
-			Atributo atributo = EntidadBs.consultarAtributo(this.idAtributo);
+			Atributo atributo = AtributoBs.consultarAtributo(this.idAtributo);
 			System.out.println("Desde cargar op 2: " + atributo.getNombre());
 			listOperadores = ReglaNegocioBs
 					.consultarOperadoresDisponibles(atributo.getTipoDato()
@@ -528,6 +648,11 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 		listTipoRN = ReglaNegocioBs.consultarTipoRNDisponibles(proyecto,
 				model.getTipoReglaNegocio());
 		listOperadores = new ArrayList<Operador>();
+		
+		listEntidades = new ArrayList<Entidad>();
+		listAtributos = new ArrayList<Atributo>();
+		listEntidades2 = new ArrayList<Entidad>();
+		listAtributos2 = new ArrayList<Atributo>();
 	}
 
 	public String verificarElementosReferencias() {
@@ -770,5 +895,31 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 	public void setModulo(Modulo modulo) {
 		this.modulo = modulo;
 	}
+
+	public String getJsonAtributos2() {
+		return jsonAtributos2;
+	}
+
+	public void setJsonAtributos2(String jsonAtributos2) {
+		this.jsonAtributos2 = jsonAtributos2;
+	}
+
+	public String getJsonEntidades2() {
+		return jsonEntidades2;
+	}
+
+	public void setJsonEntidades2(String jsonEntidades2) {
+		this.jsonEntidades2 = jsonEntidades2;
+	}
+
+	public String getJsonOperadores() {
+		return jsonOperadores;
+	}
+
+	public void setJsonOperadores(String jsonOperadores) {
+		this.jsonOperadores = jsonOperadores;
+	}
+	
+	
 	
 }

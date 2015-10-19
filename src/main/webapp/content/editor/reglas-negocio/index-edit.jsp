@@ -65,7 +65,7 @@
 							cssClass="inputFormulario ui-widget" name="idTipoRN"
 							id="idTipoRN" listKey="id" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
-							onchange="mostrarCamposTipoRN();" value="idTipoRN"></s:select>
+							onchange="mostrarCamposTipoRN(); cargarCamposTipoRN();" value="idTipoRN"></s:select>
 							<s:fielderror fieldName="idTipoRN" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
@@ -120,8 +120,7 @@
 							id="entidadUnicidad" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
 							listKey="id"
-							onchange="cargarAtributos(this, 'atributoUnicidad');"
-							value="model.atributoUnicidad.entidad.id"></s:select> <s:fielderror
+							onchange="cargarAtributos(this, 'atributoUnicidad');"/> <s:fielderror
 							fieldName="idEntidadUnicidad" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr id="filaAtributoUnicidad" class="oculto">
@@ -130,7 +129,7 @@
 							cssClass="inputFormulario ui-widget" name="idAtributoUnicidad"
 							id="atributoUnicidad" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
-							listKey="id" value="model.atributoUnicidad.id"></s:select> <s:fielderror
+							listKey="id"/> <s:fielderror
 							fieldName="idAtributoUnicidad" cssClass="error" theme="jquery" /></td>
 				</tr>
 
@@ -142,7 +141,7 @@
 							id="entidad1" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
 							listKey="id" onchange="cargarAtributos(this, 'atributo1');"
-							value="model.atributoComp1.entidad.id"></s:select> <s:fielderror
+							value="idEntidad1"></s:select> <s:fielderror
 							fieldName="idEntidad1" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr id="filaAtributo1" class="oculto">
@@ -153,7 +152,7 @@
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
 							listKey="id"
 							onchange="cargarOperadores(this);cargarEntidadesDependientes(this, 'entidad2');"
-							value="model.atributoComp1.id"></s:select> <s:fielderror
+							value="idAtributo1"></s:select> <s:fielderror
 							fieldName="idAtributo1" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr id="filaOperador" class="oculto">
@@ -163,7 +162,9 @@
 							cssClass="inputFormulario ui-widget" name="idOperador"
 							id="operador" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="simbolo"
-							listKey="id" value="model.operadorComp.id"></s:select></td>
+							listKey="id" value="idOperador"></s:select>
+							<s:fielderror
+							fieldName="idOperador" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr id="filaEntidad2" class="oculto">
 					<td class="label obligatorio"><s:text name="labelEntidad2" /></td>
@@ -173,7 +174,7 @@
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
 							listKey="id"
 							onchange="cargarAtributosDependientes(this, 'atributo2');"
-							value="model.atributoComp2.entidad.id"></s:select> <s:fielderror
+							value="idEntidad2"></s:select> <s:fielderror
 							fieldName="idEntidad2" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr id="filaAtributo2" class="oculto">
@@ -182,7 +183,7 @@
 							cssClass="inputFormulario ui-widget" name="idAtributo2"
 							id="atributo2" cssErrorClass="select-error"
 							headerValue="Seleccione" headerKey="-1" listValue="nombre"
-							listKey="id" value="model.atributoComp2.id"></s:select> <s:fielderror
+							listKey="id" value="idAtributo2"></s:select> <s:fielderror
 							fieldName="idAtributo2" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr id="filaResultado" class="oculto">
@@ -194,7 +195,8 @@
 		</div>
 		<br />
 		<div align="center">
-			<s:submit class="boton" value="Aceptar"/>
+			<s:submit class="boton" value="Aceptar" />
+
 			<input class="boton" type="button"
 				onclick="location.href='${pageContext.request.contextPath}/reglas-negocio'"
 				value="Cancelar" />
@@ -203,7 +205,36 @@
 			value="%{jsonAtributos}" />
 		<s:hidden name="jsonEntidades" id="jsonEntidades"
 			value="%{jsonEntidades}" />
-		<s:hidden name="comentario" id="comentario" value="%{comentario}" />
+		<s:hidden name="jsonOperadores" id="jsonOperadores"
+			value="%{jsonOperadores}" />
+		<s:hidden name="jsonAtributos2" id="jsonAtributos2"
+			value="%{jsonAtributos2}" />
+		<s:hidden name="jsonEntidades2" id="jsonEntidades2"
+			value="%{jsonEntidades2}" />
+			
+		<s:hidden id="idEntidadFormato"
+			value="%{idEntidadFormato}" />
+		<s:hidden id="idAtributoFormato"
+			value="%{idAtributoFormato}" />
+		
+		<s:hidden id="idEntidadUnicidad"
+			value="%{idEntidadUnicidad}" />
+		<s:hidden id="idAtributoUnicidad"
+			value="%{idAtributoUnicidad}" />
+			
+		<s:hidden id="idEntidad1"
+			value="%{idEntidad1}" />
+		<s:hidden id="idAtributo1"
+			value="%{idAtributo1}" />
+		<s:hidden id="idEntidad2"
+			value="%{idEntidad2}" />
+		<s:hidden id="idAtributo2"
+			value="%{idAtributo2}" />
+			
+		<s:hidden id="idOperador"
+			value="%{idOperador}" />
+			
+			
 	</s:form>
 	<!-- COMENTARIOS DE LA ACTUALIZACIÓN -->
 	<sj:dialog id="mensajeConfirmacion" title="Confirmación"
