@@ -58,18 +58,18 @@ public class TokenBs {
 	 * ACC·ClavePantalla·NúmeroPantalla:NombrePantalla:Nombre Parámetros (Msj.)
 	 * PARAM·Nombre
 	 */
-	private static String tokenRN = "RN" + tokenSeparator1;
-	private static String tokenENT = "ENT" + tokenSeparator1;
-	private static String tokenCU = "CU" + tokenSeparator1;
-	private static String tokenIU = "IU" + tokenSeparator1;
-	private static String tokenMSG = "MSG" + tokenSeparator1;
-	private static String tokenACT = "ACT" + tokenSeparator1;
-	private static String tokenGLS = "GLS" + tokenSeparator1;
-	private static String tokenATR = "ATR" + tokenSeparator1;
-	private static String tokenP = "P" + tokenSeparator1;
-	private static String tokenTray = "TRAY" + tokenSeparator1;
-	private static String tokenACC = "ACC" + tokenSeparator1;
-	private static String tokenPARAM = "PARAM" + tokenSeparator1;
+	public static String tokenRN = "RN" + tokenSeparator1;
+	public static String tokenENT = "ENT" + tokenSeparator1;
+	public static String tokenCU = "CU" + tokenSeparator1;
+	public static String tokenIU = "IU" + tokenSeparator1;
+	public static String tokenMSG = "MSG" + tokenSeparator1;
+	public static String tokenACT = "ACT" + tokenSeparator1;
+	public static String tokenGLS = "GLS" + tokenSeparator1;
+	public static String tokenATR = "ATR" + tokenSeparator1;
+	public static String tokenP = "P" + tokenSeparator1;
+	public static String tokenTray = "TRAY" + tokenSeparator1;
+	public static String tokenACC = "ACC" + tokenSeparator1;
+	public static String tokenPARAM = "PARAM" + tokenSeparator1;
 
 	/*
 	 * El método ArrayList<Object> convertirToken_Objeto(String @redaccion,
@@ -2109,4 +2109,6 @@ public class TokenBs {
 
 		return false;
 	}
+
+
 }
