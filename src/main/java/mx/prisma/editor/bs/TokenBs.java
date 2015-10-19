@@ -855,12 +855,15 @@ public class TokenBs {
 		if (cadenaCodificada != null && cadenaCodificada != "") {
 			String cadenaCodificadaBruta = cadenaCodificada.substring(1);
 			ArrayList<String> tokens = procesarTokenIpunt(cadenaCodificadaBruta);
+			System.out.println("despues de procesartokeninput");
 			ArrayList<String> segmentos;
 			Modulo modulo;
 			cadenaDecodificada = cadenaCodificadaBruta;
 
 			for (String token : tokens) {
 				segmentos = segmentarToken(token);
+				System.out.println("id dentro for: " + segmentos.get(1));
+				System.out.println("referencia: " + segmentos.get(0));
 				switch (ReferenciaEnum.getTipoReferencia(segmentos.get(0))) {
 				case ACCION: // ACC.IUM.NUM:PANTALLA:NOMBRE_ACC =
 								// ACC.IUSF.7:Registrar_incendio:Aceptar

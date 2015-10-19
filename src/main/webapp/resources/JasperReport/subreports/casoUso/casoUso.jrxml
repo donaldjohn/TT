@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="casoUso" pageWidth="500" pageHeight="432" columnWidth="500" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="d1849b9f-00df-401a-84c3-1265e9143528">
 	<property name="ireport.zoom" value="1.6105100000000008"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.y" value="289"/>
 	<subDataset name="Precondiciones" uuid="ab4e5f12-fe4f-4e3e-ad34-40c490116e8c">
 		<parameter name="p_casoUsoId" class="java.lang.String"/>
 		<queryString>
@@ -69,27 +69,7 @@ ORDER BY REPLACE(ele.numero,'.','') * 1 ASC;]]>
 		</band>
 	</title>
 	<detail>
-		<band height="306" splitType="Stretch">
-			<frame>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="18" y="201" width="464" height="20" uuid="dccac80d-51f2-4b96-b843-1f10771e227c"/>
-				<box topPadding="3" leftPadding="2" bottomPadding="3" rightPadding="2">
-					<pen lineWidth="0.5" lineColor="#B3B3B3"/>
-					<topPen lineWidth="0.5" lineColor="#B3B3B3"/>
-					<leftPen lineWidth="0.5" lineColor="#B3B3B3"/>
-					<bottomPen lineWidth="0.5" lineColor="#B3B3B3"/>
-					<rightPen lineWidth="0.5" lineColor="#B3B3B3"/>
-				</box>
-			</frame>
-			<frame>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="115" y="201" width="367" height="20" uuid="172cfbb0-c78c-4fa9-bf3c-cf6d431422af"/>
-				<box topPadding="3" leftPadding="2" bottomPadding="3" rightPadding="2">
-					<pen lineWidth="0.5" lineColor="#B3B3B3"/>
-					<topPen lineWidth="0.5" lineColor="#B3B3B3"/>
-					<leftPen lineWidth="0.5" lineColor="#B3B3B3"/>
-					<bottomPen lineWidth="0.5" lineColor="#B3B3B3"/>
-					<rightPen lineWidth="0.5" lineColor="#B3B3B3"/>
-				</box>
-			</frame>
+		<band height="243" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
 				<reportElement x="18" y="11" width="464" height="19" uuid="30dbc923-50a4-40af-9e11-20035382712c"/>
 				<textElement textAlignment="Left">
@@ -105,8 +85,10 @@ ORDER BY REPLACE(ele.numero,'.','') * 1 ASC;]]>
 				<textElement textAlignment="Justified"/>
 				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 			</textField>
+		</band>
+		<band height="38">
 			<staticText>
-				<reportElement mode="Opaque" x="18" y="74" width="464" height="17" forecolor="#FEFEFE" backcolor="#5B5B5B" uuid="64cfa76d-230b-4220-bc60-0e707348c734"/>
+				<reportElement mode="Opaque" x="18" y="0" width="464" height="17" forecolor="#FEFEFE" backcolor="#5B5B5B" uuid="64cfa76d-230b-4220-bc60-0e707348c734"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
@@ -120,33 +102,7 @@ ORDER BY REPLACE(ele.numero,'.','') * 1 ASC;]]>
 				<text><![CDATA[Información general del Caso de uso]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="115" y="111" width="367" height="20" uuid="9ef716d8-e09c-4788-b87a-d30ff5b19654"/>
-				<box topPadding="3" leftPadding="2" bottomPadding="3" rightPadding="2">
-					<pen lineWidth="0.5" lineColor="#B3B3B3"/>
-					<topPen lineWidth="0.5" lineColor="#B3B3B3"/>
-					<leftPen lineWidth="0.5" lineColor="#B3B3B3"/>
-					<bottomPen lineWidth="0.5" lineColor="#B3B3B3"/>
-					<rightPen lineWidth="0.5" lineColor="#B3B3B3"/>
-				</box>
-				<textElement markup="html"/>
-				<textFieldExpression><![CDATA[$V{v_redaccionActores}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="18" y="111" width="97" height="20" uuid="c37b4c16-19fa-4fce-bb55-11cfca47a543"/>
-				<box topPadding="3" leftPadding="2" bottomPadding="3" rightPadding="2">
-					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
-					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
-					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
-					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
-					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
-				</box>
-				<textElement textAlignment="Right">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Actores:]]></text>
-			</staticText>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="115" y="91" width="367" height="20" uuid="28b4ba0b-5e34-47d3-9fff-6e7f199e3e8b"/>
+				<reportElement positionType="Float" x="115" y="17" width="367" height="20" uuid="28b4ba0b-5e34-47d3-9fff-6e7f199e3e8b"/>
 				<box topPadding="3" leftPadding="2" bottomPadding="3" rightPadding="2">
 					<pen lineWidth="0.5" lineColor="#B3B3B3"/>
 					<topPen lineWidth="0.5" lineColor="#B3B3B3"/>
@@ -157,53 +113,87 @@ ORDER BY REPLACE(ele.numero,'.','') * 1 ASC;]]>
 				<textFieldExpression><![CDATA[$F{estadoNombre}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="18" y="91" width="97" height="20" uuid="6c65c35d-c8b8-473b-a831-3ed39574de28"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="18" y="17" width="97" height="20" uuid="40f1d55e-3502-4014-b737-d6ea389094eb"/>
 				<box topPadding="3" leftPadding="2" bottomPadding="3" rightPadding="2">
-					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
-					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
-					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
-					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
-					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
+					<pen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
 				</box>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Estado:]]></text>
 			</staticText>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="115" y="131" width="367" height="20" uuid="1f2dd86d-9042-4e7c-933b-ef1bf3ffd017"/>
-				<box topPadding="3" leftPadding="2" bottomPadding="3" rightPadding="2">
-					<pen lineWidth="0.5" lineColor="#B3B3B3"/>
-					<topPen lineWidth="0.5" lineColor="#B3B3B3"/>
-					<leftPen lineWidth="0.5" lineColor="#B3B3B3"/>
-					<bottomPen lineWidth="0.5" lineColor="#B3B3B3"/>
-					<rightPen lineWidth="0.5" lineColor="#B3B3B3"/>
-				</box>
-				<textElement markup="html"/>
-				<textFieldExpression><![CDATA[$V{v_redaccionEntradas}]]></textFieldExpression>
-			</textField>
+		</band>
+		<band height="23">
+			<elementGroup>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="115" y="0" width="367" height="22" uuid="9ef716d8-e09c-4788-b87a-d30ff5b19654"/>
+					<box topPadding="3" leftPadding="2" bottomPadding="3" rightPadding="2">
+						<pen lineWidth="0.5" lineColor="#FF0000"/>
+						<topPen lineWidth="0.5" lineColor="#FF0000"/>
+						<leftPen lineWidth="0.5" lineColor="#FF0000"/>
+						<bottomPen lineWidth="0.5" lineColor="#FF0000"/>
+						<rightPen lineWidth="0.5" lineColor="#FF0000"/>
+					</box>
+					<textElement markup="html"/>
+					<textFieldExpression><![CDATA[$V{v_redaccionActores}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="18" y="2" width="97" height="20" uuid="c37b4c16-19fa-4fce-bb55-11cfca47a543"/>
+					<box topPadding="3" leftPadding="2" bottomPadding="3" rightPadding="2">
+						<pen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Actores:]]></text>
+				</staticText>
+			</elementGroup>
+		</band>
+		<band height="25">
 			<staticText>
-				<reportElement x="18" y="131" width="97" height="20" uuid="fdaded5c-0fb5-4543-8cc8-b14b9ead8baa"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="18" y="0" width="97" height="20" uuid="fdaded5c-0fb5-4543-8cc8-b14b9ead8baa"/>
 				<box topPadding="3" leftPadding="2" bottomPadding="3" rightPadding="2">
-					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
-					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
-					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
-					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
-					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
+					<pen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
 				</box>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Entradas:]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="18" y="151" width="97" height="20" uuid="38c561d7-1d21-4aca-9533-3fb7bc3cc0f4"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="115" y="0" width="367" height="23" uuid="4391e7aa-3a99-4a08-9e99-0fa5960418cc"/>
 				<box topPadding="3" leftPadding="2" bottomPadding="3" rightPadding="2">
-					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
-					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
-					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
-					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
-					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
+					<pen lineWidth="0.5" lineColor="#0010FF"/>
+					<topPen lineWidth="0.5" lineColor="#0010FF"/>
+					<leftPen lineWidth="0.5" lineColor="#0010FF"/>
+					<bottomPen lineWidth="0.5" lineColor="#0010FF"/>
+					<rightPen lineWidth="0.5" lineColor="#0010FF"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$V{v_redaccionEntradas}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="26">
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="18" y="0" width="97" height="20" uuid="38c561d7-1d21-4aca-9533-3fb7bc3cc0f4"/>
+				<box topPadding="3" leftPadding="2" bottomPadding="3" rightPadding="2">
+					<pen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
 				</box>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
@@ -211,25 +201,27 @@ ORDER BY REPLACE(ele.numero,'.','') * 1 ASC;]]>
 				<text><![CDATA[Salidas:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="115" y="151" width="367" height="20" uuid="38dd811d-cd21-4d64-8349-74b7f5011f85"/>
+				<reportElement positionType="Float" x="115" y="0" width="367" height="24" uuid="38dd811d-cd21-4d64-8349-74b7f5011f85"/>
 				<box topPadding="3" leftPadding="2" bottomPadding="3" rightPadding="2">
-					<pen lineWidth="0.5" lineColor="#B3B3B3"/>
-					<topPen lineWidth="0.5" lineColor="#B3B3B3"/>
-					<leftPen lineWidth="0.5" lineColor="#B3B3B3"/>
-					<bottomPen lineWidth="0.5" lineColor="#B3B3B3"/>
-					<rightPen lineWidth="0.5" lineColor="#B3B3B3"/>
+					<pen lineWidth="0.5" lineColor="#FF0000"/>
+					<topPen lineWidth="0.5" lineColor="#FF0000"/>
+					<leftPen lineWidth="0.5" lineColor="#FF0000"/>
+					<bottomPen lineWidth="0.5" lineColor="#FF0000"/>
+					<rightPen lineWidth="0.5" lineColor="#FF0000"/>
 				</box>
 				<textElement markup="html"/>
 				<textFieldExpression><![CDATA[$V{v_redaccionSalidas}]]></textFieldExpression>
 			</textField>
+		</band>
+		<band height="50">
 			<staticText>
-				<reportElement x="18" y="171" width="97" height="30" uuid="9566a110-23ff-4a63-8ed3-1bea9d4ff79b"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="18" y="0" width="97" height="30" uuid="9566a110-23ff-4a63-8ed3-1bea9d4ff79b"/>
 				<box topPadding="3" leftPadding="2" bottomPadding="3" rightPadding="2">
-					<pen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
-					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
-					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
-					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
-					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#B3B3B3"/>
+					<pen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#B3B3B3"/>
 				</box>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
@@ -237,7 +229,36 @@ ORDER BY REPLACE(ele.numero,'.','') * 1 ASC;]]>
 				<text><![CDATA[Reglas de negocio:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="115" y="171" width="367" height="30" uuid="864b76c0-ad42-47c3-bdf2-16a065cddbea"/>
+				<reportElement positionType="Float" x="115" y="0" width="367" height="44" uuid="864b76c0-ad42-47c3-bdf2-16a065cddbea"/>
+				<box topPadding="3" leftPadding="2" bottomPadding="3" rightPadding="2">
+					<pen lineWidth="0.5" lineColor="#FFBF00"/>
+					<topPen lineWidth="0.5" lineColor="#FFBF00"/>
+					<leftPen lineWidth="0.5" lineColor="#FFBF00"/>
+					<bottomPen lineWidth="0.5" lineColor="#FFBF00"/>
+					<rightPen lineWidth="0.5" lineColor="#FFBF00"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$V{v_redaccionReglasNegocio}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="50">
+			<componentElement>
+				<reportElement positionType="Float" x="115" y="0" width="367" height="20" uuid="d8070ecb-98f2-44cc-a6dc-62d0fc3d54fe"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="Precondiciones" uuid="757a2c51-62f4-450c-9355-447ff01633fb">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="367">
+						<textField isStretchWithOverflow="true">
+							<reportElement positionType="Float" x="0" y="0" width="367" height="20" uuid="06661240-6a2a-4f72-a902-0d219d03bd45"/>
+							<box topPadding="3" leftPadding="2" bottomPadding="3" rightPadding="2"/>
+							<textFieldExpression><![CDATA[$V{v_redaccionPrecondicion}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<frame>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="115" y="0" width="367" height="32" uuid="38de7ec6-5dbb-4721-978d-48b565ca05d0"/>
 				<box topPadding="3" leftPadding="2" bottomPadding="3" rightPadding="2">
 					<pen lineWidth="0.5" lineColor="#B3B3B3"/>
 					<topPen lineWidth="0.5" lineColor="#B3B3B3"/>
@@ -245,38 +266,21 @@ ORDER BY REPLACE(ele.numero,'.','') * 1 ASC;]]>
 					<bottomPen lineWidth="0.5" lineColor="#B3B3B3"/>
 					<rightPen lineWidth="0.5" lineColor="#B3B3B3"/>
 				</box>
-				<textElement markup="html"/>
-				<textFieldExpression><![CDATA[$V{v_redaccionReglasNegocio}]]></textFieldExpression>
-			</textField>
+			</frame>
 			<staticText>
-				<reportElement x="18" y="201" width="97" height="20" uuid="16abcbca-d94d-453a-8fb9-229126c9e879"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="18" y="0" width="97" height="20" uuid="16abcbca-d94d-453a-8fb9-229126c9e879"/>
 				<box topPadding="3" leftPadding="2" bottomPadding="3" rightPadding="2">
-					<pen lineWidth="0.0" lineStyle="Double" lineColor="#B3B3B3"/>
-					<topPen lineWidth="0.0" lineStyle="Double" lineColor="#B3B3B3"/>
-					<leftPen lineWidth="0.0" lineStyle="Double" lineColor="#B3B3B3"/>
-					<bottomPen lineWidth="0.0" lineStyle="Double" lineColor="#B3B3B3"/>
-					<rightPen lineWidth="0.0" lineStyle="Double" lineColor="#B3B3B3"/>
+					<pen lineWidth="0.5" lineStyle="Double" lineColor="#B3B3B3"/>
+					<topPen lineWidth="0.5" lineStyle="Double" lineColor="#B3B3B3"/>
+					<leftPen lineWidth="0.5" lineStyle="Double" lineColor="#B3B3B3"/>
+					<bottomPen lineWidth="0.5" lineStyle="Double" lineColor="#B3B3B3"/>
+					<rightPen lineWidth="0.5" lineStyle="Double" lineColor="#B3B3B3"/>
 				</box>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Precondiciones:]]></text>
 			</staticText>
-			<componentElement>
-				<reportElement x="115" y="201" width="367" height="20" uuid="d8070ecb-98f2-44cc-a6dc-62d0fc3d54fe"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
-					<datasetRun subDataset="Precondiciones" uuid="757a2c51-62f4-450c-9355-447ff01633fb">
-						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-					</datasetRun>
-					<jr:listContents height="20" width="367">
-						<textField isStretchWithOverflow="true">
-							<reportElement x="0" y="0" width="367" height="20" uuid="06661240-6a2a-4f72-a902-0d219d03bd45"/>
-							<box topPadding="3" leftPadding="2" bottomPadding="3" rightPadding="2"/>
-							<textFieldExpression><![CDATA[$V{v_redaccionPrecondicion}]]></textFieldExpression>
-						</textField>
-					</jr:listContents>
-				</jr:list>
-			</componentElement>
 		</band>
 	</detail>
 </jasperReport>
