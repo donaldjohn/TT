@@ -40,10 +40,9 @@ public class Test {
 				}
 				
 				if (AnalizadorPasosBs.isSistemaMuestraMensaje(paso)) {
-					System.out.println("Ejecuta transacción");
+					System.out.println("Muestra mensaje");
 				}
 			}
 		}
-
 	}
 }

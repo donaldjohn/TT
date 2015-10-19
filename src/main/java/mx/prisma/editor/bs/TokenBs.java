@@ -461,6 +461,7 @@ public class TokenBs {
 
 	/*
 	 * El método String codificarCadenaToken(String @redaccion, Proyecto
+	 * 
 	 * @proyecto se encarga de codificar la cadena a su versión base de datos
 	 * (cruda).
 	 * 
@@ -855,15 +856,12 @@ public class TokenBs {
 		if (cadenaCodificada != null && cadenaCodificada != "") {
 			String cadenaCodificadaBruta = cadenaCodificada.substring(1);
 			ArrayList<String> tokens = procesarTokenIpunt(cadenaCodificadaBruta);
-			System.out.println("despues de procesartokeninput");
 			ArrayList<String> segmentos;
 			Modulo modulo;
 			cadenaDecodificada = cadenaCodificadaBruta;
 
 			for (String token : tokens) {
 				segmentos = segmentarToken(token);
-				System.out.println("id dentro for: " + segmentos.get(1));
-				System.out.println("referencia: " + segmentos.get(0));
 				switch (ReferenciaEnum.getTipoReferencia(segmentos.get(0))) {
 				case ACCION: // ACC.IUM.NUM:PANTALLA:NOMBRE_ACC =
 								// ACC.IUSF.7:Registrar_incendio:Aceptar
@@ -874,7 +872,8 @@ public class TokenBs {
 						break;
 					} else {
 						Pantalla pantalla = accion.getPantalla();
-						cadenaDecodificada = remplazoToken(cadenaDecodificada,
+						cadenaDecodificada = remplazoToken(
+								cadenaDecodificada,
 								token,
 								tokenACC
 										+ pantalla.getClave()
@@ -896,7 +895,8 @@ public class TokenBs {
 						break;
 					} else {
 						Entidad entidad = atributo.getEntidad();
-						cadenaDecodificada = remplazoToken(cadenaDecodificada, token,
+						cadenaDecodificada = remplazoToken(cadenaDecodificada,
+								token,
 								tokenATR
 										+ entidad.getNombre().replace(" ", "_")
 										+ tokenSeparator2
@@ -911,7 +911,8 @@ public class TokenBs {
 						cadenaDecodificada = "";
 						break;
 					}
-					cadenaDecodificada = remplazoToken(cadenaDecodificada, token,
+					cadenaDecodificada = remplazoToken(cadenaDecodificada,
+							token,
 							tokenACT + actor.getNombre().replace(" ", "_"));
 
 					break;
@@ -923,9 +924,10 @@ public class TokenBs {
 						break;
 					}
 					modulo = casoUso.getModulo();
-					cadenaDecodificada = remplazoToken(cadenaDecodificada, token,
-							tokenCU + modulo.getClave() + tokenSeparator1
-									+ casoUso.getNumero() + tokenSeparator2
+					cadenaDecodificada = remplazoToken(cadenaDecodificada,
+							token, tokenCU + modulo.getClave()
+									+ tokenSeparator1 + casoUso.getNumero()
+									+ tokenSeparator2
 									+ casoUso.getNombre().replace(" ", "_"));
 
 					break;
@@ -936,7 +938,8 @@ public class TokenBs {
 						cadenaDecodificada = "";
 						break;
 					}
-					cadenaDecodificada = remplazoToken(cadenaDecodificada, token,
+					cadenaDecodificada = remplazoToken(cadenaDecodificada,
+							token,
 							tokenENT + entidad.getNombre().replace(" ", "_"));
 
 					break;
@@ -947,7 +950,8 @@ public class TokenBs {
 					if (terminoGlosario == null) {
 						cadenaDecodificada = "";
 					}
-					cadenaDecodificada = remplazoToken(cadenaDecodificada,
+					cadenaDecodificada = remplazoToken(
+							cadenaDecodificada,
 							token,
 							tokenGLS
 									+ terminoGlosario.getNombre().replace(" ",
@@ -962,9 +966,10 @@ public class TokenBs {
 						break;
 					}
 					modulo = pantalla.getModulo();
-					cadenaDecodificada = remplazoToken(cadenaDecodificada, token,
-							tokenIU + modulo.getClave() + tokenSeparator1
-									+ pantalla.getNumero() + tokenSeparator2
+					cadenaDecodificada = remplazoToken(cadenaDecodificada,
+							token, tokenIU + modulo.getClave()
+									+ tokenSeparator1 + pantalla.getNumero()
+									+ tokenSeparator2
 									+ pantalla.getNombre().replace(" ", "_"));
 
 					break;
@@ -975,8 +980,9 @@ public class TokenBs {
 					if (mensaje == null) {
 						cadenaDecodificada = "";
 					}
-					cadenaDecodificada = remplazoToken(cadenaDecodificada, token,
-							tokenMSG + mensaje.getNumero() + tokenSeparator2
+					cadenaDecodificada = remplazoToken(cadenaDecodificada,
+							token, tokenMSG + mensaje.getNumero()
+									+ tokenSeparator2
 									+ mensaje.getNombre().replace(" ", "_"));
 					break;
 				case REGLANEGOCIO: // RN.ID -> RN.NUMERO:NOMBRE_RN
@@ -986,8 +992,8 @@ public class TokenBs {
 					if (reglaNegocio == null) {
 						cadenaDecodificada = "";
 					}
-					cadenaDecodificada = remplazoToken(cadenaDecodificada, token,
-							tokenRN
+					cadenaDecodificada = remplazoToken(cadenaDecodificada,
+							token, tokenRN
 									+ reglaNegocio.getNumero()
 									+ tokenSeparator2
 									+ reglaNegocio.getNombre()
@@ -1004,8 +1010,7 @@ public class TokenBs {
 
 					CasoUso cu = trayectoria.getCasoUso();
 					cadenaDecodificada = remplazoToken(cadenaDecodificada,
-							token,
-							tokenTray + cu.getClave() + tokenSeparator1
+							token, tokenTray + cu.getClave() + tokenSeparator1
 									+ cu.getNumero() + tokenSeparator2
 									+ cu.getNombre().replace(" ", "_")
 									+ tokenSeparator2 + trayectoria.getClave());
@@ -1020,8 +1025,7 @@ public class TokenBs {
 					Trayectoria t = paso.getTrayectoria();
 					CasoUso cut = t.getCasoUso();
 					cadenaDecodificada = remplazoToken(cadenaDecodificada,
-							token,
-							tokenP + cut.getClave() + tokenSeparator1
+							token, tokenP + cut.getClave() + tokenSeparator1
 									+ cut.getNumero() + tokenSeparator2
 									+ cut.getNombre().replace(" ", "_")
 									+ tokenSeparator2 + t.getClave()
@@ -1067,7 +1071,8 @@ public class TokenBs {
 					redaccion = "";
 					break;
 				} else {
-					redaccion = remplazoToken(redaccion, token, accion.getNombre());
+					redaccion = remplazoToken(redaccion, token,
+							accion.getNombre());
 				}
 				break;
 			case ACTOR:
@@ -1086,7 +1091,8 @@ public class TokenBs {
 					redaccion = "";
 					break;
 				} else {
-					redaccion = remplazoToken(redaccion, token, atributo.getNombre());
+					redaccion = remplazoToken(redaccion, token,
+							atributo.getNombre());
 				}
 				break;
 			case CASOUSO:
@@ -1096,8 +1102,8 @@ public class TokenBs {
 					redaccion = "";
 					break;
 				}
-				redaccion = remplazoToken(redaccion, token, casoUso.getClave() + " "
-						+ casoUso.getNumero() + " " + casoUso.getNombre());
+				redaccion = remplazoToken(redaccion, token, casoUso.getClave()
+						+ " " + casoUso.getNumero() + " " + casoUso.getNombre());
 
 				break;
 			case ENTIDAD: // ENT.ID -> ENT.NOMBRE_ENT
@@ -1127,8 +1133,9 @@ public class TokenBs {
 					redaccion = "";
 					break;
 				}
-				redaccion = remplazoToken(redaccion, token, pantalla.getClave() + " "
-						+ pantalla.getNumero() + " " + pantalla.getNombre());
+				redaccion = remplazoToken(redaccion, token,
+						pantalla.getClave() + " " + pantalla.getNumero() + " "
+								+ pantalla.getNombre());
 				break;
 
 			case MENSAJE: // GLS.ID -> MSG.NUMERO:NOMBRE_MSG
@@ -1137,8 +1144,8 @@ public class TokenBs {
 				if (mensaje == null) {
 					redaccion = "";
 				}
-				redaccion = remplazoToken(redaccion, token, mensaje.getClave() + " "
-						+ mensaje.getNumero() + " " + mensaje.getNombre());
+				redaccion = remplazoToken(redaccion, token, mensaje.getClave()
+						+ " " + mensaje.getNumero() + " " + mensaje.getNombre());
 				break;
 			case REGLANEGOCIO: // RN.ID -> RN.NUMERO:NOMBRE_RN
 				ReglaNegocio reglaNegocio = new ReglaNegocioDAO()
@@ -1147,7 +1154,8 @@ public class TokenBs {
 				if (reglaNegocio == null) {
 					redaccion = "";
 				}
-				redaccion = remplazoToken(redaccion,
+				redaccion = remplazoToken(
+						redaccion,
 						token,
 						reglaNegocio.getClave() + " "
 								+ reglaNegocio.getNumero() + " "
@@ -1160,7 +1168,8 @@ public class TokenBs {
 					redaccion = "";
 				}
 
-				redaccion = remplazoToken(redaccion, token, trayectoria.getClave());
+				redaccion = remplazoToken(redaccion, token,
+						trayectoria.getClave());
 				break;
 
 			case PASO: // P.CUMODULO.NUM:NOMBRECU:CLAVETRAY.NUMERO
@@ -1169,7 +1178,8 @@ public class TokenBs {
 				if (paso == null) {
 					redaccion = "";
 				}
-				redaccion = remplazoToken(redaccion, token, paso.getNumero() + "");
+				redaccion = remplazoToken(redaccion, token, paso.getNumero()
+						+ "");
 				break;
 
 			default:
@@ -1185,11 +1195,10 @@ public class TokenBs {
 	}
 
 	/*
-	 * El método  ArrayList<String> segmentarToken(String @token) construye un ArrayList de
-	 * segmentos de un token, por ejemplo: para el token "ACT·Profesor", la función devolvería
-	 * un ArrayList con dos elementos:
-	 * [0] = ACT
-	 * [1] = Profesor
+	 * El método ArrayList<String> segmentarToken(String @token) construye un
+	 * ArrayList de segmentos de un token, por ejemplo: para el token
+	 * "ACT·Profesor", la función devolvería un ArrayList con dos elementos: [0]
+	 * = ACT [1] = Profesor
 	 * 
 	 * Parámetros:
 	 * 
@@ -1215,12 +1224,12 @@ public class TokenBs {
 		}
 		return segmentos;
 	}
-	
+
 	/*
-	 * El método ArrayList<String> procesarTokenIpunt(String cadena)  construye un ArrayLisy
-	 * de tokens,ejemplo: para la cadena "ATR·Escuela:Nombre, GLS·Clave_Zona" el resultado sería
-	 * [0] = ATR·Escuela:Nombre
-	 * [1] = GLS·Clave_Zona
+	 * El método ArrayList<String> procesarTokenIpunt(String cadena) construye
+	 * un ArrayLisy de tokens,ejemplo: para la cadena
+	 * "ATR·Escuela:Nombre, GLS·Clave_Zona" el resultado sería [0] =
+	 * ATR·Escuela:Nombre [1] = GLS·Clave_Zona
 	 * 
 	 * Parámetros:
 	 * 
@@ -1295,33 +1304,34 @@ public class TokenBs {
 	 */
 	public static String remplazoToken(String cadena, String cadena_sustituir,
 			String cadena_sustituta) {
-		int indexStartMatch;
-		String cadenaFinal = cadena;
-		for (int i = 0; i < cadenaFinal.length(); i++) {
-			indexStartMatch = cadenaFinal.indexOf(cadena_sustituir, i);
-			if (indexStartMatch >= 0
-					&& remplazar(cadenaFinal, cadena_sustituir, indexStartMatch)) {
-				cadenaFinal = cadenaFinal.substring(0, indexStartMatch)
+		String cadenaFinal = null;
+		int indiceInicial = 0;
+		int indiceFinal = 0;
+		indiceInicial = cadena.indexOf(cadena_sustituir, indiceInicial);
+
+		while (indiceInicial != -1) {
+			indiceFinal = indiceInicial + cadena_sustituir.length() - 1;
+			if (indiceFinal + 1  == cadena.length()
+					|| !isId(cadena.charAt(indiceFinal + 1))) {
+				cadenaFinal = cadena.substring(0,
+						(indiceInicial != 0) ? indiceInicial : 0)
 						+ cadena_sustituta
-						+ cadenaFinal.substring(indexStartMatch
-								+ cadena_sustituir.length());
+						+ cadena.substring(indiceFinal + 1, cadena.length());
+				indiceInicial = cadenaFinal.indexOf(cadena_sustituir, indiceInicial + cadena_sustituta.length());
+				cadena = cadenaFinal;
+			} else {
+				indiceInicial = cadena.indexOf(cadena_sustituir, indiceInicial + 1);
 			}
 		}
-		return cadenaFinal;
+		return cadena;
 	}
 
-	private static boolean remplazar(String cadena, String cadena_sustituir,
-			int indexStartMatch) {
-		if (indexStartMatch + cadena_sustituir.length() == cadena.length()) {
-			return true;
-		}
-		char nextChar = cadena.charAt(indexStartMatch
-				+ cadena_sustituir.length());
+	public static boolean isId(char nextChar) {
 		try {
 			Integer.parseInt(nextChar + "");
-			return false;
-		} catch (NumberFormatException e) {
 			return true;
+		} catch (NumberFormatException e) {
+			return false;
 		}
 	}
 
@@ -1710,7 +1720,7 @@ public class TokenBs {
 			}
 		}
 	}
-	
+
 	public static void almacenarObjetosToken(ArrayList<Object> objetos,
 			TipoSeccion tipoSeccion, Paso paso) {
 		int numeroTokenAccion = 0;
@@ -1868,7 +1878,8 @@ public class TokenBs {
 					redaccion = "";
 					break;
 				} else {
-					redaccion = remplazoToken(redaccion,
+					redaccion = remplazoToken(
+							redaccion,
 							token,
 							"<a class='referencia' href='#'>"
 									+ accion.getNombre() + "</a>");
@@ -1894,7 +1905,8 @@ public class TokenBs {
 					break;
 				} else {
 					Entidad entidad = atributo.getEntidad();
-					redaccion = remplazoToken(redaccion,
+					redaccion = remplazoToken(
+							redaccion,
 							token,
 							"<a class='referencia' href='" + actionContext
 									+ "/entidades/" + entidad.getId()
@@ -1909,7 +1921,8 @@ public class TokenBs {
 					redaccion = "";
 					break;
 				}
-				redaccion = remplazoToken(redaccion,
+				redaccion = remplazoToken(
+						redaccion,
 						token,
 						"<a class='referencia' href='" + actionContext + "/cu/"
 								+ id + "'>" + casoUso.getClave() + " "
@@ -1924,7 +1937,8 @@ public class TokenBs {
 					redaccion = "";
 					break;
 				}
-				redaccion = remplazoToken(redaccion,
+				redaccion = remplazoToken(
+						redaccion,
 						token,
 						"<a class='referencia' href='" + actionContext
 								+ "/entidades/" + id + "'>"
@@ -1952,7 +1966,8 @@ public class TokenBs {
 					redaccion = "";
 					break;
 				}
-				redaccion = remplazoToken(redaccion,
+				redaccion = remplazoToken(
+						redaccion,
 						token,
 						"<a class='referencia' href='#'>" + pantalla.getClave()
 								+ " " + pantalla.getNumero() + " "
@@ -1966,7 +1981,8 @@ public class TokenBs {
 					redaccion = "";
 					break;
 				}
-				redaccion = remplazoToken(redaccion,
+				redaccion = remplazoToken(
+						redaccion,
 						token,
 						"<a class='referencia' href='" + actionContext
 								+ "/mensajes/" + id + "'>" + mensaje.getClave()
@@ -1981,7 +1997,8 @@ public class TokenBs {
 					redaccion = "";
 					break;
 				}
-				redaccion = remplazoToken(redaccion,
+				redaccion = remplazoToken(
+						redaccion,
 						token,
 						"<a class='referencia' href='" + actionContext
 								+ "/reglas-negocio/" + id + "'>"
@@ -2011,7 +2028,8 @@ public class TokenBs {
 					break;
 				}
 				CasoUso cup = paso.getTrayectoria().getCasoUso();
-				redaccion = remplazoToken(redaccion, 
+				redaccion = remplazoToken(
+						redaccion,
 						token,
 						"<a class='referencia' href='" + actionContext + "/cu/"
 								+ cup.getId() + "#paso-" + id + "'>"
@@ -2048,7 +2066,7 @@ public class TokenBs {
 
 		return false;
 	}
-	
+
 	private static boolean coma(String cadena, int i, char caracter) {
 		if (caracter == ',') {
 			if (cadena.length() - 1 > i) {
@@ -2112,6 +2130,5 @@ public class TokenBs {
 
 		return false;
 	}
-
 
 }
