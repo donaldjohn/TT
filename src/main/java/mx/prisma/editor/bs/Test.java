@@ -1,15 +1,17 @@
 package mx.prisma.editor.bs;
 
-import mx.prisma.editor.dao.CasoUsoDAO;
-import mx.prisma.editor.model.CasoUso;
-import mx.prisma.editor.model.Paso;
-import mx.prisma.editor.model.Trayectoria;
-import mx.prisma.generadorPruebas.bs.AnalizadorPasosBs;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import mx.prisma.generadorPruebas.bs.GeneradorPruebasBs;
 
 public class Test {
 
-	public static void main(String[] args) {
-		int id = 15;
+	public static void main(String[] args) throws IOException {
+		/*int id = 15;
 		CasoUso casoUso = new CasoUsoDAO().consultarCasoUso(id);
 		System.out.println(casoUso.getClave() + casoUso.getNumero() + " " + casoUso.getNombre());
 		for (Trayectoria trayectoria : casoUso.getTrayectorias()) {
@@ -43,6 +45,40 @@ public class Test {
 					System.out.println("Muestra mensaje");
 				}
 			}
+		}*/
+		ArrayList<String> parametros1 = new ArrayList<String>();
+		ArrayList<String> parametros2 = new ArrayList<String>();
+		parametros2.add("userName");
+		parametros2.add("password");
+
+
+		String a = 
+				GeneradorPruebasBs.encabezado() 
+				+ GeneradorPruebasBs.planPruebas() 
+				+ GeneradorPruebasBs.grupoHilos("CU7.1") 
+				+ GeneradorPruebasBs.cookieManager() 
+				+ GeneradorPruebasBs.configuracionJDBC("jdbc:mysql://localhost:3306/PRISMA", "com.mysql.jdbc.Driver", "root", "")
+				+ GeneradorPruebasBs.configuracionHTTP("localhost", "8080")
+				+ GeneradorPruebasBs.peticionHTTP("HTTP-CU13-P1", "prisma/access", parametros1, "get", "1.- Ingresa al sistema a través de la URL.")
+				+ GeneradorPruebasBs.peticionHTTP("HTTP-CU13-P4", "prisma/access!login", parametros2, "get", "4.- Oprime el botón de la pantalla IU 13 Iniciar sesión.")
+				+ GeneradorPruebasBs.contenedorCSV("CSV-CU13-P3", "CU13", parametros2, "3.- Ingresa datos")
+				+ GeneradorPruebasBs.cerrar();
+	
+		File file = new File("/Users/sramirezc/Desktop/TT/TestCU7_1.jmx/EclipseTest.jmx");
+
+		// if file doesnt exists, then create it
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+
+		FileWriter fw = new FileWriter(file.getAbsoluteFile());
+		BufferedWriter bw = new BufferedWriter(fw);
+		bw.write(a);
+		bw.close();
 	}
 }
