@@ -3,6 +3,7 @@ package mx.prisma.generadorPruebas.bs;
 import java.util.ArrayList;
 
 public class GeneradorPruebasBs {
+	private static String prefijoCSV = "csv_";
 
 	public static String encabezado() {
 		String bloque = 
@@ -54,15 +55,15 @@ public class GeneradorPruebasBs {
 				+ "<CookieManager guiclass=\"CookiePanel\" testclass=\"CookieManager\" testname=\"HTTP Cookie Manager\" enabled=\"true\">" + "\n"
 				+ "<collectionProp name=\"CookieManager.cookies\"/>" + "\n"
 				+ "<boolProp name=\"CookieManager.clearEachIteration\">false</boolProp>" + "\n"
-				+ "</CookieManager>" + "\n";
+				+ "</CookieManager>" + "\n"
+				+ "<hashTree/>" + "\n";
 		
 		return bloque;
 	}
 	
 	public static String configuracionJDBC(String urlBaseDatos, String driver, String usuario, String password) {
 		String bloque =
-				"<hashTree/>" + "\n"
-				+ "<JDBCDataSource guiclass=\"TestBeanGUI\" testclass=\"JDBCDataSource\" testname=\"JDBC-Default\" enabled=\"true\">" + "\n"
+				"<JDBCDataSource guiclass=\"TestBeanGUI\" testclass=\"JDBCDataSource\" testname=\"JDBC-Default\" enabled=\"true\">" + "\n"
 				+ "<stringProp name=\"dataSource\">JDBC Default</stringProp>" + "\n"
 				+ "<stringProp name=\"poolMax\">10</stringProp>" + "\n"
 				+ "<stringProp name=\"timeout\">10000</stringProp>" + "\n"
@@ -76,14 +77,14 @@ public class GeneradorPruebasBs {
 				+ "<stringProp name=\"driver\">" + driver + "</stringProp>" + "\n"
 				+ "<stringProp name=\"username\">" + usuario + "</stringProp>" + "\n"
 				+ "<stringProp name=\"password\">"+ password +"</stringProp>" + "\n"
-				+ "</JDBCDataSource>" + "\n";
+				+ "</JDBCDataSource>" + "\n"
+				+ "<hashTree/>" + "\n";
 		return bloque;
 	}
 	
 	public static String configuracionHTTP(String ip, String puerto) {
 		String bloque = 
-				"<hashTree/>" + "\n"
-				+ "<ConfigTestElement guiclass=\"HttpDefaultsGui\" testclass=\"ConfigTestElement\" testname=\"HTTP Default\" enabled=\"true\">" + "\n"
+				"<ConfigTestElement guiclass=\"HttpDefaultsGui\" testclass=\"ConfigTestElement\" testname=\"HTTP Default\" enabled=\"true\">" + "\n"
 				+ "<elementProp name=\"HTTPsampler.Arguments\" elementType=\"Arguments\" guiclass=\"HTTPArgumentsPanel\" testclass=\"Arguments\" testname=\"User Defined Variables\" enabled=\"true\">" + "\n"
 				+ "<collectionProp name=\"Arguments.arguments\"/>" + "\n"
 				+ "</elementProp>" + "\n"
@@ -96,15 +97,15 @@ public class GeneradorPruebasBs {
 				+ "<stringProp name=\"HTTPSampler.path\"></stringProp>" + "\n"
 				+ "<stringProp name=\"HTTPSampler.implementation\">Java</stringProp>" + "\n"
 				+ "<stringProp name=\"HTTPSampler.concurrentPool\">4</stringProp>" + "\n"
-				+ "</ConfigTestElement>" + "\n";
+				+ "</ConfigTestElement>" + "\n"
+				+ "<hashTree/>" + "\n";
 				
 		return bloque;
 	}
 	
-	public static String peticionHTTP(String id, String url, ArrayList<String> parametros, String metodo, String paso) {
+	public static String peticionHTTP(String id, String url, ArrayList<String> parametros, String metodo, String paso, boolean hijos) {
 		String bloque =
-				"<hashTree/>" + "\n"
-				+ "<HTTPSamplerProxy guiclass=\"HttpTestSampleGui\" testclass=\"HTTPSamplerProxy\" testname=\""+ id +"\" enabled=\"true\">" + "\n"
+				"<HTTPSamplerProxy guiclass=\"HttpTestSampleGui\" testclass=\"HTTPSamplerProxy\" testname=\""+ id +"\" enabled=\"true\">" + "\n"
 				+ "<elementProp name=\"HTTPsampler.Arguments\" elementType=\"Arguments\" guiclass=\"HTTPArgumentsPanel\" testclass=\"Arguments\" testname=\"User Defined Variables\" enabled=\"true\">" + "\n"
 				+ "<collectionProp name=\"Arguments.arguments\">" + "\n";
 				
@@ -129,6 +130,11 @@ public class GeneradorPruebasBs {
 				+ "<stringProp name=\"HTTPSampler.embedded_url_re\"></stringProp>" + "\n"
 				+ "<stringProp name=\"TestPlan.comments\">"+ paso +"</stringProp>" + "\n"
 				+ "</HTTPSamplerProxy>" + "\n";
+		if (hijos) {
+			bloque += "<hashTree>" + "\n";
+		} else {
+			bloque += "<hashTree/>" + "\n";
+		}
 		return bloque;
 		
 	}
@@ -140,7 +146,7 @@ public class GeneradorPruebasBs {
 			bloque += 
 					"<elementProp name=\""+ parametro+"\" elementType=\"HTTPArgument\">" + "\n"
 					+ "<boolProp name=\"HTTPArgument.always_encode\">true</boolProp>" + "\n"
-					+ "<stringProp name=\"Argument.value\">${csv_"+ parametro +"}</stringProp>" + "\n"
+					+ "<stringProp name=\"Argument.value\">${"+ prefijoCSV + parametro +"}</stringProp>" + "\n"
 					+ "<stringProp name=\"Argument.metadata\">=</stringProp>" + "\n"
 					+ "<boolProp name=\"HTTPArgument.use_equals\">true</boolProp>" + "\n"
 					+ "<stringProp name=\"Argument.name\">"+ parametro +"</stringProp>" + "\n"
@@ -149,11 +155,10 @@ public class GeneradorPruebasBs {
 		return bloque;
 	}
 
-	public static String contenedorCSV(String id, String claveCasoUso, ArrayList<String> parametros, String paso) {
+	public static String contenedorCSV(String id, ArrayList<String> parametros, String paso, boolean terminar) {
 		String bloque =
-				"<hashTree>" + "\n"
-				+ "<CSVDataSet guiclass=\"TestBeanGUI\" testclass=\"CSVDataSet\" testname=\""+ id +"\" enabled=\"true\">" + "\n"
-				+ "<stringProp name=\"filename\">Entradas/entradas" + claveCasoUso +".csv</stringProp>" + "\n"
+				"<CSVDataSet guiclass=\"TestBeanGUI\" testclass=\"CSVDataSet\" testname=\""+ id +"\" enabled=\"true\">" + "\n"
+				+ "<stringProp name=\"filename\">Entradas/entradas" + id +".csv</stringProp>" + "\n"
 				+ "<stringProp name=\"fileEncoding\"></stringProp>" + "\n"
 				+ "<stringProp name=\"variableNames\">" + generarNombres(parametros) +" </stringProp>" + "\n"
 				+ "<stringProp name=\"delimiter\">,</stringProp>" + "\n"
@@ -163,8 +168,10 @@ public class GeneradorPruebasBs {
 				+ "<stringProp name=\"shareMode\">shareMode.all</stringProp>" + "\n"
 				+ "<stringProp name=\"TestPlan.comments\">" + paso + "</stringProp>" + "\n"
 				+ "</CSVDataSet>" + "\n"
-				+ "<hashTree/>" + "\n"
-				+ "</hashTree>" + "\n";
+				+ "<hashTree/>" + "\n";
+				if (terminar) {
+					bloque += "</hashTree>" + "\n";
+				}
 		
 		return bloque;
 	}
@@ -172,11 +179,73 @@ public class GeneradorPruebasBs {
 	public static String generarNombres(ArrayList<String> parametros) {
 		String bloque = "";
 		for (String parametro : parametros) {
-			bloque +=  ("csv_" + parametro) + ",";
+			bloque +=  (prefijoCSV + parametro) + ",";
 		}
 		return bloque;
 	}
 
+	
+	public static String peticionJDBC(String id, String query, String paso) {
+		String bloque = 
+				"<JDBCSampler guiclass=\"TestBeanGUI\" testclass=\"JDBCSampler\" testname=\""+ id +"\" enabled=\"true\">" + "\n"
+				+ "<stringProp name=\"dataSource\">JDBC Default</stringProp>" + "\n"
+				+ "<stringProp name=\"queryType\">Select Statement</stringProp>" + "\n"
+				+ "<stringProp name=\"query\">" + query + "</stringProp>" + "\n"
+				+ "<stringProp name=\"queryArguments\"></stringProp>" + "\n"
+				+ "<stringProp name=\"queryArgumentsTypes\"></stringProp>" + "\n"
+				+ "<stringProp name=\"variableNames\">#"+id+"</stringProp>" + "\n"
+				+ "<stringProp name=\"resultVariable\"></stringProp>" + "\n"
+				+ "<stringProp name=\"queryTimeout\"></stringProp>" + "\n"
+				+ "<stringProp name=\"TestPlan.comments\">" + paso + "</stringProp>" + "\n"
+				+ "<stringProp name=\"resultSetHandler\">Store as String</stringProp>" + "\n"
+				+ "</JDBCSampler>" + "\n"
+				+ "<hashTree/>" + "\n";
+	
+		return bloque;
+	}
+
+	
+	public static String iniciarControladorIf(String id, String idPeticionJDBC) {
+		String bloque = 
+				"<IfController guiclass=\"IfControllerPanel\" testclass=\"IfController\" testname=\"" + id + "\" enabled=\"true\">" + "\n"
+				+ "<stringProp name=\"TestPlan.comments\">2.- Verifica que exista información referente a la Cardindalidad. [Trayectoria G]</stringProp>" + "\n"
+				+ "<stringProp name=\"IfController.condition\">${" + idPeticionJDBC + "_#} &gt; 0</stringProp>" + "\n"
+				+ "<boolProp name=\"IfController.evaluateAll\">false</boolProp>"+ "\n"
+				+ "</IfController>" + "\n"
+				+ "<hashTree>" + "\n";
+		
+		return bloque;
+	}
+
+	
+	public static String asercion(String id, ArrayList<String> patrones, String paso) {
+		String bloque =
+				  "<ResponseAssertion guiclass=\"AssertionGui\" testclass=\"ResponseAssertion\" testname=\"" + id + "\" enabled=\"true\"> " + "\n"
+				  + "<collectionProp name=\"Asserion.test_strings\">" + "\n"
+				  + generarPatrones(patrones) 
+				  + "</collectionProp>" + "\n"
+				  + "<stringProp name=\"TestPlan.comments\">" + paso + "</stringProp>" + "\n"
+				  + "<stringProp name=\"Assertion.test_field\">Assertion.response_data</stringProp>" + "\n"
+				  + "<boolProp name=\"Assertion.assume_success\">false</boolProp>" + "\n"
+				  + "<intProp name=\"Assertion.test_type\">16</intProp>" + "\n"
+				  + "</ResponseAssertion>" + "\n"
+				  + "<hashTree/>" + "\n"
+				  + "</hashTree>" + "\n";
+		
+		
+		return bloque;
+				
+	}
+	
+	private static String generarPatrones(ArrayList<String> patrones) {
+		String bloque = "";
+		for (String patron : patrones) {
+			bloque +=   "<stringProp name=\"873796163\">"+ patron + "</stringProp>\n";
+		}
+		return bloque;
+	}
+
+	
 	public static String cerrar() {
 		String bloque = 
 				"</hashTree>" + "\n"
@@ -186,4 +255,13 @@ public class GeneradorPruebasBs {
 	
 		return bloque;
 	}
+
+	
+	public static String terminarControladorIf() {
+		// TODO Auto-generated method stub
+		return "</hashTree>\n";
+	}
+
+
+	
 }
