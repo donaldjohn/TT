@@ -313,11 +313,11 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 		listUnidadTamanio = EntidadBs.consultarUnidadesTamanio();
 		if (listUnidadTamanio == null || listUnidadTamanio.isEmpty()) {
 			throw new PRISMAException(
-					"No hay unidades para registrar el atributo.", "MSG25");
+					"No hay unidades para registrar el atributo.", "MSG13");
 		}
 		if (listTipoDato == null || listTipoDato.isEmpty()) {
 			throw new PRISMAException(
-					"No hay tipos de dato para registrar el atributo.", "MSG25");
+					"No hay tipos de dato para registrar el atributo.", "MSG13");
 		}
 	}
 

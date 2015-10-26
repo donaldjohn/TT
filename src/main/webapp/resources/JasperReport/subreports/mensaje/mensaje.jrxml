@@ -27,9 +27,9 @@ where ele.clave = 'MSG' AND ele.Proyectoid = $P{p_proyectoId};]]>
 	<title>
 		<band height="50">
 			<staticText>
-				<reportElement x="18" y="12" width="100" height="20" forecolor="#5F5F5F" uuid="cc4d92ed-c545-4fef-a258-f1a8f214637a"/>
+				<reportElement x="18" y="0" width="150" height="25" forecolor="#5F5F5F" uuid="cc4d92ed-c545-4fef-a258-f1a8f214637a"/>
 				<textElement>
-					<font size="14" isBold="true"/>
+					<font size="20" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Mensajes]]></text>
 			</staticText>
@@ -39,11 +39,11 @@ where ele.clave = 'MSG' AND ele.Proyectoid = $P{p_proyectoId};]]>
 		</band>
 	</title>
 	<detail>
-		<band height="107" splitType="Stretch">
-			<textField>
-				<reportElement x="18" y="11" width="289" height="19" uuid="30dbc923-50a4-40af-9e11-20035382712c"/>
+		<band height="73" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="18" y="11" width="469" height="19" uuid="30dbc923-50a4-40af-9e11-20035382712c"/>
 				<textElement textAlignment="Left">
-					<font size="12" isBold="true"/>
+					<font size="14" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{clave} + $F{numero} + " " + $F{nombre}]]></textFieldExpression>
 			</textField>
@@ -55,13 +55,17 @@ where ele.clave = 'MSG' AND ele.Proyectoid = $P{p_proyectoId};]]>
 			<line>
 				<reportElement x="14" y="34" width="473" height="1" forecolor="#BFBFBF" uuid="712731b0-954c-44f6-9fe3-a5658468bc82"/>
 			</line>
+		</band>
+		<band height="22">
 			<textField isStretchWithOverflow="true">
-				<reportElement x="18" y="70" width="469" height="19" uuid="96dd86eb-4269-4b40-b351-578869b45590"/>
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="18" y="0" width="469" height="19" uuid="96dd86eb-4269-4b40-b351-578869b45590"/>
 				<textElement markup="html"/>
 				<textFieldExpression><![CDATA["<b>Redacción:</b> " + $F{redaccion}]]></textFieldExpression>
 			</textField>
+		</band>
+		<band height="20">
 			<subreport>
-				<reportElement x="18" y="97" width="469" height="10" uuid="db421041-dd9f-4e24-af7d-6f6a53f04338"/>
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="18" y="0" width="469" height="20" uuid="db421041-dd9f-4e24-af7d-6f6a53f04338"/>
 				<subreportParameter name="p_mensajeElementoId">
 					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
 				</subreportParameter>

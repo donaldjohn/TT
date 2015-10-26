@@ -598,6 +598,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 		for (PostPrecondicion postPrecondicion : postPrecondiciones) {
 			postPrecondicionAux = new PostPrecondicion();
+			postPrecondicionAux.setId(postPrecondicion.getId());
 			postPrecondicionAux.setRedaccion(TokenBs
 					.decodificarCadenasToken(postPrecondicion.getRedaccion()));
 			if (postPrecondicion.isPrecondicion()) {
@@ -953,6 +954,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	public void setIdSel(Integer idSel) {
 		this.idSel = idSel;
 		this.model = CuBs.consultarCasoUso(idSel);
+		System.out.println("this: " + this);
+		System.out.println("después de setIdSel");
 	}
 
 	public boolean isExistenPrecondiciones() {
