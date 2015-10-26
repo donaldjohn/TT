@@ -23,7 +23,7 @@ import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.dao.RevisionDAO;
 import mx.prisma.editor.dao.SeccionDAO;
 import mx.prisma.editor.model.Actor;
-import mx.prisma.editor.model.Actualizacion;
+//import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.CasoUsoActor;
