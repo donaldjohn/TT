@@ -33,7 +33,9 @@ public class Accion implements java.io.Serializable {
 	private TipoAccion tipoAccion;
 	private Pantalla pantallaDestino;
 	private String descripcion;
-	private byte[] imagen; 
+	private byte[] imagen;
+	private String urlDestino;
+	private String metodo;
 
 	public Accion() {
 	}
@@ -112,5 +114,25 @@ public class Accion implements java.io.Serializable {
 	public void setImagen(byte[] imagen) {
 		this.imagen = imagen;
 	}
+
+	@Column(name = "urlDestino", length = 2000)
+	public String getUrlDestino() {
+		return urlDestino;
+	}
+
+	public void setUrlDestino(String urlDestino) {
+		this.urlDestino = urlDestino;
+	}
+
+	@Column(name = "metodo", length = 10)
+	public String getMetodo() {
+		return metodo;
+	}
+
+	public void setMetodo(String metodo) {
+		this.metodo = metodo;
+	}
+	
+	
 	
 }

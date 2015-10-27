@@ -11,6 +11,7 @@ import mx.prisma.editor.model.Verbo;
 
 public class AnalizadorPasosBs {
 
+	//Generar petición HTTP 
 	public static boolean isActorOprimeBoton(Paso paso) {
 		String redaccion = paso.getRedaccion();
 		boolean patron1 = paso.isRealizaActor();
@@ -23,6 +24,9 @@ public class AnalizadorPasosBs {
 		}
 	}
 
+	// Petición JDBC con query
+	// Controlador if
+	
 	public static boolean isSistemaValidaPrecondiciones(Paso paso) {
 		String redaccion = paso.getRedaccion();
 		boolean patron1 = paso.isRealizaActor();
@@ -53,6 +57,7 @@ public class AnalizadorPasosBs {
 		return false;
 	}
 
+	//Assert
 	public static boolean isSistemaMuestraPantalla(Paso paso) {
 		String redaccion = paso.getRedaccion();
 		boolean patron1 = paso.isRealizaActor();
@@ -124,6 +129,9 @@ public class AnalizadorPasosBs {
 		return false;
 	}
 
+	//Petición HTTP con hijos
+	//Contenedor csv
+	
 	public static boolean isSistemaEjecutaTransaccion(Paso paso) {
 		boolean patron1 = paso.isRealizaActor();
 		Verbo patron2 = paso.getVerbo();

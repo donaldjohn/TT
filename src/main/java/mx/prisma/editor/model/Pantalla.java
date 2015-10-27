@@ -31,6 +31,7 @@ public class Pantalla extends Elemento implements java.io.Serializable {
 	private byte[] imagen;
 	private Modulo modulo;
 	private Set<Accion> acciones = new HashSet<Accion>(0);
+	private String patron;
 
 	public Pantalla() {
 	}
@@ -74,6 +75,15 @@ public class Pantalla extends Elemento implements java.io.Serializable {
 
 	public void setAcciones(Set<Accion> acciones) {
 		this.acciones = acciones;
+	}
+
+	@Column(name = "patron", length = 2000)
+	public String getPatron() {
+		return patron;
+	}
+
+	public void setPatron(String patron) {
+		this.patron = patron;
 	}
 	
 	

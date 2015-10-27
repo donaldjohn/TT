@@ -14,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -24,6 +25,8 @@ import org.hibernate.annotations.SortType;
 import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.generadorPruebas.model.ConfiguracionBaseDatos;
+import mx.prisma.generadorPruebas.model.ConfiguracionHttp;
 
 @Entity
 @Table(name = "CasoUso", catalog = "PRISMA")
@@ -50,6 +53,9 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 	private Set<Extension> Extiende = new HashSet<Extension>(0);
 	private Set<Extension> ExtendidoDe = new HashSet<Extension>(0);
 	private Set<Revision> revisiones = new HashSet<Revision>(0);
+	private ConfiguracionHttp configuracionHttp;
+	private ConfiguracionBaseDatos configuracionBaseDatos;
+	
 
 	
 	public CasoUso() {
@@ -220,5 +226,26 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 	public void setRevisiones(Set<Revision> revisiones) {
 		this.revisiones = revisiones;
 	}
+
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.ALL, orphanRemoval = false)
+	public ConfiguracionHttp getConfiguracionHttp() {
+		return configuracionHttp;
+	}
+
+	public void setConfiguracionHttp(ConfiguracionHttp configuracionHttp) {
+		this.configuracionHttp = configuracionHttp;
+	}
+
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.ALL, orphanRemoval = false)
+	public ConfiguracionBaseDatos getConfiguracionBaseDatos() {
+		return configuracionBaseDatos;
+	}
+
+	public void setConfiguracionBaseDatos(
+			ConfiguracionBaseDatos configuracionBaseDatos) {
+		this.configuracionBaseDatos = configuracionBaseDatos;
+	}
+	
+	
 
 }

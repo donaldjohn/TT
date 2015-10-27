@@ -1,16 +1,12 @@
 package mx.prisma.generadorPruebas.model;
 
-// Generated Oct 26, 2015 11:38:15 AM by Hibernate Tools 4.0.0
+// Generated Oct 27, 2015 5:08:46 PM by Hibernate Tools 4.0.0
 
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -20,16 +16,18 @@ import javax.persistence.Table;
 @Table(name = "TipoValor", catalog = "PRISMA")
 public class TipoValor implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String nombre;
-	private Set valors = new HashSet(0);
 
 	public TipoValor() {
 	}
 
-	public TipoValor(String nombre, Set valors) {
+	public TipoValor(String nombre) {
 		this.nombre = nombre;
-		this.valors = valors;
 	}
 
 	@Id
@@ -51,14 +49,4 @@ public class TipoValor implements java.io.Serializable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tipoValor")
-	public Set getValors() {
-		return this.valors;
-	}
-
-	public void setValors(Set valors) {
-		this.valors = valors;
-	}
-
 }

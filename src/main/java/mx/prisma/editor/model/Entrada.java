@@ -3,18 +3,24 @@ package mx.prisma.editor.model;
 /*
  * Sergio Ramírez Camacho 07/06/2015
  */
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import mx.prisma.generadorPruebas.model.Valor;
 
 
 @Entity
@@ -32,6 +38,7 @@ public class Entrada implements java.io.Serializable {
 	private CasoUso casoUso;
 	private Atributo atributo;
 	private TerminoGlosario terminoGlosario;
+	private Set<Valor> valores;
 
 	public Entrada() {
 	}
@@ -111,6 +118,13 @@ public class Entrada implements java.io.Serializable {
 		this.terminoGlosario = terminoGlosario;
 	}
 
-	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "entrada", cascade = CascadeType.ALL, orphanRemoval = true)
+	public Set<Valor> getValores() {
+		return valores;
+	}
+
+	public void setValores(Set<Valor> valores) {
+		this.valores = valores;
+	}
 
 }
