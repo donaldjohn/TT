@@ -85,7 +85,7 @@ public class Test {
 				+ GeneradorPruebasBs.contenedorCSV("CU7-P1", parametros3, "1.- Oprime el botón \"Entrar\" del proyecto que desea gestionar, en la pantalla IU1 Gestionar proyectos", true)
 				+ GeneradorPruebasBs.peticionHTTP("CU7-P2", "prisma/actores", sinParametros, "get", "2.- Solicita gestionar los actores seleccionando la opción \"Actores\" del menú principal.", false)
 				+ GeneradorPruebasBs.peticionJDBC("CU7.1-P2", "SELECT * FROM Cardinalidad;", "2.- Verifica que exista información referente a la Cardindalidad. [Trayectoria G]")
-				+ GeneradorPruebasBs.iniciarControladorIf("CU7.1-P2", "CU7.1-P2")
+				+ GeneradorPruebasBs.iniciarControladorIf("CU7.1-P2", "CU7.1-P2", "x" , "=")
 				+ GeneradorPruebasBs.peticionHTTP("CU7.1-P1", "prisma/actores/new", sinParametros, "get", "1.- Solicita registrar un actor oprimiendo el botón \"Registrar\" de la pantalla IU7 Gestionar actores", true)
 				+ GeneradorPruebasBs.asercion("CU7.1-B1", patrones1, "3.- Muestra la pantalla IU 7.1 Registrar actor en la cual se realizará el registro del actor.")
 				+ GeneradorPruebasBs.peticionHTTP("CU7.1-P5P6B", "prisma/actores", parametros4, "post", "5.- Solicita registrar al actor oprimiendo el botón de la pantalla IU 7.1 Registrar actor. [Trayectoria A]\n 6.- Verifica que el actor ingrese todos los campos obligatorios con base en la regla de negocio RN8 Datos obligatorios. [Trayectoria B]", true)
@@ -182,5 +182,10 @@ public class Test {
 			break;
 		}
 	return archivo;	
+	}
+
+	private Paso calcularPasoAlternativo(Paso siguiente) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
