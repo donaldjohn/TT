@@ -25,6 +25,7 @@ public class ReportUtil {
 		
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("idProyecto", idProyecto);
+		param.put("p_contextPath", rutaTarget);
 		param.put("SUBREPORT_DIR", rutaTarget + "subreports/");
 		
 		JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, param, new GenericDAO().getConnection());

@@ -9,11 +9,13 @@
 	<parameter name="p_proyectoId" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="p_moduloId" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT ele.id, ele.clave, ele.numero, ele.nombre, ele.descripcion, pan.imagen, pan.Moduloid
 FROM Elemento ele
 INNER JOIN Pantalla pan ON ele.id = pan.Elementoid
 WHERE ele.clave LIKE 'IU%' AND ele.Proyectoid = $P{p_proyectoId}
+AND pan.Moduloid = $P{p_moduloId}
 ORDER BY REPLACE(ele.numero,'.','') * 1 ASC;]]>
 	</queryString>
 	<field name="id" class="java.lang.Integer"/>
@@ -26,19 +28,13 @@ ORDER BY REPLACE(ele.numero,'.','') * 1 ASC;]]>
 	<variable name="v_imagenB64" class="java.lang.String">
 		<variableExpression><![CDATA[mx.prisma.util.ImageConverterUtil.parseBytesToB64String($F{imagen})]]></variableExpression>
 	</variable>
-	<group name="Módulo">
-		<groupExpression><![CDATA[$F{Moduloid}]]></groupExpression>
-		<groupHeader>
-			<band height="50"/>
-		</groupHeader>
-	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
 		<band height="50">
 			<staticText>
-				<reportElement x="18" y="0" width="141" height="29" forecolor="#5F5F5F" uuid="cc4d92ed-c545-4fef-a258-f1a8f214637a"/>
+				<reportElement x="18" y="0" width="141" height="30" forecolor="#5F5F5F" uuid="cc4d92ed-c545-4fef-a258-f1a8f214637a"/>
 				<textElement>
 					<font fontName="SansSerif" size="20" isBold="false"/>
 				</textElement>
@@ -50,10 +46,7 @@ ORDER BY REPLACE(ele.numero,'.','') * 1 ASC;]]>
 		</band>
 	</title>
 	<detail>
-		<band height="306" splitType="Stretch">
-			<frame>
-				<reportElement x="0" y="263" width="500" height="43" uuid="58be6bfc-4f67-4ec6-90d8-60509455adc2"/>
-			</frame>
+		<band height="270" splitType="Stretch">
 			<frame>
 				<reportElement x="0" y="64" width="500" height="199" isRemoveLineWhenBlank="true" uuid="0b7668b0-ce86-454e-bf7f-e23289e2a549">
 					<printWhenExpression><![CDATA[!$F{imagen}.equals( null )]]></printWhenExpression>
@@ -85,8 +78,10 @@ ORDER BY REPLACE(ele.numero,'.','') * 1 ASC;]]>
 				</reportElement>
 				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(javax.xml.bind.DatatypeConverter.parseBase64Binary($V{v_imagenB64}))]]></imageExpression>
 			</image>
+		</band>
+		<band height="50">
 			<subreport>
-				<reportElement x="18" y="280" width="469" height="26" uuid="db421041-dd9f-4e24-af7d-6f6a53f04338"/>
+				<reportElement x="18" y="0" width="469" height="26" uuid="db421041-dd9f-4e24-af7d-6f6a53f04338"/>
 				<subreportParameter name="p_pantallaElementoId">
 					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
 				</subreportParameter>

@@ -123,7 +123,7 @@ public class ActoresCtrl extends ActionSupportPRISMA implements
 		if (listCardinalidad == null || listCardinalidad.isEmpty()) {
 			throw new PRISMAException(
 					"No hay cardinalidades para registrar el atributo.",
-					"MSG25");
+					"MSG13");
 		}
 	}
 

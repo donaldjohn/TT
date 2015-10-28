@@ -61,7 +61,7 @@ WHERE atr.EntidadElementoId = $P{p_entidadElementoId};]]>
 	<detail>
 		<band height="24" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="469" height="19" uuid="d2b9a2c8-ccbc-45f1-9b3e-914e4c37e2ae"/>
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="0" y="0" width="469" height="12" isRemoveLineWhenBlank="true" uuid="d2b9a2c8-ccbc-45f1-9b3e-914e4c37e2ae"/>
 				<textElement textAlignment="Justified" markup="html"/>
 				<textFieldExpression><![CDATA["<b>" + $F{atributoNombre} + ".</b> " + $F{descripcion} + " " + $V{v_descripcionTipo} + " " + $V{v_descripcionObligatorio}]]></textFieldExpression>
 			</textField>

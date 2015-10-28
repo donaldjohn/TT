@@ -38,7 +38,7 @@
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 
 	<s:form autocomplete="off" id="frmCU" theme="simple"
-		action="%{#pageContext.request.contextPath}/cu/%{idSel}" method="post" onsubmit="return preparaEnvio();">
+		action="%{#pageContext.request.contextPath}/cu/%{idSel}" method="post" onsubmit="return prepararEnvio();">
 		<s:hidden name="_method" value="put" />
 		<div class="formulario">
 			<div class="tituloFormulario">Información general del caso de

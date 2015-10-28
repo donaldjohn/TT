@@ -986,6 +986,7 @@ public class TokenBs {
 									+ mensaje.getNombre().replace(" ", "_"));
 					break;
 				case REGLANEGOCIO: // RN.ID -> RN.NUMERO:NOMBRE_RN
+					
 					ReglaNegocio reglaNegocio = new ReglaNegocioDAO()
 							.consultarReglaNegocio(Integer.parseInt(segmentos
 									.get(1)));
@@ -1312,7 +1313,7 @@ public class TokenBs {
 		while (indiceInicial != -1) {
 			indiceFinal = indiceInicial + cadena_sustituir.length() - 1;
 			if (indiceFinal + 1  == cadena.length()
-					|| !isId(cadena.charAt(indiceFinal + 1))) {
+					|| !ignore(cadena.charAt(indiceFinal + 1))) {
 				cadenaFinal = cadena.substring(0,
 						(indiceInicial != 0) ? indiceInicial : 0)
 						+ cadena_sustituta
@@ -1326,13 +1327,16 @@ public class TokenBs {
 		return cadena;
 	}
 
-	public static boolean isId(char nextChar) {
+	public static boolean ignore(char nextChar) {
 		try {
 			Integer.parseInt(nextChar + "");
-			return true;
 		} catch (NumberFormatException e) {
+			if((nextChar + "").equals(tokenSeparator1) || (nextChar + "").equals(tokenSeparator2)) {
+				return true;
+			}
 			return false;
 		}
+		return false;
 	}
 
 	public static boolean duplicadoActor_Actores(Set<CasoUsoActor> actores,

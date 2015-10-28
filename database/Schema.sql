@@ -1,4 +1,4 @@
-create table Accion (id int(11) not null auto_increment, PantallaElementoid int(11) not null, nombre varchar(45) not null, TipoAccionid int(11) not null, PantallaElementoidDestino int(11), imagen blob, descripcion varchar(999) not null, primary key (id));
+create table Accion (id int(11) not null auto_increment, PantallaElementoid int(11) not null, nombre varchar(45) not null, TipoAccionid int(11) not null, PantallaElementoidDestino int(11), imagen blob, descripcion varchar(999) not null, urlDestino varchar(2000), metodo varchar(10), primary key (id));
 create table Actor (otraCardinalidad varchar(45), Elementoid int(11) not null, Cardinalidadid int(11) not null, primary key (Elementoid));
 create table Actualizacion (id int(11) not null auto_increment, fecha date not null, comentario varchar(999) not null, Elementoid int(11) not null, ColaboradorCURP varchar(18) not null, primary key (id));
 create table Atributo (id int(11) not null auto_increment, nombre varchar(200) not null, descripcion varchar(999) not null, obligatorio tinyint(1) not null, longitud int(10), formatoArchivo varchar(50), tamanioArchivo float, UnidadTamanioid int(10), EntidadElementoid int(11) not null, TipoDatoid int(10) not null, otroTipoDato varchar(45), primary key (id), constraint uniqueAtributo unique (nombre, EntidadElementoid));
@@ -9,6 +9,8 @@ create table CasoUso_Pantalla (id int(10) not null auto_increment, PantallaEleme
 create table CasoUso_ReglaNegocio (id int(10) not null auto_increment, numeroToken int(10) not null, CasoUsoElementoid int(11) not null, ReglaNegocioElementoid int(11) not null, primary key (id), constraint uniqueRelacionRN unique (CasoUsoElementoid, ReglaNegocioElementoid));
 create table Colaborador (CURP varchar(18) not null, nombre varchar(45) not null, apellidoPaterno varchar(45) not null, apellidoMaterno varchar(45) not null, correoElectronico varchar(45) not null, contrasenia varchar(20) not null, administrador tinyint(1) not null, primary key (CURP));
 create table Colaborador_Proyecto (id int(11) not null auto_increment, ColaboradorCURP varchar(18) not null, Rolid int(11) not null, Proyectoid int(11) not null, primary key (id), constraint uniqueColaborador unique (ColaboradorCURP, Proyectoid));
+create table ConfiguracionBaseDatos (id int(10) not null auto_increment, urlBaseDatos varchar(500) not null, driver varchar(50) not null, usuario varchar(50) not null, contrasenia varchar(50) not null, CasoUsoElementoid int(11) not null, primary key (id));
+create table ConfiguracionHTTP (id int(10) not null auto_increment, ip varchar(16) not null, puerto int(10), CasoUsoElementoid int(11) not null, primary key (id));
 create table Elemento (id int(11) not null auto_increment, clave varchar(10) not null, numero varchar(20) not null, nombre varchar(200) not null, descripcion varchar(999), EstadoElementoid int(11) not null, Proyectoid int(11) not null, primary key (id), constraint uniqueElemento unique (clave, nombre));
 create table Entidad (Elementoid int(11) not null, primary key (Elementoid));
 create table Entrada (id int(11) not null auto_increment, numeroToken int(10) not null, TipoParametroid int(11) not null, CasoUsoElementoid int(11) not null, Atributoid int(11), TerminoGlosarioElementoid int(11), primary key (id));
@@ -20,7 +22,7 @@ create table Mensaje (Elementoid int(11) not null, redaccion varchar(999) not nu
 create table Mensaje_Parametro (id int(10) not null auto_increment, MensajeElementoid int(11) not null, Parametroid int(10) not null, primary key (id));
 create table Modulo (id int(11) not null auto_increment, clave varchar(10) not null, nombre varchar(45) not null, descripcion varchar(999) not null, Proyectoid int(11) not null, primary key (id), constraint uniqueModulo unique (clave, Proyectoid));
 create table Operador (id int(10) not null auto_increment, nombre varchar(45) not null, simbolo varchar(11) not null, primary key (id), constraint uniqueOperadorSimbolo unique (simbolo), constraint uniqueOperador unique (nombre));
-create table Pantalla (Elementoid int(11) not null, imagen longblob, Moduloid int(11) not null, primary key (Elementoid));
+create table Pantalla (Elementoid int(11) not null, imagen longblob, Moduloid int(11) not null, patron varchar(999), primary key (Elementoid));
 create table Parametro (id int(10) not null auto_increment, nombre varchar(45) not null, descripcion varchar(500) not null, Proyectoid int(11) not null, primary key (id), constraint uniqueParametro unique (nombre, Proyectoid));
 create table Paso (id int(10) not null auto_increment, numero int(10) not null, realizaActor tinyint(1) not null, redaccion varchar(1000) not null, Trayectoriaid int(10) not null, Verboid int(10) not null, otroVerbo varchar(45), primary key (id));
 create table PostPrecondicion (id int(10) not null auto_increment, redaccion varchar(1000) not null, precondicion tinyint(1) not null, CasoUsoElementoid int(11) not null, primary key (id));
@@ -38,9 +40,17 @@ create table TipoComparacion (id int(10) not null, nombre varchar(45) not null, 
 create table TipoDato (id int(10) not null auto_increment, nombre varchar(45) not null, primary key (id), constraint uniqueTipoDato unique (nombre));
 create table TipoParametro (id int(11) not null auto_increment, nombre varchar(45) not null, primary key (id), constraint uniqueTipoParametro unique (nombre));
 create table TipoReglaNegocio (id int(10) not null auto_increment, nombre varchar(45) not null, primary key (id), constraint uniqueTipoReglaNegocio unique (nombre));
+create table TipoValor (id int(10) not null auto_increment, nombre varchar(50), primary key (id));
 create table Trayectoria (id int(10) not null auto_increment, clave varchar(5) not null, alternativa tinyint(1) not null, condicion varchar(500), CasoUsoElementoid int(11) not null, finCasoUso tinyint(1) not null, primary key (id), constraint uniqueTrayectoria unique (clave, CasoUsoElementoid));
 create table UnidadTamanio (id int(10) not null auto_increment, nombre varchar(45) not null, abreviatura varchar(10) not null, primary key (id), constraint uniqueUnidadAbreviatura unique (abreviatura), constraint uniqueUnidadNombre unique (nombre));
+create table Valor (id int(10) not null auto_increment, valor varchar(255) not null, TipoValorid int(10) not null, ReferenciaParametroid int(10), Mensaje_Parametroid int(10), Entradaid int(11), primary key (id));
 create table Verbo (id int(10) not null auto_increment, nombre varchar(45) not null, primary key (id), constraint uniqueVerbo unique (nombre));
+alter table Valor add index FKValor391554 (Entradaid), add constraint FKValor391554 foreign key (Entradaid) references Entrada (id);
+alter table ConfiguracionBaseDatos add index FKConfigurac864791 (CasoUsoElementoid), add constraint FKConfigurac864791 foreign key (CasoUsoElementoid) references CasoUso (Elementoid);
+alter table ConfiguracionHTTP add index FKConfigurac474806 (CasoUsoElementoid), add constraint FKConfigurac474806 foreign key (CasoUsoElementoid) references CasoUso (Elementoid);
+alter table Valor add index FKValor19409 (TipoValorid), add constraint FKValor19409 foreign key (TipoValorid) references TipoValor (id);
+alter table Valor add index FKValor626133 (ReferenciaParametroid), add constraint FKValor626133 foreign key (ReferenciaParametroid) references ReferenciaParametro (id);
+alter table Valor add index FKValor719327 (Mensaje_Parametroid), add constraint FKValor719327 foreign key (Mensaje_Parametroid) references Mensaje_Parametro (id);
 alter table Actualizacion add index FKActualizac268678 (ColaboradorCURP), add constraint FKActualizac268678 foreign key (ColaboradorCURP) references Colaborador (CURP);
 alter table Revision add index FKRevision175605 (Seccionid), add constraint FKRevision175605 foreign key (Seccionid) references Seccion (id) on update Cascade on delete Restrict;
 alter table Accion add index FKAccion62036 (PantallaElementoidDestino), add constraint FKAccion62036 foreign key (PantallaElementoidDestino) references Pantalla (Elementoid) on update Cascade on delete Cascade;
@@ -113,3 +123,4 @@ alter table ReglaNegocio add index FKReglaNegoc476000 (Atributoid_comp1), add co
 alter table ReglaNegocio add index FKReglaNegoc475999 (Atributoid_comp2), add constraint FKReglaNegoc475999 foreign key (Atributoid_comp2) references Atributo (id) on update Cascade on delete Restrict;
 alter table Mensaje_Parametro add index FKMensaje_Pa262782 (MensajeElementoid), add constraint FKMensaje_Pa262782 foreign key (MensajeElementoid) references Mensaje (Elementoid) on update Cascade on delete Cascade;
 alter table Mensaje_Parametro add index FKMensaje_Pa138078 (Parametroid), add constraint FKMensaje_Pa138078 foreign key (Parametroid) references Parametro (id) on update Cascade on delete Restrict;
+

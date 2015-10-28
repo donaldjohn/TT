@@ -5,10 +5,13 @@
 	<property name="ireport.y" value="0"/>
 	<style name="style1"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["/home/lorena/git/AplicacionTTB064/src/main/webapp/resources/JasperReport/subreports/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["subreports/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="idProyecto" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="p_contextPath" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[select * from Proyecto where id = $P{idProyecto};]]>
@@ -56,13 +59,13 @@
 				<textElement>
 					<font size="16" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{clave} + " " + $F{nombre}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Proyecto " + $F{clave} + " " + $F{nombre}]]></textFieldExpression>
 				<hyperlinkAnchorExpression><![CDATA["title"]]></hyperlinkAnchorExpression>
 			</textField>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="35" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="0" width="500" height="20" forecolor="#CFCFCF" uuid="fa9b04d1-032d-4b00-a155-b3b11886f30a"/>
 				<textElement textAlignment="Right">
@@ -141,28 +144,18 @@
 		</band>
 		<band height="60">
 			<subreport>
-				<reportElement x="0" y="10" width="500" height="40" uuid="92c0fc8e-d1b7-44a3-9f93-8f4fd0c6b190"/>
+				<reportElement x="0" y="10" width="500" height="40" uuid="d0348ac1-69d9-4446-bacc-1427eb31d6e4"/>
 				<subreportParameter name="SUBREPORT_DIR">
 					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="p_contextPath">
+					<subreportParameterExpression><![CDATA[$P{p_contextPath}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="p_proyectoId">
 					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "pantalla/pantalla.jasper"]]></subreportExpression>
-			</subreport>
-		</band>
-		<band height="60">
-			<subreport>
-				<reportElement x="0" y="10" width="500" height="40" uuid="27b77c10-5614-4e51-973f-538d84fe898a"/>
-				<subreportParameter name="SUBREPORT_DIR">
-					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="p_proyectoId">
-					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "casoUso/casoUso.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "modulo/modulo.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

@@ -23,6 +23,8 @@ public class AnalizadorPasosBs {
 		sistemaMuestraMensaje
 	}	
 	
+
+	//Generar petición HTTP 
 	public static boolean isActorOprimeBoton(Paso paso) {
 		String redaccion = paso.getRedaccion();
 		boolean patron1 = paso.isRealizaActor();
@@ -36,7 +38,9 @@ public class AnalizadorPasosBs {
 	}
 
 	public static boolean isSistemaValidaPrecondicion(Paso paso) {
-		String redaccion = paso.getRedaccion();
+	// Petición JDBC con query
+	// Controlador if
+			String redaccion = paso.getRedaccion();
 		boolean patron1 = paso.isRealizaActor();
 		Verbo patron2 = paso.getVerbo();
 		TipoReglaNegocioENUM patron3 = TipoReglaNegocioENUM.VERFCATALOGOS;
@@ -65,6 +69,7 @@ public class AnalizadorPasosBs {
 		return false;
 	}
 
+	//Assert
 	public static boolean isSistemaMuestraPantalla(Paso paso) {
 		String redaccion = paso.getRedaccion();
 		boolean patron1 = paso.isRealizaActor();
@@ -136,6 +141,9 @@ public class AnalizadorPasosBs {
 		return false;
 	}
 
+	//Petición HTTP con hijos
+	//Contenedor csv
+	
 	public static boolean isSistemaEjecutaTransaccion(Paso paso) {
 		boolean patron1 = paso.isRealizaActor();
 		Verbo patron2 = paso.getVerbo();

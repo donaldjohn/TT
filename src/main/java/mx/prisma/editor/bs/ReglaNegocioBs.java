@@ -55,7 +55,7 @@ public class ReglaNegocioBs {
 		if (listTipoRN == null) {
 			throw new PRISMAException(
 					"No se pueden consultar los tipos de regla de negocio.",
-					"MSG25");
+					"MSG13");
 		}
 		return listTipoRN;
 	}
@@ -182,7 +182,7 @@ public class ReglaNegocioBs {
 		List<Operador> listOperadores = new OperadorDAO().consultarOperadores();
 		if (listOperadores == null) {
 			throw new PRISMAException("No se pueden consultar los operadores.",
-					"MSG25");
+					"MSG13");
 		}
 		return listOperadores;
 	}
@@ -216,7 +216,7 @@ public class ReglaNegocioBs {
 
 	public static List<Operador> consultarOperadoresDisponibles(String tipoDato) {
 		List<Operador> listOperadores = new ArrayList<Operador>();
-		if (tipoDato.equals("Flotante") || tipoDato.equals("Entero")) {
+		if (tipoDato.equals("Flotante") || tipoDato.equals("Entero") || tipoDato.equals("Fecha")) {
 			listOperadores = consultarOperadores();
 		} else {
 			listOperadores.add(consultarOperadorSimbolo("!="));
@@ -230,7 +230,7 @@ public class ReglaNegocioBs {
 		Operador operador = new OperadorDAO().consultarOperadorSimbolo(simbolo);
 		if (operador == null) {
 			throw new PRISMAException("No se puede consultar el operador.",
-					"MSG25");
+					"MSG13");
 		}
 		return operador;
 	}
@@ -330,7 +330,7 @@ public class ReglaNegocioBs {
 		Operador operador = new OperadorDAO().consultarOperador(idOperador);
 		if (operador == null) {
 			throw new PRISMAException("No se puede consultar el operador.",
-					"MSG25");
+					"MSG13");
 		}
 		return operador;
 	}
@@ -346,7 +346,7 @@ public class ReglaNegocioBs {
 				.consultarReglaNegocio(id);
 		if (reglaNegocio == null) {
 			throw new PRISMAException(
-					"No se puede consultar la regla de negocio.", "MSG25");
+					"No se puede consultar la regla de negocio.", "MSG13");
 		}
 		return reglaNegocio;
 	}
