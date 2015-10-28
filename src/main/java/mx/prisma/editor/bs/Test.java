@@ -6,6 +6,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import mx.prisma.editor.model.Paso;
+import mx.prisma.generadorPruebas.bs.AnalizadorPasosBs;
+import mx.prisma.generadorPruebas.bs.AnalizadorPasosBs.TipoPaso;
 import mx.prisma.generadorPruebas.bs.GeneradorPruebasBs;
 
 public class Test {
@@ -108,5 +111,53 @@ public class Test {
 		BufferedWriter bw = new BufferedWriter(fw);
 		bw.write(a);
 		bw.close();
+	}
+	
+	public String generarPrueba(Paso pasoActual, ArrayList<Paso> pasos) {
+		AnalizadorPasosBs analizador;
+		String archivo = null;
+		Paso siguiente = AnalizadorPasosBs.calcularSiguiente(pasoActual, pasos);
+
+		switch(AnalizadorPasosBs.calcularTipo(pasoActual)) {
+		case actorIngresaDatos:
+			break;
+		case actorOprimeBoton:
+			if (siguiente != null && AnalizadorPasosBs.calcularTipo(siguiente) == AnalizadorPasosBs.TipoPaso.sistemaValidaPrecondicion) {
+				archivo += GeneradorPruebasBs.peticionJDBC(siguiente);
+				archivo += GeneradorPruebasBs.iniciarControladorIf(siguiente);
+				pasos.remove(siguiente);
+				archivo += generarPrueba(pasoActual, pasos);
+				archivo += GeneradorPruebasBs.terminarControladorIf();
+				
+				/*generarPrueba(p1 tray alternativa)
+				GeneradorPruebasBs.terminarControladorIf();*/
+			} else {
+				archivo += GeneradorPruebasBs.peticionHTTP(pasoActual);
+				pasos.remove(pasoActual);
+				archivo += generarPrueba(siguiente, pasos);
+			}
+			break;
+		case sistemaEjecutaTransaccion:
+			break;
+		case sistemaMuestraMensaje:
+			break;
+		case sistemaMuestraPantalla:
+
+			archivo += GeneradorPruebasBs.asercion(pasoActual);
+			pasos.remove(pasoActual);
+			archivo += generarPrueba(siguiente, pasos);
+
+			
+
+			break;
+		case sistemaValidaPrecondicion:			
+			break;
+		case sistemaValidaReglaNegocio:
+			break;
+		default:
+			break;
+
+			
+		}
 	}
 }

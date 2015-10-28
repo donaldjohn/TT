@@ -2,6 +2,8 @@ package mx.prisma.generadorPruebas.bs;
 
 import java.util.ArrayList;
 
+import mx.prisma.editor.model.Paso;
+
 public class GeneradorPruebasBs {
 	private static String prefijoCSV = "csv_";
 
@@ -183,7 +185,6 @@ public class GeneradorPruebasBs {
 		}
 		return bloque;
 	}
-
 	
 	public static String peticionJDBC(String id, String query, String paso) {
 		String bloque = 
@@ -203,7 +204,6 @@ public class GeneradorPruebasBs {
 	
 		return bloque;
 	}
-
 	
 	public static String iniciarControladorIf(String id, String idPeticionJDBC) {
 		String bloque = 
@@ -216,7 +216,6 @@ public class GeneradorPruebasBs {
 		
 		return bloque;
 	}
-
 	
 	public static String asercion(String id, ArrayList<String> patrones, String paso) {
 		String bloque =
@@ -244,7 +243,6 @@ public class GeneradorPruebasBs {
 		}
 		return bloque;
 	}
-
 	
 	public static String cerrar() {
 		String bloque = 
@@ -255,13 +253,34 @@ public class GeneradorPruebasBs {
 	
 		return bloque;
 	}
-
 	
 	public static String terminarControladorIf() {
 		// TODO Auto-generated method stub
 		return "</hashTree>\n";
 	}
 
+	public static String peticionJDBC(Paso siguiente) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	public static String iniciarControladorIf(Paso siguiente) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static String peticionHTTP(Paso pasoActual) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static String asercion(Paso pasoActual) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+
+	
 	
 }

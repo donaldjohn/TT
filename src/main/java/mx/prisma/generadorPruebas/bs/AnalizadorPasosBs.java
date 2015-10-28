@@ -1,5 +1,7 @@
 package mx.prisma.generadorPruebas.bs;
 
+import java.util.ArrayList;
+
 import mx.prisma.bs.TipoReglaNegocioEnum;
 import mx.prisma.bs.TipoReglaNegocioEnum.TipoReglaNegocioENUM;
 import mx.prisma.editor.bs.PasoBs;
@@ -10,7 +12,17 @@ import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.Verbo;
 
 public class AnalizadorPasosBs {
-
+	
+	public enum TipoPaso {
+		actorOprimeBoton,
+		sistemaValidaPrecondicion,
+		sistemaMuestraPantalla,
+		actorIngresaDatos,
+		sistemaValidaReglaNegocio,
+		sistemaEjecutaTransaccion,
+		sistemaMuestraMensaje
+	}	
+	
 	public static boolean isActorOprimeBoton(Paso paso) {
 		String redaccion = paso.getRedaccion();
 		boolean patron1 = paso.isRealizaActor();
@@ -23,7 +35,7 @@ public class AnalizadorPasosBs {
 		}
 	}
 
-	public static boolean isSistemaValidaPrecondiciones(Paso paso) {
+	public static boolean isSistemaValidaPrecondicion(Paso paso) {
 		String redaccion = paso.getRedaccion();
 		boolean patron1 = paso.isRealizaActor();
 		Verbo patron2 = paso.getVerbo();
@@ -149,4 +161,33 @@ public class AnalizadorPasosBs {
 		}
 	}
 
+	public static TipoPaso calcularTipo(Paso p) {
+		if (isActorOprimeBoton(p)) {
+			return TipoPaso.actorOprimeBoton;
+		}
+		if (isSistemaValidaPrecondicion(p)) {
+			return TipoPaso.sistemaValidaPrecondicion;
+		}			
+		if (isSistemaMuestraPantalla(p)) {
+			return TipoPaso.sistemaValidaPrecondicion;
+		}	
+		if (isActorIngresaDatos(p)) {
+			return TipoPaso.actorIngresaDatos;
+		}	
+		if (isSistemaValidaReglaNegocio(p)) {
+			return TipoPaso.sistemaValidaReglaNegocio;
+		}
+		if (isSistemaEjecutaTransaccion(p)) {
+			return TipoPaso.sistemaEjecutaTransaccion;
+		}
+		if (isSistemaMuestraMensaje(p)) {
+			return TipoPaso.sistemaMuestraMensaje;
+		}
+		return null;
+	}
+
+	public static Paso calcularSiguiente(Paso p, ArrayList<Paso> pasos) {
+		return null;
+	}
+		
 }
