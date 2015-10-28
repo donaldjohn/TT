@@ -1,12 +1,19 @@
 package mx.prisma.generadorPruebas.bs;
 
 import java.util.ArrayList;
+import java.util.Set;
 
+import mx.prisma.bs.ReferenciaEnum;
+import mx.prisma.bs.TipoValorEnum;
+import mx.prisma.bs.TipoValorEnum.tipoValor;
+import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.model.Paso;
+import mx.prisma.editor.model.ReferenciaParametro;
+import mx.prisma.generadorPruebas.model.Valor;
 
 public class GeneradorPruebasBs {
 	private static String prefijoCSV = "csv_";
-	
+	private static final String prefijoPeticionJDBC = "PJ"; 
 
 	public static String encabezado() {
 		String bloque = 
@@ -275,8 +282,26 @@ public class GeneradorPruebasBs {
 	}
 
 	public static String peticionJDBC(Paso paso) {
-		// TODO Auto-generated method stub
-		return null;
+		String bloque = null;
+		String id = prefijoPeticionJDBC + "-" + paso.getTrayectoria().getClave() + "-" + paso.getNumero();
+		String query = null;
+		ReferenciaParametro referenciaRN = null;
+		
+		for(ReferenciaParametro rp : paso.getReferencias()) {
+			if(ReferenciaEnum.getTipoReferenciaParametro(rp).equals(ReferenciaEnum.TipoReferencia.REGLANEGOCIO)) {
+				referenciaRN = rp;
+				break;
+			}
+		}
+		
+		for(Valor valor : referenciaRN.getValores()) {
+			query = valor.getValor();
+			break;
+		}
+		
+		String redaccionPaso = TokenBs.decodificarCadenaSinToken(paso.getRedaccion());
+		bloque = peticionJDBC(id, query, redaccionPaso);
+		return bloque;
 	}
 
 	public static String iniciarControladorIf(Paso siguiente) {

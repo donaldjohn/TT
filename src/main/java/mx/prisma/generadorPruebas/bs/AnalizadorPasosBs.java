@@ -210,5 +210,10 @@ public class AnalizadorPasosBs {
 		
 		return pasoSiguiente.getNumero() == Integer.MAX_VALUE ? null : pasoSiguiente;
 	}
+	
+	public Paso calcularPasoAlternativo(Paso paso) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 		
 }
