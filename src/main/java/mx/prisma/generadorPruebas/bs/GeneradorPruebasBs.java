@@ -205,11 +205,11 @@ public class GeneradorPruebasBs {
 		return bloque;
 	}
 	
-	public static String iniciarControladorIf(String id, String idPeticionJDBC) {
+	public static String iniciarControladorIf(String id, String idPeticionJDBC, String operador) {
 		String bloque = 
 				"<IfController guiclass=\"IfControllerPanel\" testclass=\"IfController\" testname=\"" + id + "\" enabled=\"true\">" + "\n"
 				+ "<stringProp name=\"TestPlan.comments\">2.- Verifica que exista información referente a la Cardindalidad. [Trayectoria G]</stringProp>" + "\n"
-				+ "<stringProp name=\"IfController.condition\">${" + idPeticionJDBC + "_#} &gt; 0</stringProp>" + "\n"
+				+ "<stringProp name=\"IfController.condition\">${" + idPeticionJDBC + "_#} " + operador + " 0</stringProp>" + "\n"
 				+ "<boolProp name=\"IfController.evaluateAll\">false</boolProp>"+ "\n"
 				+ "</IfController>" + "\n"
 				+ "<hashTree>" + "\n";
@@ -259,6 +259,7 @@ public class GeneradorPruebasBs {
 		return "</hashTree>\n";
 	}
 
+	
 	public static String peticionJDBC(Paso siguiente) {
 		// TODO Auto-generated method stub
 		return null;

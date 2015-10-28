@@ -117,47 +117,70 @@ public class Test {
 		AnalizadorPasosBs analizador;
 		String archivo = null;
 		Paso siguiente = AnalizadorPasosBs.calcularSiguiente(pasoActual, pasos);
-
+		
 		switch(AnalizadorPasosBs.calcularTipo(pasoActual)) {
 		case actorIngresaDatos:
+			pasos.remove(pasoActual);
+			generarPrueba(siguiente, pasos);
 			break;
 		case actorOprimeBoton:
-			if (siguiente != null && AnalizadorPasosBs.calcularTipo(siguiente) == AnalizadorPasosBs.TipoPaso.sistemaValidaPrecondicion) {
-				archivo += GeneradorPruebasBs.peticionJDBC(siguiente);
-				archivo += GeneradorPruebasBs.iniciarControladorIf(siguiente);
-				pasos.remove(siguiente);
-				archivo += generarPrueba(pasoActual, pasos);
-				archivo += GeneradorPruebasBs.terminarControladorIf();
-				
-				/*generarPrueba(p1 tray alternativa)
-				GeneradorPruebasBs.terminarControladorIf();*/
-			} else {
-				archivo += GeneradorPruebasBs.peticionHTTP(pasoActual);
-				pasos.remove(pasoActual);
-				archivo += generarPrueba(siguiente, pasos);
+			if (ambito == inicio) {
+				if (siguiente != null && AnalizadorPasosBs.calcularTipo(siguiente) == AnalizadorPasosBs.TipoPaso.sistemaValidaPrecondicion) {
+					archivo += GeneradorPruebasBs.peticionJDBC(siguiente);
+					archivo += GeneradorPruebasBs.iniciarControladorIf(siguiente);
+					pasos.remove(siguiente);
+					archivo += generarPrueba(pasoActual, pasos);
+					archivo += GeneradorPruebasBs.terminarControladorIf();
+					
+					archivo += GeneradorPruebasBs.iniciarControladorIf(siguiente);
+					archivo += GeneradorPruebasBs.peticionHTTP(pasoActual);
+					archivo += GeneradorPruebasBs.asercion(calcularPasoAlternativo(siguiente));
+					GeneradorPruebasBs.terminarControladorIf();
+				} else {
+					archivo += GeneradorPruebasBs.peticionHTTP(pasoActual);
+					pasos.remove(pasoActual);
+					archivo += generarPrueba(siguiente, pasos);
+				}
+			} else if (ambito == ejecucion) {
+				if (siguiente != null && AnalizadorPasosBs.calcularTipo(siguiente) == AnalizadorPasosBs.TipoPaso.sistemaValidaReglaNegocio) {
+					archivo += GeneradorPruebasBs.peticionHTTP(siguiente);
+					archivo += GeneradorPruebasBs.contenedorCSV(siguiente);
+					archivo += GeneradorPruebasBs.asercion(calcularPasoAlternativo(siguiente));
+					pasos.remove(siguiente);
+					archivo += generarPrueba(pasoActual, pasos);
+
+				} else {
+					archivo += GeneradorPruebasBs.peticionHTTP(pasoActual);
+					archivo += GeneradorPruebasBs.contenedorCSV(pasoActual);
+					pasos.remove(pasoActual);
+					archivo += generarPrueba(siguiente, pasos);
+				}		
 			}
 			break;
 		case sistemaEjecutaTransaccion:
+			pasos.remove(pasoActual);
+			archivo += generarPrueba(siguiente, pasos);
+				
 			break;
 		case sistemaMuestraMensaje:
-			break;
-		case sistemaMuestraPantalla:
-
 			archivo += GeneradorPruebasBs.asercion(pasoActual);
 			pasos.remove(pasoActual);
 			archivo += generarPrueba(siguiente, pasos);
 
-			
+			break;
+		case sistemaMuestraPantalla:
+			archivo += GeneradorPruebasBs.asercion(pasoActual);
+			pasos.remove(pasoActual);
+			archivo += generarPrueba(siguiente, pasos);
 
 			break;
-		case sistemaValidaPrecondicion:			
-			break;
-		case sistemaValidaReglaNegocio:
+		case null:
+			
 			break;
 		default:
-			break;
-
 			
+			break;
 		}
+	return archivo;	
 	}
 }
