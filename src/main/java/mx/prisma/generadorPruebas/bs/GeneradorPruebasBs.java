@@ -6,6 +6,7 @@ import mx.prisma.editor.model.Paso;
 
 public class GeneradorPruebasBs {
 	private static String prefijoCSV = "csv_";
+	
 
 	public static String encabezado() {
 		String bloque = 
@@ -16,6 +17,7 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String planPruebas() {
+		System.out.println("***desde planPruebas***");
 		String bloque = 
 				"<hashTree>" + "\n"
 				+ "<TestPlan guiclass=\"TestPlanGui\" testclass=\"TestPlan\" testname=\"Plan de Pruebas\" enabled=\"true\">" + "\n"
@@ -32,6 +34,7 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String grupoHilos(String claveCasoUso) {
+		System.out.println("***desde grupoHilos***");
 		String bloque = 
 				"<hashTree>" + "\n"
 				+ "<ThreadGroup guiclass=\"ThreadGroupGui\" testclass=\"ThreadGroup\" testname=\"TEST" + claveCasoUso + "\" enabled=\"true\">" + "\n"
@@ -52,6 +55,7 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String cookieManager() {
+		System.out.println("***desde cookieManager***");
 		String bloque = 
 				"<hashTree>" + "\n"
 				+ "<CookieManager guiclass=\"CookiePanel\" testclass=\"CookieManager\" testname=\"HTTP Cookie Manager\" enabled=\"true\">" + "\n"
@@ -64,6 +68,7 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String configuracionJDBC(String urlBaseDatos, String driver, String usuario, String password) {
+		System.out.println("***desde configuracionJDBC > urlBaseDatos: " + urlBaseDatos + ", driver: " + driver + ", usuario: " + usuario + ", pssword: " + password + "***");
 		String bloque =
 				"<JDBCDataSource guiclass=\"TestBeanGUI\" testclass=\"JDBCDataSource\" testname=\"JDBC-Default\" enabled=\"true\">" + "\n"
 				+ "<stringProp name=\"dataSource\">JDBC Default</stringProp>" + "\n"
@@ -85,6 +90,7 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String configuracionHTTP(String ip, String puerto) {
+		System.out.println("***desde configuracionHTTP > ip: " + ip + ", puerto: " + puerto + "***");
 		String bloque = 
 				"<ConfigTestElement guiclass=\"HttpDefaultsGui\" testclass=\"ConfigTestElement\" testname=\"HTTP Default\" enabled=\"true\">" + "\n"
 				+ "<elementProp name=\"HTTPsampler.Arguments\" elementType=\"Arguments\" guiclass=\"HTTPArgumentsPanel\" testclass=\"Arguments\" testname=\"User Defined Variables\" enabled=\"true\">" + "\n"
@@ -106,6 +112,7 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String peticionHTTP(String id, String url, ArrayList<String> parametros, String metodo, String paso, boolean hijos) {
+		System.out.println("***desde peticionHTTP > id: " + id + ", url: " + url + ", parametros: " + parametros + ", metodo: " + metodo + ", paso: " + paso + ", hijos: " + hijos + "***");
 		String bloque =
 				"<HTTPSamplerProxy guiclass=\"HttpTestSampleGui\" testclass=\"HTTPSamplerProxy\" testname=\""+ id +"\" enabled=\"true\">" + "\n"
 				+ "<elementProp name=\"HTTPsampler.Arguments\" elementType=\"Arguments\" guiclass=\"HTTPArgumentsPanel\" testclass=\"Arguments\" testname=\"User Defined Variables\" enabled=\"true\">" + "\n"
@@ -142,6 +149,7 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String parametrosHTTP(ArrayList<String> parametros) {
+		System.out.println("*** desde parametrosHTTP > parametros: " + parametros + "***");
 		String bloque = "";
 		
 		for (String parametro : parametros) {
@@ -158,6 +166,7 @@ public class GeneradorPruebasBs {
 	}
 
 	public static String contenedorCSV(String id, ArrayList<String> parametros, String paso, boolean terminar) {
+		System.out.println("***desde contenedorCSV > id: " + id + ", parametros: " + parametros + ", paso: " + paso + ", terminar: " + terminar + "***");
 		String bloque =
 				"<CSVDataSet guiclass=\"TestBeanGUI\" testclass=\"CSVDataSet\" testname=\""+ id +"\" enabled=\"true\">" + "\n"
 				+ "<stringProp name=\"filename\">Entradas/entradas" + id +".csv</stringProp>" + "\n"
@@ -179,6 +188,7 @@ public class GeneradorPruebasBs {
 	}
 
 	public static String generarNombres(ArrayList<String> parametros) {
+		System.out.println("***desde generarNombres > parametros: " + parametros + "***");
 		String bloque = "";
 		for (String parametro : parametros) {
 			bloque +=  (prefijoCSV + parametro) + ",";
@@ -187,6 +197,7 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String peticionJDBC(String id, String query, String paso) {
+		System.out.println("***desde peticionJDBC > id: " + id + ", query: " + query + ", paso: " + paso + "***");
 		String bloque = 
 				"<JDBCSampler guiclass=\"TestBeanGUI\" testclass=\"JDBCSampler\" testname=\""+ id +"\" enabled=\"true\">" + "\n"
 				+ "<stringProp name=\"dataSource\">JDBC Default</stringProp>" + "\n"
@@ -206,6 +217,7 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String iniciarControladorIf(String id, String idPeticionJDBC) {
+		System.out.println("***desde iniciarControladorIf > id: " + id + ", idPeticionJDBC: " + idPeticionJDBC + "***");
 		String bloque = 
 				"<IfController guiclass=\"IfControllerPanel\" testclass=\"IfController\" testname=\"" + id + "\" enabled=\"true\">" + "\n"
 				+ "<stringProp name=\"TestPlan.comments\">2.- Verifica que exista información referente a la Cardindalidad. [Trayectoria G]</stringProp>" + "\n"
@@ -218,6 +230,7 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String asercion(String id, ArrayList<String> patrones, String paso) {
+		System.out.println("***desde asercion > id: " + id + ", patrones: " + patrones + ", paso: " +paso + "***");
 		String bloque =
 				  "<ResponseAssertion guiclass=\"AssertionGui\" testclass=\"ResponseAssertion\" testname=\"" + id + "\" enabled=\"true\"> " + "\n"
 				  + "<collectionProp name=\"Asserion.test_strings\">" + "\n"
@@ -237,6 +250,7 @@ public class GeneradorPruebasBs {
 	}
 	
 	private static String generarPatrones(ArrayList<String> patrones) {
+		System.out.println("***desde generarPatrones > patrones: " + patrones + "***");
 		String bloque = "";
 		for (String patron : patrones) {
 			bloque +=   "<stringProp name=\"873796163\">"+ patron + "</stringProp>\n";
@@ -245,6 +259,7 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String cerrar() {
+		System.out.println("***desde cerrar***");
 		String bloque = 
 				"</hashTree>" + "\n"
 				+ "</hashTree>" + "\n"
@@ -255,11 +270,11 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String terminarControladorIf() {
-		// TODO Auto-generated method stub
+		System.out.println("***desde terminarControladorIf***");
 		return "</hashTree>\n";
 	}
 
-	public static String peticionJDBC(Paso siguiente) {
+	public static String peticionJDBC(Paso paso) {
 		// TODO Auto-generated method stub
 		return null;
 	}

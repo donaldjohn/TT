@@ -194,8 +194,21 @@ public class AnalizadorPasosBs {
 		return null;
 	}
 
-	public static Paso calcularSiguiente(Paso p, ArrayList<Paso> pasos) {
-		return null;
+	public static Paso calcularSiguiente(Paso pasoActual, ArrayList<Paso> pasos) {
+		int idTrayectoriaActual = pasoActual.getTrayectoria().getId();
+		
+		Paso pasoSiguiente = new Paso();
+		pasoSiguiente.setNumero(Integer.MAX_VALUE);
+		
+		for(Paso paso : pasos) {
+			if(idTrayectoriaActual == paso.getTrayectoria().getId()) {
+				if(pasoActual.getNumero() < paso.getNumero() && pasoSiguiente.getNumero() > paso.getNumero()) {
+					pasoSiguiente = paso;
+				}
+			}
+		}
+		
+		return pasoSiguiente.getNumero() == Integer.MAX_VALUE ? null : pasoSiguiente;
 	}
 		
 }
