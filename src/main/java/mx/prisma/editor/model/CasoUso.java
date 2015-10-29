@@ -138,6 +138,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 	}
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.ALL, orphanRemoval = false)
+	@OrderBy("id")
 	public Set<Entrada> getEntradas() {
 		return entradas;
 	}

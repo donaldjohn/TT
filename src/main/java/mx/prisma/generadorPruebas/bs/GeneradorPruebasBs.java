@@ -1,19 +1,36 @@
 package mx.prisma.generadorPruebas.bs;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Set;
 
 import mx.prisma.bs.ReferenciaEnum;
+import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
+import mx.prisma.bs.TipoReglaNegocioEnum;
 import mx.prisma.bs.TipoValorEnum;
 import mx.prisma.bs.TipoValorEnum.tipoValor;
 import mx.prisma.editor.bs.TokenBs;
+import mx.prisma.editor.model.Accion;
+import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.Entrada;
+import mx.prisma.editor.model.Mensaje;
+import mx.prisma.editor.model.MensajeParametro;
+import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.ReferenciaParametro;
+import mx.prisma.editor.model.ReglaNegocio;
+import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.generadorPruebas.model.Valor;
 
 public class GeneradorPruebasBs {
 	private static String prefijoCSV = "csv_";
 	private static final String prefijoPeticionJDBC = "PJ"; 
+	private static final String prefijoPeticionHTTP = "PH";
+	private static final String prefijoControladorIf = "CI";
+	private static final String prefijoAsercion = "AS";
+	private static final String prefijoContenedorCSV = "CSV";
 
 	public static String encabezado() {
 		String bloque = 
@@ -283,49 +300,165 @@ public class GeneradorPruebasBs {
 
 	public static String peticionJDBC(Paso paso) {
 		String bloque = null;
-		String id = prefijoPeticionJDBC + "-" + paso.getTrayectoria().getClave() + "-" + paso.getNumero();
+		String id = calcularIdentificador(prefijoPeticionJDBC, paso);
 		String query = null;
-		ReferenciaParametro referenciaRN = null;
-		
-		for(ReferenciaParametro rp : paso.getReferencias()) {
-			if(ReferenciaEnum.getTipoReferenciaParametro(rp).equals(ReferenciaEnum.TipoReferencia.REGLANEGOCIO)) {
-				referenciaRN = rp;
-				break;
-			}
-		}
+		ReferenciaParametro referenciaRN = AnalizadorPasosBs.obtenerPrimerReferencia(paso, ReferenciaEnum.TipoReferencia.REGLANEGOCIO);
 		
 		for(Valor valor : referenciaRN.getValores()) {
 			query = valor.getValor();
 			break;
 		}
 		
-		String redaccionPaso = TokenBs.decodificarCadenaSinToken(paso.getRedaccion());
+		String redaccionPaso = consultarRedaccion(paso);
 		bloque = peticionJDBC(id, query, redaccionPaso);
 		return bloque;
 	}
 
-	public static String iniciarControladorIf(Paso siguiente) {
-		// TODO Auto-generated method stub
+	public static String iniciarControladorIf(Paso paso, String operador) {
+		String bloque = null;
+		String id = calcularIdentificador(prefijoControladorIf, paso);
+		String idPeticionJDBC = calcularIdentificador(prefijoPeticionJDBC, paso);
+		String redaccionPaso = consultarRedaccion(paso);
+		
+		bloque = iniciarControladorIf(id, idPeticionJDBC, redaccionPaso, operador);
+		
+		return bloque;
+	}
+
+	public static String peticionHTTP(Paso paso) {
+		String bloque = null;
+		ReferenciaParametro referenciaAccion = AnalizadorPasosBs.obtenerPrimerReferencia(paso, ReferenciaEnum.TipoReferencia.ACCION);
+		String id = calcularIdentificador(prefijoPeticionHTTP, paso);
+		String url;
+		ArrayList<String> parametros;
+		String metodo;
+		String redaccionPaso;
+		boolean hijos = tieneHijos(paso);
+		
+
+		Accion accion = (Accion) referenciaAccion.getAccionDestino();
+		url = accion.getUrlDestino();
+		metodo = accion.getMetodo();
+		redaccionPaso = consultarRedaccion(paso);
+		parametros = obtenerParametros(paso.getTrayectoria().getCasoUso(), TipoValorEnum.tipoValor.PARAMETRO_HTTP_NOMBRE);
+		
+		bloque = peticionHTTP(id, url, parametros, metodo, redaccionPaso, hijos);
+		return bloque;
+	}
+
+	private static ArrayList<String> obtenerParametros(
+			CasoUso casoUso, TipoValorEnum.tipoValor tipoValor) {
+		ArrayList<String> parametros = new ArrayList<String>();
+		for(Entrada entrada : casoUso.getEntradas()) {
+			for(Valor valor : entrada.getValores()) {
+				if(TipoValorEnum.getTipoValor(valor).equals(tipoValor)) {
+					parametros.add(valor.getValor());
+				}
+			}
+		}
+		return parametros;
+	}
+
+	public static String asercion(Paso paso) {
+		String bloque = null;
+		ReferenciaParametro referenciaMensaje;
+		ReferenciaParametro referenciaPantalla;
+		String id = calcularIdentificador(prefijoAsercion, paso);
+		ArrayList<String> patrones = new ArrayList<String>();
+		String redaccionPaso;
+		Pantalla pantalla;
+		
+		referenciaMensaje = AnalizadorPasosBs.obtenerPrimerReferencia(paso, TipoReferencia.MENSAJE);
+		referenciaPantalla = AnalizadorPasosBs.obtenerPrimerReferencia(paso, TipoReferencia.PANTALLA);
+		
+		patrones.add(calcularPatronMensaje(referenciaMensaje));
+		
+		pantalla = (Pantalla)referenciaPantalla.getElementoDestino();
+		patrones.add(pantalla.getPatron());
+				
+		redaccionPaso = consultarRedaccion(paso);
+		
+		bloque = asercion(id, patrones, redaccionPaso);
+		return bloque;
+	}
+
+	private static String calcularPatronMensaje(ReferenciaParametro referenciaMensaje) {
+		Set<Valor> valoresParametros = referenciaMensaje.getValores();
+		Mensaje mensaje =  (Mensaje)referenciaMensaje.getElementoDestino();
+		String redaccionSinToken = TokenBs.decodificarCadenaSinToken(mensaje.getRedaccion());
+		String valor;
+		Set<MensajeParametro> parametros = mensaje.getParametros();
+		for(MensajeParametro parametro : parametros) {
+			valor = consultarValor(parametro, valoresParametros);
+			redaccionSinToken = TokenBs.remplazoToken(redaccionSinToken, "PARAM·" + parametro.getParametro().getNombre(), valor);
+		}
+		
+		return redaccionSinToken;
+	}
+
+	private static String consultarValor(MensajeParametro parametro,
+			Set<Valor> valoresParametros) {
+		for(Valor valor : valoresParametros) {
+			if(valor.getMensajeParametro().getId() == parametro.getId()) {
+				return valor.getValor();
+			}
+		}
 		return null;
 	}
 
-	public static String peticionHTTP(Paso pasoActual) {
-		// TODO Auto-generated method stub
-		return null;
+	public static String contenedorCSV(Paso paso, boolean terminar) throws Exception {
+		String bloque = null;
+		String id = calcularIdentificador(prefijoContenedorCSV, paso);
+		ArrayList<String> nombresParametros = obtenerParametros(paso.getTrayectoria().getCasoUso(), TipoValorEnum.tipoValor.PARAMETRO_HTTP_NOMBRE);
+		ArrayList<String> valoresParametros = obtenerParametros(paso.getTrayectoria().getCasoUso(), TipoValorEnum.tipoValor.PARAMETRO_HTTP_VALOR);
+		String redaccionPaso = consultarRedaccion(paso);
+		
+		bloque = contenedorCSV(id, nombresParametros, redaccionPaso, terminar);
+		
+		String nombreCSV = calcularNombreCSV(id);
+		String ruta = generarRutaCSV(paso);
+		generarCSV(ruta, nombreCSV, valoresParametros);
+		return bloque;
 	}
 
-	public static String asercion(Paso pasoActual) {
-		// TODO Auto-generated method stub
-		return null;
+	private static String generarRutaCSV(Paso paso) {
+		Trayectoria tray = paso.getTrayectoria();
+		CasoUso cu = tray.getCasoUso();
+		int idTrayectoria = tray.getId();
+		int idCasoUso =  cu.getId();
+		int idModulo = cu.getModulo().getId();
+		int idProyecto = cu.getProyecto().getId();
+		return "pruebas/" + idProyecto + "/" + idModulo + "/" + idCasoUso + "/" + idTrayectoria + "/";
 	}
 
-	public static String contenedorCSV(Paso siguiente) {
-		// TODO Auto-generated method stub
-		return null;
+	private static void generarCSV(String ruta, String nombreCSV,
+			ArrayList<String> valoresParametros) throws FileNotFoundException, UnsupportedEncodingException {
+		String linea = null;
+		
+		for(String valor : valoresParametros) {
+			linea = linea + valor + ", ";
+		}
+		linea = linea.substring(0, linea.length() - 1);
+		
+		PrintWriter writer = new PrintWriter(ruta + nombreCSV, "UTF-8");
+		writer.print(linea);
+		writer.close();
 	}
 
+	private static String calcularNombreCSV(String id) {
+		return "entradas" + id + ".csv";
+	}
+
+	private static String calcularIdentificador(String prefijo, Paso paso) {
+		return prefijo + "-" + paso.getTrayectoria().getClave() + "-" + paso.getNumero();
+	}
+
+	private static String consultarRedaccion(Paso paso) {
+		//return TokenBs.decodificarCadenaSinToken(paso.getRedaccion());
+		return paso.getRedaccion();
+	}
 	
-
-	
-	
+	private static boolean tieneHijos(Paso paso) {
+		return true;
+	}
 }

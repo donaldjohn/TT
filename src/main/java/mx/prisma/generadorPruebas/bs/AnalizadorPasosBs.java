@@ -2,6 +2,8 @@ package mx.prisma.generadorPruebas.bs;
 
 import java.util.ArrayList;
 
+import mx.prisma.bs.ReferenciaEnum;
+import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
 import mx.prisma.bs.TipoReglaNegocioEnum;
 import mx.prisma.bs.TipoReglaNegocioEnum.TipoReglaNegocioENUM;
 import mx.prisma.editor.bs.PasoBs;
@@ -9,6 +11,7 @@ import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.ReferenciaParametro;
 import mx.prisma.editor.model.ReglaNegocio;
+import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.editor.model.Verbo;
 
 public class AnalizadorPasosBs {
@@ -195,6 +198,10 @@ public class AnalizadorPasosBs {
 	}
 
 	public static Paso calcularSiguiente(Paso pasoActual, ArrayList<Paso> pasos) {
+		if(pasoActual == null) {
+			return null;
+		}
+		
 		int idTrayectoriaActual = pasoActual.getTrayectoria().getId();
 		
 		Paso pasoSiguiente = new Paso();
@@ -212,8 +219,23 @@ public class AnalizadorPasosBs {
 	}
 	
 	public Paso calcularPasoAlternativo(Paso paso) {
-		// TODO Auto-generated method stub
+		ReferenciaParametro referenciaTrayectoria = obtenerPrimerReferencia(paso, TipoReferencia.TRAYECTORIA);
+		Trayectoria trayectoriaRef = referenciaTrayectoria.getTrayectoria();
+		if(trayectoriaRef.isAlternativa()) {
+			return referenciaTrayectoria.getPaso();
+		}
 		return null;
+	}
+	
+	public static ReferenciaParametro obtenerPrimerReferencia(Paso paso, ReferenciaEnum.TipoReferencia tipoReferencia) {
+		ReferenciaParametro referencia = null;
+		for(ReferenciaParametro rp : paso.getReferencias()) {
+			if(ReferenciaEnum.getTipoReferenciaParametro(rp).equals(tipoReferencia)) {
+				referencia = rp;
+				break;
+			}
+		}
+		return referencia;
 	}
 		
 }

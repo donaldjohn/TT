@@ -26,7 +26,7 @@ import mx.prisma.generadorPruebas.model.Valor;
 @Entity
 @Table(name = "Entrada", catalog = "PRISMA", uniqueConstraints = @UniqueConstraint(columnNames = {
 		"CasoUsoElementoid", "Atributoid", "TerminoGlosarioElementoid" }))
-public class Entrada implements java.io.Serializable {
+public class Entrada implements java.io.Serializable, Comparable<Entrada> {
 
 	/**
 	 * 
@@ -125,6 +125,11 @@ public class Entrada implements java.io.Serializable {
 
 	public void setValores(Set<Valor> valores) {
 		this.valores = valores;
+	}
+
+	public int compareTo(Entrada o) {
+		Integer.compare(this.getId(), o.getId());
+		return 0;
 	}
 
 }
