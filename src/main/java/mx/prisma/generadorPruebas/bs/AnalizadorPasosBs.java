@@ -301,5 +301,23 @@ public class AnalizadorPasosBs {
 		}
 		return referencia;
 	}
+	
+	public static ArrayList<Paso> ordenarPasos(Trayectoria trayectoria) {
+		int longitud = trayectoria.getPasos().size();
+		ArrayList<Paso> pasos = new ArrayList<Paso>();
+		pasos.addAll(trayectoria.getPasos());
+		Paso paso = null;
+		for (int i = 0; i < longitud; i++) {
+			for (int j = 0; j < longitud; j++) {
+				if (pasos.get(i).getNumero() < pasos.get(j).getNumero()) {
+					paso = pasos.get(j);
+					pasos.set(j, pasos.get(i));
+					pasos.set(i, paso);
+				}
+			}
+		}
+		return pasos;
+		
+	}
 		
 }

@@ -8,20 +8,19 @@ import java.util.Set;
 
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
-import mx.prisma.bs.TipoReglaNegocioEnum;
 import mx.prisma.bs.TipoValorEnum;
-import mx.prisma.bs.TipoValorEnum.tipoValor;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Entrada;
+import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.MensajeParametro;
 import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.ReferenciaParametro;
-import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.Trayectoria;
+import mx.prisma.generadorPruebas.bs.AnalizadorPasosBs.TipoPaso;
 import mx.prisma.generadorPruebas.model.Valor;
 
 public class GeneradorPruebasBs {
@@ -273,7 +272,7 @@ public class GeneradorPruebasBs {
 				
 	}
 	
-	private static String generarPatrones(ArrayList<String> patrones) {
+	public static String generarPatrones(ArrayList<String> patrones) {
 		System.out.println("***desde generarPatrones > patrones: " + patrones + "***");
 		String bloque = "";
 		for (String patron : patrones) {
@@ -346,7 +345,7 @@ public class GeneradorPruebasBs {
 		return bloque;
 	}
 
-	private static ArrayList<String> obtenerParametros(
+	public static ArrayList<String> obtenerParametros(
 			CasoUso casoUso, TipoValorEnum.tipoValor tipoValor) {
 		ArrayList<String> parametros = new ArrayList<String>();
 		for(Entrada entrada : casoUso.getEntradas()) {
@@ -382,7 +381,8 @@ public class GeneradorPruebasBs {
 		return bloque;
 	}
 
-	private static String calcularPatronMensaje(ReferenciaParametro referenciaMensaje) {
+	
+	public static String calcularPatronMensaje(ReferenciaParametro referenciaMensaje) {
 		Set<Valor> valoresParametros = referenciaMensaje.getValores();
 		Mensaje mensaje =  (Mensaje)referenciaMensaje.getElementoDestino();
 		String redaccionSinToken = TokenBs.decodificarCadenaSinToken(mensaje.getRedaccion());
@@ -396,7 +396,8 @@ public class GeneradorPruebasBs {
 		return redaccionSinToken;
 	}
 
-	private static String consultarValor(MensajeParametro parametro,
+	
+	public static String consultarValor(MensajeParametro parametro,
 			Set<Valor> valoresParametros) {
 		for(Valor valor : valoresParametros) {
 			if(valor.getMensajeParametro().getId() == parametro.getId()) {
@@ -406,6 +407,7 @@ public class GeneradorPruebasBs {
 		return null;
 	}
 
+	
 	public static String contenedorCSV(Paso paso, boolean terminar) throws Exception {
 		String bloque = null;
 		String id = calcularIdentificador(prefijoContenedorCSV, paso);
@@ -421,7 +423,8 @@ public class GeneradorPruebasBs {
 		return bloque;
 	}
 
-	private static String generarRutaCSV(Paso paso) {
+	
+	public static String generarRutaCSV(Paso paso) {
 		Trayectoria tray = paso.getTrayectoria();
 		CasoUso cu = tray.getCasoUso();
 		int idTrayectoria = tray.getId();
@@ -431,7 +434,8 @@ public class GeneradorPruebasBs {
 		return "pruebas/" + idProyecto + "/" + idModulo + "/" + idCasoUso + "/" + idTrayectoria + "/";
 	}
 
-	private static void generarCSV(String ruta, String nombreCSV,
+	
+	public static void generarCSV(String ruta, String nombreCSV,
 			ArrayList<String> valoresParametros) throws FileNotFoundException, UnsupportedEncodingException {
 		String linea = null;
 		
@@ -445,20 +449,163 @@ public class GeneradorPruebasBs {
 		writer.close();
 	}
 
-	private static String calcularNombreCSV(String id) {
+	
+	public static String calcularNombreCSV(String id) {
 		return "entradas" + id + ".csv";
 	}
+	
 
-	private static String calcularIdentificador(String prefijo, Paso paso) {
+	public static String calcularIdentificador(String prefijo, Paso paso) {
 		return prefijo + "-" + paso.getTrayectoria().getClave() + "-" + paso.getNumero();
 	}
 
-	private static String consultarRedaccion(Paso paso) {
+	
+	public static String consultarRedaccion(Paso paso) {
 		//return TokenBs.decodificarCadenaSinToken(paso.getRedaccion());
 		return paso.getRedaccion();
 	}
 	
-	private static boolean tieneHijos(Paso paso) {
+	
+	public static boolean tieneHijos(Paso paso) {
 		return true;
 	}
+	
+	public static void generarCasosPrueba(CasoUso casoUso) throws Exception {
+		String archivo = "";
+		ArrayList<Paso> pasos = new ArrayList<Paso>();
+		if (!casoUso.getExtendidoDe().isEmpty()) {
+			for (Extension puntoExtension : casoUso.getExtendidoDe()) {
+				archivo += prepararPrueba(puntoExtension);
+			}
+		}
+
+		System.out.println("-- Terminan predecesores --");
+		for (Trayectoria trayectoria : casoUso.getTrayectorias()) {
+			if (!trayectoria.isAlternativa()) {
+				pasos.addAll(trayectoria.getPasos());
+				for (Paso paso : trayectoria.getPasos()) {
+					if (paso.getNumero() == 1) {
+						archivo += generarPrueba(paso, pasos);
+					}
+				}
+			}
+		}
+	}
+
+	private static String prepararPrueba(Extension puntoExtension) throws Exception {
+		String archivo = "";
+		CasoUso casoUso = puntoExtension.getCasoUsoOrigen();
+		TipoPaso tipo;
+		ArrayList<Paso> pasos = new ArrayList<Paso>();
+		
+		if (!casoUso.getExtendidoDe().isEmpty()) {
+			for (Extension puntoExtensioni : casoUso.getExtendidoDe()) {
+				archivo += prepararPrueba(puntoExtensioni);
+			}
+		}
+		casoUso = puntoExtension.getCasoUsoOrigen();
+		for (Trayectoria trayectoria : casoUso.getTrayectorias()) {
+			if (!trayectoria.isAlternativa()) {
+				pasos.addAll(trayectoria.getPasos());
+				
+				for (Paso paso : AnalizadorPasosBs.ordenarPasos(trayectoria)) {
+					tipo = AnalizadorPasosBs.calcularTipo(paso);
+					if (tipo != null) {
+						switch (tipo) {
+						case actorOprimeBoton:
+							archivo += GeneradorPruebasBs.peticionHTTP(paso);
+							break;
+						case actorSoliciaSeleccionarRegistro:
+							archivo += GeneradorPruebasBs.peticionHTTP(paso);
+							archivo += GeneradorPruebasBs.contenedorCSV(paso, true);
+							break;
+						default:
+							break;
+					
+						}
+					}
+				}
+			}
+		}
+		return archivo;
+	}
+
+	public static String generarPrueba(Paso pasoActual, ArrayList<Paso> pasos) throws Exception {
+		String archivo = "";
+		TipoPaso tipo;
+		Paso siguiente;
+		if (pasoActual == null) {
+			return archivo;
+		}
+		siguiente = AnalizadorPasosBs.calcularSiguiente(pasoActual, pasos);
+		tipo = AnalizadorPasosBs.calcularTipo(pasoActual);
+		if (tipo == null) {
+			pasos.remove(pasoActual);
+			archivo += generarPrueba(siguiente, pasos);
+			return archivo;
+		}
+
+		switch (tipo) {
+		case actorOprimeBoton:
+			if (pasoActual.getNumero() == 1) {
+				if (siguiente != null
+						&& AnalizadorPasosBs.calcularTipo(siguiente) == AnalizadorPasosBs.TipoPaso.sistemaValidaPrecondicion) {
+					archivo += GeneradorPruebasBs.peticionJDBC(siguiente);
+					archivo += GeneradorPruebasBs.iniciarControladorIf(
+							siguiente, ">");
+					pasos.remove(siguiente);
+					archivo += generarPrueba(pasoActual, pasos);
+					archivo += GeneradorPruebasBs.terminarControladorIf();
+
+					archivo += GeneradorPruebasBs.iniciarControladorIf(
+							siguiente, "==");
+					archivo += GeneradorPruebasBs.peticionHTTP(pasoActual);
+					archivo += GeneradorPruebasBs.asercion(AnalizadorPasosBs
+							.calcularPasoAlternativo(siguiente));
+					GeneradorPruebasBs.terminarControladorIf();
+				} else {
+					archivo += GeneradorPruebasBs.peticionHTTP(pasoActual);
+					pasos.remove(pasoActual);
+					archivo += generarPrueba(siguiente, pasos);
+				}
+			} else if (pasoActual.getNumero() > 1) {
+				if (siguiente != null
+						&& AnalizadorPasosBs.calcularTipo(siguiente) == AnalizadorPasosBs.TipoPaso.sistemaValidaReglaNegocio) {
+					archivo += GeneradorPruebasBs.peticionHTTP(siguiente);
+					archivo += GeneradorPruebasBs.contenedorCSV(siguiente,
+							false);
+					archivo += GeneradorPruebasBs.asercion(AnalizadorPasosBs
+							.calcularPasoAlternativo(siguiente));
+					pasos.remove(siguiente);
+					archivo += generarPrueba(pasoActual, pasos);
+
+				} else {
+					archivo += GeneradorPruebasBs.peticionHTTP(pasoActual);
+					archivo += GeneradorPruebasBs.contenedorCSV(pasoActual,
+							false);
+					pasos.remove(pasoActual);
+					archivo += generarPrueba(siguiente, pasos);
+				}
+			}
+			break;
+		case sistemaMuestraMensaje:
+			archivo += GeneradorPruebasBs.asercion(pasoActual);
+			pasos.remove(pasoActual);
+			archivo += generarPrueba(siguiente, pasos);
+
+			break;
+		case sistemaMuestraPantalla:
+			archivo += GeneradorPruebasBs.asercion(pasoActual);
+			pasos.remove(pasoActual);
+			archivo += generarPrueba(siguiente, pasos);
+
+			break;
+		default:
+			pasos.remove(pasoActual);
+			archivo += generarPrueba(siguiente, pasos);
+		}
+		return archivo;
+	}
+
 }
+
