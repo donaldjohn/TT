@@ -253,7 +253,7 @@ public class AnalizadorPasosBs {
 		return pasoSiguiente.getNumero() == Integer.MAX_VALUE ? null : pasoSiguiente;
 	}
 	
-	public Paso calcularPasoAlternativo(Paso paso) {
+	public static Paso calcularPasoAlternativo(Paso paso) {
 		ReferenciaParametro referenciaTrayectoria = obtenerPrimerReferencia(paso, TipoReferencia.TRAYECTORIA);
 		Trayectoria trayectoriaRef = referenciaTrayectoria.getTrayectoria();
 		if(trayectoriaRef.isAlternativa()) {
