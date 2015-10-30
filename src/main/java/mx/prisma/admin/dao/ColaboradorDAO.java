@@ -10,7 +10,6 @@ import org.hibernate.Query;
 
 public class ColaboradorDAO extends GenericDAO {
 	
-
 	public ColaboradorDAO() {
 		super();
 	}
