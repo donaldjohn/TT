@@ -95,7 +95,7 @@ public class Valor implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "MensajeParametroid", referencedColumnName ="id", nullable = false)
+	@JoinColumn(name = "Mensaje_Parametroid", referencedColumnName ="id", nullable = false)
 	public MensajeParametro getMensajeParametro() {
 		return this.mensajeParametro;
 	}

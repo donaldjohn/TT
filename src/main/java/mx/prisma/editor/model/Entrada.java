@@ -118,7 +118,7 @@ public class Entrada implements java.io.Serializable, Comparable<Entrada> {
 		this.terminoGlosario = terminoGlosario;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "entrada", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "entrada", cascade = CascadeType.ALL, orphanRemoval = true) 
 	public Set<Valor> getValores() {
 		return valores;
 	}

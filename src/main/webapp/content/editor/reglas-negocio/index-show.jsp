@@ -52,13 +52,16 @@
 				</s:if>
 				<s:elseif test="model.tipoReglaNegocio.nombre == 'Formato correcto'">
 					<tr>
-						<td class="ui-widget inputFormulario"><s:property
-								value="model.expresionRegular" /> </td>
+						<td class="definicion"><span class="labelIzq consulta"><s:text
+								name="labelExpReg" /></span> <span
+						class="ui-widget inputFormulario"> ${blanks} <s:property
+								value="model.expresionRegular" /></span></td>
 					</tr>
 					<tr>
-						<td>
-							<s:property
-								value="model.atributoExpReg.nombre" /></td>
+						<td class="definicion"><span class="labelIzq consulta"><s:text
+								name="labelAtributo" /></span> <span
+						class="ui-widget inputFormulario"> ${blanks} <s:property
+								value="model.atributoExpReg.nombre" /></span></td>
 					</tr>
 				</s:elseif>
 				<s:elseif

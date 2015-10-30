@@ -1,6 +1,7 @@
 package mx.prisma.generadorPruebas.bs;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
@@ -26,6 +27,40 @@ public class AnalizadorPasosBs {
 		sistemaMuestraMensaje
 	}	
 	
+	public enum AmbitoOprimeBoton {
+		oprimeBotonSolicitud,
+		oprimeBotonEjecucion
+	}
+	
+	public AmbitoOprimeBoton obtenerAmbito(Paso paso) {
+		AmbitoOprimeBoton ambito = null;
+		Trayectoria trayectoria = paso.getTrayectoria();
+		List<Paso> pasosAntOprimeBoton = new ArrayList<Paso>();
+		List<Paso> pasosSigOprimeBoton = new ArrayList<Paso>();
+		List<Paso> pasosSigEjecutaTransaccion = new ArrayList<Paso>();
+		
+		for(Paso p : trayectoria.getPasos()) {
+			if(isActorOprimeBoton(p) && p.getId() != paso.getId()) {
+				if(p.getNumero() < paso.getNumero()) {
+					pasosAntOprimeBoton.add(p);
+				} else {
+					pasosSigOprimeBoton.add(p);
+				}				
+			} 
+			if(isSistemaEjecutaTransaccion(p)) {
+				pasosSigEjecutaTransaccion.add(p);
+			}
+		}
+		
+		if(pasosAntOprimeBoton.isEmpty()) {
+			return AmbitoOprimeBoton.oprimeBotonSolicitud; 
+		} else {
+			if(pasosSigOprimeBoton.isEmpty() && !pasosSigEjecutaTransaccion.isEmpty()) {
+				return AmbitoOprimeBoton.oprimeBotonEjecucion;
+			} 
+		} 
+		return ambito;
+	}
 
 	//Generar petición HTTP 
 	public static boolean isActorOprimeBoton(Paso paso) {
