@@ -24,12 +24,25 @@ public class AnalizadorPasosBs {
 		actorIngresaDatos,
 		sistemaValidaReglaNegocio,
 		sistemaEjecutaTransaccion,
-		sistemaMuestraMensaje
+		sistemaMuestraMensaje,
+		actorSoliciaSeleccionarRegistro
 	}	
 	
 	public enum AmbitoOprimeBoton {
 		oprimeBotonSolicitud,
 		oprimeBotonEjecucion
+	}
+	
+	public static boolean isSelectorRegistroGestion(Paso paso) {
+		String redaccion = paso.getRedaccion();
+		boolean patron1 = paso.isRealizaActor();
+		Verbo patron2 = paso.getVerbo();
+		if (patron1 == true && patron2.getNombre().equals("Oprime")
+				&& redaccion.contains(TokenBs.tokenACC) && redaccion.contains("desea") && redaccion.contains(TokenBs.tokenENT)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public AmbitoOprimeBoton obtenerAmbito(Paso paso) {
@@ -208,28 +221,44 @@ public class AnalizadorPasosBs {
 	}
 
 	public static TipoPaso calcularTipo(Paso p) {
+		TipoPaso tipoPaso = null;
 		if (isActorOprimeBoton(p)) {
-			return TipoPaso.actorOprimeBoton;
+			//System.out.println("actorOprimeBoton");
+			tipoPaso = TipoPaso.actorOprimeBoton;
 		}
 		if (isSistemaValidaPrecondicion(p)) {
-			return TipoPaso.sistemaValidaPrecondicion;
+			//System.out.println("isSistemaValidaPrecondicion");
+			tipoPaso = TipoPaso.sistemaValidaPrecondicion;
 		}			
 		if (isSistemaMuestraPantalla(p)) {
-			return TipoPaso.sistemaValidaPrecondicion;
+			//System.out.println("sistemaMuestraPantalla");	
+			tipoPaso = TipoPaso.sistemaMuestraPantalla;
 		}	
 		if (isActorIngresaDatos(p)) {
-			return TipoPaso.actorIngresaDatos;
+			//System.out.println("actorIngresaDatos");
+			tipoPaso = TipoPaso.actorIngresaDatos;
 		}	
 		if (isSistemaValidaReglaNegocio(p)) {
-			return TipoPaso.sistemaValidaReglaNegocio;
+			//System.out.println("sistemaValidaReglaNegocio");
+			tipoPaso = TipoPaso.sistemaValidaReglaNegocio;
 		}
 		if (isSistemaEjecutaTransaccion(p)) {
-			return TipoPaso.sistemaEjecutaTransaccion;
+			//System.out.println("sistemaEjecutaTransaccion");
+			tipoPaso = TipoPaso.sistemaEjecutaTransaccion;
 		}
 		if (isSistemaMuestraMensaje(p)) {
-			return TipoPaso.sistemaMuestraMensaje;
+			//System.out.println("sistemaMuestraMensaje");
+			tipoPaso = TipoPaso.sistemaMuestraMensaje;
 		}
-		return null;
+		if(isSelectorRegistroGestion(p)) {
+			System.out.println("actorSoliciaSeleccionarRegistro");
+			tipoPaso = TipoPaso.actorSoliciaSeleccionarRegistro;
+		}
+		
+		if (tipoPaso == null) {
+			//System.out.println("No clasificado");
+		}
+		return tipoPaso;
 	}
 
 	public static Paso calcularSiguiente(Paso pasoActual, ArrayList<Paso> pasos) {
