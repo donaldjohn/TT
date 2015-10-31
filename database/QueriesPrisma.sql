@@ -3,8 +3,8 @@ VALUES ('PMA', 'PRISMA', '2011-03-12', '2012-03-12', '2011-03-13', '2012-03-13',
 
 INSERT INTO Modulo (nombre, clave, Proyectoid, descripcion) VALUES ('Editor', 'E', 1, 'Editor de casos de uso.');
 
-INSERT INTO PRISMA.Colaborador (CURP, nombre, apellidoPaterno, apellidoMaterno, correoElectronico, contrasenia) VALUES ('RACS930702HMCMMR05', 'Sergio', 'Ramírez', 'Camacho', 'sramirezc@live.com', 'helloworld');
-INSERT INTO PRISMA.Colaborador (CURP, nombre, apellidoPaterno, apellidoMaterno, correoElectronico, contrasenia) VALUES ('HESN930515MDFRNT03', 'Natalia', 'Hernández', 'Sánchez', 'hdeznatali@gmail.com', 'password');
+INSERT INTO PRISMA.Colaborador (CURP, nombre, apellidoPaterno, apellidoMaterno, correoElectronico, contrasenia, administrador) VALUES ('RACS930702HMCMMR05', 'Sergio', 'Ramírez', 'Camacho', 'sramirezc@live.com', 'helloworld', '0');
+INSERT INTO PRISMA.Colaborador (CURP, nombre, apellidoPaterno, apellidoMaterno, correoElectronico, contrasenia, administrador) VALUES ('HESN930515MDFRNT03', 'Natalia', 'Hernández', 'Sánchez', 'hdeznatali@gmail.com', 'password', '0');
 
 INSERT INTO PRISMA.Colaborador_Proyecto (ColaboradorCURP, Rolid, Proyectoid) VALUES ('RACS930702HMCMMR05', '2', '1');
 INSERT INTO PRISMA.Colaborador_Proyecto (ColaboradorCURP, Rolid, Proyectoid) VALUES ('HESN930515MDFRNT03', '1', '1');
