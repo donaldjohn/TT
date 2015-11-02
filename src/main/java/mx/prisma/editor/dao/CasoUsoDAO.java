@@ -3,9 +3,7 @@ package mx.prisma.editor.dao;
 import java.util.List;
 
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.CasoUso;
-import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.Trayectoria;
