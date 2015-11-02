@@ -74,7 +74,7 @@ public class MensajeParametro implements java.io.Serializable {
 		this.parametro = parametro;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "mensajeParametro", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mensajeParametro", cascade = CascadeType.ALL, orphanRemoval = true)
 	public Set<Valor> getValores() {
 		return valores;
 	}

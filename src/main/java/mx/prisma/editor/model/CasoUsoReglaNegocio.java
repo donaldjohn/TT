@@ -27,15 +27,13 @@ public class CasoUsoReglaNegocio implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private int id;
-	private int numeroToken;
 	private CasoUso casoUso;
 	private ReglaNegocio reglaNegocio;
 	
 	public CasoUsoReglaNegocio() {
 	}
 
-	public CasoUsoReglaNegocio(int numeroToken, CasoUso casoUso, ReglaNegocio reglaNegocio) {
-		this.numeroToken = numeroToken;
+	public CasoUsoReglaNegocio(CasoUso casoUso, ReglaNegocio reglaNegocio) {
 		this.casoUso = casoUso;
 		this.reglaNegocio = reglaNegocio;
 	}
@@ -49,15 +47,6 @@ public class CasoUsoReglaNegocio implements java.io.Serializable {
 
 	public void setId(int  id) {
 		this.id = id;
-	}
-
-	@Column(name = "numeroToken", nullable = false)
-	public int getNumeroToken() {
-		return this.numeroToken;
-	}
-
-	public void setNumeroToken(int numeroToken) {
-		this.numeroToken = numeroToken;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)

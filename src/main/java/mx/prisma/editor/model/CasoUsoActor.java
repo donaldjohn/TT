@@ -29,13 +29,11 @@ public class CasoUsoActor implements java.io.Serializable {
 	private int id;
 	private CasoUso casouso;
 	private Actor actor;
-	private int numeroToken;
 
 	public CasoUsoActor() {
 	}
 
-	public CasoUsoActor(int numeroToken, CasoUso casouso, Actor actor) {
-		this.numeroToken = numeroToken;
+	public CasoUsoActor(CasoUso casouso, Actor actor) {
 		this.casouso = casouso;
 		this.actor = actor;
 	}
@@ -49,15 +47,6 @@ public class CasoUsoActor implements java.io.Serializable {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	@Column(name = "numeroToken", nullable = false)
-	public int getNumeroToken() {
-		return this.numeroToken;
-	}
-
-	public void setNumeroToken(int numeroToken) {
-		this.numeroToken = numeroToken;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)

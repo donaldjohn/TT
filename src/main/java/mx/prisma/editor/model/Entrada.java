@@ -33,7 +33,6 @@ public class Entrada implements java.io.Serializable, Comparable<Entrada> {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer id;
-	private int numeroToken;
 	private TipoParametro tipoParametro;
 	private CasoUso casoUso;
 	private Atributo atributo;
@@ -43,15 +42,13 @@ public class Entrada implements java.io.Serializable, Comparable<Entrada> {
 	public Entrada() {
 	}
 
-	public Entrada(int numeroToken, TipoParametro tipoParametro, CasoUso casoUso) {
-		this.numeroToken = numeroToken;
+	public Entrada(TipoParametro tipoParametro, CasoUso casoUso) {
 		this.tipoParametro = tipoParametro;
 		this.casoUso = casoUso;
 	}
 
 	public Entrada(int numeroToken, TipoParametro tipoParametro, CasoUso casoUso,
 			Atributo atributo, TerminoGlosario terminoGlosario) {
-		this.numeroToken = numeroToken;
 		this.tipoParametro = tipoParametro;
 		this.casoUso = casoUso;
 		this.atributo = atributo;
@@ -67,15 +64,6 @@ public class Entrada implements java.io.Serializable, Comparable<Entrada> {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	@Column(name = "numeroToken", nullable = false)
-	public int getNumeroToken() {
-		return this.numeroToken;
-	}
-
-	public void setNumeroToken(int numeroToken) {
-		this.numeroToken = numeroToken;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)

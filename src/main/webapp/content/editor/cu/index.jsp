@@ -99,6 +99,12 @@
 										src="${pageContext.request.contextPath}/resources/images/icons/liberar.png" /></s:a>	
 								${blanks}	
 							</s:if>
+							<!-- Pruebas de cu -->
+							<s:url var="urlConfiguracion" value="%{#pageContext.request.contextPath}/generadorPruebas!configuracionGeneral"/>
+							<s:a href="%{urlConfiguracion}">
+								<img id="" class="button" title="Generar pruebas"
+										src="${pageContext.request.contextPath}/resources/images/icons/pruebas.png" />
+							</s:a>
 					</td>
 				</tr>
 			</s:iterator>

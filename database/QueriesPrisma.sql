@@ -41,10 +41,10 @@ INSERT INTO PRISMA.TerminoGlosario (Elementoid) VALUES ('6');
 
 INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('7', 'RN', '12', 'Identificador de elemento', 'El identificador de cada elemento se compone de un nombre, número y una clave. 
 	Donde el nombre es el que le asigna el usuario, el número es secuencial y la clave define el tipo de elemento: \"ENT\" para las entidades, \"ACT\"" para los actores, \"CU\" para los casos de uso, \"IU\" para
-    las pantallas, \"MSJ\" para los mensajes, \"RN\" para las reglas de negocio y \"GLS\" para los términos del glosario.', '1', '1');
+    las pantallas, \"MSG\" para los mensajes, \"RN\" para las reglas de negocio y \"GLS\" para los términos del glosario.', '1', '1');
 INSERT INTO PRISMA.ReglaNegocio (Elementoid, redaccion, TipoReglaNegocioid) VALUES ('7', 'El identificador de cada elemento se compone de un nombre, número y una clave. 
 	Donde el nombre es el que le asigna el usuario, el número es secuencial y la clave define el tipo de elemento: \"ENT\" para las entidades, \"ACT\"" para los actores, \"CU\" para los casos de uso, \"IU\" para
-    las pantallas, \"MSJ\" para los mensajes, \"RN\" para las reglas de negocio y \"GLS\" para los términos del glosario.', '10');
+    las pantallas, \"MSG\" para los mensajes, \"RN\" para las reglas de negocio y \"GLS\" para los términos del glosario.', '10');
 
 INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('8', 'RN', '8', 'Datos obligatorios', 'El usuario debe ingresar toda la información marcada como obligatoria en el modelo conceptual.', '1', '1');
 INSERT INTO PRISMA.ReglaNegocio (Elementoid, redaccion, TipoReglaNegocioid) VALUES ('8', 'El usuario debe ingresar toda la información marcada como obligatoria en el modelo conceptual.', '4');
@@ -126,7 +126,7 @@ INSERT INTO PRISMA.CasoUso_Actor (CasoUsoElementoid, ActorElementoid) VALUES ('2
 INSERT INTO PRISMA.Entrada (TipoParametroid, CasoUsoElementoid, Atributoid) VALUES ('5', '21', '4');
 INSERT INTO PRISMA.Entrada (TipoParametroid, CasoUsoElementoid, Atributoid) VALUES ('5', '21', '5');
 INSERT INTO PRISMA.Entrada (TipoParametroid, CasoUsoElementoid, Atributoid) VALUES ('5', '21', '6');
-INSERT INTO PRISMA.Entrada (TipoParametroid, CasoUsoElementoid, Atributoid) VALUES ('7', '21', '6');
+INSERT INTO PRISMA.Entrada (TipoParametroid, CasoUsoElementoid, TerminoGlosarioElementoid) VALUES ('7', '21', '6');
 
 INSERT INTO PRISMA.Salida (TipoParametroid, CasoUsoElementoid, MensajeElementoid) VALUES ('6', '21', '13');
 INSERT INTO PRISMA.Salida (TipoParametroid, CasoUsoElementoid, MensajeElementoid) VALUES ('6', '21', '14');
@@ -259,3 +259,5 @@ INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDesti
 INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('9', '24', '20');
 
 INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, PasoidDestino) VALUES ('10', '25', '4'); 
+
+

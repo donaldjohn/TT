@@ -29,7 +29,6 @@ public class Salida implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer id;
-	private int numeroToken;
 	private TipoParametro tipoParametro;
 	private CasoUso casoUso;
 	private Mensaje mensaje;
@@ -39,16 +38,14 @@ public class Salida implements java.io.Serializable {
 	public Salida() {
 	}
 
-	public Salida(int numeroToken, TipoParametro tipoParametro, CasoUso casoUso) {
-		this.numeroToken = numeroToken;
+	public Salida(TipoParametro tipoParametro, CasoUso casoUso) {
 		this.tipoParametro = tipoParametro;
 		this.casoUso = casoUso;
 	}
 
-	public Salida(int numeroToken, TipoParametro tipoParametro, CasoUso casoUso,
+	public Salida(TipoParametro tipoParametro, CasoUso casoUso,
 			Mensaje mensaje, TerminoGlosario terminoGlosario,
 			Atributo atributo) {
-		this.numeroToken = numeroToken;
 		this.tipoParametro = tipoParametro;
 		this.casoUso = casoUso;
 		this.mensaje = mensaje;
@@ -66,16 +63,6 @@ public class Salida implements java.io.Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-	@Column(name = "numeroToken", nullable = false)
-	public int getNumeroToken() {
-		return this.numeroToken;
-	}
-
-	public void setNumeroToken(int numeroToken) {
-		this.numeroToken = numeroToken;
-	}
-
 
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TipoParametroid", referencedColumnName = "id")

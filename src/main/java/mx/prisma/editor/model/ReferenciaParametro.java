@@ -33,7 +33,6 @@ public class ReferenciaParametro implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private TipoParametro tipoParametro;
-	private int numerToken;
 	private Set<Valor> valores; 
 	
 	// Entidad que hizo la referencia:
@@ -147,16 +146,6 @@ public class ReferenciaParametro implements java.io.Serializable {
 		this.tipoParametro = tipoParametro;
 	}
 
-	@Column(name = "numeroToken", nullable = false)
-	public int getNumerToken() {
-		return numerToken;
-	}
-
-
-	public void setNumerToken(int numerToken) {
-		this.numerToken = numerToken;
-	}
-
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Trayectoriaid", referencedColumnName="id", nullable = true)
 	public Trayectoria getTrayectoria() {
@@ -167,7 +156,7 @@ public class ReferenciaParametro implements java.io.Serializable {
 		this.trayectoria = trayectoria;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "referenciaParametro", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "referenciaParametro", cascade = CascadeType.ALL, orphanRemoval = true)
 	public Set<Valor> getValores() {
 		return valores;
 	}
