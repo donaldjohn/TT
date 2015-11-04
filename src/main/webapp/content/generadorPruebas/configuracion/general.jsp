@@ -8,7 +8,7 @@
 <head>
 <title>Configuración general</title>
 <![CDATA[
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/generadorPruebas/general/js/general.js"></script>	
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/generadorPruebas/configuracion/js/general.js"></script>	
 ]]>
 
 </head>
@@ -21,38 +21,38 @@
 	<br />
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
-	<s:form autocomplete="off" id="frmActor" theme="simple"
-		action="%{#pageContext.request.contextPath}/actores/%{idSel}" method="post">
+	<s:form autocomplete="off" id="frmConfiguracion" theme="simple"
+		action="%{#pageContext.request.contextPath}/configuracion-general!configurar" method="post">
 		<s:hidden name="_method" value="put" />
 		<div class="formulario">
 			<div class="tituloFormulario">Configuración de la conexión a la base de datos</div>
 			<table class="seccion">
 				<tr>
 					<td class="label obligatorio"><s:text name="labelURL" /></td>
-					<td><s:textfield name="" maxlength="500"
+					<td><s:textfield name="model.ConfiguracionBaseDatos.urlBaseDatos" maxlength="500"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
-						<s:fielderror fieldName ="" cssClass="error"
+						<s:fielderror fieldName ="model.ConfiguracionBaseDatos.urlBaseDatos" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelDriver" /></td>
-					<td><s:textarea name="" maxlength="50"
+					<td><s:textfield name="model.ConfiguracionBaseDatos.driver" maxlength="50"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
-						<s:fielderror fieldName ="" cssClass="error"
+						<s:fielderror fieldName ="model.ConfiguracionBaseDatos.driver" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelUsuario" /></td>
-					<td><s:textarea name="" maxlength="50"
+					<td><s:textfield name="model.ConfiguracionBaseDatos.usuario" maxlength="50"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
-						<s:fielderror fieldName ="" cssClass="error"
+						<s:fielderror fieldName ="model.ConfiguracionBaseDatos.usuario" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelContrasenia" /></td>
-					<td><s:textarea name="" maxlength="50"
+					<td><s:textfield name="model.ConfiguracionBaseDatos.contrasenia" maxlength="50"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
-						<s:fielderror fieldName ="" cssClass="error"
+						<s:fielderror fieldName ="model.ConfiguracionBaseDatos.contrasenia" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
 			</table>
@@ -62,16 +62,16 @@
 			<table class="seccion">
 				<tr>
 					<td class="label obligatorio"><s:text name="labelIp" /></td>
-					<td><s:textfield name="" maxlength="16"
+					<td><s:textfield name="model.ConfiguracionHttp.ip" maxlength="16"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
-						<s:fielderror fieldName ="" cssClass="error"
+						<s:fielderror fieldName ="model.ConfiguracionHttp.ip" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelPuerto" /></td>
-					<td><s:textarea name=""
+					<td><s:textfield name="model.ConfiguracionHttp.puerto"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
-						<s:fielderror fieldName ="" cssClass="error"
+						<s:fielderror fieldName ="model.ConfiguracionHttp.puerto" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
 			</table>
@@ -79,7 +79,8 @@
 		
 		<br />
 		<div align="center">
-			<s:submit class="boton" value="Aceptar"/>
+		
+			<s:submit class="boton" value="Siguiente"/>
 
 			<s:url var="urlGestionarCU"
 				value="%{#pageContext.request.contextPath}/cu">

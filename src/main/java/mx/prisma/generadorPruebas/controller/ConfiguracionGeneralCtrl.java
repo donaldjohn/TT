@@ -1,5 +1,6 @@
 package mx.prisma.generadorPruebas.controller;
 
+import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.util.ActionSupportPRISMA;
 
@@ -12,13 +13,22 @@ import com.opensymphony.xwork2.ModelDriven;
 @ResultPath("/content/generadorPruebas/")
 @Results({
 	@Result(name = ActionSupportPRISMA.SUCCESS, type = "redirectAction", params = {
-			"actionName", "configuracion" }) })
+			"actionName", "configuracion-general" }),
+			@Result(name = "configuracionGeneral", type = "dispatcher", location = "configuracion/general.jsp"),
+			@Result(name = "casosUsoPrevios", type = "redirectAction", params = {
+					"actionName", "configuracion-casos-uso-previos!prepararConfiguracion"})})
 public class ConfiguracionGeneralCtrl  implements ModelDriven<CasoUso> {
 	private CasoUso model;
 	private Integer idSel;
-	public String configuracionGeneral() {
-		System.out.println("desde conf general");
-		return "";
+	public String prepararConfiguracion() {
+		System.out.println("desde prepararConfiguracion general");
+		return "configuracionGeneral";
+	}
+	
+	public String configurar() {
+		System.out.println("desde configurar general");
+		
+		return "casosUsoPrevios";
 	}
 	public CasoUso getModel() {
 		return model;
@@ -31,6 +41,7 @@ public class ConfiguracionGeneralCtrl  implements ModelDriven<CasoUso> {
 	}
 	public void setIdSel(Integer idSel) {
 		this.idSel = idSel;
+		//this.model = CuBs.consultarCasoUso(idSel);
 	}
 	
 }

@@ -228,7 +228,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.revisiones = revisiones;
 	}
 
-	@OneToOne(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.ALL, orphanRemoval = false)
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "casoUso", cascade = CascadeType.ALL, orphanRemoval = false)
 	public ConfiguracionHttp getConfiguracionHttp() {
 		return configuracionHttp;
 	}
@@ -237,7 +237,7 @@ public class CasoUso extends Elemento implements java.io.Serializable {
 		this.configuracionHttp = configuracionHttp;
 	}
 
-	@OneToOne(fetch = FetchType.EAGER, mappedBy = "casoUso", cascade = CascadeType.ALL, orphanRemoval = false)
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "casoUso", cascade = CascadeType.ALL, orphanRemoval = false)
 	public ConfiguracionBaseDatos getConfiguracionBaseDatos() {
 		return configuracionBaseDatos;
 	}
