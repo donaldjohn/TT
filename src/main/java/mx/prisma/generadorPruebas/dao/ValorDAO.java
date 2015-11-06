@@ -1,17 +1,9 @@
 package mx.prisma.generadorPruebas.dao;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-
 import mx.prisma.dao.GenericDAO;
-import mx.prisma.editor.model.Entrada;
-import mx.prisma.generadorPruebas.model.Valor;
 
 public class ValorDAO extends GenericDAO {
-	public List<Valor> findByEntrada(Entrada entrada) {
+	/*public List<Valor> findByEntrada(Entrada entrada) {
 		List<Valor> valores = null;
 		try {
 			session.beginTransaction();
@@ -33,5 +25,5 @@ public class ValorDAO extends GenericDAO {
 		}
 		
 		return valores;
-	}
+	}*/
 }

@@ -465,7 +465,6 @@ public class GeneradorPruebasBs {
 		return paso.getRedaccion();
 	}
 	
-	
 	public static boolean tieneHijos(Paso paso) {
 		return true;
 	}
@@ -571,8 +570,8 @@ public class GeneradorPruebasBs {
 			} else if (pasoActual.getNumero() > 1) {
 				if (siguiente != null
 						&& AnalizadorPasosBs.calcularTipo(siguiente) == AnalizadorPasosBs.TipoPaso.sistemaValidaReglaNegocio) {
-					archivo += GeneradorPruebasBs.peticionHTTP(siguiente);
-					archivo += GeneradorPruebasBs.contenedorCSV(siguiente,
+					archivo += GeneradorPruebasBs.peticionesReglaNegocio(pasoActual, siguiente);
+					archivo += GeneradorPruebasBs.contenedorCSV(pasoActual, siguiente,
 							false);
 					archivo += GeneradorPruebasBs.asercion(AnalizadorPasosBs
 							.calcularPasoAlternativo(siguiente));
@@ -606,6 +605,58 @@ public class GeneradorPruebasBs {
 		}
 		return archivo;
 	}
+
+	/*private static String peticionesReglaNegocio(Paso peticion, Paso reglaNegocio) {
+		String bloque = null;
+		ReferenciaParametro referenciaAccion = AnalizadorPasosBs.obtenerPrimerReferencia(reglaNegocio, ReferenciaEnum.TipoReferencia.REGLANEGOCIO);
+
+		/*
+		String id = calcularIdentificador(prefijoPeticionHTTP, paso);
+		String url;
+		ArrayList<String> parametros;
+		String metodo;
+		String redaccionPaso;
+		boolean hijos = tieneHijos(paso);
+		
+		Accion accion = (Accion) referenciaAccion.getAccionDestino();
+		url = accion.getUrlDestino();
+		metodo = accion.getMetodo();
+		redaccionPaso = consultarRedaccion(paso);
+		parametros = obtenerParametros(paso.getTrayectoria().getCasoUso(), TipoValorEnum.tipoValor.PARAMETRO_HTTP_NOMBRE);
+		
+		bloque = peticionHTTP(id, url, parametros, metodo, redaccionPaso, hijos);
+		return bloque;
+		
+		model.nombre nombreHTML entradaX
+		Sergio	valorHTML entradaX
+				valorHTML entradaX		
+		
+		String id = calcularIdentificador(prefijoPeticionHTTP, peticion);
+		String url;
+		ArrayList<String> parametros;
+		String metodo;
+		String redaccionPaso;
+		int noEscenarios = 0;
+		//boolean hijos = tieneHijos(paso);
+		
+		Accion accion = (Accion) referenciaAccion.getAccionDestino();
+		url = accion.getUrlDestino();
+		metodo = accion.getMetodo();
+		redaccionPaso = consultarRedaccion(peticion) + "\n" + consultarRedaccion(reglaNegocio);
+		noEscenarios = calcularEscenarios(reglaNegocio);
+		
+		
+		parametros = obtenerParametros(paso.getTrayectoria().getCasoUso(), TipoValorEnum.tipoValor.PARAMETRO_HTTP_NOMBRE);
+		
+		bloque = peticionHTTP(id, url, parametros, metodo, redaccionPaso, hijos);
+		return bloque;
+		
+				
+		for (Valor valor : referenciaAccion.getValores()) {
+			
+		}
+		return null;
+	}*/
 
 }
 

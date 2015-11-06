@@ -2,8 +2,10 @@
 <!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
 
 <hibernate-reverse-engineering>
-  <table-filter match-catalog="PRISMA" match-name="Valor"/>
-  <table-filter match-catalog="PRISMA" match-name="TipoValor"/>
-  <table-filter match-catalog="PRISMA" match-name="ConfiguracionHTTP"/>
-  <table-filter match-catalog="PRISMA" match-name="ConfiguracionBaseDatos"/>
+  <table-filter match-catalog="PRISMA" match-name="ValorEntrada"/>
+  <table-filter match-catalog="PRISMA" match-name="Escenario_ValorEntrada"/>
+  <table-filter match-catalog="PRISMA" match-name="Escenario"/>
+  <table-filter match-catalog="PRISMA" match-name="ValorMensajeParametro"/>
+  <table-filter match-catalog="PRISMA" match-name="Query"/>
+  
 </hibernate-reverse-engineering>

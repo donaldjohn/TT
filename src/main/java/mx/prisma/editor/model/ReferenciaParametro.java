@@ -4,6 +4,8 @@ package mx.prisma.editor.model;
  * Sergio Ramírez Camacho 07/06/2015
  */
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,16 +13,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
-import static javax.persistence.GenerationType.IDENTITY;
-
-import javax.persistence.Id;
 import javax.persistence.Table;
 
-import mx.prisma.generadorPruebas.model.Valor;
+import mx.prisma.generadorPruebas.model.Query;
+import mx.prisma.generadorPruebas.model.ValorMensajeParametro;
 
 
 @Entity
@@ -33,7 +33,8 @@ public class ReferenciaParametro implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private TipoParametro tipoParametro;
-	private Set<Valor> valores; 
+	private Set<ValorMensajeParametro> valoresMensajeParametro; 
+	private Set<Query> queries;
 	
 	// Entidad que hizo la referencia:
 	private PostPrecondicion postPrecondicion;
@@ -157,13 +158,26 @@ public class ReferenciaParametro implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "referenciaParametro", cascade = CascadeType.ALL, orphanRemoval = true)
-	public Set<Valor> getValores() {
-		return valores;
+	public Set<ValorMensajeParametro> getValoresMensajeParametro() {
+		return valoresMensajeParametro;
 	}
 
-	public void setValores(Set<Valor> valores) {
-		this.valores = valores;
+
+	public void setValoresMensajeParametro(
+			Set<ValorMensajeParametro> valoresMensajeParametro) {
+		this.valoresMensajeParametro = valoresMensajeParametro;
 	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "referenciaParametro", cascade = CascadeType.ALL, orphanRemoval = true)
+	public Set<Query> getQueries() {
+		return queries;
+	}
+
+	public void setQueries(Set<Query> queries) {
+		this.queries = queries;
+	}
+
+	
 	
 	
 

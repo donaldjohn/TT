@@ -3,6 +3,8 @@ package mx.prisma.editor.model;
 /*
  * Sergio Ramírez Camacho 07/06/2015
  */
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -10,17 +12,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
-import static javax.persistence.GenerationType.IDENTITY;
-
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import mx.prisma.generadorPruebas.model.Valor;
+import mx.prisma.generadorPruebas.model.ValorEntrada;
 
 
 @Entity
@@ -37,7 +36,8 @@ public class Entrada implements java.io.Serializable, Comparable<Entrada> {
 	private CasoUso casoUso;
 	private Atributo atributo;
 	private TerminoGlosario terminoGlosario;
-	private Set<Valor> valores;
+	private Set<ValorEntrada> valores;
+	private String nombreHTML;
 
 	public Entrada() {
 	}
@@ -107,17 +107,27 @@ public class Entrada implements java.io.Serializable, Comparable<Entrada> {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "entrada", cascade = CascadeType.ALL, orphanRemoval = true) 
-	public Set<Valor> getValores() {
+	public Set<ValorEntrada> getValores() {
 		return valores;
 	}
 
-	public void setValores(Set<Valor> valores) {
+	public void setValores(Set<ValorEntrada> valores) {
 		this.valores = valores;
+	}
+	
+	@Column(name = "nombreHTML", nullable = true)
+	public String getNombreHTML() {
+		return nombreHTML;
+	}
+
+	public void setNombreHTML(String nombreHTML) {
+		this.nombreHTML = nombreHTML;
 	}
 
 	public int compareTo(Entrada o) {
 		Integer.compare(this.getId(), o.getId());
 		return 0;
 	}
+	
 
 }

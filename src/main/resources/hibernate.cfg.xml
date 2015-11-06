@@ -53,9 +53,13 @@
   <mapping class="mx.prisma.editor.model.Trayectoria"/>
   <mapping class="mx.prisma.editor.model.UnidadTamanio"/>
   <mapping class="mx.prisma.editor.model.Verbo"/>
-  <mapping class="mx.prisma.generadorPruebas.model.Valor"/>
-  <mapping class="mx.prisma.generadorPruebas.model.TipoValor"/>
   <mapping class="mx.prisma.generadorPruebas.model.ConfiguracionBaseDatos"/>
   <mapping class="mx.prisma.generadorPruebas.model.ConfiguracionHttp"/>
+  <mapping class="mx.prisma.generadorPruebas.model.ValorEntrada"/>
+  <mapping class="mx.prisma.generadorPruebas.model.EscenarioValorEntrada"/>
+  <mapping class="mx.prisma.generadorPruebas.model.Escenario"/>
+  <mapping class="mx.prisma.generadorPruebas.model.ValorMensajeParametro"/>
+  <mapping class="mx.prisma.generadorPruebas.model.Query"/>
+  
  </session-factory>
 </hibernate-configuration>

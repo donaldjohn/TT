@@ -15,7 +15,8 @@ public class Test {
 
 	public static void main(String[] args) throws Exception {
 		int id = 15;
-		GeneradorPruebasBs.generarCasosPrueba(new CasoUsoDAO().consultarCasoUso(id));
+		new CasoUsoDAO().consultarCasoUso(id);
+		//GeneradorPruebasBs.generarCasosPrueba(new CasoUsoDAO().consultarCasoUso(id));
 		
 	}
 	

@@ -5,6 +5,7 @@ package mx.prisma.editor.model;
  */
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -18,7 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import mx.prisma.generadorPruebas.model.Valor;
+import mx.prisma.generadorPruebas.model.ValorMensajeParametro;
 
 
 
@@ -33,7 +34,7 @@ public class MensajeParametro implements java.io.Serializable {
 	private Integer id;
 	private Mensaje mensaje;
 	private Parametro parametro;
-	private Set<Valor> valores;
+	private Set<ValorMensajeParametro> valores = new HashSet<ValorMensajeParametro>(0);
 
 	public MensajeParametro() {
 	}
@@ -74,13 +75,13 @@ public class MensajeParametro implements java.io.Serializable {
 		this.parametro = parametro;
 	}
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mensajeParametro", cascade = CascadeType.ALL, orphanRemoval = true)
-	public Set<Valor> getValores() {
+	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "mensajeParametro", cascade = CascadeType.ALL, orphanRemoval = true)
+	public Set<ValorMensajeParametro> getValores() {
 		return valores;
 	}
 
-	public void setValores(Set<Valor> valores) {
+	public void setValores(Set<ValorMensajeParametro> valores) {
 		this.valores = valores;
-	}
+	}*/
 
 }
