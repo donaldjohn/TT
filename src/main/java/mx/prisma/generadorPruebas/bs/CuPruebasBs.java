@@ -168,7 +168,7 @@ public class CuPruebasBs {
 		Atributo atributo = entrada.getAtributo();
 		ValorEntrada valor = new ValorEntrada();
 		valor.setEntrada(entrada);
-		valor.setReglaNegocioElementoid(reglaNegocio);
+		valor.setReglaNegocio(reglaNegocio);
 		String valorCadena = null;
 
 		if(TipoDatoEnum.getTipoDato(atributo.getTipoDato()).equals(TipoDatoEnum.tipoDato.OTRO)) {

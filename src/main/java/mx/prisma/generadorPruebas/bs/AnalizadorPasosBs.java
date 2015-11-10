@@ -9,6 +9,7 @@ import mx.prisma.bs.TipoReglaNegocioEnum;
 import mx.prisma.bs.TipoReglaNegocioEnum.TipoReglaNegocioENUM;
 import mx.prisma.editor.bs.PasoBs;
 import mx.prisma.editor.bs.TokenBs;
+import mx.prisma.editor.dao.PasoDAO;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.ReferenciaParametro;
 import mx.prisma.editor.model.ReglaNegocio;
@@ -286,13 +287,23 @@ public class AnalizadorPasosBs {
 		ReferenciaParametro referenciaTrayectoria = obtenerPrimerReferencia(paso, TipoReferencia.TRAYECTORIA);
 		Trayectoria trayectoriaRef = referenciaTrayectoria.getTrayectoria();
 		if(trayectoriaRef.isAlternativa()) {
-			return referenciaTrayectoria.getPaso();
+			return buscarPaso(1, trayectoriaRef);
 		}
 		return null;
 	}
 	
+	private static Paso buscarPaso(int numero, Trayectoria trayectoria) {
+		for (Paso pasoi : trayectoria.getPasos()) {
+			if (pasoi.getNumero() == numero) {
+				return pasoi;
+			}
+		}
+		return null;
+	}
+
 	public static ReferenciaParametro obtenerPrimerReferencia(Paso paso, ReferenciaEnum.TipoReferencia tipoReferencia) {
 		ReferenciaParametro referencia = null;
+		paso = new PasoDAO().consultarPaso(paso.getId());
 		for(ReferenciaParametro rp : paso.getReferencias()) {
 			if(ReferenciaEnum.getTipoReferenciaParametro(rp).equals(tipoReferencia)) {
 				referencia = rp;
