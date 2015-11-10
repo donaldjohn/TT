@@ -33,6 +33,8 @@ public class ReferenciaParametroDAO extends GenericDAO {
 		try {
 			session.beginTransaction();
 			referenciaParametro = (ReferenciaParametro) session.get(ReferenciaParametro.class, id);
+			referenciaParametro.getQueries().size();
+			referenciaParametro.getValoresMensajeParametro().size();
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();

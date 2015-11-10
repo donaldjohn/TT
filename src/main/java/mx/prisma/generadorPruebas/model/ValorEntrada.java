@@ -72,11 +72,11 @@ public class ValorEntrada implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ReglaNegocioElementoid", referencedColumnName = "Elementoid")		
-	public ReglaNegocio getReglaNegocioElementoid() {
+	public ReglaNegocio getReglaNegocio() {
 		return this.reglaNegocio;
 	}
 
-	public void setReglaNegocioElementoid(ReglaNegocio reglaNegocio) {
+	public void setReglaNegocio(ReglaNegocio reglaNegocio) {
 		this.reglaNegocio = reglaNegocio;
 	}
 
