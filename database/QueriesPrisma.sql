@@ -50,7 +50,7 @@ INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoEleme
 INSERT INTO PRISMA.ReglaNegocio (Elementoid, redaccion, TipoReglaNegocioid) VALUES ('8', 'El usuario debe ingresar toda la información marcada como obligatoria en el modelo conceptual.', '4');
 
 INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('9', 'RN', '60', 'Unicidad de nombres de actor', 'El nombre de los elementos del mismo tipo no puede repetirse.', '1', '1');
-INSERT INTO PRISMA.ReglaNegocio (Elementoid, redaccion, TipoReglaNegocioid, Atributoid_unicidad) VALUES ('9', 'El nombre de los elementos del mismo tipo no puede repetirse.', '4', '4');
+INSERT INTO PRISMA.ReglaNegocio (Elementoid, redaccion, TipoReglaNegocioid, Atributoid_unicidad) VALUES ('9', 'El nombre de los elementos del mismo tipo no puede repetirse.', '3', '4');
 
 INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('10', 'RN', '61', 'Nombre del actor', 'Los nombres de los elementos no pueden contener coma, punto, punto medio, dos puntos o guión bajo.', '1', '1');
 INSERT INTO PRISMA.ReglaNegocio (Elementoid, redaccion, TipoReglaNegocioid, expresionRegular, Atributoid_expReg) VALUES ('10', 'Los nombres de los elementos no pueden contener coma, punto, punto medio, dos puntos o guión bajo.', '9', '[^,._·:]*$', '4');

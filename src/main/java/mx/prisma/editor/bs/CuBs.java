@@ -888,4 +888,77 @@ public class CuBs {
 
 	}
 	
+	public static List<CasoUso> obtenerCaminoPrevioMasCorto(CasoUso casoUso) {
+		List<List<CasoUso>> caminosPrevios = obtenerCasosUsoPrevios(casoUso);
+		if(caminosPrevios == null) {
+			return null;
+		}
+		List<CasoUso> caminoCorto;
+		caminoCorto = caminosPrevios.get(0);
+		for(List<CasoUso> camino : caminosPrevios) {
+			if(camino.size() < caminoCorto.size()) {
+				caminoCorto = camino;
+			}
+		}
+		System.out.println("Inicio camino");
+		for(CasoUso cu : caminoCorto) {
+			System.out.print("CU " + cu.getNombre() + " ->");
+		}
+		System.out.println("Fin camino");
+		return caminoCorto; 
+	}
+
+	public static List<List<CasoUso>> obtenerCasosUsoPrevios(CasoUso casoUso) {
+		List<List<CasoUso>> caminosPrevios = new ArrayList<List<CasoUso>>();
+		//CasoUso cuGestion = CuBs.consultarCasoUso(30);
+		//cuPrevios.add(cuGestion);
+		if(casoUso == null) {
+			System.out.println("es nulo");
+			return null;
+		}
+		if(esPrimario(casoUso)) {
+			System.out.println("es Primario");
+			return null;
+		}
+		
+		System.out.println("No es primario");
+		List<Extension> extensiones = new ArrayList<Extension>(casoUso.getExtendidoDe());
+		System.out.println("size extensiones: " + extensiones.size());
+		
+		for(Extension previo : extensiones) {
+			System.out.println("Previo: " + previo.getCasoUsoOrigen());
+			List<List<CasoUso>> previosExtension = obtenerCasosUsoPrevios(previo.getCasoUsoOrigen());
+			if(previosExtension != null) {
+					
+				for(List<CasoUso> caminoPrevio : previosExtension) {
+					caminoPrevio.add(0, previo.getCasoUsoOrigen());
+					
+					caminosPrevios.add(caminoPrevio);
+				}
+			} else {
+				List<CasoUso> caminoPrevio = new ArrayList<CasoUso>();
+				caminoPrevio.add(previo.getCasoUsoOrigen());
+				caminosPrevios.add(caminoPrevio);
+				
+			}
+		}
+		return caminosPrevios;
+	}
+
+	private static boolean esPrimario(CasoUso casoUso) {
+		if(casoUso.getExtendidoDe() == null || casoUso.getExtendidoDe().isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+
+	public static Trayectoria obtenerTrayectoriaPrincipal(CasoUso casoUso) {
+		for (Trayectoria t : casoUso.getTrayectorias()) {
+			if (!t.isAlternativa()) {
+				return t;
+			}
+		}
+		return null;
+	}
+	
 }

@@ -1469,7 +1469,7 @@ public class TokenBs {
 					ReferenciaEnum.getTipoReferencia(objeto), tipoSeccion)) {
 			case ACTOR_ACTORES:
 				actor = (Actor) objeto;
-				casoUsoActor = new CasoUsoActor(numeroTokenActor_Actores++,
+				casoUsoActor = new CasoUsoActor(
 						casouso, actor);
 				if (!TokenBs.duplicadoActor_Actores(casouso.getActores(),
 						casoUsoActor)) {
@@ -1478,7 +1478,7 @@ public class TokenBs {
 				break;
 			case ATRIBUTO_ENTRADAS:
 				atributo = (Atributo) objeto;
-				entrada = new Entrada(numeroTokenAtributo_Entradas++,
+				entrada = new Entrada(
 						new TipoParametroDAO()
 								.consultarTipoParametro("Atributo"), casouso);
 				entrada.setAtributo(atributo);
@@ -1490,7 +1490,6 @@ public class TokenBs {
 			case TERMINOGLS_ENTRADAS:
 				termino = (TerminoGlosario) objeto;
 				entrada = new Entrada(
-						numeroTokenTermino_Entradas++,
 						new TipoParametroDAO()
 								.consultarTipoParametro("Término del glosario"),
 						casouso);
@@ -1503,7 +1502,6 @@ public class TokenBs {
 			case TERMINOGLS_SALIDAS:
 				termino = (TerminoGlosario) objeto;
 				salida = new Salida(
-						numeroTokenTermino_Salidas++,
 						new TipoParametroDAO()
 								.consultarTipoParametro("Término del glosario"),
 						casouso);
@@ -1515,7 +1513,7 @@ public class TokenBs {
 				break;
 			case MENSAJE_SALIDAS:
 				mensaje = (Mensaje) objeto;
-				salida = new Salida(numeroTokenMensaje_Salidas++,
+				salida = new Salida(
 						new TipoParametroDAO()
 								.consultarTipoParametro("Mensaje"), casouso);
 				salida.setMensaje(mensaje);
@@ -1526,7 +1524,7 @@ public class TokenBs {
 				break;
 			case ATRIBUTO_SALIDAS:
 				atributo = (Atributo) objeto;
-				salida = new Salida(numeroTokenAtributo_Salidas++,
+				salida = new Salida(
 						new TipoParametroDAO()
 								.consultarTipoParametro("Atributo"), casouso);
 				salida.setAtributo(atributo);
@@ -1537,8 +1535,7 @@ public class TokenBs {
 				break;
 			case REGLANEGOCIO_REGLASNEGOCIOS:
 				reglaNegocio = (ReglaNegocio) objeto;
-				casoUsoReglas = new CasoUsoReglaNegocio(
-						numeroTokenAtributo_Salidas++, casouso, reglaNegocio);
+				casoUsoReglas = new CasoUsoReglaNegocio(casouso, reglaNegocio);
 				casoUsoReglas.setReglaNegocio(reglaNegocio);
 				if (!TokenBs.duplicadoRegla_Reglas(casouso.getReglas(),
 						casoUsoReglas)) {
@@ -1594,7 +1591,6 @@ public class TokenBs {
 						.consultarTipoParametro("Acción");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setAccionDestino(accion);
-				referenciaParametro.setNumerToken(numeroTokenAccion++);
 
 				break;
 			case ACTOR_POSTPRECONDICIONES:
@@ -1603,7 +1599,6 @@ public class TokenBs {
 						.consultarTipoParametro("Actor");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setElementoDestino(actor);
-				referenciaParametro.setNumerToken(numeroTokenActor++);
 				break;
 			case ATRIBUTO_POSTPRECONDICIONES:
 				atributo = (Atributo) objeto;
@@ -1611,7 +1606,6 @@ public class TokenBs {
 						.consultarTipoParametro("Atributo");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setAtributo(atributo);
-				referenciaParametro.setNumerToken(numeroTokenAtributo++);
 
 				break;
 			case CASOUSO_POSTPRECONDICIONES:
@@ -1620,7 +1614,6 @@ public class TokenBs {
 						.consultarTipoParametro("Caso de uso");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setElementoDestino(casoUso);
-				referenciaParametro.setNumerToken(numeroTokenCasoUso++);
 				break;
 			case ENTIDAD_POSTPRECONDICIONES:
 				entidad = (Entidad) objeto;
@@ -1628,7 +1621,6 @@ public class TokenBs {
 						.consultarTipoParametro("Entidad");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setElementoDestino(entidad);
-				referenciaParametro.setNumerToken(numeroTokenEntidad++);
 				break;
 			case MENSAJE_POSTPRECONDICIONES:
 				mensaje = (Mensaje) objeto;
@@ -1636,7 +1628,6 @@ public class TokenBs {
 						.consultarTipoParametro("Mensaje");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setElementoDestino(mensaje);
-				referenciaParametro.setNumerToken(numeroTokenMensaje++);
 				break;
 			case PANTALLA_POSTPRECONDICIONES:
 				pantalla = (Pantalla) objeto;
@@ -1644,7 +1635,6 @@ public class TokenBs {
 						.consultarTipoParametro("Pantalla");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setElementoDestino(pantalla);
-				referenciaParametro.setNumerToken(numeroTokenPantalla++);
 
 				break;
 			case PASO_POSTPRECONDICIONES:
@@ -1653,7 +1643,6 @@ public class TokenBs {
 						.consultarTipoParametro("Paso");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setPasoDestino(paso);
-				referenciaParametro.setNumerToken(numeroTokenPaso++);
 				break;
 			case REGLANEGOCIO_POSTPRECONDICIONES:
 				reglaNegocio = (ReglaNegocio) objeto;
@@ -1661,7 +1650,6 @@ public class TokenBs {
 						.consultarTipoParametro("Regla de negocio");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setElementoDestino(reglaNegocio);
-				referenciaParametro.setNumerToken(numeroTokenReglaNegocio++);
 				break;
 
 			case TERMINOGLS_POSTPRECONDICIONES:
@@ -1670,7 +1658,6 @@ public class TokenBs {
 						.consultarTipoParametro("Término del glosario");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setElementoDestino(terminoGlosario);
-				referenciaParametro.setNumerToken(numeroTokenTerminoGlosario++);
 				break;
 			case TRAYECTORIA_POSTPRECONDICIONES:
 				trayectoria = (Trayectoria) objeto;
@@ -1678,7 +1665,6 @@ public class TokenBs {
 						.consultarTipoParametro("Trayectoria");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setTrayectoria(trayectoria);
-				referenciaParametro.setNumerToken(numeroTokenTrayectoria++);
 				break;
 			default:
 				break;
@@ -1713,7 +1699,6 @@ public class TokenBs {
 						.consultarTipoParametro("Paso");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setPasoDestino(paso);
-				referenciaParametro.setNumerToken(numeroTokenExtension++);
 				break;
 			default:
 				break;
@@ -1763,7 +1748,6 @@ public class TokenBs {
 						.consultarTipoParametro("Acción");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setAccionDestino(accion);
-				referenciaParametro.setNumerToken(numeroTokenAccion++);
 
 				break;
 			case ACTOR_PASOS:
@@ -1772,7 +1756,6 @@ public class TokenBs {
 						.consultarTipoParametro("Actor");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setElementoDestino(actor);
-				referenciaParametro.setNumerToken(numeroTokenActor++);
 				break;
 			case ATRIBUTO_PASOS:
 				atributo = (Atributo) objeto;
@@ -1780,7 +1763,6 @@ public class TokenBs {
 						.consultarTipoParametro("Atributo");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setAtributo(atributo);
-				referenciaParametro.setNumerToken(numeroTokenAtributo++);
 
 				break;
 			case CASOUSO_PASOS:
@@ -1789,7 +1771,6 @@ public class TokenBs {
 						.consultarTipoParametro("Caso de uso");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setElementoDestino(casoUso);
-				referenciaParametro.setNumerToken(numeroTokenCasoUso++);
 				break;
 			case ENTIDAD_PASOS:
 				entidad = (Entidad) objeto;
@@ -1797,7 +1778,6 @@ public class TokenBs {
 						.consultarTipoParametro("Entidad");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setElementoDestino(entidad);
-				referenciaParametro.setNumerToken(numeroTokenEntidad++);
 				break;
 			case MENSAJE_PASOS:
 				mensaje = (Mensaje) objeto;
@@ -1805,7 +1785,6 @@ public class TokenBs {
 						.consultarTipoParametro("Mensaje");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setElementoDestino(mensaje);
-				referenciaParametro.setNumerToken(numeroTokenMensaje++);
 				break;
 			case PANTALLA_PASOS:
 				pantalla = (Pantalla) objeto;
@@ -1813,7 +1792,6 @@ public class TokenBs {
 						.consultarTipoParametro("Pantalla");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setElementoDestino(pantalla);
-				referenciaParametro.setNumerToken(numeroTokenPantalla++);
 
 				break;
 			case PASO_PASOS:
@@ -1822,7 +1800,6 @@ public class TokenBs {
 						.consultarTipoParametro("Paso");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setPasoDestino(pasoDestino);
-				referenciaParametro.setNumerToken(numeroTokenPaso++);
 				break;
 			case REGLANEGOCIO_PASOS:
 				reglaNegocio = (ReglaNegocio) objeto;
@@ -1830,7 +1807,6 @@ public class TokenBs {
 						.consultarTipoParametro("Regla de negocio");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setElementoDestino(reglaNegocio);
-				referenciaParametro.setNumerToken(numeroTokenReglaNegocio++);
 				break;
 
 			case TERMINOGLS_PASOS:
@@ -1839,7 +1815,6 @@ public class TokenBs {
 						.consultarTipoParametro("Término del glosario");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setElementoDestino(terminoGlosario);
-				referenciaParametro.setNumerToken(numeroTokenTerminoGlosario++);
 				break;
 			case TRAYECTORIA_PASOS:
 				trayectoria = (Trayectoria) objeto;
@@ -1847,7 +1822,6 @@ public class TokenBs {
 						.consultarTipoParametro("Trayectoria");
 				referenciaParametro = new ReferenciaParametro(tipoParametro);
 				referenciaParametro.setTrayectoria(trayectoria);
-				referenciaParametro.setNumerToken(numeroTokenTrayectoria++);
 				break;
 			default:
 				break;
