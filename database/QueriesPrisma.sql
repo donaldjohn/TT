@@ -50,7 +50,7 @@ INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoEleme
 INSERT INTO PRISMA.ReglaNegocio (Elementoid, redaccion, TipoReglaNegocioid) VALUES ('8', 'El usuario debe ingresar toda la información marcada como obligatoria en el modelo conceptual.', '4');
 
 INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('9', 'RN', '60', 'Unicidad de nombres de actor', 'El nombre de los elementos del mismo tipo no puede repetirse.', '1', '1');
-INSERT INTO PRISMA.ReglaNegocio (Elementoid, redaccion, TipoReglaNegocioid, Atributoid_unicidad) VALUES ('9', 'El nombre de los elementos del mismo tipo no puede repetirse.', '4', '4');
+INSERT INTO PRISMA.ReglaNegocio (Elementoid, redaccion, TipoReglaNegocioid, Atributoid_unicidad) VALUES ('9', 'El nombre de los elementos del mismo tipo no puede repetirse.', '3', '4');
 
 INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('10', 'RN', '61', 'Nombre del actor', 'Los nombres de los elementos no pueden contener coma, punto, punto medio, dos puntos o guión bajo.', '1', '1');
 INSERT INTO PRISMA.ReglaNegocio (Elementoid, redaccion, TipoReglaNegocioid, expresionRegular, Atributoid_expReg) VALUES ('10', 'Los nombres de los elementos no pueden contener coma, punto, punto medio, dos puntos o guión bajo.', '9', '[^,._·:]*$', '4');
@@ -162,8 +162,8 @@ INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Ver
 INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('7', '7', '0', '$que el nombre del actor no se encuentre registrado en el sistema con base en la regla de negocio RN·9. TRAY·5', '1', '5', NULL);
 INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('8', '8', '0', '$que el nombre no contenga caracteres inválidos con base en la regla de negocio RN·10. TRAY·6', '1', '5', NULL);
 INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('9', '9', '0', '$que los datos requeridos sean proporcionados correctamente como se especifica en la regla de negocio RN·11. TRAY·7', '1', '5', NULL);
-INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('10', '10', '0', '$que los datos reueridos tengan la longitud correcta de acuerdo a la regla de negocio RN·12. TRAY·8', '1', '7', NULL);
-INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('11', '11', '0', '$la información del actor en el sistema.', '1', '3', NULL);
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('10', '10', '0', '$que los datos requeridos tengan la longitud correcta de acuerdo a la regla de negocio RN·12. TRAY·8', '1', '5', NULL);
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('11', '11', '0', '$la información del actor en el sistema.', '1', '7', NULL);
 INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('12', '12', '0', '$el mensaje MSG·13 en la pantalla IU·19 para indicar al actor que el registro se ha realizado exitosamente.', '1', '3', NULL);
 
 INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('13', '1', '0', '$el mensaje MSG·22 en la pantalla IU·19.', '2', '3', NULL);
@@ -289,7 +289,7 @@ INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoEleme
 INSERT INTO PRISMA.Mensaje (Elementoid, redaccion, parametrizado) VALUES ('31', 'No se han encontrado registros.', '0');
 
 
-INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('32', 'IUE', '1', 'Gestionar proyectos', 'En esta pantalla el actor puede visualizar algunos atributos de los proyectos y las operaciones disponibles de acuerdo su estado.', '1', '1');
+INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('32', 'IUE', '4', 'Gestionar proyectos', 'En esta pantalla el actor puede visualizar algunos atributos de los proyectos y las operaciones disponibles de acuerdo su estado.', '1', '1');
 INSERT INTO PRISMA.Pantalla (Elementoid, Moduloid, imagen) VALUES ('32', '1', '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');
 
 INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('33', 'IUE', '3', 'Gestionar módulos', 'En esta pantalla el actor puede visualizar algunos atributos de los módulos registrados y las operaciones disponibles de gestión.', '1', '1');
@@ -298,10 +298,12 @@ INSERT INTO PRISMA.Pantalla (Elementoid, Moduloid, imagen) VALUES ('33', '1', 'i
 INSERT INTO PRISMA.Accion (id, PantallaElementoid, nombre, TipoAccionid, PantallaElementoidDestino, descripcion, imagen) VALUES ('4', '32', 'Entrar', '2', '33', 'Permite al actor entrar un proyecto.', 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAK8AAACvABQqw0mAAAABh0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzT7MfTgAAAkdJREFUSInNlU9IFHEUxz/vN+MuratWGEFE5VUNCqMs6BrRoQ4duwXhpRCiPxTRydBN6VBQUhhIhyDoGHQVghIzFQoiiIKoQ1IZtu7u/Pm9Drujs61rmi34hcfM/ObxPu/3fu/NiKpSS5maRl+zgOHJzemh8aaWmgGsbn1Q5+x+f//VznM1AeT96fbZwjtRmvrvjXdc+O8A39qCb5VfhQ9AfWZwbE9ViERt2jPiNDbXH+xOupuaVO2ivSsIloCfuamTSrhR1SJiqK9rIdC5i6f3jl2vCrg5uq9LSAxaLQBSNXtFKQTfAFt8VkXEkE7sILDZ892dowNxfze6yfnZpB9+RVl68AQQcQFnAaqWmfwnGpLb+28878ye3f/iTvRu/gy80GqoCawml7RQkwTWKbPQJvAtzOS/AKnbvc862ip24AUOi1d+eRIMlpDQfseRxGHgTTnAF6xWr/3y5OJ5Pq6jIwsrJeV9I6v98KmCY9zLA0cmXlYACp7YZe9AKvtMFYwxfbeOTfTG12MlMo+s1VaQxqWSBAitPQo671fM3GSGT0xeqsjlX8py/O6u1xbbFnW0MdL3+NRURfCyHaxEOU+MtYAIjiPXnnRNXqnmK6qKW5ycdSVgNEWmZBIzQpg9cLX9oUmZQ/4Pb2g08/YMsN4pli8EgpLlAtUgAqSBZiAFJGKgCBBdUQgbtjWkN7Q2bvn49PO4QKo0rVFgD5gDpgPVbNkZuCL8kXHULPNNIyAB+KqqIuK6RagSsyAWc9W9/zetzX/ySvQbgysSQJjQz44AAAAASUVORK5CYII=');
 
 
-INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('34', 'IUE', '3.4', 'Menú principal', 'Este menú muestra los elementos que se pueden gestionar y que no están asociados a un módulo', '1', '1');
+INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('34', 'IUE', '3.4', 'Menú principal', 'Este menú muestra los elementos que se pueden gestionar y que no están asociados a un módulo.', '1', '1');
 INSERT INTO PRISMA.Pantalla (Elementoid, Moduloid) VALUES ('34', '1');
 
 INSERT INTO PRISMA.Accion (id, PantallaElementoid, nombre, TipoAccionid, PantallaElementoidDestino, descripcion) VALUES ('5', '34', 'Actores', '3', '19', 'Permite al actor gestionar los actores.');
+
+INSERT INTO PRISMA.Accion (id, PantallaElementoid, nombre, TipoAccionid, PantallaElementoidDestino, descripcion) VALUES ('7', '34', 'Proyectos', '3', '32', 'Permite al actor gestionar los proyectos.');
 
 
 INSERT INTO PRISMA.CasoUso_Actor (CasoUsoElementoid, ActorElementoid) VALUES ('30', '1');
@@ -328,14 +330,14 @@ INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Ver
 INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('31', '1', '0', '$el mensaje MSG·31 en la pantalla IU·19 para indicar que no existen registros de actores para mostrar.', '10', '3', NULL);
 
 
-INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, AccionidDestino) VALUES ('4', '26', '4');
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, AccionidDestino) VALUES ('8', '26', '4');
 INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('9', '26', '32'); 
 
-INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, AccionidDestino) VALUES ('4', '27', '5');
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, AccionidDestino) VALUES ('8', '27', '5');
 
 INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('9', '29', '19'); 
 
-INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, AccionidDestino) VALUES ('4', '30', '1');
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, AccionidDestino) VALUES ('8', '30', '1');
 
 
 INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('6', '31', '31');
@@ -345,3 +347,207 @@ INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDesti
 INSERT INTO PRISMA.Extension (id, CasoUsoElementoid_origen, CasoUsoElementoid_destino, causa, region) VALUES ('1', '30', '21', 'El actor requiere registrar un actor.', '$Paso P·30 de la trayectoria principal.');
 
 INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Extensionid, PasoidDestino) VALUES ('10', '1', '30'); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('36', 'ENT', '', 'Colaborador', 'Se refiere al participante de un proyecto.', '1', '1');
+INSERT INTO PRISMA.Entidad (Elementoid) VALUES ('36');
+INSERT INTO PRISMA.Atributo (id, nombre, descripcion, obligatorio, longitud, EntidadElementoid, TipoDatoid) VALUES ('11', 'CURP', 'Clave Única de Registro de Población.', '1', '18', '36', '1');
+INSERT INTO PRISMA.Atributo (id, nombre, descripcion, obligatorio, longitud, EntidadElementoid, TipoDatoid) VALUES ('12', 'Nombre', 'Nombre o nombres de pila del colaborador.', '1', '45', '36', '1');
+INSERT INTO PRISMA.Atributo (id, nombre, descripcion, obligatorio, longitud, EntidadElementoid, TipoDatoid) VALUES ('13', 'Primer Apellido', 'Nombre de familia con que se distinguen las personas.', '1', '45', '36', '1');
+INSERT INTO PRISMA.Atributo (id, nombre, descripcion, obligatorio, longitud, EntidadElementoid, TipoDatoid) VALUES ('14', 'Segundo Apellido', 'Nombre de familia con que se distinguen las personas.', '0', '45', '36', '1');
+INSERT INTO PRISMA.Atributo (id, nombre, descripcion, obligatorio, longitud, EntidadElementoid, TipoDatoid) VALUES ('15', 'Correo electrónico', 'Dirección de correo electrónico.', '1', '45', '36', '1');
+INSERT INTO PRISMA.Atributo (id, nombre, descripcion, obligatorio, longitud, EntidadElementoid, TipoDatoid) VALUES ('16', 'Contraseña', 'Código necesario para accesar al sistema.', '1', '20', '36', '1');
+
+
+INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('37', 'MSG', '31', 'Correo electrónico y/o contraseña incorrectos', 'Informar al actor que no es posible iniciar sesión debido a que su correo electrónico y/o contraseña son incorrectos.', '1', '1');
+INSERT INTO PRISMA.Mensaje (Elementoid, redaccion, parametrizado) VALUES ('37', 'Correo electrónico y/o contraseña incorrectos.', '0');
+
+
+INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('38', 'IUE', '13', 'Iniciar sesión', 'Esta pantalla permite al actor iniciar sesión en el sistema.', '1', '1');
+INSERT INTO PRISMA.Pantalla (Elementoid, Moduloid) VALUES ('38', '1');
+
+INSERT INTO PRISMA.Accion (id, PantallaElementoid, nombre, TipoAccionid, PantallaElementoidDestino, descripcion) VALUES ('6', '38', 'Aceptar', '3', '32', 'Permite al actor solicitar el inicio de sesión.');
+
+
+INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('39', 'CUE', '13', 'Iniciar sesión', 'Este caso de uso permite al actor iniciar sesión en el sistema.', '1', '1'); 
+INSERT INTO PRISMA.CasoUso (Elementoid, Moduloid, redaccionActores, redaccionEntradas, redaccionSalidas, redaccionReglasNegocio) VALUES ('39', '1', '$ACT·1, ACT·2, ACT·3', '$ATR·15 \n ATR·16', '$MSG·14 \n MSG·16 \n MSG·37', '$RN·8 \n RN·12');
+
+
+INSERT INTO PRISMA.CasoUso_Actor (CasoUsoElementoid, ActorElementoid) VALUES ('39', '1');
+INSERT INTO PRISMA.CasoUso_Actor (CasoUsoElementoid, ActorElementoid) VALUES ('39', '2');
+INSERT INTO PRISMA.CasoUso_Actor (CasoUsoElementoid, ActorElementoid) VALUES ('39', '3');
+
+
+INSERT INTO PRISMA.Entrada (TipoParametroid, CasoUsoElementoid, Atributoid) VALUES ('5', '39', '15');
+INSERT INTO PRISMA.Entrada (TipoParametroid, CasoUsoElementoid, Atributoid) VALUES ('5', '39', '16');
+
+
+INSERT INTO PRISMA.Salida (TipoParametroid, CasoUsoElementoid, MensajeElementoid) VALUES ('6', '39', '14');
+INSERT INTO PRISMA.Salida (TipoParametroid, CasoUsoElementoid, MensajeElementoid) VALUES ('6', '39', '16');
+INSERT INTO PRISMA.Salida (TipoParametroid, CasoUsoElementoid, MensajeElementoid) VALUES ('6', '39', '37');
+
+
+INSERT INTO PRISMA.CasoUso_ReglaNegocio (CasoUsoElementoid, ReglaNegocioElementoid) VALUES ('39', '12');
+
+
+INSERT INTO PRISMA.Trayectoria (id, clave, alternativa, condicion, CasoUsoElementoid, finCasoUso) VALUES ('11', 'TP', '0', NULL, '39', '1');
+INSERT INTO PRISMA.Trayectoria (id, clave, alternativa, condicion, CasoUsoElementoid, finCasoUso) VALUES ('12', 'A', '1', 'El actor no ingresó algún dato marcado como obligatorio.', '39', '0');
+INSERT INTO PRISMA.Trayectoria (id, clave, alternativa, condicion, CasoUsoElementoid, finCasoUso) VALUES ('13', 'B', '1', 'El actor proporciona un dato que excede la longitud máxima.', '39', '0');
+INSERT INTO PRISMA.Trayectoria (id, clave, alternativa, condicion, CasoUsoElementoid, finCasoUso) VALUES ('14', 'C', '1', 'Existe un error en los datos.', '39', '0');
+
+
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('32', '1', '1', '$al sistema por medio de la URL.', '11', '4', NULL);
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('33', '2', '0', '$la pantalla IU·38.', '11', '3', NULL);
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('34', '3', '1', '$los datos solicitados en la pantalla IU·38.', '11', '4', NULL);
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('35', '4', '1', '$el botón ACC·6 en la pantalla IU·38.', '11', '6', NULL);
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('36', '5', '0', '$que el actor ingrese todos los datos obligatorios de acuerdo a la regla de negocio RN·8. TRAY·12', '11', '5', NULL);
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('37', '6', '0', '$que los datos requeridos no rebasen la longitud válida de acuerdo a la regla de negocio RN·12. TRAY·13', '11', '5', NULL);
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('38', '7', '0', '$que el actor se encuentre registrado. TRAY·14', '11', '5', NULL);
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('39', '8', '0', '$que la contraseña ingresada sea correcta. TRAY·14', '11', '5', NULL);
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('40', '9', '0', '$la pantalla IU·32.', '11', '3', NULL);
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('47', '10', '1', '$los proyectos.', '11', '13', 'Gestiona');
+
+
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('41', '1', '0', '$el mensaje MSG·14 y señala el campo que presenta el error en la pantalla IU·38, indicando al actor que el dato es obligatorio.', '12', '3', NULL);
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('42', '2', '0', '$con el paso P·34 de la trayectoria principal.', '12', '9', NULL);
+
+
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('43', '1', '0', '$el mensaje MSG·16 y señala el campo que excede la longitud en la pantalla IU·38.', '13', '3', NULL);
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('44', '2', '0', '$con el paso P·34 de la trayectoria principal.', '13', '9', NULL);
+
+
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('45', '1', '0', '$el mensaje MSG·37 para indicar que los datos ingresados son incorrectos.', '14', '3', NULL);
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('46', '2', '0', '$con el paso P·34 de la trayectoria principal.', '14', '9', NULL);
+
+
+
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('9', '33', '38');
+
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('9', '34', '38');
+
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, AccionidDestino) VALUES ('8', '35', '6');
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('9', '35', '38');
+
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('3', '36', '8');
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, Trayectoriaid) VALUES ('11', '36', '12');
+
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('3', '37', '12');
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, Trayectoriaid) VALUES ('11', '37', '13');
+
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, Trayectoriaid) VALUES ('11', '38', '14');
+
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, Trayectoriaid) VALUES ('11', '39', '14');
+
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('9', '40', '32');
+
+
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('6', '41', '14');
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('9', '41', '38');
+
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, PasoidDestino) VALUES ('10', '42', '34');
+
+
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('6', '43', '16');
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('9', '43', '38');
+
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, PasoidDestino) VALUES ('10', '44', '34');
+
+
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('6', '45', '37');
+
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, PasoidDestino) VALUES ('10', '46', '34');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('40', 'ENT', '', 'Proyecto', 'Idea de una cosa que se piensa hacer y para la cual se establece un modo determinado y un conjunto de medios necesarios.', '1', '1');
+INSERT INTO PRISMA.Entidad (Elementoid) VALUES ('40');
+INSERT INTO PRISMA.Atributo (id, nombre, descripcion, obligatorio, longitud, EntidadElementoid, TipoDatoid) VALUES ('17', 'Clave', 'Clave que permitirá distinguir al proyecto, generalmente es la abreviación del nombre del proyecto.', '1', '10', '40', '1');
+INSERT INTO PRISMA.Atributo (id, nombre, descripcion, obligatorio, longitud, EntidadElementoid, TipoDatoid) VALUES ('18', 'Nombre', 'Palabra que sirve para identificar al proyecto.', '1', '50', '40', '1');
+INSERT INTO PRISMA.Atributo (id, nombre, descripcion, obligatorio, longitud, EntidadElementoid, TipoDatoid) VALUES ('19', 'Descripción', 'Párrafo que contiene las características generales del proyecto.', '1', '999', '40', '1');
+
+
+INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('41', 'CUE', '4', 'Gestionar proyectos', 'Este caso de uso permite al analista visualizar los registros de los proyectos.', '1', '1'); 
+INSERT INTO PRISMA.CasoUso (Elementoid, Moduloid, redaccionActores, redaccionEntradas, redaccionSalidas, redaccionReglasNegocio) VALUES ('41', '1', '$ACT·1, ACT·2', '$Ninguna', '$ATR·17 \n ATR·18 \n MSG·31', '$Ninguna');
+
+
+
+INSERT INTO PRISMA.CasoUso_Actor (CasoUsoElementoid, ActorElementoid) VALUES ('41', '1');
+INSERT INTO PRISMA.CasoUso_Actor (CasoUsoElementoid, ActorElementoid) VALUES ('41', '2');
+
+
+INSERT INTO PRISMA.Salida (TipoParametroid, CasoUsoElementoid, Atributoid) VALUES ('5', '41', '17');
+INSERT INTO PRISMA.Salida (TipoParametroid, CasoUsoElementoid, Atributoid) VALUES ('5', '41', '18');
+INSERT INTO PRISMA.Salida (TipoParametroid, CasoUsoElementoid, MensajeElementoid) VALUES ('6', '41', '31');
+
+
+
+INSERT INTO PRISMA.Trayectoria (id, clave, alternativa, condicion, CasoUsoElementoid, finCasoUso) VALUES ('15', 'TP', '0', NULL, '41', '1');
+INSERT INTO PRISMA.Trayectoria (id, clave, alternativa, condicion, CasoUsoElementoid, finCasoUso) VALUES ('16', 'A', '1', 'No existen registros de proyectos.', '41', '1');
+
+
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('48', '1', '1', '$gestionar los proyectos presionando la opción ACC·7 del menú principal.', '15', '1', NULL);
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('49', '2', '0', '$la información de los ENT·40 registrados en el sistema.', '15', '2', NULL);
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('50', '3', '0', '$la información de los ENT·40 en la pantalla IU·32 y las operaciones disponibles.', '15', '3', NULL);
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('51', '4', '1', '$los proyectos a través de los botones ACC·4.', '15', '13', 'Gestiona');
+
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('52', '1', '0', '$el mensaje MSG·31 en la pantalla IU·32 para indicar que no existen registros de proyectos para mostrar.', '16', '3', NULL);
+
+
+
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, AccionidDestino) VALUES ('8', '48', '7');
+
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('1', '49', '40'); 
+
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('1', '50', '40'); 
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('9', '50', '32'); 
+
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, AccionidDestino) VALUES ('8', '51', '4');
+
+
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('6', '52', '31'); 
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('9', '52', '32'); 
+
+
+
+
+
+INSERT INTO PRISMA.Extension (id, CasoUsoElementoid_origen, CasoUsoElementoid_destino, causa, region) VALUES ('2', '39', '41', 'El actor requiere gestionar los proyectos.', '$Paso P·47 de la trayectoria principal.');
+
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Extensionid, PasoidDestino) VALUES ('10', '2', '47'); 
+
+
+
+INSERT INTO PRISMA.Extension (id, CasoUsoElementoid_origen, CasoUsoElementoid_destino, causa, region) VALUES ('3', '41', '30', 'El actor requiere gestionar los actores.', '$Paso P·51 de la trayectoria principal.');
+
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Extensionid, PasoidDestino) VALUES ('10', '3', '51'); 

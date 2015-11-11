@@ -101,7 +101,7 @@
 							</s:if>
 							<!-- Pruebas de cu -->
 							<s:url var="urlConfiguracion" value="%{#pageContext.request.contextPath}/configuracion-general!prepararConfiguracion">
-								<s:param name="idSel" value="%{#cu.id}"/>
+								<s:param name="idCU" value="%{#cu.id}"/>
 							</s:url>
 							<s:a href="%{urlConfiguracion}">
 								<img id="" class="button" title="Generar pruebas"

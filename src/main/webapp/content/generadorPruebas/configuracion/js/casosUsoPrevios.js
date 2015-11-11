@@ -1,0 +1,13 @@
+$(document).ready(function() {
+	$('#gestion').DataTable();
+	contextPath = $("#rutaContexto").val();
+});
+
+function abrirConfiguracion(idCu) {
+	$('#configuracionDialog').dialog('open');
+	return false;
+}
+
+function cancelarConfirmarConfiguracion() {
+	$('#configuracionDialog').dialog('close');
+}

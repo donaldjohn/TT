@@ -21,7 +21,6 @@ public class StrutsDateConverter extends StrutsTypeConverter {
 		try {
 			fecha = formatter.parse(dia + "/" + mes + "/" + anio);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -30,7 +29,6 @@ public class StrutsDateConverter extends StrutsTypeConverter {
 
 	@Override
 	public String convertToString(Map arg0, Object arg1) {
-		System.out.println("convertToString: " + arg1.toString());
 		return arg1.toString();
 	}
 

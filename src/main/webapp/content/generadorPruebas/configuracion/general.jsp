@@ -29,30 +29,30 @@
 			<table class="seccion">
 				<tr>
 					<td class="label obligatorio"><s:text name="labelURL" /></td>
-					<td><s:textfield name="model.ConfiguracionBaseDatos.urlBaseDatos" maxlength="500"
+					<td><s:textfield name="cbd.urlBaseDatos" maxlength="500"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
-						<s:fielderror fieldName ="model.ConfiguracionBaseDatos.urlBaseDatos" cssClass="error"
+						<s:fielderror fieldName ="cbd.urlBaseDatos" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelDriver" /></td>
-					<td><s:textfield name="model.ConfiguracionBaseDatos.driver" maxlength="50"
+					<td><s:textfield name="cbd.driver" maxlength="50"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
-						<s:fielderror fieldName ="model.ConfiguracionBaseDatos.driver" cssClass="error"
+						<s:fielderror fieldName ="cbd.driver" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelUsuario" /></td>
-					<td><s:textfield name="model.ConfiguracionBaseDatos.usuario" maxlength="50"
+					<td><s:textfield name="cbd.usuario" maxlength="50"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
-						<s:fielderror fieldName ="model.ConfiguracionBaseDatos.usuario" cssClass="error"
+						<s:fielderror fieldName ="cbd.usuario" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelContrasenia" /></td>
-					<td><s:textfield name="model.ConfiguracionBaseDatos.contrasenia" maxlength="50"
+					<td><s:textfield name="cbd.contrasenia" maxlength="50"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
-						<s:fielderror fieldName ="model.ConfiguracionBaseDatos.contrasenia" cssClass="error"
+						<s:fielderror fieldName ="cbd.contrasenia" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
 			</table>
@@ -62,16 +62,16 @@
 			<table class="seccion">
 				<tr>
 					<td class="label obligatorio"><s:text name="labelIp" /></td>
-					<td><s:textfield name="model.ConfiguracionHttp.ip" maxlength="16"
+					<td><s:textfield name="chttp.ip" maxlength="16"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
-						<s:fielderror fieldName ="model.ConfiguracionHttp.ip" cssClass="error"
+						<s:fielderror fieldName ="chttp.ip" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelPuerto" /></td>
-					<td><s:textfield name="model.ConfiguracionHttp.puerto"
+					<td><s:textfield name="chttp.puerto"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
-						<s:fielderror fieldName ="model.ConfiguracionHttp.puerto" cssClass="error"
+						<s:fielderror fieldName ="chttp.puerto" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
 			</table>

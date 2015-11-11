@@ -282,7 +282,7 @@ public class ReglaNegocioBs {
 		List<TipoReglaNegocio> tiposRNAux = consultarTipoRN();
 		List<TipoReglaNegocio> tiposRN = new ArrayList<TipoReglaNegocio>();
 		for (TipoReglaNegocio trn : tiposRNAux) {
-			if (TipoReglaNegocioEnum.esGlobal(trn)) {
+			if (esGlobal(trn)) {
 				if (!existeTipoRN(proyecto, trn)) {
 					tiposRN.add(trn);
 				} else {
@@ -554,4 +554,35 @@ public class ReglaNegocioBs {
 		}
 		
 	}
+	
+	public static boolean esGlobal(TipoReglaNegocio trn) {
+		if(trn != null) {
+			switch(TipoReglaNegocioEnum.getTipoReglaNegocio(trn)) {
+			case COMPATRIBUTOS:
+				return false;
+			case DATOCORRECTO:
+				return true;
+			case FORMATOARCH:
+				return true;
+			case FORMATOCAMPO:
+				return false;
+			case LONGITUD:
+				return true;
+			case OBLIGATORIOS:
+				return true;
+			case OTRO:
+				return false;
+			case TAMANOARCH:
+				return true;
+			case UNICIDAD:
+				return false;
+			case VERFCATALOGOS:
+				return true;
+			default:
+				return false;
+			}	
+		}
+		return false;
+	}
 }
+

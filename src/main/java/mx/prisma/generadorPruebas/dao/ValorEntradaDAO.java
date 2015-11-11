@@ -1,0 +1,77 @@
+package mx.prisma.generadorPruebas.dao;
+
+import java.util.List;
+import java.util.Set;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+
+import mx.prisma.dao.GenericDAO;
+import mx.prisma.editor.model.Entrada;
+import mx.prisma.generadorPruebas.model.ValorEntrada;
+
+public class ValorEntradaDAO extends GenericDAO {
+
+	public void registrarValorEntrada(ValorEntrada valor) {
+		try {
+			session.beginTransaction();
+			session.save(valor);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
+		
+	}
+
+	public ValorEntrada consultarValorValido(Entrada entrada) {
+		List<ValorEntrada> results = null;
+		
+		try {
+			session.beginTransaction();
+			Query query = session
+					.createQuery("from ValorEntrada where entrada = :entrada AND valido = true");
+			query.setParameter("entrada", entrada);
+
+			results = query.list();
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		
+		if(results == null) {
+			return null;
+		} else if (results.isEmpty()) {
+			return null;
+		} else {
+			return results.get(0);
+		}
+	}
+
+	public List<ValorEntrada> consultarValoresInvalidos(Entrada entrada) {
+		List<ValorEntrada> results = null;
+		
+		try {
+			session.beginTransaction();
+			Query query = session
+					.createQuery("from ValorEntrada where entrada = :entrada AND valido = false");
+			query.setParameter("entrada", entrada);
+
+			results = query.list();
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		
+		if(results == null) {
+			return null;
+		} else if (results.isEmpty()) {
+			return null;
+		} else {
+			return results;
+		}
+	}
+}

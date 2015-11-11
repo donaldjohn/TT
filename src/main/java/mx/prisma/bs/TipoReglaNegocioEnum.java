@@ -36,35 +36,7 @@ public class TipoReglaNegocioEnum {
 		}
 		return null;
 	}
-	public static boolean esGlobal(TipoReglaNegocio trn) {
-		if(trn != null) {
-			switch(getTipoReglaNegocio(trn)) {
-			case COMPATRIBUTOS:
-				return false;
-			case DATOCORRECTO:
-				return true;
-			case FORMATOARCH:
-				return true;
-			case FORMATOCAMPO:
-				return false;
-			case LONGITUD:
-				return true;
-			case OBLIGATORIOS:
-				return true;
-			case OTRO:
-				return false;
-			case TAMANOARCH:
-				return true;
-			case UNICIDAD:
-				return false;
-			case VERFCATALOGOS:
-				return true;
-			default:
-				return false;
-			}	
-		}
-		return false;
-	}
+	
 	public static TipoReglaNegocioENUM getTipoReglaNegocio(
 			mx.prisma.editor.model.TipoReglaNegocio trn) {
 		String nombre = trn.getNombre();
