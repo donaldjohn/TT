@@ -179,9 +179,9 @@ public class AnalizadorPasosBs {
 						case TAMANOARCH:
 							return false;
 						case UNICIDAD:
-							return true;
+							return false; // CAMBIAR A TRUE
 						case VERFCATALOGOS:
-							return true;
+							return false;
 						default:
 							return false;						
 						}
@@ -226,10 +226,6 @@ public class AnalizadorPasosBs {
 		if (isActorOprimeBoton(p)) {
 			//System.out.println("actorOprimeBoton");
 			tipoPaso = TipoPaso.actorOprimeBoton;
-		}
-		if (isSistemaValidaPrecondicion(p)) {
-			//System.out.println("isSistemaValidaPrecondicion");
-			tipoPaso = TipoPaso.sistemaValidaPrecondicion;
 		}			
 		if (isSistemaMuestraPantalla(p)) {
 			//System.out.println("sistemaMuestraPantalla");	
@@ -243,6 +239,12 @@ public class AnalizadorPasosBs {
 			//System.out.println("sistemaValidaReglaNegocio");
 			tipoPaso = TipoPaso.sistemaValidaReglaNegocio;
 		}
+		
+		if (isSistemaValidaPrecondicion(p)) {
+			//System.out.println("isSistemaValidaPrecondicion");
+			tipoPaso = TipoPaso.sistemaValidaPrecondicion;
+		}
+		
 		if (isSistemaEjecutaTransaccion(p)) {
 			//System.out.println("sistemaEjecutaTransaccion");
 			tipoPaso = TipoPaso.sistemaEjecutaTransaccion;
@@ -257,8 +259,10 @@ public class AnalizadorPasosBs {
 		}
 		
 		if (tipoPaso == null) {
-			//System.out.println("No clasificado");
+			System.out.println("No clasificado");
 		}
+		
+		System.out.println("P" + p.getNumero()+": "+ tipoPaso);
 		return tipoPaso;
 	}
 

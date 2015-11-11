@@ -43,7 +43,6 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String planPruebas() {
-		System.out.println("***desde planPruebas***");
 		String bloque = 
 				"<hashTree>" + "\n"
 				+ "<TestPlan guiclass=\"TestPlanGui\" testclass=\"TestPlan\" testname=\"Plan de Pruebas\" enabled=\"true\">" + "\n"
@@ -60,7 +59,6 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String grupoHilos(String claveCasoUso) {
-		System.out.println("***desde grupoHilos***");
 		String bloque = 
 				"<hashTree>" + "\n"
 				+ "<ThreadGroup guiclass=\"ThreadGroupGui\" testclass=\"ThreadGroup\" testname=\"TEST" + claveCasoUso + "\" enabled=\"true\">" + "\n"
@@ -81,7 +79,6 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String cookieManager() {
-		System.out.println("***desde cookieManager***");
 		String bloque = 
 				"<hashTree>" + "\n"
 				+ "<CookieManager guiclass=\"CookiePanel\" testclass=\"CookieManager\" testname=\"HTTP Cookie Manager\" enabled=\"true\">" + "\n"
@@ -94,7 +91,6 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String configuracionJDBC(String urlBaseDatos, String driver, String usuario, String password) {
-		System.out.println("***desde configuracionJDBC > urlBaseDatos: " + urlBaseDatos + ", driver: " + driver + ", usuario: " + usuario + ", pssword: " + password + "***");
 		String bloque =
 				"<JDBCDataSource guiclass=\"TestBeanGUI\" testclass=\"JDBCDataSource\" testname=\"JDBC-Default\" enabled=\"true\">" + "\n"
 				+ "<stringProp name=\"dataSource\">JDBC Default</stringProp>" + "\n"
@@ -116,7 +112,6 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String configuracionHTTP(String ip, String puerto) {
-		System.out.println("***desde configuracionHTTP > ip: " + ip + ", puerto: " + puerto + "***");
 		String bloque = 
 				"<ConfigTestElement guiclass=\"HttpDefaultsGui\" testclass=\"ConfigTestElement\" testname=\"HTTP Default\" enabled=\"true\">" + "\n"
 				+ "<elementProp name=\"HTTPsampler.Arguments\" elementType=\"Arguments\" guiclass=\"HTTPArgumentsPanel\" testclass=\"Arguments\" testname=\"User Defined Variables\" enabled=\"true\">" + "\n"
@@ -194,7 +189,7 @@ public class GeneradorPruebasBs {
 				"<CSVDataSet guiclass=\"TestBeanGUI\" testclass=\"CSVDataSet\" testname=\""+ id +"\" enabled=\"true\">" + "\n"
 				+ "<stringProp name=\"filename\">" + ruta + nombre + "</stringProp>" + "\n"
 				+ "<stringProp name=\"fileEncoding\"></stringProp>" + "\n"
-				+ "<stringProp name=\"variableNames\">" + generarNombres(idPeticionHTTP, parametros) +" </stringProp>" + "\n"
+				+ "<stringProp name=\"variableNames\">" + generarNombres(idPeticionHTTP, parametros) +"</stringProp>" + "\n"
 				+ "<stringProp name=\"delimiter\">,</stringProp>" + "\n"
 				+ "<boolProp name=\"quotedData\">false</boolProp>" + "\n" 
 				+ "<boolProp name=\"recycle\">true</boolProp>" + "\n"
@@ -292,7 +287,8 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String terminarControladorIf() {
-		System.out.println("***desde terminarControladorIf***");
+		System.out.println("If-}  P");
+
 		return "</hashTree>\n";
 	}
 
@@ -312,6 +308,8 @@ public class GeneradorPruebasBs {
 
 	 */
 	public static String peticionJDBC(Paso paso) {
+		System.out.println("JDBC P"+paso.getNumero());
+
 		String bloque = null;
 		String id = calcularIdentificador(prefijoPeticionJDBC, paso);
 		String queryString = null;
@@ -331,6 +329,7 @@ public class GeneradorPruebasBs {
 	}
 
 	public static String iniciarControladorIf(Paso paso, String operador) {
+		System.out.println("If-{ P"+paso.getNumero());
 		String bloque = null;
 		String id = calcularIdentificador(prefijoControladorIf, paso);
 		String idPeticionJDBC = calcularIdentificador(prefijoPeticionJDBC, paso);
@@ -342,6 +341,8 @@ public class GeneradorPruebasBs {
 	}
 
 	public static String peticionHTTP(Paso paso, boolean hijos) {
+		System.out.println("HTTP P"+paso.getNumero());
+
 		String bloque;
 		String id = null;
 		ReferenciaParametro refParam;
@@ -369,7 +370,8 @@ public class GeneradorPruebasBs {
 		return bloque;
 	}
 	
-	public static String peticionHTTP(Paso paso, Paso pasoRN, boolean hijos) {
+	public static String peticionHTTP(Paso paso, Paso pasoRN, Entrada entrada, boolean hijos) {
+		System.out.println("HTTP P"+paso.getNumero() + " - "+pasoRN.getNumero());
 		String bloque;
 		String id = null;
 		ReferenciaParametro refParam;
@@ -381,7 +383,7 @@ public class GeneradorPruebasBs {
 		String metodo;
 		String redaccionPaso;
 		
-		id = calcularIdentificador(prefijoPeticionHTTP, paso, pasoRN);
+		id = calcularIdentificador(prefijoPeticionHTTP, paso, pasoRN, entrada);
 
 		refParam = AnalizadorPasosBs.obtenerPrimerReferencia(paso, ReferenciaEnum.TipoReferencia.ACCION);
 		accion = (Accion) refParam.getAccionDestino();
@@ -397,8 +399,8 @@ public class GeneradorPruebasBs {
 		return bloque;
 	}
 		
-
 	public static String asercion(Paso paso) {
+		System.out.println("Aserción P"+paso.getNumero());
 		String bloque;
 		String id;
 		ReferenciaParametro refParamMensaje;
@@ -412,9 +414,12 @@ public class GeneradorPruebasBs {
 		refParamMensaje = AnalizadorPasosBs.obtenerPrimerReferencia(paso, TipoReferencia.MENSAJE);
 		refParamPantalla = AnalizadorPasosBs.obtenerPrimerReferencia(paso, TipoReferencia.PANTALLA);
 		
-		patrones.add(calcularPatron(refParamMensaje));
-		patrones.add(calcularPatron(refParamPantalla));
-				
+		if (refParamMensaje != null) {
+			patrones.add(calcularPatron(refParamMensaje));
+		}
+		if (refParamPantalla != null) {
+			patrones.add(calcularPatron(refParamPantalla));
+		}	
 		redaccionPaso = consultarRedaccion(paso);
 		
 		bloque = asercion(id, patrones, redaccionPaso);
@@ -429,7 +434,11 @@ public class GeneradorPruebasBs {
 		switch(ReferenciaEnum.getTipoReferenciaParametro(refParam)) {
 		case MENSAJE:
 			mensaje = (Mensaje) refParam.getElementoDestino();
-			patron = TokenBs.decodificarCadenasToken(mensaje.getRedaccion());
+			if (!mensaje.getParametros().isEmpty()) {
+				patron = TokenBs.decodificarCadenasToken(mensaje.getRedaccion());
+			} else {
+				patron = mensaje.getRedaccion();
+			}
 			for (MensajeParametro mensajeParametro : mensaje.getParametros()) {
 				for (ValorMensajeParametro valor : refParam.getValoresMensajeParametro()) {
 					if (mensajeParametro.getId().equals(valor.getMensajeParametro().getId())) {
@@ -491,8 +500,8 @@ public class GeneradorPruebasBs {
 		String ruta;
 		ReferenciaParametro referenciaParametro;
 		
-		idCSV = calcularIdentificador(prefijoContenedorCSV, paso, rn);
-		idPeticionHTTP = calcularIdentificador(prefijoPeticionHTTP, paso, rn);
+		idCSV = calcularIdentificador(prefijoContenedorCSV, paso, rn, entradaInvalida);
+		idPeticionHTTP = calcularIdentificador(prefijoPeticionHTTP, paso, rn, entradaInvalida);
 		entradas.addAll(paso.getTrayectoria().getCasoUso().getEntradas());
 		referenciaParametro = AnalizadorPasosBs.obtenerPrimerReferencia(rn, ReferenciaEnum.TipoReferencia.REGLANEGOCIO);
 		
@@ -556,13 +565,20 @@ public class GeneradorPruebasBs {
 		}
 		return nombres;
 	}
-	
 
 	private static String calcularIdentificador(String prefijo,
-			Paso paso, Paso rn) {
-		return prefijo + "-" + paso.getTrayectoria().getClave() + "-" + paso.getNumero() + "-" + paso.getTrayectoria().getClave() + "-" + paso.getNumero();
+			Paso paso, Paso rn, Entrada entrada) {
+		if (entrada.getAtributo()!= null) {
+			return prefijo + "-" + paso.getTrayectoria().getClave() + paso.getNumero() + rn.getTrayectoria().getClave() + rn.getNumero() + entrada.getId();
+		} else if (entrada.getTerminoGlosario() != null) {
+			return prefijo + "-" + paso.getTrayectoria().getClave() + paso.getNumero() + rn.getTrayectoria().getClave() + rn.getNumero() + entrada.getId();
+		}
+		return null;
 	}
-
+	
+	public static String calcularIdentificador(String prefijo, Paso paso) {
+		return prefijo + "-" + paso.getTrayectoria().getClave() + paso.getNumero();
+	}
 	
 	public static String generarRutaCSV(Paso paso) {
 		Trayectoria tray = paso.getTrayectoria();
@@ -570,14 +586,12 @@ public class GeneradorPruebasBs {
 		int idCasoUso =  cu.getId();
 		int idModulo = cu.getModulo().getId();
 		int idProyecto = cu.getProyecto().getId();
-		return "pruebas/" + idProyecto + "/" + idModulo + "/" + idCasoUso + "/" + "/";
+		return "pruebas/" + idProyecto + "/" + idModulo + "/" + idCasoUso + "/";
 	}
 	
-
 	public static void generarCSV(String ruta, String nombreCSV,
 			ArrayList<String> valoresParametros) throws IOException {
 		String linea = "";
-
 		
 		for(String valor : valoresParametros) {
 			linea = linea + valor + ",";
@@ -592,36 +606,59 @@ public class GeneradorPruebasBs {
 
 	}
 
-
 	public static String calcularNombreCSV(String id) {
 		return "entradas" + id + ".csv";
 	}
 	
-
-	public static String calcularIdentificador(String prefijo, Paso paso) {
-		return prefijo + "-" + paso.getTrayectoria().getClave() + "-" + paso.getNumero();
-	}
-	
-
 	public static String consultarRedaccion(Paso paso) {
 		//return TokenBs.decodificarCadenaSinToken(paso.getRedaccion());
 		return paso.getRedaccion();
 	}
 	
+	public static ArrayList<Entrada> ordenarEntradas(ArrayList<Entrada> entradas) {
+		int longitud = entradas.size();
+		Entrada entrada = null;
+		for (int i = 0; i < longitud; i++) {
+			for (int j = 0; j < longitud; j++) {
+				if (entradas.get(i).getId() < entradas.get(j).getId()) {
+					entrada = entradas.get(j);
+					entradas.set(j, entradas.get(i));
+					entradas.set(i, entrada);
+				}
+			}
+		}
+		return entradas;
+		
+	}
 
+	public static String probarReglaNegocio(Paso pasoActual, Paso siguiente) throws Exception {
+		String archivo = "";
+		ArrayList<Entrada> entradas = new ArrayList<Entrada>();
+		entradas.addAll(pasoActual.getTrayectoria().getCasoUso().getEntradas());
+		for (Entrada entrada : entradas) {
+			archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, siguiente, entrada, true);
+			archivo += GeneradorPruebasBs.contenedorCSV(pasoActual,	siguiente, entrada, false);
+			archivo += GeneradorPruebasBs.asercion(AnalizadorPasosBs
+					.calcularPasoAlternativo(siguiente));
+		}
+						
+		return archivo;
+	}	
+	
 	public static void generarCasosPrueba(CasoUso casoUso) throws Exception {
 		String archivo = "";
 		ArrayList<Paso> pasos = new ArrayList<Paso>();
-		if (!casoUso.getExtendidoDe().isEmpty()) {
+		/*if (!casoUso.getExtendidoDe().isEmpty()) {
 			for (Extension puntoExtension : casoUso.getExtendidoDe()) {
 				archivo += prepararPrueba(puntoExtension);
 			}
-		}
+		}*/
 
 		System.out.println("-- Terminan predecesores --");
 		for (Trayectoria trayectoria : casoUso.getTrayectorias()) {
 			if (!trayectoria.isAlternativa()) {
 				pasos.addAll(trayectoria.getPasos());
+				//pasos = AnalizadorPasosBs.ordenarPasos(trayectoria);
 				for (Paso paso : trayectoria.getPasos()) {
 					if (paso.getNumero() == 1) {
 						archivo += generarPrueba(paso, pasos);
@@ -629,8 +666,9 @@ public class GeneradorPruebasBs {
 				}
 			}
 		}
+		
+		System.out.println(archivo);
 	}
-
 
 	public static String prepararPrueba(Extension puntoExtension) throws Exception {
 		String archivo = "";
@@ -647,7 +685,6 @@ public class GeneradorPruebasBs {
 		for (Trayectoria trayectoria : casoUso.getTrayectorias()) {
 			if (!trayectoria.isAlternativa()) {
 				pasos.addAll(trayectoria.getPasos());
-				
 				for (Paso paso : AnalizadorPasosBs.ordenarPasos(trayectoria)) {
 					tipo = AnalizadorPasosBs.calcularTipo(paso);
 					if (tipo != null) {
@@ -669,7 +706,6 @@ public class GeneradorPruebasBs {
 		}
 		return archivo;
 	}
-
 
 	public static String generarPrueba(Paso pasoActual, ArrayList<Paso> pasos) throws Exception {
 		String archivo = "";
@@ -747,35 +783,9 @@ public class GeneradorPruebasBs {
 	}
 	
 	
-	public static String probarReglaNegocio(Paso pasoActual, Paso siguiente) throws Exception {
-		String archivo = "";
-		ArrayList<Entrada> entradas = new ArrayList<Entrada>();
-		entradas.addAll(pasoActual.getTrayectoria().getCasoUso().getEntradas());
-		for (Entrada entrada : entradas) {
-			archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, siguiente, true);
-			archivo += GeneradorPruebasBs.contenedorCSV(pasoActual,	siguiente, entrada, false);
-			archivo += GeneradorPruebasBs.asercion(AnalizadorPasosBs
-					.calcularPasoAlternativo(siguiente));
-		}
-						
-		return archivo;
-	}
+	
 
 
-	public static ArrayList<Entrada> ordenarEntradas(ArrayList<Entrada> entradas) {
-		int longitud = entradas.size();
-		Entrada entrada = null;
-		for (int i = 0; i < longitud; i++) {
-			for (int j = 0; j < longitud; j++) {
-				if (entradas.get(i).getId() < entradas.get(j).getId()) {
-					entrada = entradas.get(j);
-					entradas.set(j, entradas.get(i));
-					entradas.set(i, entrada);
-				}
-			}
-		}
-		return entradas;
-		
-	}
+	
 }
 

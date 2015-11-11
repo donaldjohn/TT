@@ -953,7 +953,12 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 	public void setIdSel(Integer idSel) {
 		this.idSel = idSel;
-		this.model = CuBs.consultarCasoUso(idSel);
+		if (model == null) {
+			System.out.println("No Try");
+			this.model = CuBs.consultarCasoUso(idSel);
+		} else {
+			System.out.println("Try");
+		}
 		System.out.println("this: " + this);
 		System.out.println("después de setIdSel");
 	}
