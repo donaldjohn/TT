@@ -44,7 +44,7 @@
 								<s:if test="%{#cu.estadoElemento.id == 1 || #cu.estadoElemento.id == 3}">
 									<!-- Configurar caso de uso -->
 									<s:url var="urlConfigurarCU"
-										value="%{#pageContext.request.contextPath}/configuracion-casos-uso-previos!configurarCasoUso">
+										value="%{#pageContext.request.contextPath}/configuracion-casos-uso-previos!prepararConfiguracionCasoUso">
 										<s:param name="idCUPrevio" value="%{#cu.id}"></s:param>
 									</s:url>			
 									<s:a href="%{urlConfigurarCU}">

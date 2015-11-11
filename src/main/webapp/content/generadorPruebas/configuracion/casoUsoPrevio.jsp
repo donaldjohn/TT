@@ -8,13 +8,15 @@
 <head>
 <title>Configuración Caso de uso</title>
 <![CDATA[
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/generadorPruebas/configuracion/js/casoUsoPrevio.js"></script>	
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/generadorPruebas/configuracion/js/casoUsoPrevio.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/constructores.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/validaciones.js"></script>	
 ]]>
 
 </head>
 <body>
 
-	<h1>Configuración del Caso de uso</h1>
+	<h1>Configuración del Caso de uso previo</h1>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
@@ -22,20 +24,22 @@
 
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 	<s:form autocomplete="off" id="frmCasoUso" theme="simple"
-		action="%{#pageContext.request.contextPath}/configuracion-casos-uso-previos!guardar" method="post">
+		action="%{#pageContext.request.contextPath}/configuracion-casos-uso-previos!configurarCasoUso" method="post" onsubmit="return prepararEnvio();">
 		<s:hidden name="_method" value="put" />
-		<div class="formulario">
+		<div class="formulario" id="formularioEntradas">
 			<div class="tituloFormulario">Configuración de las Entradas</div>
+			<p class="instrucciones">Ingrese la etiqueta y el valor de cada una de las Entradas.</p>
 			<div class="seccion" id="seccionEntradas">
 				<table id="tablaEntradas">
+				<!--  -->
 				</table>
 			</div>
 		</div>
-		<div class="formulario">
+		<div class="formulario" id="formularioURL">
 			<div class="tituloFormulario">Configuración de las URL</div>
+			<p class="instrucciones">Ingrese la URL destino de cada una de las Acciones.</p>
 			<div class="seccion" id="seccionURL">
-				<table id="tablaURL">
-				</table>
+				<!--  -->
 			</div>
 		</div>
 		

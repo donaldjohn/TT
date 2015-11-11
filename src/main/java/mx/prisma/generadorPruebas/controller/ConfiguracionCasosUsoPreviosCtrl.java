@@ -1,5 +1,6 @@
 package mx.prisma.generadorPruebas.controller;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -8,13 +9,17 @@ import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AccessBs;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.model.Accion;
+import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Entrada;
 import mx.prisma.editor.model.Modulo;
+import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.generadorPruebas.bs.CuPruebasBs;
+import mx.prisma.generadorPruebas.model.ValorEntrada;
 import mx.prisma.util.ActionSupportPRISMA;
+import mx.prisma.util.ErrorManager;
 import mx.prisma.util.JsonUtil;
 import mx.prisma.util.SessionManager;
 
@@ -45,8 +50,7 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 	
 	public String prepararConfiguracion() throws Exception {
 		String resultado;
-		
-		System.out.println("desde prepararConfiguracion previos");
+
 		colaborador = SessionManager.consultarColaboradorActivo();
 		proyecto = SessionManager.consultarProyectoActivo();
 		modulo = SessionManager.consultarModuloActivo();
@@ -66,16 +70,33 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 		}
 		
 		listCU = CuBs.obtenerCaminoPrevioMasCorto(casoUso);
+		
 		if(listCU == null) {
-			return "casoUso";
+			return "siguiente";
 		}
 		
 		return "pantallaConfiguracionCasosUsoPrevios"; 
 	}
 	
-	public String configurarCasoUso() {
-		System.out.println("desde configurarCasoUso, idCUPrevio: " + idCUPrevio);
+	public String prepararConfiguracionCasoUso() throws Exception {
+		String resultado;
+		colaborador = SessionManager.consultarColaboradorActivo();
+		proyecto = SessionManager.consultarProyectoActivo();
+		modulo = SessionManager.consultarModuloActivo();
+		casoUso = SessionManager.consultarCasoUsoActivo();
 		
+		if (casoUso == null) {
+			resultado = "cu";
+			return resultado;
+		}
+		if (modulo == null) {
+			resultado = "modulos";
+			return resultado;
+		}
+		if (!AccessBs.verificarPermisos(modulo.getProyecto(), colaborador)) {
+			resultado = Action.LOGIN;
+			return resultado;
+		}
 		
 		CasoUso previo = CuBs.consultarCasoUso(idCUPrevio);
 		obtenerJsonCampos(previo);
@@ -84,24 +105,63 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 		return "pantallaConfiguracionCasoUsoPrevio";
 	}
 	
-	private void obtenerJsonCampos(CasoUso previo) {
+	public String configurarCasoUso() {
+		return "siguiente";
+	}
+	
+	private void obtenerJsonCampos(CasoUso previo) throws Exception{
 		
-		
-		for(Entrada entrada : previo.getEntradas()) {
-			entrada.setCasoUso(null);
-			entrada.setValores(null);
+		Set<Entrada> entradasAux = previo.getEntradas();
+		Set<Entrada> entradas = new HashSet<Entrada>(0);
+		for(Entrada entrada : entradasAux) {
+			Entrada entradaAux = new Entrada();
+			Atributo atributo = new Atributo();
+			Atributo atributoAux = entrada.getAtributo();
+			
+			atributo.setNombre(atributoAux.getNombre());
+			atributo.setId(atributoAux.getId());
+			
+			entradaAux.setAtributo(atributo);
+			
+			Set<ValorEntrada> valores = new HashSet<ValorEntrada>(0);
+			valores.add(new ValorEntrada());
+			
+			entradaAux.setValores(valores);
+			entradaAux.setId(entrada.getId());
+			entradas.add(entradaAux);
+			
 		} 
 		
-		jsonEntradas = JsonUtil.mapSetToJSON(previo.getEntradas());
+		jsonEntradas = JsonUtil.mapSetToJSON(entradas);
 		System.out.println("jsonEntradas: " + jsonEntradas);
 		
 		Trayectoria trayectoriaPrincipal = CuBs.obtenerTrayectoriaPrincipal(previo);
 		
 		if(trayectoriaPrincipal != null) {
-			Set<Accion> acciones = CuPruebasBs.obtenerAcciones(trayectoriaPrincipal);
-			for(Accion accion : acciones) {
-				accion.setImagen(null);
-				accion.setPantalla(null);
+			Set<Accion> accionesAux = CuPruebasBs.obtenerAcciones(trayectoriaPrincipal);
+			Set<Accion> acciones = new HashSet<Accion>(0);
+			for(Accion accion : accionesAux) {
+				Accion accionAux = new Accion();
+				accionAux.setId(accion.getId());
+				accionAux.setNombre(accion.getNombre());
+				accionAux.setTipoAccion(accion.getTipoAccion());
+				
+				Pantalla pantalla = new Pantalla();
+				pantalla.setNombre(accion.getPantalla().getNombre());
+				pantalla.setClave(accion.getPantalla().getClave());
+				pantalla.setNumero(accion.getPantalla().getNumero());
+				pantalla.setId(accion.getPantalla().getId());
+				
+				Pantalla pantallaDestino = new Pantalla();
+				pantallaDestino.setNombre(accion.getPantallaDestino().getNombre());
+				pantallaDestino.setClave(accion.getPantallaDestino().getClave());
+				pantallaDestino.setNumero(accion.getPantallaDestino().getNumero());
+				pantallaDestino.setId(accion.getPantallaDestino().getId());
+				
+				accionAux.setPantalla(pantalla);
+				accionAux.setPantallaDestino(pantallaDestino);
+				
+				acciones.add(accionAux);
 			}
 			jsonAcciones = JsonUtil.mapSetToJSON(acciones);
 			System.out.println("jsonAcciones: " + jsonAcciones);

@@ -162,5 +162,12 @@ function ImagenAccion(imagen, id) {
 	this.id = id;
 }
 
+function Entrada(id, etiqueta, valoresEntrada) {
+	this.id = id;
+	this.nombreHTML = etiqueta;
+	this.valores = valoresEntrada;
+}
 
-
+function ValorEntrada(valor) {
+	this.valor = valor;
+}

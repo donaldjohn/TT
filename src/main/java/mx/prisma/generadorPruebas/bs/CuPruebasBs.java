@@ -314,6 +314,7 @@ public class CuPruebasBs {
 			if(AnalizadorPasosBs.isActorOprimeBoton(paso)) {
 				Accion accion = AnalizadorPasosBs.obtenerPrimerReferencia(paso, TipoReferencia.ACCION).getAccionDestino();
 				acciones.add(accion);
+				
 			}
 		}
 		return acciones;

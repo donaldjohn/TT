@@ -51,7 +51,6 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 			session.put("idCU", idCU);
 		}
 		String resultado;
-		System.out.println("desde prepararConfiguracion general");
 		colaborador = SessionManager.consultarColaboradorActivo();
 		proyecto = SessionManager.consultarProyectoActivo();
 		modulo = SessionManager.consultarModuloActivo();
@@ -74,7 +73,6 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 	}
 	
 	public String configurar() throws Exception {
-		System.out.println("desde configurar general");
 		String resultado;
 		try {
 			casoUso = SessionManager.consultarCasoUsoActivo();
