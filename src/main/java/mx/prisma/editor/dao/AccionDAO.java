@@ -67,4 +67,17 @@ public class AccionDAO extends GenericDAO {
 
 	}
 
+	public void modificarAccion(Accion accion) {
+		try {
+			session.beginTransaction();
+			session.update(accion);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
+		
+	}
+
 }

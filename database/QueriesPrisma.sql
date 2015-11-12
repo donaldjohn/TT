@@ -282,7 +282,7 @@ INSERT INTO PRISMA.Atributo (id, nombre, descripcion, obligatorio, longitud, Ent
 
 
 INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('30', 'CUE', '7', 'Gestionar actores', 'Este caso de uso permite al analista visualizar los registros de los actores registrados en el sistema. También permiteal actor acceder a las operaciones de registro, consulta, modificación, y eliminación de un actor.', '1', '1'); 
-INSERT INTO PRISMA.CasoUso (Elementoid, Moduloid, redaccionActores, redaccionEntradas, redaccionSalidas, redaccionReglasNegocio) VALUES ('30', '1', '$ACT·1, ACT·2', '$Ninguna', '$ATR·9 \n ATR·8 \n ATR·10 \n ATR·4 \n MSG·31', '$Ninguna');
+INSERT INTO PRISMA.CasoUso (Elementoid, Moduloid, redaccionActores, redaccionEntradas, redaccionSalidas, redaccionReglasNegocio) VALUES ('30', '1', '$ACT·1, ACT·2', '$ATR·20', '$ATR·9 \n ATR·8 \n ATR·10 \n ATR·4 \n MSG·31', '$Ninguna');
 
 
 INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('31', 'MSG', '2', 'No existe información', 'Notificar al actor que aún no existe información registrada en el editor.', '1', '1');
@@ -495,6 +495,7 @@ INSERT INTO PRISMA.Entidad (Elementoid) VALUES ('40');
 INSERT INTO PRISMA.Atributo (id, nombre, descripcion, obligatorio, longitud, EntidadElementoid, TipoDatoid) VALUES ('17', 'Clave', 'Clave que permitirá distinguir al proyecto, generalmente es la abreviación del nombre del proyecto.', '1', '10', '40', '1');
 INSERT INTO PRISMA.Atributo (id, nombre, descripcion, obligatorio, longitud, EntidadElementoid, TipoDatoid) VALUES ('18', 'Nombre', 'Palabra que sirve para identificar al proyecto.', '1', '50', '40', '1');
 INSERT INTO PRISMA.Atributo (id, nombre, descripcion, obligatorio, longitud, EntidadElementoid, TipoDatoid) VALUES ('19', 'Descripción', 'Párrafo que contiene las características generales del proyecto.', '1', '999', '40', '1');
+INSERT INTO PRISMA.Atributo (id, nombre, descripcion, obligatorio, longitud, EntidadElementoid, TipoDatoid) VALUES ('20', 'Id', 'Identificador numérico del proyecto.', '1', '11', '40', '3');
 
 
 INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('41', 'CUE', '4', 'Gestionar proyectos', 'Este caso de uso permite al analista visualizar los registros de los proyectos.', '1', '1'); 
@@ -551,3 +552,19 @@ INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Extensionid, PasoidDest
 INSERT INTO PRISMA.Extension (id, CasoUsoElementoid_origen, CasoUsoElementoid_destino, causa, region) VALUES ('3', '41', '30', 'El actor requiere gestionar los actores.', '$Paso P·51 de la trayectoria principal.');
 
 INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Extensionid, PasoidDestino) VALUES ('10', '3', '51'); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+INSERT INTO PRISMA.Entrada (TipoParametroid, CasoUsoElementoid, Atributoid) VALUES ('5', '30', '20');

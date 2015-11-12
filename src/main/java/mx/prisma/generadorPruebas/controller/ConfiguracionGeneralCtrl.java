@@ -84,7 +84,28 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 			
 			cbd.setCasoUso(casoUso);
 			chttp.setCasoUso(casoUso);
-			ConfiguracionGeneralBs.modificarConfiguracionGeneral(cbd, chttp);
+			
+			ConfiguracionBaseDatos cbdBD = ConfiguracionGeneralBs.consultarConfiguracionBaseDatos(casoUso);
+			ConfiguracionHttp chttpBD = ConfiguracionGeneralBs.consultarConfiguracionHttp(casoUso);
+
+			
+			if(cbdBD == null) {
+				cbdBD = cbd;
+			} else {
+				cbdBD.setContrasenia(cbd.getContrasenia());
+				cbdBD.setDriver(cbd.getDriver());
+				cbdBD.setUrlBaseDatos(cbd.getUrlBaseDatos());
+				cbdBD.setUsuario(cbd.getUsuario());
+			}
+			
+			if(chttpBD == null) {
+				chttpBD = chttp;
+			} else {
+				chttpBD.setIp(chttp.getIp());
+				chttpBD.setPuerto(chttp.getPuerto());
+			}
+			
+			ConfiguracionGeneralBs.modificarConfiguracionGeneral(cbdBD, chttpBD);
 			
 			resultado = "siguiente";
 		} catch (PRISMAValidacionException pve) {

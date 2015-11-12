@@ -1,6 +1,7 @@
 package mx.prisma.generadorPruebas.bs;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +20,7 @@ import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.MensajeParametro;
 import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.Paso;
+import mx.prisma.editor.model.ReferenciaParametro;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.generadorPruebas.dao.EscenarioDAO;
@@ -314,10 +316,68 @@ public class CuPruebasBs {
 			if(AnalizadorPasosBs.isActorOprimeBoton(paso)) {
 				Accion accion = AnalizadorPasosBs.obtenerPrimerReferencia(paso, TipoReferencia.ACCION).getAccionDestino();
 				acciones.add(accion);
-				
 			}
 		}
 		return acciones;
+	}
+
+
+	public static Set<Pantalla> obtenerPantallas(
+			Trayectoria trayectoria) {
+		Set<Pantalla> pantallas = new HashSet<Pantalla>(0);
+		for(Paso paso : trayectoria.getPasos()) {
+			if(AnalizadorPasosBs.isSistemaMuestraPantalla(paso)) {
+				Pantalla pantalla = (Pantalla) AnalizadorPasosBs.obtenerPrimerReferencia(paso, TipoReferencia.PANTALLA).getElementoDestino();
+				pantallas.add(pantalla);
+			}
+		}
+		return pantallas;
+	}
+
+
+
+
+
+	public static Set<ReferenciaParametro> obtenerReferenciasReglasNegocioQuery(
+			Trayectoria trayectoria) {
+		Set<ReferenciaParametro> referencias = new HashSet<ReferenciaParametro>(0);
+		
+		for(Paso paso : trayectoria.getPasos()) {
+			if(AnalizadorPasosBs.isSistemaValidaReglaNegocio(paso) || AnalizadorPasosBs.isSistemaValidaPrecondicion(paso)) {
+				ReferenciaParametro referenciaReglaNegocio = AnalizadorPasosBs.obtenerPrimerReferencia(paso, TipoReferencia.REGLANEGOCIO);
+				ReglaNegocio reglaNegocio = (ReglaNegocio) referenciaReglaNegocio.getElementoDestino();
+				switch(TipoReglaNegocioEnum.getTipoReglaNegocio(reglaNegocio.getTipoReglaNegocio())) {
+				case UNICIDAD:
+					referencias.add(referenciaReglaNegocio);
+					break;
+				case VERFCATALOGOS:
+					referencias.add(referenciaReglaNegocio);
+					break;
+				default:
+					break;
+					
+				}
+			}
+		}
+		
+		return referencias;
+	}
+
+
+	public static Set<ReferenciaParametro> obtenerReferenciasParametroMensajes(
+			Trayectoria trayectoria) {
+		Set<ReferenciaParametro> referencias = new HashSet<ReferenciaParametro>(0);
+		for(Paso paso : trayectoria.getPasos()) {
+			if(AnalizadorPasosBs.isSistemaMuestraMensaje(paso)) {
+				ReferenciaParametro referencia = AnalizadorPasosBs.obtenerPrimerReferencia(paso, TipoReferencia.MENSAJE);
+				Mensaje mensaje = (Mensaje) referencia.getElementoDestino();
+				if(mensaje.isParametrizado()) {
+					referencias.add(referencia);
+				}
+				
+			}
+		}
+		return referencias;
 	}
 
 		

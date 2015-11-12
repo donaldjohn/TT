@@ -8,7 +8,10 @@
 <head>
 <title>Configuración Caso de uso x</title>
 <![CDATA[
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/generadorPruebas/configuracion/js/casosUsoPrevios.js"></script>	
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/generadorPruebas/configuracion/js/casoUso.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/constructores.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/resources/scripts/validaciones.js"></script>	
+		
 ]]>
 
 </head>
@@ -24,43 +27,43 @@
 	<s:form autocomplete="off" id="frmCasoUso" theme="simple"
 		action="%{#pageContext.request.contextPath}/configuracion-caso-uso!configurar" method="post">
 		<s:hidden name="_method" value="put" />
-		<div class="formulario">
-			<div class="tituloFormulario">Configuración del registro seleccionado</div>
-			<div class="seccion" id="seccionRegistro">
-			<!--  -->
+		
+		<div class="formulario" id="formularioEntradas">
+			<div class="tituloFormulario">Configuración de las Entradas</div>
+			<p class="instrucciones">Ingrese la etiqueta y el valor de cada una de las Entradas.</p>
+			<div class="seccion" id="seccionEntradas">
+				<table id="tablaEntradas">
+				<!--  -->
+				</table>
 			</div>
-		</div>	
-		<div class="formulario">
+		</div>
+		<br />
+		
+		<div class="formulario" id="formularioAcciones">
 			<div class="tituloFormulario">Configuración de las URL</div>
+			<p class="instrucciones">Ingrese la URL destino de cada una de las Acciones.</p>
 			<div class="seccion" id="seccionURL">
-			<!--  -->
+				<!--  -->
 			</div>
-		</div>	
-		<div class="formulario">
-			<div class="tituloFormulario">Configuración de los campos</div>
-			<div class="seccion" id="seccionCampos">
-			<!--  -->
-			</div>
-		</div>	
+		</div>
 		
 		<br />
 		<div align="center">
-			<s:url var="urlAnterior"
-				value="%{#pageContext.request.contextPath}/configuracion-general!prepararConfiguracion">
-			</s:url>
-			<input class="boton" type="button"
-				onclick="location.href='${urlAnterior}'"
-				value="Anterior" />
-		
-			<s:submit class="boton" value="Finalizar"/>
+			<s:submit class="boton" value="Aceptar"/>
 
 			<s:url var="urlGestionarCU"
-				value="%{#pageContext.request.contextPath}/cu">
+				value="%{#pageContext.request.contextPath}/configuracion-casos-uso-previos!prepararConfiguracion">
 			</s:url>
 			<input class="boton" type="button"
 				onclick="location.href='${urlGestionarCU}'"
 				value="Cancelar" />
 		</div>
+		
+		<s:hidden name="jsonAcciones" id="jsonAcciones" value="%{jsonAcciones}"/>
+		<s:hidden name="jsonEntradas" id="jsonEntradas" value="%{jsonEntradas}"/>
+		<s:hidden name="jsonReferenciasReglasNegocio" id="jsonReferenciasReglasNegocio" value="%{jsonReferenciasReglasNegocio}"/>
+		<s:hidden name="jsonReferenciasParametrosMensaje" id="jsonReferenciasParametrosMensaje" value="%{jsonReferenciasParametrosMensaje}"/>
+		<s:hidden name="jsonPantallas" id="jsonPantallas" value="%{jsonPantallas}"/>
 	</s:form>
 </body>
 	</html>

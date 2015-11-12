@@ -143,13 +143,15 @@ function Colaborador(curp) {
 /*
  * Constructor del objeto Accion
  */
-function Accion(nombre, imagen, descripcion, idTipoAccion, idPantallaDestino, id) {
+function Accion(nombre, imagen, descripcion, idTipoAccion, idPantallaDestino, id, url, metodo) {
 	this.nombre = nombre;
 	this.imagen = imagen;
 	this.descripcion = descripcion;
 	this.tipoAccion = new TipoAccion(idTipoAccion);
 	this.pantallaDestino = new Pantalla(null, null, null, idPantallaDestino);
 	this.id = id;
+	this.urlDestino = url;
+	this.metodo = metodo;
 }
 
 function TipoAccion(id, nombre) {
@@ -168,6 +170,8 @@ function Entrada(id, etiqueta, valoresEntrada) {
 	this.valores = valoresEntrada;
 }
 
-function ValorEntrada(valor) {
+function ValorEntrada(valor, valido, id) {
 	this.valor = valor;
+	this.valido = valido;
+	this.id = id;
 }

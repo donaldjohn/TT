@@ -104,4 +104,5 @@ public class ConfiguracionGeneralBs {
 		return chttp;
 	}
 
+
 }

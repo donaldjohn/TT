@@ -16,16 +16,15 @@
 </head>
 <body>
 
-	<h1>Configuración del Caso de uso previo</h1>
+	<h1>Configuración del Caso de uso ${previo.clave} ${previo.numero} ${previo.nombre} </h1>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
 	<br />
 
-	<p class="instrucciones">Ingrese la información solicitada.</p>
 	<s:form autocomplete="off" id="frmCasoUso" theme="simple"
 		action="%{#pageContext.request.contextPath}/configuracion-casos-uso-previos!configurarCasoUso" method="post" onsubmit="return prepararEnvio();">
-		<s:hidden name="_method" value="put" />
+		
 		<div class="formulario" id="formularioEntradas">
 			<div class="tituloFormulario">Configuración de las Entradas</div>
 			<p class="instrucciones">Ingrese la etiqueta y el valor de cada una de las Entradas.</p>
@@ -35,7 +34,9 @@
 				</table>
 			</div>
 		</div>
-		<div class="formulario" id="formularioURL">
+		<br />
+		
+		<div class="formulario" id="formularioAcciones">
 			<div class="tituloFormulario">Configuración de las URL</div>
 			<p class="instrucciones">Ingrese la URL destino de cada una de las Acciones.</p>
 			<div class="seccion" id="seccionURL">

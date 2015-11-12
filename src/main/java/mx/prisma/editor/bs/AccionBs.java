@@ -78,4 +78,15 @@ public class AccionBs {
 		return accion;
 	}
 
+	public static void modificarAccion(Accion accion) throws Exception{
+		validar(accion);
+		new AccionDAO().modificarAccion(accion);
+		
+	}
+
+	private static void validar(Accion accion) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

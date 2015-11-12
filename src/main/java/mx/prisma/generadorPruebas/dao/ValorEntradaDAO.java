@@ -7,6 +7,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
 import mx.prisma.dao.GenericDAO;
+import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entrada;
 import mx.prisma.generadorPruebas.model.ValorEntrada;
 
@@ -73,5 +74,44 @@ public class ValorEntradaDAO extends GenericDAO {
 		} else {
 			return results;
 		}
+	}
+
+	public List<ValorEntrada> consultarValores(Entrada entrada) {
+		List<ValorEntrada> results = null;
+		
+		try {
+			session.beginTransaction();
+			Query query = session
+					.createQuery("from ValorEntrada where entrada = :entrada");
+			query.setParameter("entrada", entrada);
+
+			results = query.list();
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		
+		if(results == null) {
+			return null;
+		} else if (results.isEmpty()) {
+			return null;
+		} else {
+			return results;
+		}
+	}
+
+	public ValorEntrada consultarValor(Integer id) {
+		ValorEntrada valor = null;
+		try {
+			session.beginTransaction();
+			valor = (ValorEntrada) session.get(ValorEntrada.class, id);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
+		return valor;
 	}
 }

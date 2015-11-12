@@ -16,6 +16,7 @@ import mx.prisma.bs.TipoSeccionEnum.TipoSeccionENUM;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.ElementoDAO;
+import mx.prisma.editor.dao.EntradaDAO;
 import mx.prisma.editor.dao.ExtensionDAO;
 import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.dao.PasoDAO;

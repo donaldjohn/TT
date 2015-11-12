@@ -7,6 +7,7 @@ import mx.prisma.dao.GenericDAO;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Entrada;
 import mx.prisma.editor.model.TerminoGlosario;
+import mx.prisma.generadorPruebas.model.ValorEntrada;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -66,5 +67,18 @@ public class EntradaDAO extends GenericDAO {
 		}
 		return entrada;
 
+	}
+
+	public void modificarEntrada(Entrada entrada) {
+		try {
+			session.beginTransaction();
+			session.update(entrada);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
+		
 	}
 }
