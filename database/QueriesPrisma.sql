@@ -128,6 +128,7 @@ INSERT INTO PRISMA.Entrada (TipoParametroid, CasoUsoElementoid, Atributoid) VALU
 INSERT INTO PRISMA.Entrada (TipoParametroid, CasoUsoElementoid, Atributoid) VALUES ('5', '21', '6');
 INSERT INTO PRISMA.Entrada (TipoParametroid, CasoUsoElementoid, TerminoGlosarioElementoid) VALUES ('7', '21', '6');
 
+INSERT INTO PRISMA.Salida (TipoParametroid, CasoUsoElementoid, MensajeElementoid) VALUES ('5', '21', '7');
 INSERT INTO PRISMA.Salida (TipoParametroid, CasoUsoElementoid, MensajeElementoid) VALUES ('6', '21', '13');
 INSERT INTO PRISMA.Salida (TipoParametroid, CasoUsoElementoid, MensajeElementoid) VALUES ('6', '21', '14');
 INSERT INTO PRISMA.Salida (TipoParametroid, CasoUsoElementoid, MensajeElementoid) VALUES ('6', '21', '15');
@@ -190,6 +191,7 @@ INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Ver
 
 INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('1', '1', '5');
 INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('9', '1', '19'); 
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, AccionidDestino) VALUES ('8', '1', '1'); 
 
 INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('7', '2', '6');
 INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, Trayectoriaid) VALUES ('11', '2', '2'); 
@@ -309,6 +311,7 @@ INSERT INTO PRISMA.Accion (id, PantallaElementoid, nombre, TipoAccionid, Pantall
 INSERT INTO PRISMA.CasoUso_Actor (CasoUsoElementoid, ActorElementoid) VALUES ('30', '1');
 INSERT INTO PRISMA.CasoUso_Actor (CasoUsoElementoid, ActorElementoid) VALUES ('30', '2');
 
+INSERT INTO PRISMA.Entrada (TipoParametroid, CasoUsoElementoid, Atributoid) VALUES ('5', '30', '20');
 
 INSERT INTO PRISMA.Salida (TipoParametroid, CasoUsoElementoid, Atributoid) VALUES ('5', '30', '9');
 INSERT INTO PRISMA.Salida (TipoParametroid, CasoUsoElementoid, Atributoid) VALUES ('5', '30', '8');
@@ -404,6 +407,7 @@ INSERT INTO PRISMA.Salida (TipoParametroid, CasoUsoElementoid, MensajeElementoid
 INSERT INTO PRISMA.Salida (TipoParametroid, CasoUsoElementoid, MensajeElementoid) VALUES ('6', '39', '37');
 
 
+INSERT INTO PRISMA.CasoUso_ReglaNegocio (CasoUsoElementoid, ReglaNegocioElementoid) VALUES ('39', '8');
 INSERT INTO PRISMA.CasoUso_ReglaNegocio (CasoUsoElementoid, ReglaNegocioElementoid) VALUES ('39', '12');
 
 
