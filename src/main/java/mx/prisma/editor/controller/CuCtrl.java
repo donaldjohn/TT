@@ -2,7 +2,6 @@ package mx.prisma.editor.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,7 +19,6 @@ import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
-import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
@@ -953,14 +951,9 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 	public void setIdSel(Integer idSel) {
 		this.idSel = idSel;
-		if (model == null) {
-			System.out.println("No Try");
+		if (this.model == null) {
 			this.model = CuBs.consultarCasoUso(idSel);
-		} else {
-			System.out.println("Try");
 		}
-		System.out.println("this: " + this);
-		System.out.println("después de setIdSel");
 	}
 
 	public boolean isExistenPrecondiciones() {

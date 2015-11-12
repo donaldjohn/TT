@@ -75,7 +75,7 @@ public class ConfiguracionHttp implements java.io.Serializable {
 		this.puerto = puerto;
 	}
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CasoUsoElementoid", referencedColumnName ="Elementoid", nullable = false)
 	public CasoUso getCasoUso() {
 		return this.casoUso;

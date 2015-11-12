@@ -22,6 +22,9 @@ import mx.prisma.editor.model.ReferenciaParametro;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.generadorPruebas.bs.AnalizadorPasosBs.TipoPaso;
+import mx.prisma.generadorPruebas.dao.ConfiguracionDAO;
+import mx.prisma.generadorPruebas.model.ConfiguracionBaseDatos;
+import mx.prisma.generadorPruebas.model.ConfiguracionHttp;
 import mx.prisma.generadorPruebas.model.Query;
 import mx.prisma.generadorPruebas.model.ValorEntrada;
 import mx.prisma.generadorPruebas.model.ValorMensajeParametro;
@@ -216,7 +219,6 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String peticionJDBC(String id, String query, String paso) {
-		System.out.println("***desde peticionJDBC > id: " + id + ", query: " + query + ", paso: " + paso + "***");
 		String bloque = 
 				"<JDBCSampler guiclass=\"TestBeanGUI\" testclass=\"JDBCSampler\" testname=\""+ id +"\" enabled=\"true\">" + "\n"
 				+ "<stringProp name=\"dataSource\">JDBC Default</stringProp>" + "\n"
@@ -236,11 +238,10 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String iniciarControladorIf(String id, String idPeticionJDBC, String paso, String operador) {
-		System.out.println("***desde iniciarControladorIf > id: " + id + ", idPeticionJDBC: " + idPeticionJDBC + "***");
 		String bloque = 
 				"<IfController guiclass=\"IfControllerPanel\" testclass=\"IfController\" testname=\"" + id + "\" enabled=\"true\">" + "\n"
 				+ "<stringProp name=\"TestPlan.comments\">"+ paso +"</stringProp>" + "\n"
-				+ "<stringProp name=\"IfController.condition\">${" + idPeticionJDBC + "_#} " +operador+ " 0</stringProp>" + "\n"
+				+ "<stringProp name=\"IfController.condition\">${#" + idPeticionJDBC + "_#} " +operador+ " 0</stringProp>" + "\n"
 				+ "<boolProp name=\"IfController.evaluateAll\">false</boolProp>"+ "\n"
 				+ "</IfController>" + "\n"
 				+ "<hashTree>" + "\n";
@@ -276,7 +277,6 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String cerrar() {
-		System.out.println("***desde cerrar***");
 		String bloque = 
 				"</hashTree>" + "\n"
 				+ "</hashTree>" + "\n"
@@ -290,6 +290,127 @@ public class GeneradorPruebasBs {
 		System.out.println("If-}  P");
 
 		return "</hashTree>\n";
+	}
+
+	public static String estadisticas() {
+		String archivo = "";
+		archivo += "<ResultCollector guiclass=\"ViewResultsFullVisualizer\" testclass=\"ResultCollector\" testname=\"View Results Tree\" enabled=\"true\">"
+				+ " <boolProp name=\"ResultCollector.error_logging\">false</boolProp>"
+				+ " <objProp>"
+				+ " <value class=\"SampleSaveConfiguration\">"
+				+ " <time>true</time>"
+				+ "<latency>true</latency>"
+				+ " <timestamp>true</timestamp>"
+				+ "<success>true</success>"
+				+ " <label>true</label>"
+				+ " <code>true</code>"
+				+ " <message>true</message>"
+				+ "<threadName>true</threadName>"
+				+ "<dataType>true</dataType>"
+				+ "<encoding>false</encoding>"
+				+ "<assertions>true</assertions>"
+				+ "<subresults>true</subresults>"
+				+ "<responseData>false</responseData>"
+				+ "<samplerData>false</samplerData>"
+				+ "<xml>false</xml>"
+				+ "<fieldNames>false</fieldNames>"
+				+ "<responseHeaders>false</responseHeaders>"
+				+ "<requestHeaders>false</requestHeaders>"
+				+ "<responseDataOnError>false</responseDataOnError>"
+				+ "<saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>"
+				+ "<assertionsResultsToSave>0</assertionsResultsToSave>"
+				+ "<bytes>true</bytes>"
+				+ "</value>"
+				+ "</objProp>"
+				+ "<objProp>"
+				+ "<value class=\"SampleSaveConfiguration\">"
+				+ "<time>true</time>"
+				+ "<latency>true</latency>"
+				+ "<timestamp>true</timestamp>"
+				+ "<success>true</success>"
+				+ "<label>true</label>"
+				+ "<code>true</code>"
+				+ "<message>true</message>"
+				+ "<threadName>true</threadName>"
+				+ "<dataType>true</dataType>"
+				+ "<encoding>false</encoding>"
+				+ "<assertions>true</assertions>"
+				+ "<subresults>true</subresults>"
+				+ "<responseData>false</responseData>"
+				+ "<samplerData>false</samplerData>"
+				+ "<xml>false</xml>"
+				+ "<fieldNames>false</fieldNames>"
+				+ "<responseHeaders>false</responseHeaders>"
+				+ "<requestHeaders>false</requestHeaders>"
+				+ " <responseDataOnError>false</responseDataOnError>"
+				+ "<saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>"
+				+ "<assertionsResultsToSave>0</assertionsResultsToSave>"
+				+ "<bytes>true</bytes>"
+				+ "<threadCounts>true</threadCounts>"
+				+ "</value>"
+				+ "</objProp>"
+				+ "<stringProp name=\"filename\"></stringProp>"
+				+ "</ResultCollector>"
+				+ " <hashTree/>"
+				+ "<ResultCollector guiclass=\"TableVisualizer\" testclass=\"ResultCollector\" testname=\"View Results in Table\" enabled=\"true\">"
+				+ "<boolProp name=\"ResultCollector.error_logging\">false</boolProp>"
+				+ " <objProp>"
+				+ "<value class=\"SampleSaveConfiguration\">"
+				+ "<latency>true</latency>"
+				+ "<timestamp>true</timestamp>"
+				+ "<success>true</success>"
+				+ "<label>true</label>"
+				+ "<code>true</code>"
+				+ "<message>true</message>"
+				+ "<threadName>true</threadName>"
+				+ "<dataType>true</dataType>"
+				+ "<encoding>false</encoding>"
+				+ "<assertions>true</assertions>"
+				+ "<subresults>true</subresults>"
+				+ "<responseData>false</responseData>"
+				+ "<samplerData>false</samplerData>"
+				+ " <xml>false</xml>"
+				+ "<fieldNames>false</fieldNames>"
+				+ "<responseHeaders>false</responseHeaders>"
+				+ "<requestHeaders>false</requestHeaders>"
+				+ "<responseDataOnError>false</responseDataOnError>"
+				+ "<saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>"
+				+ "<assertionsResultsToSave>0</assertionsResultsToSave>"
+				+ "<bytes>true</bytes>"
+				+ "</value>"
+				+ "</objProp>"
+				+ "<objProp>"
+				+ "<value class=\"SampleSaveConfiguration\">"
+				+ "<time>true</time>"
+				+ "<latency>true</latency>"
+				+ "<timestamp>true</timestamp>"
+				+ "<success>true</success>"
+				+ "<label>true</label>"
+				+ "<code>true</code>"
+				+ "<message>true</message>"
+				+ "<threadName>true</threadName>"
+				+ " <dataType>true</dataType>"
+				+ "<encoding>false</encoding>"
+				+ "<assertions>true</assertions>"
+				+ "<subresults>true</subresults>"
+				+ " <responseData>false</responseData>"
+				+ "<samplerData>false</samplerData>"
+				+ "<xml>false</xml>"
+				+ "<fieldNames>false</fieldNames>"
+				+ "<responseHeaders>false</responseHeaders>"
+				+ "<requestHeaders>false</requestHeaders>"
+				+ "<responseDataOnError>false</responseDataOnError>"
+				+ "<saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>"
+				+ "<assertionsResultsToSave>0</assertionsResultsToSave>"
+				+ "<bytes>true</bytes>"
+				+ "<threadCounts>true</threadCounts>"
+				+ "</value>"
+				+ "</objProp>"
+				+ "<stringProp name=\"filename\"></stringProp>"
+				+ "</ResultCollector>"
+				+ " <hashTree/>";
+		
+		return archivo;
 	}
 
 	/*
@@ -408,21 +529,26 @@ public class GeneradorPruebasBs {
 		ArrayList<String> patrones = new ArrayList<String>();
 		String redaccionPaso;
 
-		
 		id = calcularIdentificador(prefijoAsercion, paso);
 
 		refParamMensaje = AnalizadorPasosBs.obtenerPrimerReferencia(paso, TipoReferencia.MENSAJE);
 		refParamPantalla = AnalizadorPasosBs.obtenerPrimerReferencia(paso, TipoReferencia.PANTALLA);
-		
+		System.out.println("3");
+
 		if (refParamMensaje != null) {
 			patrones.add(calcularPatron(refParamMensaje));
+			System.out.println("4");
+
 		}
 		if (refParamPantalla != null) {
 			patrones.add(calcularPatron(refParamPantalla));
+			System.out.println("5");
+
 		}	
 		redaccionPaso = consultarRedaccion(paso);
 		
 		bloque = asercion(id, patrones, redaccionPaso);
+		System.out.println("Termina aserción");
 		return bloque;
 	}
 	
@@ -431,6 +557,7 @@ public class GeneradorPruebasBs {
 		Pantalla pantalla;
 		String patron = null;
 		refParam = new ReferenciaParametroDAO().consultarReferenciaParametro(refParam.getId());
+
 		switch(ReferenciaEnum.getTipoReferenciaParametro(refParam)) {
 		case MENSAJE:
 			mensaje = (Mensaje) refParam.getElementoDestino();
@@ -457,10 +584,10 @@ public class GeneradorPruebasBs {
 			break;
 			
 		}
-		
 		return patron;
 	}
 	
+
 	public static String contenedorCSV(Paso paso, boolean terminar) throws Exception {
 		String bloque = null;
 		String idCSV;
@@ -487,6 +614,7 @@ public class GeneradorPruebasBs {
 		generarCSV(ruta, nombreCSV, valoresParametros);
 		return bloque;
 	}
+	
 	
 	public static String contenedorCSV(Paso paso, Paso rn, Entrada entradaInvalida, boolean terminar) throws Exception {
 		String bloque = null;
@@ -516,6 +644,7 @@ public class GeneradorPruebasBs {
 		return bloque;
 	}
 	
+	
 	private static ArrayList<String> obtenerValoresParametros(
 			ArrayList<Entrada> entradas) {
 		ArrayList<String> valores = new ArrayList<String>();
@@ -529,6 +658,7 @@ public class GeneradorPruebasBs {
 		}
 		return valores;
 	}
+	
 	
 	private static ArrayList<String> obtenerValoresParametros(
 			ArrayList<Entrada> entradas, Entrada entradaInvalida, ReglaNegocio reglaNegocio) {
@@ -556,6 +686,7 @@ public class GeneradorPruebasBs {
 		return valores;
 	}
 	
+	
 	public static ArrayList<String> obtenerNombresParametros(
 			ArrayList<Entrada> entradas) {
 		ArrayList<String> nombres = new ArrayList<String>();
@@ -566,6 +697,7 @@ public class GeneradorPruebasBs {
 		return nombres;
 	}
 
+	
 	private static String calcularIdentificador(String prefijo,
 			Paso paso, Paso rn, Entrada entrada) {
 		if (entrada.getAtributo()!= null) {
@@ -576,9 +708,11 @@ public class GeneradorPruebasBs {
 		return null;
 	}
 	
+	
 	public static String calcularIdentificador(String prefijo, Paso paso) {
 		return prefijo + "-" + paso.getTrayectoria().getClave() + paso.getNumero();
 	}
+	
 	
 	public static String generarRutaCSV(Paso paso) {
 		Trayectoria tray = paso.getTrayectoria();
@@ -588,6 +722,7 @@ public class GeneradorPruebasBs {
 		int idProyecto = cu.getProyecto().getId();
 		return "pruebas/" + idProyecto + "/" + idModulo + "/" + idCasoUso + "/";
 	}
+	
 	
 	public static void generarCSV(String ruta, String nombreCSV,
 			ArrayList<String> valoresParametros) throws IOException {
@@ -606,14 +741,17 @@ public class GeneradorPruebasBs {
 
 	}
 
+	
 	public static String calcularNombreCSV(String id) {
 		return "entradas" + id + ".csv";
 	}
+	
 	
 	public static String consultarRedaccion(Paso paso) {
 		//return TokenBs.decodificarCadenaSinToken(paso.getRedaccion());
 		return paso.getRedaccion();
 	}
+	
 	
 	public static ArrayList<Entrada> ordenarEntradas(ArrayList<Entrada> entradas) {
 		int longitud = entradas.size();
@@ -631,6 +769,7 @@ public class GeneradorPruebasBs {
 		
 	}
 
+	
 	public static String probarReglaNegocio(Paso pasoActual, Paso siguiente) throws Exception {
 		String archivo = "";
 		ArrayList<Entrada> entradas = new ArrayList<Entrada>();
@@ -646,15 +785,27 @@ public class GeneradorPruebasBs {
 	}	
 	
 	public static void generarCasosPrueba(CasoUso casoUso) throws Exception {
+		System.out.println("Inicia generarCasosPrueba");
 		String archivo = "";
+		ConfiguracionHttp confHTTP;
+		ConfiguracionBaseDatos confJDBC;
 		ArrayList<Paso> pasos = new ArrayList<Paso>();
-		/*if (!casoUso.getExtendidoDe().isEmpty()) {
+		archivo += GeneradorPruebasBs.encabezado();
+		archivo += GeneradorPruebasBs.planPruebas();
+		archivo += GeneradorPruebasBs.grupoHilos(casoUso.getClave() + casoUso.getNumero());
+		archivo += GeneradorPruebasBs.cookieManager();
+		confHTTP = new ConfiguracionDAO().consultarConfiguracionHttpByCasoUso(casoUso);
+		archivo += GeneradorPruebasBs.configuracionHTTP(confHTTP.getIp(), confHTTP.getPuerto().toString());
+		confJDBC = new ConfiguracionDAO().consultarConfiguracionBaseDatosByCasoUso(casoUso);
+		archivo += GeneradorPruebasBs.configuracionJDBC(confJDBC.getUrlBaseDatos(), confJDBC.getDriver(), confJDBC.getUsuario(), confJDBC.getContrasenia());
+		archivo += GeneradorPruebasBs.estadisticas();
+		if (!casoUso.getExtendidoDe().isEmpty()) {
 			for (Extension puntoExtension : casoUso.getExtendidoDe()) {
 				archivo += prepararPrueba(puntoExtension);
 			}
-		}*/
+		}
 
-		System.out.println("-- Terminan predecesores --");
+		/*System.out.println("-- Terminan predecesores --");
 		for (Trayectoria trayectoria : casoUso.getTrayectorias()) {
 			if (!trayectoria.isAlternativa()) {
 				pasos.addAll(trayectoria.getPasos());
@@ -666,8 +817,10 @@ public class GeneradorPruebasBs {
 				}
 			}
 		}
+		*/
+		archivo += GeneradorPruebasBs.cerrar();
 		
-		System.out.println(archivo);
+		//System.out.println(archivo);
 	}
 
 	public static String prepararPrueba(Extension puntoExtension) throws Exception {
@@ -707,6 +860,7 @@ public class GeneradorPruebasBs {
 		return archivo;
 	}
 
+	
 	public static String generarPrueba(Paso pasoActual, ArrayList<Paso> pasos) throws Exception {
 		String archivo = "";
 		TipoPaso tipo;
@@ -737,9 +891,9 @@ public class GeneradorPruebasBs {
 					archivo += GeneradorPruebasBs.iniciarControladorIf(
 							siguiente, "==");
 					archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, true);
-					archivo += GeneradorPruebasBs.asercion(AnalizadorPasosBs
-							.calcularPasoAlternativo(siguiente));
-					GeneradorPruebasBs.terminarControladorIf();
+					System.out.println("Pre-aserción");
+					archivo += GeneradorPruebasBs.asercion(AnalizadorPasosBs.calcularPasoAlternativo(siguiente));
+					archivo += GeneradorPruebasBs.terminarControladorIf();
 				} else {
 					archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, true);
 					pasos.remove(pasoActual);

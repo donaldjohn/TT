@@ -39,7 +39,7 @@ public class AnalizadorPasosBs {
 		boolean patron1 = paso.isRealizaActor();
 		Verbo patron2 = paso.getVerbo();
 		if (patron1 == true && patron2.getNombre().equals("Oprime")
-				&& redaccion.contains(TokenBs.tokenACC) && redaccion.contains("desea") && redaccion.contains(TokenBs.tokenENT)) {
+				&& redaccion.contains(TokenBs.tokenACC) && redaccion.contains("desea")) {
 			return true;
 		} else {
 			return false;
@@ -92,15 +92,13 @@ public class AnalizadorPasosBs {
 	public static boolean isSistemaValidaPrecondicion(Paso paso) {
 	// Petición JDBC con query
 	// Controlador if
-			String redaccion = paso.getRedaccion();
+		String redaccion = paso.getRedaccion();
 		boolean patron1 = paso.isRealizaActor();
 		Verbo patron2 = paso.getVerbo();
 		TipoReglaNegocioENUM patron3 = TipoReglaNegocioENUM.VERFCATALOGOS;
-
+		
 		if (patron1 == false) {
-			if ((patron2.getNombre().equals("Busca") || patron2.getNombre()
-					.equals("Verifica"))
-					&& redaccion.contains(TokenBs.tokenENT)
+			if ((patron2.getNombre().equals("Busca") || patron2.getNombre().equals("Verifica"))
 					&& redaccion.contains(TokenBs.tokenRN)) {
 				Paso pasoRefs = PasoBs.consultarPaso(paso.getId());
 				for (ReferenciaParametro referenciaParametro : pasoRefs
@@ -254,15 +252,14 @@ public class AnalizadorPasosBs {
 			tipoPaso = TipoPaso.sistemaMuestraMensaje;
 		}
 		if(isSelectorRegistroGestion(p)) {
-			System.out.println("actorSoliciaSeleccionarRegistro");
 			tipoPaso = TipoPaso.actorSoliciaSeleccionarRegistro;
 		}
 		
 		if (tipoPaso == null) {
-			System.out.println("No clasificado");
+			System.out.println(p.getTrayectoria().getCasoUso().getClave() + p.getTrayectoria().getCasoUso().getNumero() + "-" +  p.getTrayectoria().getClave() + p.getNumero() + " No clasificado");
+		} else {
+			System.out.println(p.getTrayectoria().getCasoUso().getClave() + p.getTrayectoria().getCasoUso().getNumero() + "-" +  p.getTrayectoria().getClave() + p.getNumero() + " " + tipoPaso);
 		}
-		
-		System.out.println("P" + p.getNumero()+": "+ tipoPaso);
 		return tipoPaso;
 	}
 

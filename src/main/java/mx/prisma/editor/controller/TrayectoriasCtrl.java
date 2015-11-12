@@ -8,23 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.ResultPath;
-import org.apache.struts2.convention.annotation.Results;
-import org.apache.struts2.interceptor.SessionAware;
-
-import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ModelDriven;
-
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
-import mx.prisma.editor.bs.CuBs;
 import mx.prisma.bs.AccessBs;
+import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.TipoSeccionEnum;
-import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
 import mx.prisma.bs.TipoSeccionEnum.TipoSeccionENUM;
+import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.PasoBs;
 import mx.prisma.editor.bs.TokenBs;
@@ -32,7 +23,6 @@ import mx.prisma.editor.bs.TrayectoriaBs;
 import mx.prisma.editor.dao.PasoDAO;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
-import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
@@ -51,6 +41,15 @@ import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.SessionManager;
+
+import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.ResultPath;
+import org.apache.struts2.convention.annotation.Results;
+import org.apache.struts2.interceptor.SessionAware;
+
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ModelDriven;
 
 @ResultPath("/content/editor/")
 @Results({
@@ -871,8 +870,9 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 
 	public void setIdSel(Integer idSel) {
 		this.idSel = idSel;
-		this.model = TrayectoriaBs.consultarTrayectoria(idSel);
-		System.err.println("***********************************************Desués de setIdSel");
+		if (this.model == null) {
+			this.model = TrayectoriaBs.consultarTrayectoria(idSel);
+		}
 	}
 
 	public String getObservaciones() {

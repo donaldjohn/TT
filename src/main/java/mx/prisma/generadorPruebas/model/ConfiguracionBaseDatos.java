@@ -93,7 +93,7 @@ public class ConfiguracionBaseDatos implements java.io.Serializable {
 		this.contrasenia = contrasenia;
 	}
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CasoUsoElementoid", referencedColumnName ="Elementoid", nullable = false)
 	public CasoUso getCasoUso() {
 		return this.casoUso;

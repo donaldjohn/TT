@@ -147,7 +147,7 @@ public class ReferenciaParametro implements java.io.Serializable {
 		this.tipoParametro = tipoParametro;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "Trayectoriaid", referencedColumnName="id", nullable = true)
 	public Trayectoria getTrayectoria() {
 		return trayectoria;
