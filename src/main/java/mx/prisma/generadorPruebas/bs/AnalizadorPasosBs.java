@@ -81,7 +81,7 @@ public class AnalizadorPasosBs {
 		String redaccion = paso.getRedaccion();
 		boolean patron1 = paso.isRealizaActor();
 		Verbo patron2 = paso.getVerbo();
-		if (patron1 == true && patron2.getNombre().equals("Solicita")
+		if (patron1 == true && (patron2.getNombre().equals("Solicita") || patron2.getNombre().equals("Oprime"))
 				&& redaccion.contains(TokenBs.tokenACC)) {
 			return true;
 		} else {
@@ -177,7 +177,7 @@ public class AnalizadorPasosBs {
 						case TAMANOARCH:
 							return false;
 						case UNICIDAD:
-							return false; // CAMBIAR A TRUE
+							return true;
 						case VERFCATALOGOS:
 							return false;
 						default:
@@ -256,9 +256,9 @@ public class AnalizadorPasosBs {
 		}
 		
 		if (tipoPaso == null) {
-			System.out.println(p.getTrayectoria().getCasoUso().getClave() + p.getTrayectoria().getCasoUso().getNumero() + "-" +  p.getTrayectoria().getClave() + p.getNumero() + " No clasificado");
+			//System.out.println("No clasificado: " + seguimiento(p));
 		} else {
-			System.out.println(p.getTrayectoria().getCasoUso().getClave() + p.getTrayectoria().getCasoUso().getNumero() + "-" +  p.getTrayectoria().getClave() + p.getNumero() + " " + tipoPaso);
+			//System.out.println(tipoPaso+": " + seguimiento(p));
 		}
 		return tipoPaso;
 	}
@@ -332,4 +332,8 @@ public class AnalizadorPasosBs {
 		
 	}
 		
+	public static String seguimiento(Paso paso) {
+		return paso.getTrayectoria().getCasoUso().getClave() + paso.getTrayectoria().getCasoUso().getNumero() + "-" +  paso.getTrayectoria().getClave() + paso.getNumero();
+
+	}
 }

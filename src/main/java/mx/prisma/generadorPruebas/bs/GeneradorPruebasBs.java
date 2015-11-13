@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import mx.prisma.bs.ReferenciaEnum;
+import mx.prisma.bs.TipoReglaNegocioEnum;
 import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
+import mx.prisma.bs.TipoReglaNegocioEnum.TipoReglaNegocioENUM;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.dao.EntradaDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
@@ -36,6 +38,7 @@ public class GeneradorPruebasBs {
 	private static final String prefijoControladorIf = "CI";
 	private static final String prefijoAsercion = "AS";
 	private static final String prefijoContenedorCSV = "CSV";
+	private static String casoUsoTesting = "";
 
 	public static String encabezado() {
 		String bloque = 
@@ -187,10 +190,10 @@ public class GeneradorPruebasBs {
 		return bloque;
 	}
 
-	public static String contenedorCSV(String id, String idPeticionHTTP, ArrayList<String> parametros, String paso, boolean terminar, String ruta, String nombre) {
+	public static String contenedorCSV(String id, String idPeticionHTTP, ArrayList<String> parametros, String paso, boolean terminar, String nombre) {
 		String bloque =
 				"<CSVDataSet guiclass=\"TestBeanGUI\" testclass=\"CSVDataSet\" testname=\""+ id +"\" enabled=\"true\">" + "\n"
-				+ "<stringProp name=\"filename\">" + ruta + nombre + "</stringProp>" + "\n"
+				+ "<stringProp name=\"filename\">entradas/" + nombre + "</stringProp>" + "\n"
 				+ "<stringProp name=\"fileEncoding\"></stringProp>" + "\n"
 				+ "<stringProp name=\"variableNames\">" + generarNombres(idPeticionHTTP, parametros) +"</stringProp>" + "\n"
 				+ "<stringProp name=\"delimiter\">,</stringProp>" + "\n"
@@ -213,7 +216,10 @@ public class GeneradorPruebasBs {
 		for (String parametro : parametros) {
 			bloque +=  (prefijoCSV + idPeticionHTTP + "_" + parametro) + ",";
 		}
-		bloque = bloque.substring(0, bloque.length() - 1);
+		
+		if (bloque != "") {
+			bloque = bloque.substring(0, bloque.length() - 1);
+		}
 		
 		return bloque;
 	}
@@ -287,7 +293,7 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String terminarControladorIf() {
-		System.out.println("If-}  P");
+		System.out.println("If-}");
 
 		return "</hashTree>\n";
 	}
@@ -429,7 +435,7 @@ public class GeneradorPruebasBs {
 
 	 */
 	public static String peticionJDBC(Paso paso) {
-		System.out.println("JDBC P"+paso.getNumero());
+		System.out.println("JDBC " + AnalizadorPasosBs.seguimiento(paso) );
 
 		String bloque = null;
 		String id = calcularIdentificador(prefijoPeticionJDBC, paso);
@@ -450,7 +456,7 @@ public class GeneradorPruebasBs {
 	}
 
 	public static String iniciarControladorIf(Paso paso, String operador) {
-		System.out.println("If-{ P"+paso.getNumero());
+		System.out.println("If-{ " + AnalizadorPasosBs.seguimiento(paso) );
 		String bloque = null;
 		String id = calcularIdentificador(prefijoControladorIf, paso);
 		String idPeticionJDBC = calcularIdentificador(prefijoPeticionJDBC, paso);
@@ -462,7 +468,7 @@ public class GeneradorPruebasBs {
 	}
 
 	public static String peticionHTTP(Paso paso, boolean hijos) {
-		System.out.println("HTTP P"+paso.getNumero());
+		System.out.println("HTTP " + AnalizadorPasosBs.seguimiento(paso) );
 
 		String bloque;
 		String id = null;
@@ -492,7 +498,7 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String peticionHTTP(Paso paso, Paso pasoRN, Entrada entrada, boolean hijos) {
-		System.out.println("HTTP P"+paso.getNumero() + " - "+pasoRN.getNumero());
+		System.out.println("HTTP "+AnalizadorPasosBs.seguimiento(paso) + " _ "+AnalizadorPasosBs.seguimiento(pasoRN));
 		String bloque;
 		String id = null;
 		ReferenciaParametro refParam;
@@ -521,7 +527,8 @@ public class GeneradorPruebasBs {
 	}
 		
 	public static String asercion(Paso paso) {
-		System.out.println("Aserción P"+paso.getNumero());
+		System.out.println("Aserción "+AnalizadorPasosBs.seguimiento(paso));
+		
 		String bloque;
 		String id;
 		ReferenciaParametro refParamMensaje;
@@ -533,22 +540,18 @@ public class GeneradorPruebasBs {
 
 		refParamMensaje = AnalizadorPasosBs.obtenerPrimerReferencia(paso, TipoReferencia.MENSAJE);
 		refParamPantalla = AnalizadorPasosBs.obtenerPrimerReferencia(paso, TipoReferencia.PANTALLA);
-		System.out.println("3");
 
 		if (refParamMensaje != null) {
 			patrones.add(calcularPatron(refParamMensaje));
-			System.out.println("4");
 
 		}
 		if (refParamPantalla != null) {
 			patrones.add(calcularPatron(refParamPantalla));
-			System.out.println("5");
 
 		}	
 		redaccionPaso = consultarRedaccion(paso);
 		
 		bloque = asercion(id, patrones, redaccionPaso);
-		System.out.println("Termina aserción");
 		return bloque;
 	}
 	
@@ -589,6 +592,7 @@ public class GeneradorPruebasBs {
 	
 
 	public static String contenedorCSV(Paso paso, boolean terminar) throws Exception {
+		System.out.println("CSV " + AnalizadorPasosBs.seguimiento(paso));
 		String bloque = null;
 		String idCSV;
 		String idPeticionHTTP;
@@ -609,7 +613,7 @@ public class GeneradorPruebasBs {
 		nombreCSV = calcularNombreCSV(idCSV);
 		ruta = generarRutaCSV(paso);
 		
-		bloque = contenedorCSV(idCSV, idPeticionHTTP, nombresParametros, redaccionPaso, terminar, ruta, nombreCSV);
+		bloque = contenedorCSV(idCSV, idPeticionHTTP, nombresParametros, redaccionPaso, terminar, nombreCSV);
 		
 		generarCSV(ruta, nombreCSV, valoresParametros);
 		return bloque;
@@ -617,6 +621,8 @@ public class GeneradorPruebasBs {
 	
 	
 	public static String contenedorCSV(Paso paso, Paso rn, Entrada entradaInvalida, boolean terminar) throws Exception {
+		System.out.println("CSV " + AnalizadorPasosBs.seguimiento(paso) + " _ " + AnalizadorPasosBs.seguimiento(rn) + ": " + entradaInvalida.getNombreHTML());
+
 		String bloque = null;
 		String idCSV;
 		String idPeticionHTTP;
@@ -639,7 +645,7 @@ public class GeneradorPruebasBs {
 		nombreCSV = calcularNombreCSV(idCSV);
 		ruta = generarRutaCSV(paso);
 		
-		bloque = contenedorCSV(idCSV, idPeticionHTTP, nombresParametros, redaccionPaso, terminar, ruta, nombreCSV);
+		bloque = contenedorCSV(idCSV, idPeticionHTTP, nombresParametros, redaccionPaso, terminar, nombreCSV);
 		generarCSV(ruta, nombreCSV, valoresParametros);
 		return bloque;
 	}
@@ -666,7 +672,7 @@ public class GeneradorPruebasBs {
 		boolean buscarInvalida = false;
 		for (Entrada entrada : entradas) {
 			entrada = new EntradaDAO().findById(entrada.getId());
-			if (entrada.getId() == entradaInvalida.getId()) {
+			if (entradaInvalida != null && entrada.getId() == entradaInvalida.getId()) {
 				buscarInvalida = true;
 			} else {
 				buscarInvalida = false;
@@ -700,10 +706,13 @@ public class GeneradorPruebasBs {
 	
 	private static String calcularIdentificador(String prefijo,
 			Paso paso, Paso rn, Entrada entrada) {
+		if (entrada == null) {
+			return prefijo + "-" + paso.getTrayectoria().getClave() + paso.getNumero() + rn.getTrayectoria().getClave() + rn.getNumero();
+		}
 		if (entrada.getAtributo()!= null) {
-			return prefijo + "-" + paso.getTrayectoria().getClave() + paso.getNumero() + rn.getTrayectoria().getClave() + rn.getNumero() + entrada.getId();
+			return prefijo + "-" + paso.getTrayectoria().getClave() + paso.getNumero() + rn.getTrayectoria().getClave() + rn.getNumero() + entrada.getNombreHTML();
 		} else if (entrada.getTerminoGlosario() != null) {
-			return prefijo + "-" + paso.getTrayectoria().getClave() + paso.getNumero() + rn.getTrayectoria().getClave() + rn.getNumero() + entrada.getId();
+			return prefijo + "-" + paso.getTrayectoria().getClave() + paso.getNumero() + rn.getTrayectoria().getClave() + rn.getNumero() + entrada.getNombreHTML();
 		}
 		return null;
 	}
@@ -715,14 +724,8 @@ public class GeneradorPruebasBs {
 	
 	
 	public static String generarRutaCSV(Paso paso) {
-		Trayectoria tray = paso.getTrayectoria();
-		CasoUso cu = tray.getCasoUso();
-		int idCasoUso =  cu.getId();
-		int idModulo = cu.getModulo().getId();
-		int idProyecto = cu.getProyecto().getId();
-		return "pruebas/" + idProyecto + "/" + idModulo + "/" + idCasoUso + "/";
+		return casoUsoTesting + "/entradas/";
 	}
-	
 	
 	public static void generarCSV(String ruta, String nombreCSV,
 			ArrayList<String> valoresParametros) throws IOException {
@@ -732,18 +735,17 @@ public class GeneradorPruebasBs {
 			linea = linea + valor + ",";
 		}
 		
-		linea = linea.substring(0, linea.length() - 1);	
-		File file = new File(ruta + nombreCSV);
-		file.getParentFile().mkdirs();
-		FileWriter writer = new FileWriter(file);
-		writer.append(linea);
-		writer.close();
+		if (linea != "") {
+			linea = linea.substring(0, linea.length() - 1);	
+		}
+		
+		crearArchivo(nombreCSV, ruta, linea);
 
 	}
 
 	
 	public static String calcularNombreCSV(String id) {
-		return "entradas" + id + ".csv";
+		return  id + ".csv";
 	}
 	
 	
@@ -770,26 +772,53 @@ public class GeneradorPruebasBs {
 	}
 
 	
-	public static String probarReglaNegocio(Paso pasoActual, Paso siguiente) throws Exception {
+	public static String probarReglaNegocio(Paso pasoActual, Paso pasoRN) throws Exception {
 		String archivo = "";
 		ArrayList<Entrada> entradas = new ArrayList<Entrada>();
-		entradas.addAll(pasoActual.getTrayectoria().getCasoUso().getEntradas());
-		for (Entrada entrada : entradas) {
-			archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, siguiente, entrada, true);
-			archivo += GeneradorPruebasBs.contenedorCSV(pasoActual,	siguiente, entrada, false);
-			archivo += GeneradorPruebasBs.asercion(AnalizadorPasosBs
-					.calcularPasoAlternativo(siguiente));
+		ReferenciaParametro refParam;
+		ReglaNegocio reglaNegocio;
+		refParam = AnalizadorPasosBs.obtenerPrimerReferencia(pasoRN, TipoReferencia.REGLANEGOCIO);
+		reglaNegocio = (ReglaNegocio) refParam.getElementoDestino();
+		
+		if (TipoReglaNegocioEnum.getTipoReglaNegocio(reglaNegocio.getTipoReglaNegocio()) == TipoReglaNegocioENUM.UNICIDAD) {
+			refParam = new ReferenciaParametroDAO().consultarReferenciaParametro(refParam.getId());
+			archivo += GeneradorPruebasBs.peticionJDBC(pasoRN);
+			archivo += GeneradorPruebasBs.iniciarControladorIf(
+					pasoRN, ">");
+			archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, pasoRN, null, true);
+			archivo += GeneradorPruebasBs.contenedorCSV(pasoActual, pasoRN, null, false);
+			archivo += GeneradorPruebasBs.asercion(AnalizadorPasosBs.calcularPasoAlternativo(pasoRN));
+			archivo += GeneradorPruebasBs.terminarControladorIf();
+
+		} else {
+			entradas.addAll(pasoActual.getTrayectoria().getCasoUso().getEntradas());		
+			for (Entrada entrada : entradas) {
+				archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, pasoRN, entrada, true);
+				archivo += GeneradorPruebasBs.contenedorCSV(pasoActual,	pasoRN, entrada, false);
+				archivo += GeneradorPruebasBs.asercion(AnalizadorPasosBs
+					.calcularPasoAlternativo(pasoRN));
+			}
 		}
 						
 		return archivo;
 	}	
 	
+	public static void crearArchivo(String nombre, String ruta,
+			String contenido) throws IOException {
+		
+		File file = new File(ruta + nombre);
+		file.getParentFile().mkdirs();
+		FileWriter writer = new FileWriter(file);
+		writer.append(contenido);
+		writer.close();		
+	}
+	
 	public static void generarCasosPrueba(CasoUso casoUso) throws Exception {
-		System.out.println("Inicia generarCasosPrueba");
 		String archivo = "";
 		ConfiguracionHttp confHTTP;
 		ConfiguracionBaseDatos confJDBC;
 		ArrayList<Paso> pasos = new ArrayList<Paso>();
+		casoUsoTesting = casoUso.getId() + "";
 		archivo += GeneradorPruebasBs.encabezado();
 		archivo += GeneradorPruebasBs.planPruebas();
 		archivo += GeneradorPruebasBs.grupoHilos(casoUso.getClave() + casoUso.getNumero());
@@ -805,7 +834,7 @@ public class GeneradorPruebasBs {
 			}
 		}
 
-		/*System.out.println("-- Terminan predecesores --");
+		System.out.println("-- Terminan predecesores --");
 		for (Trayectoria trayectoria : casoUso.getTrayectorias()) {
 			if (!trayectoria.isAlternativa()) {
 				pasos.addAll(trayectoria.getPasos());
@@ -817,11 +846,14 @@ public class GeneradorPruebasBs {
 				}
 			}
 		}
-		*/
+		
 		archivo += GeneradorPruebasBs.cerrar();
 		
-		//System.out.println(archivo);
+		crearArchivo(casoUso.getClave() + casoUso.getNumero(), casoUsoTesting, archivo);
+
+		System.out.println(archivo);
 	}
+
 
 	public static String prepararPrueba(Extension puntoExtension) throws Exception {
 		String archivo = "";
@@ -843,7 +875,12 @@ public class GeneradorPruebasBs {
 					if (tipo != null) {
 						switch (tipo) {
 						case actorOprimeBoton:
-							archivo += GeneradorPruebasBs.peticionHTTP(paso, false);
+							if (paso.getNumero() == 1) {
+								archivo += GeneradorPruebasBs.peticionHTTP(paso, false);
+							} else {
+								archivo += GeneradorPruebasBs.peticionHTTP(paso, false);
+								archivo += GeneradorPruebasBs.contenedorCSV(paso, false);
+							}
 							break;
 						case actorSoliciaSeleccionarRegistro:
 							archivo += GeneradorPruebasBs.peticionHTTP(paso, true);
@@ -891,7 +928,6 @@ public class GeneradorPruebasBs {
 					archivo += GeneradorPruebasBs.iniciarControladorIf(
 							siguiente, "==");
 					archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, true);
-					System.out.println("Pre-aserción");
 					archivo += GeneradorPruebasBs.asercion(AnalizadorPasosBs.calcularPasoAlternativo(siguiente));
 					archivo += GeneradorPruebasBs.terminarControladorIf();
 				} else {
