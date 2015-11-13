@@ -155,7 +155,7 @@ INSERT INTO PRISMA.Trayectoria (id, clave, alternativa, condicion, CasoUsoElemen
 INSERT INTO PRISMA.Trayectoria (id, clave, alternativa, condicion, CasoUsoElementoid, finCasoUso) VALUES ('8', 'G', '1', 'El actor proporciona un dato que excede la longitud máxima.', 21, '0');
 
 INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('1', '1', '1', '$registrar un ENT·5 oprimiento el botón ACC·1 de la pantalla IU·19.', '1', '1', NULL);
-INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('2', '2', '0', '$que exista información referente a la GLS·6. TRAY·2', '1', '5', NULL);
+INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('2', '2', '0', '$que exista información referente a la GLS·6 con base en la regla de negocio RN·23. TRAY·2', '1', '5', NULL);
 INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('3', '3', '0', '$la pantalla IU·20 en la cual se realizará el registro del actor.', '1', '3', NULL);
 INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('4', '4', '1', '$la información del actor en la pantalla IU·20.', '1', '4', NULL);
 INSERT INTO PRISMA.Paso (id, numero, realizaActor, redaccion, Trayectoriaid, Verboid, otroVerbo) VALUES ('5', '5', '1', '$registrar al actor oprimiendo el botón ACC·2 de la pantalla IU·20. TRAY·3', '1', '1', NULL);
@@ -271,8 +271,10 @@ INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, PasoidDestino) 
 
 
 
+INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('23', 'RN', '20', 'Verificación de catálogos', 'Es necesario que exista información registrada en los catálogos al momento de solicitar una operación que requiera estos.', '1', '1');
+INSERT INTO PRISMA.ReglaNegocio (Elementoid, redaccion, TipoReglaNegocioid) VALUES ('23', 'Es necesario que exista información registrada en los catálogos al momento de solicitar una operación que requiera estos.', '1');
 
-
+INSERT INTO PRISMA.ReferenciaParametro (TipoParametroid, Pasoid, ElementoidDestino) VALUES ('3', '2', '23'); 
 
 
 INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('29', 'ENT', '', 'Módulo', 'Se refiere a los segmentos en que se dividen los proyectos.', '1', '1');
