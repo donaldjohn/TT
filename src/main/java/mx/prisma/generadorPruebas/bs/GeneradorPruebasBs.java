@@ -621,7 +621,12 @@ public class GeneradorPruebasBs {
 	
 	
 	public static String contenedorCSV(Paso paso, Paso rn, Entrada entradaInvalida, boolean terminar) throws Exception {
-		System.out.println("CSV " + AnalizadorPasosBs.seguimiento(paso) + " _ " + AnalizadorPasosBs.seguimiento(rn) + ": " + entradaInvalida.getNombreHTML());
+		
+		if(entradaInvalida == null) {
+			System.out.println("CSV " + AnalizadorPasosBs.seguimiento(paso) + " _ " + AnalizadorPasosBs.seguimiento(rn) + ": Unicidad");
+		} else {
+			System.out.println("CSV " + AnalizadorPasosBs.seguimiento(paso) + " _ " + AnalizadorPasosBs.seguimiento(rn) + ": " + entradaInvalida.getNombreHTML());
+		}
 
 		String bloque = null;
 		String idCSV;
@@ -849,9 +854,7 @@ public class GeneradorPruebasBs {
 		
 		archivo += GeneradorPruebasBs.cerrar();
 		
-		crearArchivo(casoUso.getClave() + casoUso.getNumero(), casoUsoTesting, archivo);
-
-		System.out.println(archivo);
+		crearArchivo(casoUso.getClave() + casoUso.getNumero() + ".jmx", casoUsoTesting + "/", archivo);
 	}
 
 
@@ -878,8 +881,8 @@ public class GeneradorPruebasBs {
 							if (paso.getNumero() == 1) {
 								archivo += GeneradorPruebasBs.peticionHTTP(paso, false);
 							} else {
-								archivo += GeneradorPruebasBs.peticionHTTP(paso, false);
-								archivo += GeneradorPruebasBs.contenedorCSV(paso, false);
+								archivo += GeneradorPruebasBs.peticionHTTP(paso, true);
+								archivo += GeneradorPruebasBs.contenedorCSV(paso, true);
 							}
 							break;
 						case actorSoliciaSeleccionarRegistro:
