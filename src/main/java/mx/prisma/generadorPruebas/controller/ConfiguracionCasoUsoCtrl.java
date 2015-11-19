@@ -1,5 +1,6 @@
 package mx.prisma.generadorPruebas.controller;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -7,27 +8,45 @@ import java.util.Set;
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AccessBs;
+import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
+import mx.prisma.editor.bs.AccionBs;
 import mx.prisma.editor.bs.CuBs;
+import mx.prisma.editor.bs.EntradaBs;
+import mx.prisma.editor.bs.MensajeBs;
+import mx.prisma.editor.bs.MensajeParametroBs;
+import mx.prisma.editor.bs.PantallaBs;
+import mx.prisma.editor.bs.PasoBs;
+import mx.prisma.editor.bs.ReferenciaParametroBs;
+import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.CasoUsoReglaNegocio;
 import mx.prisma.editor.model.Entrada;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.MensajeParametro;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
+import mx.prisma.editor.model.Parametro;
+import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.ReferenciaParametro;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.editor.model.Trayectoria;
+import mx.prisma.generadorPruebas.bs.AnalizadorPasosBs;
 import mx.prisma.generadorPruebas.bs.CuPruebasBs;
+import mx.prisma.generadorPruebas.bs.GeneradorPruebasBs;
+import mx.prisma.generadorPruebas.bs.QueryBs;
 import mx.prisma.generadorPruebas.bs.ValorEntradaBs;
+import mx.prisma.generadorPruebas.bs.ValorMensajeParametroBs;
 import mx.prisma.generadorPruebas.model.Query;
 import mx.prisma.generadorPruebas.model.ValorEntrada;
 import mx.prisma.generadorPruebas.model.ValorMensajeParametro;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
 import mx.prisma.util.JsonUtil;
+import mx.prisma.util.PRISMAException;
+import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.SessionManager;
 
 import org.apache.struts2.convention.annotation.Result;
@@ -47,6 +66,10 @@ import com.opensymphony.xwork2.Action;
 			"actionName", "configuracion-casos-uso-previos!prepararConfiguracion" })})
 
 public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Colaborador colaborador;
 	private Proyecto proyecto;
 	private Modulo modulo;
@@ -59,12 +82,12 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 	private String jsonPantallas;
 	public String prepararConfiguracion() {
 		String resultado;
-		System.out.println("desde prepararConfiguracion previos");
 		try {
 			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
 			modulo = SessionManager.consultarModuloActivo();
 			casoUso = SessionManager.consultarCasoUsoActivo();
+			System.out.println("despues de consultas");
 
 			if (casoUso == null) {
 				resultado = "cu";
@@ -78,13 +101,41 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 				resultado = Action.LOGIN;
 				return resultado;
 			}
+			//Se generan los valores
+			Set<ReglaNegocio> reglas = new HashSet<ReglaNegocio>(0);
+			for(CasoUsoReglaNegocio curn : casoUso.getReglas()) {
+				reglas.add(curn.getReglaNegocio());
+			}
+			System.out.println("despues de validaciones");
+			//CuPruebasBs.generarValores(casoUso.getEntradas(), reglas); //Descomentar
 			
+
 			obtenerJsonCamposEntradas(casoUso);
 			obtenerJsonCamposAcciones(casoUso);
 			obtenerJsonCamposReglasNegocio(casoUso);
 			obtenerJsonCamposParametrosMensaje(casoUso);
 			obtenerJsonCamposPantallas(casoUso);
+
+			
+			System.out.println("entradas: " + jsonEntradas);
+			System.out.println("acciones: " + jsonAcciones);
+			System.out.println("rn: " + jsonReferenciasReglasNegocio);
+			System.out.println("msj: " + jsonReferenciasParametrosMensaje);
+			System.out.println("pantllas :" + jsonPantallas);
+			
 			resultado = "pantallaConfiguracionCasoUso";
+			
+			@SuppressWarnings("unchecked")
+			Collection<String> msjs = (Collection<String>) SessionManager
+					.get("mensajesAccion");
+			this.setActionMessages(msjs);
+			SessionManager.delete("mensajesAccion");
+			
+			@SuppressWarnings("unchecked")
+			Collection<String> msjsError = (Collection<String>) SessionManager
+					.get("mensajesError");
+			this.setActionErrors(msjsError);
+			SessionManager.delete("mensajesError");
 		} catch(Exception e) {
 			ErrorManager.agregaMensajeError(this, e);
 			resultado = "anterior";
@@ -93,10 +144,285 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 		return resultado; 
 	}
 	
+	public String prepararConfiguracionError() {
+		String resultado;
+		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			casoUso = SessionManager.consultarCasoUsoActivo();
+			System.out.println("despues de consultas");
+
+			if (casoUso == null) {
+				resultado = "cu";
+				return resultado;
+			}
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(modulo.getProyecto(), colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+			//Se generan los valores
+			Set<ReglaNegocio> reglas = new HashSet<ReglaNegocio>(0);
+			for(CasoUsoReglaNegocio curn : casoUso.getReglas()) {
+				reglas.add(curn.getReglaNegocio());
+			}
+			System.out.println("despues de validaciones");
+			//CuPruebasBs.generarValores(casoUso.getEntradas(), reglas); //Descomentar
+			
+			
+			//Se arman los json con los campos que se mostrarán en pantalla
+			if(jsonEntradas == null || jsonEntradas.isEmpty()) {
+				obtenerJsonCamposEntradas(casoUso);
+			}
+			System.out.println("despues de obtenerJsonCamposEntradas");
+			
+			if(jsonAcciones == null || jsonAcciones.isEmpty()) {
+				obtenerJsonCamposAcciones(casoUso);
+			}
+			System.out.println("despues de obtenerJsonCamposAcciones");
+			
+			if(jsonReferenciasReglasNegocio == null || jsonReferenciasReglasNegocio.isEmpty()) {
+				obtenerJsonCamposReglasNegocio(casoUso);
+			}
+			System.out.println("despues de obtenerJsonCamposReglasNegocio");
+			
+			if(jsonReferenciasParametrosMensaje == null || jsonReferenciasParametrosMensaje.isEmpty()) {
+				obtenerJsonCamposParametrosMensaje(casoUso);
+			}
+			System.out.println("despues de obtenerJsonCamposParametrosMensaje");
+			
+			if(jsonPantallas == null || jsonPantallas.isEmpty()) {
+				obtenerJsonCamposPantallas(casoUso);
+			}
+			System.out.println("despues de obtenerJsonCamposPantallas");
+			
+			System.out.println("entradas: " + jsonEntradas);
+			System.out.println("acciones: " + jsonAcciones);
+			System.out.println("rn: " + jsonReferenciasReglasNegocio);
+			System.out.println("msj: " + jsonReferenciasParametrosMensaje);
+			System.out.println("pantllas :" + jsonPantallas);
+			
+			resultado = "pantallaConfiguracionCasoUso";
+			
+			@SuppressWarnings("unchecked")
+			Collection<String> msjs = (Collection<String>) SessionManager
+					.get("mensajesAccion");
+			this.setActionMessages(msjs);
+			SessionManager.delete("mensajesAccion");
+			
+			@SuppressWarnings("unchecked")
+			Collection<String> msjsError = (Collection<String>) SessionManager
+					.get("mensajesError");
+			this.setActionErrors(msjsError);
+			SessionManager.delete("mensajesError");
+		} catch(Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = "anterior";
+		}
+		
+		return resultado; 
+	}
+	
+	public String configurar() {
+		String resultado;
+		try {
+			System.out.println("json recibidos");
+			System.out.println("entradas: " + jsonEntradas);
+			System.out.println("acciones: " + jsonAcciones);
+			System.out.println("rn: " + jsonReferenciasReglasNegocio);
+			System.out.println("msj: " + jsonReferenciasParametrosMensaje);
+			System.out.println("pantllas :" + jsonPantallas);
+			
+			modificarEntradas();
+			modificarAcciones();
+			modificarReferenciasReglasNegocio();
+			modificarReferenciasParametrosMensaje();
+			modificarPantallas();
+			
+			casoUso = SessionManager.consultarCasoUsoActivo();
+
+			if (casoUso == null) {
+				resultado = "cu";
+				throw new Exception();
+			}
+			CuBs.configurarCasoUso(casoUso);
+			
+			//GeneradorPruebasBs.generarCasosPrueba(casoUso);
+			
+			resultado = "cu";
+			addActionMessage(getText("MSG1", new String[] { "La", "Prueba",
+			"generada" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
+			resultado = prepararConfiguracionError();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
+			resultado = "cu";
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
+			resultado = "cu";
+		}
+		return resultado;
+	}
+
+	private void modificarEntradas() throws Exception {
+		if (jsonEntradas != null && !jsonEntradas.equals("")) {
+			List<Entrada> entradasVista = JsonUtil.mapJSONToArrayList(this.jsonEntradas, Entrada.class);
+			
+			for(Entrada entradaVista : entradasVista) {
+				Entrada entradaBD = EntradaBs.consultarEntrada(entradaVista.getId());
+				entradaBD.setNombreHTML(entradaVista.getNombreHTML());
+				
+				Set<ValorEntrada> valores = new HashSet<ValorEntrada>(0);
+				
+				
+				
+				for(ValorEntrada veVista : entradaVista.getValores()) {
+					ValorEntrada veBD = ValorEntradaBs.consultarValor(veVista.getId());
+					if(veBD != null) {
+						veBD.setValor(veVista.getValor());
+						valores.add(veBD);
+					} else {
+						veVista.setId(null);
+						veVista.setValido(true);
+						veVista.setEntrada(entradaBD);
+						veVista.setReglaNegocio(null);
+						valores.add(veVista);
+					}
+					
+					//Se agregan los valores que ya tenía asociada la entrada
+					for(ValorEntrada valor : entradaBD.getValores()) {
+						if(veBD != null && valor.getId() != veBD.getId()) {
+							valores.add(valor);
+						}
+					}
+					break;
+				}
+				
+				
+				
+				entradaBD.setValores(valores);
+
+				EntradaBs.modificarEntrada(entradaBD);
+			}
+			
+		}
+		
+		
+		
+	}
+	
+	private void modificarAcciones() throws Exception {
+		if(jsonAcciones != null && !jsonAcciones.equals("")) {
+			List<Accion> accionesVista = JsonUtil.mapJSONToArrayList(this.jsonAcciones, Accion.class);
+			for(Accion accionVista : accionesVista) {
+				Accion accionBD = AccionBs.consultarAccion(accionVista.getId());
+				accionBD.setMetodo(accionVista.getMetodo());
+				accionBD.setUrlDestino(accionVista.getUrlDestino());
+				AccionBs.modificarAccion(accionBD);
+			}
+		}
+		
+	}
+	
+	private void modificarReferenciasReglasNegocio() throws Exception {
+		if(jsonReferenciasReglasNegocio != null && !jsonReferenciasReglasNegocio.equals("")) {
+			List<ReferenciaParametro> referenciasVista = JsonUtil.mapJSONToArrayList(this.jsonReferenciasReglasNegocio, ReferenciaParametro.class);
+			for(ReferenciaParametro referenciaVista : referenciasVista) {
+				ReferenciaParametro referenciaBD = ReferenciaParametroBs.consultarReferenciaParametro(referenciaVista.getId());
+				
+				Set<Query> queriesVista = referenciaVista.getQueries();
+				Set<Query> queries = new HashSet<Query>(0);
+				for(Query queryVista : queriesVista) {
+					Query queryBD = QueryBs.consultarQuery(queryVista.getId());
+					if(queryBD != null) {
+						queryBD.setQuery(queryVista.getQuery());
+						queries.add(queryBD);
+					} else {
+						queryVista.setReferenciaParametro(referenciaBD);
+						queryVista.setId(null);
+						queries.add(queryVista);
+					}
+				}
+				referenciaBD.getQueries().clear();
+				referenciaBD.getQueries().addAll(queries);
+				
+				ReferenciaParametroBs.modificarReferenciaParametro(referenciaBD);
+			}
+		}
+	}
+	
+	private void modificarReferenciasParametrosMensaje() throws Exception {
+		System.out.println("jsonReferenciasParametrosMensaje: " + jsonReferenciasParametrosMensaje); 
+		if(jsonReferenciasParametrosMensaje != null && !jsonReferenciasParametrosMensaje.equals("")) {
+			List<ReferenciaParametro> referenciasVista = JsonUtil.mapJSONToListWithSubtypes(this.jsonReferenciasParametrosMensaje, ReferenciaParametro.class);
+			System.out.println("reconvertido" + JsonUtil.mapListToJSON(referenciasVista));;
+			for(ReferenciaParametro referenciaVista : referenciasVista) {
+				ReferenciaParametro referenciaBD = ReferenciaParametroBs.consultarReferenciaParametro(referenciaVista.getId());
+				
+				Set<ValorMensajeParametro> valoresVista = referenciaVista.getValoresMensajeParametro();
+				Set<ValorMensajeParametro> valores = new HashSet<ValorMensajeParametro>(0);
+				
+				for(ValorMensajeParametro valorVista : valoresVista) {
+					ValorMensajeParametro valorBD = ValorMensajeParametroBs.consultarValor(valorVista.getId());
+					
+					MensajeParametro mensajeParametroBD = MensajeParametroBs.consultarMensajeParametro(valorVista.getMensajeParametro().getId());
+					
+					
+					
+					if(valorBD != null) {
+						valorBD.setValor(valorVista.getValor());
+						valores.add(valorBD);
+					} else {
+						valorVista.setId(null);
+						valorVista.setReferenciaParametro(referenciaBD);
+						valorVista.setMensajeParametro(mensajeParametroBD);
+						valores.add(valorVista);
+					}
+				}
+				referenciaBD.getValoresMensajeParametro().clear();
+				referenciaBD.getValoresMensajeParametro().addAll(valores);
+				
+				ReferenciaParametroBs.modificarReferenciaParametro(referenciaBD);
+			}
+		}
+		
+	}
+	
+	private void modificarPantallas() throws Exception {
+		if(jsonPantallas != null && !jsonPantallas.equals("")) {
+			List<Pantalla> pantallasVista = JsonUtil.mapJSONToArrayList(jsonPantallas, Pantalla.class);
+			for(Pantalla pantallaVista : pantallasVista) {
+				Pantalla pantallaBD = PantallaBs.consultarPantalla(pantallaVista.getId());
+				pantallaBD.setPatron(pantallaVista.getPatron());
+				PantallaBs.modificarPantalla(pantallaBD);
+			}
+		}
+		
+	}
+	
 	private void obtenerJsonCamposPantallas(CasoUso casoUso2) {
-		Set<Pantalla> pantallasAux = new HashSet<Pantalla>(0);
+		Set<Pantalla> pantallasAuxTrayectorias = new HashSet<Pantalla>(0);
 		for(Trayectoria trayectoria : casoUso.getTrayectorias()) {
-			pantallasAux.addAll(CuPruebasBs.obtenerPantallas(trayectoria));
+			pantallasAuxTrayectorias.addAll(CuPruebasBs.obtenerPantallas(trayectoria));
+			
+		}
+		
+		Set<Pantalla> pantallasAux = new HashSet<Pantalla>(0);
+		Set<Integer> identificadores = new HashSet<Integer>(0);
+		for(Pantalla pantalla : pantallasAuxTrayectorias) {
+			if(!identificadores.contains(pantalla.getId())) {
+				pantallasAux.add(pantalla);
+				identificadores.add(pantalla.getId());
+			}
 		}
 		
 		
@@ -123,31 +449,69 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 		
 		
 		Set<ReferenciaParametro> referencias = new HashSet<ReferenciaParametro>(0);
+	
+		
 		for(ReferenciaParametro referencia : referenciasParametroAux) {
 			ReferenciaParametro referenciaAux = new ReferenciaParametro();
+			
+			Paso paso = referencia.getPaso();
+			Paso pasoAux = new Paso();
+			pasoAux.setRealizaActor(paso.isRealizaActor());
+			pasoAux.setOtroVerbo(paso.getOtroVerbo());
+			pasoAux.setVerbo(paso.getVerbo());
+			pasoAux.setRedaccion(TokenBs.decodificarCadenaSinToken(paso.getRedaccion()));
+			
+			referenciaAux.setPaso(pasoAux);
 			
 			Mensaje mensaje = (Mensaje)referencia.getElementoDestino();
 			Mensaje mensajeAux = new Mensaje();
 			mensajeAux.setId(mensaje.getId());
 			mensajeAux.setClave(mensaje.getClave());
 			mensajeAux.setNumero(mensaje.getNumero());
+			mensajeAux.setNombre(mensaje.getNombre());
+			
+			Set<MensajeParametro> parametrosAux = mensaje.getParametros();
+			Set<MensajeParametro> parametros = new HashSet<MensajeParametro>(0);
+			
+			for(MensajeParametro mensajeParametro : parametrosAux) {
+				MensajeParametro mensajeParametroAux = new MensajeParametro();
+				mensajeParametroAux.setId(mensajeParametro.getId());
+				
+				Parametro parametro = new Parametro();
+				Parametro parametroAux = mensajeParametro.getParametro();
+				
+				parametro.setId(parametroAux.getId());
+				parametro.setNombre(parametroAux.getNombre());
+				
+				mensajeParametroAux.setParametro(parametro);
+				parametros.add(mensajeParametroAux);
+			}
+			
+			mensajeAux.setParametros(parametros);
 			
 			referenciaAux.setId(referencia.getId());
 			referenciaAux.setElementoDestino(mensajeAux);
 			
-			Set<ValorMensajeParametro> vmpsAux = referencia.getValoresMensajeParametro();
+			Set<ValorMensajeParametro> vmpsAux = ValorMensajeParametroBs.consultarValores(referencia);
 			Set<ValorMensajeParametro> vmps = new HashSet<ValorMensajeParametro>(0);
-			for(ValorMensajeParametro vmp : vmpsAux) {
-				ValorMensajeParametro vmpAux = new ValorMensajeParametro();
-				vmpAux.setId(vmp.getId());
-				vmpAux.setValor(vmp.getValor());
-				
-				vmps.add(vmpAux);
+			
+			if(vmpsAux != null) {
+				for(ValorMensajeParametro vmp : vmpsAux) {
+					ValorMensajeParametro vmpAux = new ValorMensajeParametro();
+					vmpAux.setId(vmp.getId());
+					vmpAux.setValor(vmp.getValor());
+					MensajeParametro mensajeParametroConId = new MensajeParametro();
+					mensajeParametroConId.setId(vmp.getMensajeParametro().getId());
+					vmpAux.setMensajeParametro(mensajeParametroConId);
+					vmps.add(vmpAux);
+				}
+				referenciaAux.setValoresMensajeParametro(vmps);
 			}
 			
-			referenciaAux.setValoresMensajeParametro(vmps);
 			
-			
+			/*Set<ValorMensajeParametro> valoresMensajeParametro = new HashSet<ValorMensajeParametro>(0);
+			valoresMensajeParametro.add(new ValorMensajeParametro(null, null, null));
+			referenciaAux.setValoresMensajeParametro(valoresMensajeParametro);*/
 			referencias.add(referenciaAux);
 		}
 		jsonReferenciasParametrosMensaje = JsonUtil.mapSetToJSON(referencias);
@@ -160,11 +524,18 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 			referenciasReglaNegocioAux.addAll(CuPruebasBs.obtenerReferenciasReglasNegocioQuery(trayectoria));
 		}
 		
-		
 		Set<ReferenciaParametro> referencias = new HashSet<ReferenciaParametro>(0);
 		for(ReferenciaParametro referencia : referenciasReglaNegocioAux) {
 			ReferenciaParametro referenciaAux = new ReferenciaParametro();
+
+			Paso paso = referencia.getPaso();
+			Paso pasoAux = new Paso();
+			pasoAux.setRealizaActor(paso.isRealizaActor());
+			pasoAux.setOtroVerbo(paso.getOtroVerbo());
+			pasoAux.setVerbo(paso.getVerbo());
+			pasoAux.setRedaccion(TokenBs.decodificarCadenaSinToken(paso.getRedaccion()));
 			
+			referenciaAux.setPaso(pasoAux);
 			
 			referenciaAux.setId(referencia.getId());
 			
@@ -176,18 +547,24 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 			reglaNegocioAux.setNombre(regla.getNombre());
 			referenciaAux.setElementoDestino(reglaNegocioAux);
 			
-			
-			Set<Query> queriesAux = referencia.getQueries();
+
+			Set<Query> queriesAux = QueryBs.consultarQueries(referencia);
 			Set<Query> queries = new HashSet<Query>(0);
 			
-			for(Query query : queriesAux) {
-				Query queryAux = new Query();
-				queryAux.setId(query.getId());
-				queryAux.setQuery(query.getQuery());
-				
-				queries.add(queryAux);
+			if(queriesAux != null) {
+				for(Query query : queriesAux) {
+					Query queryAux = new Query();
+					queryAux.setId(query.getId());
+					queryAux.setQuery(query.getQuery());
+					ReferenciaParametro referenciaConId = new ReferenciaParametro();
+					referenciaConId.setId(referencia.getId());
+					queryAux.setReferenciaParametro(referenciaConId);
+					
+					queries.add(queryAux);
+				}
+				referenciaAux.setQueries(queries);
 			}
-			referenciaAux.setQueries(queries);
+			
 			referencias.add(referenciaAux);
 		}
 		
@@ -196,17 +573,7 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 		
 	}
 
-	public String configurar() {
-		System.out.println("desde configurar previos");
-		try {
-			CuPruebasBs.generarEscenarios(casoUso.getEntradas(), casoUso.getReglas());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return "cu";
-	}
-
-private void obtenerJsonCamposEntradas(CasoUso previo) throws Exception{
+	private void obtenerJsonCamposEntradas(CasoUso previo) throws Exception{
 		
 		Set<Entrada> entradasAux = previo.getEntradas();
 
@@ -220,13 +587,11 @@ private void obtenerJsonCamposEntradas(CasoUso previo) throws Exception{
 			TerminoGlosario terminoAux = entrada.getTerminoGlosario();
 			
 			if(atributoAux != null) {
-				atributo.setNombre(atributoAux.getNombre());
-				atributo.setId(atributoAux.getId());	
+				atributo.setNombre(atributoAux.getNombre());	
 				entradaAux.setAtributo(atributo);
 			}
 			
 			if(terminoAux != null) {
-				termino.setId(terminoAux.getId());
 				termino.setNombre(terminoAux.getNombre());	
 				entradaAux.setTerminoGlosario(termino);
 			}

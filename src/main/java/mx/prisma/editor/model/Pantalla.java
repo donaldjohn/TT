@@ -86,6 +86,5 @@ public class Pantalla extends Elemento implements java.io.Serializable {
 		this.patron = patron;
 	}
 	
-	
 
 }

@@ -12,6 +12,8 @@ import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.ReferenciaParametro;
 import mx.prisma.util.PRISMAException;
+import mx.prisma.util.PRISMAValidacionException;
+import mx.prisma.util.Validador;
 
 public class AccionBs {
 
@@ -85,7 +87,29 @@ public class AccionBs {
 	}
 
 	private static void validar(Accion accion) {
-		// TODO Auto-generated method stub
+		String valor = accion.getUrlDestino();
+		if (Validador.esNuloOVacio(valor)) {
+			throw new PRISMAValidacionException(
+					"El usuario no ingresó la url destino.", "MSG38", null,
+					"campos");
+		}
+		if (Validador.validaLongitudMaxima(valor, 2000)) {
+			throw new PRISMAValidacionException(
+					"El usuario ingreso una url destino muy larga.", "MSG39",
+					new String[] { "2000", "caracteres", "la Url destino de la Acción " + accion.getNombre() }, "campos");
+		}
+		
+		valor = accion.getMetodo();
+		if (Validador.esNuloOVacio(valor)) {
+			throw new PRISMAValidacionException(
+					"El usuario no ingresó el valor del método.", "MSG38", null,
+					"campos");
+		}
+		if (Validador.validaLongitudMaxima(valor, 10)) {
+			throw new PRISMAValidacionException(
+					"El usuario ingreso un método muy largo.", "MSG39",
+					new String[] { "10", "caracteres", "el Método de la Acción " + accion.getNombre() }, "campos");
+		}
 		
 	}
 

@@ -307,7 +307,7 @@ public class CuBs {
 		return cu;
 	}
 	
-	public static CasoUso consultarCasoUsoTrayLAZY(int id) {
+	/*public static CasoUso consultarCasoUsoTrayLAZY(int id) {
 		CasoUso cu = null;
 		try {
 			cu = new CasoUsoDAO().consultarCasoUsoTrayLAZY(id);
@@ -320,7 +320,7 @@ public class CuBs {
 					new String[] { "El", "caso de uso" });
 		}
 		return cu;
-	}
+	}*/
 
 	public static String consultarAutor(CasoUso cu) {
 		return "Autor";
@@ -949,6 +949,12 @@ public class CuBs {
 			}
 		}
 		return null;
+	}
+
+	public static void configurarCasoUso(CasoUso casoUso) throws Exception {
+		casoUso.setEstadoElemento(ElementoBs
+				.consultarEstadoElemento(Estado.CONFIGURADO));
+		new CasoUsoDAO().modificarEstadoCasoUso(casoUso);
 	}
 	
 }

@@ -21,13 +21,26 @@ function agregarCamposEntradasSeccion() {
 		$.each(
 				parsedJson,
 				function(i, item) {
-					inputEtiqueta = "<input type='text' class='ui-widget' id='input-etiqueta-entrada-" + item.id  + "' value='" + item.nombreHTML + "'>";
-					inputValor = "<input type='text' class='ui-widget' id='input-valor-entrada-" + item.id  + "' value='" + item.valores[0].valor + "'>";
+					if(item.valores[0] != null) {
+						valor = item.valores[0].valor;
+						idValor = item.valores[0].id;
+					} else {
+						valor = "";
+						idValor = 0;
+					}
+					
+					inputEtiqueta = "<input type='text' class='ui-widget' id='input-etiqueta-entrada-" + item.id  + "' value='" + nullToEmpty(item.nombreHTML) + "'>";
+					inputValor = "<input type='text' class='ui-widget' id='input-valor-entrada-" + item.id  + "' value='" + valor + "'>";
+					var labelEntrada = "";
+					nombreAtributo = null;
+					nombreTermino = null;
 					if(item.atributo != null) {
 						labelEntrada = item.atributo.nombre;
+						nombreAtributo = item.atributo.nombre;
 					}
 					if(item.terminoGlosario != null) {
 						labelEntrada = item.terminoGlosario.nombre;
+						nombreTermino = item.terminoGlosario.nombre;
 					}
 					 
 					$("#tablaEntradas").append("<tr>"
@@ -35,7 +48,10 @@ function agregarCamposEntradasSeccion() {
 									+ "<td>" + inputEtiqueta + "</td>"
 									+ "<td>" + inputValor + "</td>"
 									+ "<td class='hide'>" + item.id + "</td>"
-									+ "<td class='hide'>" + item.valores[0].id + "</td>"
+									+ "<td class='hide'>" + idValor + "</td>"
+									+ "<td class='hide'>" + item.nombreHTML + "</td>"
+									+ "<td class='hide'>" + nombreAtributo + "</td>"
+									+ "<td class='hide'>" + nombreTermino + "</td>"
 								+"</tr>"); 
 					
 		});
@@ -44,6 +60,7 @@ function agregarCamposEntradasSeccion() {
 		$("#formularioEntradas").hide();
 	}
 }
+
 
 function agregarCamposAccionesSeccion() {
 	var json = document.getElementById("jsonAcciones").value;
@@ -54,9 +71,10 @@ function agregarCamposAccionesSeccion() {
 		$.each(
 				parsedJson,
 				function(i, item) {
-					idTablaPantalla =  item.pantalla.id;
+					var idTablaPantalla =  item.pantalla.id;
 					
-					if (typeof tablaPantalla == 'undefined') {
+					tablaPantalla = $("#tabla-acciones-" + idTablaPantalla);
+					if (tablaPantalla.size() == 0) {
 						$("#seccionURL").append("<div class='subtituloFormulario'>Pantalla " + item.pantalla.clave + item.pantalla.numero + " " + item.pantalla.nombre +"</div>");
 						$("#seccionURL").append("<table id='tabla-acciones-" + idTablaPantalla + "'> <!--  --> </table>");
 						
@@ -65,19 +83,30 @@ function agregarCamposAccionesSeccion() {
 								+ "<td class='ui-widget'><center>URL</center></td>"
 								+ "<td class='ui-widget'><center>Método</center></td>"
 							+"</tr>");
+						$("#seccionURL").append("</br>");
 						
 					} 
 
-					inputURL = "<input type='text' class='inputFormulario ui-widget' id='input-url-accion-" + item.id  + "' value='" + item.urlDestino + "'>";
-					inputMetodo = "<input type='text' class=' ui-widget' id='input-metodo-accion-" + item.id  + "' value='" + item.metodo + "'>";
+					inputURL = "<input type='text' class='inputFormulario ui-widget' id='input-url-accion-" + item.id  + "' value='" + nullToEmpty(item.urlDestino) + "'>";
+					inputMetodo = "<input type='text' class=' ui-widget' id='input-metodo-accion-" + item.id  + "' value='" + nullToEmpty(item.metodo) + "'>";
 					
 					label = item.tipoAccion.nombre + " " + item.nombre;
+					
+					clavePantallaDestino = item.pantallaDestino.clave;
+					numeroPantallaDestino = item.pantallaDestino.numero;
+					nombrePantallaDestino = item.pantallaDestino.nombre;
+					pantallaDestino = clavePantallaDestino + numeroPantallaDestino + " " + nombrePantallaDestino;
 					
 					$("#tabla-acciones-" + idTablaPantalla).append("<tr>"
 							+ "<td class='label obligatorio'>" + label + "</td>"
 							+ "<td>" + inputURL + "</td>"
 							+ "<td>" + inputMetodo + "</td>"
 							+ "<td class='hide'>" + item.id + "</td>"
+							+ "<td class='hide'>" + item.nombre + "</td>"
+							+ "<td class='hide'>" + clavePantallaDestino + "</td>"
+							+ "<td class='hide'>" + numeroPantallaDestino + "</td>"
+							+ "<td class='hide'>" + nombrePantallaDestino + "</td>"
+							+ "<td class='textoAyuda'>Dirige a la pantalla " + pantallaDestino + "</td>"
 						+"</tr>");
 
 		});
@@ -111,10 +140,24 @@ function tablaEntradasToJson() {
 	    var valor = tabla.rows[i].cells[2].childNodes[0].value;
 	    var id = tabla.rows[i].cells[3].innerHTML;
 	    var idValor = tabla.rows[i].cells[4].innerHTML;
+	    var nombreHTML = tabla.rows[i].cells[5].innerHTML;
+		var nombreAtributo = tabla.rows[i].cells[6].innerHTML;
+		var nombreTermino = tabla.rows[i].cells[7].innerHTML;
+	    
+		var atributo = null;
+		var termino = null;
+		
+		if(nombreAtributo != "null") {
+			atributo = new Atributo(nombreAtributo);
+		}
+		
+		if(nombreTermino != "null") {
+			termino = new TerminoGlosario(nombreTermino);
+		}
 	    
 	    var valoresEntrada = [];
 	    valoresEntrada.push(new ValorEntrada(valor, true, idValor)); 
-	    arregloEntradas.push(new Entrada(id, etiqueta, valoresEntrada));
+	    arregloEntradas.push(new Entrada(id, etiqueta, valoresEntrada, atributo, termino));
 	}
 
 	
@@ -136,15 +179,16 @@ function tablaAccionesToJson() {
 		var nRegistros = tabla.rows.length;
 		
 		for (var i = 1; i < nRegistros; i++) {
-		    var url = tabla.rows[i].cells[1].childNodes[0].value;
+			var url = tabla.rows[i].cells[1].childNodes[0].value;
 		    var metodo = tabla.rows[i].cells[2].childNodes[0].value;
 		    var id = tabla.rows[i].cells[3].innerHTML;
+		    var nombreAccion = tabla.rows[i].cells[4].innerHTML;
+		    var clavePantalla = tabla.rows[i].cells[5].innerHTML;
+		    var numeroPantalla = tabla.rows[i].cells[6].innerHTML;
+		    var nombrePantalla = tabla.rows[i].cells[7].innerHTML;
 		    
-		    console.log("url: " + url);
-		    console.log("metodo: " + metodo);
-		    console.log("id: " + id);
-	 
-		    arregloAcciones.push(new Accion(null, null, null, null, null, id, url, metodo));
+		    var pantallaDestino = new Pantalla(null, numeroPantalla, nombrePantalla, clavePantalla);
+		    arregloAcciones.push(new Accion(nombreAccion, null, null, null, pantallaDestino, id, url, metodo));
 		}
 	});
 	
@@ -164,3 +208,10 @@ function agregarEspacios(cadenaSinEsp) {
 	return cadenaSinEsp.replace(/_/g, " ");
 }
 
+function nullToEmpty (cadena) {
+	if(cadena == null) {
+		return "";
+	} else {
+		return cadena;
+	}
+}

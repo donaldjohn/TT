@@ -147,6 +147,18 @@ public class CasoUsoDAO extends ElementoDAO {
 		}	
 	}
 	
+	public void modificarEstadoCasoUso(CasoUso casodeuso) {
+		try {
+			session.beginTransaction();			
+			session.update(casodeuso);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}	
+	}
+	
 	
 
 	public void registrarCasoUso(CasoUso casodeuso) {

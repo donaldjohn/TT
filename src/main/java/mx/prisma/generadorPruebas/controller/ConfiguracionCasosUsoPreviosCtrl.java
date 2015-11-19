@@ -1,14 +1,18 @@
 package mx.prisma.generadorPruebas.controller;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AccessBs;
+import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
 import mx.prisma.editor.bs.AccionBs;
 import mx.prisma.editor.bs.CuBs;
+import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.EntradaBs;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Atributo;
@@ -19,6 +23,7 @@ import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.editor.bs.CuBs;
+import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.generadorPruebas.bs.CuPruebasBs;
 import mx.prisma.generadorPruebas.bs.ValorEntradaBs;
 import mx.prisma.generadorPruebas.model.ValorEntrada;
@@ -34,12 +39,15 @@ import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 
 import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 
 @ResultPath("/content/generadorPruebas/")
 @Results({
 	@Result(name = "pantallaConfiguracionCasosUsoPrevios", type = "dispatcher", location = "configuracion/casosUsoPrevios.jsp"),
 	@Result(name = "pantallaConfiguracionCasoUsoPrevio", type = "dispatcher", location = "configuracion/casoUsoPrevio.jsp"),
+	@Result(name = "cu", type = "redirectAction", params = {
+			"actionName", "cu" }),
 	@Result(name = "siguiente", type = "redirectAction", params = {
 			"actionName", "configuracion-caso-uso!prepararConfiguracion"})})
 public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
@@ -57,7 +65,8 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 	private Integer idCUPrevio;
 	private String jsonEntradas;
 	private String jsonAcciones;
-	
+	private Set<Entrada> entradas;
+	private Set<Accion> acciones;
 	
 	public String prepararConfiguracion() throws Exception {
 		String resultado;
@@ -81,15 +90,57 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 		}
 		
 		listCU = CuBs.obtenerCaminoPrevioMasCorto(casoUso);
+		SessionManager.set(listCU, "casosUsoPrevios");
 		
 		if(listCU == null) {
 			return "siguiente";
 		}
 		
+		@SuppressWarnings("unchecked")
+		Collection<String> msjs = (Collection<String>) SessionManager
+				.get("mensajesAccion");
+		this.setActionMessages(msjs);
+		SessionManager.delete("mensajesAccion");
+		
+		@SuppressWarnings("unchecked")
+		Collection<String> msjsError = (Collection<String>) SessionManager
+				.get("mensajesError");
+		this.setActionErrors(msjsError);
+		SessionManager.delete("mensajesError");
 		return "pantallaConfiguracionCasosUsoPrevios"; 
 	}
 	
+	public String configurar() {
+		System.out.println("desde configurar previos");
+		String resultado;
+		
+		try {
+			listCU = (List<CasoUso>) SessionManager.get("casosUsoPrevios");
+			SessionManager.delete("casosUsoPrevios");
+			for(CasoUso cu : listCU) {
+				if (cu.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.CONFIGURADO)){
+					throw new PRISMAValidacionException("Falta configurar un caso de uso.", "MSG37");
+				}
+			}
+			resultado = "siguiente";
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
+			resultado = "pantallaConfiguracionCasosUsoPrevios";
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
+			resultado = "cu";
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
+			resultado = "cu";
+		}
+		return resultado;
+	}
+	
 	public String prepararConfiguracionCasoUso() {
+		Map<String, Object> session = null;
 		String resultado;
 		try {
 			colaborador = SessionManager.consultarColaboradorActivo();
@@ -110,14 +161,27 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 				return resultado;
 			}
 			
-			previo = CuBs.consultarCasoUso(idCUPrevio);
 			
-			System.out.println("1");
+			previo = SessionManager.consultarCasoUsoPrevio();
+			System.out.println("despues de consulta cu");
+			
+			if (previo == null) {
+				session = ActionContext.getContext().getSession();
+				session.put("idPrevio", idCUPrevio);
+				previo = SessionManager.consultarCasoUsoActivo();
+			}
+
 			obtenerJsonCamposEntradas(previo);
-			System.out.println("2");
 			obtenerJsonCamposAcciones(previo);
+			
+			@SuppressWarnings("unchecked")
+			Collection<String> msjsError = (Collection<String>) SessionManager
+					.get("mensajesError");
+			this.setActionErrors(msjsError);
+			SessionManager.delete("mensajesError");
 		} catch (Exception e) {
 			ErrorManager.agregaMensajeError(this, e);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
 			resultado = "pantallaConfiguracionCasosUsoPrevios";
 		}
 		
@@ -128,21 +192,29 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 	public String configurarCasoUso() throws Exception {
 		String resultado;
 		try {
-			System.out.println("jsonEntradas: " + this.jsonEntradas);
-			System.out.println("jsonAcciones: " + this.jsonAcciones);
 			
 			modificarEntradas();
 			modificarAcciones();
 			
-			resultado = "siguiente";
+			previo = SessionManager.consultarCasoUsoPrevio();
+			CuBs.configurarCasoUso(previo);
+			
+			
+			addActionMessage(getText("MSG1", new String[] { "La", "Configuración del caso de uso",
+			"registrada" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+			return prepararConfiguracion();
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
 			resultado = prepararConfiguracionCasoUso();
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
 			resultado = "cu";
 		} catch (Exception e) {
 			ErrorManager.agregaMensajeError(this, e);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
 			resultado = "cu";
 		}
 		
@@ -162,21 +234,20 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 				
 				
 				for(ValorEntrada veVista : entradaVista.getValores()) {
-					System.out.println("valorEntrada: " + veVista);
 					ValorEntrada veBD = ValorEntradaBs.consultarValor(veVista.getId());
 					if(veBD != null) {
 						veBD.setValor(veVista.getValor());
 						valores.add(veBD);
 					} else {
+						veVista.setId(null);
 						veVista.setValido(true);
 						veVista.setEntrada(entradaBD);
 						veVista.setReglaNegocio(null);
 						valores.add(veVista);
 					}
 					
-					
-					Entrada entrada = EntradaBs.consultarEntrada(entradaVista.getId());
-					for(ValorEntrada valor : entrada.getValores()) {
+
+					for(ValorEntrada valor : entradaBD.getValores()) {
 						if(veBD != null && valor.getId() != veBD.getId()) {
 							valores.add(valor);
 						}
@@ -224,13 +295,11 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 			TerminoGlosario terminoAux = entrada.getTerminoGlosario();
 			
 			if(atributoAux != null) {
-				atributo.setNombre(atributoAux.getNombre());
-				atributo.setId(atributoAux.getId());	
+				atributo.setNombre(atributoAux.getNombre());	
 				entradaAux.setAtributo(atributo);
 			}
 			
 			if(terminoAux != null) {
-				termino.setId(terminoAux.getId());
 				termino.setNombre(terminoAux.getNombre());	
 				entradaAux.setTerminoGlosario(termino);
 			}
@@ -251,7 +320,7 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 			entradas.add(entradaAux);
 			
 		} 
-		
+		this.entradas = entradas;
 		jsonEntradas = JsonUtil.mapSetToJSON(entradas);
 		
 
@@ -291,12 +360,6 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 			}
 			jsonAcciones = JsonUtil.mapSetToJSON(acciones);
 		}
-	}
-
-	public String configurar() {
-		System.out.println("desde configurar previos");
-		
-		return "siguiente";
 	}
 
 	public List<CasoUso> getListCU() {
@@ -378,7 +441,23 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 	public void setPrevio(CasoUso previo) {
 		this.previo = previo;
 	}
-	
+
+	public Set<Entrada> getEntradas() {
+		return entradas;
+	}
+
+	public void setEntradas(Set<Entrada> entradas) {
+		this.entradas = entradas;
+	}
+
+	public Set<Accion> getAcciones() {
+		return acciones;
+	}
+
+	public void setAcciones(Set<Accion> acciones) {
+		this.acciones = acciones;
+	}
+
 	
 	
 }

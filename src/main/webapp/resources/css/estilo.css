@@ -180,7 +180,6 @@ p.main {
 .subtituloFormulario {
 	position: relative;
 	top: 10px;
-	left: 10px;
 	font-size: 13px;
 	width: 80%;
 	color: #4d4d4d;
@@ -358,6 +357,7 @@ textfield {
 }
 
 .hide {
+	display: none;
 	visibility: hidden;
 }
 

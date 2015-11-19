@@ -2,17 +2,20 @@ package mx.prisma.util;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import mx.prisma.editor.model.Elemento;
+import mx.prisma.editor.model.ReferenciaParametro;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
+
+
 
 /**
  * Clase que representa las herramientas JSON
@@ -26,7 +29,7 @@ public class JsonUtil {
 
 
 	private static ObjectMapper mapper = new ObjectMapper();
-
+	private static com.fasterxml.jackson.databind.ObjectMapper mapper2 = new com.fasterxml.jackson.databind.ObjectMapper();
 	/**
 	 * Constructor privado que oculta el por defecto
 	 */
@@ -66,6 +69,25 @@ public class JsonUtil {
 			return null;
 		}
 	}
+	
+	/**
+	 * Convierte una cadena en formato JSON a una lista de objetos
+	 * 
+	 * @param json
+	 * @param obj
+	 * @return List<T>
+	 */
+	public static <C> List<C> mapJSONToListWithSubtypes(String json, Class<C> clazz) {
+		try {
+			JavaType type = mapper2.getTypeFactory().
+					  constructCollectionType(List.class, clazz);
+			return mapper2.readValue(json, type);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
 
 	/**
 	 * Convierte una cadena en formatoJSON a un objeto

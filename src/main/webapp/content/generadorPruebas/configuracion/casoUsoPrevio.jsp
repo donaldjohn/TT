@@ -20,10 +20,12 @@
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
+	<s:fielderror fieldName ="campos" cssClass="error" theme="jquery" />
 	<br />
 
 	<s:form autocomplete="off" id="frmCasoUso" theme="simple"
 		action="%{#pageContext.request.contextPath}/configuracion-casos-uso-previos!configurarCasoUso" method="post" onsubmit="return prepararEnvio();">
+		
 		
 		<div class="formulario" id="formularioEntradas">
 			<div class="tituloFormulario">Configuración de las Entradas</div>
@@ -34,8 +36,6 @@
 				</table>
 			</div>
 		</div>
-		<br />
-		
 		<div class="formulario" id="formularioAcciones">
 			<div class="tituloFormulario">Configuración de las URL</div>
 			<p class="instrucciones">Ingrese la URL destino de cada una de las Acciones.</p>

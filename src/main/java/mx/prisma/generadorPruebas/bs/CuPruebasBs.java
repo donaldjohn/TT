@@ -100,36 +100,46 @@ public class CuPruebasBs {
 		return valoresValidos;
 	}
 
-	private static void generarValores(Set<Entrada> entradas,
+	public static void generarValores(Set<Entrada> entradas,
 			Set<ReglaNegocio> reglasNegocio) throws Exception {
 		for(ReglaNegocio reglaNegocio: reglasNegocio) {
-			System.out.println("RN: " + reglaNegocio.getTipoReglaNegocio().getNombre() + ", " + reglaNegocio.getNombre());
 				for(Entrada entrada : entradas) {
-					System.out.println("Entrada: " + entrada.getAtributo().getNombre());
+					if(entrada.getAtributo() != null) {
 
-					ValorEntrada valorInvalido = null;
-					
-					if(!ReglaNegocioBs.esGlobal(reglaNegocio.getTipoReglaNegocio())) {
-						if(entradaPerteneceReglaNegocio(entrada, reglaNegocio)) {
-							valorInvalido = generarValor(entrada, reglaNegocio, reglasNegocio, false);
+						ValorEntrada valorInvalido = null;
+						
+						valorInvalido = ValorEntradaBs.consultarValorInvalido(reglaNegocio, entrada);
+						if(valorInvalido == null) {
+							if(!ReglaNegocioBs.esGlobal(reglaNegocio.getTipoReglaNegocio())) {
+								if(entradaPerteneceReglaNegocio(entrada, reglaNegocio)) {
+									valorInvalido = generarValor(entrada, reglaNegocio, reglasNegocio, false);
+								}
+							} else {
+								valorInvalido = generarValor(entrada, reglaNegocio, reglasNegocio, false);
+							}
+							if(valorInvalido != null) {
+								ValorEntradaBs.registrarValorEntrada(valorInvalido);
+							}
 						}
-					} else {
-						valorInvalido = generarValor(entrada, reglaNegocio, reglasNegocio, false);
-					}
-					if(valorInvalido != null) {
-						ValorEntradaBs.registrarValorEntrada(valorInvalido);
-						System.out.println("Valor:" + valorInvalido.getValor());
-					}
+					} 
+					
 				}
 		}
 		
 		for(Entrada entrada : entradas) {
-			System.out.println("Entrada valida: " + entrada.getAtributo().getNombre());
-
-			ValorEntrada valorValido = generarValor(entrada, null, reglasNegocio, true);
-			if(valorValido != null) {
-				ValorEntradaBs.registrarValorEntrada(valorValido);
-				System.out.println("Valor:" + valorValido.getValor());
+			ValorEntrada valorValido = null;
+			valorValido = ValorEntradaBs.consultarValorValido(entrada);
+			if(valorValido == null) {
+				if(entrada.getAtributo() != null) {
+		
+					valorValido = generarValor(entrada, null, reglasNegocio, true);
+					if(valorValido != null) {
+						ValorEntradaBs.registrarValorEntrada(valorValido);
+					}
+				} else if(entrada.getTerminoGlosario() != null) {
+					valorValido = new ValorEntrada(entrada, null, "1", true);
+					ValorEntradaBs.registrarValorEntrada(valorValido);
+				}
 			}
 		}
 	}
@@ -187,9 +197,9 @@ public class CuPruebasBs {
 					}
 					valorCadena = "a";
 					break;
-				case FORMATOCAMPO:
+				/*case FORMATOCAMPO:
 					valorCadena = GeneradorCadenasUtil.generarCadenaAleatoria(4, true) + "xX01_ ?";
-					break;
+					break;*/
 				case LONGITUD:
 					if(TipoDatoEnum.getTipoDato(atributo.getTipoDato()).equals(TipoDatoEnum.tipoDato.BOOLEANO) 
 							|| TipoDatoEnum.getTipoDato(atributo.getTipoDato()).equals(TipoDatoEnum.tipoDato.FECHA)) {
@@ -213,7 +223,7 @@ public class CuPruebasBs {
 					}
 					break;
 				default:
-					break;
+					return null;
 			}
 		}
 		
@@ -313,7 +323,7 @@ public class CuPruebasBs {
 			Trayectoria trayectoria) {
 		Set<Accion> acciones = new HashSet<Accion>(0);
 		for(Paso paso : trayectoria.getPasos()) {
-			if(AnalizadorPasosBs.isActorOprimeBoton(paso)) {
+			if(AnalizadorPasosBs.isActorOprimeBoton(paso)) {				
 				Accion accion = AnalizadorPasosBs.obtenerPrimerReferencia(paso, TipoReferencia.ACCION).getAccionDestino();
 				acciones.add(accion);
 			}

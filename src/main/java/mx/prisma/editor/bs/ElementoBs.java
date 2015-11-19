@@ -22,9 +22,10 @@ public class ElementoBs {
 	private final static int ID_PENDIENTECORRECCION = 3;
 	private final static int ID_PORLIBERAR = 4;
 	private final static int ID_LIBERADO = 5;
+	private final static int ID_CONFIGURADO = 6;
 	
 	public enum Estado {
-	    EDICION, REVISION, PENDIENTECORRECCION, PORLIBERAR, LIBERADO
+	    EDICION, REVISION, PENDIENTECORRECCION, PORLIBERAR, LIBERADO, CONFIGURADO
 	}
 	
 	public static EstadoElemento consultarEstadoElemento(Estado estado) throws Exception{
@@ -45,6 +46,8 @@ public class ElementoBs {
 		case REVISION:
 			estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(ID_REVISION);
 			break;
+		case CONFIGURADO:
+			estadoElemento = new EstadoElementoDAO().consultarEstadoElemento(ID_CONFIGURADO);
 		default:
 			break;
 		}
@@ -66,6 +69,8 @@ public class ElementoBs {
 			return ID_PORLIBERAR;
 		case REVISION:
 			return ID_REVISION;
+		case CONFIGURADO:
+			return ID_CONFIGURADO;
 		default:
 			return 0;
 		}
@@ -95,6 +100,11 @@ public class ElementoBs {
 			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION) && elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.PENDIENTECORRECCION)) {
 				throw new PRISMAException("El estado del caso de uso es inválido.", "MSG13");
 		}
+			break;
+		case CONFIGURARPRUEBA5_7:
+			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.LIBERADO) && elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.CONFIGURADO)) {
+				throw new PRISMAException("El estado del caso de uso es inválido.", "MSG13");
+			}
 			break;
 		default:
 			break;

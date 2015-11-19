@@ -117,4 +117,17 @@ public class ReferenciaParametroDAO extends GenericDAO {
 		return results;
 	}
 
+	public void modificarReferenciaParametro(ReferenciaParametro referencia) {
+		try {
+			session.beginTransaction();
+			session.saveOrUpdate(referencia);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
+		
+	}
+
 }

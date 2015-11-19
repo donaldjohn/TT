@@ -253,12 +253,13 @@ function tablaToJson(idTable) {
 		var nombre = table.fnGetData(i, 1);
 		var imagenCadena = table.fnGetData(i, 2);
 		var descripcion = table.fnGetData(i, 3);
-		var tipoAccion = table.fnGetData(i, 4);
-		var pantallaDestino = table.fnGetData(i, 5);
+		var idTipoAccion = table.fnGetData(i, 4);
+		var idPantallaDestino = table.fnGetData(i, 5);
 		var id = table.fnGetData(i, 6);
 		
 		var imagen = [];
-		
+		var pantallaDestino = new Pantalla(null, null, null, null, idPantallaDestino);
+		var tipoAccion = new TipoAccion(idTipoAccion);
 		arregloAcciones.push(new Accion(nombre, imagen, descripcion, tipoAccion,
 				pantallaDestino, id));
 		

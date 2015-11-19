@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import mx.prisma.dao.GenericDAO;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entrada;
+import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.generadorPruebas.model.ValorEntrada;
 
 public class ValorEntradaDAO extends GenericDAO {
@@ -113,5 +114,30 @@ public class ValorEntradaDAO extends GenericDAO {
 			throw he;
 		}
 		return valor;
+	}
+
+	public ValorEntrada consultarValorInvalido(ReglaNegocio reglaNegocio,
+			Entrada entrada) {
+		List<ValorEntrada> results = null;
+		try {
+			session.beginTransaction();
+			Query query = session
+					.createQuery("from ValorEntrada where reglaNegocio = :reglaNegocio AND entrada = :entrada AND valido = false");
+			query.setParameter("reglaNegocio", reglaNegocio);
+			query.setParameter("entrada", entrada);
+			results = query.list();
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		
+		if(results == null) {
+			return null;
+		} else if (results.isEmpty()) {
+			return null;
+		} else {
+			return results.get(0);
+		}
 	}
 }

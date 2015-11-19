@@ -41,17 +41,15 @@
 						<td><s:property value="%{#cu.clave + #cu.numero + ' ' +#cu.nombre}"/></td>
 						<td><s:property value="%{#cu.estadoElemento.nombre}"/></td>
 						<td align="center">
-								<s:if test="%{#cu.estadoElemento.id == 1 || #cu.estadoElemento.id == 3}">
-									<!-- Configurar caso de uso -->
-									<s:url var="urlConfigurarCU"
-										value="%{#pageContext.request.contextPath}/configuracion-casos-uso-previos!prepararConfiguracionCasoUso">
-										<s:param name="idCUPrevio" value="%{#cu.id}"></s:param>
-									</s:url>			
-									<s:a href="%{urlConfigurarCU}">
-										<img id="" class="button" title="Configurar Caso de uso"
-												src="${pageContext.request.contextPath}/resources/images/icons/configurar.png" />
-									</s:a>
-								</s:if>
+							<!-- Configurar caso de uso -->
+							<s:url var="urlConfigurarCU"
+								value="%{#pageContext.request.contextPath}/configuracion-casos-uso-previos!prepararConfiguracionCasoUso">
+								<s:param name="idCUPrevio" value="%{#cu.id}"></s:param>
+							</s:url>			
+							<s:a href="%{urlConfigurarCU}">
+								<img id="" class="button" title="Configurar Caso de uso"
+										src="${pageContext.request.contextPath}/resources/images/icons/configurar.png" />
+							</s:a>
 						</td>
 					</tr>
 				</s:iterator>

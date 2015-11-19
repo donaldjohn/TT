@@ -16,8 +16,12 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.opensymphony.xwork2.validator.annotations.IntRangeFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
@@ -31,6 +35,16 @@ import mx.prisma.admin.model.Proyecto;
 @Table(name = "Elemento", catalog = "PRISMA", uniqueConstraints = @UniqueConstraint(columnNames = {
 		"clave", "numero", "nombre", "Proyectoid" }))
 @Inheritance(strategy=InheritanceType.JOINED)
+
+@JsonTypeInfo(
+		  use = JsonTypeInfo.Id.NAME,
+		  include = JsonTypeInfo.As.PROPERTY,
+		  property = "type")
+		@JsonSubTypes({
+		  @Type(value = Mensaje.class, name = "mensaje"),
+		  @Type(value = Pantalla.class, name = "pantalla"),
+		  @Type(value = Pantalla.class, name = "reglaNegocio")
+		})
 public class Elemento implements java.io.Serializable {
 	/**
 	 * 
@@ -43,6 +57,7 @@ public class Elemento implements java.io.Serializable {
 	private Proyecto proyecto;
 	private String descripcion;
 	private EstadoElemento estadoElemento;
+	private String type;
 
 	public Elemento() {
 	}
@@ -134,6 +149,14 @@ public class Elemento implements java.io.Serializable {
 		this.estadoElemento = estadoElemento;
 	}
 
-	
+	@Transient
+	public String getType() {
+		return type;
+	}
 
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	
 }

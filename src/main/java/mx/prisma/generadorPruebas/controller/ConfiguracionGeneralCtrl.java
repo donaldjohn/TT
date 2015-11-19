@@ -1,5 +1,6 @@
 package mx.prisma.generadorPruebas.controller;
 
+import java.util.Collection;
 import java.util.Map;
 
 import mx.prisma.admin.model.Colaborador;
@@ -34,6 +35,8 @@ import com.opensymphony.xwork2.ModelDriven;
 			@Result(name = "modulos", type = "redirectAction", params = {
 					"actionName", "modulos" }),
 			@Result(name = "pantallaConfiguracionGeneral", type = "dispatcher", location = "configuracion/general.jsp"),
+			@Result(name = "ultimoPaso", type = "redirectAction", params = {
+					"actionName", "configuracion-caso-uso!prepararConfiguracion"}),
 			@Result(name = "siguiente", type = "redirectAction", params = {
 					"actionName", "configuracion-casos-uso-previos!prepararConfiguracion"})})
 public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
@@ -46,15 +49,23 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 	private CasoUso casoUso;
 	public String prepararConfiguracion() throws Exception {
 		Map<String, Object> session = null;
-		if (SessionManager.consultarCasoUsoActivo() == null) {
-			session = ActionContext.getContext().getSession();
-			session.put("idCU", idCU);
-		}
+		
 		String resultado;
 		colaborador = SessionManager.consultarColaboradorActivo();
+		System.out.println("despues de consulta colaboador");
 		proyecto = SessionManager.consultarProyectoActivo();
+		System.out.println("despues de consulta proy");
 		modulo = SessionManager.consultarModuloActivo();
+		System.out.println("despues de consulta modulo");
 		casoUso = SessionManager.consultarCasoUsoActivo();
+		System.out.println("despues de consulta cu");
+		
+		if (casoUso == null) {
+			session = ActionContext.getContext().getSession();
+			session.put("idCU", idCU);
+			casoUso = SessionManager.consultarCasoUsoActivo();
+		}
+		
 
 		if (casoUso == null) {
 			resultado = "cu";
@@ -69,7 +80,14 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 			return resultado;
 		}
 		
-		return "pantallaConfiguracionGeneral";
+		@SuppressWarnings("unchecked")
+		Collection<String> msjsError = (Collection<String>) SessionManager
+				.get("mensajesError");
+		this.setActionMessages(msjsError);
+		SessionManager.delete("mensajesError");
+		System.out.println("después de verificaciones y x");
+		return "ultimoPaso";
+		//return "pantallaConfiguracionGeneral";
 	}
 	
 	public String configurar() throws Exception {
@@ -108,14 +126,27 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 			ConfiguracionGeneralBs.modificarConfiguracionGeneral(cbdBD, chttpBD);
 			
 			resultado = "siguiente";
+			
+			addActionMessage(getText("MSG1", new String[] { "La", "Configuración general",
+			"registrada" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+			
+			@SuppressWarnings("unchecked")
+			Collection<String> msjsError = (Collection<String>) SessionManager
+					.get("mensajesError");
+			this.setActionErrors(msjsError);
+			SessionManager.delete("mensajesError");
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
 			resultado = prepararConfiguracion();
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
 			resultado = "cu";
 		} catch (Exception e) {
 			ErrorManager.agregaMensajeError(this, e);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
 			resultado = "cu";
 		}
 		return resultado;

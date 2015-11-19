@@ -181,4 +181,15 @@ public class SessionManager {
 //		System.out.println("pop url: " + urlPrev);
 		return urlPrev;
 	}
+
+	public static CasoUso consultarCasoUsoPrevio() {
+		HttpSession session = ServletActionContext.getRequest().getSession(false); 
+		CasoUso casoUso = null;
+		Integer idCU = null;
+		if (session != null && session.getAttribute("idPrevio") != null) {
+			idCU = (Integer)  session.getAttribute("idPrevio");
+			casoUso = new CasoUsoDAO().consultarCasoUso(idCU);
+		}
+		return casoUso;
+	}
 }

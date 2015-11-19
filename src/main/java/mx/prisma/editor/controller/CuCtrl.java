@@ -137,6 +137,12 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 					.get("mensajesAccion");
 			this.setActionMessages(msjs);
 			SessionManager.delete("mensajesAccion");
+			
+			@SuppressWarnings("unchecked")
+			Collection<String> msjsError = (Collection<String>) SessionManager
+					.get("mensajesError");
+			this.setActionErrors(msjsError);
+			SessionManager.delete("mensajesError");
 
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);

@@ -8,6 +8,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import mx.prisma.admin.model.Proyecto;
 
@@ -15,6 +19,7 @@ import mx.prisma.admin.model.Proyecto;
 @Entity
 @Table(name = "ReglaNegocio", catalog = "PRISMA")
 @PrimaryKeyJoinColumn(name = "Elementoid", referencedColumnName = "id")
+//@JsonTypeName("reglaNegocio")
 public class ReglaNegocio extends Elemento implements java.io.Serializable {
 
 	/**
@@ -152,6 +157,10 @@ public class ReglaNegocio extends Elemento implements java.io.Serializable {
 		this.atributoExpReg = atributoExpReg;
 	}
 
-
+	@JsonIgnore
+	@Transient
+	public String getType() {
+		return "reglaNegocio";
+	}
 
 }

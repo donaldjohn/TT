@@ -12,6 +12,10 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import mx.prisma.admin.model.Proyecto;
 
@@ -21,6 +25,7 @@ import mx.prisma.admin.model.Proyecto;
 @Entity
 @Table(name = "Mensaje", catalog = "PRISMA")
 @PrimaryKeyJoinColumn(name = "Elementoid", referencedColumnName = "id")
+//@JsonTypeName("mensaje")
 public class Mensaje extends Elemento implements java.io.Serializable {
 
 	/**
@@ -67,5 +72,12 @@ public class Mensaje extends Elemento implements java.io.Serializable {
 	public void setParametros(Set<MensajeParametro> parametros) {
 		this.parametros = parametros;
 	}
+	
+	@JsonIgnore
+	@Transient
+	public String getType() {
+		return "mensaje";
+	}
+	
 
 }

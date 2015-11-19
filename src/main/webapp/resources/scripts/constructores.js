@@ -53,9 +53,11 @@ function Verbo(nombre) {
 /*
  * Constructores del objeto ReglaNegocio
  * */
-function ReglaNegocio(numero, nombre) {
+function ReglaNegocio(numero, nombre, clave, id) {
     this.numero = numero;
     this.nombre = nombre;
+    this.clave = clave;
+    this.id = id;
 }
    
 /*
@@ -92,9 +94,11 @@ function UnidadTamanio(abreviatura) {
 /*
  * Constructor del objeto Mensaje
  */
-function Mensaje(numero, nombre) {
+function Mensaje(numero, nombre, clave, id) {
 	this.numero = numero;
     this.nombre = nombre;
+    this.clave = clave;
+    this.id = id;
 }
 
 /*
@@ -108,11 +112,13 @@ function Entidad(nombre, descripcion) {
 /*
  * Constructor del objeto Pantalla
  */
-function Pantalla(nombreModulo, numero, nombre, id) {
+function Pantalla(nombreModulo, numero, nombre, clave, id, patron) {
 	this.modulo = new Modulo(nombreModulo);
 	this.numero = numero;
 	this.nombre = nombre;
+	this.clave = clave;
 	this.id = id;
+	this.patron = patron;
 }
 
 /*
@@ -132,9 +138,10 @@ function TerminoGlosario(nombre) {
 /*
  * Constructor del objeto Parametro
  */
-function Parametro(nombre, descripcion) {
+function Parametro(nombre, descripcion, id) {
 	this.nombre = nombre;
 	this.descripcion = descripcion;
+	this.id = id;
 }
 
 function Colaborador(curp) {
@@ -143,15 +150,16 @@ function Colaborador(curp) {
 /*
  * Constructor del objeto Accion
  */
-function Accion(nombre, imagen, descripcion, idTipoAccion, idPantallaDestino, id, url, metodo) {
+function Accion(nombre, imagen, descripcion, tipoAccion, pantallaDestino, id, url, metodo, pantalla) {
 	this.nombre = nombre;
 	this.imagen = imagen;
 	this.descripcion = descripcion;
-	this.tipoAccion = new TipoAccion(idTipoAccion);
-	this.pantallaDestino = new Pantalla(null, null, null, idPantallaDestino);
+	this.tipoAccion = tipoAccion;
+	this.pantallaDestino = pantallaDestino;
 	this.id = id;
 	this.urlDestino = url;
 	this.metodo = metodo;
+	this.pantalla = pantalla;
 }
 
 function TipoAccion(id, nombre) {
@@ -164,14 +172,41 @@ function ImagenAccion(imagen, id) {
 	this.id = id;
 }
 
-function Entrada(id, etiqueta, valoresEntrada) {
+function Entrada(id, etiqueta, valoresEntrada, atributo, terminoGlosario) {
 	this.id = id;
 	this.nombreHTML = etiqueta;
 	this.valores = valoresEntrada;
+	this.atributo = atributo;
+	this.terminoGlosario = terminoGlosario;
 }
 
 function ValorEntrada(valor, valido, id) {
 	this.valor = valor;
 	this.valido = valido;
 	this.id = id;
+}
+
+function Query(id, query, referenciaParametro) {
+	this.id = id;
+	this.query = query;
+	this.referenciaParametro = referenciaParametro;
+}
+
+function ReferenciaParametro(id, queries, valoresMensajeParametro, elementoDestino, paso) {
+	this.id = id;
+	this.queries = queries;
+	this.valoresMensajeParametro = valoresMensajeParametro;
+	this.elementoDestino = elementoDestino;
+	this.paso = paso;
+}
+
+function ValorMensajeParametro(id, valor, idMensajeParametro) {
+	this.id = id;
+	this.valor = valor;
+	this.mensajeParametro = new MensajeParametro(idMensajeParametro);
+}
+
+function MensajeParametro(id, parametro) {
+	this.id = id;
+	this.parametro = parametro;
 }
