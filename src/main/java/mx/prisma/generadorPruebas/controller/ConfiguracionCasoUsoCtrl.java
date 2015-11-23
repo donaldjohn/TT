@@ -1,5 +1,9 @@
 package mx.prisma.generadorPruebas.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -18,6 +22,7 @@ import mx.prisma.editor.bs.PantallaBs;
 import mx.prisma.editor.bs.PasoBs;
 import mx.prisma.editor.bs.ReferenciaParametroBs;
 import mx.prisma.editor.bs.TokenBs;
+import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
@@ -47,7 +52,9 @@ import mx.prisma.util.ErrorManager;
 import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
+import mx.prisma.util.ReportUtil;
 import mx.prisma.util.SessionManager;
+import mx.prisma.util.ZipUtil;
 
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
@@ -63,7 +70,12 @@ import com.opensymphony.xwork2.Action;
 	@Result(name = "modulos", type = "redirectAction", params = {
 			"actionName", "modulos" }),
 	@Result(name = "anterior", type = "redirectAction", params = {
-			"actionName", "configuracion-casos-uso-previos!prepararConfiguracion" })})
+			"actionName", "configuracion-casos-uso-previos!prepararConfiguracion" }),
+	@Result(name = "documento", type = "stream", params = { 
+	        "contentType", "${type}", 
+	        "inputName", "fileInputStream", 
+	        "bufferSize", "1024", 
+	        "contentDisposition", "attachment;filename=\"${filename}\""})})
 
 public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 	/**
@@ -80,6 +92,11 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 	private String jsonEntradas;
 	private String jsonReferenciasParametrosMensaje;
 	private String jsonPantallas;
+	
+	private InputStream fileInputStream;
+	private String type;
+    private String filename;
+	
 	public String prepararConfiguracion() {
 		String resultado;
 		try {
@@ -87,7 +104,6 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 			proyecto = SessionManager.consultarProyectoActivo();
 			modulo = SessionManager.consultarModuloActivo();
 			casoUso = SessionManager.consultarCasoUsoActivo();
-			System.out.println("despues de consultas");
 
 			if (casoUso == null) {
 				resultado = "cu";
@@ -106,106 +122,29 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 			for(CasoUsoReglaNegocio curn : casoUso.getReglas()) {
 				reglas.add(curn.getReglaNegocio());
 			}
-			System.out.println("despues de validaciones");
-			//CuPruebasBs.generarValores(casoUso.getEntradas(), reglas); //Descomentar
-			
-
-			obtenerJsonCamposEntradas(casoUso);
-			obtenerJsonCamposAcciones(casoUso);
-			obtenerJsonCamposReglasNegocio(casoUso);
-			obtenerJsonCamposParametrosMensaje(casoUso);
-			obtenerJsonCamposPantallas(casoUso);
-
-			
-			System.out.println("entradas: " + jsonEntradas);
-			System.out.println("acciones: " + jsonAcciones);
-			System.out.println("rn: " + jsonReferenciasReglasNegocio);
-			System.out.println("msj: " + jsonReferenciasParametrosMensaje);
-			System.out.println("pantllas :" + jsonPantallas);
-			
-			resultado = "pantallaConfiguracionCasoUso";
-			
-			@SuppressWarnings("unchecked")
-			Collection<String> msjs = (Collection<String>) SessionManager
-					.get("mensajesAccion");
-			this.setActionMessages(msjs);
-			SessionManager.delete("mensajesAccion");
-			
-			@SuppressWarnings("unchecked")
-			Collection<String> msjsError = (Collection<String>) SessionManager
-					.get("mensajesError");
-			this.setActionErrors(msjsError);
-			SessionManager.delete("mensajesError");
-		} catch(Exception e) {
-			ErrorManager.agregaMensajeError(this, e);
-			resultado = "anterior";
-		}
-		
-		return resultado; 
-	}
-	
-	public String prepararConfiguracionError() {
-		String resultado;
-		try {
-			colaborador = SessionManager.consultarColaboradorActivo();
-			proyecto = SessionManager.consultarProyectoActivo();
-			modulo = SessionManager.consultarModuloActivo();
-			casoUso = SessionManager.consultarCasoUsoActivo();
-			System.out.println("despues de consultas");
-
-			if (casoUso == null) {
-				resultado = "cu";
-				return resultado;
-			}
-			if (modulo == null) {
-				resultado = "modulos";
-				return resultado;
-			}
-			if (!AccessBs.verificarPermisos(modulo.getProyecto(), colaborador)) {
-				resultado = Action.LOGIN;
-				return resultado;
-			}
-			//Se generan los valores
-			Set<ReglaNegocio> reglas = new HashSet<ReglaNegocio>(0);
-			for(CasoUsoReglaNegocio curn : casoUso.getReglas()) {
-				reglas.add(curn.getReglaNegocio());
-			}
-			System.out.println("despues de validaciones");
-			//CuPruebasBs.generarValores(casoUso.getEntradas(), reglas); //Descomentar
+			CuPruebasBs.generarValores(casoUso.getEntradas(), reglas);
 			
 			
 			//Se arman los json con los campos que se mostrarán en pantalla
 			if(jsonEntradas == null || jsonEntradas.isEmpty()) {
 				obtenerJsonCamposEntradas(casoUso);
 			}
-			System.out.println("despues de obtenerJsonCamposEntradas");
 			
 			if(jsonAcciones == null || jsonAcciones.isEmpty()) {
 				obtenerJsonCamposAcciones(casoUso);
 			}
-			System.out.println("despues de obtenerJsonCamposAcciones");
 			
 			if(jsonReferenciasReglasNegocio == null || jsonReferenciasReglasNegocio.isEmpty()) {
 				obtenerJsonCamposReglasNegocio(casoUso);
 			}
-			System.out.println("despues de obtenerJsonCamposReglasNegocio");
 			
 			if(jsonReferenciasParametrosMensaje == null || jsonReferenciasParametrosMensaje.isEmpty()) {
 				obtenerJsonCamposParametrosMensaje(casoUso);
 			}
-			System.out.println("despues de obtenerJsonCamposParametrosMensaje");
 			
 			if(jsonPantallas == null || jsonPantallas.isEmpty()) {
 				obtenerJsonCamposPantallas(casoUso);
 			}
-			System.out.println("despues de obtenerJsonCamposPantallas");
-			
-			System.out.println("entradas: " + jsonEntradas);
-			System.out.println("acciones: " + jsonAcciones);
-			System.out.println("rn: " + jsonReferenciasReglasNegocio);
-			System.out.println("msj: " + jsonReferenciasParametrosMensaje);
-			System.out.println("pantllas :" + jsonPantallas);
-			
 			resultado = "pantallaConfiguracionCasoUso";
 			
 			@SuppressWarnings("unchecked")
@@ -230,18 +169,11 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 	public String configurar() {
 		String resultado;
 		try {
-			System.out.println("json recibidos");
-			System.out.println("entradas: " + jsonEntradas);
-			System.out.println("acciones: " + jsonAcciones);
-			System.out.println("rn: " + jsonReferenciasReglasNegocio);
-			System.out.println("msj: " + jsonReferenciasParametrosMensaje);
-			System.out.println("pantllas :" + jsonPantallas);
-			
-			modificarEntradas();
-			modificarAcciones();
-			modificarReferenciasReglasNegocio();
-			modificarReferenciasParametrosMensaje();
-			modificarPantallas();
+			modificarEntradas(true);
+			modificarAcciones(true);
+			modificarReferenciasReglasNegocio(true);
+			modificarReferenciasParametrosMensaje(true);
+			modificarPantallas(true);
 			
 			casoUso = SessionManager.consultarCasoUsoActivo();
 
@@ -249,18 +181,58 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 				resultado = "cu";
 				throw new Exception();
 			}
-			CuBs.configurarCasoUso(casoUso);
+			CuBs.modificarEstadoCasoUso(casoUso, Estado.CONFIGURADO);
 			
-			//GeneradorPruebasBs.generarCasosPrueba(casoUso);
-			
-			resultado = "cu";
+			@SuppressWarnings("deprecation")
+			String ruta = request.getRealPath("/") + "/tmp/pruebas/"; 
+			GeneradorPruebasBs.generarCasosPrueba(casoUso, ruta);
+			SessionManager.set(ruta, "rutaPruebaGenerada");
+			SessionManager.set(true, "pruebaGenerada");
+
 			addActionMessage(getText("MSG1", new String[] { "La", "Prueba",
 			"generada" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+			resultado = "cu";
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
+			resultado = prepararConfiguracion();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
+			resultado = "cu";
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
+			resultado = "cu";
+		}
+		return resultado;
+	}
+	
+	public String guardar() {
+		String resultado;
+		try {			
+			modificarEntradas(false);
+			modificarAcciones(false);
+			modificarReferenciasReglasNegocio(false);
+			modificarReferenciasParametrosMensaje(false);
+			modificarPantallas(false);
+			
+			casoUso = SessionManager.consultarCasoUsoActivo();
+
+			if (casoUso == null) {
+				resultado = "cu";
+				throw new Exception();
+			}
+			
+			resultado = "cu";
+			addActionMessage(getText("MSG1", new String[] { "La", "Configuración del Caso de Uso",
+			"guardada" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			SessionManager.set(this.getActionErrors(), "mensajesError");
-			resultado = prepararConfiguracionError();
+			resultado = prepararConfiguracion();
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 			SessionManager.set(this.getActionErrors(), "mensajesError");
@@ -273,7 +245,32 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 		return resultado;
 	}
 
-	private void modificarEntradas() throws Exception {
+	public String descargarPrueba() {
+		casoUso = SessionManager.consultarCasoUsoActivo();
+		SessionManager.delete("idCU");
+		String ruta = (String) SessionManager.get("rutaPruebaGenerada");
+		
+		filename = casoUso.getClave() + casoUso.getNumero() + "_" + casoUso.getNombre().replace(" ", "_") + ".zip";
+
+		type = "application/zip";
+		
+		String rutaFolder = ruta + casoUso.getId() + "/";
+
+				
+		try {
+				ZipUtil.zipIt(rutaFolder, ruta + filename);
+		    	
+		        File doc = new File(ruta + filename);
+		        this.fileInputStream = new FileInputStream(doc); 
+	        } catch (Exception e) {
+	        	ErrorManager.agregaMensajeError(this, e);
+	        	return "cu";
+	        }
+			
+	    return "documento";
+	}
+	
+	private void modificarEntradas(boolean validarObligatorios) throws Exception {
 		if (jsonEntradas != null && !jsonEntradas.equals("")) {
 			List<Entrada> entradasVista = JsonUtil.mapJSONToArrayList(this.jsonEntradas, Entrada.class);
 			
@@ -311,7 +308,7 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 				
 				entradaBD.setValores(valores);
 
-				EntradaBs.modificarEntrada(entradaBD);
+				EntradaBs.modificarEntrada(entradaBD, validarObligatorios);
 			}
 			
 		}
@@ -320,20 +317,20 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 		
 	}
 	
-	private void modificarAcciones() throws Exception {
+	private void modificarAcciones(boolean validarObligatorios) throws Exception {
 		if(jsonAcciones != null && !jsonAcciones.equals("")) {
 			List<Accion> accionesVista = JsonUtil.mapJSONToArrayList(this.jsonAcciones, Accion.class);
 			for(Accion accionVista : accionesVista) {
 				Accion accionBD = AccionBs.consultarAccion(accionVista.getId());
 				accionBD.setMetodo(accionVista.getMetodo());
 				accionBD.setUrlDestino(accionVista.getUrlDestino());
-				AccionBs.modificarAccion(accionBD);
+				AccionBs.modificarAccion(accionBD, validarObligatorios);
 			}
 		}
 		
 	}
 	
-	private void modificarReferenciasReglasNegocio() throws Exception {
+	private void modificarReferenciasReglasNegocio(boolean validarObligatorios) throws Exception {
 		if(jsonReferenciasReglasNegocio != null && !jsonReferenciasReglasNegocio.equals("")) {
 			List<ReferenciaParametro> referenciasVista = JsonUtil.mapJSONToArrayList(this.jsonReferenciasReglasNegocio, ReferenciaParametro.class);
 			for(ReferenciaParametro referenciaVista : referenciasVista) {
@@ -355,16 +352,14 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 				referenciaBD.getQueries().clear();
 				referenciaBD.getQueries().addAll(queries);
 				
-				ReferenciaParametroBs.modificarReferenciaParametro(referenciaBD);
+				ReferenciaParametroBs.modificarReferenciaParametro(referenciaBD, validarObligatorios);
 			}
 		}
 	}
 	
-	private void modificarReferenciasParametrosMensaje() throws Exception {
-		System.out.println("jsonReferenciasParametrosMensaje: " + jsonReferenciasParametrosMensaje); 
+	private void modificarReferenciasParametrosMensaje(boolean validarObligatorios) throws Exception {
 		if(jsonReferenciasParametrosMensaje != null && !jsonReferenciasParametrosMensaje.equals("")) {
 			List<ReferenciaParametro> referenciasVista = JsonUtil.mapJSONToListWithSubtypes(this.jsonReferenciasParametrosMensaje, ReferenciaParametro.class);
-			System.out.println("reconvertido" + JsonUtil.mapListToJSON(referenciasVista));;
 			for(ReferenciaParametro referenciaVista : referenciasVista) {
 				ReferenciaParametro referenciaBD = ReferenciaParametroBs.consultarReferenciaParametro(referenciaVista.getId());
 				
@@ -391,19 +386,19 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 				referenciaBD.getValoresMensajeParametro().clear();
 				referenciaBD.getValoresMensajeParametro().addAll(valores);
 				
-				ReferenciaParametroBs.modificarReferenciaParametro(referenciaBD);
+				ReferenciaParametroBs.modificarReferenciaParametro(referenciaBD, validarObligatorios);
 			}
 		}
 		
 	}
 	
-	private void modificarPantallas() throws Exception {
+	private void modificarPantallas(boolean validarObligatorios) throws Exception {
 		if(jsonPantallas != null && !jsonPantallas.equals("")) {
 			List<Pantalla> pantallasVista = JsonUtil.mapJSONToArrayList(jsonPantallas, Pantalla.class);
 			for(Pantalla pantallaVista : pantallasVista) {
 				Pantalla pantallaBD = PantallaBs.consultarPantalla(pantallaVista.getId());
 				pantallaBD.setPatron(pantallaVista.getPatron());
-				PantallaBs.modificarPantalla(pantallaBD);
+				PantallaBs.modificarPatronPantalla(pantallaBD, validarObligatorios);
 			}
 		}
 		
@@ -469,6 +464,7 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 			mensajeAux.setClave(mensaje.getClave());
 			mensajeAux.setNumero(mensaje.getNumero());
 			mensajeAux.setNombre(mensaje.getNombre());
+			mensajeAux.setRedaccion(TokenBs.decodificarCadenaSinToken(mensaje.getRedaccion()));
 			
 			Set<MensajeParametro> parametrosAux = mensaje.getParametros();
 			Set<MensajeParametro> parametros = new HashSet<MensajeParametro>(0);
@@ -737,6 +733,30 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 
 	public void setJsonPantallas(String jsonPantallas) {
 		this.jsonPantallas = jsonPantallas;
+	}
+
+	public InputStream getFileInputStream() {
+		return fileInputStream;
+	}
+
+	public void setFileInputStream(InputStream fileInputStream) {
+		this.fileInputStream = fileInputStream;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
 	
 	

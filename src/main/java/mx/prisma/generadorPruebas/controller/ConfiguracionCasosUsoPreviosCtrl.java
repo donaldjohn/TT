@@ -111,14 +111,13 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 	}
 	
 	public String configurar() {
-		System.out.println("desde configurar previos");
 		String resultado;
 		
 		try {
 			listCU = (List<CasoUso>) SessionManager.get("casosUsoPrevios");
 			SessionManager.delete("casosUsoPrevios");
 			for(CasoUso cu : listCU) {
-				if (cu.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.CONFIGURADO)){
+				if (cu.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.CONFIGURADO) && cu.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.PRECONFIGURADO)){
 					throw new PRISMAValidacionException("Falta configurar un caso de uso.", "MSG37");
 				}
 			}
@@ -168,11 +167,16 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 			if (previo == null) {
 				session = ActionContext.getContext().getSession();
 				session.put("idPrevio", idCUPrevio);
-				previo = SessionManager.consultarCasoUsoActivo();
+				previo = SessionManager.consultarCasoUsoPrevio();
 			}
 
-			obtenerJsonCamposEntradas(previo);
-			obtenerJsonCamposAcciones(previo);
+			if(jsonEntradas == null || jsonEntradas.isEmpty()) {
+				obtenerJsonCamposEntradas(previo);
+			}
+			
+			if(jsonAcciones == null || jsonAcciones.isEmpty()) {
+				obtenerJsonCamposAcciones(previo);
+			}
 			
 			@SuppressWarnings("unchecked")
 			Collection<String> msjsError = (Collection<String>) SessionManager
@@ -193,12 +197,12 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 		String resultado;
 		try {
 			
-			modificarEntradas();
-			modificarAcciones();
+			modificarEntradas(true);
+			modificarAcciones(true);
 			
 			previo = SessionManager.consultarCasoUsoPrevio();
-			CuBs.configurarCasoUso(previo);
-			
+			CuBs.modificarEstadoCasoUso(previo, Estado.PRECONFIGURADO);
+			SessionManager.delete("idPrevio");
 			
 			addActionMessage(getText("MSG1", new String[] { "La", "Configuración del caso de uso",
 			"registrada" }));
@@ -221,7 +225,40 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 		return resultado;
 	}
 	
-	private void modificarEntradas() throws Exception {
+	public String guardarCasoUso() throws Exception {
+		String resultado;
+		try {
+			
+			modificarEntradas(false);
+			modificarAcciones(false);
+			
+			previo = SessionManager.consultarCasoUsoPrevio();
+			CuBs.modificarEstadoCasoUso(previo, Estado.LIBERADO);
+			SessionManager.delete("idPrevio");
+			
+			
+			addActionMessage(getText("MSG1", new String[] { "La", "Configuración del caso de uso",
+			"guardada" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+			return prepararConfiguracion();
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
+			resultado = prepararConfiguracionCasoUso();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
+			resultado = "cu";
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
+			resultado = "cu";
+		}
+		
+		return resultado;
+	}
+	
+	private void modificarEntradas(boolean validarObligatorios) throws Exception {
 		if (jsonEntradas != null && !jsonEntradas.equals("")) {
 			List<Entrada> entradasVista = JsonUtil.mapJSONToArrayList(this.jsonEntradas, Entrada.class);
 			
@@ -259,7 +296,7 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 				
 				entradaBD.setValores(valores);
 
-				EntradaBs.modificarEntrada(entradaBD);
+				EntradaBs.modificarEntrada(entradaBD, validarObligatorios);
 			}
 			
 		}
@@ -268,14 +305,14 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 		
 	}
 	
-	private void modificarAcciones() throws Exception {
+	private void modificarAcciones(boolean validarObligatorios) throws Exception {
 		if(jsonAcciones != null && !jsonAcciones.equals("")) {
 			List<Accion> accionesVista = JsonUtil.mapJSONToArrayList(this.jsonAcciones, Accion.class);
 			for(Accion accionVista : accionesVista) {
 				Accion accionBD = AccionBs.consultarAccion(accionVista.getId());
 				accionBD.setMetodo(accionVista.getMetodo());
 				accionBD.setUrlDestino(accionVista.getUrlDestino());
-				AccionBs.modificarAccion(accionBD);
+				AccionBs.modificarAccion(accionBD, validarObligatorios);
 			}
 		}
 		
@@ -415,6 +452,7 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 	}
 
 	public void setIdCUPrevio(Integer idCUPrevio) {
+		System.out.println("desde setIdCUPrevio");
 		this.idCUPrevio = idCUPrevio;
 	}
 

@@ -7,6 +7,7 @@ INSERT INTO EstadoElemento (nombre) VALUES ('Revisión');
 INSERT INTO EstadoElemento (nombre) VALUES ('Pendiente de corrección');
 INSERT INTO EstadoElemento (nombre) VALUES ('Por liberar');
 INSERT INTO EstadoElemento (nombre) VALUES ('Liberado');
+INSERT INTO EstadoElemento (nombre) VALUES ('Preconfigurado');
 INSERT INTO EstadoElemento (nombre) VALUES ('Configurado');
 
 INSERT INTO Cardinalidad (nombre) VALUES ('Uno');

@@ -93,21 +93,46 @@ function verificarParametros() {
 }
 
 function tablaToJson(idTable) {
-	var tabla = document.getElementById("parametros");
-	var arregloParametros = [];
-	var tam = tabla.rows.length;
-	for (var i = 0; i < tam; i++) {
-		var nombre = tabla.rows[i].cells[0].innerHTML;
-		var elem = document.getElementById("idDescripcionParametro" + i);
-		if (elem != null) {
-			var descripcion = elem.value;
-			arregloParametros.push(new Parametro(nombre, descripcion));
-		}
-	}
+	var tabla;
+	try {
+		tabla = document.getElementById("parametros");
+		if(tabla) {
+			var arregloParametros = [];
+			var tam = tabla.rows.length;
+			for (var i = 0; i < tam; i++) {
+				var nombre = tabla.rows[i].cells[0].innerHTML;
+				var descripcion = document.getElementById("idDescripcionParametro" + i).value;
+				arregloParametros.push(new Parametro(nombre, descripcion));
+			}
 
-		var jsonParametros = JSON.stringify(arregloParametros);
-		document.getElementById("jsonParametros").value = jsonParametros;
-	
+			var jsonParametros = JSON.stringify(arregloParametros);
+			document.getElementById("jsonParametros").value = jsonParametros;
+		}
+	} catch (err) {
+		console.log("sin parámetros");
+	}	
+}
+
+function tablaToJson(idTable) {
+	try {
+		var tabla = document.getElementById("parametros");
+		if(tabla) {
+			var arregloParametros = [];
+			var tam = tabla.rows.length;
+			for (var i = 0; i < tam; i++) {
+				var nombre = tabla.rows[i].cells[0].innerHTML;
+				var elem = document.getElementById("idDescripcionParametro" + i);
+				if (elem != null) {
+					var descripcion = elem.value;
+					arregloParametros.push(new Parametro(nombre, descripcion));
+				}
+			}
+			var jsonParametros = JSON.stringify(arregloParametros);
+			document.getElementById("jsonParametros").value = jsonParametros;
+		}
+	} catch (err) {
+		console.log("sin parámetros");
+	}
 }
 
 

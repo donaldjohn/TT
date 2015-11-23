@@ -110,6 +110,10 @@ public class MensajeBs {
 		if(!Pattern.matches("[1-9]+[0-9]*", model.getNumero())) {
 			throw new PRISMAValidacionException("El usuario no ingresó un número válido", "MSG5", new String[]{"un", "número entero"}, "model.numero");
 		}
+		if(Validador.validaLongitudMaxima(model.getNumero().toString(), 20)) {
+			throw new PRISMAValidacionException("El usuario ingreso un número muy largo.", "MSG6", new String[] { "20",
+			"números"}, "model.numero");
+		}
 		
 		//Se asegura la unicidad del nombre y del numero
 		List<Mensaje> mensajes = consultarMensajesProyecto(model.getProyecto());

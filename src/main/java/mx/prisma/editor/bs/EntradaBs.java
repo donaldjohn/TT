@@ -12,17 +12,17 @@ public class EntradaBs {
 		return entrada;
 	}
 
-	public static void modificarEntrada(Entrada entrada) throws Exception{
-		validar(entrada);
+	public static void modificarEntrada(Entrada entrada, boolean validarObligatorios) throws Exception{
+		validar(entrada, validarObligatorios);
 		new EntradaDAO().modificarEntrada(entrada);
 		
 	}
 
-	private static void validar(Entrada entrada) {
+	private static void validar(Entrada entrada, boolean validarObligatorios) {
 		for(ValorEntrada valorEntrada : entrada.getValores()){
 			if(valorEntrada.getValido()) {
 				String valor = valorEntrada.getValor();
-				if (Validador.esNuloOVacio(valor)) {
+				if (validarObligatorios && Validador.esNuloOVacio(valor)) {
 					throw new PRISMAValidacionException(
 							"El usuario no ingresó el valor de una entrada", "MSG38", null,
 							"campos");
@@ -35,7 +35,7 @@ public class EntradaBs {
 			}
 		}
 		String etiqueta = entrada.getNombreHTML();
-		if (Validador.esNuloOVacio(etiqueta)) {
+		if (validarObligatorios && Validador.esNuloOVacio(etiqueta)) {
 			throw new PRISMAValidacionException(
 					"El usuario no ingresó la etiqueta de una entrada.", "MSG38", null,
 					"campos");

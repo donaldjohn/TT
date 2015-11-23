@@ -1,6 +1,13 @@
 $(document).ready(function() {
-	$('#gestion').DataTable();
 	contextPath = $("#rutaContexto").val();
+	console.log("$(#pruebaGenerada).value: " + document.getElementById("pruebaGenerada").value);
+	
+	if(document.getElementById("pruebaGenerada").value == "true") {
+		window.location.href = contextPath + "/configuracion-caso-uso!descargarPrueba";
+		document.getElementById("pruebaGenerada").value = "false";
+	}
+	$('#gestion').DataTable();
+	
 });
 
 function confirmarEliminacion(urlEliminar) {

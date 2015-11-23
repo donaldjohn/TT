@@ -16,12 +16,13 @@
 
 </head>
 <body>
-
-	<h1>Configuración del Caso de uso</h1>
+	<div class="modal" id="modal"><!-- Place at bottom of page --></div>
+	
+	<h1>Configuración del Caso de uso <s:property value="casoUso.clave + casoUso.numero + ' ' + casoUso.nombre"/></h1>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
-	<s:fielderror fieldName ="campos" cssClass="error seccion" theme="jquery" />
+	<s:fielderror fieldName ="campos" cssClass="error" theme="jquery" />
 	<br />
 	
 	<p class="instrucciones">Ingrese la información solicitada.</p>
@@ -74,17 +75,27 @@
 				</table>
 			</div>
 		</div>
-		
 		<br />
 		<div align="center">
-			<s:submit class="boton" value="Finalizar"/>
+			<s:url var="urlAnterior"
+				value="%{#pageContext.request.contextPath}/configuracion-casos-uso-previos!prepararConfiguracion">
+			</s:url>
+			<input class="boton" type="button"
+				onclick="location.href='${urlAnterior}?idCU=${idCU}'"
+				value="Anterior" />
+			<input class="boton" type="button"
+				onclick="guardarSalir();"
+				value="Guardar" />
+			<input class="boton" type="button"
+				onclick="aceptar();"
+				value="Finalizar" />
 
 			<s:url var="urlGestionarCU"
 				value="%{#pageContext.request.contextPath}/cu">
 			</s:url>
 			<input class="boton" type="button"
 				onclick="location.href='${urlGestionarCU}'"
-				value="Cancelar" />
+				value="Salir" />
 		</div>
 		
 		<s:hidden name="jsonAcciones" id="jsonAcciones" value="%{jsonAcciones}"/>

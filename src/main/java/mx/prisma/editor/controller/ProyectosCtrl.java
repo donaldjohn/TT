@@ -266,14 +266,11 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 	}
 	
 	public String descargarDocumento() {
-		System.out.println("desde descargar documento");
 		String extension = "pdf";
 		@SuppressWarnings("deprecation")
 		String rutaSrc = request.getRealPath("/") + "/resources/JasperReport/";
 		@SuppressWarnings("deprecation")
 		String rutaTarget = request.getRealPath("/") + "/resources/JasperReport/";
-		System.out.println("RUTA TARGET: " + rutaTarget);
-		System.out.println("RUTA SRC: " + rutaSrc);
 		
 		if(extension.equals("pdf")) {
 			filename = this.model.getNombre().replace(' ', '_');

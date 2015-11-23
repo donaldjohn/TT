@@ -9,18 +9,18 @@ $(document).ready(function() {
 
 function agregarCamposEntradasSeccion() {
 	var json = document.getElementById("jsonEntradas").value;
-	console.log("json:" + json);
 	if (json !== "" && json !== "[]") {
 		var parsedJson = JSON.parse(json);
 		$("#tablaEntradas").append("<tr>"
 				+ "<td> <!-- --> </td>"
 				+ "<td class='ui-widget'><center>Etiqueta</center></td>"
-				+ "<td class='ui-widget'><center>Valor</center></td>"
+				+ "<td class='ui-widget'><center>Valor válido</center></td>"
 			+"</tr>");
 		
 		$.each(
 				parsedJson,
 				function(i, item) {
+
 					if(item.valores[0] != null) {
 						valor = item.valores[0].valor;
 						idValor = item.valores[0].id;
@@ -31,7 +31,6 @@ function agregarCamposEntradasSeccion() {
 					
 					inputEtiqueta = "<input type='text' class='ui-widget' id='input-etiqueta-entrada-" + item.id  + "' value='" + nullToEmpty(item.nombreHTML) + "'>";
 					inputValor = "<input type='text' class='ui-widget' id='input-valor-entrada-" + item.id  + "' value='" + valor + "'>";
-					var labelEntrada = "";
 					nombreAtributo = null;
 					nombreTermino = null;
 					if(item.atributo != null) {
@@ -52,7 +51,7 @@ function agregarCamposEntradasSeccion() {
 									+ "<td class='hide'>" + item.nombreHTML + "</td>"
 									+ "<td class='hide'>" + nombreAtributo + "</td>"
 									+ "<td class='hide'>" + nombreTermino + "</td>"
-								+"</tr>"); 
+								+"</tr>");
 					
 		});
 		
@@ -61,18 +60,15 @@ function agregarCamposEntradasSeccion() {
 	}
 }
 
-
 function agregarCamposAccionesSeccion() {
 	var json = document.getElementById("jsonAcciones").value;
-	console.log("json:" + json);
 	if (json !== "" && json !== "[]") {
 		var parsedJson = JSON.parse(json);
 		
 		$.each(
 				parsedJson,
 				function(i, item) {
-					var idTablaPantalla =  item.pantalla.id;
-					
+					idTablaPantalla =  item.pantalla.id;
 					tablaPantalla = $("#tabla-acciones-" + idTablaPantalla);
 					if (tablaPantalla.size() == 0) {
 						$("#seccionURL").append("<div class='subtituloFormulario'>Pantalla " + item.pantalla.clave + item.pantalla.numero + " " + item.pantalla.nombre +"</div>");
@@ -96,7 +92,7 @@ function agregarCamposAccionesSeccion() {
 					numeroPantallaDestino = item.pantallaDestino.numero;
 					nombrePantallaDestino = item.pantallaDestino.nombre;
 					pantallaDestino = clavePantallaDestino + numeroPantallaDestino + " " + nombrePantallaDestino;
-					
+				    
 					$("#tabla-acciones-" + idTablaPantalla).append("<tr>"
 							+ "<td class='label obligatorio'>" + label + "</td>"
 							+ "<td>" + inputURL + "</td>"
@@ -106,6 +102,11 @@ function agregarCamposAccionesSeccion() {
 							+ "<td class='hide'>" + clavePantallaDestino + "</td>"
 							+ "<td class='hide'>" + numeroPantallaDestino + "</td>"
 							+ "<td class='hide'>" + nombrePantallaDestino + "</td>"
+							+ "<td class='hide'>" + item.pantalla.id + "</td>"
+							+ "<td class='hide'>" + item.pantalla.clave + "</td>"
+							+ "<td class='hide'>" + item.pantalla.numero + "</td>"
+							+ "<td class='hide'>" + item.pantalla.nombre + "</td>"
+							+ "<td class='hide'>" + item.tipoAccion.nombre + "</td>"
 							+ "<td class='textoAyuda'>Dirige a la pantalla " + pantallaDestino + "</td>"
 						+"</tr>");
 
@@ -115,6 +116,7 @@ function agregarCamposAccionesSeccion() {
 		$("#formularioAcciones").hide();
 	}
 }
+
 
 function prepararEnvio() {
 	try {
@@ -136,6 +138,7 @@ function tablaEntradasToJson() {
 	var nRegistros = tabla.rows.length;
 	
 	for (var i = 1; i < nRegistros; i++) {
+		
 	    var etiqueta = tabla.rows[i].cells[1].childNodes[0].value;
 	    var valor = tabla.rows[i].cells[2].childNodes[0].value;
 	    var id = tabla.rows[i].cells[3].innerHTML;
@@ -143,7 +146,7 @@ function tablaEntradasToJson() {
 	    var nombreHTML = tabla.rows[i].cells[5].innerHTML;
 		var nombreAtributo = tabla.rows[i].cells[6].innerHTML;
 		var nombreTermino = tabla.rows[i].cells[7].innerHTML;
-	    
+		
 		var atributo = null;
 		var termino = null;
 		
@@ -163,7 +166,6 @@ function tablaEntradasToJson() {
 	
 	var jsonEntradas = JSON.stringify(arregloEntradas);
 	document.getElementById("jsonEntradas").value = jsonEntradas;
-	console.log("jsonEntradas: " + jsonEntradas);
 }
 
 function tablaAccionesToJson() {
@@ -173,22 +175,33 @@ function tablaAccionesToJson() {
 	
 	var arregloAcciones = [];
 	
-	$.each( tablas, function(i, item) {
-		var tabla = item;
+	$.each( tablas, function(i, tabla) {
 
 		var nRegistros = tabla.rows.length;
 		
 		for (var i = 1; i < nRegistros; i++) {
-			var url = tabla.rows[i].cells[1].childNodes[0].value;
+			
+		    var url = tabla.rows[i].cells[1].childNodes[0].value;
 		    var metodo = tabla.rows[i].cells[2].childNodes[0].value;
 		    var id = tabla.rows[i].cells[3].innerHTML;
 		    var nombreAccion = tabla.rows[i].cells[4].innerHTML;
-		    var clavePantalla = tabla.rows[i].cells[5].innerHTML;
-		    var numeroPantalla = tabla.rows[i].cells[6].innerHTML;
-		    var nombrePantalla = tabla.rows[i].cells[7].innerHTML;
+		    var clavePantallaDestino = tabla.rows[i].cells[5].innerHTML;
+		    var numeroPantallaDestino = tabla.rows[i].cells[6].innerHTML;
+		    var nombrePantallaDestino = tabla.rows[i].cells[7].innerHTML;
 		    
-		    var pantallaDestino = new Pantalla(null, numeroPantalla, nombrePantalla, clavePantalla);
-		    arregloAcciones.push(new Accion(nombreAccion, null, null, null, pantallaDestino, id, url, metodo));
+		    var idPantalla = tabla.rows[i].cells[8].innerHTML;
+		    var clavePantalla = tabla.rows[i].cells[9].innerHTML;
+		    var numeroPantalla = tabla.rows[i].cells[10].innerHTML;
+		    var nombrePantalla = tabla.rows[i].cells[11].innerHTML;
+		    
+		    var nombreTipoAccion = tabla.rows[i].cells[12].innerHTML;
+		    
+		    var tipoAccion = new TipoAccion(null, nombreTipoAccion);
+		    
+		    var pantalla = new Pantalla(null, numeroPantalla, nombrePantalla, clavePantalla, idPantalla);
+		    var pantallaDestino = new Pantalla(null, numeroPantallaDestino, nombrePantallaDestino, clavePantallaDestino);
+		    arregloAcciones.push(new Accion(nombreAccion, null, null, tipoAccion, pantallaDestino, id, url, metodo, pantalla));
+		    
 		}
 	});
 	
@@ -196,7 +209,6 @@ function tablaAccionesToJson() {
 	
 	var jsonAcciones = JSON.stringify(arregloAcciones);
 	document.getElementById("jsonAcciones").value = jsonAcciones;
-	console.log("jsonAcciones: " + jsonAcciones);
 }
 
 
@@ -213,5 +225,19 @@ function nullToEmpty (cadena) {
 		return "";
 	} else {
 		return cadena;
+	}
+}
+
+function aceptar() {
+	$('form').get(0).setAttribute("action", contextPath + "/configuracion-casos-uso-previos!configurarCasoUso");
+	if(prepararEnvio()) {
+		$('form').get(0).submit();
+	}
+}
+
+function guardarSalir() {
+	$('form').get(0).setAttribute("action", contextPath + "/configuracion-casos-uso-previos!guardarCasoUso");
+	if(prepararEnvio()) {
+		$('form').get(0).submit();
 	}
 }

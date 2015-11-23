@@ -44,7 +44,7 @@ a {
     right: -320px;
     top: 0px;
     width: 80%;
-    z-index: 999;
+    z-index: 99;
 }
 
 .logo {
@@ -337,7 +337,7 @@ a.menuCUSel:hover {
 	font-size:12px;
 	text-align: left; 
 	vertical-align: top; 
-	width: 500px;
+	width: 400px;
 	max-width: 500px;
 	word-wrap: break-word;
 }
@@ -398,6 +398,10 @@ textfield {
 .botonEditar {
 	text-align: left; 
 	vertical-align: top;	
+}
+
+.boton {
+	min-width: 80px; 
 }
 
 textarea[readonly=""] {
@@ -531,4 +535,23 @@ a.referencia:hover {
 
 .filaCU3 {
 	background: #ffe5b4!important;
+}
+
+/* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+.modal {
+    display:    none;
+    position:   fixed;
+    z-index:    100;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('images/gifs/cargando.gif') 
+                50% 50% 
+                no-repeat;
 }

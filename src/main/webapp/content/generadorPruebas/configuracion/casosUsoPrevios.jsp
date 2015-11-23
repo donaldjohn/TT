@@ -64,7 +64,7 @@
 				value="%{#pageContext.request.contextPath}/configuracion-general!prepararConfiguracion">
 			</s:url>
 			<input class="boton" type="button"
-				onclick="location.href='${urlAnterior}'"
+				onclick="location.href='${urlAnterior}?idCU=${idCU}'"
 				value="Anterior" />
 		
 			<s:submit class="boton" value="Siguiente"/>

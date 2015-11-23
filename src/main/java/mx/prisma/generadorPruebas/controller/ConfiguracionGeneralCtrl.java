@@ -6,7 +6,10 @@ import java.util.Map;
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AccessBs;
+import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
 import mx.prisma.editor.bs.CuBs;
+import mx.prisma.editor.bs.ElementoBs;
+import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.generadorPruebas.bs.ConfiguracionGeneralBs;
@@ -86,8 +89,7 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 		this.setActionMessages(msjsError);
 		SessionManager.delete("mensajesError");
 		System.out.println("después de verificaciones y x");
-		return "ultimoPaso";
-		//return "pantallaConfiguracionGeneral";
+		return "pantallaConfiguracionGeneral";
 	}
 	
 	public String configurar() throws Exception {
@@ -123,7 +125,7 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 				chttpBD.setPuerto(chttp.getPuerto());
 			}
 			
-			ConfiguracionGeneralBs.modificarConfiguracionGeneral(cbdBD, chttpBD);
+			ConfiguracionGeneralBs.modificarConfiguracionGeneral(cbdBD, chttpBD, true);
 			
 			resultado = "siguiente";
 			
@@ -150,6 +152,81 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 			resultado = "cu";
 		}
 		return resultado;
+	}
+	
+	public String guardar() throws Exception {
+		String resultado;
+		try {
+			casoUso = SessionManager.consultarCasoUsoActivo();
+
+			if (casoUso == null) {
+				resultado = "cu";
+				return resultado;
+			}
+			
+			cbd.setCasoUso(casoUso);
+			chttp.setCasoUso(casoUso);
+			
+			ConfiguracionBaseDatos cbdBD = ConfiguracionGeneralBs.consultarConfiguracionBaseDatos(casoUso);
+			ConfiguracionHttp chttpBD = ConfiguracionGeneralBs.consultarConfiguracionHttp(casoUso);
+
+			
+			if(cbdBD == null) {
+				cbdBD = cbd;
+			} else {
+				cbdBD.setContrasenia(cbd.getContrasenia());
+				cbdBD.setDriver(cbd.getDriver());
+				cbdBD.setUrlBaseDatos(cbd.getUrlBaseDatos());
+				cbdBD.setUsuario(cbd.getUsuario());
+			}
+			
+			if(chttpBD == null) {
+				chttpBD = chttp;
+			} else {
+				chttpBD.setIp(chttp.getIp());
+				chttpBD.setPuerto(chttp.getPuerto());
+			}
+			
+			ConfiguracionGeneralBs.modificarConfiguracionGeneral(cbdBD, chttpBD, false);
+			
+			resultado = "cu";
+			
+			addActionMessage(getText("MSG1", new String[] { "La", "Configuración general",
+			"guardada" }));
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+			
+			@SuppressWarnings("unchecked")
+			Collection<String> msjsError = (Collection<String>) SessionManager
+					.get("mensajesError");
+			this.setActionErrors(msjsError);
+			SessionManager.delete("mensajesError");
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
+			resultado = prepararConfiguracion();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
+			resultado = "cu";
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
+			resultado = "cu";
+		}
+		return resultado;
+	}
+	
+	public static boolean esConfigurable(int id) {
+		CasoUso casoUso = CuBs.consultarCasoUso(id);
+		try {
+			ElementoBs.verificarEstado(casoUso, CU_CasosUso.CONFIGURARPRUEBA5_7);
+			for(CasoUso previo : CuBs.obtenerCaminoPrevioMasCorto(casoUso)) {
+				ElementoBs.verificarEstado(previo, CU_CasosUso.CONFIGURARPRUEBA5_7);
+			}
+			return true;
+		} catch (PRISMAException pe) {
+			return false;
+		}
 	}
 
 	public Colaborador getColaborador() {
@@ -181,6 +258,7 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 	}
 
 	public void setIdCU(Integer idCU) {
+		System.out.println("desde set idCU: " + idCU);
 		this.idCU = idCU;
 		this.casoUso = CuBs.consultarCasoUso(idCU);
 		this.cbd = ConfiguracionGeneralBs.consultarConfiguracionBaseDatos(casoUso);

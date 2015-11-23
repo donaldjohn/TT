@@ -312,4 +312,20 @@ public class PantallaBs {
 		}
 
 	}
+
+	public static void modificarPatronPantalla(Pantalla pantalla, boolean validarObligatorios) {
+		String patron = pantalla.getPatron();
+		if (validarObligatorios && Validador.esNuloOVacio(patron)) {
+			throw new PRISMAValidacionException(
+					"El usuario no ingresó algún patrón de pantalla.", "MSG38", null,
+					"campos");
+		}
+		if (Validador.validaLongitudMaxima(patron, 999)) {
+			throw new PRISMAValidacionException(
+					"El usuario ingreso un patrón de pantalla muy largo.", "MSG39",
+					new String[] { "999", "caracteres", "el patrón de la pantalla " + pantalla.getClave() + pantalla.getNumero() + " " + pantalla.getNombre() }, "campos");
+		}
+		
+		new PantallaDAO().modificarPantalla(pantalla);
+	}
 }

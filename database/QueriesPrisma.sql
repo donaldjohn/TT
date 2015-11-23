@@ -112,7 +112,7 @@ INSERT INTO PRISMA.Accion (id, PantallaElementoid, nombre, TipoAccionid, Pantall
 INSERT INTO PRISMA.Accion (id, PantallaElementoid, nombre, TipoAccionid, PantallaElementoidDestino, descripcion) VALUES ('2', '20', 'Aceptar', '2', '19', 'Permite al actor guardar el registro del actor.');
 INSERT INTO PRISMA.Accion (id, PantallaElementoid, nombre, TipoAccionid, PantallaElementoidDestino, descripcion) VALUES ('3', '20', 'Cancelar', '2', '19', 'Permite al actor cancelar el registro del actor.');
 
-INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('21', 'CUE', '7.1', 'Registrar actor', 'Un actor es un rol que va a interactuar con el sistema. Este caso de uso permite al analista registrar un actor', '1', '1');
+INSERT INTO PRISMA.Elemento (id, clave, numero, nombre, descripcion, EstadoElementoid, Proyectoid) VALUES ('21', 'CUE', '7.1', 'Registrar actor', 'Un actor es un rol que va a interactuar con el sistema. Este caso de uso permite al analista registrar un actor', '5', '1');
 INSERT INTO PRISMA.CasoUso (Elementoid, Moduloid, redaccionActores, redaccionEntradas, redaccionSalidas, redaccionReglasNegocio) VALUES ('21', '1', '$ACT·1, ACT·2', '$ATR·4 \n ATR·5 \n ATR·6 \n GLS·6', '$ATR·7 \n MSG·13 \n MSG·14 \n MSG·15 \n MSG·16 \n MSG·17 \n MSG·18 \n MSG·22', '$RN·7 \n RN·8 \n RN·9 \n RN·10 \n RN·11 \n RN·12');
 
 

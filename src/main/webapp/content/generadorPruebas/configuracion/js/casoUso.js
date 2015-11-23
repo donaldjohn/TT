@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	
+	$("#modal").css("display", "none");
 	
 	contextPath = $("#rutaContexto").val();
 	
@@ -241,6 +241,7 @@ function agregarCamposParametrosSeccion() {
 					tablaMensaje = $("#tabla-parametros-" + idTablaMensaje);
 					if (tablaMensaje.size() == 0) {
 						$("#seccionParametros").append("<div class='subtituloFormulario'>Mensaje " + item.elementoDestino.clave + item.elementoDestino.numero + " " + item.elementoDestino.nombre +"</div>");
+						$("#seccionParametros").append("<div class='textoAyuda'>Redacción: " + item.elementoDestino.redaccion +"</div>");
 						$("#seccionParametros").append("<div class='textoAyuda'>Paso: " + realizaImg + " " + verboAux + " " +  item.paso.redaccion +"</div>");
 						$("#seccionParametros").append("<table id='tabla-parametros-" + idTablaMensaje + "'> <!--  --> </table>");
 						$("#seccionParametros").append("</br>");
@@ -281,6 +282,7 @@ function agregarCamposParametrosSeccion() {
 								+ "<td class='hide'>" + nombreVerbo + "</td>"
 								+ "<td class='hide'>" + paso.otroVerbo + "</td>"
 								+ "<td class='hide'>" + paso.redaccion + "</td>"
+								+ "<td class='hide'>" + item.elementoDestino.redaccion + "</td>"
 							+"</tr>");
 					});
 					
@@ -487,6 +489,8 @@ function tablaReferenciasParametrosMensajeToJson() {
 		    var otroVerbo = tabla.rows[i].cells[13].innerHTML;
 		    var redaccion = tabla.rows[i].cells[14].innerHTML;
 		    
+		    var redaccionMSG = tabla.rows[i].cells[15].innerHTML;
+		    
 		    paso = new Paso(null, realizaActor, nombreVerbo, otroVerbo, redaccion);
 		    
 		    arregloValoresMensajeParametro.push(new ValorMensajeParametro(idValor, valor, idMensajeParametro));
@@ -495,7 +499,7 @@ function tablaReferenciasParametrosMensajeToJson() {
 		    parametro = new Parametro(nombreParametro, null, idParametro);
 
 		    mensajeParametros.push(new MensajeParametro(idMensajeParametro, parametro));
-		    mensaje = new Mensaje(numeroMSG, nombreMSG, claveMSG, idMSG);
+		    mensaje = new Mensaje(numeroMSG, nombreMSG, claveMSG, idMSG, redaccionMSG);
 		    mensaje.type = "mensaje";
 		    mensaje.parametros = mensajeParametros;
 		    arregloMensajeParametro.push(new MensajeParametro(idMensajeParametro, parametro));
@@ -547,10 +551,18 @@ function nullToEmpty (cadena) {
 	}
 }
 
-$(document).ajaxStart(function() {
-    // show loader on start
-    console.log("X");
-}).ajaxSuccess(function() {
-    // hide loader on success
-	console.log("Y");
-});
+function aceptar() {
+	$('form').get(0).setAttribute("action", contextPath + "/configuracion-caso-uso!configurar");
+	if(prepararEnvio()) {
+		$('form').get(0).submit();
+		$("#modal").css("display", "block");
+		
+	}
+}
+
+function guardarSalir() {
+	$('form').get(0).setAttribute("action", contextPath + "/configuracion-caso-uso!guardar");
+	if(prepararEnvio()) {
+		$('form').get(0).submit();
+	}
+}

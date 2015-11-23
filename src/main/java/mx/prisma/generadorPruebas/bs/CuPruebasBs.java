@@ -25,7 +25,6 @@ import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.generadorPruebas.dao.EscenarioDAO;
 import mx.prisma.generadorPruebas.dao.ValorEntradaDAO;
-import mx.prisma.generadorPruebas.model.Campo;
 import mx.prisma.generadorPruebas.model.Escenario;
 import mx.prisma.generadorPruebas.model.EscenarioValorEntrada;
 import mx.prisma.generadorPruebas.model.ValorEntrada;

@@ -16,7 +16,7 @@
 </head>
 <body>
 
-	<h1>Configuración del Caso de uso ${previo.clave} ${previo.numero} ${previo.nombre} </h1>
+	<h1>Configuración del Caso de uso <s:property value="previo.clave + previo.numero + ' ' + previo.nombre"/> </h1>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
@@ -24,7 +24,7 @@
 	<br />
 
 	<s:form autocomplete="off" id="frmCasoUso" theme="simple"
-		action="%{#pageContext.request.contextPath}/configuracion-casos-uso-previos!configurarCasoUso" method="post" onsubmit="return prepararEnvio();">
+		action="%{#pageContext.request.contextPath}/configuracion-casos-uso-previos!configurarCasoUso" method="post">
 		
 		
 		<div class="formulario" id="formularioEntradas">
@@ -46,7 +46,13 @@
 		
 		<br />
 		<div align="center">
-			<s:submit class="boton" value="Aceptar"/>
+			<input class="boton" type="button"
+				onclick="guardarSalir();"
+				value="Guardar" />
+				
+			<input class="boton" type="button"
+				onclick="aceptar();"
+				value="Finalizar" />
 
 			<s:url var="urlGestionarCU"
 				value="%{#pageContext.request.contextPath}/configuracion-casos-uso-previos!prepararConfiguracion">

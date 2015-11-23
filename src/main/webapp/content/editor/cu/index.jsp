@@ -100,13 +100,16 @@
 								${blanks}	
 							</s:if>
 							<!-- Pruebas de cu -->
-							<s:url var="urlConfiguracion" value="%{#pageContext.request.contextPath}/configuracion-general!prepararConfiguracion">
-								<s:param name="idCU" value="%{#cu.id}"/>
-							</s:url>
-							<s:a href="%{urlConfiguracion}">
-								<img id="" class="button" title="Generar pruebas"
-										src="${pageContext.request.contextPath}/resources/images/icons/pruebas.png" />
-							</s:a>
+							<s:set var="configurable"><s:property value="@mx.prisma.generadorPruebas.controller.ConfiguracionGeneralCtrl@esConfigurable(#cu.id)"/></s:set>
+							<s:if test="%{#configurable}">
+								<s:url var="urlConfiguracion" value="%{#pageContext.request.contextPath}/configuracion-general!prepararConfiguracion">
+									<s:param name="idCU" value="%{#cu.id}"/>
+								</s:url>
+								<s:a href="%{urlConfiguracion}">
+									<img id="" class="button" title="Generar pruebas"
+											src="${pageContext.request.contextPath}/resources/images/icons/pruebas.png" />
+								</s:a>
+							</s:if>
 					</td>
 				</tr>
 			</s:iterator>
@@ -122,6 +125,8 @@
 			<s:text name="Registrar"></s:text>
 		</button>
 	</div>
+	
+	<s:hidden name="pruebaGenerada" id="pruebaGenerada" value="%{pruebaGenerada}"/>
 	</s:form>
 	<div class = "invisible">
 	<!-- EMERGENTE CONFIRMAR ELIMINACIÓN -->

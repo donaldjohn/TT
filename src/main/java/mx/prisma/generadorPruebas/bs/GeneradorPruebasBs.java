@@ -818,12 +818,12 @@ public class GeneradorPruebasBs {
 		writer.close();		
 	}
 	
-	public static void generarCasosPrueba(CasoUso casoUso) throws Exception {
+	public static void generarCasosPrueba(CasoUso casoUso, String rutaPruebas) throws Exception {
 		String archivo = "";
 		ConfiguracionHttp confHTTP;
 		ConfiguracionBaseDatos confJDBC;
 		ArrayList<Paso> pasos = new ArrayList<Paso>();
-		casoUsoTesting = casoUso.getId() + "";
+		casoUsoTesting = rutaPruebas + casoUso.getId() + "";
 		archivo += GeneradorPruebasBs.encabezado();
 		archivo += GeneradorPruebasBs.planPruebas();
 		archivo += GeneradorPruebasBs.grupoHilos(casoUso.getClave() + casoUso.getNumero());

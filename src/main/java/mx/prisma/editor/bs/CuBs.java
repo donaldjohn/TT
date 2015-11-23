@@ -521,7 +521,11 @@ public class CuBs {
 		referenciasParametro = new ReferenciaParametroDAO()
 				.consultarReferenciasParametro(model);
 		referenciasExtension = new ExtensionDAO().consultarReferencias(model);
-
+		if(referenciasParametro != null) {
+			System.out.println("size referenciasPara: " + referenciasParametro.size());
+		} else {
+			System.out.println("ref null");
+		}
 		for (ReferenciaParametro referencia : referenciasParametro) {
 			String linea = "";
 			postPrecondicion = referencia.getPostPrecondicion();
@@ -557,7 +561,7 @@ public class CuBs {
 				setReferenciasVista.add(linea);
 			}
 		}
-
+		System.out.println("después de 1 for");
 		for (Extension referenciaExtension : referenciasExtension) {
 			String linea = "";
 			idSelf = referenciaExtension.getCasoUsoOrigen().getId();
@@ -569,7 +573,7 @@ public class CuBs {
 				setReferenciasVista.add(linea);
 			}
 		}
-
+		System.out.println("después de 2 for");
 		for (Trayectoria tray : model.getTrayectorias()) {
 			for (String string : TrayectoriaBs.verificarReferencias(tray)) {
 				if (!string.contains(casoUsoSelf)) {
@@ -578,9 +582,10 @@ public class CuBs {
 			}
 
 		}
+		System.out.println("después de 3 for");
 
 		listReferenciasVista.addAll(setReferenciasVista);
-
+		System.out.println("antes return");
 		return listReferenciasVista;
 	}
 
@@ -951,10 +956,9 @@ public class CuBs {
 		return null;
 	}
 
-	public static void configurarCasoUso(CasoUso casoUso) throws Exception {
+	public static void modificarEstadoCasoUso(CasoUso casoUso, Estado estado) throws Exception {
 		casoUso.setEstadoElemento(ElementoBs
-				.consultarEstadoElemento(Estado.CONFIGURADO));
+				.consultarEstadoElemento(estado));
 		new CasoUsoDAO().modificarEstadoCasoUso(casoUso);
 	}
-	
 }

@@ -1,5 +1,8 @@
 package mx.prisma.editor.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -38,6 +41,7 @@ import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.SessionManager;
+import mx.prisma.util.ZipUtil;
 
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
@@ -58,7 +62,12 @@ import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 				"actionName", "modulos" }),
 		@Result(name = "restricciones", type = "json", params = { "root",
 				"restriccionesTermino" }),
-		@Result(name = "revision", type = "dispatcher", location = "cu/revision.jsp") })
+		@Result(name = "revision", type = "dispatcher", location = "cu/revision.jsp"),
+		@Result(name = "documento", type = "stream", params = { 
+		        "contentType", "${type}", 
+		        "inputName", "fileInputStream", 
+		        "bufferSize", "1024", 
+		        "contentDisposition", "attachment;filename=\"${filename}\""})})
 public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> {
 	/**
 	 * 
@@ -109,12 +118,20 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	private String comentario;
 	private List<String> elementosReferencias;
 	private List<String> restriccionesTermino;
-
+	
+	private boolean pruebaGenerada;
 	
 	public String index() {
 		String resultado;
 		Map<String, Object> session = null;
 		try {
+			if(SessionManager.get("pruebaGenerada") != null && (Boolean) SessionManager.get("pruebaGenerada")) {
+				pruebaGenerada = true;
+				SessionManager.delete("pruebaGenerada");
+			} else {
+				SessionManager.delete("idCU");
+			}
+			
 			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
 			modulo = SessionManager.consultarModuloActivo();
@@ -128,8 +145,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			}
 			model.setProyecto(proyecto);
 			model.setModulo(modulo);
-			session = ActionContext.getContext().getSession();
-			session.remove("idCU");
+			
 			listCU = CuBs.consultarCasosUsoModulo(modulo);
 
 			@SuppressWarnings("unchecked")
@@ -1058,4 +1074,11 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		this.esCorrectoPuntosExt = esCorrectoPuntosExt;
 	}
 
+	public boolean isPruebaGenerada() {
+		return pruebaGenerada;
+	}
+
+	public void setPruebaGenerada(boolean pruebaGenerada) {
+		this.pruebaGenerada = pruebaGenerada;
+	}
 }

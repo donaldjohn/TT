@@ -16,8 +16,11 @@ public class Validador {
 		return objeto == null;
 	}
 
-	public static boolean validaLongitudMaxima(String clave, int i) {
-		return clave.length() > i;
+	public static boolean validaLongitudMaxima(String cadena, int longitud) {
+		if(cadena == null) {
+			return false;
+		}
+		return cadena.length() > longitud;
 	}
 
 	public static boolean esNuloOVacio(Set set) {

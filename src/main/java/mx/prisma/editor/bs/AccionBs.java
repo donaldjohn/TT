@@ -80,15 +80,15 @@ public class AccionBs {
 		return accion;
 	}
 
-	public static void modificarAccion(Accion accion) throws Exception{
-		validar(accion);
+	public static void modificarAccion(Accion accion, boolean validarObligatorios) throws Exception{
+		validar(accion, validarObligatorios);
 		new AccionDAO().modificarAccion(accion);
 		
 	}
 
-	private static void validar(Accion accion) {
+	private static void validar(Accion accion, boolean validarObligatorios) {
 		String valor = accion.getUrlDestino();
-		if (Validador.esNuloOVacio(valor)) {
+		if (validarObligatorios && Validador.esNuloOVacio(valor)) {
 			throw new PRISMAValidacionException(
 					"El usuario no ingresó la url destino.", "MSG38", null,
 					"campos");
@@ -100,7 +100,7 @@ public class AccionBs {
 		}
 		
 		valor = accion.getMetodo();
-		if (Validador.esNuloOVacio(valor)) {
+		if (validarObligatorios && Validador.esNuloOVacio(valor)) {
 			throw new PRISMAValidacionException(
 					"El usuario no ingresó el valor del método.", "MSG38", null,
 					"campos");

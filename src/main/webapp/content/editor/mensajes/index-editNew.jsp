@@ -34,11 +34,9 @@
 		<div class="formulario">
 			<div class="tituloFormulario">Información general del Mensaje</div>
 			<table class="seccion">
-				<tr>
+				<tr>		
 					<td class="label"><s:text name="labelClave" /></td>
-					<td class="labelDerecho"><s:property value="model.clave"/>
-							<s:fielderror fieldName="model.clave" cssClass="error" theme="jquery" /></td>
-					<s:hidden value="%{model.clave}" name="model.clave"/>
+					<td class="labelDerecho"><s:property value="model.clave"/></td>
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelNumero" /></td>

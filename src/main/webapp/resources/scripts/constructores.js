@@ -94,11 +94,12 @@ function UnidadTamanio(abreviatura) {
 /*
  * Constructor del objeto Mensaje
  */
-function Mensaje(numero, nombre, clave, id) {
+function Mensaje(numero, nombre, clave, id, redaccion) {
 	this.numero = numero;
     this.nombre = nombre;
     this.clave = clave;
     this.id = id;
+    this.redaccion = redaccion;
 }
 
 /*

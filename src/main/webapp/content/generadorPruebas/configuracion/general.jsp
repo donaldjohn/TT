@@ -13,7 +13,6 @@
 
 </head>
 <body>
-
 	<h1>Configuración general</h1>
 
 	<s:actionmessage theme="jquery" />
@@ -23,7 +22,6 @@
 	<p class="instrucciones">Ingrese la información solicitada.</p>
 	<s:form autocomplete="off" id="frmConfiguracion" theme="simple"
 		action="%{#pageContext.request.contextPath}/configuracion-general!configurar" method="post">
-		<s:hidden name="_method" value="put" />
 		<div class="formulario">
 			<div class="tituloFormulario">Configuración de la conexión a la base de datos</div>
 			<table class="seccion">
@@ -79,8 +77,13 @@
 		
 		<br />
 		<div align="center">
-		
-			<s:submit class="boton" value="Siguiente"/>
+			<input class="boton" type="button"
+				onclick="guardarSalir();"
+				value="Guardar" />
+				
+			<input class="boton" type="button"
+				onclick="siguiente();"
+				value="Siguiente" />
 
 			<s:url var="urlGestionarCU"
 				value="%{#pageContext.request.contextPath}/cu">
