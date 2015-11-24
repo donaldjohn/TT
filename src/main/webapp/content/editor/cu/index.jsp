@@ -149,7 +149,7 @@
 		<s:form autocomplete="off" id="frmConfirmarEliminacion" name="frmConfirmarEliminacionName" theme="simple">
 				<div class="seccion">
 				<s:text name="MSG14"/>
-				<div id="elementosReferencias"></div>
+				<div id="elementosReferencias"><!--  --></div>
 				</div>
 			<br />
 			<div align="center">

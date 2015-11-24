@@ -52,8 +52,7 @@ public class ExtensionDAO extends GenericDAO {
 		List<Extension> results = null;
 		Query query = null;
 		String queryCadena = null;
-
-		queryCadena = "FROM Extension WHERE CasoUsoElementoid_destino = :idCasoUso";
+		queryCadena = "FROM Extension WHERE casoUsoDestino.id = :idCasoUso";
 
 		try {
 			session.beginTransaction();

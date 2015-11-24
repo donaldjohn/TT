@@ -18,6 +18,7 @@
 	<br />
 	<s:form autocomplete="off" theme="simple"
 		action="%{pageContext.request.contextPath}/cu!guardar">
+		<s:hidden value="%{model.id}" name="idSel"/>
 	<div class="formulario">
 		<div class="tituloFormulario">${blanks}</div>
 		<div class="seccion">

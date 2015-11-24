@@ -136,7 +136,7 @@ public class CuBs {
 			// Se quitan los espacios iniciales y finales del nombre
 			cu.setNombre(cu.getNombre().trim());
 			
-			new CasoUsoDAO().modificarCasoUso(cu);
+			new CasoUsoDAO().modificarCasoUso(cu, true);
 
 		} catch (JDBCException je) {
 			System.out.println("ERROR CODE " + je.getErrorCode());
@@ -156,7 +156,7 @@ public class CuBs {
 			model.setEstadoElemento(ElementoBs
 					.consultarEstadoElemento(Estado.REVISION));
 
-			new CasoUsoDAO().modificarCasoUso(model);
+			new CasoUsoDAO().modificarCasoUso(model, false);
 
 		} catch (JDBCException je) {
 			System.out.println("ERROR CODE " + je.getErrorCode());
@@ -521,6 +521,7 @@ public class CuBs {
 		referenciasParametro = new ReferenciaParametroDAO()
 				.consultarReferenciasParametro(model);
 		referenciasExtension = new ExtensionDAO().consultarReferencias(model);
+		System.out.println("Size referencias extensión: " + referenciasExtension.size());
 		if(referenciasParametro != null) {
 			System.out.println("size referenciasPara: " + referenciasParametro.size());
 		} else {
@@ -561,7 +562,6 @@ public class CuBs {
 				setReferenciasVista.add(linea);
 			}
 		}
-		System.out.println("después de 1 for");
 		for (Extension referenciaExtension : referenciasExtension) {
 			String linea = "";
 			idSelf = referenciaExtension.getCasoUsoOrigen().getId();
@@ -573,7 +573,6 @@ public class CuBs {
 				setReferenciasVista.add(linea);
 			}
 		}
-		System.out.println("después de 2 for");
 		for (Trayectoria tray : model.getTrayectorias()) {
 			for (String string : TrayectoriaBs.verificarReferencias(tray)) {
 				if (!string.contains(casoUsoSelf)) {
@@ -582,7 +581,6 @@ public class CuBs {
 			}
 
 		}
-		System.out.println("después de 3 for");
 
 		listReferenciasVista.addAll(setReferenciasVista);
 		System.out.println("antes return");
@@ -959,6 +957,6 @@ public class CuBs {
 	public static void modificarEstadoCasoUso(CasoUso casoUso, Estado estado) throws Exception {
 		casoUso.setEstadoElemento(ElementoBs
 				.consultarEstadoElemento(estado));
-		new CasoUsoDAO().modificarEstadoCasoUso(casoUso);
+		new CasoUsoDAO().modificarCasoUso(casoUso, false);
 	}
 }

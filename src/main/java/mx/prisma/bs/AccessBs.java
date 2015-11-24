@@ -79,6 +79,8 @@ public class AccessBs {
 	public static boolean verificarPermisos(Proyecto proyecto, Colaborador colaborador) {
 		boolean acceso = false;
 		for (ColaboradorProyecto colaboradorProyecto : colaborador.getColaborador_proyectos()) {
+			System.out.println("colaboradorProyecto.getProyecto().getId(): " + colaboradorProyecto.getProyecto().getId());
+			System.out.println("proyecto.getId(): " + proyecto.getId());
 			if (colaboradorProyecto.getProyecto().getId() == proyecto.getId()) {
 				acceso = true;
 				break;

@@ -119,37 +119,27 @@ public class CasoUsoDAO extends ElementoDAO {
 //		}	
 //	}
 	
-	public void modificarCasoUso(CasoUso casodeuso) {
+	public void modificarCasoUso(CasoUso casodeuso, boolean modificarReferencias) {
 		try {
 			session.beginTransaction();
-			Query query1 = session.createQuery("DELETE FROM CasoUsoActor WHERE casouso.id = :id");
-			query1.setParameter("id", casodeuso.getId());
-			query1.executeUpdate();
-			Query query2 = session.createQuery("DELETE FROM Entrada WHERE casoUso.id = :id");
-			query2.setParameter("id", casodeuso.getId());
-			query2.executeUpdate();
-			Query query3 = session.createQuery("DELETE FROM Salida WHERE casoUso.id = :id");
-			query3.setParameter("id", casodeuso.getId());
-			query3.executeUpdate();
-			Query query4 = session.createQuery("DELETE FROM CasoUsoReglaNegocio WHERE casoUso.id = :id");
-			query4.setParameter("id", casodeuso.getId());
-			query4.executeUpdate();
-			Query query5 = session.createQuery("DELETE FROM PostPrecondicion WHERE casoUso.id = :id");
-			query5.setParameter("id", casodeuso.getId());
-			query5.executeUpdate();
+			if(modificarReferencias) {
+				Query query1 = session.createQuery("DELETE FROM CasoUsoActor WHERE casouso.id = :id");
+				query1.setParameter("id", casodeuso.getId());
+				query1.executeUpdate();
+				Query query2 = session.createQuery("DELETE FROM Entrada WHERE casoUso.id = :id");
+				query2.setParameter("id", casodeuso.getId());
+				query2.executeUpdate();
+				Query query3 = session.createQuery("DELETE FROM Salida WHERE casoUso.id = :id");
+				query3.setParameter("id", casodeuso.getId());
+				query3.executeUpdate();
+				Query query4 = session.createQuery("DELETE FROM CasoUsoReglaNegocio WHERE casoUso.id = :id");
+				query4.setParameter("id", casodeuso.getId());
+				query4.executeUpdate();
+				Query query5 = session.createQuery("DELETE FROM PostPrecondicion WHERE casoUso.id = :id");
+				query5.setParameter("id", casodeuso.getId());
+				query5.executeUpdate();
+			}
 			
-			session.update(casodeuso);
-			session.getTransaction().commit();
-		} catch (HibernateException he) {
-			he.printStackTrace();
-			session.getTransaction().rollback();
-			throw he;
-		}	
-	}
-	
-	public void modificarEstadoCasoUso(CasoUso casodeuso) {
-		try {
-			session.beginTransaction();			
 			session.update(casodeuso);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {

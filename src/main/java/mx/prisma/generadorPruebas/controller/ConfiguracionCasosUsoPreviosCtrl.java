@@ -96,6 +96,8 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 			return "siguiente";
 		}
 		
+		SessionManager.delete("idPrevio");
+		
 		@SuppressWarnings("unchecked")
 		Collection<String> msjs = (Collection<String>) SessionManager
 				.get("mensajesAccion");
@@ -162,7 +164,6 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 			
 			
 			previo = SessionManager.consultarCasoUsoPrevio();
-			System.out.println("despues de consulta cu");
 			
 			if (previo == null) {
 				session = ActionContext.getContext().getSession();

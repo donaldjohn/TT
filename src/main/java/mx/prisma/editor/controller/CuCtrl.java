@@ -1,8 +1,5 @@
 package mx.prisma.editor.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -41,14 +38,12 @@ import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.SessionManager;
-import mx.prisma.util.ZipUtil;
 
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.convention.annotation.Results;
 
 import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 
@@ -62,12 +57,7 @@ import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 				"actionName", "modulos" }),
 		@Result(name = "restricciones", type = "json", params = { "root",
 				"restriccionesTermino" }),
-		@Result(name = "revision", type = "dispatcher", location = "cu/revision.jsp"),
-		@Result(name = "documento", type = "stream", params = { 
-		        "contentType", "${type}", 
-		        "inputName", "fileInputStream", 
-		        "bufferSize", "1024", 
-		        "contentDisposition", "attachment;filename=\"${filename}\""})})
+		@Result(name = "revision", type = "dispatcher", location = "cu/revision.jsp")})
 public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> {
 	/**
 	 * 
@@ -398,9 +388,11 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
 			resultado = index();
 		} catch (Exception e) {
 			ErrorManager.agregaMensajeError(this, e);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
 			resultado = index();
 		}
 		return resultado;
@@ -661,6 +653,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 	public String verificarElementosReferencias() {
 		try {
+			System.out.println("desde cuctrl idSel: " + idSel);
+			model.setId(idSel);
 			elementosReferencias = new ArrayList<String>();
 			elementosReferencias = CuBs.verificarReferencias(model);
 
@@ -671,9 +665,12 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	}
 
 	public String verificarTermino() {
+		System.out.println("desde verificar termino");
 		try {
 			restriccionesTermino = new ArrayList<String>();
+			System.out.println("1");
 			restriccionesTermino = CuBs.verificarRestriccionesTermino(model);
+			System.out.println("2");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -687,16 +684,16 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
 			modulo = SessionManager.consultarModuloActivo();
+			model = CuBs.consultarCasoUso(idSel);
 			if (modulo == null) {
 				resultado = "modulos";
 				return resultado;
 			}
-			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
 				resultado = Action.LOGIN;
 				return resultado;
 			}
-			model.setProyecto(proyecto);
-			model.setModulo(modulo);
+			System.out.println("model.estado: " + model.getEstadoElemento().getId());
 			ElementoBs.verificarEstado(model, CU_CasosUso.TERMINARCASOUSO5_6);
 			resultado = SUCCESS;
 			CuBs.terminar(model);
@@ -705,9 +702,11 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
 			resultado = index();
 		} catch (Exception e) {
 			ErrorManager.agregaMensajeError(this, e);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
 			resultado = index();
 		}
 		return resultado;
@@ -719,16 +718,15 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
 			modulo = SessionManager.consultarModuloActivo();
+			model = CuBs.consultarCasoUso(idSel);
 			if (modulo == null) {
 				resultado = "modulos";
 				return resultado;
 			}
-			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
 				resultado = Action.LOGIN;
 				return resultado;
 			}
-			model.setProyecto(proyecto);
-			model.setModulo(modulo);
 
 			ElementoBs.verificarEstado(model, CU_CasosUso.REVISARCASOUSO5_5);
 
@@ -738,12 +736,15 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			resultado = "revision";
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
 			resultado = edit();
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
 			resultado = index();
 		} catch (Exception e) {
 			ErrorManager.agregaMensajeError(this, e);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
 			resultado = index();
 		}
 		return resultado;
@@ -757,16 +758,15 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
 			modulo = SessionManager.consultarModuloActivo();
+			model = CuBs.consultarCasoUso(idSel);
 			if (modulo == null) {
 				resultado = "modulos";
 				return resultado;
 			}
-			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
 				resultado = Action.LOGIN;
 				return resultado;
 			}
-			model.setProyecto(proyecto);
-			model.setModulo(modulo);
 
 			ElementoBs.verificarEstado(model, CU_CasosUso.REVISARCASOUSO5_5);
 
@@ -826,10 +826,10 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		}
 		return resultado;
 	}
-
-	@VisitorFieldValidator
+	
 	public CasoUso getModel() {
 		if (this.model == null) {
+			System.out.println("se crea model");
 			model = new CasoUso();
 		}
 		return model;
@@ -973,7 +973,9 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 	public void setIdSel(Integer idSel) {
 		this.idSel = idSel;
+		System.out.println("desde setIdSel");
 		if (this.model == null) {
+			System.out.println("model = null");
 			this.model = CuBs.consultarCasoUso(idSel);
 		}
 	}
@@ -1033,6 +1035,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	public void setObservacionesResumen(String observacionesResumen) {
 		this.observacionesResumen = observacionesResumen;
 	}
+	
 
 	public String getObservacionesTrayectoria() {
 		return observacionesTrayectoria;

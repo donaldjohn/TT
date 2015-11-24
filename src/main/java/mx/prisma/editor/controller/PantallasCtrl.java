@@ -172,7 +172,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 				for (Accion accionVista : accionesVista) {
 					pantallaDestino = PantallaBs.consultarPantalla(accionVista.getPantallaDestino().getId());
 
-					if(!imagenesAccionesTexto.get(i).contains("image/png")) {
+					if(imagenesAccionesTexto.get(i) != null && !imagenesAccionesTexto.get(i).isEmpty() &&!imagenesAccionesTexto.get(i).contains("image/png")) {
 						throw new PRISMAValidacionException(
 								"El usuario seleccionó una imagen que no es PNG.", "MSG36");
 					}
@@ -245,7 +245,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	}
 	
 	private void agregarImagen() throws IOException {
-		if(!pantallaB64.contains("image/png")) {
+		if(pantallaB64 != null && !pantallaB64.isEmpty() && !pantallaB64.contains("image/png")) {
 			throw new PRISMAValidacionException(
 					"El usuario seleccionó una imagen que no es PNG.", "MSG36", null,
 					"pantallaB64");
