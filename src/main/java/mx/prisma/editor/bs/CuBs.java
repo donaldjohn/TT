@@ -590,12 +590,7 @@ public class CuBs {
 		referenciasParametro = new ReferenciaParametroDAO()
 				.consultarReferenciasParametro(model);
 		referenciasExtension = new ExtensionDAO().consultarReferencias(model);
-		System.out.println("Size referencias extensión: " + referenciasExtension.size());
-		if(referenciasParametro != null) {
-			System.out.println("size referenciasPara: " + referenciasParametro.size());
-		} else {
-			System.out.println("ref null");
-		}
+		
 		for (ReferenciaParametro referencia : referenciasParametro) {
 			String linea = "";
 			postPrecondicion = referencia.getPostPrecondicion();
@@ -652,7 +647,6 @@ public class CuBs {
 		}
 
 		listReferenciasVista.addAll(setReferenciasVista);
-		System.out.println("antes return");
 		return listReferenciasVista;
 	}
 
@@ -927,7 +921,6 @@ public class CuBs {
 		}
 
 		if (esCorrectoResumen != null) {
-			System.out.println("ecr: "+esCorrectoResumen);
 			if (esCorrectoResumen == 2) { 
 				observacionesCambio = true;
 				validarObservacionRevision(observacionesResumen, "observacionesResumen");
@@ -954,7 +947,6 @@ public class CuBs {
 		}
 		
 		if (esCorrectoTrayectoria != null) {
-			System.out.println("ect: "+esCorrectoTrayectoria);
 			if (esCorrectoTrayectoria == 2) { 
 				observacionesCambio = true;
 				validarObservacionRevision(observacionesTrayectoria, "observacionesTrayectoria");
@@ -982,7 +974,6 @@ public class CuBs {
 		
 		if(model.getExtiende() != null && !model.getExtiende().isEmpty()) {
 			if (esCorrectoPuntosExt != null) {
-				System.out.println("ecpe: "+esCorrectoPuntosExt);
 				if (esCorrectoPuntosExt == 2) { 
 					observacionesCambio = true;
 					validarObservacionRevision(observacionesPuntosExt, "observacionesPuntosExt");
