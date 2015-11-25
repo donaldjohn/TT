@@ -1841,10 +1841,14 @@ public class TokenBs {
 					redaccion = "";
 					break;
 				} else {
+					Pantalla pantalla = accion.getPantalla();
 					redaccion = remplazoToken(
 							redaccion,
 							token,
-							"<a class='referencia' href='#'>"
+							"<a class='referencia' href='" + actionContext
+									+ "/pantallas/" + pantalla.getId() 
+									+ "#accion-" + id
+									+ "'>"
 									+ accion.getNombre() + "</a>");
 				}
 				break;
@@ -1932,7 +1936,7 @@ public class TokenBs {
 				redaccion = remplazoToken(
 						redaccion,
 						token,
-						"<a class='referencia' href='#'>" + pantalla.getClave()
+						"<a class='referencia' href='" + actionContext + "/pantallas/" + id +"'>" + pantalla.getClave()
 								+ " " + pantalla.getNumero() + " "
 								+ pantalla.getNombre() + "</a>");
 				break;

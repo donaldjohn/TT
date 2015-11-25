@@ -83,7 +83,7 @@
 							</s:if>				
 							<s:if test="%{#cu.estadoElemento.id == 2}">	
 								<!-- Revisar caso de uso -->			
-								<s:url var="urlRevisar" value="%{#pageContext.request.contextPath}/cu!revision?idSel=%{#cu.id}" method="post"/>
+								<s:url var="urlRevisar" value="%{#pageContext.request.contextPath}/cu!prepararRevision?idSel=%{#cu.id}" method="post"/>
 								<s:a href="%{urlRevisar}">
 								<img id="" class="button" title="Revisar Caso de uso"
 										src="${pageContext.request.contextPath}/resources/images/icons/revisar.png" /></s:a>	
@@ -93,11 +93,19 @@
 							<s:set var="rol"><s:property value="@mx.prisma.controller.AccessCtrl@getRol()" /></s:set>
 							<s:if test="%{#cu.estadoElemento.id == 4 and #rol == 1}">	
 							<!-- Liberar caso de uso -->			
-								<s:url var="urlLiberar" value="%{#pageContext.request.contextPath}/cu!liberar?idSel=%{#cu.id}" method="post"/>
+								<s:url var="urlLiberar" value="%{#pageContext.request.contextPath}/cu!prepararLiberacion?idSel=%{#cu.id}" method="post"/>
 								<s:a href="%{urlLiberar}">
 								<img id="" class="button" title="Liberar Caso de uso"
 										src="${pageContext.request.contextPath}/resources/images/icons/liberar.png" /></s:a>	
-								${blanks}	
+								${blanks}		
+							</s:if>
+							<s:if test="%{#cu.estadoElemento.id == 5 and #rol == 1}">
+							<!-- Desbloquear caso de uso -->			
+								<s:url var="urlDesbloquear" value="%{#pageContext.request.contextPath}/cu!prepararLiberacion?idSel=%{#cu.id}" method="post"/>
+								<s:a href="%{urlDesbloquear}">
+								<img id="" class="button" title="Solicitar correcciones del Caso de uso"
+										src="${pageContext.request.contextPath}/resources/images/icons/solicitarCorrecciones.png" /></s:a>	
+								${blanks}
 							</s:if>
 							<!-- Pruebas de cu -->
 							<s:set var="configurable"><s:property value="@mx.prisma.generadorPruebas.controller.ConfiguracionGeneralCtrl@esConfigurable(#cu.id)"/></s:set>

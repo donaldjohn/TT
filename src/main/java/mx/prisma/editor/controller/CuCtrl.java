@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import mx.prisma.admin.bs.ProyectoBs;
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AccessBs;
@@ -57,7 +58,8 @@ import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 				"actionName", "modulos" }),
 		@Result(name = "restricciones", type = "json", params = { "root",
 				"restriccionesTermino" }),
-		@Result(name = "revision", type = "dispatcher", location = "cu/revision.jsp")})
+		@Result(name = "revision", type = "dispatcher", location = "cu/revision.jsp"),
+		@Result(name = "liberacion", type = "dispatcher", location = "cu/liberacion.jsp")})
 public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> {
 	/**
 	 * 
@@ -712,7 +714,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		return resultado;
 	}
 
-	public String revision() {
+	public String prepararRevision() {
 		String resultado = null;
 		try {
 			colaborador = SessionManager.consultarColaboradorActivo();
@@ -730,8 +732,12 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 			ElementoBs.verificarEstado(model, CU_CasosUso.REVISARCASOUSO5_5);
 
-			buscaElementos();
-			prepararVista();
+			this.existenPrecondiciones = CuBs.existenPrecondiciones(model
+					.getPostprecondiciones());
+			this.existenPostcondiciones = CuBs.existenPostcondiciones(model
+					.getPostprecondiciones());
+
+			CuBs.decodificarTokens(model);
 
 			resultado = "revision";
 		} catch (PRISMAValidacionException pve) {
@@ -750,9 +756,8 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		return resultado;
 	}
 	
-	public String guardar() throws Exception{
+	public String revisar() throws Exception{
 		String resultado = null;
-		System.err.println("**********************************************************test");
 
 		try {
 			colaborador = SessionManager.consultarColaboradorActivo();
@@ -770,14 +775,117 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 			ElementoBs.verificarEstado(model, CU_CasosUso.REVISARCASOUSO5_5);
 
-			resultado = SUCCESS;
-			CuBs.guardarRevisiones(esCorrectoResumen, observacionesResumen,
+			
+			System.out.println("desde guardar: " + esCorrectoResumen + ", " + esCorrectoTrayectoria + ", " + esCorrectoPuntosExt);
+			System.out.println("desde guardar: " + observacionesResumen + ", " + observacionesTrayectoria + ", " + observacionesPuntosExt);
+			if(CuBs.guardarRevisiones(esCorrectoResumen, observacionesResumen,
 					esCorrectoTrayectoria, observacionesTrayectoria,
-					esCorrectoPuntosExt, observacionesPuntosExt, model);
+					esCorrectoPuntosExt, observacionesPuntosExt, model)) {
+				CuBs.modificarEstadoCasoUso(model, Estado.PENDIENTECORRECCION);
+				addActionMessage(getText("MSG1", new String[] { "El",
+						"Caso de uso", "revisado" }));
+			} else {
+				if(ProyectoBs.consultarColaboradorProyectoLider(proyecto).getColaborador().getCurp().equals(colaborador.getCurp())) {
+					CuBs.modificarEstadoCasoUso(model, Estado.LIBERADO);
+					addActionMessage(getText("MSG1", new String[] { "El",
+							"Caso de uso", "revisado" }));
+				} else {
+					CuBs.modificarEstadoCasoUso(model, Estado.PORLIBERAR);
+					addActionMessage(getText("MSG1", new String[] { "El",
+							"Caso de uso", "liberado" }));
+				}
+			}
+			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+			resultado = SUCCESS;
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = prepararRevision();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			resultado = index();
+		}
+		return resultado;
+	}
+	
+	public String prepararLiberacion() {
+		String resultado = null;
+		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			model = CuBs.consultarCasoUso(idSel);
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+
+			ElementoBs.verificarEstado(model, CU_CasosUso.LIBERARCASOUSO4_3);
+
+			this.existenPrecondiciones = CuBs.existenPrecondiciones(model
+					.getPostprecondiciones());
+			this.existenPostcondiciones = CuBs.existenPostcondiciones(model
+					.getPostprecondiciones());
+
+			CuBs.decodificarTokens(model);
+
+			resultado = "liberacion";
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
+			resultado = edit();
+		} catch (PRISMAException pe) {
+			ErrorManager.agregaMensajeError(this, pe);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
+			resultado = index();
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
+			resultado = index();
+		}
+		return resultado;
+	}
+	
+	public String liberar() throws Exception{
+		String resultado = null;
+
+		try {
+			colaborador = SessionManager.consultarColaboradorActivo();
+			proyecto = SessionManager.consultarProyectoActivo();
+			modulo = SessionManager.consultarModuloActivo();
+			model = CuBs.consultarCasoUso(idSel);
+			if (modulo == null) {
+				resultado = "modulos";
+				return resultado;
+			}
+			if (!AccessBs.verificarPermisos(proyecto, colaborador)) {
+				resultado = Action.LOGIN;
+				return resultado;
+			}
+
+			ElementoBs.verificarEstado(model, CU_CasosUso.LIBERARCASOUSO4_3);
+
+			if(CuBs.guardarRevisiones(esCorrectoResumen, observacionesResumen,
+					esCorrectoTrayectoria, observacionesTrayectoria,
+					esCorrectoPuntosExt, observacionesPuntosExt, model)) {
+				CuBs.modificarEstadoCasoUso(model, Estado.PENDIENTECORRECCION);
+			} else {
+				CuBs.modificarEstadoCasoUso(model, Estado.LIBERADO);
+			}
 			
 			addActionMessage(getText("MSG1", new String[] { "El",
-					"Caso de uso", "terminado" }));
+					"Caso de uso", "liberado" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+			resultado = SUCCESS;
+		} catch (PRISMAValidacionException pve) {
+			ErrorManager.agregaMensajeError(this, pve);
+			resultado = prepararLiberacion();
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
@@ -796,7 +904,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		this.observacionesPuntosExt = observacionesPuntosExt;
 	}
 
-	public String revisar() throws Exception {
+	/*public String revisar() throws Exception {
 		String resultado = null;
 		try {
 			colaborador = SessionManager.consultarColaboradorActivo();
@@ -813,10 +921,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			model.setProyecto(proyecto);
 			model.setModulo(modulo);
 			resultado = SUCCESS;
-			// CuBs.terminar(model);
-			addActionMessage(getText("MSG1", new String[] { "El",
-					"Caso de uso", "terminado" }));
-			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 		} catch (PRISMAException pe) {
 			ErrorManager.agregaMensajeError(this, pe);
 			resultado = index();
@@ -825,7 +929,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			resultado = index();
 		}
 		return resultado;
-	}
+	}*/
 	
 	public CasoUso getModel() {
 		if (this.model == null) {

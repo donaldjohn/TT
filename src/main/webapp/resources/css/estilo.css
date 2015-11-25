@@ -555,3 +555,7 @@ a.referencia:hover {
                 50% 50% 
                 no-repeat;
 }
+
+.radiobotones {
+	padding-left: 12%;
+}

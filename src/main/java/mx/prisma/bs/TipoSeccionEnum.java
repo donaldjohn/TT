@@ -8,7 +8,7 @@ public class TipoSeccionEnum {
 	public static String getNombre(TipoSeccionENUM seccion) {
 		switch(seccion) {
 		case RESUMEN:
-			return "Resumen";
+			return "General";
 		case PUNTOSEXTENSION:
 			return "Puntos de extensión";
 		case TRAYECTORIA:

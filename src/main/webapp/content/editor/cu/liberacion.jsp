@@ -8,17 +8,17 @@
 <head>
 <title>Casos de uso</title>
 <![CDATA[
-	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/revision.js"></script>
+	<script type="text/javascript" charset="utf8" src="${pageContext.request.contextPath}/content/editor/cu/js/liberacion.js"></script>
 ]]>
 </head>
 <body>
-	<h1>Revisar Caso de uso</h1>
+	<h1>Liberar Caso de uso</h1>
 	<h3><s:property value="%{model.clave + ' ' + model.numero + ' ' + model.nombre}" /></h3>
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
 	<br />
 	<s:form autocomplete="off" theme="simple"
-		action="%{pageContext.request.contextPath}/cu!revisar">
+		action="%{pageContext.request.contextPath}/cu!liberar">
 		<s:hidden value="%{model.id}" name="idSel"/>
 		<div class="formulario">
 			<div class="tituloFormulario">${blanks}</div>

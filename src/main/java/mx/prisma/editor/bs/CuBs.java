@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import mx.prisma.admin.dao.ProyectoDAO;
+import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
 import mx.prisma.bs.ReferenciaEnum;
@@ -17,6 +18,7 @@ import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.ElementoDAO;
 import mx.prisma.editor.dao.EntradaDAO;
+import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.dao.ExtensionDAO;
 import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.dao.PasoDAO;
@@ -32,6 +34,7 @@ import mx.prisma.editor.model.CasoUsoReglaNegocio;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Entrada;
+import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Modulo;
@@ -347,13 +350,79 @@ public class CuBs {
 		return model;
 
 	}
+	
+	public static void decodificarTokens(CasoUso model) {
+		String redaccion = null;
+
+		// Información general del caso de uso
+		redaccion = model.getRedaccionActores();
+
+		redaccion = TokenBs.decodificarCadenaSinToken(redaccion);
+		model.setRedaccionActores(redaccion);
+
+		redaccion = model.getRedaccionEntradas();
+
+		redaccion = TokenBs.decodificarCadenaSinToken(redaccion);
+		model.setRedaccionEntradas(redaccion);
+
+		redaccion = model.getRedaccionSalidas();
+
+		redaccion = TokenBs.decodificarCadenaSinToken(redaccion);
+		model.setRedaccionSalidas(redaccion);
+
+		redaccion = model.getRedaccionReglasNegocio();
+
+		redaccion = TokenBs.decodificarCadenaSinToken(redaccion);
+		model.setRedaccionReglasNegocio(redaccion);
+
+		// Precondiciones y postcondiciones
+		Set<PostPrecondicion> postprecondiciones = model
+				.getPostprecondiciones();
+		List<PostPrecondicion> postprecondicionesAux = new ArrayList<PostPrecondicion>(
+				postprecondiciones);
+		if (!Validador.esNuloOVacio(postprecondiciones)) {
+			for (PostPrecondicion pp : postprecondicionesAux) {
+				redaccion = pp.getRedaccion();
+				postprecondiciones.remove(pp);
+				redaccion = TokenBs.decodificarCadenaSinToken(redaccion);
+				pp.setRedaccion(redaccion);
+				postprecondiciones.add(pp);
+			}
+		}
+
+		// Trayectorias
+		Set<Trayectoria> trayectorias = model.getTrayectorias();
+		List<Trayectoria> trayectoriasAux = new ArrayList<Trayectoria>(
+				trayectorias);
+		for (Trayectoria trayectoria : trayectoriasAux) {
+			Set<Paso> pasos = trayectoria.getPasos();
+			List<Paso> pasosAux = new ArrayList<Paso>(pasos);
+			trayectorias.remove(trayectoria);
+			for (Paso paso : pasosAux) {
+				pasos.remove(paso);
+				redaccion = paso.getRedaccion();
+				redaccion = TokenBs.decodificarCadenaSinToken(redaccion);
+				paso.setRedaccion(redaccion);
+				pasos.add(paso);
+			}
+			trayectorias.add(trayectoria);
+		}
+
+		// Puntos de extensión
+		String region;
+		Set<Extension> extensiones = model.getExtiende();
+		List<Extension> extensionesAux = new ArrayList<Extension>(extensiones);
+		for (Extension extension : extensionesAux) {
+			extensiones.remove(extension);
+			region = extension.getRegion();
+			region = TokenBs.decodificarCadenaSinToken(region);
+			extension.setRegion(region);
+			extensiones.add(extension);
+		}
+	}
 
 	public static void agregarReferencias(String actionContext, CasoUso model) {
 		String redaccion = null;
-		// Descripción
-		redaccion = model.getDescripcion();
-		redaccion = TokenBs.agregarReferencias(actionContext, redaccion);
-		model.setDescripcion(redaccion);
 
 		// Información general del caso de uso
 		redaccion = model.getRedaccionActores();
@@ -827,14 +896,16 @@ public class CuBs {
 		return false;
 	}
 
-	public static void guardarRevisiones(Integer esCorrectoResumen,
+	public static boolean guardarRevisiones(Integer esCorrectoResumen,
 			String observacionesResumen, Integer esCorrectoTrayectoria,
 			String observacionesTrayectoria, Integer esCorrectoPuntosExt,
-			String observacionesPuntosExt, CasoUso model) {
+			String observacionesPuntosExt, CasoUso model) throws Exception {
 
 		Revision revisionResumen = null;
 		Revision revisionTrayectoria = null;
 		Revision revisionPuntosExt = null;
+		
+		boolean observacionesCambio = false;
 
 		for (Revision revision : model.getRevisiones()) {
 			if (revision.getSeccion().getNombre()
@@ -854,20 +925,12 @@ public class CuBs {
 				revisionPuntosExt = revision;
 			}
 		}
+
 		if (esCorrectoResumen != null) {
 			System.out.println("ecr: "+esCorrectoResumen);
-			if (esCorrectoResumen == 2) {
-				if (Validador.esNuloOVacio(observacionesResumen)) {
-					throw new PRISMAValidacionException(
-							"El usuario no ingresó el nombre del cu.", "MSG4",
-							null, "model.nombre");
-				}
-				if (Validador.validaLongitudMaxima(observacionesResumen, 999)) {
-					throw new PRISMAValidacionException(
-							"El usuario ingreso observaciones muy largas", "MSG6",
-							new String[] { "999", "caracteres" },
-							"observacionesResumen");
-				}
+			if (esCorrectoResumen == 2) { 
+				observacionesCambio = true;
+				validarObservacionRevision(observacionesResumen, "observacionesResumen");
 
 				if (revisionResumen != null) {
 					revisionResumen.setObservaciones(observacionesResumen);
@@ -889,9 +952,82 @@ public class CuBs {
 					"El usuario no ingresó la respuesta", "MSG4", null,
 					"esCorrectoResumen");
 		}
+		
+		if (esCorrectoTrayectoria != null) {
+			System.out.println("ect: "+esCorrectoTrayectoria);
+			if (esCorrectoTrayectoria == 2) { 
+				observacionesCambio = true;
+				validarObservacionRevision(observacionesTrayectoria, "observacionesTrayectoria");
+
+				if (revisionTrayectoria != null) {
+					revisionTrayectoria.setObservaciones(observacionesTrayectoria);
+					revisionTrayectoria.setRevisado(false);
+				} else {
+					revisionTrayectoria = new Revision(observacionesTrayectoria, model,
+							new SeccionDAO().consultarSeccion(TipoSeccionEnum
+									.getNombre(TipoSeccionENUM.TRAYECTORIA)));
+					revisionTrayectoria.setRevisado(false);
+				}		
+				new RevisionDAO().update(revisionTrayectoria);
+			} else {
+				if (revisionTrayectoria != null) {
+					new RevisionDAO().delete(revisionTrayectoria);
+				}
+			}
+		} else {
+			throw new PRISMAValidacionException(
+					"El usuario no ingresó la respuesta", "MSG4", null,
+					"esCorrectoTrayectoria");
+		}
+		
+		if(model.getExtiende() != null && !model.getExtiende().isEmpty()) {
+			if (esCorrectoPuntosExt != null) {
+				System.out.println("ecpe: "+esCorrectoPuntosExt);
+				if (esCorrectoPuntosExt == 2) { 
+					observacionesCambio = true;
+					validarObservacionRevision(observacionesPuntosExt, "observacionesPuntosExt");
+	
+					if (revisionPuntosExt != null) {
+						revisionPuntosExt.setObservaciones(observacionesPuntosExt);
+						revisionPuntosExt.setRevisado(false);
+					} else {
+						revisionPuntosExt = new Revision(observacionesPuntosExt, model,
+								new SeccionDAO().consultarSeccion(TipoSeccionEnum
+										.getNombre(TipoSeccionENUM.PUNTOSEXTENSION)));
+						revisionPuntosExt.setRevisado(false);
+					}		
+					new RevisionDAO().update(revisionPuntosExt);
+				} else {
+					if (revisionPuntosExt != null) {
+						new RevisionDAO().delete(revisionPuntosExt);
+					}
+				}
+			} else {
+				throw new PRISMAValidacionException(
+						"El usuario no ingresó la respuesta", "MSG4", null,
+						"esCorrectoPuntosExt");
+			}
+		}
+		
+		return observacionesCambio;
 
 	}
 	
+	private static void validarObservacionRevision(String observacionesResumen, String campo) throws Exception{
+		if (Validador.esNuloOVacio(observacionesResumen)) {
+			throw new PRISMAValidacionException(
+					"El usuario no ingresó las observaciones", "MSG4",
+					null, campo);
+		}
+		if (Validador.validaLongitudMaxima(observacionesResumen, 999)) {
+			throw new PRISMAValidacionException(
+					"El usuario ingreso observaciones muy largas", "MSG6",
+					new String[] { "999", "caracteres" },
+					campo);
+		}
+		
+	}
+
 	public static List<CasoUso> obtenerCaminoPrevioMasCorto(CasoUso casoUso) {
 		List<List<CasoUso>> caminosPrevios = obtenerCasosUsoPrevios(casoUso);
 		if(caminosPrevios == null) {

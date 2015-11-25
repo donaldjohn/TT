@@ -177,7 +177,7 @@
 			</s:else>
 		</div>
 	</div>
-	<s:if test="model.extiende == 0">
+	<s:if test="model.extiende.size > 0">
 		<div class="formulario">
 			<div class="tituloFormulario">
 				${blanks}
@@ -195,11 +195,10 @@
 										name="labelRegion" /></span> <span class="ui-widget">${blanks}
 									${extension.region}</span> <br /> <span class="labelIzq consulta"><s:text
 										name="labelCasoUsoExtiende" /></span> <span class="ui-widget">
-									${blanks} <a class="referencia"
-									href='${pageContext.request.contextPath}/cu/${extension.casoUsoDestino.id}'>
+									${blanks} 
 										${extension.casoUsoDestino.clave}
 										${extension.casoUsoDestino.numero} ${blanks}
-										${extension.casoUsoDestino.nombre}</a>
+										${extension.casoUsoDestino.nombre}
 							</span></td>
 						</tr>
 					</table>

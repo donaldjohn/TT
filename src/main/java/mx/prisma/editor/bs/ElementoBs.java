@@ -104,7 +104,7 @@ public class ElementoBs {
 		}
 			break;
 		case LIBERARCASOUSO4_3:
-			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION) && elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.PENDIENTECORRECCION)) {
+			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION) && elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.PORLIBERAR) && elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.LIBERADO)) {
 				throw new PRISMAException("El estado del caso de uso es inválido.", "MSG13");
 		}
 			break;
