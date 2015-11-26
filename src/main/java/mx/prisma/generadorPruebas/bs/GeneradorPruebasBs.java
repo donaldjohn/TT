@@ -712,19 +712,19 @@ public class GeneradorPruebasBs {
 	private static String calcularIdentificador(String prefijo,
 			Paso paso, Paso rn, Entrada entrada) {
 		if (entrada == null) {
-			return prefijo + "-" + paso.getTrayectoria().getClave() + paso.getNumero() + rn.getTrayectoria().getClave() + rn.getNumero();
+			return prefijo + paso.getTrayectoria().getCasoUso().getClave() + paso.getTrayectoria().getCasoUso().getNumero() + "-" + paso.getTrayectoria().getClave() + paso.getNumero() + rn.getTrayectoria().getClave() + rn.getNumero();
 		}
 		if (entrada.getAtributo()!= null) {
-			return prefijo + "-" + paso.getTrayectoria().getClave() + paso.getNumero() + rn.getTrayectoria().getClave() + rn.getNumero() + entrada.getNombreHTML();
+			return prefijo + paso.getTrayectoria().getCasoUso().getClave() + paso.getTrayectoria().getCasoUso().getNumero() + "-" + paso.getTrayectoria().getClave() + paso.getNumero() + rn.getTrayectoria().getClave() + rn.getNumero() + entrada.getNombreHTML();
 		} else if (entrada.getTerminoGlosario() != null) {
-			return prefijo + "-" + paso.getTrayectoria().getClave() + paso.getNumero() + rn.getTrayectoria().getClave() + rn.getNumero() + entrada.getNombreHTML();
+			return prefijo + paso.getTrayectoria().getCasoUso().getClave() + paso.getTrayectoria().getCasoUso().getNumero() +"-" + paso.getTrayectoria().getClave() + paso.getNumero() + rn.getTrayectoria().getClave() + rn.getNumero() + entrada.getNombreHTML();
 		}
 		return null;
 	}
 	
 	
 	public static String calcularIdentificador(String prefijo, Paso paso) {
-		return prefijo + "-" + paso.getTrayectoria().getClave() + paso.getNumero();
+		return prefijo + paso.getTrayectoria().getCasoUso().getClave() + paso.getTrayectoria().getCasoUso().getNumero() + "-" + paso.getTrayectoria().getClave() + paso.getNumero();
 	}
 	
 	
