@@ -1,6 +1,5 @@
 package mx.prisma.bs;
 
-import mx.prisma.editor.model.TipoReglaNegocio;
 
 public class TipoReglaNegocioEnum {
 	public enum TipoReglaNegocioENUM {

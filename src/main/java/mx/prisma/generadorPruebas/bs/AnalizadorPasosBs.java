@@ -161,13 +161,13 @@ public class AnalizadorPasosBs {
 								.getElementoDestino();
 						switch(TipoReglaNegocioEnum.getTipoReglaNegocio(reglaNegocio.getTipoReglaNegocio())) {
 						case COMPATRIBUTOS:
-							return true;
+							return false;
 						case DATOCORRECTO:
 							return true;
 						case FORMATOARCH:
 							return false;
 						case FORMATOCAMPO:
-							return true;
+							return false;
 						case LONGITUD:
 							return true;
 						case OBLIGATORIOS:

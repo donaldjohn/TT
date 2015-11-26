@@ -7,7 +7,7 @@ public class Test {
 
 	public static void main(String[] args) throws Exception {
 		
-		//GeneradorPruebasBs.generarCasosPrueba(new CasoUsoDAO().consultarCasoUso(21));
+		GeneradorPruebasBs.generarCasosPrueba(new CasoUsoDAO().consultarCasoUso(48), "");
 		
 	}
 	

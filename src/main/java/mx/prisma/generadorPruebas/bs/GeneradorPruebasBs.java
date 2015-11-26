@@ -784,8 +784,9 @@ public class GeneradorPruebasBs {
 		ReglaNegocio reglaNegocio;
 		refParam = AnalizadorPasosBs.obtenerPrimerReferencia(pasoRN, TipoReferencia.REGLANEGOCIO);
 		reglaNegocio = (ReglaNegocio) refParam.getElementoDestino();
+		TipoReglaNegocioENUM tipoRN = TipoReglaNegocioEnum.getTipoReglaNegocio(reglaNegocio.getTipoReglaNegocio());
 		
-		if (TipoReglaNegocioEnum.getTipoReglaNegocio(reglaNegocio.getTipoReglaNegocio()) == TipoReglaNegocioENUM.UNICIDAD) {
+		if (tipoRN == TipoReglaNegocioENUM.UNICIDAD) {
 			refParam = new ReferenciaParametroDAO().consultarReferenciaParametro(refParam.getId());
 			archivo += GeneradorPruebasBs.peticionJDBC(pasoRN);
 			archivo += GeneradorPruebasBs.iniciarControladorIf(
@@ -796,12 +797,36 @@ public class GeneradorPruebasBs {
 			archivo += GeneradorPruebasBs.terminarControladorIf();
 
 		} else {
-			entradas.addAll(pasoActual.getTrayectoria().getCasoUso().getEntradas());		
-			for (Entrada entrada : entradas) {
-				archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, pasoRN, entrada, true);
-				archivo += GeneradorPruebasBs.contenedorCSV(pasoActual,	pasoRN, entrada, false);
-				archivo += GeneradorPruebasBs.asercion(AnalizadorPasosBs
-					.calcularPasoAlternativo(pasoRN));
+			entradas.addAll(pasoActual.getTrayectoria().getCasoUso().getEntradas());	
+			if (tipoRN == TipoReglaNegocioENUM.DATOCORRECTO); {
+				for (Entrada entrada : entradas) {
+					if (entrada.getAtributo() != null && !entrada.getAtributo().getTipoDato().getNombre().equals("Cadena") && !entrada.getAtributo().getTipoDato().getNombre().equals("Archivo") && !entrada.getAtributo().getTipoDato().getNombre().equals("Otro")) { 
+						archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, pasoRN, entrada, true);
+						archivo += GeneradorPruebasBs.contenedorCSV(pasoActual,	pasoRN, entrada, false);
+						archivo += GeneradorPruebasBs.asercion(AnalizadorPasosBs
+						.calcularPasoAlternativo(pasoRN));
+					}
+				}
+			}
+			if (tipoRN == TipoReglaNegocioENUM.LONGITUD); {
+				for (Entrada entrada : entradas) {
+					if (entrada.getAtributo() != null && (entrada.getAtributo().getTipoDato().getNombre().equals("Cadena") || entrada.getAtributo().getTipoDato().getNombre().equals("Entero") || entrada.getAtributo().getTipoDato().getNombre().equals("Flotante"))) { 
+						archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, pasoRN, entrada, true);
+						archivo += GeneradorPruebasBs.contenedorCSV(pasoActual,	pasoRN, entrada, false);
+						archivo += GeneradorPruebasBs.asercion(AnalizadorPasosBs
+						.calcularPasoAlternativo(pasoRN));
+					}
+				}
+			}			
+			if (tipoRN == TipoReglaNegocioENUM.OBLIGATORIOS); {
+				for (Entrada entrada : entradas) {
+					if (entrada.getAtributo() != null && entrada.getAtributo().isObligatorio()) { 
+						archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, pasoRN, entrada, true);
+						archivo += GeneradorPruebasBs.contenedorCSV(pasoActual,	pasoRN, entrada, false);
+						archivo += GeneradorPruebasBs.asercion(AnalizadorPasosBs
+						.calcularPasoAlternativo(pasoRN));
+					}
+				}
 			}
 		}
 						
