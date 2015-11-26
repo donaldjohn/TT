@@ -142,10 +142,16 @@ public class MensajeBs {
 			throw new PRISMAValidacionException("El usuario ingreso un nombre con caracter inválido.", "MSG23", new String[] { "El",
 			"nombre"}, "model.nombre");
 		}
-		//Validaciones de la Descripción
-		if(model.getDescripcion() != null && Validador.validaLongitudMaxima(model.getDescripcion(), 999)) {
-			throw new PRISMAValidacionException("El usuario ingreso una descripcion muy larga.", "MSG6", new String[] { "999",
-			"caracteres"}, "model.descripcion");
+		// Validaciones de la Descripción
+		if(Validador.esNuloOVacio(model.getDescripcion())) {
+			throw new PRISMAValidacionException(
+					"El usuario no ingresó la desripción del mensaje.", "MSG4",
+					null, "model.descripcion");
+		}
+		if (Validador.validaLongitudMaxima(model.getDescripcion(), 999)) {
+			throw new PRISMAValidacionException(
+					"El usuario ingreso una descripcion muy larga.", "MSG6",
+					new String[] { "999", "caracteres" }, "model.descripcion");
 		}
 		//Validaciones de la Redacción
 		if(Validador.esNuloOVacio(model.getRedaccion())) {

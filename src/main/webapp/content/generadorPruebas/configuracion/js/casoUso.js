@@ -90,7 +90,10 @@ function agregarCamposAccionesSeccion() {
 					} 
 
 					inputURL = "<input type='text' class='inputFormularioGrande ui-widget' id='input-url-accion-" + item.id  + "' value='" + nullToEmpty(item.urlDestino) + "'>";
-					inputMetodo = "<input type='text' class='inputFormularioChico ui-widget' id='input-metodo-accion-" + item.id  + "' value='" + nullToEmpty(item.metodo) + "'>";
+					inputMetodo = " <select id='input-metodo-accion-" + item.id  + "'> "
+									  + "<option value='GET'>GET</option>"
+									  + "<option value='POST'>POST</option>"
+									+ "</select> ";
 					
 					label = item.tipoAccion.nombre + " " + item.nombre;
 					
@@ -115,6 +118,8 @@ function agregarCamposAccionesSeccion() {
 							+ "<td class='hide'>" + item.tipoAccion.nombre + "</td>"
 							+ "<td class='textoAyuda'>Dirige a la pantalla " + pantallaDestino + "</td>"
 						+"</tr>");
+					
+					document.getElementById("input-metodo-accion-" + item.id).value = nullToEmpty(item.metodo);
 
 		});
 		
@@ -183,7 +188,7 @@ function agregarCamposReglasNegocioSeccion() {
 						
 					}
 					
-					inputQuery = "<input type='text' class='ui-widget inputFormulario' id='input-query-rn-" + item.id  + "' value='" + valor + "'>";
+					inputQuery = "<input type='text' class='ui-widget inputFormularioGrande' id='input-query-rn-" + item.id  + "' value='" + valor + "'>";
 					 
 					$("#tabla-queries-" + idTablaRN).append("<tr>"
 									+ "<td class='label obligatorio'>Query " + reglaNegocio + "</td>"
@@ -303,7 +308,7 @@ function agregarCamposPantallasSeccion() {
 				parsedJson,
 				function(i, item) {
 					console.log("patron: " + item.patron);
-					inputPatron = "<textarea class='ui-widget inputFormulario' id='input-patron-pantalla-" + item.id  + "' >" + nullToEmpty(item.patron) + "</textarea>";
+					inputPatron = "<textarea class='ui-widget inputFormularioGrande' id='input-patron-pantalla-" + item.id  + "' >" + nullToEmpty(item.patron) + "</textarea>";
 					label = item.clave + item.numero + " " + item.nombre;
 					 
 					$("#tablaPantallas").append("<tr>"
@@ -394,8 +399,9 @@ function tablaAccionesToJson() {
 		for (var i = 1; i < nRegistros; i++) {
 			
 		    var url = tabla.rows[i].cells[1].childNodes[0].value;
-		    var metodo = tabla.rows[i].cells[2].childNodes[0].value;
+		    
 		    var id = tabla.rows[i].cells[3].innerHTML;
+		    var metodo = document.getElementById("input-metodo-accion-" + id).value;
 		    var nombreAccion = tabla.rows[i].cells[4].innerHTML;
 		    var clavePantallaDestino = tabla.rows[i].cells[5].innerHTML;
 		    var numeroPantallaDestino = tabla.rows[i].cells[6].innerHTML;

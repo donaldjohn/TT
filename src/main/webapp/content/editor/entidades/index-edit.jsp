@@ -41,7 +41,7 @@
 				<tr>
 					<td class="label obligatorio"><s:text name="labelDescripcion" /></td>
 					<td><s:textarea name="model.descripcion" maxlength="999"
-							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
+							cssErrorClass="input-error" cssClass="inputFormularioExtraGrande ui-widget" />
 						<s:fielderror fieldName ="model.descripcion" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
@@ -116,7 +116,7 @@
 					</tr>
 					<tr>
 						<td class="label obligatorio"><s:text name="labelDescripcion" /></td>
-						<td><s:textarea rows="5" name="atributo.descripcion" id="atributo.descripcion"
+						<td><s:textarea rows="5" name="atributo.descripcion" id="atributo.descripcion" cssClass="inputFormularioExtraGrande ui-widget"
 								maxlength="999" cssErrorClass="input-error"></s:textarea></td>
 					</tr>
 					<tr>

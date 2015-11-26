@@ -42,13 +42,13 @@
 				<tr>
 					<td class="label obligatorio"><s:text name="labelCausa" /></td>
 					<td><s:textarea name="causa" id="model.idCausa" cssErrorClass="input-error" maxlength="999" 
-					cssClass="inputFormulario ui-widget"></s:textarea> <s:fielderror
+					cssClass="inputFormularioExtraGrande ui-widget"></s:textarea> <s:fielderror
 							fieldName="causa" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelRegion" /></td>
 					<td><s:textarea name="region" id="inputor" cssErrorClass="input-error" maxlength="499" 
-					cssClass="inputFormulario ui-widget"></s:textarea> <s:fielderror
+					cssClass="inputFormularioExtraGrande ui-widget"></s:textarea> <s:fielderror
 							fieldName="region" cssClass="error" theme="jquery" /></td>
 				</tr>				
 			</table>

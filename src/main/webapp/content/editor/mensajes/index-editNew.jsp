@@ -51,8 +51,8 @@
 							fieldName="model.nombre" cssClass="error" theme="jquery" /></td>
 				</tr>
 				<tr>
-						<td class="label"><s:text name="labelDescripcion" /></td>
-						<td><s:textarea rows="5" name="model.descripcion" cssClass="inputFormulario ui-widget"
+						<td class="label obligatorio"><s:text name="labelDescripcion" /></td>
+						<td><s:textarea rows="5" name="model.descripcion" cssClass="inputFormularioExtraGrande ui-widget"
 								maxlength="999" cssErrorClass="input-error"></s:textarea> 
 								<s:fielderror
 								fieldName="model.descripcion" cssClass="error"
@@ -64,7 +64,7 @@
 				</tr>
 				<tr>
 						<td class="label obligatorio"><s:text name="labelRedaccion" /></td>
-						<td><s:textarea rows="5" name="model.redaccion" cssClass="inputFormulario ui-widget" id="inputor"
+						<td><s:textarea rows="5" name="model.redaccion" cssClass="inputFormularioExtraGrande ui-widget" id="inputor"
 								maxlength="999" cssErrorClass="input-error" oninput="verificarEsParametrizado();" onchange="verificarEsParametrizado();"/> 
 								<s:fielderror
 								fieldName="model.redaccion" cssClass="error"
@@ -83,13 +83,16 @@
 		<s:fielderror fieldName="model.parametros" cssClass="error errorFormulario" theme="jquery" />
 		<div  class="formulario" style="display: none;" id = "seccionParametros">
 			<div class="tituloFormulario">Parámetros del mensaje</div>
+			<div class="seccion">
 			<div class="instrucciones">Ingrese la descripción de los parámetros.</div>
-			<table class="seccion" id="parametros">
+			<br/>
+			<table id="parametros">
 				<thead>
 					<th></th>
 					<th></th>
 				</thead>
 			</table>
+			</div>
 		</div>
 		<br />
 		<div align="center">

@@ -127,7 +127,7 @@ function mostrarCamposParametros(json) {
 						function(i, item) {
 							var parametro = [
 									item.nombre,
-									"<textarea rows='2' class='inputFormulario ui-widget' id='idDescripcionParametro"
+									"<textarea rows='2' class='inputFormularioExtraGrande ui-widget' id='idDescripcionParametro"
 											+ i
 											+ "'"
 											+ "maxlength='500'>"
@@ -157,7 +157,7 @@ function cargarParametros() {
 						function(i, item) {
 							var parametro = [
 									item.nombre,
-									"<textarea rows='2' class='inputFormulario ui-widget' id='idDescripcionParametro"
+									"<textarea rows='2' class='inputFormularioExtraGrande ui-widget' id='idDescripcionParametro"
 											+ i
 											+ "'"
 											+ "maxlength='500'>"

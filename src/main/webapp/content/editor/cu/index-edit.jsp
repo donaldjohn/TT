@@ -68,7 +68,7 @@
 				<tr>
 					<td class="label"><s:text name="labelResumen" /></td>
 					<td><s:textarea rows="5" name="model.descripcion"
-							cssClass="inputFormulario ui-widget" maxlength="999"
+							cssClass="inputFormularioExtraGrande ui-widget" maxlength="999"
 							cssErrorClass="input-error"></s:textarea> <s:fielderror
 							fieldName="model.descripcion" cssClass="error" theme="jquery" /></td>
 				</tr>
@@ -81,7 +81,7 @@
 					<tr>
 						<td class="label"><s:text name="labelActores" /></td>
 						<td><s:textarea rows="5" name="model.redaccionActores"
-								cssClass="inputFormulario ui-widget" maxlength="999"
+								cssClass="inputFormularioExtraGrande ui-widget" maxlength="999"
 								cssErrorClass="input-error" id="actorInput"></s:textarea> <s:fielderror
 								fieldName="model.redaccionActores" cssClass="error"
 								theme="jquery" /></td>
@@ -89,7 +89,7 @@
 					<tr>
 						<td class="label"><s:text name="labelEntradas" /></td>
 						<td><s:textarea rows="5" name="model.redaccionEntradas"
-								id="entradaInput" cssClass="inputFormulario ui-widget"
+								id="entradaInput" cssClass="inputFormularioExtraGrande ui-widget"
 								maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
 								fieldName="model.redaccionEntradas" cssClass="error"
 								theme="jquery" /></td>
@@ -97,7 +97,7 @@
 					<tr>
 						<td class="label"><s:text name="labelSalidas" /></td>
 						<td><s:textarea rows="5" name="model.redaccionSalidas"
-								id="salidaInput" cssClass="inputFormulario ui-widget"
+								id="salidaInput" cssClass="inputFormularioExtraGrande ui-widget"
 								maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
 								fieldName="model.redaccionSalidas" cssClass="error"
 								theme="jquery" /></td>
@@ -105,7 +105,7 @@
 					<tr>
 						<td class="label"><s:text name="labelReglasNegocio" /></td>
 						<td><s:textarea rows="5" name="model.redaccionReglasNegocio"
-								id="inputor" cssClass="inputFormulario ui-widget"
+								id="inputor" cssClass="inputFormularioExtraGrande ui-widget"
 								maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
 								fieldName="model.redaccionReglasNegocio" cssClass="error"
 								theme="jquery" /></td>
@@ -207,7 +207,7 @@
 					<tr>
 						<td class="label obligatorio"><s:text name="labelRedaccion" /></td>
 						<td><s:textarea rows="5" name="precondicion.redaccion"
-								id="precondicionInput" cssClass="inputFormulario ui-widget"
+								id="precondicionInput" cssClass="inputFormularioExtraGrande ui-widget"
 								maxlength="999" cssErrorClass="input-error"></s:textarea></td>
 					</tr>
 				</table>
@@ -232,7 +232,7 @@
 					<tr>
 						<td class="label obligatorio"><s:text name="labelRedaccion" /></td>
 						<td><s:textarea rows="5" name="postcondicion.redaccion"
-								id="postcondicionInput" cssClass="inputFormulario ui-widget"
+								id="postcondicionInput" cssClass="inputFormularioExtraGrande ui-widget"
 								maxlength="999" cssErrorClass="input-error"></s:textarea></td>
 					</tr>
 				</table>
@@ -264,7 +264,7 @@
 						<td class="label obligatorio"><s:text name="labelComentarios" /></td>
 						<td><s:textarea rows="5" name="comentarioDialogo"
 								id="comentarioDialogo" maxlength="999"
-								cssErrorClass="input-error" cssClass="inputFormulario ui-widget" /></td>
+								cssErrorClass="input-error" cssClass="inputFormularioExtraGrande ui-widget" /></td>
 					</tr>
 				</table>
 				</div>

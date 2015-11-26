@@ -55,7 +55,7 @@
 				</tr>
 				<tr>
 						<td class="label"><s:text name="labelResumen" /></td>
-						<td><s:textarea rows="5" name="model.descripcion" cssClass="inputFormulario ui-widget"
+						<td><s:textarea rows="5" name="model.descripcion" cssClass="inputFormularioExtraGrande ui-widget"
 								maxlength="999" cssErrorClass="input-error"></s:textarea> 
 								<s:fielderror
 								fieldName="model.descripcion" cssClass="error"
@@ -65,11 +65,10 @@
 		</div>
 		<div class="formulario">
 			<div class="tituloFormulario">Descripción del caso de uso</div>
-			<div class="seccion">
-				<table>
+				<table class="seccion">
 					<tr>
 						<td class="label"><s:text name="labelActores" /></td>
-						<td><s:textarea rows="5" name="model.redaccionActores" cssClass="inputFormulario ui-widget"
+						<td><s:textarea rows="5" name="model.redaccionActores" cssClass="inputFormularioExtraGrande ui-widget"
 								maxlength="999" cssErrorClass="input-error" id="actorInput" ></s:textarea>
 								<s:fielderror
 								fieldName="model.redaccionActores" cssClass="error"
@@ -77,14 +76,14 @@
 					</tr>
 					<tr>
 						<td class="label"><s:text name="labelEntradas" /></td>
-						<td><s:textarea rows="5" name="model.redaccionEntradas" id="entradaInput" cssClass="inputFormulario ui-widget"
+						<td><s:textarea rows="5" name="model.redaccionEntradas" id="entradaInput" cssClass="inputFormularioExtraGrande ui-widget"
 								maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
 								fieldName="model.redaccionEntradas" cssClass="error"
 								theme="jquery" /></td>
 					</tr>
 					<tr>
 						<td class="label"><s:text name="labelSalidas" /></td>
-						<td><s:textarea rows="5" name="model.redaccionSalidas" id="salidaInput" cssClass="inputFormulario ui-widget"
+						<td><s:textarea rows="5" name="model.redaccionSalidas" id="salidaInput" cssClass="inputFormularioExtraGrande ui-widget"
 								maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
 								fieldName="model.redaccionSalidas" cssClass="error"
 								theme="jquery" /></td>
@@ -92,14 +91,12 @@
 					<tr>
 						<td class="label"><s:text
 								name="labelReglasNegocio" /></td>
-						<td><s:textarea rows="5" name="model.redaccionReglasNegocio" id="inputor" cssClass="inputFormulario ui-widget"
+						<td><s:textarea rows="5" name="model.redaccionReglasNegocio" id="inputor" cssClass="inputFormularioExtraGrande ui-widget"
 								maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
 								fieldName="model.redaccionReglasNegocio" cssClass="error"
 								theme="jquery" /></td>
 					</tr>
 				</table>
-
-			</div>
 		</div>
 		<div class="formulario">
 			<div class="tituloFormulario">Precondiciones</div>
@@ -172,7 +169,7 @@
 				<table class="seccion">
 					<tr>
 						<td class="label obligatorio"><s:text name="labelRedaccion" /></td>
-						<td><s:textarea rows="5" name="precondicion.redaccion" id="precondicionInput" cssClass="inputFormulario ui-widget"
+						<td><s:textarea rows="5" name="precondicion.redaccion" id="precondicionInput" cssClass="inputFormularioExtraGrande ui-widget"
 								maxlength="999" cssErrorClass="input-error"></s:textarea></td>
 					</tr>
 				</table>
@@ -197,7 +194,7 @@
 				<table class="seccion">
 					<tr>
 						<td class="label obligatorio"><s:text name="labelRedaccion" /></td>
-						<td><s:textarea rows="5" name="postcondicion.redaccion" id="postcondicionInput" cssClass="inputFormulario ui-widget"
+						<td><s:textarea rows="5" name="postcondicion.redaccion" id="postcondicionInput" cssClass="inputFormularioExtraGrande ui-widget"
 								maxlength="999" cssErrorClass="input-error"></s:textarea></td>
 					</tr>
 				</table>

@@ -16,6 +16,10 @@
 
 </head>
 <body>
+	<div class="menuWizard">
+	<img id="" src="${pageContext.request.contextPath}/resources/images/wizard/w3.png" />
+	</div>
+	
 	<div class="modal" id="modal"><!-- Place at bottom of page --></div>
 	
 	<h1>Configuración del Caso de uso <s:property value="casoUso.clave + casoUso.numero + ' ' + casoUso.nombre"/></h1>
