@@ -34,8 +34,8 @@
 		<div class="formulario" id="formularioEntradas">
 			<div class="tituloFormulario">Configuración de las Entradas</div>
 			<p class="instrucciones">Ingrese la etiqueta y el valor válido de cada una de las Entradas.</p>
-			<div class="seccion" id="seccionEntradas">
-				<table id="tablaEntradas">
+			<div id="seccionEntradas">
+				<table class="seccion" id="tablaEntradas">
 				<!--  -->
 				</table>
 			</div>
@@ -54,7 +54,7 @@
 				<div class="seccion" id="seccionRN">
 					<!--  -->
 				</div>
-				<table id="tablaReglasNegocio">
+				<table class="seccion" id="tablaReglasNegocio">
 				<!--  -->
 				</table>
 			</div>
@@ -70,7 +70,7 @@
 			<div class="tituloFormulario">Configuración de las Pantallas</div>
 			<p class="instrucciones">Ingrese el patrón de cada Pantalla.</p>
 			<div class="seccion" id="seccionPantallas">
-				<table id="tablaPantallas">
+				<table class="seccion" id="tablaPantallas">
 				<!--  -->
 				</table>
 			</div>
@@ -95,7 +95,7 @@
 			</s:url>
 			<input class="boton" type="button"
 				onclick="location.href='${urlGestionarCU}'"
-				value="Salir" />
+				value="Cancelar" />
 		</div>
 		
 		<s:hidden name="jsonAcciones" id="jsonAcciones" value="%{jsonAcciones}"/>

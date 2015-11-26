@@ -41,7 +41,7 @@ a {
 	text-align: right;
 	font-size: 13px;
 	position: relative;
-    right: -320px;
+    right: -20%;
     top: 0px;
     width: 80%;
     z-index: 99;
@@ -58,9 +58,9 @@ a {
 	position: absolute;
 	top: 40px;
 	/*left: 25%;*/
-	left: 15%;
+	left: 10%;
 	padding: 30px;
-	width: 70%;
+	width: 80%;
 	heigth: 100%;
 	z-index: 96;
 	visibility: hidden;
@@ -146,14 +146,15 @@ p.main {
 	position: relative;
 	border-radius: 5px;
 	margin: 15px;
-	
+	width: 100%;
 }
 
 .seccion {
   	/*background-color: #0000ff;*/
   	border: 0px;
   	top: 0px;
-  	padding: 10px 40px 10px 30px;
+  	padding: 10px 10px 10px 10px;
+  	width: 98%;
 }
 
 .subseccion {
@@ -237,8 +238,7 @@ a.menu:hover {
 .menuSecundario {
 	position: fixed;
 	left: 0px;
-	/*width: 25%;*/	
-	width: 15%;
+	width: 10%;
 	top: 35px;
 	z-index: 97;
 	height: 100%;
@@ -327,7 +327,8 @@ a.menuCUSel:hover {
 	font-size:12px;
 	text-align: right; 
 	vertical-align: top; 
-	width: 200px;
+	width: 20%;
+	min-width: 150px;
 	max-width: 200px;
 	word-wrap: break-word;
 	
@@ -343,7 +344,18 @@ a.menuCUSel:hover {
 }
 
 .inputFormulario {
-	min-width: 400px;
+	width: 50%;
+	min-width: 250px;
+}
+
+.inputFormularioGrande {
+	min-width: 70%;
+	min-width: 350px;
+}
+
+.inputFormularioChico {
+	min-width: 30%;
+	min-width: 100px;
 }
 
 textarea { 
@@ -558,4 +570,9 @@ a.referencia:hover {
 
 .radiobotones {
 	padding-left: 12%;
+}
+
+.menuWizard {
+	padding-top: 5%;
+	padding-bottom: 5%;
 }

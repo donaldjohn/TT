@@ -35,8 +35,8 @@ function agregarCamposEntradasSeccion() {
 						idValor = 0;
 					}
 					
-					inputEtiqueta = "<input type='text' class='ui-widget' id='input-etiqueta-entrada-" + item.id  + "' value='" + nullToEmpty(item.nombreHTML) + "'>";
-					inputValor = "<input type='text' class='ui-widget' id='input-valor-entrada-" + item.id  + "' value='" + valor + "'>";
+					inputEtiqueta = "<input type='text' class='inputFormulario ui-widget' id='input-etiqueta-entrada-" + item.id  + "' value='" + nullToEmpty(item.nombreHTML) + "'>";
+					inputValor = "<input type='text' class='inputFormulario ui-widget' id='input-valor-entrada-" + item.id  + "' value='" + valor + "'>";
 					nombreAtributo = null;
 					nombreTermino = null;
 					if(item.atributo != null) {
@@ -78,7 +78,7 @@ function agregarCamposAccionesSeccion() {
 					tablaPantalla = $("#tabla-acciones-" + idTablaPantalla);
 					if (tablaPantalla.size() == 0) {
 						$("#seccionURL").append("<div class='subtituloFormulario'>Pantalla " + item.pantalla.clave + item.pantalla.numero + " " + item.pantalla.nombre +"</div>");
-						$("#seccionURL").append("<table id='tabla-acciones-" + idTablaPantalla + "'> <!--  --> </table>");
+						$("#seccionURL").append("<table class='seccion' id='tabla-acciones-" + idTablaPantalla + "'> <!--  --> </table>");
 						
 						$("#tabla-acciones-" + idTablaPantalla).append("<tr>"
 								+ "<td> <!-- --> </td>"
@@ -89,8 +89,8 @@ function agregarCamposAccionesSeccion() {
 						
 					} 
 
-					inputURL = "<input type='text' class='inputFormulario ui-widget' id='input-url-accion-" + item.id  + "' value='" + nullToEmpty(item.urlDestino) + "'>";
-					inputMetodo = "<input type='text' class=' ui-widget' id='input-metodo-accion-" + item.id  + "' value='" + nullToEmpty(item.metodo) + "'>";
+					inputURL = "<input type='text' class='inputFormularioGrande ui-widget' id='input-url-accion-" + item.id  + "' value='" + nullToEmpty(item.urlDestino) + "'>";
+					inputMetodo = "<input type='text' class='inputFormularioChico ui-widget' id='input-metodo-accion-" + item.id  + "' value='" + nullToEmpty(item.metodo) + "'>";
 					
 					label = item.tipoAccion.nombre + " " + item.nombre;
 					
@@ -178,7 +178,7 @@ function agregarCamposReglasNegocioSeccion() {
 					if (tablaRN.size() == 0) {
 						$("#seccionRN").append("<div class='subtituloFormulario'>" + reglaNegocio +"</div>");
 						$("#seccionRN").append("<div class='textoAyuda'>Paso: " + realizaImg + " " + verboAux + " " +  item.paso.redaccion +"</div>");
-						$("#seccionRN").append("<table id='tabla-queries-" + idTablaRN + "'> <!--  --> </table>");
+						$("#seccionRN").append("<table class='seccion' id='tabla-queries-" + idTablaRN + "'> <!--  --> </table>");
 						$("#seccionRN").append("</br>");
 						
 					}
@@ -243,7 +243,7 @@ function agregarCamposParametrosSeccion() {
 						$("#seccionParametros").append("<div class='subtituloFormulario'>Mensaje " + item.elementoDestino.clave + item.elementoDestino.numero + " " + item.elementoDestino.nombre +"</div>");
 						$("#seccionParametros").append("<div class='textoAyuda'>Redacción: " + item.elementoDestino.redaccion +"</div>");
 						$("#seccionParametros").append("<div class='textoAyuda'>Paso: " + realizaImg + " " + verboAux + " " +  item.paso.redaccion +"</div>");
-						$("#seccionParametros").append("<table id='tabla-parametros-" + idTablaMensaje + "'> <!--  --> </table>");
+						$("#seccionParametros").append("<table class='seccion' id='tabla-parametros-" + idTablaMensaje + "'> <!--  --> </table>");
 						$("#seccionParametros").append("</br>");
 						
 					}

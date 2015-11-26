@@ -13,7 +13,9 @@
 
 </head>
 <body>
-	<h1>Configuración general</h1>
+	<div class="menuWizard">
+	<img id="" class="button" title="Eliminar Caso de uso" src="${pageContext.request.contextPath}/resources/images/wizard/w1.png" />
+	</div>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
