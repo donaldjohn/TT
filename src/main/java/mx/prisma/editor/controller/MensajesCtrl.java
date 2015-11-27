@@ -185,6 +185,7 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 			prepararVista();
 
 			resultado = EDIT;
+			System.out.println("jsonEnv: " + jsonParametros);
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			resultado = edit();
@@ -201,6 +202,7 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 	public String update() {
 		String resultado = null;
 		try {
+			System.out.println("jsonRec: " + jsonParametros);
 			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
 			if (proyecto == null) {
@@ -337,7 +339,7 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 			cambioRedaccion = "false";
 		}
 
-		if (jsonParametros == null) {
+		if (jsonParametros == null || jsonParametros.isEmpty()) {
 			for (MensajeParametro parametro : model.getParametros()) {
 				parametroAux = new Parametro(parametro.getParametro()
 						.getNombre(), parametro.getParametro().getDescripcion());

@@ -64,7 +64,7 @@
 				<tr id="filaCondicion" style="display: none;">
 					<td class="label obligatorio"><s:text name="labelCondicion" /></td>
 					<td><s:textarea rows="5" name="model.condicion"
-							cssClass="inputFormulario ui-widget" id="model.idCondicion"
+							cssClass="inputFormularioExtraGrande ui-widget" id="model.idCondicion"
 							maxlength="999" cssErrorClass="input-error"></s:textarea> <s:fielderror
 							fieldName="model.condicion" cssClass="error" theme="jquery" /></td>
 				</tr>
@@ -154,7 +154,7 @@
 					</tr>
 					<tr>
 						<td class="label obligatorio"><s:text name="labelRedaccion" /></td>
-						<td><s:textarea rows="5" name="paso.redaccion" id="inputor"
+						<td><s:textarea rows="5" name="paso.redaccion" id="inputor" cssClass="inputFormularioExtraGrande ui-widget"
 								maxlength="999" cssErrorClass="input-error"></s:textarea></td>
 					</tr>
 				</table>

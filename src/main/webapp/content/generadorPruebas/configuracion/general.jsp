@@ -14,18 +14,19 @@
 </head>
 <body>
 	<div class="menuWizard">
-	<img id="" class="button" title="Eliminar Caso de uso" src="${pageContext.request.contextPath}/resources/images/wizard/w1.png" />
+	<img id="" src="${pageContext.request.contextPath}/resources/images/wizard/w1.png" />
 	</div>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
 	<br />
 
-	<p class="instrucciones">Ingrese la información solicitada.</p>
+	
 	<s:form autocomplete="off" id="frmConfiguracion" theme="simple"
 		action="%{#pageContext.request.contextPath}/configuracion-general!configurar" method="post">
 		<div class="formulario">
 			<div class="tituloFormulario">Configuración de la conexión a la base de datos</div>
+			<p class="instrucciones">Ingrese la información necesaria para la conexión a la base de datos de su sistema a probar.</p>
 			<table class="seccion">
 				<tr>
 					<td class="label obligatorio"><s:text name="labelURL" /></td>
@@ -59,6 +60,7 @@
 		</div>
 		<div class="formulario">
 			<div class="tituloFormulario">Configuración HTTP</div>
+			<p class="instrucciones">Ingrese el nombre del servidor o IP donde se aloja su sistema, así como el puerto.</p>
 			<table class="seccion">
 				<tr>
 					<td class="label obligatorio"><s:text name="labelIp" /></td>

@@ -13,8 +13,9 @@
 
 </head>
 <body>
-
-	<h1>Configuración Casos de uso previos</h1>
+	<div class="menuWizard">
+	<img id="" src="${pageContext.request.contextPath}/resources/images/wizard/w2.png" />
+	</div>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
