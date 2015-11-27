@@ -4,7 +4,7 @@ package mx.prisma.editor.model;
  * Sergio Ramírez Camacho 07/06/2015
  */
 
-import java.util.HashSet; 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -19,14 +19,11 @@ import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Sort;
-import org.hibernate.annotations.SortType;
-
-import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
-
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.generadorPruebas.model.ConfiguracionBaseDatos;
 import mx.prisma.generadorPruebas.model.ConfiguracionHttp;
+
+import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
 
 @Entity
 @Table(name = "CasoUso", catalog = "PRISMA")

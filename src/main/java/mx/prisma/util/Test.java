@@ -1,7 +1,5 @@
 package mx.prisma.util;
 
-import mx.prisma.editor.dao.CasoUsoDAO;
-import mx.prisma.generadorPruebas.bs.GeneradorPruebasBs;
 
 public class Test {
 

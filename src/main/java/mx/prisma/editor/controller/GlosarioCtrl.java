@@ -2,7 +2,6 @@ package mx.prisma.editor.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +11,6 @@ import mx.prisma.bs.AccessBs;
 import mx.prisma.bs.AnalisisEnum.CU_Glosario;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.TerminoGlosarioBs;
-import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.util.ActionSupportPRISMA;

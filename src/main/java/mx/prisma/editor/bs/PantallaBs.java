@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.hibernate.HibernateException;
-import org.hibernate.JDBCException;
-
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AnalisisEnum.CU_Pantallas;
 import mx.prisma.bs.ReferenciaEnum;
@@ -17,7 +14,6 @@ import mx.prisma.editor.dao.PantallaDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.dao.TipoAccionDAO;
 import mx.prisma.editor.model.Accion;
-import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
@@ -28,6 +24,9 @@ import mx.prisma.editor.model.TipoAccion;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
+
+import org.hibernate.HibernateException;
+import org.hibernate.JDBCException;
 
 public class PantallaBs {
 

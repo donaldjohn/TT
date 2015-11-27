@@ -2,7 +2,6 @@ package mx.prisma.editor.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +15,6 @@ import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.bs.EntidadBs;
 import mx.prisma.editor.bs.ReglaNegocioBs;
-import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Modulo;

@@ -4,7 +4,6 @@ import mx.prisma.editor.model.CasoUso;
 import mx.prisma.generadorPruebas.dao.ConfiguracionDAO;
 import mx.prisma.generadorPruebas.model.ConfiguracionBaseDatos;
 import mx.prisma.generadorPruebas.model.ConfiguracionHttp;
-import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
 

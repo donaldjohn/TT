@@ -2,14 +2,13 @@ package mx.prisma.generadorPruebas.dao;
 
 import java.util.List;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-
-import mx.prisma.admin.model.Colaborador;
 import mx.prisma.dao.GenericDAO;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.generadorPruebas.model.ConfiguracionBaseDatos;
 import mx.prisma.generadorPruebas.model.ConfiguracionHttp;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
 
 public class ConfiguracionDAO extends GenericDAO {
 	public void modificarConfiguracionGeneral(Object obj) {

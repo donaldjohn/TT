@@ -1,6 +1,5 @@
 package mx.prisma.util;
 
-import java.util.ArrayList;
 
 public class PRISMAException extends RuntimeException{
 

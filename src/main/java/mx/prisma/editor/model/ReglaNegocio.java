@@ -10,10 +10,9 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-
 import mx.prisma.admin.model.Proyecto;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity

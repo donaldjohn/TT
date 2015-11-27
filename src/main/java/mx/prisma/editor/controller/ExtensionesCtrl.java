@@ -6,12 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import mx.prisma.admin.bs.ProyectoBs;
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AccessBs;
 import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
-import mx.prisma.bs.ReferenciaEnum.TipoSeccion;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.ExtensionBs;

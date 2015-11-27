@@ -9,10 +9,10 @@ import java.util.Set;
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AccessBs;
-import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
 import mx.prisma.editor.bs.AccionBs;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
+import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.bs.EntradaBs;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Atributo;
@@ -22,8 +22,6 @@ import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.editor.model.Trayectoria;
-import mx.prisma.editor.bs.CuBs;
-import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.generadorPruebas.bs.CuPruebasBs;
 import mx.prisma.generadorPruebas.bs.ValorEntradaBs;
 import mx.prisma.generadorPruebas.model.ValorEntrada;
@@ -40,7 +38,6 @@ import org.apache.struts2.convention.annotation.Results;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ModelDriven;
 
 @ResultPath("/content/generadorPruebas/")
 @Results({

@@ -2,7 +2,6 @@ package mx.prisma.editor.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +14,6 @@ import mx.prisma.editor.bs.AtributoBs;
 import mx.prisma.editor.bs.EntidadBs;
 import mx.prisma.editor.dao.TipoDatoDAO;
 import mx.prisma.editor.dao.UnidadTamanioDAO;
-import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Modulo;

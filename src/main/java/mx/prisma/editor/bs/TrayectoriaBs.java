@@ -13,7 +13,6 @@ import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.dao.TrayectoriaDAO;
 import mx.prisma.editor.dao.VerboDAO;
-import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
