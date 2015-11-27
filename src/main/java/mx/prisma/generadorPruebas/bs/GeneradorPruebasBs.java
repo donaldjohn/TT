@@ -798,7 +798,7 @@ public class GeneradorPruebasBs {
 
 		} else {
 			entradas.addAll(pasoActual.getTrayectoria().getCasoUso().getEntradas());	
-			if (tipoRN == TipoReglaNegocioENUM.DATOCORRECTO); {
+			if (tipoRN == TipoReglaNegocioENUM.DATOCORRECTO) {
 				for (Entrada entrada : entradas) {
 					if (entrada.getAtributo() != null && !entrada.getAtributo().getTipoDato().getNombre().equals("Cadena") && !entrada.getAtributo().getTipoDato().getNombre().equals("Archivo") && !entrada.getAtributo().getTipoDato().getNombre().equals("Otro")) { 
 						archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, pasoRN, entrada, true);
@@ -807,8 +807,8 @@ public class GeneradorPruebasBs {
 						.calcularPasoAlternativo(pasoRN));
 					}
 				}
-			}
-			if (tipoRN == TipoReglaNegocioENUM.LONGITUD); {
+			} 
+			if (tipoRN == TipoReglaNegocioENUM.LONGITUD) {
 				for (Entrada entrada : entradas) {
 					if (entrada.getAtributo() != null && (entrada.getAtributo().getTipoDato().getNombre().equals("Cadena") || entrada.getAtributo().getTipoDato().getNombre().equals("Entero") || entrada.getAtributo().getTipoDato().getNombre().equals("Flotante"))) { 
 						archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, pasoRN, entrada, true);
@@ -818,7 +818,7 @@ public class GeneradorPruebasBs {
 					}
 				}
 			}			
-			if (tipoRN == TipoReglaNegocioENUM.OBLIGATORIOS); {
+			if (tipoRN == TipoReglaNegocioENUM.OBLIGATORIOS) {
 				for (Entrada entrada : entradas) {
 					if (entrada.getAtributo() != null && entrada.getAtributo().isObligatorio()) { 
 						archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, pasoRN, entrada, true);
