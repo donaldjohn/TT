@@ -3,7 +3,6 @@ package mx.prisma.editor.controller;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import mx.prisma.admin.bs.ProyectoBs;
@@ -46,7 +45,6 @@ import org.apache.struts2.convention.annotation.Results;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 
 @ResultPath("/content/editor/")
 @Results({
@@ -115,7 +113,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	
 	public String index() {
 		String resultado;
-		Map<String, Object> session = null;
 		try {
 			if(SessionManager.get("pruebaGenerada") != null && (Boolean) SessionManager.get("pruebaGenerada")) {
 				pruebaGenerada = true;
