@@ -1,9 +1,9 @@
 package mx.prisma.generadorPruebas.dao;
 
-import org.hibernate.HibernateException;
-
 import mx.prisma.dao.GenericDAO;
 import mx.prisma.generadorPruebas.model.Escenario;
+
+import org.hibernate.HibernateException;
 
 public class EscenarioDAO extends GenericDAO {
 

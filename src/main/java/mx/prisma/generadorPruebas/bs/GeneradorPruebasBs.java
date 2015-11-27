@@ -39,6 +39,8 @@ public class GeneradorPruebasBs {
 	private static final String prefijoAsercion = "AS";
 	private static final String prefijoContenedorCSV = "CSV";
 	private static String casoUsoTesting = "";
+	private static boolean caminoIdealIncierto = true; 
+	private static Paso pasoIncierto;
 
 	public static String encabezado() {
 		String bloque = 
@@ -157,7 +159,7 @@ public class GeneradorPruebasBs {
 				+ "<stringProp name=\"HTTPSampler.contentEncoding\"></stringProp>" + "\n"
 				+ "<stringProp name=\"HTTPSampler.path\">"+ url +"</stringProp>" + "\n"
 				+ "<stringProp name=\"HTTPSampler.method\">"+ metodo +"</stringProp>" + "\n"
-				+ "<boolProp name=\"HTTPSampler.follow_redirects\">true</boolProp>" + "\n"
+				+ "<boolProp name=\"HTTPSampler.follow_redirects\">false</boolProp>" + "\n"
 				+ "<boolProp name=\"HTTPSampler.auto_redirects\">false</boolProp>" + "\n"
 				+ "<boolProp name=\"HTTPSampler.use_keepalive\">true</boolProp>" + "\n"
 				+ "<boolProp name=\"HTTPSampler.DO_MULTIPART_POST\">false</boolProp>" + "\n"
@@ -794,11 +796,13 @@ public class GeneradorPruebasBs {
 			archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, pasoRN, null, true);
 			archivo += GeneradorPruebasBs.contenedorCSV(pasoActual, pasoRN, null, false);
 			archivo += GeneradorPruebasBs.asercion(AnalizadorPasosBs.calcularPasoAlternativo(pasoRN));
-			archivo += GeneradorPruebasBs.terminarControladorIf();
+			archivo += GeneradorPruebasBs.terminarControladorIf();			
+			pasoIncierto = pasoRN;
+			caminoIdealIncierto = true;
 
 		} else {
 			entradas.addAll(pasoActual.getTrayectoria().getCasoUso().getEntradas());	
-			if (tipoRN == TipoReglaNegocioENUM.DATOCORRECTO); {
+			if (tipoRN == TipoReglaNegocioENUM.DATOCORRECTO) {
 				for (Entrada entrada : entradas) {
 					if (entrada.getAtributo() != null && !entrada.getAtributo().getTipoDato().getNombre().equals("Cadena") && !entrada.getAtributo().getTipoDato().getNombre().equals("Archivo") && !entrada.getAtributo().getTipoDato().getNombre().equals("Otro")) { 
 						archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, pasoRN, entrada, true);
@@ -807,8 +811,8 @@ public class GeneradorPruebasBs {
 						.calcularPasoAlternativo(pasoRN));
 					}
 				}
-			}
-			if (tipoRN == TipoReglaNegocioENUM.LONGITUD); {
+			} 
+			if (tipoRN == TipoReglaNegocioENUM.LONGITUD) {
 				for (Entrada entrada : entradas) {
 					if (entrada.getAtributo() != null && (entrada.getAtributo().getTipoDato().getNombre().equals("Cadena") || entrada.getAtributo().getTipoDato().getNombre().equals("Entero") || entrada.getAtributo().getTipoDato().getNombre().equals("Flotante"))) { 
 						archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, pasoRN, entrada, true);
@@ -818,7 +822,7 @@ public class GeneradorPruebasBs {
 					}
 				}
 			}			
-			if (tipoRN == TipoReglaNegocioENUM.OBLIGATORIOS); {
+			if (tipoRN == TipoReglaNegocioENUM.OBLIGATORIOS) {
 				for (Entrada entrada : entradas) {
 					if (entrada.getAtributo() != null && entrada.getAtributo().isObligatorio()) { 
 						archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, pasoRN, entrada, true);
@@ -973,11 +977,20 @@ public class GeneradorPruebasBs {
 					archivo += generarPrueba(pasoActual, pasos);
 
 				} else {
-					archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, true);
-					archivo += GeneradorPruebasBs.contenedorCSV(pasoActual,
+					if (!caminoIdealIncierto) {
+						archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, true);
+						archivo += GeneradorPruebasBs.contenedorCSV(pasoActual,
 							false);
-					pasos.remove(pasoActual);
-					archivo += generarPrueba(siguiente, pasos);
+					} else {
+						archivo += GeneradorPruebasBs.iniciarControladorIf(
+								pasoIncierto, "==");
+						archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, pasoIncierto, null, true);
+						archivo += GeneradorPruebasBs.contenedorCSV(pasoActual, pasoIncierto, null, false);
+						pasos.remove(pasoActual);
+						archivo += generarPrueba(siguiente, pasos);
+						archivo += GeneradorPruebasBs.terminarControladorIf();	
+					}
+					
 				}
 			}
 			break;

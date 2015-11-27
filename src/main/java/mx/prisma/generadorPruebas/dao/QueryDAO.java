@@ -1,15 +1,12 @@
 package mx.prisma.generadorPruebas.dao;
 
 import java.util.List;
-import java.util.Set;
+
+import mx.prisma.dao.GenericDAO;
+import mx.prisma.editor.model.ReferenciaParametro;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-
-import mx.prisma.dao.GenericDAO;
-import mx.prisma.editor.model.Elemento;
-import mx.prisma.editor.model.Entrada;
-import mx.prisma.editor.model.ReferenciaParametro;
 
 public class QueryDAO extends GenericDAO {
 

@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import mx.prisma.editor.model.Entrada;
 import mx.prisma.editor.model.ReferenciaParametro;
 import mx.prisma.generadorPruebas.dao.QueryDAO;
 import mx.prisma.generadorPruebas.model.Query;

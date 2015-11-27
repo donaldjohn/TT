@@ -12,7 +12,6 @@ import mx.prisma.editor.dao.EntradaDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.dao.SalidaDAO;
 import mx.prisma.editor.dao.TerminoGlosarioDAO;
-import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Entrada;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;

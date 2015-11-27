@@ -16,7 +16,6 @@ import mx.prisma.editor.dao.CardinalidadDAO;
 import mx.prisma.editor.dao.CasoUsoActorDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.model.Actor;
-import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Cardinalidad;
 import mx.prisma.editor.model.CasoUsoActor;
 import mx.prisma.editor.model.Paso;

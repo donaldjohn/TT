@@ -1,9 +1,5 @@
 package mx.prisma.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-
 import org.apache.commons.codec.binary.Base64;
 
 public class ImageConverterUtil {

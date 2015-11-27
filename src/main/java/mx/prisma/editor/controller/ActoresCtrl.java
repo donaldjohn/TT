@@ -2,7 +2,6 @@ package mx.prisma.editor.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +12,6 @@ import mx.prisma.bs.AnalisisEnum.CU_Actores;
 import mx.prisma.editor.bs.ActorBs;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.model.Actor;
-import mx.prisma.editor.model.Actualizacion;
 import mx.prisma.editor.model.Cardinalidad;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.util.ActionSupportPRISMA;

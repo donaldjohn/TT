@@ -1,7 +1,5 @@
 package mx.prisma.generadorPruebas.bs;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -9,7 +7,6 @@ import java.util.Set;
 import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
 import mx.prisma.bs.TipoDatoEnum;
 import mx.prisma.bs.TipoReglaNegocioEnum;
-import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ReglaNegocioBs;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Atributo;
@@ -17,7 +14,6 @@ import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.CasoUsoReglaNegocio;
 import mx.prisma.editor.model.Entrada;
 import mx.prisma.editor.model.Mensaje;
-import mx.prisma.editor.model.MensajeParametro;
 import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.ReferenciaParametro;
@@ -28,8 +24,8 @@ import mx.prisma.generadorPruebas.dao.ValorEntradaDAO;
 import mx.prisma.generadorPruebas.model.Escenario;
 import mx.prisma.generadorPruebas.model.EscenarioValorEntrada;
 import mx.prisma.generadorPruebas.model.ValorEntrada;
-import mx.prisma.util.PRISMARandomUtil;
 import mx.prisma.util.GeneradorCadenasUtil;
+import mx.prisma.util.PRISMARandomUtil;
 
 public class CuPruebasBs {
 	

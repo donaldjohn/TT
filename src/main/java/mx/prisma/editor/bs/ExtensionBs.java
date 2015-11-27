@@ -3,13 +3,8 @@ package mx.prisma.editor.bs;
 
 import java.util.Set;
 
-import org.hibernate.HibernateException;
-import org.hibernate.JDBCException;
-
-import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
 import mx.prisma.bs.ReferenciaEnum.TipoSeccion;
-import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.ExtensionDAO;
 import mx.prisma.editor.dao.VerboDAO;
 import mx.prisma.editor.model.CasoUso;
@@ -18,6 +13,9 @@ import mx.prisma.editor.model.Verbo;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
+
+import org.hibernate.HibernateException;
+import org.hibernate.JDBCException;
 
 public class ExtensionBs {
 

@@ -9,7 +9,6 @@ import mx.prisma.bs.AccessBs;
 import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
-import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.generadorPruebas.bs.ConfiguracionGeneralBs;
@@ -27,7 +26,6 @@ import org.apache.struts2.convention.annotation.Results;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ModelDriven;
 
 @ResultPath("/content/generadorPruebas/")
 @Results({

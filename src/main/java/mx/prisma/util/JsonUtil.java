@@ -6,13 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import mx.prisma.editor.model.Elemento;
-import mx.prisma.editor.model.ReferenciaParametro;
-
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 
 
