@@ -1,5 +1,7 @@
 $(document).ready(function() {
-	$('#gestion').DataTable();
+	$('#gestion').DataTable({
+		"ordering": false
+		});
 	contextPath = $("#rutaContexto").val();
 });
 

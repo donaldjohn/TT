@@ -117,7 +117,7 @@
 						<td class="label obligatorio"><s:text
 								name="labelObservaciones" /></td>
 						<td><s:textarea rows="5" name="observacionesResumen"
-								cssClass="inputFormulario ui-widget" maxlength="999"
+								cssClass="inputFormularioExtraGrande ui-widget" maxlength="999"
 								cssErrorClass="input-error"></s:textarea> <s:fielderror
 								fieldName="observacionesResumen" cssClass="error" theme="jquery" /></td>
 					</tr>
@@ -231,7 +231,7 @@
 						<td class="label obligatorio"><s:text
 								name="labelObservaciones" /></td>
 						<td><s:textarea rows="5" name="observacionesTrayectoria"
-								cssClass="inputFormulario ui-widget" maxlength="999"
+								cssClass="inputFormularioExtraGrande ui-widget" maxlength="999"
 								cssErrorClass="input-error"></s:textarea> <s:fielderror
 								fieldName="observacionesTrayectoria" cssClass="error"
 								theme="jquery" /></td>
@@ -288,7 +288,7 @@
 						<td class="label obligatorio"><s:text
 								name="labelObservaciones" /></td>
 						<td><s:textarea rows="5" name="observacionesPuntosExt"
-								cssClass="inputFormulario ui-widget" maxlength="999"
+								cssClass="inputFormularioExtraGrande ui-widget" maxlength="999"
 								cssErrorClass="input-error"></s:textarea> <s:fielderror
 								fieldName="observacionesPuntosExt" cssClass="error"
 								theme="jquery" /></td>

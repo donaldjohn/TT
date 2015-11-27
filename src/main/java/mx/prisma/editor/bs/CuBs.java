@@ -1,6 +1,7 @@
 package mx.prisma.editor.bs;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -1031,7 +1032,7 @@ public class CuBs {
 				caminoCorto = camino;
 			}
 		}
-
+		Collections.reverse(caminoCorto);
 		return caminoCorto; 
 	}
 

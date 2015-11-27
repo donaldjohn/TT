@@ -1,7 +1,11 @@
 package mx.prisma.editor.bs;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.model.Mensaje;
+import mx.prisma.editor.model.MensajeParametro;
 import mx.prisma.editor.model.ReferenciaParametro;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.generadorPruebas.model.Query;
@@ -18,6 +22,22 @@ public class ReferenciaParametroBs {
 
 	public static void modificarReferenciaParametro(
 			ReferenciaParametro referencia, boolean validarObligatorios) {
+		
+		Set<ValorMensajeParametro> valores = new HashSet<ValorMensajeParametro>(0);
+		if(referencia.getElementoDestino() instanceof Mensaje) {
+			for(ValorMensajeParametro vmp : referencia.getValoresMensajeParametro()) {
+				if(vmp.getValor() == null || vmp.getValor().isEmpty()) {
+					Mensaje mensaje = (Mensaje)referencia.getElementoDestino();
+					for(MensajeParametro mensajeParametro : mensaje.getParametros()) {
+						if(vmp.getMensajeParametro().getId() == mensajeParametro.getId()) {
+							vmp.setValor(mensajeParametro.getParametro().getNombre());
+						}
+					}
+				}
+				valores.add(vmp);
+			}
+		}
+		referencia.setValoresMensajeParametro(valores);
 		validar(referencia, validarObligatorios);
 		new ReferenciaParametroDAO().modificarReferenciaParametro(referencia);
 		
