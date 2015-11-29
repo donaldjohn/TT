@@ -19,10 +19,6 @@
 	<div class="menuWizard">
 	<img id="" src="${pageContext.request.contextPath}/resources/images/wizard/w3.png" />
 	</div>
-	
-	<div class="modal" id="modal"><!-- Place at bottom of page --></div>
-	
-	<h1>Configuración del Caso de uso <s:property value="casoUso.clave + casoUso.numero + ' ' + casoUso.nombre"/></h1>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
@@ -37,7 +33,10 @@
 		
 		<div class="formulario" id="formularioEntradas">
 			<div class="tituloFormulario">Configuración de las Entradas</div>
-			<p class="instrucciones">Ingrese la etiqueta y el valor válido de cada una de las Entradas.</p>
+			<div class="seccion">
+				<p class="instrucciones">Ingrese los valores de los atributos <i>name</i> y <i>value</i> de los input HTML de cada una de las Entradas. Los valores mostrados en
+					<i>value</i> son propuestas generadas a partir de la especificación de los atributos.</p>
+			</div>
 			<div id="seccionEntradas">
 				<table class="seccion" id="tablaEntradas">
 				<!--  -->
@@ -45,16 +44,25 @@
 			</div>
 		</div>
 		<div class="formulario" id="formularioAcciones">
-			<div class="tituloFormulario">Configuración de las URL</div>
-			<p class="instrucciones">Ingrese la URL destino de cada una de las Acciones.</p>
+			<div class="tituloFormulario">Configuración de las Acciones</div>
+			<div class="seccion">
+				<p class="instrucciones">Ingrese la URL destino de cada una de las Acciones.</p>
+			</div>
 			<div class="seccion" id="seccionURL">
 				<!--  -->
 			</div>
 		</div>
 		<div class="formulario" id="formularioReglasNegocio">
 			<div class="tituloFormulario">Configuración de las Reglas de negocio</div>
-			<p class="instrucciones">Ingrese la query necesaria.</p>
-			<div class="seccion" id="seccionReglasNegocio">
+			<div class="seccion">
+				<p class="instrucciones">Es esta sección deberá ingresar las queries necesarias para realizar consultas a la base de datos. Las Reglas de negocio
+				de unicidad requieren una query que consulte las Entidades cuyo Atributo identificador sea igual al proporcionado en las Entradas. </p>
+				<p class="instrucciones"><span class="textoAyuda">P.e. Select * from Persona where CURP = "HESN900909MDFRNT00"; (donde la CURP es el atributo identificador de la entidad Persona).</span></p>
+				<p class="instrucciones">En el caso
+				de las Reglas de negocio de verificación de catálogos, deberá ingresar una query que consulte todos los registros del catálogo.</p>
+				<p class="instrucciones"><span class="textoAyuda">P.e. Select * from Genero; (donde Genero es un catálogo).</span></p>
+			</div>
+			<div id="seccionReglasNegocio">
 				<div class="seccion" id="seccionRN">
 					<!--  -->
 				</div>
@@ -65,14 +73,19 @@
 		</div>
 		<div class="formulario" id="formularioParametros">
 			<div class="tituloFormulario">Configuración de los Parámetros</div>
-			<p class="instrucciones">Ingrese el valor de cada uno de los Parámetros.</p>
+			<div class="seccion">
+				<p class="instrucciones">Ingrese el valor que tomará cada uno de los Parámetros de los Mensajes, en caso de que no sea posible determinarlos 
+				puede dejar los campos vacíos y el sistema guardará el nombre del Parámetro como su valor para que puedan ser fácilmente identificados dentro del plan de pruebas.</p>
+			</div>
 			<div class="seccion" id="seccionParametros">
 				<!--  -->
 			</div>
 		</div>
 		<div class="formulario" id="formularioPantallas">
 			<div class="tituloFormulario">Configuración de las Pantallas</div>
-			<p class="instrucciones">Ingrese el patrón de cada Pantalla.</p>
+			<div class="seccion">
+				<p class="instrucciones">Es necesario que indique una cadena con la que cada Pantalla pueda ser identificada, como el título o algún párrafo que contenga.</p>
+			</div>
 			<div class="seccion" id="seccionPantallas">
 				<table class="seccion" id="tablaPantallas">
 				<!--  -->

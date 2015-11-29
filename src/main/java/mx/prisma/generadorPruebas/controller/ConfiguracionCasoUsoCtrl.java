@@ -3,6 +3,7 @@ package mx.prisma.generadorPruebas.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -44,11 +45,11 @@ import mx.prisma.generadorPruebas.model.ValorEntrada;
 import mx.prisma.generadorPruebas.model.ValorMensajeParametro;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
+import mx.prisma.util.FileUtil;
 import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.SessionManager;
-import mx.prisma.util.ZipUtil;
 
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
@@ -176,15 +177,9 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 				throw new Exception();
 			}
 			CuBs.modificarEstadoCasoUso(casoUso, Estado.CONFIGURADO);
-			
-			@SuppressWarnings("deprecation")
-			String ruta = request.getRealPath("/") + "/tmp/pruebas/"; 
-			GeneradorPruebasBs.generarCasosPrueba(casoUso, ruta);
-			SessionManager.set(ruta, "rutaPruebaGenerada");
-			SessionManager.set(true, "pruebaGenerada");
 
 			addActionMessage(getText("MSG1", new String[] { "La", "Prueba",
-			"generada" }));
+			"configurada" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 			resultado = "cu";
 		} catch (PRISMAValidacionException pve) {
@@ -239,10 +234,33 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 		return resultado;
 	}
 
+	public String generarPrueba() {
+		try {
+			@SuppressWarnings("deprecation")
+			String ruta = request.getRealPath("/") + "/tmp/pruebas/"; 
+			
+			SessionManager.set(ruta, "rutaPruebaGenerada");
+			SessionManager.set(idCU, "idCUPruebaGenerada");
+			SessionManager.set(true, "pruebaGenerada");
+			
+			casoUso = CuBs.consultarCasoUso(idCU);
+			
+			GeneradorPruebasBs.generarCasosPrueba(casoUso, ruta);
+			
+		} catch (Exception e) {
+			ErrorManager.agregaMensajeError(this, e);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
+		}
+		return "cu";
+	}
 	public String descargarPrueba() {
-		casoUso = SessionManager.consultarCasoUsoActivo();
-		SessionManager.delete("idCU");
+		int idCUPruebaGenerada = (Integer)SessionManager.get("idCUPruebaGenerada");
+		casoUso = CuBs.consultarCasoUso(idCUPruebaGenerada);
 		String ruta = (String) SessionManager.get("rutaPruebaGenerada");
+		
+		SessionManager.delete("rutaPruebaGenerada");
+		SessionManager.delete("idCUPruebaGenerada");
+		SessionManager.delete("pruebaGenerada");
 		
 		filename = casoUso.getClave() + casoUso.getNumero() + "_" + casoUso.getNombre().replace(" ", "_") + ".zip";
 
@@ -252,10 +270,12 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 
 				
 		try {
-				ZipUtil.zipIt(rutaFolder, ruta + filename);
+				FileUtil.zipIt(rutaFolder, ruta + filename);
 		    	
 		        File doc = new File(ruta + filename);
-		        this.fileInputStream = new FileInputStream(doc); 
+		        this.fileInputStream = new FileInputStream(doc);
+		        File pruebaCU = new File(ruta);
+		        FileUtil.delete(pruebaCU);
 	        } catch (Exception e) {
 	        	ErrorManager.agregaMensajeError(this, e);
 	        	return "cu";
@@ -611,13 +631,20 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 	
 	private void obtenerJsonCamposAcciones(CasoUso casoUso) {
 		
-		Set<Accion> accionesAux = new HashSet<Accion>(0);
+		List<Accion> accionesAux = new ArrayList<Accion>();
 		for(Trayectoria trayectoria : casoUso.getTrayectorias()) {
-			accionesAux.addAll(CuPruebasBs.obtenerAcciones(trayectoria));
+			if(!trayectoria.isAlternativa()) {
+				accionesAux.addAll(CuPruebasBs.obtenerAcciones(trayectoria));
+			}
+		}
+		for(Trayectoria trayectoria : casoUso.getTrayectorias()) {
+			if(trayectoria.isAlternativa()) {
+				accionesAux.addAll(CuPruebasBs.obtenerAcciones(trayectoria));
+			}
 		}
 		
 		
-		Set<Accion> acciones = new HashSet<Accion>(0);
+		List<Accion> acciones = new ArrayList<Accion>();
 		for(Accion accion : accionesAux) {
 			Accion accionAux = new Accion();
 			accionAux.setId(accion.getId());
@@ -643,7 +670,7 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 			
 			acciones.add(accionAux);
 		}
-		jsonAcciones = JsonUtil.mapSetToJSON(acciones);
+		jsonAcciones = JsonUtil.mapListToJSON(acciones);
 	}
 
 	public Colaborador getColaborador() {

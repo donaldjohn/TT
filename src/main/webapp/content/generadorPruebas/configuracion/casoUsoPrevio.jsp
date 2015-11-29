@@ -16,7 +16,8 @@
 </head>
 <body>
 
-	<h1>Configuración del Caso de uso <s:property value="previo.clave + previo.numero + ' ' + previo.nombre"/> </h1>
+	<h1>Configuración del Caso de uso  </h1>
+	<h3><s:property value="previo.clave + previo.numero + ' ' + previo.nombre"/></h3>
 
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
@@ -29,7 +30,7 @@
 		
 		<div class="formulario" id="formularioEntradas">
 			<div class="tituloFormulario">Configuración de las Entradas</div>
-			<p class="instrucciones">Ingrese la etiqueta y el valor de cada una de las Entradas.</p>
+			<p class="instrucciones">Ingrese los valores de los atributos <i>name</i> y <i>value</i> de los input HTML de cada una de las Entradas.</p>
 			<div class="seccion" id="seccionEntradas">
 				<table id="tablaEntradas">
 				<!--  -->

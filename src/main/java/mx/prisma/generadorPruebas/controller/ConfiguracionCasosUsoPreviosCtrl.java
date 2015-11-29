@@ -1,5 +1,6 @@
 package mx.prisma.generadorPruebas.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -366,8 +367,8 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 		Trayectoria trayectoriaPrincipal = CuBs.obtenerTrayectoriaPrincipal(previo);
 		
 		if(trayectoriaPrincipal != null) {
-			Set<Accion> accionesAux = CuPruebasBs.obtenerAcciones(trayectoriaPrincipal);
-			Set<Accion> acciones = new HashSet<Accion>(0);
+			List<Accion> accionesAux = CuPruebasBs.obtenerAcciones(trayectoriaPrincipal);
+			List<Accion> acciones = new ArrayList<Accion>();
 			for(Accion accion : accionesAux) {
 				Accion accionAux = new Accion();
 				accionAux.setId(accion.getId());
@@ -393,7 +394,7 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 				
 				acciones.add(accionAux);
 			}
-			jsonAcciones = JsonUtil.mapSetToJSON(acciones);
+			jsonAcciones = JsonUtil.mapListToJSON(acciones);
 		}
 	}
 

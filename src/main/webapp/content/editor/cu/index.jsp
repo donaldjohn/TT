@@ -11,6 +11,7 @@
 ]]> 
 </head>
 <body>
+	<div class="modal" id="modal"><!-- Place at bottom of page --></div>
 	<h1>Gestionar Casos de uso</h1>
 	<s:actionmessage theme="jquery" />
 	<s:actionerror theme="jquery" />
@@ -74,8 +75,7 @@
 										
 								${blanks}	
 									
-								<!-- Eliminar caso de uso -->			
-								<!--<s:url var="urlEliminar" value="%{#pageContext.request.contextPath}/cu/%{#cu.id}?_method=delete" method="post"/>-->
+								<!-- Eliminar caso de uso -->
 								<s:a onclick="return verificarEliminacionElemento(%{#cu.id});">
 								<img id="" class="button" title="Eliminar Caso de uso"
 										src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" /></s:a>	
@@ -99,7 +99,7 @@
 										src="${pageContext.request.contextPath}/resources/images/icons/liberar.png" /></s:a>	
 								${blanks}		
 							</s:if>
-							<s:if test="%{#cu.estadoElemento.id == 5 and #rol == 1}">
+							<s:if test="%{(#cu.estadoElemento.id == 5 or #cu.estadoElemento.id == 6 or #cu.estadoElemento.id == 7) and #rol == 1}">
 							<!-- Desbloquear caso de uso -->			
 								<s:url var="urlDesbloquear" value="%{#pageContext.request.contextPath}/cu!prepararLiberacion?idSel=%{#cu.id}" method="post"/>
 								<s:a href="%{urlDesbloquear}">
@@ -114,9 +114,18 @@
 									<s:param name="idCU" value="%{#cu.id}"/>
 								</s:url>
 								<s:a href="%{urlConfiguracion}">
-									<img id="" class="button" title="Generar pruebas"
-											src="${pageContext.request.contextPath}/resources/images/icons/pruebas.png" />
+									<img id="" class="button" title="Configurar prueba"
+											src="${pageContext.request.contextPath}/resources/images/icons/configurar.png" />
+									${blanks}
 								</s:a>
+							</s:if>
+							<s:if test="%{#cu.estadoElemento.id == 7}">
+							<!-- Descargar pruebas -->			
+								<s:url var="urlDescargarPrueba" value="%{#pageContext.request.contextPath}/configuracion-caso-uso!generarPrueba?idCU=%{#cu.id}" method="post"/>
+								<s:a href="%{urlDescargarPrueba}" onclick="mostrarMensajeCargando();">
+								<img id="" class="button" title="Generar prueba"
+										src="${pageContext.request.contextPath}/resources/images/icons/pruebas.png" /></s:a>	
+								${blanks}
 							</s:if>
 					</td>
 				</tr>

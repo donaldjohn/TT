@@ -1,5 +1,6 @@
 package mx.prisma.generadorPruebas.bs;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -314,9 +315,9 @@ public class CuPruebasBs {
 	}
 */
 
-	public static Set<Accion> obtenerAcciones(
+	public static List<Accion> obtenerAcciones(
 			Trayectoria trayectoria) {
-		Set<Accion> acciones = new HashSet<Accion>(0);
+		List<Accion> acciones = new ArrayList<Accion>();
 		for(Paso paso : trayectoria.getPasos()) {
 			if(AnalizadorPasosBs.isActorOprimeBoton(paso)) {				
 				Accion accion = AnalizadorPasosBs.obtenerPrimerReferencia(paso, TipoReferencia.ACCION).getAccionDestino();

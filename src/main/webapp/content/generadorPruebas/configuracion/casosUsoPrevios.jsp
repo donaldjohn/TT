@@ -21,7 +21,8 @@
 	<s:actionerror theme="jquery" />
 	<br />
 
-	<p class="instrucciones">Configure cada uno de los casos de uso previos.</p>
+	<p class="instrucciones">Para configurar el Caso de uso <b><s:property value="casoUso.clave + casoUso.numero + ' ' + casoUso.nombre"/></b> es necesario que configure
+	los Casos de uso que se muestran a continuación.</p>
 	<s:form autocomplete="off" id="frmActor" theme="simple"
 		action="%{#pageContext.request.contextPath}/configuracion-casos-uso-previos!configurar" method="post">
 		<s:hidden name="_method" value="put" />

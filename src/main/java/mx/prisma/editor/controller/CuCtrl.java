@@ -117,9 +117,9 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			if(SessionManager.get("pruebaGenerada") != null && (Boolean) SessionManager.get("pruebaGenerada")) {
 				pruebaGenerada = true;
 				SessionManager.delete("pruebaGenerada");
-			} else {
-				SessionManager.delete("idCU");
-			}
+			} 
+			SessionManager.delete("idCU");
+			
 			
 			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
@@ -930,7 +930,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	
 	public CasoUso getModel() {
 		if (this.model == null) {
-			System.out.println("se crea model");
 			model = new CasoUso();
 		}
 		return model;
@@ -1074,9 +1073,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 	public void setIdSel(Integer idSel) {
 		this.idSel = idSel;
-		System.out.println("desde setIdSel");
 		if (this.model == null) {
-			System.out.println("model = null");
 			this.model = CuBs.consultarCasoUso(idSel);
 		}
 	}

@@ -13,8 +13,8 @@ function agregarCamposEntradasSeccion() {
 		var parsedJson = JSON.parse(json);
 		$("#tablaEntradas").append("<tr>"
 				+ "<td> <!-- --> </td>"
-				+ "<td class='ui-widget'><center>Etiqueta</center></td>"
-				+ "<td class='ui-widget'><center>Valor válido</center></td>"
+				+ "<td class='ui-widget'><center>Name</center></td>"
+				+ "<td class='ui-widget'><center>Value</center></td>"
 			+"</tr>");
 		
 		$.each(

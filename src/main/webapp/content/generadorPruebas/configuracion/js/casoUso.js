@@ -19,8 +19,8 @@ function agregarCamposEntradasSeccion() {
 		var parsedJson = JSON.parse(json);
 		$("#tablaEntradas").append("<tr>"
 				+ "<td> <!-- --> </td>"
-				+ "<td class='ui-widget'><center>Etiqueta</center></td>"
-				+ "<td class='ui-widget'><center>Valor válido</center></td>"
+				+ "<td class='ui-widget'><center>Name</center></td>"
+				+ "<td class='ui-widget'><center>Value</center></td>"
 			+"</tr>");
 		
 		$.each(
@@ -560,8 +560,7 @@ function nullToEmpty (cadena) {
 function aceptar() {
 	$('form').get(0).setAttribute("action", contextPath + "/configuracion-caso-uso!configurar");
 	if(prepararEnvio()) {
-		$('form').get(0).submit();
-		$("#modal").css("display", "block");
+		$('form').get(0).submit();		
 		
 	}
 }

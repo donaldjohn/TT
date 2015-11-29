@@ -9,6 +9,7 @@ import mx.prisma.bs.AccessBs;
 import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
+import mx.prisma.editor.bs.ElementoBs.Estado;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.generadorPruebas.bs.ConfiguracionGeneralBs;
@@ -125,6 +126,8 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 			
 			ConfiguracionGeneralBs.modificarConfiguracionGeneral(cbdBD, chttpBD, true);
 			
+			CuBs.modificarEstadoCasoUso(casoUso, Estado.PRECONFIGURADO);
+			
 			resultado = "siguiente";
 			
 			addActionMessage(getText("MSG1", new String[] { "La", "Configuración general",
@@ -186,6 +189,8 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 			}
 			
 			ConfiguracionGeneralBs.modificarConfiguracionGeneral(cbdBD, chttpBD, false);
+			
+			CuBs.modificarEstadoCasoUso(casoUso, Estado.PRECONFIGURADO);
 			
 			resultado = "cu";
 			
