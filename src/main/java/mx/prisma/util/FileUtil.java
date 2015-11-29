@@ -4,10 +4,19 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class FileUtil {
 	private static List<String> fileList;
@@ -98,8 +107,6 @@ public class FileUtil {
         		if(file.list().length==0){
         			
         		   file.delete();
-        		   System.out.println("Directory is deleted : " 
-                                                     + file.getAbsolutePath());
         			
         		}else{
         			
@@ -117,15 +124,27 @@ public class FileUtil {
             	   //check the directory again, if empty then delete it
             	   if(file.list().length==0){
                	     file.delete();
-            	     System.out.println("Directory is deleted : " 
-                                                      + file.getAbsolutePath());
             	   }
         		}
         		
         	}else{
         		//if file, then delete it
         		file.delete();
-        		System.out.println("File is deleted : " + file.getAbsolutePath());
         	}
         }
+    
+    public static Document parseXmlFile(String in) {
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            InputSource is = new InputSource(new StringReader(in));
+            return db.parse(is);
+        } catch (ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        } catch (SAXException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

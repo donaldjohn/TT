@@ -3,8 +3,20 @@ package mx.prisma.generadorPruebas.bs;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.apache.xml.serialize.OutputFormat;
+import org.apache.xml.serialize.XMLSerializer;
+import org.w3c.dom.Document;
 
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
@@ -31,6 +43,7 @@ import mx.prisma.generadorPruebas.model.ConfiguracionHttp;
 import mx.prisma.generadorPruebas.model.Query;
 import mx.prisma.generadorPruebas.model.ValorEntrada;
 import mx.prisma.generadorPruebas.model.ValorMensajeParametro;
+import mx.prisma.util.FileUtil;
 
 public class GeneradorPruebasBs {
 	private static String prefijoCSV = "csv_";
@@ -844,8 +857,27 @@ public class GeneradorPruebasBs {
 		File file = new File(ruta + nombre);
 		file.getParentFile().mkdirs();
 		FileWriter writer = new FileWriter(file);
+		
+		if(nombre.contains(".jmx")) {
+			contenido = formatoXML(contenido);
+		}
+		
 		writer.append(contenido);
-		writer.close();		
+		writer.close();
+	}
+	
+	public static String formatoXML(String cadena) throws IOException {
+		Document document = FileUtil.parseXmlFile(cadena);
+
+        OutputFormat format = new OutputFormat(document);
+        format.setLineWidth(65);
+        format.setIndenting(true);
+        format.setIndent(2);
+        Writer out = new StringWriter();
+        XMLSerializer serializer = new XMLSerializer(out, format);
+        serializer.serialize(document);
+        
+        return out.toString();
 	}
 	
 	public static void generarCasosPrueba(CasoUso casoUso, String rutaPruebas) throws Exception {

@@ -123,3 +123,7 @@ function mostrarMensajeRestriccion(json, id) {
 	};
 	$('#mensajeTerminarDialog').dialog('open');
 }
+
+function mostrarMensajeCargando() {
+	$("#modal").css("display", "block");
+}

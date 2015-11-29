@@ -214,10 +214,11 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 				throw new Exception();
 			}
 			
-			resultado = "cu";
+			
 			addActionMessage(getText("MSG1", new String[] { "La", "Configuración del Caso de Uso",
 			"guardada" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
+			resultado = prepararConfiguracion();
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			SessionManager.set(this.getActionErrors(), "mensajesError");

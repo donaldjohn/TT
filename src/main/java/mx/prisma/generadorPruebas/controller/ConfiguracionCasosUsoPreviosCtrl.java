@@ -239,7 +239,7 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 			addActionMessage(getText("MSG1", new String[] { "La", "Configuración del caso de uso",
 			"guardada" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
-			return prepararConfiguracion();
+			return prepararConfiguracionCasoUso();
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			SessionManager.set(this.getActionErrors(), "mensajesError");

@@ -192,7 +192,7 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 			
 			CuBs.modificarEstadoCasoUso(casoUso, Estado.PRECONFIGURADO);
 			
-			resultado = "cu";
+			
 			
 			addActionMessage(getText("MSG1", new String[] { "La", "Configuración general",
 			"guardada" }));
@@ -203,6 +203,8 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 					.get("mensajesError");
 			this.setActionErrors(msjsError);
 			SessionManager.delete("mensajesError");
+			
+			resultado = prepararConfiguracion();
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			SessionManager.set(this.getActionErrors(), "mensajesError");
