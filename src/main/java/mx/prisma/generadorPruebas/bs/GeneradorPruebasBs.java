@@ -17,7 +17,6 @@ import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Entrada;
-import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.MensajeParametro;
 import mx.prisma.editor.model.Pantalla;
