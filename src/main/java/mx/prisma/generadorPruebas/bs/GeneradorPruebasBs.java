@@ -4,11 +4,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import mx.prisma.bs.ReferenciaEnum;
-import mx.prisma.bs.TipoReglaNegocioEnum;
 import mx.prisma.bs.ReferenciaEnum.TipoReferencia;
+import mx.prisma.bs.TipoReglaNegocioEnum;
 import mx.prisma.bs.TipoReglaNegocioEnum.TipoReglaNegocioENUM;
+import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.TokenBs;
 import mx.prisma.editor.dao.EntradaDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
@@ -862,11 +864,8 @@ public class GeneradorPruebasBs {
 		confJDBC = new ConfiguracionDAO().consultarConfiguracionBaseDatosByCasoUso(casoUso);
 		archivo += GeneradorPruebasBs.configuracionJDBC(confJDBC.getUrlBaseDatos(), confJDBC.getDriver(), confJDBC.getUsuario(), confJDBC.getContrasenia());
 		archivo += GeneradorPruebasBs.estadisticas();
-		if (!casoUso.getExtendidoDe().isEmpty()) {
-			for (Extension puntoExtension : casoUso.getExtendidoDe()) {
-				archivo += prepararPrueba(puntoExtension);
-			}
-		}
+		archivo += prepararPrueba(casoUso);
+
 
 		System.out.println("-- Terminan predecesores --");
 		for (Trayectoria trayectoria : casoUso.getTrayectorias()) {
@@ -887,40 +886,37 @@ public class GeneradorPruebasBs {
 	}
 
 
-	public static String prepararPrueba(Extension puntoExtension) throws Exception {
+	public static String prepararPrueba(CasoUso casoUso) throws Exception {
 		String archivo = "";
-		CasoUso casoUso = puntoExtension.getCasoUsoOrigen();
 		TipoPaso tipo;
 		ArrayList<Paso> pasos = new ArrayList<Paso>();
+		List<CasoUso> casosUso = new ArrayList<CasoUso>();
+		casosUso = CuBs.obtenerCaminoPrevioMasCorto(casoUso);
 		
-		if (!casoUso.getExtendidoDe().isEmpty()) {
-			for (Extension puntoExtensioni : casoUso.getExtendidoDe()) {
-				archivo += prepararPrueba(puntoExtensioni);
-			}
-		}
-		casoUso = puntoExtension.getCasoUsoOrigen();
-		for (Trayectoria trayectoria : casoUso.getTrayectorias()) {
-			if (!trayectoria.isAlternativa()) {
-				pasos.addAll(trayectoria.getPasos());
-				for (Paso paso : AnalizadorPasosBs.ordenarPasos(trayectoria)) {
-					tipo = AnalizadorPasosBs.calcularTipo(paso);
-					if (tipo != null) {
-						switch (tipo) {
-						case actorOprimeBoton:
-							if (paso.getNumero() == 1) {
-								archivo += GeneradorPruebasBs.peticionHTTP(paso, false);
-							} else {
+		for (CasoUso casoUsoi : casosUso) {
+			for (Trayectoria trayectoria : casoUsoi.getTrayectorias()) {
+				if (!trayectoria.isAlternativa()) {
+					pasos.addAll(trayectoria.getPasos());
+					for (Paso paso : AnalizadorPasosBs.ordenarPasos(trayectoria)) {
+						tipo = AnalizadorPasosBs.calcularTipo(paso);
+						if (tipo != null) {
+							switch (tipo) {
+							case actorOprimeBoton:
+								if (paso.getNumero() == 1) {
+									archivo += GeneradorPruebasBs.peticionHTTP(paso, false);
+								} else {
+									archivo += GeneradorPruebasBs.peticionHTTP(paso, true);
+									archivo += GeneradorPruebasBs.contenedorCSV(paso, true);
+								}
+								break;
+							case actorSoliciaSeleccionarRegistro:
 								archivo += GeneradorPruebasBs.peticionHTTP(paso, true);
 								archivo += GeneradorPruebasBs.contenedorCSV(paso, true);
+								break;
+							default:
+								break;
+						
 							}
-							break;
-						case actorSoliciaSeleccionarRegistro:
-							archivo += GeneradorPruebasBs.peticionHTTP(paso, true);
-							archivo += GeneradorPruebasBs.contenedorCSV(paso, true);
-							break;
-						default:
-							break;
-					
 						}
 					}
 				}
