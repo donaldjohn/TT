@@ -62,8 +62,10 @@ function agregarCamposEntradasSeccion() {
 
 function agregarCamposAccionesSeccion() {
 	var json = document.getElementById("jsonAcciones").value;
-	if (json !== "" && json !== "[]") {
+	var jsonImg = document.getElementById("jsonImagenesPantallasAcciones").value;
+	if (json !== "" && json !== "[]" && jsonImg !== "" && jsonImg !== "[]") {
 		var parsedJson = JSON.parse(json);
+		var parsedJsonImg = JSON.parse(jsonImg);
 		
 		$.each(
 				parsedJson,
@@ -71,7 +73,9 @@ function agregarCamposAccionesSeccion() {
 					idTablaPantalla =  item.pantalla.id;
 					tablaPantalla = $("#tabla-acciones-" + idTablaPantalla);
 					if (tablaPantalla.size() == 0) {
-						$("#seccionURL").append("<div class='subtituloFormulario'>Pantalla " + item.pantalla.clave + item.pantalla.numero + " " + item.pantalla.nombre +"</div>");
+						$("#seccionURL").append("<div class='subtituloFormulario'><a class='referencia' href='#' onclick=\"mostrarPantalla('" + 
+								parsedJsonImg[i] +"');\">Pantalla " + item.pantalla.clave + item.pantalla.numero + " " + item.pantalla.nombre +"</a></div>");
+						$("#seccionURL").append("<input type='hidden' value='" + parsedJsonImg[i] + "' id='img-pantalla-" + item.pantalla.id + "'/>");
 						$("#seccionURL").append("<table id='tabla-acciones-" + idTablaPantalla + "'> <!--  --> </table>");
 						
 						$("#tabla-acciones-" + idTablaPantalla).append("<tr>"
@@ -178,6 +182,7 @@ function tablaAccionesToJson() {
 	
 	
 	var arregloAcciones = [];
+	var arregloImagenesPantalla = [];
 	
 	$.each( tablas, function(i, tabla) {
 
@@ -200,12 +205,14 @@ function tablaAccionesToJson() {
 		    var clavePantalla = tabla.rows[i].cells[9].innerHTML;
 		    var numeroPantalla = tabla.rows[i].cells[10].innerHTML;
 		    var nombrePantalla = tabla.rows[i].cells[11].innerHTML;
+		    var imagenPantalla = document.getElementById("img-pantalla-" + idPantalla).value;
 		    
 		    var nombreTipoAccion = tabla.rows[i].cells[12].innerHTML;
 		    
 		    var tipoAccion = new TipoAccion(null, nombreTipoAccion);
 		    
 		    var pantalla = new Pantalla(null, numeroPantalla, nombrePantalla, clavePantalla, idPantalla);
+		    arregloImagenesPantalla.push(imagenPantalla);
 		    var pantallaDestino = new Pantalla(null, numeroPantallaDestino, nombrePantallaDestino, clavePantallaDestino);
 		    arregloAcciones.push(new Accion(nombreAccion, null, null, tipoAccion, pantallaDestino, id, url, metodo, pantalla));
 		    
@@ -216,6 +223,9 @@ function tablaAccionesToJson() {
 	
 	var jsonAcciones = JSON.stringify(arregloAcciones);
 	document.getElementById("jsonAcciones").value = jsonAcciones;
+	
+	var jsonImgAcciones = JSON.stringify(arregloImagenesPantalla);
+	document.getElementById("jsonImagenesPantallasAcciones").value = jsonImgAcciones;
 }
 
 
@@ -247,4 +257,20 @@ function guardarSalir() {
 	if(prepararEnvio()) {
 		$('form').get(0).submit();
 	}
+}
+
+function mostrarPantalla(imagen) {
+	if(imagen != null && imagen != "" && imagen != "null") {
+		document.getElementById("pantalla").src = imagen;
+	} else {
+		document.getElementById("pantalla").src = contextPath + "/resources/images/icons/sinImagen.png";
+	}
+	
+	$('#pantallaDialog').dialog('open');
+	$('#pantallaDialog').focus();
+}
+
+function cerrarPantalla(imagen) {
+	document.getElementById("pantalla").src = "";
+	$('#pantallaDialog').dialog('close');
 }

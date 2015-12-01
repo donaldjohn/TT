@@ -22,9 +22,9 @@
 		<div class="form">
 			<table id="gestion" class="tablaGestion" cellspacing="0" width="100%">
 				<thead>
-					<th style="width: 50%;"><s:text name="colProyecto" /></th>
+					<th style="width: 40%;"><s:text name="colProyecto" /></th>
 					<th style="width: 40%;"><s:text name="colLiderProyecto" /></th>
-					<th style="width: 10%;"><s:text name="colAcciones" /></th>
+					<th style="width: 20%;"><s:text name="colAcciones" /></th>
 				</thead>
 				<tbody>
 					<s:iterator value="listProyectos" var="proyecto">
@@ -64,10 +64,21 @@
 								<!-- Descargar documento -->
 								${blanks}
 								<s:url var="urlDescargar"
-										value="%{#pageContext.request.contextPath}/proyectos!descargarDocumento?idSel=%{#proyecto.id}" />
+										value="%{#pageContext.request.contextPath}/proyectos!descargarDocumento?idSel=%{#proyecto.id}" >
+										<s:param name="extension">pdf</s:param>
+								</s:url>
 								<s:a href="%{urlDescargar}" method="post">
 										<img id="" class="button" title="Descargar Documento"
-											src="${pageContext.request.contextPath}/resources/images/icons/descargar.png" />										
+											src="${pageContext.request.contextPath}/resources/images/icons/pdf.png" />										
+								</s:a>
+								${blanks}
+								<s:url var="urlDescargarDocx"
+										value="%{#pageContext.request.contextPath}/proyectos!descargarDocumento?idSel=%{#proyecto.id}">
+										<s:param name="extension">docx</s:param>
+								</s:url>
+								<s:a href="%{urlDescargarDocx}" method="post">
+										<img id="" class="button" title="Descargar Documento"
+											src="${pageContext.request.contextPath}/resources/images/icons/docx.png" />										
 								</s:a>
 							</td>
 						</tr>

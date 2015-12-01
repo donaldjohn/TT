@@ -120,7 +120,19 @@
 		<s:hidden name="jsonReferenciasReglasNegocio" id="jsonReferenciasReglasNegocio" value="%{jsonReferenciasReglasNegocio}"/>
 		<s:hidden name="jsonReferenciasParametrosMensaje" id="jsonReferenciasParametrosMensaje" value="%{jsonReferenciasParametrosMensaje}"/>
 		<s:hidden name="jsonPantallas" id="jsonPantallas" value="%{jsonPantallas}"/>
+		<s:hidden name="jsonImagenesPantallasAcciones" id="jsonImagenesPantallasAcciones" value="%{jsonImagenesPantallasAcciones}"/>
 	</s:form>
+	<sj:dialog id="pantallaDialog" title="Previsualizar Pantalla" autoOpen="false"
+		minHeight="200" minWidth="700" modal="true" draggable="true">
+			<div class="marcoImagen" id="marco-pantalla">
+				<center>
+					<img id="pantalla" src="#" class="imagen" />
+				</center>
+			</div>
+			<div align="center">
+				<input type="button" onclick="cerrarPantalla()" value="Aceptar"/> 
+			</div>
+	</sj:dialog>
 </body>
 	</html>
 </jsp:root>

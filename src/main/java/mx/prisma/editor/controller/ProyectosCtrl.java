@@ -21,6 +21,7 @@ import mx.prisma.bs.RolBs;
 import mx.prisma.bs.RolBs.Rol_Enum;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
+import mx.prisma.util.FileUtil;
 import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.ReportUtil;
@@ -66,6 +67,7 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 	private InputStream fileInputStream;
 	private String type;
     private String filename; 
+    private String extension;
 
 	public String index() {
 		Map<String, Object> session = null;
@@ -266,24 +268,28 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 	}
 	
 	public String descargarDocumento() {
-		String extension = "pdf";
+		//String extension = "docx";
 		@SuppressWarnings("deprecation")
 		String rutaSrc = request.getRealPath("/") + "/resources/JasperReport/";
 		@SuppressWarnings("deprecation")
 		String rutaTarget = request.getRealPath("/") + "/resources/JasperReport/";
 		
 		if(extension.equals("pdf")) {
-			filename = this.model.getNombre().replace(' ', '_');
+			filename = this.model.getNombre().replace(' ', '_') + "." + extension;
 			type = "application/pdf";
+		} else if(extension.equals("docx")) {
+			filename = this.model.getNombre().replace(' ', '_') + "." + extension;
+			type = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 		} else {
-			filename = this.model.getNombre().replace(' ', '_');
+			filename = this.model.getNombre().replace(' ', '_') + ".pdf";
 			type = "application/pdf";
 		}
 				
 		try {
 				ReportUtil.crearReporte(extension, filename, model.getId(), rutaSrc, rutaTarget);
-		        File doc = new File(rutaTarget + filename + "." + extension);
-		        this.fileInputStream = new FileInputStream(doc); 
+		        File doc = new File(rutaTarget + filename);
+		        this.fileInputStream = new FileInputStream(doc);
+		        FileUtil.delete(doc);
 	        } catch (Exception e) {
 	        	ErrorManager.agregaMensajeError(this, e);
 	        	return index();
@@ -291,6 +297,8 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 			
 	    return "documento";
 	}
+	
+	
 
 	public Proyecto getModel() {
 		try {
@@ -365,6 +373,30 @@ public class ProyectosCtrl extends ActionSupportPRISMA implements
 
 	public void setFileInputStream(InputStream fileInputStream) {
 		this.fileInputStream = fileInputStream;
+	}
+	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+
+	public String getExtension() {
+		return extension;
+	}
+
+	public void setExtension(String extension) {
+		this.extension = extension;
 	}
 	
 	

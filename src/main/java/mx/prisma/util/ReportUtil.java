@@ -21,7 +21,7 @@ public class ReportUtil {
 		String extension = "";
 		
 		@SuppressWarnings("deprecation")
-		JasperReport reporte = (JasperReport) JRLoader.loadObject(rutaTarget + "prisma.jasper");
+		JasperReport reporte = (JasperReport) JRLoader.loadObjectFromFile(rutaTarget + "prisma.jasper");
 		
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("idProyecto", idProyecto);
@@ -43,7 +43,7 @@ public class ReportUtil {
 		
 		//Configuración genérica (no importa del formato)
 		exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
-		exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File(rutaTarget + nombre + "." + extension));
+		exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File(rutaTarget + nombre));
 		exporter.exportReport();
 
 	}

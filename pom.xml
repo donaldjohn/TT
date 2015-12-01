@@ -153,8 +153,9 @@
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
-			<version>5.0.1</version>
+			<version>6.1.0</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.github.mifmif</groupId>
 			<artifactId>generex</artifactId>

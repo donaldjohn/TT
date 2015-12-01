@@ -46,6 +46,7 @@ import mx.prisma.generadorPruebas.model.ValorMensajeParametro;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
 import mx.prisma.util.FileUtil;
+import mx.prisma.util.ImageConverterUtil;
 import mx.prisma.util.JsonUtil;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
@@ -87,6 +88,7 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 	private String jsonEntradas;
 	private String jsonReferenciasParametrosMensaje;
 	private String jsonPantallas;
+	private String jsonImagenesPantallasAcciones;
 	
 	private InputStream fileInputStream;
 	private String type;
@@ -646,6 +648,7 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 		
 		
 		List<Accion> acciones = new ArrayList<Accion>();
+		List<String> imagenesPantallaAcciones = new ArrayList<String>();
 		for(Accion accion : accionesAux) {
 			Accion accionAux = new Accion();
 			accionAux.setId(accion.getId());
@@ -658,6 +661,7 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 			pantalla.setNombre(accion.getPantalla().getNombre());
 			pantalla.setClave(accion.getPantalla().getClave());
 			pantalla.setNumero(accion.getPantalla().getNumero());
+			imagenesPantallaAcciones.add(ImageConverterUtil.parseBytesToPNGB64String(accion.getPantalla().getImagen()));
 			pantalla.setId(accion.getPantalla().getId());
 			
 			Pantalla pantallaDestino = new Pantalla();
@@ -672,6 +676,7 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 			acciones.add(accionAux);
 		}
 		jsonAcciones = JsonUtil.mapListToJSON(acciones);
+		jsonImagenesPantallasAcciones = JsonUtil.mapListToJSON(imagenesPantallaAcciones);
 	}
 
 	public Colaborador getColaborador() {
@@ -779,6 +784,15 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 
 	public void setFilename(String filename) {
 		this.filename = filename;
+	}
+
+	public String getJsonImagenesPantallasAcciones() {
+		return jsonImagenesPantallasAcciones;
+	}
+
+	public void setJsonImagenesPantallasAcciones(
+			String jsonImagenesPantallasAcciones) {
+		this.jsonImagenesPantallasAcciones = jsonImagenesPantallasAcciones;
 	}
 	
 	
