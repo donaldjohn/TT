@@ -190,19 +190,32 @@ public class ProyectoBs {
 
 	public static void agregarLider(Proyecto proyecto, String curpLider) {
 		Colaborador liderVista = new ColaboradorDAO().consultarColaborador(curpLider);
-		ColaboradorProyecto colaboradorPoryectoLiderBD = consultarColaboradorProyectoLider(proyecto);
+		ColaboradorProyecto colaboradorProyectoLiderBD = consultarColaboradorProyectoLider(proyecto);
 		ColaboradorProyecto colaboradorproyecto = new ColaboradorProyectoDAO().findByColaborador_Proyecto(liderVista, proyecto);
 		
 		int idLider = RolBs.consultarIdRol(Rol_Enum.LIDER);
 		Rol rolLider = new RolDAO().consultarRol(idLider);
 		
-		if(colaboradorproyecto == null) {
+		if (colaboradorproyecto == null) {
+			colaboradorproyecto = new ColaboradorProyecto(liderVista, rolLider, proyecto);
+			proyecto.getProyecto_colaboradores().add(colaboradorproyecto);
+			proyecto.getProyecto_colaboradores().remove(colaboradorProyectoLiderBD);
+			new ProyectoDAO().modificarProyecto(proyecto);	
+		} else {
+			colaboradorproyecto.setRol(rolLider);
+			System.out.println(colaboradorproyecto.getColaborador().getCurp());
+			new ColaboradorProyectoDAO().modificarColaboradorProyecto(colaboradorproyecto);
+			new ProyectoDAO().modificarProyecto(proyecto);
+		}
+		
+		/*if(colaboradorproyecto == null) {
 			// Si el colaborador no está asociado al proyecto
 			ColaboradorProyecto colaboradorProyectoLider = new ColaboradorProyecto(liderVista, rolLider, proyecto);
 			proyecto.getProyecto_colaboradores().add(colaboradorProyectoLider);
 			
 			// se elimina el líder anterior
 			if(proyecto.getProyecto_colaboradores().remove(colaboradorPoryectoLiderBD)) {
+				System.out.println("1");
 				System.out.println("Se elimina: " + colaboradorPoryectoLiderBD.getColaborador().getCurp());
 			} else {
 				System.out.println("no se eliminó");
@@ -210,17 +223,18 @@ public class ProyectoBs {
 		} else if(!colaboradorPoryectoLiderBD.getColaborador().getCurp().equals(colaboradorproyecto.getColaborador().getCurp())) {
 			// Si el colaborador está asociado al proyecto y no es líder
 			colaboradorproyecto.setRol(rolLider);
-			
-			proyecto.getProyecto_colaboradores().add(colaboradorproyecto);
-			//new ColaboradorProyectoDAO().modificarColaboradorProyecto(colaboradorproyecto);
+			new ColaboradorProyectoDAO().modificarColaboradorProyecto(colaboradorproyecto);
 			
 			
 			// se elimina el líder anterior
 			if(proyecto.getProyecto_colaboradores().remove(colaboradorPoryectoLiderBD)) {
+				System.out.println("2");
+
 				System.out.println("Se elimina: " + colaboradorPoryectoLiderBD.getColaborador().getCurp());
 			}
-		}
+		}*/
 	}
+
 
 	public static ColaboradorProyecto consultarColaboradorProyectoLider(Proyecto model) {
 		Set<ColaboradorProyecto> colaboradores_proyecto = model.getProyecto_colaboradores();
