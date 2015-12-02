@@ -17,6 +17,7 @@ import mx.prisma.editor.dao.CasoUsoActorDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Cardinalidad;
+import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.CasoUsoActor;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
@@ -215,6 +216,40 @@ public class ActorBs {
 			if (linea != "") {
 				setReferenciasVista.add(linea);
 			}
+		}
+
+		listReferenciasVista.addAll(setReferenciasVista);
+
+		return listReferenciasVista;
+	}
+	
+	public static List<CasoUso> verificarCasosUsoReferencias(Actor model) {
+
+		List<ReferenciaParametro> referenciasParametro;
+		List<CasoUsoActor> referenciasCasoUsoActor = new ArrayList<CasoUsoActor>();
+
+		List<CasoUso> listReferenciasVista = new ArrayList<CasoUso>();
+		Set<CasoUso> setReferenciasVista = new HashSet<CasoUso>(0);
+		PostPrecondicion postPrecondicion = null;
+		Paso paso = null;
+
+		referenciasParametro = new ReferenciaParametroDAO()
+				.consultarReferenciasParametro(model);
+		referenciasCasoUsoActor = new CasoUsoActorDAO().consultarReferencias(model);
+
+		for (ReferenciaParametro referencia : referenciasParametro) {
+			postPrecondicion = referencia.getPostPrecondicion();
+			paso = referencia.getPaso();
+
+			if (postPrecondicion != null) {
+				setReferenciasVista.add(postPrecondicion.getCasoUso());
+			} else if (paso != null) {
+				setReferenciasVista.add(paso.getTrayectoria().getCasoUso());
+			}
+		}
+
+		for (CasoUsoActor casoUsoActor : referenciasCasoUsoActor) {
+			setReferenciasVista.add(casoUsoActor.getCasouso());
 		}
 
 		listReferenciasVista.addAll(setReferenciasVista);

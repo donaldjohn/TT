@@ -15,6 +15,7 @@ import mx.prisma.bs.AccessBs;
 import mx.prisma.editor.bs.AccionBs;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs.Estado;
+import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.EntradaBs;
 import mx.prisma.editor.bs.MensajeParametroBs;
 import mx.prisma.editor.bs.PantallaBs;
@@ -178,7 +179,7 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 				resultado = "cu";
 				throw new Exception();
 			}
-			CuBs.modificarEstadoCasoUso(casoUso, Estado.CONFIGURADO);
+			ElementoBs.modificarEstadoElemento(casoUso, Estado.CONFIGURADO);
 
 			addActionMessage(getText("MSG1", new String[] { "La", "Prueba",
 			"configurada" }));

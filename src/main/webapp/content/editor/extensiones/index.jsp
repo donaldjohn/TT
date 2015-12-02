@@ -17,6 +17,16 @@
 	<s:actionerror theme="jquery"/>
 	
 	<br/>
+	<s:set var="obs" value="observaciones" />
+
+	<s:if test="%{#obs != null}">
+		<div class="formulario">
+			<div class="tituloObservaciones">Observaciones</div>
+			<div class="observaciones">
+				<s:property value="#obs" />
+			</div>
+		</div>
+	</s:if>
 	<s:form autocomplete="off" theme="simple" onsubmit="return false;">
 	<div class="form">
 		<table id="gestion" class="tablaGestion" cellspacing="0" width="100%">

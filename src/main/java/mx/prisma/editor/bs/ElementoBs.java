@@ -7,8 +7,11 @@ import mx.prisma.bs.AnalisisEnum.CU_Glosario;
 import mx.prisma.bs.AnalisisEnum.CU_Mensajes;
 import mx.prisma.bs.AnalisisEnum.CU_Pantallas;
 import mx.prisma.bs.AnalisisEnum.CU_ReglasNegocio;
+import mx.prisma.editor.dao.CasoUsoDAO;
+import mx.prisma.editor.dao.ElementoDAO;
 import mx.prisma.editor.dao.EstadoElementoDAO;
 import mx.prisma.editor.model.Actor;
+import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.EstadoElemento;
@@ -228,6 +231,12 @@ public class ElementoBs {
 			break;
 		}
 		
+	}
+	
+	public static void modificarEstadoElemento(Elemento elemento, Estado estado) throws Exception {
+		elemento.setEstadoElemento(ElementoBs
+				.consultarEstadoElemento(estado));
+		new ElementoDAO().modificarElemento(elemento);
 	}
 }
 

@@ -126,7 +126,7 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 			
 			ConfiguracionGeneralBs.modificarConfiguracionGeneral(cbdBD, chttpBD, true);
 			
-			CuBs.modificarEstadoCasoUso(casoUso, Estado.PRECONFIGURADO);
+			ElementoBs.modificarEstadoElemento(casoUso, Estado.PRECONFIGURADO);
 			
 			resultado = "siguiente";
 			
@@ -190,7 +190,7 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 			
 			ConfiguracionGeneralBs.modificarConfiguracionGeneral(cbdBD, chttpBD, false);
 			
-			CuBs.modificarEstadoCasoUso(casoUso, Estado.PRECONFIGURADO);
+			ElementoBs.modificarEstadoElemento(casoUso, Estado.PRECONFIGURADO);
 			
 			
 			

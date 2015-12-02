@@ -197,7 +197,7 @@
 								listKey="id"></s:select></td>
 					</tr>
 					<tr>
-						<td class="label obligatorio"><s:text
+						<td class="label"><s:text
 								name="labelPantallaDestino" /></td>
 						<td><s:select list="listTipoAccion"
 								cssClass="inputFormulario" name="accion.pantallaDestino"

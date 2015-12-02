@@ -8,6 +8,7 @@ import java.util.Set;
 import mx.prisma.editor.dao.AccionDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.model.Accion;
+import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.ReferenciaParametro;
@@ -63,6 +64,37 @@ public class AccionBs {
 
 			if (linea != "") {
 				setReferenciasVista.add(linea);
+			}
+		}
+
+		listReferenciasVista.addAll(setReferenciasVista);
+
+		return listReferenciasVista;
+	}
+	
+	public static List<CasoUso> verificarCasosUsoReferencias(Accion model) {
+
+		List<ReferenciaParametro> referenciasParametro;
+
+		List<CasoUso> listReferenciasVista = new ArrayList<CasoUso>();
+		Set<CasoUso> setReferenciasVista = new HashSet<CasoUso>(0);
+
+		PostPrecondicion postPrecondicion = null; // Origen de la referencia
+		Paso paso = null; // Origen de la referencia
+
+		referenciasParametro = new ReferenciaParametroDAO()
+				.consultarReferenciasParametro(model);
+
+		for (ReferenciaParametro referencia : referenciasParametro) {
+			String linea = "";
+			postPrecondicion = referencia.getPostPrecondicion();
+			paso = referencia.getPaso();
+
+			if (postPrecondicion != null) {
+				setReferenciasVista.add(postPrecondicion.getCasoUso());
+
+			} else if (paso != null) {
+				setReferenciasVista.add(paso.getTrayectoria().getCasoUso());
 			}
 		}
 

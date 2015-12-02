@@ -9,7 +9,9 @@ import java.util.Set;
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AccessBs;
+import mx.prisma.bs.TipoSeccionEnum;
 import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
+import mx.prisma.bs.TipoSeccionEnum.TipoSeccionENUM;
 import mx.prisma.editor.bs.CuBs;
 import mx.prisma.editor.bs.ElementoBs;
 import mx.prisma.editor.bs.ExtensionBs;
@@ -19,6 +21,7 @@ import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Paso;
+import mx.prisma.editor.model.Revision;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.util.ActionSupportPRISMA;
 import mx.prisma.util.ErrorManager;
@@ -64,6 +67,8 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 	private String jsonPasos;
 	
 	private Integer idSel;
+	
+	private String observaciones;
 
 	public String index() throws Exception {
 		String resultado;
@@ -96,6 +101,17 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 				extension.setRegion(regionDecodificada);
 				listPtosExtension.add(extension);
 			}
+			
+			for (Revision rev : casoUso.getRevisiones()) {
+				if (!rev.isRevisado()
+						&& rev.getSeccion()
+								.getNombre()
+								.equals(TipoSeccionEnum
+										.getNombre(TipoSeccionENUM.PUNTOSEXTENSION))) {
+					this.observaciones = rev.getObservaciones();
+				}
+			}
+			
 			@SuppressWarnings("unchecked")
 			Collection<String> msjs = (Collection<String>) SessionManager
 					.get("mensajesAccion");
@@ -224,6 +240,15 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 		idCasoUsoDestino = model.getCasoUsoDestino().getId();
 		model.setRegion(TokenBs
 					.decodificarCadenasToken(model.getRegion()));
+		for (Revision rev : model.getCasoUsoOrigen().getRevisiones()) {
+			if (!rev.isRevisado()
+					&& rev.getSeccion()
+							.getNombre()
+							.equals(TipoSeccionEnum
+									.getNombre(TipoSeccionENUM.PUNTOSEXTENSION))) {
+				this.observaciones = rev.getObservaciones();
+			}
+		}
 	}
 
 	public String update() throws Exception {
@@ -450,5 +475,15 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 		this.idSel = idSel;
 		this.model = ExtensionBs.consultarExtension(idSel);
 	}
+
+	public String getObservaciones() {
+		return observaciones;
+	}
+
+	public void setObservaciones(String observaciones) {
+		this.observaciones = observaciones;
+	}
+	
+	
 
 }

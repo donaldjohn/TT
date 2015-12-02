@@ -311,7 +311,6 @@ function agregarCamposPantallasSeccion() {
 		$.each(
 				parsedJson,
 				function(i, item) {
-					console.log("patron: " + item.patron);
 					inputPatron = "<textarea class='ui-widget inputFormularioGrande' id='input-patron-pantalla-" + item.id  + "' >" + nullToEmpty(item.patron) + "</textarea>";
 					label = item.clave + item.numero + " " + item.nombre;
 					 
@@ -335,15 +334,10 @@ function prepararEnvio() {
 	try {
 		
 		tablaEntradasToJson();
-		console.log("depues de entradas");
 		tablaAccionesToJson();
-		console.log("depues de acciones");
 		tablaReglasNegocioToJson();
-		console.log("depues de rn");
 		tablaReferenciasParametrosMensajeToJson();
-		console.log("depues de parametros");
 		tablaPantallasToJson();
-		console.log("depues de pantallas");
 		return true;
 	} catch (err) {
 		alert("Ocurrió un error: " + err);
@@ -424,7 +418,6 @@ function tablaAccionesToJson() {
 		    
 		    var pantalla = new Pantalla(null, numeroPantalla, nombrePantalla, clavePantalla, idPantalla);
 		    arregloImagenesPantalla.push(imagenPantalla);
-		    console.log("c");
 		    var pantallaDestino = new Pantalla(null, numeroPantallaDestino, nombrePantallaDestino, clavePantallaDestino);
 		    arregloAcciones.push(new Accion(nombreAccion, null, null, tipoAccion, pantallaDestino, id, url, metodo, pantalla));
 		    

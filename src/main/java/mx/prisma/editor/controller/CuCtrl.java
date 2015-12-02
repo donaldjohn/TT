@@ -21,15 +21,20 @@ import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Actor;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.CasoUsoActor;
+import mx.prisma.editor.model.CasoUsoReglaNegocio;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entidad;
+import mx.prisma.editor.model.Entrada;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
+import mx.prisma.editor.model.ReferenciaParametro;
 import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.Revision;
+import mx.prisma.editor.model.Salida;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.util.ActionSupportPRISMA;
@@ -350,7 +355,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			this.existenPostcondiciones = CuBs.existenPostcondiciones(model
 					.getPostprecondiciones());
 
-			CuBs.agregarReferencias(request.getContextPath(), this.model);
+			CuBs.agregarReferencias(request.getContextPath(), this.model, "_self");
 
 			resultado = SHOW;
 		} catch (PRISMAException pe) {
@@ -734,7 +739,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			this.existenPostcondiciones = CuBs.existenPostcondiciones(model
 					.getPostprecondiciones());
 
-			CuBs.decodificarTokens(model);
+			CuBs.agregarReferencias(request.getContextPath(), model, "_blank");
 
 			resultado = "revision";
 		} catch (PRISMAValidacionException pve) {
@@ -778,18 +783,19 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			if(CuBs.guardarRevisiones(esCorrectoResumen, observacionesResumen,
 					esCorrectoTrayectoria, observacionesTrayectoria,
 					esCorrectoPuntosExt, observacionesPuntosExt, model)) {
-				CuBs.modificarEstadoCasoUso(model, Estado.PENDIENTECORRECCION);
+				ElementoBs.modificarEstadoElemento(model, Estado.PENDIENTECORRECCION);
 				addActionMessage(getText("MSG1", new String[] { "El",
 						"Caso de uso", "revisado" }));
 			} else {
 				if(ProyectoBs.consultarColaboradorProyectoLider(proyecto).getColaborador().getCurp().equals(colaborador.getCurp())) {
-					CuBs.modificarEstadoCasoUso(model, Estado.LIBERADO);
-					addActionMessage(getText("MSG1", new String[] { "El",
-							"Caso de uso", "revisado" }));
-				} else {
-					CuBs.modificarEstadoCasoUso(model, Estado.PORLIBERAR);
+					ElementoBs.modificarEstadoElemento(model, Estado.LIBERADO);
+					CuBs.liberarElementosRelacionados(model);
 					addActionMessage(getText("MSG1", new String[] { "El",
 							"Caso de uso", "liberado" }));
+				} else {
+					ElementoBs.modificarEstadoElemento(model, Estado.PORLIBERAR);
+					addActionMessage(getText("MSG1", new String[] { "El",
+							"Caso de uso", "revisado" }));
 				}
 			}
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
@@ -830,7 +836,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			this.existenPostcondiciones = CuBs.existenPostcondiciones(model
 					.getPostprecondiciones());
 
-			CuBs.decodificarTokens(model);
+			CuBs.agregarReferencias(request.getContextPath(), model, "_blank");
 
 			resultado = "liberacion";
 		} catch (PRISMAValidacionException pve) {
@@ -871,9 +877,11 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 			if(CuBs.guardarRevisiones(esCorrectoResumen, observacionesResumen,
 					esCorrectoTrayectoria, observacionesTrayectoria,
 					esCorrectoPuntosExt, observacionesPuntosExt, model)) {
-				CuBs.modificarEstadoCasoUso(model, Estado.PENDIENTECORRECCION);
+				ElementoBs.modificarEstadoElemento(model, Estado.PENDIENTECORRECCION);
+				CuBs.habilitarElementosRelacionados(model);
 			} else {
-				CuBs.modificarEstadoCasoUso(model, Estado.LIBERADO);
+				ElementoBs.modificarEstadoElemento(model, Estado.LIBERADO);
+				CuBs.liberarElementosRelacionados(model);
 			}
 			
 			addActionMessage(getText("MSG1", new String[] { "El",

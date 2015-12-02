@@ -10,18 +10,23 @@ import java.util.regex.Pattern;
 import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AnalisisEnum.CU_CasosUso;
+import mx.prisma.bs.EstadoProyectoEnum.EstadoProyecto;
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.bs.ReferenciaEnum.TipoSeccion;
 import mx.prisma.bs.TipoSeccionEnum;
 import mx.prisma.bs.TipoSeccionEnum.TipoSeccionENUM;
 import mx.prisma.editor.bs.ElementoBs.Estado;
+import mx.prisma.editor.dao.CasoUsoActorDAO;
 import mx.prisma.editor.dao.CasoUsoDAO;
 import mx.prisma.editor.dao.ElementoDAO;
+import mx.prisma.editor.dao.EntradaDAO;
 import mx.prisma.editor.dao.ExtensionDAO;
 import mx.prisma.editor.dao.ModuloDAO;
 import mx.prisma.editor.dao.PasoDAO;
+import mx.prisma.editor.dao.PostPrecondicionDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.dao.RevisionDAO;
+import mx.prisma.editor.dao.SalidaDAO;
 import mx.prisma.editor.dao.SeccionDAO;
 import mx.prisma.editor.model.Actor;
 //import mx.prisma.editor.model.Actualizacion;
@@ -32,9 +37,11 @@ import mx.prisma.editor.model.CasoUsoReglaNegocio;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Entrada;
+import mx.prisma.editor.model.EstadoElemento;
 import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Mensaje;
 import mx.prisma.editor.model.Modulo;
+import mx.prisma.editor.model.Pantalla;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.ReferenciaParametro;
@@ -49,6 +56,8 @@ import mx.prisma.util.Validador;
 
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
+
+import antlr.Token;
 
 public class CuBs {
 	private static final String CLAVE = "CU";
@@ -347,29 +356,29 @@ public class CuBs {
 		return model;
 
 	}
-	
-	public static void decodificarTokens(CasoUso model) {
+
+	public static void agregarReferencias(String actionContext, CasoUso model, String target) {
 		String redaccion = null;
 
 		// Información general del caso de uso
 		redaccion = model.getRedaccionActores();
 
-		redaccion = TokenBs.decodificarCadenaSinToken(redaccion);
+		redaccion = TokenBs.agregarReferencias(actionContext, redaccion, target);
 		model.setRedaccionActores(redaccion);
 
 		redaccion = model.getRedaccionEntradas();
 
-		redaccion = TokenBs.decodificarCadenaSinToken(redaccion);
+		redaccion = TokenBs.agregarReferencias(actionContext, redaccion, target);
 		model.setRedaccionEntradas(redaccion);
 
 		redaccion = model.getRedaccionSalidas();
 
-		redaccion = TokenBs.decodificarCadenaSinToken(redaccion);
+		redaccion = TokenBs.agregarReferencias(actionContext, redaccion, target);
 		model.setRedaccionSalidas(redaccion);
 
 		redaccion = model.getRedaccionReglasNegocio();
 
-		redaccion = TokenBs.decodificarCadenaSinToken(redaccion);
+		redaccion = TokenBs.agregarReferencias(actionContext, redaccion, target);
 		model.setRedaccionReglasNegocio(redaccion);
 
 		// Precondiciones y postcondiciones
@@ -381,7 +390,7 @@ public class CuBs {
 			for (PostPrecondicion pp : postprecondicionesAux) {
 				redaccion = pp.getRedaccion();
 				postprecondiciones.remove(pp);
-				redaccion = TokenBs.decodificarCadenaSinToken(redaccion);
+				redaccion = TokenBs.agregarReferencias(actionContext, redaccion, target);
 				pp.setRedaccion(redaccion);
 				postprecondiciones.add(pp);
 			}
@@ -398,7 +407,7 @@ public class CuBs {
 			for (Paso paso : pasosAux) {
 				pasos.remove(paso);
 				redaccion = paso.getRedaccion();
-				redaccion = TokenBs.decodificarCadenaSinToken(redaccion);
+				redaccion = TokenBs.agregarReferencias(actionContext, redaccion, target);
 				paso.setRedaccion(redaccion);
 				pasos.add(paso);
 			}
@@ -412,77 +421,7 @@ public class CuBs {
 		for (Extension extension : extensionesAux) {
 			extensiones.remove(extension);
 			region = extension.getRegion();
-			region = TokenBs.decodificarCadenaSinToken(region);
-			extension.setRegion(region);
-			extensiones.add(extension);
-		}
-	}
-
-	public static void agregarReferencias(String actionContext, CasoUso model) {
-		String redaccion = null;
-
-		// Información general del caso de uso
-		redaccion = model.getRedaccionActores();
-
-		redaccion = TokenBs.agregarReferencias(actionContext, redaccion);
-		model.setRedaccionActores(redaccion);
-
-		redaccion = model.getRedaccionEntradas();
-
-		redaccion = TokenBs.agregarReferencias(actionContext, redaccion);
-		model.setRedaccionEntradas(redaccion);
-
-		redaccion = model.getRedaccionSalidas();
-
-		redaccion = TokenBs.agregarReferencias(actionContext, redaccion);
-		model.setRedaccionSalidas(redaccion);
-
-		redaccion = model.getRedaccionReglasNegocio();
-
-		redaccion = TokenBs.agregarReferencias(actionContext, redaccion);
-		model.setRedaccionReglasNegocio(redaccion);
-
-		// Precondiciones y postcondiciones
-		Set<PostPrecondicion> postprecondiciones = model
-				.getPostprecondiciones();
-		List<PostPrecondicion> postprecondicionesAux = new ArrayList<PostPrecondicion>(
-				postprecondiciones);
-		if (!Validador.esNuloOVacio(postprecondiciones)) {
-			for (PostPrecondicion pp : postprecondicionesAux) {
-				redaccion = pp.getRedaccion();
-				postprecondiciones.remove(pp);
-				redaccion = TokenBs.agregarReferencias(actionContext, redaccion);
-				pp.setRedaccion(redaccion);
-				postprecondiciones.add(pp);
-			}
-		}
-
-		// Trayectorias
-		Set<Trayectoria> trayectorias = model.getTrayectorias();
-		List<Trayectoria> trayectoriasAux = new ArrayList<Trayectoria>(
-				trayectorias);
-		for (Trayectoria trayectoria : trayectoriasAux) {
-			Set<Paso> pasos = trayectoria.getPasos();
-			List<Paso> pasosAux = new ArrayList<Paso>(pasos);
-			trayectorias.remove(trayectoria);
-			for (Paso paso : pasosAux) {
-				pasos.remove(paso);
-				redaccion = paso.getRedaccion();
-				redaccion = TokenBs.agregarReferencias(actionContext, redaccion);
-				paso.setRedaccion(redaccion);
-				pasos.add(paso);
-			}
-			trayectorias.add(trayectoria);
-		}
-
-		// Puntos de extensión
-		String region;
-		Set<Extension> extensiones = model.getExtiende();
-		List<Extension> extensionesAux = new ArrayList<Extension>(extensiones);
-		for (Extension extension : extensionesAux) {
-			extensiones.remove(extension);
-			region = extension.getRegion();
-			region = TokenBs.agregarReferencias(actionContext, region);
+			region = TokenBs.agregarReferencias(actionContext, region, target);
 			extension.setRegion(region);
 			extensiones.add(extension);
 		}
@@ -1078,9 +1017,226 @@ public class CuBs {
 		return null;
 	}
 
-	public static void modificarEstadoCasoUso(CasoUso casoUso, Estado estado) throws Exception {
-		casoUso.setEstadoElemento(ElementoBs
-				.consultarEstadoElemento(estado));
-		new CasoUsoDAO().modificarCasoUso(casoUso, false);
+	public static void liberarElementosRelacionados(CasoUso model) throws Exception {
+		for(CasoUsoActor cu_actor : model.getActores()) {
+			ElementoBs.modificarEstadoElemento(cu_actor.getActor(), Estado.EDICION);
+		}
+		for(Entrada entrada : model.getEntradas()) {
+			if(entrada.getAtributo() != null) {
+				ElementoBs.modificarEstadoElemento(entrada.getAtributo().getEntidad(), Estado.EDICION);
+			} else if(entrada.getTerminoGlosario() != null) {
+				ElementoBs.modificarEstadoElemento(entrada.getTerminoGlosario(), Estado.EDICION);
+			}
+		}
+		for(Salida salida : model.getSalidas()) {
+			if(salida.getMensaje() != null) {
+				ElementoBs.modificarEstadoElemento(salida.getMensaje(), Estado.EDICION);
+			} else if(salida.getAtributo() != null) {
+				ElementoBs.modificarEstadoElemento(salida.getAtributo().getEntidad(), Estado.EDICION);
+			} else if(salida.getTerminoGlosario() != null) {
+				ElementoBs.modificarEstadoElemento(salida.getTerminoGlosario(), Estado.EDICION);
+			}
+		}
+		for(CasoUsoReglaNegocio cu_regla : model.getReglas()) {
+			ElementoBs.modificarEstadoElemento(cu_regla.getReglaNegocio(), Estado.EDICION);
+		}
+		for(PostPrecondicion pp : model.getPostprecondiciones()) {
+			for(ReferenciaParametro referencia : pp.getReferencias()) {
+				switch(ReferenciaEnum.getTipoReferenciaParametro(referencia)) {
+				case ACCION:
+					ElementoBs.modificarEstadoElemento(referencia.getAccionDestino().getPantalla(), Estado.EDICION);
+					break;
+				case ACTOR:
+					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+					break;
+				case ATRIBUTO:
+					ElementoBs.modificarEstadoElemento(referencia.getAtributo().getEntidad(), Estado.EDICION);
+					break;
+				case ENTIDAD:
+					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+					break;
+				case MENSAJE:
+					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+					break;
+				case PANTALLA:
+					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+					break;
+				case REGLANEGOCIO:
+					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+					break;
+				case TERMINOGLS:
+					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		
+		for(Trayectoria trayectoria : model.getTrayectorias()) {
+			for(Paso paso : trayectoria.getPasos()) {
+				for(ReferenciaParametro referencia : paso.getReferencias()) {
+					switch(ReferenciaEnum.getTipoReferenciaParametro(referencia)) {
+					case ACCION:
+						ElementoBs.modificarEstadoElemento(referencia.getAccionDestino().getPantalla(), Estado.EDICION);
+						break;
+					case ACTOR:
+						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+						break;
+					case ATRIBUTO:
+						ElementoBs.modificarEstadoElemento(referencia.getAtributo().getEntidad(), Estado.EDICION);
+						break;
+					case ENTIDAD:
+						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+						break;
+					case MENSAJE:
+						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+						break;
+					case PANTALLA:
+						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+						break;
+					case REGLANEGOCIO:
+						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+						break;
+					case TERMINOGLS:
+						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+						break;
+					default:
+						break;
+					}
+				}
+			}
+		}
+		
 	}
+
+	public static void habilitarElementosRelacionados(CasoUso model) throws Exception {
+		for(CasoUsoActor cu_actor : model.getActores()) {
+			if(!estaRelacionadoConCasoUsoLiberado(cu_actor.getActor())) { 
+				ElementoBs.modificarEstadoElemento(cu_actor.getActor(), Estado.EDICION);
+			}
+		}
+		for(Entrada entrada : model.getEntradas()) {
+			if(entrada.getAtributo() != null) {
+				ElementoBs.modificarEstadoElemento(entrada.getAtributo().getEntidad(), Estado.EDICION);
+			} else if(entrada.getTerminoGlosario() != null) {
+				ElementoBs.modificarEstadoElemento(entrada.getTerminoGlosario(), Estado.EDICION);
+			}
+		}
+		for(Salida salida : model.getSalidas()) {
+			if(salida.getMensaje() != null) {
+				ElementoBs.modificarEstadoElemento(salida.getMensaje(), Estado.EDICION);
+			} else if(salida.getAtributo() != null) {
+				ElementoBs.modificarEstadoElemento(salida.getAtributo().getEntidad(), Estado.EDICION);
+			} else if(salida.getTerminoGlosario() != null) {
+				ElementoBs.modificarEstadoElemento(salida.getTerminoGlosario(), Estado.EDICION);
+			}
+		}
+		for(CasoUsoReglaNegocio cu_regla : model.getReglas()) {
+			ElementoBs.modificarEstadoElemento(cu_regla.getReglaNegocio(), Estado.EDICION);
+		}
+		for(PostPrecondicion pp : model.getPostprecondiciones()) {
+			for(ReferenciaParametro referencia : pp.getReferencias()) {
+				switch(ReferenciaEnum.getTipoReferenciaParametro(referencia)) {
+				case ACCION:
+					ElementoBs.modificarEstadoElemento(referencia.getAccionDestino().getPantalla(), Estado.EDICION);
+					break;
+				case ACTOR:
+					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+					break;
+				case ATRIBUTO:
+					ElementoBs.modificarEstadoElemento(referencia.getAtributo().getEntidad(), Estado.EDICION);
+					break;
+				case ENTIDAD:
+					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+					break;
+				case MENSAJE:
+					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+					break;
+				case PANTALLA:
+					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+					break;
+				case REGLANEGOCIO:
+					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+					break;
+				case TERMINOGLS:
+					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		
+		for(Trayectoria trayectoria : model.getTrayectorias()) {
+			for(Paso paso : trayectoria.getPasos()) {
+				for(ReferenciaParametro referencia : paso.getReferencias()) {
+					switch(ReferenciaEnum.getTipoReferenciaParametro(referencia)) {
+					case ACCION:
+						ElementoBs.modificarEstadoElemento(referencia.getAccionDestino().getPantalla(), Estado.EDICION);
+						break;
+					case ACTOR:
+						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+						break;
+					case ATRIBUTO:
+						ElementoBs.modificarEstadoElemento(referencia.getAtributo().getEntidad(), Estado.EDICION);
+						break;
+					case ENTIDAD:
+						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+						break;
+					case MENSAJE:
+						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+						break;
+					case PANTALLA:
+						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+						break;
+					case REGLANEGOCIO:
+						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+						break;
+					case TERMINOGLS:
+						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+						break;
+					default:
+						break;
+					}
+				}
+			}
+		}
+		
+	}
+
+	private static boolean estaRelacionadoConCasoUsoLiberado(Elemento elemento) {
+		List<CasoUso> casosUso = new ArrayList<CasoUso>();
+		switch(ReferenciaEnum.getTipoReferencia(elemento)) {
+		case ACTOR:
+			casosUso.addAll(ActorBs.verificarCasosUsoReferencias((Actor)elemento));
+			break;
+		case ENTIDAD:
+			casosUso.addAll(EntidadBs.verificarCasosUsoReferencias((Entidad)elemento));			
+			break;
+		case MENSAJE:
+			casosUso.addAll(MensajeBs.verificarCasosUsoReferencias((Mensaje)elemento));
+			break;
+		case PANTALLA:
+			casosUso.addAll(PantallaBs.verificarCasosUsoReferencias((Pantalla)elemento));
+			break;
+		case REGLANEGOCIO:
+			casosUso.addAll(ReglaNegocioBs.verificarCasosUsoReferencias((ReglaNegocio)elemento));
+			break;
+		case TERMINOGLS:
+			casosUso.addAll(TerminoGlosarioBs.verificarCasosUsoReferencias((TerminoGlosario)elemento));
+			break;
+		default:
+			break;
+		}
+		
+		for(CasoUso casoUso : casosUso) {
+			if(casoUso.getEstadoElemento().getId() == ElementoBs.getIdEstado(Estado.EDICION)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	
 }

@@ -32,8 +32,7 @@ import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 import mx.prisma.admin.model.Proyecto;
 
 @Entity
-@Table(name = "Elemento", catalog = "PRISMA", uniqueConstraints = @UniqueConstraint(columnNames = {
-		"clave", "numero", "nombre", "Proyectoid" }))
+@Table(name = "Elemento", catalog = "PRISMA")
 @Inheritance(strategy=InheritanceType.JOINED)
 
 @JsonTypeInfo(
