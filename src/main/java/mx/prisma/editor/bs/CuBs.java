@@ -654,7 +654,7 @@ public class CuBs {
 		return listRestricciones;
 	}
 
-	private static String construirRestriccion(
+	private static String construirRestriccion( 
 			ReferenciaParametro referenciaParametro) {
 		switch (ReferenciaEnum.getTipoReferenciaParametro(referenciaParametro)) {
 		case ACTOR:
