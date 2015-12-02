@@ -125,27 +125,22 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 			
 			//Se arman los json con los campos que se mostrarán en pantalla
 			if(jsonEntradas == null || jsonEntradas.isEmpty()) {
-				System.out.println("jsonEntradas: " + jsonEntradas);
 				obtenerJsonCamposEntradas(casoUso);
 			}
 			
 			if(jsonAcciones == null || jsonAcciones.isEmpty()) {
-				System.out.println("jsonAcciones: " + jsonAcciones);
 				obtenerJsonCamposAcciones(casoUso);
 			}
 			
 			if(jsonReferenciasReglasNegocio == null || jsonReferenciasReglasNegocio.isEmpty()) {
-				System.out.println("jsonReferenciasReglasNegocio: " + jsonReferenciasReglasNegocio);
 				obtenerJsonCamposReglasNegocio(casoUso);
 			}
 			
 			if(jsonReferenciasParametrosMensaje == null || jsonReferenciasParametrosMensaje.isEmpty()) {
-				System.out.println("jsonReferenciasParametrosMensaje: " + jsonReferenciasParametrosMensaje);
 				obtenerJsonCamposParametrosMensaje(casoUso);
 			}
 			
 			if(jsonPantallas == null || jsonPantallas.isEmpty()) {
-				System.out.println("jsonPantallas: " + jsonPantallas);
 				obtenerJsonCamposPantallas(casoUso);
 			}
 			resultado = "pantallaConfiguracionCasoUso";
@@ -209,11 +204,11 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 	public String guardar() {
 		String resultado;
 		try {			
-			System.out.println(jsonEntradas);
+			/*System.out.println(jsonEntradas);
 			System.out.println(jsonAcciones);
 			System.out.println(jsonReferenciasParametrosMensaje);
 			System.out.println(jsonReferenciasReglasNegocio);
-			System.out.println(jsonPantallas);
+			System.out.println(jsonPantallas);*/
 			
 			modificarEntradas(false);
 			modificarAcciones(false);
