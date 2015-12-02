@@ -209,6 +209,12 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 	public String guardar() {
 		String resultado;
 		try {			
+			System.out.println(jsonEntradas);
+			System.out.println(jsonAcciones);
+			System.out.println(jsonReferenciasParametrosMensaje);
+			System.out.println(jsonReferenciasReglasNegocio);
+			System.out.println(jsonPantallas);
+			
 			modificarEntradas(false);
 			modificarAcciones(false);
 			modificarReferenciasReglasNegocio(false);
