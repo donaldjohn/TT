@@ -232,10 +232,17 @@ function esValidoAtributo(idTabla, nombre, descripcion, tipoDato, otroTipoDato,
 			}
 		}
 	} else {
+		
 		if (vaciaONula(longitud)) {
 			agregarMensaje("Agregue todos los campos obligatorios.");
 			return false;
 		}
+		
+		if (longitud > 1999) {
+			agregarMensaje("Ingrese una longitud menor a 1999.");
+			return false;
+		}
+		
 		if (!esEntero(longitud)) {
 			agregarMensaje("Ingrese una longitud válida.");
 			return false;

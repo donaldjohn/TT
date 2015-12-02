@@ -387,14 +387,19 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 				imagenesPantallaAcciones.add(ImageConverterUtil.parseBytesToPNGB64String(accion.getPantalla().getImagen()));
 				pantalla.setId(accion.getPantalla().getId());
 				
-				Pantalla pantallaDestino = new Pantalla();
-				pantallaDestino.setNombre(accion.getPantallaDestino().getNombre());
-				pantallaDestino.setClave(accion.getPantallaDestino().getClave());
-				pantallaDestino.setNumero(accion.getPantallaDestino().getNumero());
-				pantallaDestino.setId(accion.getPantallaDestino().getId());
+				
+				if(accion.getPantallaDestino() != null) {
+					Pantalla pantallaDestino = new Pantalla();
+					pantallaDestino.setNombre(accion.getPantallaDestino().getNombre());
+					pantallaDestino.setClave(accion.getPantallaDestino().getClave());
+					pantallaDestino.setNumero(accion.getPantallaDestino().getNumero());
+					pantallaDestino.setId(accion.getPantallaDestino().getId());
+					accionAux.setPantallaDestino(pantallaDestino);
+				}
+				
 				
 				accionAux.setPantalla(pantalla);
-				accionAux.setPantallaDestino(pantallaDestino);
+				
 				
 				acciones.add(accionAux);
 			}

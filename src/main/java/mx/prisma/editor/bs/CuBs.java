@@ -1040,7 +1040,11 @@ public class CuBs {
 		for(CasoUsoReglaNegocio cu_regla : model.getReglas()) {
 			ElementoBs.modificarEstadoElemento(cu_regla.getReglaNegocio(), Estado.EDICION);
 		}
-		for(PostPrecondicion pp : model.getPostprecondiciones()) {
+		
+		List<PostPrecondicion> postprecondiciones = new PostPrecondicionDAO().consultarPostPrecondiciones(model, true);
+		postprecondiciones.addAll(new PostPrecondicionDAO().consultarPostPrecondiciones(model, false));
+		
+		for(PostPrecondicion pp : postprecondiciones) {
 			for(ReferenciaParametro referencia : pp.getReferencias()) {
 				switch(ReferenciaEnum.getTipoReferenciaParametro(referencia)) {
 				case ACCION:
@@ -1170,7 +1174,8 @@ public class CuBs {
 		
 		for(Trayectoria trayectoria : model.getTrayectorias()) {
 			for(Paso paso : trayectoria.getPasos()) {
-				for(ReferenciaParametro referencia : paso.getReferencias()) {
+				List<ReferenciaParametro> referenciasparametro = new ReferenciaParametroDAO().consultarReferenciasParametro(paso);
+				for(ReferenciaParametro referencia : referenciasparametro) {
 					switch(ReferenciaEnum.getTipoReferenciaParametro(referencia)) {
 					case ACCION:
 						ElementoBs.modificarEstadoElemento(referencia.getAccionDestino().getPantalla(), Estado.EDICION);

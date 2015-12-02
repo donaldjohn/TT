@@ -97,5 +97,18 @@ public class ColaboradorProyectoDAO extends GenericDAO {
 			return results.get(0);
 		}
 	}
+
+	public void modificarColaboradorProyecto(
+			ColaboradorProyecto colaboradorproyecto) {
+		try {
+			session.beginTransaction();
+			session.update(colaboradorproyecto);
+			session.getTransaction().commit();
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		
+	}
 	
 }

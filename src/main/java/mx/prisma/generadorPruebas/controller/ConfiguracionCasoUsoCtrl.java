@@ -125,22 +125,27 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 			
 			//Se arman los json con los campos que se mostrarán en pantalla
 			if(jsonEntradas == null || jsonEntradas.isEmpty()) {
+				System.out.println("jsonEntradas: " + jsonEntradas);
 				obtenerJsonCamposEntradas(casoUso);
 			}
 			
 			if(jsonAcciones == null || jsonAcciones.isEmpty()) {
+				System.out.println("jsonAcciones: " + jsonAcciones);
 				obtenerJsonCamposAcciones(casoUso);
 			}
 			
 			if(jsonReferenciasReglasNegocio == null || jsonReferenciasReglasNegocio.isEmpty()) {
+				System.out.println("jsonReferenciasReglasNegocio: " + jsonReferenciasReglasNegocio);
 				obtenerJsonCamposReglasNegocio(casoUso);
 			}
 			
 			if(jsonReferenciasParametrosMensaje == null || jsonReferenciasParametrosMensaje.isEmpty()) {
+				System.out.println("jsonReferenciasParametrosMensaje: " + jsonReferenciasParametrosMensaje);
 				obtenerJsonCamposParametrosMensaje(casoUso);
 			}
 			
 			if(jsonPantallas == null || jsonPantallas.isEmpty()) {
+				System.out.println("jsonPantallas: " + jsonPantallas);
 				obtenerJsonCamposPantallas(casoUso);
 			}
 			resultado = "pantallaConfiguracionCasoUso";
@@ -482,7 +487,7 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 			mensajeAux.setClave(mensaje.getClave());
 			mensajeAux.setNumero(mensaje.getNumero());
 			mensajeAux.setNombre(mensaje.getNombre());
-			mensajeAux.setRedaccion(TokenBs.decodificarCadenaSinToken(mensaje.getRedaccion()));
+			mensajeAux.setRedaccion(mensaje.getRedaccion());
 			
 			Set<MensajeParametro> parametrosAux = mensaje.getParametros();
 			Set<MensajeParametro> parametros = new HashSet<MensajeParametro>(0);
@@ -665,14 +670,16 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 			imagenesPantallaAcciones.add(ImageConverterUtil.parseBytesToPNGB64String(accion.getPantalla().getImagen()));
 			pantalla.setId(accion.getPantalla().getId());
 			
-			Pantalla pantallaDestino = new Pantalla();
-			pantallaDestino.setNombre(accion.getPantallaDestino().getNombre());
-			pantallaDestino.setClave(accion.getPantallaDestino().getClave());
-			pantallaDestino.setNumero(accion.getPantallaDestino().getNumero());
-			pantallaDestino.setId(accion.getPantallaDestino().getId());
+			if(accion.getPantallaDestino() != null) {
+				Pantalla pantallaDestino = new Pantalla();
+				pantallaDestino.setNombre(accion.getPantallaDestino().getNombre());
+				pantallaDestino.setClave(accion.getPantallaDestino().getClave());
+				pantallaDestino.setNumero(accion.getPantallaDestino().getNumero());
+				pantallaDestino.setId(accion.getPantallaDestino().getId());
+				accionAux.setPantallaDestino(pantallaDestino);
+			}
 			
 			accionAux.setPantalla(pantalla);
-			accionAux.setPantallaDestino(pantallaDestino);
 			
 			acciones.add(accionAux);
 		}

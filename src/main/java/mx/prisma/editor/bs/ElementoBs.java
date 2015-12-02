@@ -107,7 +107,8 @@ public class ElementoBs {
 		}
 			break;
 		case LIBERARCASOUSO4_3:
-			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION) && elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.PORLIBERAR) && elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.LIBERADO)) {
+			if (elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.EDICION) && elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.PORLIBERAR) && elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.LIBERADO)
+					&& elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.CONFIGURADO) && elemento.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.PRECONFIGURADO)) {
 				throw new PRISMAException("El estado del caso de uso es inválido.", "MSG13");
 		}
 			break;
