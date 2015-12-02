@@ -168,7 +168,9 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 				
 				int i = 0;
 				for (Accion accionVista : accionesVista) {
-					pantallaDestino = PantallaBs.consultarPantalla(accionVista.getPantallaDestino().getId());
+					if(accionVista.getPantallaDestino() != null && accionVista.getPantallaDestino().getId() > 0) {
+						pantallaDestino = PantallaBs.consultarPantalla(accionVista.getPantallaDestino().getId());
+					}
 
 					if(imagenesAccionesTexto.get(i) != null && !imagenesAccionesTexto.get(i).isEmpty() &&!imagenesAccionesTexto.get(i).contains("image/png")) {
 						throw new PRISMAValidacionException(

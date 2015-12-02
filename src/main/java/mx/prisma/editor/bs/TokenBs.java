@@ -1821,7 +1821,7 @@ public class TokenBs {
 	}
 
 	public static String agregarReferencias(String actionContext,
-			String redaccion) {
+			String redaccion, String target) {
 		if (redaccion == null || redaccion.isEmpty()) {
 			return "Sin información";
 		}
@@ -1845,7 +1845,7 @@ public class TokenBs {
 					redaccion = remplazoToken(
 							redaccion,
 							token,
-							"<a class='referencia' href='" + actionContext
+							"<a target='" + target + "'" +  "class='referencia' href='" + actionContext
 									+ "/pantallas/" + pantalla.getId() 
 									+ "#accion-" + id
 									+ "'>"
@@ -1860,7 +1860,7 @@ public class TokenBs {
 					break;
 				}
 				redaccion = remplazoToken(redaccion, token,
-						"<a class='referencia' href='" + actionContext
+						"<a target='" + target + "'" +  "class='referencia' href='" + actionContext
 								+ "/actores/" + id + "'>" + actor.getNombre()
 								+ "</a>");
 				break;
@@ -1875,7 +1875,7 @@ public class TokenBs {
 					redaccion = remplazoToken(
 							redaccion,
 							token,
-							"<a class='referencia' href='" + actionContext
+							"<a target='" + target + "'" +  "class='referencia' href='" + actionContext
 									+ "/entidades/" + entidad.getId()
 									+ "#atributo-" + id + "'>"
 									+ atributo.getNombre() + "</a>");
@@ -1891,7 +1891,7 @@ public class TokenBs {
 				redaccion = remplazoToken(
 						redaccion,
 						token,
-						"<a class='referencia' href='" + actionContext + "/cu/"
+						"<a target='" + target + "'" +  "class='referencia' href='" + actionContext + "/cu/"
 								+ id + "'>" + casoUso.getClave() + " "
 								+ casoUso.getNumero() + " "
 								+ casoUso.getNombre() + "</a>");
@@ -1907,7 +1907,7 @@ public class TokenBs {
 				redaccion = remplazoToken(
 						redaccion,
 						token,
-						"<a class='referencia' href='" + actionContext
+						"<a target='" + target + "'" +  "class='referencia' href='" + actionContext
 								+ "/entidades/" + id + "'>"
 								+ entidad.getNombre() + "</a>");
 
@@ -1921,7 +1921,7 @@ public class TokenBs {
 					break;
 				} else {
 					redaccion = remplazoToken(redaccion, token,
-							"<a class='referencia' href='" + actionContext
+							"<a target='" + target + "'" +  "class='referencia' href='" + actionContext
 									+ "/glosario/" + id + "'>"
 									+ terminoGlosario.getNombre() + "</a>");
 				}
@@ -1936,7 +1936,7 @@ public class TokenBs {
 				redaccion = remplazoToken(
 						redaccion,
 						token,
-						"<a class='referencia' href='" + actionContext + "/pantallas/" + id +"'>" + pantalla.getClave()
+						"<a target='" + target + "'" +  "class='referencia' href='" + actionContext + "/pantallas/" + id +"'>" + pantalla.getClave()
 								+ " " + pantalla.getNumero() + " "
 								+ pantalla.getNombre() + "</a>");
 				break;
@@ -1951,7 +1951,7 @@ public class TokenBs {
 				redaccion = remplazoToken(
 						redaccion,
 						token,
-						"<a class='referencia' href='" + actionContext
+						"<a target='" + target + "'" +  "class='referencia' href='" + actionContext
 								+ "/mensajes/" + id + "'>" + mensaje.getClave()
 								+ " " + mensaje.getNumero() + " "
 								+ mensaje.getNombre() + "</a>");
@@ -1967,7 +1967,7 @@ public class TokenBs {
 				redaccion = remplazoToken(
 						redaccion,
 						token,
-						"<a class='referencia' href='" + actionContext
+						"<a target='" + target + "'" +  "class='referencia' href='" + actionContext
 								+ "/reglas-negocio/" + id + "'>"
 								+ reglaNegocio.getClave() + " "
 								+ reglaNegocio.getNumero() + " "
@@ -1982,7 +1982,7 @@ public class TokenBs {
 				}
 				CasoUso cu = trayectoria.getCasoUso();
 				redaccion = remplazoToken(redaccion, token,
-						"<a class='referencia' href='" + actionContext + "/cu/"
+						"<a target='" + target + "'" +  "class='referencia' href='" + actionContext + "/cu/"
 								+ cu.getId() + "#trayectoria-" + id + "'>"
 								+ trayectoria.getClave() + "</a>");
 				break;
@@ -1998,7 +1998,7 @@ public class TokenBs {
 				redaccion = remplazoToken(
 						redaccion,
 						token,
-						"<a class='referencia' href='" + actionContext + "/cu/"
+						"<a target='" + target + "'" +  "class='referencia' href='" + actionContext + "/cu/"
 								+ cup.getId() + "#paso-" + id + "'>"
 								+ paso.getNumero() + "</a>");
 				break;

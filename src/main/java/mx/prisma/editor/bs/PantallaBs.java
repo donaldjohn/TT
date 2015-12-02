@@ -14,6 +14,7 @@ import mx.prisma.editor.dao.PantallaDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.dao.TipoAccionDAO;
 import mx.prisma.editor.model.Accion;
+import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Elemento;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
@@ -260,6 +261,45 @@ public class PantallaBs {
 
 		for (Accion acc : model.getAcciones()) {
 			setReferenciasVista.addAll(AccionBs.verificarReferencias(acc));
+		}
+
+		listReferenciasVista.addAll(setReferenciasVista);
+
+		return listReferenciasVista;
+	}
+	
+	public static List<CasoUso> verificarCasosUsoReferencias(Pantalla model) {
+
+		List<ReferenciaParametro> referenciasParametro = new ArrayList<ReferenciaParametro>();
+
+		List<CasoUso> listReferenciasVista = new ArrayList<CasoUso>();
+		Set<CasoUso> setReferenciasVista = new HashSet<CasoUso>(0);
+
+		PostPrecondicion postPrecondicion = null; // Origen de la referencia
+		Paso paso = null; // Origen de la referencia
+		Accion accion = null; // Origen de la referencia
+		String casoUso = ""; // Caso de uso que tiene la referencia
+		String pantalla = ""; // Pantalla que tiene la referencia
+
+		referenciasParametro = new ReferenciaParametroDAO()
+				.consultarReferenciasParametro(model);
+
+		for (ReferenciaParametro referencia : referenciasParametro) {
+			String linea = "";
+			postPrecondicion = referencia.getPostPrecondicion();
+			paso = referencia.getPaso();
+			accion = referencia.getAccionDestino();
+
+			if (postPrecondicion != null) {
+				setReferenciasVista.add(postPrecondicion.getCasoUso());
+
+			} else if (paso != null) {
+				setReferenciasVista.add(paso.getTrayectoria().getCasoUso());
+			}
+		}
+
+		for (Accion acc : model.getAcciones()) {
+			setReferenciasVista.addAll(AccionBs.verificarCasosUsoReferencias(acc));
 		}
 
 		listReferenciasVista.addAll(setReferenciasVista);

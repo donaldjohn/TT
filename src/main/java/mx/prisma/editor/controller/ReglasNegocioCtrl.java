@@ -214,7 +214,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 					.consultarEstadoElemento(Estado.EDICION));
 
 			// Se registra la regla de negocio
-			
+			System.out.println("Proyecto activo: " + proyecto.getNombre());
 			ReglaNegocioBs.registrarReglaNegocio(model);
 			resultado = SUCCESS;
 

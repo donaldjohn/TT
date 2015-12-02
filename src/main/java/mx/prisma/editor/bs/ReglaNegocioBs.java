@@ -19,6 +19,7 @@ import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.dao.TipoReglaNegocioDAO;
 import mx.prisma.editor.model.Atributo;
+import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.CasoUsoReglaNegocio;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Operador;
@@ -475,6 +476,41 @@ public class ReglaNegocioBs {
 			if (linea != "") {
 				setReferenciasVista.add(linea);
 			}
+		}
+
+		listReferenciasVista.addAll(setReferenciasVista);
+
+		return listReferenciasVista;
+	}
+	
+	public static List<CasoUso> verificarCasosUsoReferencias(ReglaNegocio model) {
+
+		List<ReferenciaParametro> referenciasParametro;
+		List<CasoUsoReglaNegocio> referenciasReglaNegocio;
+
+		List<CasoUso> listReferenciasVista = new ArrayList<CasoUso>();
+		Set<CasoUso> setReferenciasVista = new HashSet<CasoUso>(0);
+		PostPrecondicion postPrecondicion = null;
+		Paso paso = null;
+
+		referenciasParametro = new ReferenciaParametroDAO()
+				.consultarReferenciasParametro(model);
+		referenciasReglaNegocio = new CasoUsoReglaNegocioDAO()
+				.consultarReferencias(model);
+
+		for (ReferenciaParametro referencia : referenciasParametro) {
+			postPrecondicion = referencia.getPostPrecondicion();
+			paso = referencia.getPaso();
+
+			if (postPrecondicion != null) {
+				setReferenciasVista.add(postPrecondicion.getCasoUso());
+			} else if (paso != null) {
+				setReferenciasVista.add(paso.getTrayectoria().getCasoUso());
+			}
+		}
+
+		for (CasoUsoReglaNegocio casoUsoReglaNegocio : referenciasReglaNegocio) {
+			setReferenciasVista.add(casoUsoReglaNegocio.getCasoUso());
 		}
 
 		listReferenciasVista.addAll(setReferenciasVista);

@@ -166,7 +166,7 @@
 		<s:form autocomplete="off" id="frmConfirmarEliminacion" name="frmConfirmarEliminacionName" theme="simple">
 				<div class="seccion">
 				<s:text name="MSG14"/>
-				<div id="elementosReferencias"><!--  --></div>
+				<div class="" id="elementosReferencias"><!--  --></div>
 				</div>
 			<br />
 			<div align="center">
@@ -181,12 +181,11 @@
 		<s:form autocomplete="off" id="frmConfirmarEliminacion" name="frmConfirmarEliminacionName" theme="simple">
 				
 				<div class="seccion">
-				<div align="center">
-				<div id = "mensajeRestricciones"></div>
-				<div id="restriccionesTermino"></div>
-				</div>
-			<br />
-			
+					<div id = "mensajeRestricciones"><!--  --></div>
+					<div id="restriccionesTermino"><!--  --></div>
+				<br />
+			</div>
+			<div align="center">
 				<input id="btnConfirmarTermino" type="button" value="Aceptar"/> 
 				 <input type="button" onclick="cancelarConfirmarTermino();" value="Cancelar" />
 			</div>

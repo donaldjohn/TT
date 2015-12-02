@@ -202,7 +202,7 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 			modificarAcciones(true);
 			
 			previo = SessionManager.consultarCasoUsoPrevio();
-			CuBs.modificarEstadoCasoUso(previo, Estado.PRECONFIGURADO);
+			ElementoBs.modificarEstadoElemento(previo, Estado.PRECONFIGURADO);
 			SessionManager.delete("idPrevio");
 			
 			addActionMessage(getText("MSG1", new String[] { "La", "Configuración del caso de uso",
@@ -234,7 +234,7 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 			modificarAcciones(false);
 			
 			previo = SessionManager.consultarCasoUsoPrevio();
-			CuBs.modificarEstadoCasoUso(previo, Estado.LIBERADO);
+			ElementoBs.modificarEstadoElemento(previo, Estado.LIBERADO);
 			SessionManager.delete("idPrevio");
 			
 			

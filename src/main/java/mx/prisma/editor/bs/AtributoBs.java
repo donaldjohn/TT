@@ -1,6 +1,7 @@
 package mx.prisma.editor.bs;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +13,7 @@ import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.dao.ReglaNegocioDAO;
 import mx.prisma.editor.dao.SalidaDAO;
 import mx.prisma.editor.model.Atributo;
+import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Entrada;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
@@ -141,5 +143,44 @@ public class AtributoBs {
 					new String[] { "El", "paso" });
 		}
 		return paso;
+	}
+
+	public static Collection<? extends CasoUso> verificarCasosUsoReferencias(
+			Atributo atributo) {
+		List<ReferenciaParametro> referenciasParametro;
+		List<Entrada> referenciasEntrada;
+		List<Salida> referenciasSalida;
+
+		List<CasoUso> listReferenciasVista = new ArrayList<CasoUso>();
+		Set<CasoUso> setReferenciasVista = new HashSet<CasoUso>(0);
+		PostPrecondicion postPrecondicion = null;
+		Paso paso = null;
+
+		referenciasParametro = new ReferenciaParametroDAO().consultarReferenciasParametro(atributo);
+		referenciasEntrada = new EntradaDAO().consultarReferencias(atributo);
+		referenciasSalida = new SalidaDAO().consultarReferencias(atributo);
+		
+		for (ReferenciaParametro referencia : referenciasParametro) {
+			postPrecondicion = referencia.getPostPrecondicion();
+			paso = referencia.getPaso();
+
+			if (postPrecondicion != null) {
+				setReferenciasVista.add(postPrecondicion.getCasoUso());
+
+			} else if (paso != null) {
+				setReferenciasVista.add(paso.getTrayectoria().getCasoUso());
+			}
+		}
+		
+		for (Salida salida : referenciasSalida) {
+			setReferenciasVista.add(salida.getCasoUso());
+		}
+		
+		for (Entrada entrada : referenciasEntrada) {
+			setReferenciasVista.add(entrada.getCasoUso());			
+		}
+		
+		listReferenciasVista.addAll(setReferenciasVista);
+		return listReferenciasVista;
 	}
 }

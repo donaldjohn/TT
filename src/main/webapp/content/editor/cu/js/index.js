@@ -88,6 +88,7 @@ function verificarTerminarCasoUso(idElemento) {
 			idSel : idElemento
 		},
 		success : function(data) {
+			console.log(data);
 			mostrarMensajeRestriccion(data, idElemento);
 		},
 		error : function(err) {

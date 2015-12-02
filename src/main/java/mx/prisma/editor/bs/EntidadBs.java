@@ -16,6 +16,7 @@ import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.dao.TipoDatoDAO;
 import mx.prisma.editor.dao.UnidadTamanioDAO;
 import mx.prisma.editor.model.Atributo;
+import mx.prisma.editor.model.CasoUso;
 import mx.prisma.editor.model.Entidad;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
@@ -277,6 +278,40 @@ public class EntidadBs {
 		for (Atributo atributo : model.getAtributos()) {
 			setReferenciasVista.addAll(AtributoBs
 					.verificarReferencias(atributo));
+		}
+
+		listReferenciasVista.addAll(setReferenciasVista);
+
+		return listReferenciasVista;
+	}
+	
+	public static List<CasoUso> verificarCasosUsoReferencias(Entidad model) {
+
+		List<ReferenciaParametro> referenciasParametro;
+
+		List<CasoUso> listReferenciasVista = new ArrayList<CasoUso>();
+		Set<CasoUso> setReferenciasVista = new HashSet<CasoUso>(0);
+		PostPrecondicion postPrecondicion = null;
+		Paso paso = null;
+
+		referenciasParametro = new ReferenciaParametroDAO()
+				.consultarReferenciasParametro(model);
+
+		for (ReferenciaParametro referencia : referenciasParametro) {
+			postPrecondicion = referencia.getPostPrecondicion();
+			paso = referencia.getPaso();
+
+			if (postPrecondicion != null) {
+				setReferenciasVista.add(postPrecondicion.getCasoUso());
+
+			} else if (paso != null) {
+				setReferenciasVista.add(paso.getTrayectoria().getCasoUso());
+			}
+		}
+
+		for (Atributo atributo : model.getAtributos()) {
+			setReferenciasVista.addAll(AtributoBs
+					.verificarCasosUsoReferencias(atributo));
 		}
 
 		listReferenciasVista.addAll(setReferenciasVista);
