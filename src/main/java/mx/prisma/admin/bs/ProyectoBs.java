@@ -211,6 +211,10 @@ public class ProyectoBs {
 			// Si el colaborador está asociado al proyecto y no es líder
 			colaboradorproyecto.setRol(rolLider);
 			
+			proyecto.getProyecto_colaboradores().add(colaboradorproyecto);
+			//new ColaboradorProyectoDAO().modificarColaboradorProyecto(colaboradorproyecto);
+			
+			
 			// se elimina el líder anterior
 			if(proyecto.getProyecto_colaboradores().remove(colaboradorPoryectoLiderBD)) {
 				System.out.println("Se elimina: " + colaboradorPoryectoLiderBD.getColaborador().getCurp());

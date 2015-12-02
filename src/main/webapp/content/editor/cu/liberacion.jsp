@@ -108,9 +108,10 @@
 								list="#{'1':'Sí','2':'No'}" cssErrorClass="input-error"
 								cssClass="genericFont"
 								onchange="verificarObservaciones('resumen')" />
-							<br/>
-							<s:fielderror fieldName="esCorrectoResumen" cssClass="error"
-								theme="jquery" />
+							<div class="seccion">
+								<s:fielderror fieldName="esCorrectoResumen" cssClass="error"
+									theme="jquery" />
+							</div>
 						</div>
 				</div>
 				<div id="divObservacionesResumen" style="display: none">
@@ -225,9 +226,10 @@
 								list="#{'1':'Sí','2':'No'}" cssErrorClass="input-error"
 								cssClass="genericFont"
 								onchange="verificarObservaciones('trayectoria')" />
-							<br/>
-							<s:fielderror fieldName="esCorrectoTrayectoria" cssClass="error"
-								theme="jquery" />
+							<div class="seccion">
+								<s:fielderror fieldName="esCorrectoTrayectoria" cssClass="error"
+									theme="jquery" />
+							</div>
 						</div>
 				</div>
 				<div id="divObservacionesTrayectoria" style="display: none">
@@ -285,9 +287,10 @@
 							list="#{'1':'Sí','2':'No'}" cssErrorClass="input-error"
 							cssClass="genericFont"
 							onchange="verificarObservaciones('puntosExt')" />
-							<br/>
-						<s:fielderror fieldName="esCorrectoPuntosExt" cssClass="error"
+						<div class="seccion">
+							<s:fielderror fieldName="esCorrectoPuntosExt" cssClass="error"
 							theme="jquery" />
+						</div>
 					</div>
 				</div>
 				<div id="divObservacionesPuntosExt" style="display: none">

@@ -101,27 +101,51 @@ function agregarCamposAccionesSeccion() {
 					
 					label = item.tipoAccion.nombre + " " + item.nombre;
 					
-					clavePantallaDestino = item.pantallaDestino.clave;
-					numeroPantallaDestino = item.pantallaDestino.numero;
-					nombrePantallaDestino = item.pantallaDestino.nombre;
-					pantallaDestino = clavePantallaDestino + numeroPantallaDestino + " " + nombrePantallaDestino;
+					if(item.pantallaDestino != null) {
+						clavePantallaDestino = item.pantallaDestino.clave;
+						numeroPantallaDestino = item.pantallaDestino.numero;
+						nombrePantallaDestino = item.pantallaDestino.nombre;
+						pantallaDestino = clavePantallaDestino + numeroPantallaDestino + " " + nombrePantallaDestino;
+						$("#tabla-acciones-" + idTablaPantalla).append("<tr>"
+								+ "<td class='label obligatorio'>" + label + "</td>"
+								+ "<td>" + inputURL + "</td>"
+								+ "<td>" + inputMetodo + "</td>"
+								+ "<td class='hide'>" + item.id + "</td>"
+								+ "<td class='hide'>" + item.nombre + "</td>"
+								+ "<td class='hide'>" + clavePantallaDestino + "</td>"
+								+ "<td class='hide'>" + numeroPantallaDestino + "</td>"
+								+ "<td class='hide'>" + nombrePantallaDestino + "</td>"
+								+ "<td class='hide'>" + item.pantalla.id + "</td>"
+								+ "<td class='hide'>" + item.pantalla.clave + "</td>"
+								+ "<td class='hide'>" + item.pantalla.numero + "</td>"
+								+ "<td class='hide'>" + item.pantalla.nombre + "</td>"
+								+ "<td class='hide'>" + item.tipoAccion.nombre + "</td>"
+								+ "<td class='textoAyuda'>Dirige a la pantalla " + pantallaDestino + "</td>"
+							+"</tr>");
+					} else {
+						clavePantallaDestino = "";
+						numeroPantallaDestino = "";
+						nombrePantallaDestino = "";
+						pantallaDestino = "";
+						$("#tabla-acciones-" + idTablaPantalla).append("<tr>"
+								+ "<td class='label obligatorio'>" + label + "</td>"
+								+ "<td>" + inputURL + "</td>"
+								+ "<td>" + inputMetodo + "</td>"
+								+ "<td class='hide'>" + item.id + "</td>"
+								+ "<td class='hide'>" + item.nombre + "</td>"
+								+ "<td class='hide'>" + clavePantallaDestino + "</td>"
+								+ "<td class='hide'>" + numeroPantallaDestino + "</td>"
+								+ "<td class='hide'>" + nombrePantallaDestino + "</td>"
+								+ "<td class='hide'>" + item.pantalla.id + "</td>"
+								+ "<td class='hide'>" + item.pantalla.clave + "</td>"
+								+ "<td class='hide'>" + item.pantalla.numero + "</td>"
+								+ "<td class='hide'>" + item.pantalla.nombre + "</td>"
+								+ "<td class='hide'>" + item.tipoAccion.nombre + "</td>"
+							+"</tr>");
+					}
+					
 				    
-					$("#tabla-acciones-" + idTablaPantalla).append("<tr>"
-							+ "<td class='label obligatorio'>" + label + "</td>"
-							+ "<td>" + inputURL + "</td>"
-							+ "<td>" + inputMetodo + "</td>"
-							+ "<td class='hide'>" + item.id + "</td>"
-							+ "<td class='hide'>" + item.nombre + "</td>"
-							+ "<td class='hide'>" + clavePantallaDestino + "</td>"
-							+ "<td class='hide'>" + numeroPantallaDestino + "</td>"
-							+ "<td class='hide'>" + nombrePantallaDestino + "</td>"
-							+ "<td class='hide'>" + item.pantalla.id + "</td>"
-							+ "<td class='hide'>" + item.pantalla.clave + "</td>"
-							+ "<td class='hide'>" + item.pantalla.numero + "</td>"
-							+ "<td class='hide'>" + item.pantalla.nombre + "</td>"
-							+ "<td class='hide'>" + item.tipoAccion.nombre + "</td>"
-							+ "<td class='textoAyuda'>Dirige a la pantalla " + pantallaDestino + "</td>"
-						+"</tr>");
+					
 					
 					document.getElementById("input-metodo-accion-" + item.id).value = nullToEmpty(item.metodo);
 
@@ -418,7 +442,13 @@ function tablaAccionesToJson() {
 		    
 		    var pantalla = new Pantalla(null, numeroPantalla, nombrePantalla, clavePantalla, idPantalla);
 		    arregloImagenesPantalla.push(imagenPantalla);
-		    var pantallaDestino = new Pantalla(null, numeroPantallaDestino, nombrePantallaDestino, clavePantallaDestino);
+		    
+		    var pantallaDestino;
+		    if(clavePantallaDestino != "") {
+		    	pantallaDestino = new Pantalla(null, numeroPantallaDestino, nombrePantallaDestino, clavePantallaDestino);
+		    } else {
+		    	pantallaDestino = null;
+		    }
 		    arregloAcciones.push(new Accion(nombreAccion, null, null, tipoAccion, pantallaDestino, id, url, metodo, pantalla));
 		    
 		}
