@@ -14,8 +14,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.xml.serialize.OutputFormat;
-import org.apache.xml.serialize.XMLSerializer;
+/*import org.apache.xml.serialize.OutputFormat;
+import org.apache.xml.serialize.XMLSerializer;*/
 import org.w3c.dom.Document;
 
 import mx.prisma.bs.ReferenciaEnum;
@@ -858,15 +858,15 @@ public class GeneradorPruebasBs {
 		file.getParentFile().mkdirs();
 		FileWriter writer = new FileWriter(file);
 		
-		if(nombre.contains(".jmx")) {
+		/*if(nombre.contains(".jmx")) {
 			contenido = formatoXML(contenido);
-		}
+		}*/
 		
 		writer.append(contenido);
 		writer.close();
 	}
 	
-	public static String formatoXML(String cadena) throws IOException {
+	/*public static String formatoXML(String cadena) throws IOException {
 		Document document = FileUtil.parseXmlFile(cadena);
 
         OutputFormat format = new OutputFormat(document);
@@ -878,7 +878,7 @@ public class GeneradorPruebasBs {
         serializer.serialize(document);
         
         return out.toString();
-	}
+	}*/
 	
 	public static void generarCasosPrueba(CasoUso casoUso, String rutaPruebas) throws Exception {
 		String archivo = "";

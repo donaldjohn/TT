@@ -96,32 +96,35 @@
 					</tr>
 				</table>
 			</div>
-			<div class="genericFont seccion">
-					<br />
-					<div class="obligatorio">
-						<s:text name="labelCorrectoResumen" />
-					</div>
-					<br />
-					<div class="radiobotones">
-						<s:radio id="esCorrectoResumen" name="esCorrectoResumen"
-							list="#{'1':'Sí','2':'No'}" cssErrorClass="input-error"
-							cssClass="genericFont"
-							onchange="verificarObservaciones('resumen')" />
-						<s:fielderror fieldName="esCorrectoResumen" cssClass="error"
-							theme="jquery" />
-					</div>
-			</div>
-			<div id="divObservacionesResumen" style="display: none">
-				<table class="seccion">
-					<tr>
-						<td class="label obligatorio"><s:text
-								name="labelObservaciones" /></td>
-						<td><s:textarea rows="5" name="observacionesResumen"
-								cssClass="inputFormularioExtraGrande ui-widget" maxlength="999"
-								cssErrorClass="input-error"></s:textarea> <s:fielderror
-								fieldName="observacionesResumen" cssClass="error" theme="jquery" /></td>
-					</tr>
-				</table>
+			<div class="pregunta">
+				<div class="genericFont seccion">
+						<br />
+						<div class="obligatorio">
+							<s:text name="labelCorrectoResumen" />
+						</div>
+						<br />
+						<div class="radiobotones">
+							<s:radio id="esCorrectoResumen" name="esCorrectoResumen"
+								list="#{'1':'Sí','2':'No'}" cssErrorClass="input-error"
+								cssClass="genericFont"
+								onchange="verificarObservaciones('resumen')" />
+							<br/>
+							<s:fielderror fieldName="esCorrectoResumen" cssClass="error"
+								theme="jquery" />
+						</div>
+				</div>
+				<div id="divObservacionesResumen" style="display: none">
+					<table class="seccion">
+						<tr>
+							<td class="label obligatorio"><s:text
+									name="labelObservaciones" /></td>
+							<td><s:textarea rows="5" name="observacionesResumen"
+									cssClass="inputFormularioExtraGrande ui-widget" maxlength="999"
+									cssErrorClass="input-error"></s:textarea> <s:fielderror
+									fieldName="observacionesResumen" cssClass="error" theme="jquery" /></td>
+						</tr>
+					</table>
+				</div>
 			</div>
 			<br/>
 		</div>
@@ -210,33 +213,36 @@
 					</s:iterator>
 				</s:else>
 			</div>
-			<div class="genericFont seccion">
-					<br />
-					<div class="obligatorio">
-						<s:text name="labelCorrectoTrayectorias" />
-					</div>
-					<br />
-					<div class="radiobotones">
-						<s:radio id="esCorrectoTrayectoria" name="esCorrectoTrayectoria"
-							list="#{'1':'Sí','2':'No'}" cssErrorClass="input-error"
-							cssClass="genericFont"
-							onchange="verificarObservaciones('trayectoria')" />
-						<s:fielderror fieldName="esCorrectoTrayectoria" cssClass="error"
-							theme="jquery" />
-					</div>
-			</div>
-			<div id="divObservacionesTrayectoria" style="display: none">
-				<table>
-					<tr>
-						<td class="label obligatorio"><s:text
-								name="labelObservaciones" /></td>
-						<td><s:textarea rows="5" name="observacionesTrayectoria"
-								cssClass="inputFormularioExtraGrande ui-widget" maxlength="999"
-								cssErrorClass="input-error"></s:textarea> <s:fielderror
-								fieldName="observacionesTrayectoria" cssClass="error"
-								theme="jquery" /></td>
-					</tr>
-				</table>
+			<div class="pregunta">
+				<div class="genericFont seccion">
+						<br />
+						<div class="obligatorio">
+							<s:text name="labelCorrectoTrayectorias" />
+						</div>
+						<br />
+						<div class="radiobotones">
+							<s:radio id="esCorrectoTrayectoria" name="esCorrectoTrayectoria"
+								list="#{'1':'Sí','2':'No'}" cssErrorClass="input-error"
+								cssClass="genericFont"
+								onchange="verificarObservaciones('trayectoria')" />
+							<br/>
+							<s:fielderror fieldName="esCorrectoTrayectoria" cssClass="error"
+								theme="jquery" />
+						</div>
+				</div>
+				<div id="divObservacionesTrayectoria" style="display: none">
+					<table>
+						<tr>
+							<td class="label obligatorio"><s:text
+									name="labelObservaciones" /></td>
+							<td><s:textarea rows="5" name="observacionesTrayectoria"
+									cssClass="inputFormularioExtraGrande ui-widget" maxlength="999"
+									cssErrorClass="input-error"></s:textarea> <s:fielderror
+									fieldName="observacionesTrayectoria" cssClass="error"
+									theme="jquery" /></td>
+						</tr>
+					</table>
+				</div>
 			</div>
 			<br/>
 		</div>
@@ -267,6 +273,7 @@
 						</table>
 					</s:iterator>
 				</div>
+			<div class="pregunta">
 				<div class="genericFont seccion">
 					<br />
 					<div class="obligatorio">
@@ -278,22 +285,24 @@
 							list="#{'1':'Sí','2':'No'}" cssErrorClass="input-error"
 							cssClass="genericFont"
 							onchange="verificarObservaciones('puntosExt')" />
+							<br/>
 						<s:fielderror fieldName="esCorrectoPuntosExt" cssClass="error"
 							theme="jquery" />
 					</div>
-			</div>
-			<div id="divObservacionesPuntosExt" style="display: none">
-				<table>
-					<tr>
-						<td class="label obligatorio"><s:text
-								name="labelObservaciones" /></td>
-						<td><s:textarea rows="5" name="observacionesPuntosExt"
-								cssClass="inputFormularioExtraGrande ui-widget" maxlength="999"
-								cssErrorClass="input-error"></s:textarea> <s:fielderror
-								fieldName="observacionesPuntosExt" cssClass="error"
-								theme="jquery" /></td>
-					</tr>
-				</table>
+				</div>
+				<div id="divObservacionesPuntosExt" style="display: none">
+					<table>
+						<tr>
+							<td class="label obligatorio"><s:text
+									name="labelObservaciones" /></td>
+							<td><s:textarea rows="5" name="observacionesPuntosExt"
+									cssClass="inputFormularioExtraGrande ui-widget" maxlength="999"
+									cssErrorClass="input-error"></s:textarea> <s:fielderror
+									fieldName="observacionesPuntosExt" cssClass="error"
+									theme="jquery" /></td>
+						</tr>
+					</table>
+				</div>
 			</div>
 				<br/>
 			</div>

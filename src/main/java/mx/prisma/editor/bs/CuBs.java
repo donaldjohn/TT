@@ -654,7 +654,7 @@ public class CuBs {
 		return listRestricciones;
 	}
 
-	private static String construirRestriccion(
+	private static String construirRestriccion( 
 			ReferenciaParametro referenciaParametro) {
 		switch (ReferenciaEnum.getTipoReferenciaParametro(referenciaParametro)) {
 		case ACTOR:
@@ -679,7 +679,7 @@ public class CuBs {
 		case REGLANEGOCIO:
 			ReglaNegocio reglaNegocio = (ReglaNegocio) referenciaParametro
 					.getElementoDestino();
-			return "Regla de Negocio " + reglaNegocio.getClave()
+			return "Regla de negocio " + reglaNegocio.getClave()
 					+ reglaNegocio.getNumero() + " " + reglaNegocio.getNombre();
 		default:
 			break;
