@@ -54,13 +54,9 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 		
 		String resultado;
 		colaborador = SessionManager.consultarColaboradorActivo();
-		System.out.println("despues de consulta colaboador");
 		proyecto = SessionManager.consultarProyectoActivo();
-		System.out.println("despues de consulta proy");
 		modulo = SessionManager.consultarModuloActivo();
-		System.out.println("despues de consulta modulo");
 		casoUso = SessionManager.consultarCasoUsoActivo();
-		System.out.println("despues de consulta cu");
 		
 		if (casoUso == null) {
 			session = ActionContext.getContext().getSession();
@@ -83,11 +79,16 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 		}
 		
 		@SuppressWarnings("unchecked")
+		Collection<String> msjs = (Collection<String>) SessionManager
+				.get("mensajesAccion");
+		this.setActionMessages(msjs);
+		SessionManager.delete("mensajesAccion");
+		
+		@SuppressWarnings("unchecked")
 		Collection<String> msjsError = (Collection<String>) SessionManager
 				.get("mensajesError");
-		this.setActionMessages(msjsError);
+		this.setActionErrors(msjsError);
 		SessionManager.delete("mensajesError");
-		System.out.println("después de verificaciones y x");
 		return "pantallaConfiguracionGeneral";
 	}
 	
@@ -123,8 +124,8 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 				chttpBD.setIp(chttp.getIp());
 				chttpBD.setPuerto(chttp.getPuerto());
 			}
-			
-			ConfiguracionGeneralBs.modificarConfiguracionGeneral(cbdBD, chttpBD, true);
+			casoUso.setConfiguracionBaseDatos(cbdBD);
+			casoUso.setConfiguracionHttp(chttpBD);
 			
 			ElementoBs.modificarEstadoElemento(casoUso, Estado.PRECONFIGURADO);
 			
@@ -134,11 +135,6 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 			"registrada" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
 			
-			@SuppressWarnings("unchecked")
-			Collection<String> msjsError = (Collection<String>) SessionManager
-					.get("mensajesError");
-			this.setActionErrors(msjsError);
-			SessionManager.delete("mensajesError");
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			SessionManager.set(this.getActionErrors(), "mensajesError");
@@ -188,7 +184,8 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 				chttpBD.setPuerto(chttp.getPuerto());
 			}
 			
-			ConfiguracionGeneralBs.modificarConfiguracionGeneral(cbdBD, chttpBD, false);
+			casoUso.setConfiguracionBaseDatos(cbdBD);
+			casoUso.setConfiguracionHttp(chttpBD);
 			
 			ElementoBs.modificarEstadoElemento(casoUso, Estado.PRECONFIGURADO);
 			
@@ -197,12 +194,6 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 			addActionMessage(getText("MSG1", new String[] { "La", "Configuración general",
 			"guardada" }));
 			SessionManager.set(this.getActionMessages(), "mensajesAccion");
-			
-			@SuppressWarnings("unchecked")
-			Collection<String> msjsError = (Collection<String>) SessionManager
-					.get("mensajesError");
-			this.setActionErrors(msjsError);
-			SessionManager.delete("mensajesError");
 			
 			resultado = prepararConfiguracion();
 		} catch (PRISMAValidacionException pve) {

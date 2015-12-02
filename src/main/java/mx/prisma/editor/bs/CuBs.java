@@ -1079,7 +1079,8 @@ public class CuBs {
 		
 		for(Trayectoria trayectoria : model.getTrayectorias()) {
 			for(Paso paso : trayectoria.getPasos()) {
-				for(ReferenciaParametro referencia : paso.getReferencias()) {
+				List<ReferenciaParametro> referencias = new ReferenciaParametroDAO().consultarReferenciasParametro(paso);
+				for(ReferenciaParametro referencia : referencias) {
 					switch(ReferenciaEnum.getTipoReferenciaParametro(referencia)) {
 					case ACCION:
 						ElementoBs.modificarEstadoElemento(referencia.getAccionDestino().getPantalla(), Estado.EDICION);

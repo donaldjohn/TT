@@ -12,8 +12,8 @@ public class ConfiguracionGeneralBs {
 	public static void modificarConfiguracionGeneral(ConfiguracionBaseDatos cbd, ConfiguracionHttp chttp, boolean validarObligatorios) {
 			validar(cbd, validarObligatorios);
 			validar(chttp, validarObligatorios);
-			//ElementoBs.verificarEstado(cu, CU_CasosUso.MODIFICARCASOUSO5_2);
 			
+			System.out.println("Desde modificar configuración general: " + cbd.getContrasenia());
 			new ConfiguracionDAO().modificarConfiguracionGeneral(cbd);	
 			new ConfiguracionDAO().modificarConfiguracionGeneral(chttp);
 	}

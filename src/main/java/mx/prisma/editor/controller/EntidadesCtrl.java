@@ -324,7 +324,6 @@ public class EntidadesCtrl extends ActionSupportPRISMA implements
 		Set<Atributo> atributosVista = new HashSet<Atributo>(0);
 
 		Atributo atributoBD = null;
-		System.out.println("json: " + jsonAtributosTabla);
 		if (jsonAtributosTabla != null && !jsonAtributosTabla.equals("")) {
 			atributosVista = JsonUtil.mapJSONToSet(jsonAtributosTabla,
 					Atributo.class);

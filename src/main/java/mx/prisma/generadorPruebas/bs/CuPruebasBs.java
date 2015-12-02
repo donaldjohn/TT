@@ -102,20 +102,29 @@ public class CuPruebasBs {
 				for(Entrada entrada : entradas) {
 					if(entrada.getAtributo() != null) {
 
-						ValorEntrada valorInvalido = null;
+						ValorEntrada valorInvalidoBD = null;
+						String valorCadenaInvalido = null;
 						
-						valorInvalido = ValorEntradaBs.consultarValorInvalido(reglaNegocio, entrada);
-						if(valorInvalido == null) {
-							if(!ReglaNegocioBs.esGlobal(reglaNegocio.getTipoReglaNegocio())) {
-								if(entradaPerteneceReglaNegocio(entrada, reglaNegocio)) {
-									valorInvalido = generarValor(entrada, reglaNegocio, reglasNegocio, false);
-								}
-							} else {
-								valorInvalido = generarValor(entrada, reglaNegocio, reglasNegocio, false);
+						valorInvalidoBD = ValorEntradaBs.consultarValorInvalido(reglaNegocio, entrada);
+						
+						if(valorInvalidoBD == null) {
+							valorInvalidoBD = new ValorEntrada();
+							valorInvalidoBD.setReglaNegocio(reglaNegocio);
+							valorInvalidoBD.setEntrada(entrada);
+							valorInvalidoBD.setValido(false);
+						}
+						
+						if(!ReglaNegocioBs.esGlobal(reglaNegocio.getTipoReglaNegocio())) {
+							if(entradaPerteneceReglaNegocio(entrada, reglaNegocio)) {
+								valorCadenaInvalido = generarValor(entrada, reglaNegocio, reglasNegocio, false);
 							}
-							if(valorInvalido != null) {
-								ValorEntradaBs.registrarValorEntrada(valorInvalido);
-							}
+						} else {
+							valorCadenaInvalido = generarValor(entrada, reglaNegocio, reglasNegocio, false);
+						}
+						
+						if(valorCadenaInvalido != null) { 
+							valorInvalidoBD.setValor(valorCadenaInvalido);
+							ValorEntradaBs.registrarValorEntrada(valorInvalidoBD);
 						}
 					} 
 					
@@ -123,19 +132,25 @@ public class CuPruebasBs {
 		}
 		
 		for(Entrada entrada : entradas) {
-			ValorEntrada valorValido = null;
-			valorValido = ValorEntradaBs.consultarValorValido(entrada);
-			if(valorValido == null) {
-				if(entrada.getAtributo() != null) {
-		
-					valorValido = generarValor(entrada, null, reglasNegocio, true);
-					if(valorValido != null) {
-						ValorEntradaBs.registrarValorEntrada(valorValido);
-					}
-				} else if(entrada.getTerminoGlosario() != null) {
-					valorValido = new ValorEntrada(entrada, null, "1", true);
-					ValorEntradaBs.registrarValorEntrada(valorValido);
-				}
+			ValorEntrada valorValidoBD = ValorEntradaBs.consultarValorValido(entrada);
+			String valorCadenaValido = null;
+			
+			if(valorValidoBD == null) {
+				valorValidoBD = new ValorEntrada();
+				valorValidoBD.setReglaNegocio(null);
+				valorValidoBD.setEntrada(entrada);
+				valorValidoBD.setValido(true);
+			}
+			
+			if(entrada.getAtributo() != null) {	
+				valorCadenaValido = generarValor(entrada, null, reglasNegocio, true);
+			} else if(entrada.getTerminoGlosario() != null) {
+				valorCadenaValido = "1";
+			}
+			
+			if(valorCadenaValido != null) {
+				valorValidoBD.setValor(valorCadenaValido);
+				ValorEntradaBs.registrarValorEntrada(valorValidoBD);
 			}
 		}
 	}
@@ -170,13 +185,10 @@ public class CuPruebasBs {
 		return false;
 	}
 
-	private static ValorEntrada generarValor(Entrada entrada,
+	private static String generarValor(Entrada entrada,
 			ReglaNegocio reglaNegocio, Set<ReglaNegocio> reglasNegocio,
 			boolean valido) {
 		Atributo atributo = entrada.getAtributo();
-		ValorEntrada valor = new ValorEntrada();
-		valor.setEntrada(entrada);
-		valor.setReglaNegocio(reglaNegocio);
 		String valorCadena = null;
 
 		if(TipoDatoEnum.getTipoDato(atributo.getTipoDato()).equals(TipoDatoEnum.tipoDato.OTRO)) {
@@ -222,10 +234,8 @@ public class CuPruebasBs {
 					return null;
 			}
 		}
-		
-		valor.setValor(valorCadena);
-		valor.setValido(valido);
-		return valor;
+
+		return valorCadena;
 	}
 
 	public static String generarCadenaValidaFormatoCorrecto(Entrada entrada, ReglaNegocio reglaNegocio) {
