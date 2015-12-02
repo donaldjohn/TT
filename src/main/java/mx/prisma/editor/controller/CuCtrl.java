@@ -439,8 +439,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		// Se consultan los elementos de todo el proyecto
 		listElementos = CuBs.consultarElementos(proyecto);
 		
-		System.out.println("XD-Después de consultarElementos");
-		
 		Modulo moduloAux = null;
 		
 
@@ -671,11 +669,9 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	public String verificarTermino() {
 		System.out.println("desde verificar termino");
 		try {
+			model = CuBs.consultarCasoUso(idSel);
 			restriccionesTermino = new ArrayList<String>();
-			System.out.println("1");
 			restriccionesTermino = CuBs.verificarRestriccionesTermino(model);
-			System.out.println("2");
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
