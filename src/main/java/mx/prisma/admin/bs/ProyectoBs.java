@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Set;
 
 import mx.prisma.admin.dao.ColaboradorDAO;
-import mx.prisma.admin.dao.ColaboradorProyectoDAO;
 import mx.prisma.admin.dao.EstadoProyectoDAO;
 import mx.prisma.admin.dao.ProyectoDAO;
 import mx.prisma.admin.dao.RolDAO;
@@ -190,49 +189,40 @@ public class ProyectoBs {
 
 	public static void agregarLider(Proyecto proyecto, String curpLider) {
 		Colaborador liderVista = new ColaboradorDAO().consultarColaborador(curpLider);
-		ColaboradorProyecto colaboradorProyectoLiderBD = consultarColaboradorProyectoLider(proyecto);
-		ColaboradorProyecto colaboradorproyecto = new ColaboradorProyectoDAO().findByColaborador_Proyecto(liderVista, proyecto);
-		
+		ColaboradorProyecto colaboradorproyecto = null;
+		ColaboradorProyecto lider = null;
 		int idLider = RolBs.consultarIdRol(Rol_Enum.LIDER);
 		Rol rolLider = new RolDAO().consultarRol(idLider);
+		
+		for (ColaboradorProyecto colaborador : proyecto.getProyecto_colaboradores()) {
+			if (colaborador.getRol().getId() == idLider) {
+				lider = colaborador;
+			}
+			if (curpLider.equals(colaborador.getColaborador().getCurp())) {
+				colaboradorproyecto = colaborador;
+			}
+		}
+		
+		for (ColaboradorProyecto colaborador : proyecto.getProyecto_colaboradores()) {
+			if (curpLider.equals(colaborador.getColaborador().getCurp())) {
+				colaboradorproyecto = colaborador;
+			}
+		}
+
 		
 		if (colaboradorproyecto == null) {
 			colaboradorproyecto = new ColaboradorProyecto(liderVista, rolLider, proyecto);
 			proyecto.getProyecto_colaboradores().add(colaboradorproyecto);
-			proyecto.getProyecto_colaboradores().remove(colaboradorProyectoLiderBD);
-			new ProyectoDAO().modificarProyecto(proyecto);	
-		} else {
-			colaboradorproyecto.setRol(rolLider);
-			System.out.println(colaboradorproyecto.getColaborador().getCurp());
-			new ColaboradorProyectoDAO().modificarColaboradorProyecto(colaboradorproyecto);
-			new ProyectoDAO().modificarProyecto(proyecto);
+			proyecto.getProyecto_colaboradores().remove(lider);
+			
+		} else 
+			if (lider.getId() == colaboradorproyecto.getId()){
+				colaboradorproyecto.setRol(rolLider);
+			} else {
+				colaboradorproyecto.setRol(rolLider);
+				proyecto.getProyecto_colaboradores().remove(lider);
 		}
 		
-		/*if(colaboradorproyecto == null) {
-			// Si el colaborador no está asociado al proyecto
-			ColaboradorProyecto colaboradorProyectoLider = new ColaboradorProyecto(liderVista, rolLider, proyecto);
-			proyecto.getProyecto_colaboradores().add(colaboradorProyectoLider);
-			
-			// se elimina el líder anterior
-			if(proyecto.getProyecto_colaboradores().remove(colaboradorPoryectoLiderBD)) {
-				System.out.println("1");
-				System.out.println("Se elimina: " + colaboradorPoryectoLiderBD.getColaborador().getCurp());
-			} else {
-				System.out.println("no se eliminó");
-			}
-		} else if(!colaboradorPoryectoLiderBD.getColaborador().getCurp().equals(colaboradorproyecto.getColaborador().getCurp())) {
-			// Si el colaborador está asociado al proyecto y no es líder
-			colaboradorproyecto.setRol(rolLider);
-			new ColaboradorProyectoDAO().modificarColaboradorProyecto(colaboradorproyecto);
-			
-			
-			// se elimina el líder anterior
-			if(proyecto.getProyecto_colaboradores().remove(colaboradorPoryectoLiderBD)) {
-				System.out.println("2");
-
-				System.out.println("Se elimina: " + colaboradorPoryectoLiderBD.getColaborador().getCurp());
-			}
-		}*/
 	}
 
 

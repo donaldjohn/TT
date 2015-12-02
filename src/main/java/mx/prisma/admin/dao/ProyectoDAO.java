@@ -33,12 +33,14 @@ public class ProyectoDAO extends GenericDAO {
 	}
 	
 	public void modificarProyecto(Proyecto proyecto){
+		System.out.println("asa");
 		try {
 			session.beginTransaction();
 			session.update(proyecto);
-			/*for(ColaboradorProyecto colaborador : proyecto.getProyecto_colaboradores()){
+			for(ColaboradorProyecto colaborador : proyecto.getProyecto_colaboradores()){
+				System.out.println(colaborador.getColaborador().getCurp() + colaborador.getRol().getNombre());
 				session.saveOrUpdate(colaborador);
-			}*/
+			}
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();
