@@ -242,36 +242,28 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		String resultado = null;
 		try {
 			colaborador = SessionManager.consultarColaboradorActivo();
-			System.err.println("**********************************************************Después de consultarColaboradorActivo");
-			
 			proyecto = SessionManager.consultarProyectoActivo();
-			System.err.println("**********************************************************Después de consultarProyectoActivo");
 			
 			modulo = SessionManager.consultarModuloActivo();
 			if (modulo == null) {
 				resultado = "modulos";
 				return resultado;
 			}
-			System.err.println("**********************************************************Después de consultarModuloActivo");
 			
 			if (!AccessBs.verificarPermisos(model.getProyecto(), colaborador)) {
 				resultado = Action.LOGIN;
 				return resultado;
 			}
-			System.err.println("**********************************************************Después de verificarPermisos");
 			
 			model.setProyecto(proyecto);
 			
 			model.setModulo(modulo);
 
 			ElementoBs.verificarEstado(model, CU_CasosUso.MODIFICARCASOUSO5_2);
-			System.err.println("**********************************************************Después de verificarEstado");
 
 			buscaElementos();
-			System.err.println("**********************************************************Después de buscaElementos");
 			
 			prepararVista();
-			System.err.println("**********************************************************Después de prepararVista");
 
 			resultado = EDIT;
 		} catch (PRISMAValidacionException pve) {
@@ -623,23 +615,18 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		}
 		this.jsonPrecondiciones = JsonUtil.mapListToJSON(precondiciones);
 		this.jsonPostcondiciones = JsonUtil.mapListToJSON(postcondiciones);
-		System.out.println("despues postprecondiciones");
 
 		model.setRedaccionActores((TokenBs.decodificarCadenasToken(model
 				.getRedaccionActores())));
-		System.out.println("despues setRedaccionActores");
 		
 		model.setRedaccionEntradas((TokenBs.decodificarCadenasToken(model
 				.getRedaccionEntradas())));
-		System.out.println("despues setRedaccionEntradas");
 		
 		model.setRedaccionSalidas((TokenBs.decodificarCadenasToken(model
 				.getRedaccionSalidas())));
-		System.out.println("despues setRedaccionSalidas");
 		
 		model.setRedaccionReglasNegocio((TokenBs.decodificarCadenasToken(model
 				.getRedaccionReglasNegocio())));
-		System.out.println("despues setRedaccionReglasNegocio");
 
 		for (Revision rev : model.getRevisiones()) {
 			if (!rev.isRevisado()
@@ -650,12 +637,10 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 				this.observaciones = rev.getObservaciones();
 			}
 		}
-		System.out.println("despues getRevisiones");
 	}
 
 	public String verificarElementosReferencias() {
 		try {
-			System.out.println("desde cuctrl idSel: " + idSel);
 			model.setId(idSel);
 			elementosReferencias = new ArrayList<String>();
 			elementosReferencias = CuBs.verificarReferencias(model);
@@ -667,7 +652,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 	}
 
 	public String verificarTermino() {
-		System.out.println("desde verificar termino");
 		try {
 			model = CuBs.consultarCasoUso(idSel);
 			restriccionesTermino = new ArrayList<String>();
@@ -693,7 +677,6 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 				resultado = Action.LOGIN;
 				return resultado;
 			}
-			System.out.println("model.estado: " + model.getEstadoElemento().getId());
 			ElementoBs.verificarEstado(model, CU_CasosUso.TERMINARCASOUSO5_6);
 			resultado = SUCCESS;
 			CuBs.terminar(model);
@@ -773,9 +756,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 
 			ElementoBs.verificarEstado(model, CU_CasosUso.REVISARCASOUSO5_5);
 
-			
-			System.out.println("desde guardar: " + esCorrectoResumen + ", " + esCorrectoTrayectoria + ", " + esCorrectoPuntosExt);
-			System.out.println("desde guardar: " + observacionesResumen + ", " + observacionesTrayectoria + ", " + observacionesPuntosExt);
+
 			if(CuBs.guardarRevisiones(esCorrectoResumen, observacionesResumen,
 					esCorrectoTrayectoria, observacionesTrayectoria,
 					esCorrectoPuntosExt, observacionesPuntosExt, model)) {

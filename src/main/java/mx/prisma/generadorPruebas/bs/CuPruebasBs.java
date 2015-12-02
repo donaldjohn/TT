@@ -377,7 +377,7 @@ public class CuPruebasBs {
 			if(AnalizadorPasosBs.isSistemaMuestraMensaje(paso)) {
 				ReferenciaParametro referencia = AnalizadorPasosBs.obtenerPrimerReferencia(paso, TipoReferencia.MENSAJE);
 				Mensaje mensaje = (Mensaje) referencia.getElementoDestino();
-				if(mensaje.isParametrizado()) {
+				if(mensaje.getParametros() != null && mensaje.getParametros().size() > 0) {
 					referencias.add(referencia);
 				}
 				
