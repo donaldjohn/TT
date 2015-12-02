@@ -740,7 +740,7 @@ public class CuBs {
 		case REGLANEGOCIO:
 			ReglaNegocio reglaNegocio = (ReglaNegocio) referenciaParametro
 					.getElementoDestino();
-			return "Regla de Negocio " + reglaNegocio.getClave()
+			return "Regla de negocio " + reglaNegocio.getClave()
 					+ reglaNegocio.getNumero() + " " + reglaNegocio.getNombre();
 		default:
 			break;
