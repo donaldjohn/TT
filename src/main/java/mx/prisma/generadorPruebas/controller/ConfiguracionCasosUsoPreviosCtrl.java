@@ -144,6 +144,7 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 		Map<String, Object> session = null;
 		String resultado;
 		try {
+			this.clearErrorsAndMessages();
 			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
 			modulo = SessionManager.consultarModuloActivo();
@@ -178,12 +179,6 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 			if(jsonAcciones == null || jsonAcciones.isEmpty()) {
 				obtenerJsonCamposAcciones(previo);
 			}
-			
-			@SuppressWarnings("unchecked")
-			Collection<String> msjsError = (Collection<String>) SessionManager
-					.get("mensajesError");
-			this.setActionErrors(msjsError);
-			SessionManager.delete("mensajesError");
 		} catch (Exception e) {
 			ErrorManager.agregaMensajeError(this, e);
 			SessionManager.set(this.getActionErrors(), "mensajesError");
@@ -235,7 +230,6 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 			
 			previo = SessionManager.consultarCasoUsoPrevio();
 			ElementoBs.modificarEstadoElemento(previo, Estado.LIBERADO);
-			SessionManager.delete("idPrevio");
 			
 			
 			addActionMessage(getText("MSG1", new String[] { "La", "Configuración del caso de uso",
@@ -461,7 +455,6 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 	}
 
 	public void setIdCUPrevio(Integer idCUPrevio) {
-		System.out.println("desde setIdCUPrevio");
 		this.idCUPrevio = idCUPrevio;
 	}
 

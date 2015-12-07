@@ -158,6 +158,7 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 			SessionManager.delete("mensajesError");
 		} catch(Exception e) {
 			ErrorManager.agregaMensajeError(this, e);
+			SessionManager.set(this.getActionErrors(), "mensajesError");
 			resultado = "anterior";
 		}
 		
@@ -305,9 +306,19 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 				Set<ValorEntrada> valores = new HashSet<ValorEntrada>(0);
 				
 				
-				
+				 
 				for(ValorEntrada veVista : entradaVista.getValores()) {
-					ValorEntrada veBD = ValorEntradaBs.consultarValor(veVista.getId());
+					ValorEntrada veBD = null;
+					//Se agregan los valores que ya tenía asociada la entrada
+					for(ValorEntrada valor : entradaBD.getValores()) {
+						
+						if(valor.getId() != veVista.getId()) {
+							valores.add(valor);
+						} else {
+							veBD = valor;
+						}
+					}
+					
 					if(veBD != null) {
 						veBD.setValor(veVista.getValor());
 						valores.add(veBD);
@@ -318,19 +329,11 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 						veVista.setReglaNegocio(null);
 						valores.add(veVista);
 					}
-					
-					//Se agregan los valores que ya tenía asociada la entrada
-					for(ValorEntrada valor : entradaBD.getValores()) {
-						if(veBD != null && valor.getId() != veBD.getId()) {
-							valores.add(valor);
-						}
-					}
-					break;
 				}
 				
 				
-				
-				entradaBD.setValores(valores);
+				entradaBD.getValores().clear();
+				entradaBD.getValores().addAll(valores);
 
 				EntradaBs.modificarEntrada(entradaBD, validarObligatorios);
 			}

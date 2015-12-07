@@ -15,7 +15,7 @@ public class ValorEntradaDAO extends GenericDAO {
 	public void registrarValorEntrada(ValorEntrada valor) {
 		try {
 			session.beginTransaction();
-			session.save(valor);
+			session.saveOrUpdate(valor);
 			session.getTransaction().commit();
 		} catch (HibernateException he) {
 			he.printStackTrace();

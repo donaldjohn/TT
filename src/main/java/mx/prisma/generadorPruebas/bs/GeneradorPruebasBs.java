@@ -570,7 +570,7 @@ public class GeneradorPruebasBs {
 		case MENSAJE:
 			mensaje = (Mensaje) refParam.getElementoDestino();
 			if (!mensaje.getParametros().isEmpty()) {
-				patron = TokenBs.decodificarCadenasToken(mensaje.getRedaccion());
+				patron = mensaje.getRedaccion();
 			} else {
 				patron = mensaje.getRedaccion();
 			}
