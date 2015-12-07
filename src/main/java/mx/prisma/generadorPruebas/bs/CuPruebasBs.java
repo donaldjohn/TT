@@ -98,6 +98,7 @@ public class CuPruebasBs {
 
 	public static void generarValores(Set<Entrada> entradas,
 			Set<ReglaNegocio> reglasNegocio) throws Exception {
+		System.out.println("DESDE GENERAR VALORES");
 		for(ReglaNegocio reglaNegocio: reglasNegocio) {
 				for(Entrada entrada : entradas) {
 					if(entrada.getAtributo() != null) {

@@ -18,9 +18,11 @@ import mx.prisma.editor.bs.EntradaBs;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.Atributo;
 import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.CasoUsoReglaNegocio;
 import mx.prisma.editor.model.Entrada;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Pantalla;
+import mx.prisma.editor.model.ReglaNegocio;
 import mx.prisma.editor.model.TerminoGlosario;
 import mx.prisma.editor.model.Trayectoria;
 import mx.prisma.generadorPruebas.bs.CuPruebasBs;
@@ -92,10 +94,6 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 		listCU = CuBs.obtenerCaminoPrevioMasCorto(casoUso);
 		SessionManager.set(listCU, "casosUsoPrevios");
 		
-		if(listCU == null) {
-			return "siguiente";
-		}
-		
 		SessionManager.delete("idPrevio");
 		
 		@SuppressWarnings("unchecked")
@@ -116,11 +114,21 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 		String resultado;
 		
 		try {
+			//Se generan los valores
+			casoUso = SessionManager.consultarCasoUsoActivo();
+			Set<ReglaNegocio> reglas = new HashSet<ReglaNegocio>(0);
+			for(CasoUsoReglaNegocio curn : casoUso.getReglas()) {
+				reglas.add(curn.getReglaNegocio());
+			}
+			CuPruebasBs.generarValores(casoUso.getEntradas(), reglas);
+			
 			listCU = (List<CasoUso>) SessionManager.get("casosUsoPrevios");
 			SessionManager.delete("casosUsoPrevios");
-			for(CasoUso cu : listCU) {
-				if (cu.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.CONFIGURADO) && cu.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.PRECONFIGURADO)){
-					throw new PRISMAValidacionException("Falta configurar un caso de uso.", "MSG37");
+			if(listCU != null) {
+				for(CasoUso cu : listCU) {
+					if (cu.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.CONFIGURADO) && cu.getEstadoElemento().getId() != ElementoBs.getIdEstado(Estado.PRECONFIGURADO)){
+						throw new PRISMAValidacionException("Falta configurar un caso de uso.", "MSG37");
+					}
 				}
 			}
 			resultado = "siguiente";
@@ -264,12 +272,24 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 				Set<ValorEntrada> valores = new HashSet<ValorEntrada>(0);
 				
 				
-				
+				 
 				for(ValorEntrada veVista : entradaVista.getValores()) {
-					ValorEntrada veBD = ValorEntradaBs.consultarValor(veVista.getId());
-					if(veBD != null) {
-						veBD.setValor(veVista.getValor());
-						valores.add(veBD);
+					ValorEntrada veValido = null;
+					//Se agregan los valores que ya tenía asociada la entrada
+					for(ValorEntrada valorBD : entradaBD.getValores()) {
+						if(valorBD.getId() != veVista.getId()) {
+							valores.add(valorBD);
+						}
+						
+						System.out.println("id bd: " + valorBD.getId());
+						if(valorBD.getId().equals(veVista.getId())){
+							veValido = valorBD;
+						}
+					}
+					
+					if(veValido != null) {
+						veValido.setValor(veVista.getValor());
+						valores.add(veValido);
 					} else {
 						veVista.setId(null);
 						veVista.setValido(true);
@@ -277,19 +297,10 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 						veVista.setReglaNegocio(null);
 						valores.add(veVista);
 					}
-					
-
-					for(ValorEntrada valor : entradaBD.getValores()) {
-						if(veBD != null && valor.getId() != veBD.getId()) {
-							valores.add(valor);
-						}
-					}
-					break;
 				}
 				
-				
-				
-				entradaBD.setValores(valores);
+				entradaBD.getValores().clear();
+				entradaBD.getValores().addAll(valores);
 
 				EntradaBs.modificarEntrada(entradaBD, validarObligatorios);
 			}

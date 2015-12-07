@@ -18,7 +18,7 @@ public class ConfiguracionGeneralBs {
 			new ConfiguracionDAO().modificarConfiguracionGeneral(chttp);
 	}
 
-	private static void validar(ConfiguracionHttp chttp, boolean validarObligatorios) {
+	public static void validar(ConfiguracionHttp chttp, boolean validarObligatorios) {
 		// Validaciones de ip
 		if (validarObligatorios && Validador.esNuloOVacio(chttp.getIp())) {
 			throw new PRISMAValidacionException(
@@ -31,11 +31,6 @@ public class ConfiguracionGeneralBs {
 					new String[] { "16", "caracteres" }, "chttp.ip");
 		}
 		// Validaciones de puerto
-		if (validarObligatorios && chttp.getPuerto() == 0) {
-			throw new PRISMAValidacionException(
-					"El usuario no ingresó el puerto.", "MSG4", null,
-					"chttp.puerto");
-		}
 		if (chttp.getPuerto() != null && Validador.validaLongitudMaxima(chttp.getPuerto().toString(), 10)) {
 			throw new PRISMAValidacionException(
 					"El usuario ingreso un puerto muy largo.", "MSG6",
@@ -44,7 +39,7 @@ public class ConfiguracionGeneralBs {
 		
 	}
 
-	private static void validar(ConfiguracionBaseDatos cbd, boolean validarObligatorios) {
+	public static void validar(ConfiguracionBaseDatos cbd, boolean validarObligatorios) {
 		// Validaciones de URL
 		if (validarObligatorios && Validador.esNuloOVacio(cbd.getUrlBaseDatos())) {
 			throw new PRISMAValidacionException(
@@ -79,11 +74,6 @@ public class ConfiguracionGeneralBs {
 					new String[] { "50", "caracteres" }, "cbd.usuario");
 		}
 		// Validaciones de contraseña
-		if (validarObligatorios && Validador.esNuloOVacio(cbd.getContrasenia())) {
-			throw new PRISMAValidacionException(
-					"El usuario no ingresó la contraseña.", "MSG4", null,
-					"cbd.contrasenia");
-		}
 		if (Validador.validaLongitudMaxima(cbd.getContrasenia(), 50)) {
 			throw new PRISMAValidacionException(
 					"El usuario ingreso una contraseña muy larga.", "MSG6",

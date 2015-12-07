@@ -1009,10 +1009,12 @@ public class GeneradorPruebasBs {
 						archivo += GeneradorPruebasBs.contenedorCSV(pasoActual,
 							false);
 					} else {
-						archivo += GeneradorPruebasBs.iniciarControladorIf(
-								pasoIncierto, "==");
-						archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, pasoIncierto, null, true);
-						archivo += GeneradorPruebasBs.contenedorCSV(pasoActual, pasoIncierto, null, false);
+						if(pasoIncierto != null) {
+							archivo += GeneradorPruebasBs.iniciarControladorIf(
+									pasoIncierto, "==");
+							archivo += GeneradorPruebasBs.peticionHTTP(pasoActual, pasoIncierto, null, true);
+							archivo += GeneradorPruebasBs.contenedorCSV(pasoActual, pasoIncierto, null, false);
+						}
 						pasos.remove(pasoActual);
 						archivo += generarPrueba(siguiente, pasos);
 						archivo += GeneradorPruebasBs.terminarControladorIf();	

@@ -98,6 +98,18 @@ public class ActorBs {
 					"El usuario ingreso un nombre con caracter inválido.",
 					"MSG23", new String[] { "El", "nombre" }, "model.nombre");
 		}
+		List<Actor> actoresBD = ActorBs.consultarActoresProyecto(model.getProyecto());
+		for(Actor actor : actoresBD) {
+			if(actor.getId() != model.getId()) {
+				if(actor.getNombre().equals(model.getNombre())) {
+					throw new PRISMAValidacionException(
+							"El nombre del actor ya existe.",
+							"MSG7",
+							new String[] { "El", "Actor", model.getNombre() },
+							"model.nombre");
+				}
+			}
+		}
 		// Validaciones de la Descripción
 		if (Validador.esNuloOVacio(model.getDescripcion())) {
 			throw new PRISMAValidacionException(

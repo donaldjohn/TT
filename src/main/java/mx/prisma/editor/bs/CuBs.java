@@ -958,7 +958,7 @@ public class CuBs {
 	public static List<CasoUso> obtenerCaminoPrevioMasCorto(CasoUso casoUso) {
 		List<List<CasoUso>> caminosPrevios = obtenerCasosUsoPrevios(casoUso);
 		if(caminosPrevios == null) {
-			return null;
+			return new ArrayList<CasoUso>();
 		}
 		List<CasoUso> caminoCorto;
 		caminoCorto = caminosPrevios.get(0);
@@ -1019,60 +1019,64 @@ public class CuBs {
 
 	public static void liberarElementosRelacionados(CasoUso model) throws Exception {
 		for(CasoUsoActor cu_actor : model.getActores()) {
-			ElementoBs.modificarEstadoElemento(cu_actor.getActor(), Estado.EDICION);
+			ElementoBs.modificarEstadoElemento(cu_actor.getActor(), Estado.LIBERADO);
 		}
 		for(Entrada entrada : model.getEntradas()) {
 			if(entrada.getAtributo() != null) {
-				ElementoBs.modificarEstadoElemento(entrada.getAtributo().getEntidad(), Estado.EDICION);
+				ElementoBs.modificarEstadoElemento(entrada.getAtributo().getEntidad(), Estado.LIBERADO);
 			} else if(entrada.getTerminoGlosario() != null) {
-				ElementoBs.modificarEstadoElemento(entrada.getTerminoGlosario(), Estado.EDICION);
+				ElementoBs.modificarEstadoElemento(entrada.getTerminoGlosario(), Estado.LIBERADO);
 			}
 		}
 		for(Salida salida : model.getSalidas()) {
 			if(salida.getMensaje() != null) {
-				ElementoBs.modificarEstadoElemento(salida.getMensaje(), Estado.EDICION);
+				ElementoBs.modificarEstadoElemento(salida.getMensaje(), Estado.LIBERADO);
 			} else if(salida.getAtributo() != null) {
-				ElementoBs.modificarEstadoElemento(salida.getAtributo().getEntidad(), Estado.EDICION);
+				ElementoBs.modificarEstadoElemento(salida.getAtributo().getEntidad(), Estado.LIBERADO);
 			} else if(salida.getTerminoGlosario() != null) {
-				ElementoBs.modificarEstadoElemento(salida.getTerminoGlosario(), Estado.EDICION);
+				ElementoBs.modificarEstadoElemento(salida.getTerminoGlosario(), Estado.LIBERADO);
 			}
 		}
 		for(CasoUsoReglaNegocio cu_regla : model.getReglas()) {
-			ElementoBs.modificarEstadoElemento(cu_regla.getReglaNegocio(), Estado.EDICION);
+			ElementoBs.modificarEstadoElemento(cu_regla.getReglaNegocio(), Estado.LIBERADO);
 		}
 		
 		List<PostPrecondicion> postprecondiciones = new PostPrecondicionDAO().consultarPostPrecondiciones(model, true);
 		postprecondiciones.addAll(new PostPrecondicionDAO().consultarPostPrecondiciones(model, false));
 		
 		for(PostPrecondicion pp : postprecondiciones) {
-			for(ReferenciaParametro referencia : pp.getReferencias()) {
-				switch(ReferenciaEnum.getTipoReferenciaParametro(referencia)) {
-				case ACCION:
-					ElementoBs.modificarEstadoElemento(referencia.getAccionDestino().getPantalla(), Estado.EDICION);
-					break;
-				case ACTOR:
-					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
-					break;
-				case ATRIBUTO:
-					ElementoBs.modificarEstadoElemento(referencia.getAtributo().getEntidad(), Estado.EDICION);
-					break;
-				case ENTIDAD:
-					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
-					break;
-				case MENSAJE:
-					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
-					break;
-				case PANTALLA:
-					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
-					break;
-				case REGLANEGOCIO:
-					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
-					break;
-				case TERMINOGLS:
-					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
-					break;
-				default:
-					break;
+			System.out.println("pp: " + pp);
+			List<ReferenciaParametro> referencias = new ReferenciaParametroDAO().consultarReferenciasParametro(pp);
+			if(referencias != null) {
+				for(ReferenciaParametro referencia : referencias) {
+					switch(ReferenciaEnum.getTipoReferenciaParametro(referencia)) {
+					case ACCION:
+						ElementoBs.modificarEstadoElemento(referencia.getAccionDestino().getPantalla(), Estado.LIBERADO);
+						break;
+					case ACTOR:
+						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.LIBERADO);
+						break;
+					case ATRIBUTO:
+						ElementoBs.modificarEstadoElemento(referencia.getAtributo().getEntidad(), Estado.LIBERADO);
+						break;
+					case ENTIDAD:
+						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.LIBERADO);
+						break;
+					case MENSAJE:
+						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.LIBERADO);
+						break;
+					case PANTALLA:
+						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.LIBERADO);
+						break;
+					case REGLANEGOCIO:
+						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.LIBERADO);
+						break;
+					case TERMINOGLS:
+						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.LIBERADO);
+						break;
+					default:
+						break;
+					}
 				}
 			}
 		}
@@ -1080,34 +1084,36 @@ public class CuBs {
 		for(Trayectoria trayectoria : model.getTrayectorias()) {
 			for(Paso paso : trayectoria.getPasos()) {
 				List<ReferenciaParametro> referencias = new ReferenciaParametroDAO().consultarReferenciasParametro(paso);
-				for(ReferenciaParametro referencia : referencias) {
-					switch(ReferenciaEnum.getTipoReferenciaParametro(referencia)) {
-					case ACCION:
-						ElementoBs.modificarEstadoElemento(referencia.getAccionDestino().getPantalla(), Estado.EDICION);
-						break;
-					case ACTOR:
-						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
-						break;
-					case ATRIBUTO:
-						ElementoBs.modificarEstadoElemento(referencia.getAtributo().getEntidad(), Estado.EDICION);
-						break;
-					case ENTIDAD:
-						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
-						break;
-					case MENSAJE:
-						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
-						break;
-					case PANTALLA:
-						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
-						break;
-					case REGLANEGOCIO:
-						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
-						break;
-					case TERMINOGLS:
-						ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
-						break;
-					default:
-						break;
+				if(referencias != null) {
+					for(ReferenciaParametro referencia : referencias) {
+						switch(ReferenciaEnum.getTipoReferenciaParametro(referencia)) {
+						case ACCION:
+							ElementoBs.modificarEstadoElemento(referencia.getAccionDestino().getPantalla(), Estado.LIBERADO);
+							break;
+						case ACTOR:
+							ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.LIBERADO);
+							break;
+						case ATRIBUTO:
+							ElementoBs.modificarEstadoElemento(referencia.getAtributo().getEntidad(), Estado.LIBERADO);
+							break;
+						case ENTIDAD:
+							ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.LIBERADO);
+							break;
+						case MENSAJE:
+							ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.LIBERADO);
+							break;
+						case PANTALLA:
+							ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.LIBERADO);
+							break;
+						case REGLANEGOCIO:
+							ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.LIBERADO);
+							break;
+						case TERMINOGLS:
+							ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.LIBERADO);
+							break;
+						default:
+							break;
+						}
 					}
 				}
 			}
@@ -1141,42 +1147,9 @@ public class CuBs {
 			ElementoBs.modificarEstadoElemento(cu_regla.getReglaNegocio(), Estado.EDICION);
 		}
 		for(PostPrecondicion pp : model.getPostprecondiciones()) {
-			for(ReferenciaParametro referencia : pp.getReferencias()) {
-				switch(ReferenciaEnum.getTipoReferenciaParametro(referencia)) {
-				case ACCION:
-					ElementoBs.modificarEstadoElemento(referencia.getAccionDestino().getPantalla(), Estado.EDICION);
-					break;
-				case ACTOR:
-					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
-					break;
-				case ATRIBUTO:
-					ElementoBs.modificarEstadoElemento(referencia.getAtributo().getEntidad(), Estado.EDICION);
-					break;
-				case ENTIDAD:
-					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
-					break;
-				case MENSAJE:
-					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
-					break;
-				case PANTALLA:
-					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
-					break;
-				case REGLANEGOCIO:
-					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
-					break;
-				case TERMINOGLS:
-					ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
-					break;
-				default:
-					break;
-				}
-			}
-		}
-		
-		for(Trayectoria trayectoria : model.getTrayectorias()) {
-			for(Paso paso : trayectoria.getPasos()) {
-				List<ReferenciaParametro> referenciasparametro = new ReferenciaParametroDAO().consultarReferenciasParametro(paso);
-				for(ReferenciaParametro referencia : referenciasparametro) {
+			List<ReferenciaParametro> referencias = new ReferenciaParametroDAO().consultarReferenciasParametro(pp);
+			if(referencias != null) {
+				for(ReferenciaParametro referencia : referencias) {
 					switch(ReferenciaEnum.getTipoReferenciaParametro(referencia)) {
 					case ACCION:
 						ElementoBs.modificarEstadoElemento(referencia.getAccionDestino().getPantalla(), Estado.EDICION);
@@ -1204,6 +1177,44 @@ public class CuBs {
 						break;
 					default:
 						break;
+					}
+				}
+			}
+		}
+		
+		for(Trayectoria trayectoria : model.getTrayectorias()) {
+			for(Paso paso : trayectoria.getPasos()) {
+				List<ReferenciaParametro> referenciasparametro = new ReferenciaParametroDAO().consultarReferenciasParametro(paso);
+				if(referenciasparametro != null) {
+					for(ReferenciaParametro referencia : referenciasparametro) {
+						switch(ReferenciaEnum.getTipoReferenciaParametro(referencia)) {
+						case ACCION:
+							ElementoBs.modificarEstadoElemento(referencia.getAccionDestino().getPantalla(), Estado.EDICION);
+							break;
+						case ACTOR:
+							ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+							break;
+						case ATRIBUTO:
+							ElementoBs.modificarEstadoElemento(referencia.getAtributo().getEntidad(), Estado.EDICION);
+							break;
+						case ENTIDAD:
+							ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+							break;
+						case MENSAJE:
+							ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+							break;
+						case PANTALLA:
+							ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+							break;
+						case REGLANEGOCIO:
+							ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+							break;
+						case TERMINOGLS:
+							ElementoBs.modificarEstadoElemento(referencia.getElementoDestino(), Estado.EDICION);
+							break;
+						default:
+							break;
+						}
 					}
 				}
 			}
@@ -1237,7 +1248,7 @@ public class CuBs {
 		}
 		
 		for(CasoUso casoUso : casosUso) {
-			if(casoUso.getEstadoElemento().getId() == ElementoBs.getIdEstado(Estado.EDICION)) {
+			if(casoUso.getEstadoElemento().getId() == ElementoBs.getIdEstado(Estado.LIBERADO)) {
 				return true;
 			}
 		}

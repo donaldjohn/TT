@@ -24,7 +24,6 @@ public class GeneradorCadenasUtil {
 			caracter = "a";
 		}
 		String expReg = "(" + caracter + "){" + longitud + "}";
-		System.out.println("expReg: " + expReg);
 		Generex generex = new Generex(expReg);
 		String cadena = generex.random();
 		return cadena;

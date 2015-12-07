@@ -112,7 +112,12 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 			if(cbdBD == null) {
 				cbdBD = cbd;
 			} else {
-				cbdBD.setContrasenia(cbd.getContrasenia());
+				if(cbd.getContrasenia() == null) {
+					cbdBD.setContrasenia("");
+				} else {
+					cbdBD.setContrasenia(cbd.getContrasenia());
+				}
+				
 				cbdBD.setDriver(cbd.getDriver());
 				cbdBD.setUrlBaseDatos(cbd.getUrlBaseDatos());
 				cbdBD.setUsuario(cbd.getUsuario());
@@ -124,6 +129,9 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 				chttpBD.setIp(chttp.getIp());
 				chttpBD.setPuerto(chttp.getPuerto());
 			}
+			ConfiguracionGeneralBs.validar(cbd, true);
+			ConfiguracionGeneralBs.validar(chttp, true);
+			
 			casoUso.setConfiguracionBaseDatos(cbdBD);
 			casoUso.setConfiguracionHttp(chttpBD);
 			
@@ -171,7 +179,11 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 			if(cbdBD == null) {
 				cbdBD = cbd;
 			} else {
-				cbdBD.setContrasenia(cbd.getContrasenia());
+				if(cbd.getContrasenia() == null) {
+					cbdBD.setContrasenia("");
+				} else {
+					cbdBD.setContrasenia(cbd.getContrasenia());
+				}
 				cbdBD.setDriver(cbd.getDriver());
 				cbdBD.setUrlBaseDatos(cbd.getUrlBaseDatos());
 				cbdBD.setUsuario(cbd.getUsuario());
@@ -183,6 +195,8 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 				chttpBD.setIp(chttp.getIp());
 				chttpBD.setPuerto(chttp.getPuerto());
 			}
+			ConfiguracionGeneralBs.validar(cbd, false);
+			ConfiguracionGeneralBs.validar(chttp, false);
 			
 			casoUso.setConfiguracionBaseDatos(cbdBD);
 			casoUso.setConfiguracionHttp(chttpBD);
@@ -254,7 +268,6 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 	}
 
 	public void setIdCU(Integer idCU) {
-		System.out.println("desde set idCU: " + idCU);
 		this.idCU = idCU;
 		this.casoUso = CuBs.consultarCasoUso(idCU);
 		this.cbd = ConfiguracionGeneralBs.consultarConfiguracionBaseDatos(casoUso);

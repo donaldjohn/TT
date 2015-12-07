@@ -85,6 +85,19 @@ public class TerminoGlosarioBs {
 					"El usuario ingreso un nombre con caracter inválido.",
 					"MSG23", new String[] { "El", "nombre" }, "model.nombre");
 		}
+		// Se asegura la unicidad del nombre
+		List<TerminoGlosario> terminos = TerminoGlosarioBs.consultarTerminosGlosarioProyecto(model.getProyecto());
+		for(TerminoGlosario termino : terminos) {
+			if(termino.getId() != model.getId()) {
+				if(termino.getNombre().equals(model.getNombre())) {
+					throw new PRISMAValidacionException(
+							"El nombre del caso de uso ya existe.",
+							"MSG7",
+							new String[] { "El", "Término", model.getNombre() },
+							"model.nombre");
+				}
+			}
+		}
 		// Validaciones de la Descripción
 		if (Validador.esNuloOVacio(model.getDescripcion())) {
 			throw new PRISMAValidacionException(

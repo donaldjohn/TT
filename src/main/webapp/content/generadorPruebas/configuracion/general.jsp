@@ -50,8 +50,8 @@
 							theme="jquery" /></td>
 				</tr>
 				<tr>
-					<td class="label obligatorio"><s:text name="labelContrasenia" /></td>
-					<td><s:textfield name="cbd.contrasenia" maxlength="50"
+					<td class="label"><s:text name="labelContrasenia" /></td>
+					<td><s:password name="cbd.contrasenia" maxlength="50"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
 						<s:fielderror fieldName ="cbd.contrasenia" cssClass="error"
 							theme="jquery" /></td>
@@ -70,7 +70,7 @@
 							theme="jquery" /></td>
 				</tr>
 				<tr>
-					<td class="label obligatorio"><s:text name="labelPuerto" /></td>
+					<td class="label"><s:text name="labelPuerto" /></td>
 					<td><s:textfield name="chttp.puerto"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
 						<s:fielderror fieldName ="chttp.puerto" cssClass="error"

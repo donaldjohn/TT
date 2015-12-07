@@ -115,12 +115,8 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 				resultado = Action.LOGIN;
 				return resultado;
 			}
-			//Se generan los valores
-			Set<ReglaNegocio> reglas = new HashSet<ReglaNegocio>(0);
-			for(CasoUsoReglaNegocio curn : casoUso.getReglas()) {
-				reglas.add(curn.getReglaNegocio());
-			}
-			CuPruebasBs.generarValores(casoUso.getEntradas(), reglas);
+			
+			
 			
 			
 			//Se arman los json con los campos que se mostrarán en pantalla
@@ -259,6 +255,9 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 			GeneradorPruebasBs.generarCasosPrueba(casoUso, ruta);
 			
 		} catch (Exception e) {
+			SessionManager.delete("rutaPruebaGenerada");
+			SessionManager.delete("idCUPruebaGenerada");
+			SessionManager.delete("pruebaGenerada");
 			ErrorManager.agregaMensajeError(this, e);
 			SessionManager.set(this.getActionErrors(), "mensajesError");
 		}
@@ -308,20 +307,22 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 				
 				 
 				for(ValorEntrada veVista : entradaVista.getValores()) {
-					ValorEntrada veBD = null;
+					ValorEntrada veValido = null;
 					//Se agregan los valores que ya tenía asociada la entrada
-					for(ValorEntrada valor : entradaBD.getValores()) {
+					for(ValorEntrada valorBD : entradaBD.getValores()) {
+						if(valorBD.getId() != veVista.getId()) {
+							valores.add(valorBD);
+						}
 						
-						if(valor.getId() != veVista.getId()) {
-							valores.add(valor);
-						} else {
-							veBD = valor;
+						System.out.println("id bd: " + valorBD.getId());
+						if(valorBD.getId().equals(veVista.getId())){
+							veValido = valorBD;
 						}
 					}
 					
-					if(veBD != null) {
-						veBD.setValor(veVista.getValor());
-						valores.add(veBD);
+					if(veValido != null) {
+						veValido.setValor(veVista.getValor());
+						valores.add(veValido);
 					} else {
 						veVista.setId(null);
 						veVista.setValido(true);
@@ -330,7 +331,6 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 						valores.add(veVista);
 					}
 				}
-				
 				
 				entradaBD.getValores().clear();
 				entradaBD.getValores().addAll(valores);
