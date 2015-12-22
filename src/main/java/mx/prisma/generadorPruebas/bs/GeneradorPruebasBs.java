@@ -745,7 +745,7 @@ public class GeneradorPruebasBs {
 			linea = linea + valor + ",";
 		}
 		
-		if (linea != "") {
+		if (!linea.equals("")) {
 			linea = linea.substring(0, linea.length() - 1);	
 		} else {
 			linea = ",";

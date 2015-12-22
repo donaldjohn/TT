@@ -81,7 +81,6 @@ public class ActorBs {
 	}
 
 	private static void validar(Actor model) {
-
 		// Validaciones del nombre
 		if (Validador.esNuloOVacio(model.getNombre())) {
 			throw new PRISMAValidacionException(
