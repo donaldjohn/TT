@@ -750,7 +750,6 @@ public class GeneradorPruebasBs {
 		} else {
 			linea = ",";
 		}
-		
 		crearArchivo(nombreCSV, ruta, linea);
 	}
 
