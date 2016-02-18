@@ -205,7 +205,7 @@ function prepararEnvio() {
 		//$('#mensajeConfirmacion').dialog('open');
 		return true;
 	} catch(err) {
-		alert("Ocurrió un error.");
+		alert("Ha ocurrido un error.");
 		return false;
 	}
 }
@@ -288,7 +288,8 @@ function verificarEliminacionPaso(idPaso, dom) {
 			mostrarMensajeEliminacion(data, idPaso, dom);
 		},
 		error : function(err) {
-			alert("AJAX error in request: " + JSON.stringify(err, null, 2));
+			alert("Ha ocurrido un error.");
+			console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
 		}
 	});
 	

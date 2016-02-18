@@ -136,7 +136,7 @@ function prepararEnvio() {
 		//$('#mensajeConfirmacion').dialog('open');
 		return true;
 	} catch(err) {
-		alert("Ocurrió un error.");
+		alert("Ha ocurrido un error.");
 		return false;
 	}
 }

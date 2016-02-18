@@ -158,6 +158,7 @@ function cargarEntidades(idSelect) {
 			agregarListaSelect(select, data);
 		},
 		error : function(err) {
+			alert("Ha ocurrido un error.");
 			console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
 		}
 	});
@@ -179,6 +180,7 @@ function cargarAtributos(select, idSelectAtributos) {
 			agregarListaSelect(document.getElementById(idSelectAtributos), data);
 		},
 		error : function(err) {
+			alert("Ha ocurrido un error.");
 			console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
 		}
 	});
@@ -201,6 +203,7 @@ function cargarOperadores(select) {
 			agregarListaSelectOperador(document.getElementById("operador"), data);
 		},
 		error : function(err) {
+			alert("Ha ocurrido un error.");
 			console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
 		}
 	});
@@ -221,6 +224,7 @@ function cargarEntidadesDependientes(select, idSelectEntidades) {
 			agregarListaSelect(document.getElementById(idSelectEntidades), data);
 		},
 		error : function(err) {
+			alert("Ha ocurrido un error.");
 			console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
 		}
 	});
@@ -243,6 +247,7 @@ function cargarAtributosDependientes(select, idSelectAtributos) {
 			agregarListaSelect(document.getElementById(idSelectAtributos), data);
 		},
 		error : function(err) {
+			alert("Ha ocurrido un error.");
 			console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
 		}
 	});

@@ -35,6 +35,7 @@ function probarConexion() {
 			mostrarResultadoConexion(data);
 		},
 		error : function(err) {
+			alert("Ha ocurrido un error.");
 			console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
 		}
 	});

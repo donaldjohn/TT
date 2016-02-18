@@ -326,7 +326,7 @@ function preparaEnvio() {
 		tablaToJson("tablaAtributo");
 		return true;
 	} catch (err) {
-		alert("Ocurrió un error.");
+		alert("Ha ocurrido un error.");
 	}
 }
 

@@ -332,9 +332,9 @@ public class TrayectoriaBs {
 			}
 		}
 
-		for (Paso pasoModel : model.getPasos()) {
+		/*for (Paso pasoModel : model.getPasos()) {
 			setReferenciasVista.addAll(PasoBs.verificarReferencias(pasoModel, modulo));
-		}
+		}*/
 
 		listReferenciasVista.addAll(setReferenciasVista);
 

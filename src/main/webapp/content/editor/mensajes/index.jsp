@@ -23,6 +23,7 @@
 		<table id="gestion" class="tablaGestion" cellspacing="0" width="100%"> 
 			<thead>
 				<tr>
+					<th><!-- Número del mensaje --></th>
 					<th style="width: 80%;"><s:text name="colMensaje"/></th>
 					<th style="width: 20%;"><s:text name="colAcciones"/></th>
 				</tr>
@@ -30,6 +31,7 @@
 			<tbody>
 			<s:iterator value="listMensajes" var="msj">
 				<tr>
+					<td><s:property value="%{#msj.numero}"/></td>
 					<td><s:property value="%{#msj.clave + #msj.numero + ' ' + #msj.nombre}"/></td>
 					<td align="center">	
 						<!-- Consultar caso de uso -->			

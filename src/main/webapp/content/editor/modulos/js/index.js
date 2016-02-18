@@ -40,7 +40,7 @@ function verificarEliminacionElemento(idElemento) {
 		},
 		error : function(err) {
 			ocultarMensajeCargando();
-			alert("Ha ocurrido un error");
+			alert("Ha ocurrido un error.");
 			console.log("AJAX error:" + JSON.stringify(err, null, 2));
 		}
 	});

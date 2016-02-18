@@ -5,7 +5,7 @@ $(document).ready(function() {
 		window.location.href = contextPath + "/configuracion-caso-uso!descargarPrueba";
 		document.getElementById("pruebaGenerada").value = "false";
 	}
-	$('#gestion').DataTable();
+	$('#gestion').DataTable().column(0).visible(false); 
 	
 });
 
@@ -45,7 +45,8 @@ function verificarEliminacionElemento(idElemento) {
 			mostrarMensajeEliminacion(data, idElemento);
 		},
 		error : function(err) {
-			alert("AJAX error in request: " + JSON.stringify(err, null, 2));
+			alert("Ha ocurrido un error.");
+			console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
 		}
 	});
 
@@ -93,7 +94,8 @@ function verificarTerminarCasoUso(idElemento) {
 		},
 		error : function(err) {
 			ocultarMensajeCargando();
-			alert("Ha ocurrido un error");
+			alert("Ha ocurrido un error.");
+			console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
 		}
 	});
 

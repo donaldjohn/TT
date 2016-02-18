@@ -189,7 +189,7 @@ function esValidaAccion(idTabla, nombre, descripcion, imagen, tipoAccion, pantal
 	 * Inicia la validación del nombre y descripción, los cuales se deben validar independientemente del tipo de dato seleccionado.
 	 */
 
-	if (vaciaONula(nombre) || vaciaONula(descripcion) || tipoAccion.selectedIndex == 0) {
+	if (vaciaONula(nombre) || vaciaONula(descripcion) || tipoAccion.selectedIndex == 0 || pantallaDestino.selectedIndex == 0) {
 		agregarMensaje("Agregue todos los campos obligatorios.");
 		return false;
 	}

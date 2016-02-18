@@ -87,7 +87,8 @@ function verificarParametros() {
 			
 		},
 		error : function(err) {
-			alert("AJAX error in request: " + JSON.stringify(err, null, 2));
+			alert("Ha ocurrido un error.");
+			console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
 		}
 	});
 }

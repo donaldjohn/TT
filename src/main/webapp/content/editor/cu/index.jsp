@@ -22,6 +22,7 @@
 		<table id="gestion" class="tablaGestion" cellspacing="0" width="100%"> 
 			<thead>
 				<tr>
+					<th><!-- Número del Caso de uso --></th>
 					<th><s:text name="colCasoUso"/></th>
 					<th style="width: 20%;"><s:text name="colEstado"/></th>
 					<th style="width: 20%;"><s:text name="colAcciones"/></th>
@@ -30,6 +31,7 @@
 			<tbody>
 			<s:iterator value="listCU" var="cu">
 				<tr class="${'filaCU'}${cu.estadoElemento.id}">
+					<td><s:property value="%{#cu.numero}"/></td>
 					<td><s:property value="%{#cu.clave + #cu.numero + ' ' +#cu.nombre}"/></td>
 					<td><s:property value="%{#cu.estadoElemento.nombre}"/></td>
 					<td align="center">

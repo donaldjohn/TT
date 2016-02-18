@@ -23,6 +23,7 @@
 			<table id="gestion" class="tablaGestion" cellspacing="0" width="100%">
 				<thead>
 					<tr>
+						<th><!-- Número de la Pantalla --></th>
 						<th><s:text name="colPantalla" /></th>
 						<th style="width: 20%;"><s:text name="colAcciones" /></th>
 					</tr>
@@ -30,6 +31,8 @@
 				<tbody>
 					<s:iterator value="listPantallas" var="pantalla">
 						<tr>
+							<td><s:property
+									value="%{#pantalla.numero}" /></td>
 							<td><s:property
 									value="%{#pantalla.clave + #pantalla.numero + ' ' +#pantalla.nombre}" /></td>
 							<td align="center"><s:url var="urlConsultar"

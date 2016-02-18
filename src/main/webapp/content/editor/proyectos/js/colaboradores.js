@@ -24,7 +24,7 @@ function prepararEnvio() {
 		tablaToJson("tablaColaboradores");
 		return true;
 	} catch (err) {
-		alert("Ocurrió un error." + err);
+		alert("Ha ocurrido un error." + err);
 	}
 }
 

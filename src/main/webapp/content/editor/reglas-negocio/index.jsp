@@ -23,6 +23,7 @@
 		<table id="gestion" class="tablaGestion" cellspacing="0" width="100%"> 
 			<thead>
 				<tr>
+					<th><!-- Número de la Regla de Negocio --></th>
 					<th style="width: 80%;"><s:text name="colReglasNegocio"/></th>
 					<th style="width: 20%;"><s:text name="colAcciones"/></th>
 				</tr>
@@ -30,6 +31,7 @@
 			<tbody>
 			<s:iterator value="listReglasNegocio" var="rn">
 				<tr>
+					<td><s:property value="%{#rn.numero}"/></td>
 					<td><s:property value="%{#rn.clave + #rn.numero + ' ' + #rn.nombre}"/></td>
 					<td align="center">				
 						<s:url var="urlConsultar" value="%{#pageContext.request.contextPath}/reglas-negocio/%{#rn.id}"/>

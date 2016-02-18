@@ -251,19 +251,15 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 			Date date = new Date(97, 1, 23);
 			long t1 = date.getTime();
 			colaborador = SessionManager.consultarColaboradorActivo();
-			System.err.println("***********************************************Tiempo consultarColaboradorActivo: " + (t1-date.getTime()));
 			
 			t1 = date.getTime();
 			proyecto = SessionManager.consultarProyectoActivo();
-			System.err.println("***********************************************Tiempo consultarProyectoActivo: " + (t1-date.getTime()));
 			
 			t1 = date.getTime();
 			modulo = SessionManager.consultarModuloActivo();
-			System.err.println("***********************************************Tiempo consultarModuloActivo: " + (t1-date.getTime()));
 			
 			t1 = date.getTime();
 			casoUso = SessionManager.consultarCasoUsoActivo();
-			System.err.println("***********************************************Tiempo consultarCasoUsoActivo: " + (t1-date.getTime()));
 			
 			if (casoUso == null) {
 				resultado = "cu";
@@ -276,29 +272,23 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 				return resultado;
 			}
 			model.setCasoUso(casoUso);
-			System.err.println("***********************************************Tiempo verificarPermisos: " + (t1-date.getTime()));
 
 			t1 = date.getTime();
 			ElementoBs.verificarEstado(casoUso,
 					CU_CasosUso.MODIFICARTRAYECTORIA5_1_1_2);
-			System.err.println("***********************************************Tiempo verificarEstado: " + (t1-date.getTime()));
 
 			t1 = date.getTime();
 			buscaElementos();
-			System.err.println("***********************************************Tiempo buscaElementos: " + (t1-date.getTime()));
 			
 			t1 = date.getTime();
 			buscaCatalogos();
-			System.err.println("***********************************************Tiempo buscaCatalogos: " + (t1-date.getTime()));
 			
 			t1 = date.getTime();
 			existeTPrincipal = TrayectoriaBs.existeTrayectoriaPrincipal(
 					casoUso.getId(), model.getId());
-			System.err.println("***********************************************Tiempo existeTrayectoriaPrincipal: " + (t1-date.getTime()));
 
 			t1 = date.getTime();
 			prepararVista();
-			System.err.println("***********************************************Tiempo prepararVista: " + (t1-date.getTime()));
 
 			resultado = EDIT;
 		} catch (PRISMAException pe) {
@@ -489,15 +479,16 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 					break;
 				case CASOUSO:					
 					CasoUso auxCasoUso = new CasoUso();
+					CasoUso cu = (CasoUso) el;
 					
 					moduloAux = new Modulo();
-					moduloAux.setId(auxCasoUso.getModulo().getId());
-					moduloAux.setNombre(auxCasoUso.getModulo().getNombre());
-					moduloAux.setClave(auxCasoUso.getModulo().getClave());
+					moduloAux.setId(cu.getModulo().getId());
+					moduloAux.setNombre(cu.getModulo().getNombre());
+					moduloAux.setClave(cu.getModulo().getClave());
 					
-					auxCasoUso.setClave(el.getClave());
-					auxCasoUso.setNumero(el.getNumero());
-					auxCasoUso.setNombre(el.getNombre());
+					auxCasoUso.setClave(cu.getClave());
+					auxCasoUso.setNumero(cu.getNumero());
+					auxCasoUso.setNombre(cu.getNombre());
 					auxCasoUso.setModulo(moduloAux);
 					listCasosUso.add(auxCasoUso);
 
@@ -550,14 +541,15 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 					break;
 				case PANTALLA:
 					Pantalla auxPantalla = new Pantalla();
+					Pantalla pantalla = (Pantalla) el;
 					moduloAux = new Modulo();
-					moduloAux.setId(auxPantalla.getModulo().getId());
-					moduloAux.setNombre(auxPantalla.getModulo().getNombre());
-					moduloAux.setClave(auxPantalla.getModulo().getClave());
+					moduloAux.setId(pantalla.getModulo().getId());
+					moduloAux.setNombre(pantalla.getModulo().getNombre());
+					moduloAux.setClave(pantalla.getModulo().getClave());
 					
-					auxPantalla.setClave(el.getClave());
-					auxPantalla.setNumero(el.getNumero());
-					auxPantalla.setNombre(el.getNombre());
+					auxPantalla.setClave(pantalla.getClave());
+					auxPantalla.setNumero(pantalla.getNumero());
+					auxPantalla.setNombre(pantalla.getNombre());
 					auxPantalla.setModulo(moduloAux);
 					listPantallas.add(auxPantalla);
 					// Se obtienen las acciones
@@ -675,6 +667,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 
 	public String verificarElementosReferencias() {
 		try {
+			model.setId(idSel);
 			elementosReferencias = new ArrayList<String>();
 			elementosReferencias = TrayectoriaBs.verificarReferencias(model, null);
 

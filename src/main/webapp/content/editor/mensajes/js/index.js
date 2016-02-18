@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$('#gestion').DataTable();
+	$('#gestion').DataTable().column(0).visible(false);
 	contextPath = $("#rutaContexto").val();
 } );
 
@@ -26,7 +26,8 @@ function verificarEliminacionElemento(idElemento) {
 			mostrarMensajeEliminacion(data, idElemento);
 		},
 		error : function(err) {
-			alert("AJAX error in request: " + JSON.stringify(err, null, 2));
+			alert("Ha ocurrido un error.");
+			console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
 		}
 	});
 	
