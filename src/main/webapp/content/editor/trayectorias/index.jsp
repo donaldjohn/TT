@@ -96,11 +96,11 @@
 		<br />
 		<br />
 		<div align="center">
-			<button class="boton" formmethod="post"
+			<button class="boton" 
 				onclick="location.href='${pageContext.request.contextPath}/cu'">
 				<s:text name="Regresar"></s:text>
 			</button>
-			<button class="boton" formmethod="post"
+			<button class="boton" 
 				onclick="location.href='${pageContext.request.contextPath}/trayectorias/new'">
 				<s:text name="Registrar"></s:text>
 			</button>

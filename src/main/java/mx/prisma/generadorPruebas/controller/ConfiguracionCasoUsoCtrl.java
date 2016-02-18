@@ -432,13 +432,13 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 	}
 	
 	private void obtenerJsonCamposPantallas(CasoUso casoUso2) {
-		Set<Pantalla> pantallasAuxTrayectorias = new HashSet<Pantalla>(0);
+		List<Pantalla> pantallasAuxTrayectorias = new ArrayList<Pantalla>();
 		for(Trayectoria trayectoria : casoUso.getTrayectorias()) {
 			pantallasAuxTrayectorias.addAll(CuPruebasBs.obtenerPantallas(trayectoria));
 			
 		}
 		
-		Set<Pantalla> pantallasAux = new HashSet<Pantalla>(0);
+		List<Pantalla> pantallasAux = new ArrayList<Pantalla>();
 		Set<Integer> identificadores = new HashSet<Integer>(0);
 		for(Pantalla pantalla : pantallasAuxTrayectorias) {
 			if(!identificadores.contains(pantalla.getId())) {
@@ -448,7 +448,7 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 		}
 		
 		
-		Set<Pantalla> pantallas = new HashSet<Pantalla>(0);
+		List<Pantalla> pantallas = new ArrayList<Pantalla>();
 		for(Pantalla pantalla : pantallasAux) {
 			Pantalla pantallaAux = new Pantalla();
 			pantallaAux.setId(pantalla.getId());
@@ -459,18 +459,18 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 			
 			pantallas.add(pantallaAux);
 		}
-		jsonPantallas = JsonUtil.mapSetToJSON(pantallas);
+		jsonPantallas = JsonUtil.mapListToJSON(pantallas);
 		
 	}
 
 	private void obtenerJsonCamposParametrosMensaje(CasoUso casoUso) {
-		Set<ReferenciaParametro> referenciasParametroAux = new HashSet<ReferenciaParametro>(0);
+		List<ReferenciaParametro> referenciasParametroAux = new ArrayList<ReferenciaParametro>();
 		for(Trayectoria trayectoria : casoUso.getTrayectorias()) {
 			referenciasParametroAux.addAll(CuPruebasBs.obtenerReferenciasParametroMensajes(trayectoria));
 		}
 		
 		
-		Set<ReferenciaParametro> referencias = new HashSet<ReferenciaParametro>(0);
+		List<ReferenciaParametro> referencias = new ArrayList<ReferenciaParametro>();
 	
 		
 		for(ReferenciaParametro referencia : referenciasParametroAux) {
@@ -493,8 +493,8 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 			mensajeAux.setNombre(mensaje.getNombre());
 			mensajeAux.setRedaccion(mensaje.getRedaccion());
 			
-			Set<MensajeParametro> parametrosAux = mensaje.getParametros();
-			Set<MensajeParametro> parametros = new HashSet<MensajeParametro>(0);
+			List<MensajeParametro> parametrosAux = new ArrayList<MensajeParametro>(mensaje.getParametros());
+			List<MensajeParametro> parametros = new ArrayList<MensajeParametro>();
 			
 			for(MensajeParametro mensajeParametro : parametrosAux) {
 				MensajeParametro mensajeParametroAux = new MensajeParametro();
@@ -510,13 +510,13 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 				parametros.add(mensajeParametroAux);
 			}
 			
-			mensajeAux.setParametros(parametros);
+			mensajeAux.setParametros(new HashSet<MensajeParametro>(parametros));
 			
 			referenciaAux.setId(referencia.getId());
 			referenciaAux.setElementoDestino(mensajeAux);
 			
-			Set<ValorMensajeParametro> vmpsAux = ValorMensajeParametroBs.consultarValores(referencia);
-			Set<ValorMensajeParametro> vmps = new HashSet<ValorMensajeParametro>(0);
+			List<ValorMensajeParametro> vmpsAux = ValorMensajeParametroBs.consultarValores(referencia);
+			List<ValorMensajeParametro> vmps = new ArrayList<ValorMensajeParametro>();
 			
 			if(vmpsAux != null) {
 				for(ValorMensajeParametro vmp : vmpsAux) {
@@ -528,7 +528,7 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 					vmpAux.setMensajeParametro(mensajeParametroConId);
 					vmps.add(vmpAux);
 				}
-				referenciaAux.setValoresMensajeParametro(vmps);
+				referenciaAux.setValoresMensajeParametro(new HashSet<ValorMensajeParametro>(vmps));
 			}
 			
 			
@@ -537,17 +537,17 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 			referenciaAux.setValoresMensajeParametro(valoresMensajeParametro);*/
 			referencias.add(referenciaAux);
 		}
-		jsonReferenciasParametrosMensaje = JsonUtil.mapSetToJSON(referencias);
+		jsonReferenciasParametrosMensaje = JsonUtil.mapListToJSON(referencias);
 		
 	}
 
 	private void obtenerJsonCamposReglasNegocio(CasoUso casoUso2) {
-		Set<ReferenciaParametro> referenciasReglaNegocioAux = new HashSet<ReferenciaParametro>(0);
+		List<ReferenciaParametro> referenciasReglaNegocioAux = new ArrayList<ReferenciaParametro>();
 		for(Trayectoria trayectoria : casoUso.getTrayectorias()) {
 			referenciasReglaNegocioAux.addAll(CuPruebasBs.obtenerReferenciasReglasNegocioQuery(trayectoria));
 		}
 		
-		Set<ReferenciaParametro> referencias = new HashSet<ReferenciaParametro>(0);
+		List<ReferenciaParametro> referencias = new ArrayList<ReferenciaParametro>();
 		for(ReferenciaParametro referencia : referenciasReglaNegocioAux) {
 			ReferenciaParametro referenciaAux = new ReferenciaParametro();
 
@@ -592,15 +592,15 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 		}
 		
 		
-		jsonReferenciasReglasNegocio = JsonUtil.mapSetToJSON(referencias);
+		jsonReferenciasReglasNegocio = JsonUtil.mapListToJSON(referencias);
 		
 	}
 
 	private void obtenerJsonCamposEntradas(CasoUso previo) throws Exception{
 		
-		Set<Entrada> entradasAux = previo.getEntradas();
+		List<Entrada> entradasAux = new ArrayList<Entrada>(previo.getEntradas());
 
-		Set<Entrada> entradas = new HashSet<Entrada>(0);
+		List<Entrada> entradas = new ArrayList<Entrada>();
 		for(Entrada entrada : entradasAux) {
 			Entrada entradaAux = new Entrada();
 			Atributo atributo = new Atributo();
@@ -636,7 +636,7 @@ public class ConfiguracionCasoUsoCtrl extends ActionSupportPRISMA {
 			
 		} 
 		
-		jsonEntradas = JsonUtil.mapSetToJSON(entradas);
+		jsonEntradas = JsonUtil.mapListToJSON(entradas);
 		
 
 		

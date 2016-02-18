@@ -35,12 +35,12 @@
 						<s:fielderror fieldName="password" cssClass="error" theme="jquery" /></td>
 				</tr>
 			</table>
-			<div align="right">
+			<!-- <div align="right">
 				<a class="link"
 					href="${pageContext.request.contextPath}/access!recover">Recuperar
 					contraseña</a>
 
-			</div>
+			</div> -->
 
 		</div>
 

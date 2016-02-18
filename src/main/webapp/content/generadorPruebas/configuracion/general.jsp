@@ -30,31 +30,39 @@
 			<table class="seccion">
 				<tr>
 					<td class="label obligatorio"><s:text name="labelURL" /></td>
-					<td><s:textfield name="cbd.urlBaseDatos" maxlength="500"
+					<td><s:textfield name="cbd.urlBaseDatos" maxlength="500" id="url"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
 						<s:fielderror fieldName ="cbd.urlBaseDatos" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelDriver" /></td>
-					<td><s:textfield name="cbd.driver" maxlength="50"
+					<td><s:textfield name="cbd.driver" maxlength="50" id="driver"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
 						<s:fielderror fieldName ="cbd.driver" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelUsuario" /></td>
-					<td><s:textfield name="cbd.usuario" maxlength="50"
+					<td><s:textfield name="cbd.usuario" maxlength="50" id="usuario"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
 						<s:fielderror fieldName ="cbd.usuario" cssClass="error"
 							theme="jquery" /></td>
 				</tr>
 				<tr>
 					<td class="label"><s:text name="labelContrasenia" /></td>
-					<td><s:password name="cbd.contrasenia" maxlength="50"
+					<td><s:password name="cbd.contrasenia" maxlength="50" url="contrasenia"
 							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
 						<s:fielderror fieldName ="cbd.contrasenia" cssClass="error"
 							theme="jquery" /></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<input class="boton" type="button"
+							onclick="probarConexion();"
+							value="Probar conexión" />
+					</td>
 				</tr>
 			</table>
 		</div>

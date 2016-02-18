@@ -508,7 +508,7 @@ public class CuBs {
 
 	}
 
-	public static List<String> verificarReferencias(CasoUso model) {
+	public static List<String> verificarReferencias(CasoUso model, Modulo modulo) {
 
 		List<ReferenciaParametro> referenciasParametro;
 		List<Extension> referenciasExtension;
@@ -531,8 +531,9 @@ public class CuBs {
 			String linea = "";
 			postPrecondicion = referencia.getPostPrecondicion();
 			paso = referencia.getPaso();
-
-			if (postPrecondicion != null) {
+			
+			if (postPrecondicion != null && (modulo == null || postPrecondicion.getCasoUso().getModulo().getId() != modulo.getId())) {
+				
 				idSelf = postPrecondicion.getCasoUso().getId();
 				casoUso = postPrecondicion.getCasoUso().getClave()
 						+ postPrecondicion.getCasoUso().getNumero() + " "
@@ -546,7 +547,8 @@ public class CuBs {
 							+ postPrecondicion.getCasoUso().getNombre();
 				}
 
-			} else if (paso != null) {
+			} else if (paso != null && (modulo == null || paso.getTrayectoria().getCasoUso().getModulo().getId() != modulo.getId())) {
+				
 				idSelf = paso.getTrayectoria().getCasoUso().getId();
 				casoUso = paso.getTrayectoria().getCasoUso().getClave()
 						+ paso.getTrayectoria().getCasoUso().getNumero() + " "
@@ -563,18 +565,20 @@ public class CuBs {
 			}
 		}
 		for (Extension referenciaExtension : referenciasExtension) {
-			String linea = "";
-			idSelf = referenciaExtension.getCasoUsoOrigen().getId();
-			casoUso = referenciaExtension.getCasoUsoOrigen().getClave()
-					+ referenciaExtension.getCasoUsoOrigen().getNumero() + " "
-					+ referenciaExtension.getCasoUsoOrigen().getNombre();
-			linea = "Puntos de extensión del caso de uso " + casoUso;
-			if (linea != "" && idSelf != model.getId()) {
-				setReferenciasVista.add(linea);
+			if(modulo == null || referenciaExtension.getCasoUsoOrigen().getModulo().getId() != modulo.getId()) {
+				String linea = "";
+				idSelf = referenciaExtension.getCasoUsoOrigen().getId();
+				casoUso = referenciaExtension.getCasoUsoOrigen().getClave()
+						+ referenciaExtension.getCasoUsoOrigen().getNumero() + " "
+						+ referenciaExtension.getCasoUsoOrigen().getNombre();
+				linea = "Puntos de extensión del caso de uso " + casoUso;
+				if (linea != "" && idSelf != model.getId()) {
+					setReferenciasVista.add(linea);
+				}
 			}
 		}
 		for (Trayectoria tray : model.getTrayectorias()) {
-			for (String string : TrayectoriaBs.verificarReferencias(tray)) {
+			for (String string : TrayectoriaBs.verificarReferencias(tray, modulo)) {
 				if (!string.contains(casoUsoSelf)) {
 					setReferenciasVista.add(string);
 				}
@@ -1002,6 +1006,16 @@ public class CuBs {
 	}
 
 	private static boolean esPrimario(CasoUso casoUso) {
+		if(casoUso.getExtendidoDe() == null || casoUso.getExtendidoDe().isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean esPrimario(Integer id) {
+		//int id = Integer.parseInt(idCadena);
+		CasoUso casoUso = consultarCasoUso(id);
+		
 		if(casoUso.getExtendidoDe() == null || casoUso.getExtendidoDe().isEmpty()) {
 			return true;
 		}

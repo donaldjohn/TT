@@ -10,6 +10,7 @@ import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AnalisisEnum.CU_Pantallas;
 import mx.prisma.bs.ReferenciaEnum;
 import mx.prisma.editor.bs.ElementoBs.Estado;
+import mx.prisma.editor.dao.AccionDAO;
 import mx.prisma.editor.dao.PantallaDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.dao.TipoAccionDAO;
@@ -199,9 +200,10 @@ public class PantallaBs {
 
 	}
 
-	public static List<String> verificarReferencias(Pantalla model) {
+	public static List<String> verificarReferencias(Pantalla model, Modulo modulo) {
 
 		List<ReferenciaParametro> referenciasParametro = new ArrayList<ReferenciaParametro>();
+		List<Accion> referenciasAccion = new ArrayList<Accion>();
 
 		List<String> listReferenciasVista = new ArrayList<String>();
 		Set<String> setReferenciasVista = new HashSet<String>(0);
@@ -214,6 +216,7 @@ public class PantallaBs {
 
 		referenciasParametro = new ReferenciaParametroDAO()
 				.consultarReferenciasParametro(model);
+		referenciasAccion = new AccionDAO().consultarReferencias(model);
 
 		for (ReferenciaParametro referencia : referenciasParametro) {
 			String linea = "";
@@ -221,7 +224,7 @@ public class PantallaBs {
 			paso = referencia.getPaso();
 			accion = referencia.getAccionDestino();
 
-			if (postPrecondicion != null) {
+			if (postPrecondicion != null && (modulo == null || postPrecondicion.getCasoUso().getModulo().getId() != modulo.getId())) {
 				casoUso = postPrecondicion.getCasoUso().getClave()
 						+ postPrecondicion.getCasoUso().getNumero() + " "
 						+ postPrecondicion.getCasoUso().getNombre();
@@ -234,7 +237,7 @@ public class PantallaBs {
 							+ postPrecondicion.getCasoUso().getNombre();
 				}
 
-			} else if (paso != null) {
+			} else if (paso != null && (modulo == null || paso.getTrayectoria().getCasoUso().getModulo().getId() != modulo.getId())) {
 				casoUso = paso.getTrayectoria().getCasoUso().getClave()
 						+ paso.getTrayectoria().getCasoUso().getNumero() + " "
 						+ paso.getTrayectoria().getCasoUso().getNombre();
@@ -244,7 +247,8 @@ public class PantallaBs {
 						+ ((paso.getTrayectoria().isAlternativa()) ? "alternativa "
 								+ paso.getTrayectoria().getClave()
 								: "principal") + " del caso de uso " + casoUso;
-			} else if (accion != null) {
+			} else if (accion != null && (modulo == null || accion.getPantalla().getModulo().getId() != modulo.getId())) {
+				System.out.println("accion.getPantalla().getModulo().getId() "+ accion.getPantalla().getModulo().getId());
 				if (accion.getPantalla() != model) {
 					pantalla = accion.getPantalla().getClave()
 							+ accion.getPantalla().getNumero() + " "
@@ -258,9 +262,22 @@ public class PantallaBs {
 				setReferenciasVista.add(linea);
 			}
 		}
+		for(Accion accionOP : referenciasAccion) {
+			if(modulo == null || accionOP.getPantalla().getModulo().getId() != modulo.getId()) {
+				String linea = "";
+				pantalla = accionOP.getPantalla().getClave()
+						+ accionOP.getPantalla().getNumero() + " "
+						+ accionOP.getPantalla().getNombre();
+				linea = "Acción " + accionOP.getNombre() + " de la pantalla "
+						+ pantalla; 
+				if (linea != "") {
+					setReferenciasVista.add(linea);
+				}
+			}
+		}
 
 		for (Accion acc : model.getAcciones()) {
-			setReferenciasVista.addAll(AccionBs.verificarReferencias(acc));
+			setReferenciasVista.addAll(AccionBs.verificarReferencias(acc, modulo));
 		}
 
 		listReferenciasVista.addAll(setReferenciasVista);

@@ -64,7 +64,7 @@
 	<br />
 	<br />
 	<div align="center">
-		<button class="boton" formmethod="post"
+		<button class="boton" 
 			onclick="location.href='${pageContext.request.contextPath}/mensajes/new'">
 			<s:text name="Registrar"></s:text>
 		</button>

@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import mx.prisma.dao.GenericDAO;
 import mx.prisma.editor.model.Accion;
+import mx.prisma.editor.model.Extension;
 import mx.prisma.editor.model.Pantalla;
 
 public class AccionDAO extends GenericDAO {
@@ -78,6 +79,28 @@ public class AccionDAO extends GenericDAO {
 			throw he;
 		}
 		
+	}
+
+	public List<Accion> consultarReferencias(Pantalla pantalla) {
+		List<Accion> results = null;
+		Query query = null;
+		String queryCadena = null;
+		queryCadena = "FROM Accion WHERE pantallaDestino.id = :idPantalla";
+
+		try {
+			session.beginTransaction();
+			query = session.createQuery(queryCadena);
+			query.setParameter("idPantalla", pantalla.getId());
+			results = query.list();
+			session.getTransaction().commit();
+
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			session.getTransaction().rollback();
+			throw he;
+		}
+
+		return results;
 	}
 
 }

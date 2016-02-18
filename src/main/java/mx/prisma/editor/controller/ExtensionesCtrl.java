@@ -374,7 +374,7 @@ public class ExtensionesCtrl extends ActionSupportPRISMA implements
 		if (catalogoCasoUso.isEmpty()) {
 			throw new PRISMAException(
 					"No hay casos de uso para seleccionar como punto de extensión.",
-					"MSG22");
+					"MSG22", new String[] { "Casos de uso para extender."});
 		}
 	}
 

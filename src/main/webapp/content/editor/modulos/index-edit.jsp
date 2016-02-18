@@ -29,10 +29,7 @@
 			<table class="seccion">
 				<tr>
 					<td class="label obligatorio"><s:text name="labelClave" /></td>
-					<td><s:textfield name="model.clave" maxlength="10"
-							cssErrorClass="input-error" cssClass="inputFormulario ui-widget" />
-						<s:fielderror fieldName ="model.clave" cssClass="error"
-							theme="jquery" /></td>
+					<td class="labelDerecho"><s:property value="model.clave"/></td>
 				</tr>
 				<tr>
 					<td class="label obligatorio"><s:text name="labelNombre" /></td>

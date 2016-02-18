@@ -1,5 +1,9 @@
 package mx.prisma.generadorPruebas.controller;
 
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Map;
 
@@ -39,9 +43,12 @@ import com.opensymphony.xwork2.ActionContext;
 			@Result(name = "pantallaConfiguracionGeneral", type = "dispatcher", location = "configuracion/general.jsp"),
 			@Result(name = "ultimoPaso", type = "redirectAction", params = {
 					"actionName", "configuracion-caso-uso!prepararConfiguracion"}),
+			@Result(name = "conexion", type = "json", params = { "root",
+					"resultadoConexion" }),
 			@Result(name = "siguiente", type = "redirectAction", params = {
 					"actionName", "configuracion-casos-uso-previos!prepararConfiguracion"})})
 public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
+	private static final long serialVersionUID = 1L;
 	private ConfiguracionBaseDatos cbd;
 	private ConfiguracionHttp chttp;
 	private Colaborador colaborador;
@@ -49,6 +56,11 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 	private Modulo modulo;
 	private Integer idCU;
 	private CasoUso casoUso;
+	private String resultadoConexion;
+	private String url;
+	private String driver;
+	private String usuario;
+	private String contrasenia;
 	public String prepararConfiguracion() throws Exception {
 		Map<String, Object> session = null;
 		
@@ -238,6 +250,33 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 			return false;
 		}
 	}
+	
+	public String probarConexion() {
+		System.out.println("datos para conexion: " + driver + ", " + url + ", " + usuario + ", " + contrasenia);
+		resultadoConexion = "Hubo un error en la conexión\n";
+		try {
+			Class.forName(driver);
+		} catch (ClassNotFoundException cne) {
+			System.out.println("No se encontró el driver: ");
+			resultadoConexion = resultadoConexion.concat(cne.getMessage());
+			cne.printStackTrace();
+			return "conexion";
+		}
+		System.out.println("1");
+		try {
+			Connection conn = DriverManager.getConnection(url, usuario, contrasenia);
+			
+			if(conn != null) {
+				resultadoConexion = "Conexión exitosa";
+			}
+			conn.close();
+		} catch (SQLException e) {
+			System.out.println("Se generó un error en la conexión: ");
+			e.printStackTrace();
+			resultadoConexion = resultadoConexion.concat(e.getMessage());
+		}
+		return "conexion";
+	}
 
 	public Colaborador getColaborador() {
 		return colaborador;
@@ -305,6 +344,46 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 
 	public void setChttp(ConfiguracionHttp chttp) {
 		this.chttp = chttp;
+	}
+
+	public String getResultadoConexion() {
+		return resultadoConexion;
+	}
+
+	public void setResultadoConexion(String resultadoConexion) {
+		this.resultadoConexion = resultadoConexion;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getDriver() {
+		return driver;
+	}
+
+	public void setDriver(String driver) {
+		this.driver = driver;
+	}
+
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+	public String getContrasenia() {
+		return contrasenia;
+	}
+
+	public void setContrasenia(String contrasenia) {
+		this.contrasenia = contrasenia;
 	}
 	
 	

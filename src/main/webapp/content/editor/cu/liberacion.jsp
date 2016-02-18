@@ -267,9 +267,7 @@
 										${extension.region}</span> <br /> <span class="labelIzq consulta"><s:text
 											name="labelCasoUsoExtiende" /></span> <span class="ui-widget">
 										${blanks} 
-											${extension.casoUsoDestino.clave}
-											${extension.casoUsoDestino.numero} ${blanks}
-											${extension.casoUsoDestino.nombre}
+											<s:property value="%{#extension.casoUsoDestino.clave + #extension.casoUsoDestino.numero + ' ' + #extension.casoUsoDestino.nombre}"/>
 								</span></td>
 							</tr>
 						</table>

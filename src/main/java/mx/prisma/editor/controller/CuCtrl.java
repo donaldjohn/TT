@@ -643,7 +643,7 @@ public class CuCtrl extends ActionSupportPRISMA implements ModelDriven<CasoUso> 
 		try {
 			model.setId(idSel);
 			elementosReferencias = new ArrayList<String>();
-			elementosReferencias = CuBs.verificarReferencias(model);
+			elementosReferencias = CuBs.verificarReferencias(model, null);
 
 		} catch (Exception e) {
 			e.printStackTrace();

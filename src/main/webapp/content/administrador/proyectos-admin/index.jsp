@@ -57,7 +57,7 @@
 	<br />
 	<br />
 	<div align="center">
-		<button class="boton" formmethod="post"
+		<button class="boton" 
 			onclick="location.href='${pageContext.request.contextPath}/proyectos-admin/new'">
 			<s:text name="Registrar"></s:text>
 		</button>

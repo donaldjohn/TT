@@ -8,13 +8,14 @@ import java.util.Set;
 import mx.prisma.editor.dao.PasoDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.model.Extension;
+import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.ReferenciaParametro;
 import mx.prisma.util.PRISMAException;
 
 public class PasoBs {
-	public static List<String> verificarReferencias(Paso model) {
+	public static List<String> verificarReferencias(Paso model, Modulo modulo) {
 
 		List<ReferenciaParametro> referenciasParametro;
 
@@ -35,7 +36,7 @@ public class PasoBs {
 			paso = referencia.getPaso();
 			extension = referencia.getExtension();
 
-			if (postPrecondicion != null) {
+			if (postPrecondicion != null && (modulo == null || postPrecondicion.getCasoUso().getModulo().getId() != modulo.getId())) {
 				casoUso = postPrecondicion.getCasoUso().getClave()
 						+ postPrecondicion.getCasoUso().getNumero() + " "
 						+ postPrecondicion.getCasoUso().getNombre();
@@ -48,7 +49,7 @@ public class PasoBs {
 							+ postPrecondicion.getCasoUso().getNombre();
 				}
 
-			} else if (paso != null) {
+			} else if (paso != null && (modulo == null || paso.getTrayectoria().getCasoUso().getModulo().getId() != modulo.getId())) {
 				idSelf = paso.getId();
 				casoUso = paso.getTrayectoria().getCasoUso().getClave()
 						+ paso.getTrayectoria().getCasoUso().getNumero() + " "
@@ -59,7 +60,7 @@ public class PasoBs {
 						+ ((paso.getTrayectoria().isAlternativa()) ? "alternativa "
 								+ paso.getTrayectoria().getClave()
 								: "principal") + " del caso de uso " + casoUso;
-			} else if (extension != null) {
+			} else if (extension != null && (modulo == null || extension.getCasoUsoOrigen().getModulo().getId() != modulo.getId())) {
 				casoUso = extension.getCasoUsoOrigen().getClave()
 						+ extension.getCasoUsoOrigen().getNumero() + " "
 						+ extension.getCasoUsoOrigen().getNombre();

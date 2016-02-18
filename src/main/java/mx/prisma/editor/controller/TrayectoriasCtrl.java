@@ -474,10 +474,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 		listElementos = CuBs.consultarElementos(proyecto);
 
 		// Módulo auxiliar para la serialización
-		Modulo moduloAux = new Modulo();
-		moduloAux.setId(modulo.getId());
-		moduloAux.setNombre(modulo.getNombre());
-		moduloAux.setClave(modulo.getClave());
+		Modulo moduloAux = null;
 
 		if (listElementos != null && !listElementos.isEmpty()) {
 			// Se clasifican los conjuntos
@@ -490,8 +487,14 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 					auxActor.setNombre(el.getNombre());
 					listActores.add(auxActor);
 					break;
-				case CASOUSO:
+				case CASOUSO:					
 					CasoUso auxCasoUso = new CasoUso();
+					
+					moduloAux = new Modulo();
+					moduloAux.setId(auxCasoUso.getModulo().getId());
+					moduloAux.setNombre(auxCasoUso.getModulo().getNombre());
+					moduloAux.setClave(auxCasoUso.getModulo().getClave());
+					
 					auxCasoUso.setClave(el.getClave());
 					auxCasoUso.setNumero(el.getNumero());
 					auxCasoUso.setNombre(el.getNombre());
@@ -547,6 +550,11 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 					break;
 				case PANTALLA:
 					Pantalla auxPantalla = new Pantalla();
+					moduloAux = new Modulo();
+					moduloAux.setId(auxPantalla.getModulo().getId());
+					moduloAux.setNombre(auxPantalla.getModulo().getNombre());
+					moduloAux.setClave(auxPantalla.getModulo().getClave());
+					
 					auxPantalla.setClave(el.getClave());
 					auxPantalla.setNumero(el.getNumero());
 					auxPantalla.setNombre(el.getNombre());
@@ -668,7 +676,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 	public String verificarElementosReferencias() {
 		try {
 			elementosReferencias = new ArrayList<String>();
-			elementosReferencias = TrayectoriaBs.verificarReferencias(model);
+			elementosReferencias = TrayectoriaBs.verificarReferencias(model, null);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -680,7 +688,7 @@ public class TrayectoriasCtrl extends ActionSupportPRISMA implements
 		try {
 			elementosReferencias = new ArrayList<String>();
 			elementosReferencias = PasoBs.verificarReferencias(PasoBs
-					.consultarPaso(idSelPaso));
+					.consultarPaso(idSelPaso), null);
 
 		} catch (Exception e) {
 			e.printStackTrace();

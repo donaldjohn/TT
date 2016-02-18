@@ -1,5 +1,6 @@
 package mx.prisma.editor.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 import mx.prisma.admin.model.Colaborador;
 import mx.prisma.admin.model.Proyecto;
 import mx.prisma.bs.AccessBs;
+import mx.prisma.editor.bs.ActorBs;
 import mx.prisma.editor.bs.ModuloBs;
 import mx.prisma.editor.model.Modulo;
 import mx.prisma.util.ActionSupportPRISMA;
@@ -32,6 +34,8 @@ import com.opensymphony.xwork2.ModelDriven;
 				"actionName", "proyectos" }),
 		@Result(name = "cu", type = "redirectAction", params = { "actionName",
 				"cu" }),
+		@Result(name = "referencias", type = "json", params = { "root",
+				"elementosReferencias" }),
 		@Result(name = "pantallas", type = "redirectAction", params = { "actionName",
 				"pantallas" })
 
@@ -48,6 +52,7 @@ public class ModulosCtrl extends ActionSupportPRISMA implements
 	private Colaborador colaborador;
 	private List<Modulo> listModulos;
 	private Integer idSel;
+	private List<String> elementosReferencias;
 
 	public String index() throws Exception {
 		String resultado = null;
@@ -287,6 +292,17 @@ public class ModulosCtrl extends ActionSupportPRISMA implements
 		}
 		return resultado;
 	}
+	
+	public String verificarElementosReferencias() {
+		try {
+			elementosReferencias = new ArrayList<String>();
+			elementosReferencias = ModuloBs.verificarReferencias(model);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "referencias";
+	}
 
 	public Modulo getModel() {
 		return (model == null) ? model = new Modulo() : model;
@@ -341,5 +357,15 @@ public class ModulosCtrl extends ActionSupportPRISMA implements
 	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
 	}
+
+	public List<String> getElementosReferencias() {
+		return elementosReferencias;
+	}
+
+	public void setElementosReferencias(List<String> elementosReferencias) {
+		this.elementosReferencias = elementosReferencias;
+	}
+	
+	
 
 }

@@ -83,7 +83,7 @@
 		
 		<s:fielderror fieldName="model.parametros" cssClass="error errorFormulario" theme="jquery" />
 		<div  class="formulario" style="display: none;" id = "seccionParametros">
-			<div class="tituloFormulario">Parámetros del mensaje</div>
+			<div class="tituloFormulario">Parámetros del Mensaje</div>
 			<div class="seccion">
 			<div class="instrucciones">Ingrese la descripción de los parámetros.</div>
 			<br/>

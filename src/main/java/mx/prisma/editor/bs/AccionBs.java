@@ -9,6 +9,7 @@ import mx.prisma.editor.dao.AccionDAO;
 import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.model.Accion;
 import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.ReferenciaParametro;
@@ -18,7 +19,7 @@ import mx.prisma.util.Validador;
 
 public class AccionBs {
 
-	public static List<String> verificarReferencias(Accion model) {
+	public static List<String> verificarReferencias(Accion model, Modulo modulo) {
 
 		List<ReferenciaParametro> referenciasParametro;
 
@@ -37,7 +38,7 @@ public class AccionBs {
 			postPrecondicion = referencia.getPostPrecondicion();
 			paso = referencia.getPaso();
 
-			if (postPrecondicion != null) {
+			if (postPrecondicion != null && (modulo == null || postPrecondicion.getCasoUso().getModulo().getId() != modulo.getId())) {
 				casoUso = postPrecondicion.getCasoUso().getClave()
 						+ postPrecondicion.getCasoUso().getNumero() + " "
 						+ postPrecondicion.getCasoUso().getNombre();
@@ -50,7 +51,7 @@ public class AccionBs {
 							+ postPrecondicion.getCasoUso().getNombre();
 				}
 
-			} else if (paso != null) {
+			} else if (paso != null && (modulo == null || paso.getTrayectoria().getCasoUso().getModulo().getId() != modulo.getId())) {
 				casoUso = paso.getTrayectoria().getCasoUso().getClave()
 						+ paso.getTrayectoria().getCasoUso().getNumero() + " "
 						+ paso.getTrayectoria().getCasoUso().getNombre();

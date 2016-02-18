@@ -114,7 +114,7 @@
 									<s:param name="idCU" value="%{#cu.id}"/>
 								</s:url>
 								<s:a href="%{urlConfiguracion}">
-									<img id="" class="button" title="Configurar prueba"
+									<img id="" class="button" title="Configurar Prueba"
 											src="${pageContext.request.contextPath}/resources/images/icons/configurar.png" />
 									${blanks}
 								</s:a>
@@ -123,7 +123,7 @@
 							<!-- Descargar pruebas -->			
 								<s:url var="urlDescargarPrueba" value="%{#pageContext.request.contextPath}/configuracion-caso-uso!generarPrueba?idCU=%{#cu.id}" method="post"/>
 								<s:a href="%{urlDescargarPrueba}" onclick="mostrarMensajeCargando();">
-								<img id="" class="button" title="Generar prueba"
+								<img id="" class="button" title="Generar Prueba"
 										src="${pageContext.request.contextPath}/resources/images/icons/pruebas.png" /></s:a>	
 								${blanks}
 							</s:if>
@@ -137,7 +137,7 @@
 	<br />
 	<br />
 	<div align="center">
-		<button class="boton" formmethod="post"
+		<button class="boton" 
 			onclick="location.href='${pageContext.request.contextPath}/cu/new'">
 			<s:text name="Registrar"></s:text>
 		</button>

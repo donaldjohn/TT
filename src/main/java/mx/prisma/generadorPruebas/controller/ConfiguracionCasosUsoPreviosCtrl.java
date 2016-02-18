@@ -67,8 +67,6 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 	private String jsonEntradas;
 	private String jsonAcciones;
 	private String jsonImagenesPantallasAcciones;
-	private Set<Entrada> entradas;
-	private Set<Accion> acciones;
 	
 	public String prepararConfiguracion() throws Exception {
 		String resultado;
@@ -326,9 +324,9 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 
 	private void obtenerJsonCamposEntradas(CasoUso previo) throws Exception{
 		
-		Set<Entrada> entradasAux = previo.getEntradas();
+		List<Entrada> entradasAux = new ArrayList<Entrada>(previo.getEntradas());
 
-		Set<Entrada> entradas = new HashSet<Entrada>(0);
+		List<Entrada> entradas = new ArrayList<Entrada>();
 		for(Entrada entrada : entradasAux) {
 			Entrada entradaAux = new Entrada();
 			Atributo atributo = new Atributo();
@@ -363,8 +361,7 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 			entradas.add(entradaAux);
 			
 		} 
-		this.entradas = entradas;
-		jsonEntradas = JsonUtil.mapSetToJSON(entradas);
+		jsonEntradas = JsonUtil.mapListToJSON(entradas);
 		
 
 		
@@ -491,22 +488,6 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 
 	public void setPrevio(CasoUso previo) {
 		this.previo = previo;
-	}
-
-	public Set<Entrada> getEntradas() {
-		return entradas;
-	}
-
-	public void setEntradas(Set<Entrada> entradas) {
-		this.entradas = entradas;
-	}
-
-	public Set<Accion> getAcciones() {
-		return acciones;
-	}
-
-	public void setAcciones(Set<Accion> acciones) {
-		this.acciones = acciones;
 	}
 
 	public String getJsonImagenesPantallasAcciones() {

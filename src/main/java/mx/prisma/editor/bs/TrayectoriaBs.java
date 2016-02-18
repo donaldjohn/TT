@@ -14,6 +14,7 @@ import mx.prisma.editor.dao.ReferenciaParametroDAO;
 import mx.prisma.editor.dao.TrayectoriaDAO;
 import mx.prisma.editor.dao.VerboDAO;
 import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.Modulo;
 import mx.prisma.editor.model.Paso;
 import mx.prisma.editor.model.PostPrecondicion;
 import mx.prisma.editor.model.ReferenciaParametro;
@@ -281,7 +282,7 @@ public class TrayectoriaBs {
 		}
 	}
 
-	public static List<String> verificarReferencias(Trayectoria model) {
+	public static List<String> verificarReferencias(Trayectoria model, Modulo modulo) {
 
 		List<ReferenciaParametro> referenciasParametro = new ArrayList<ReferenciaParametro>();
 
@@ -300,7 +301,7 @@ public class TrayectoriaBs {
 			postPrecondicion = referencia.getPostPrecondicion();
 			paso = referencia.getPaso();
 
-			if (postPrecondicion != null) {
+			if (postPrecondicion != null && (modulo == null || postPrecondicion.getCasoUso().getModulo().getId() != modulo.getId())) {
 				casoUso = postPrecondicion.getCasoUso().getClave()
 						+ postPrecondicion.getCasoUso().getNumero() + " "
 						+ postPrecondicion.getCasoUso().getNombre();
@@ -313,7 +314,7 @@ public class TrayectoriaBs {
 							+ postPrecondicion.getCasoUso().getNombre();
 				}
 
-			} else if (paso != null) {
+			} else if (paso != null && (modulo == null || paso.getTrayectoria().getCasoUso().getModulo().getId() != modulo.getId())) {
 				idSelf = paso.getTrayectoria().getId();
 				casoUso = paso.getTrayectoria().getCasoUso().getClave()
 						+ paso.getTrayectoria().getCasoUso().getNumero() + " "
@@ -332,7 +333,7 @@ public class TrayectoriaBs {
 		}
 
 		for (Paso pasoModel : model.getPasos()) {
-			setReferenciasVista.addAll(PasoBs.verificarReferencias(pasoModel));
+			setReferenciasVista.addAll(PasoBs.verificarReferencias(pasoModel, modulo));
 		}
 
 		listReferenciasVista.addAll(setReferenciasVista);

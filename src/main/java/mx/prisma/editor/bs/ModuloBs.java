@@ -1,10 +1,22 @@
 package mx.prisma.editor.bs;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import mx.prisma.admin.model.Proyecto;
+import mx.prisma.editor.dao.CasoUsoActorDAO;
 import mx.prisma.editor.dao.ModuloDAO;
+import mx.prisma.editor.dao.ReferenciaParametroDAO;
+import mx.prisma.editor.model.Actor;
+import mx.prisma.editor.model.CasoUso;
+import mx.prisma.editor.model.CasoUsoActor;
 import mx.prisma.editor.model.Modulo;
+import mx.prisma.editor.model.Pantalla;
+import mx.prisma.editor.model.Paso;
+import mx.prisma.editor.model.PostPrecondicion;
+import mx.prisma.editor.model.ReferenciaParametro;
 import mx.prisma.util.PRISMAException;
 import mx.prisma.util.PRISMAValidacionException;
 import mx.prisma.util.Validador;
@@ -136,6 +148,29 @@ public class ModuloBs {
 	public static void eliminarModulo(Modulo model) {
 		new ModuloDAO().eliminarModulo(model);
 		
+	}
+
+	public static List<String> verificarReferencias(Modulo model) {
+
+
+		List<String> listReferenciasVista = new ArrayList<String>();
+		Set<String> setReferenciasVista = new HashSet<String>(0);
+		
+		List<CasoUso> casosUso = CuBs.consultarCasosUsoModulo(model);
+		List<Pantalla> pantallas = PantallaBs.consultarPantallasModulo(model);
+		
+		for(CasoUso casoUso : casosUso) {
+			setReferenciasVista.addAll(CuBs.verificarReferencias(casoUso, model));
+		}
+		
+		for(Pantalla pantalla : pantallas) {
+			setReferenciasVista.addAll(PantallaBs.verificarReferencias(pantalla, model));
+		}
+		
+
+		listReferenciasVista.addAll(setReferenciasVista);
+
+		return listReferenciasVista;
 	}
 
 }

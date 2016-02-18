@@ -381,9 +381,9 @@ public class CuPruebasBs {
 	}
 
 
-	public static Set<ReferenciaParametro> obtenerReferenciasParametroMensajes(
+	public static List<ReferenciaParametro> obtenerReferenciasParametroMensajes(
 			Trayectoria trayectoria) {
-		Set<ReferenciaParametro> referencias = new HashSet<ReferenciaParametro>(0);
+		List<ReferenciaParametro> referencias = new ArrayList<ReferenciaParametro>();
 		for(Paso paso : trayectoria.getPasos()) {
 			if(AnalizadorPasosBs.isSistemaMuestraMensaje(paso)) {
 				ReferenciaParametro referencia = AnalizadorPasosBs.obtenerPrimerReferencia(paso, TipoReferencia.MENSAJE);
@@ -396,6 +396,5 @@ public class CuPruebasBs {
 		}
 		return referencias;
 	}
-
 		
 }

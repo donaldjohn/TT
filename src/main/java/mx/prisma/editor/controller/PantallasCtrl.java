@@ -432,7 +432,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 	public String verificarElementosReferencias() {
 		try {
 			elementosReferencias = new ArrayList<String>();
-			elementosReferencias = PantallaBs.verificarReferencias(model);
+			elementosReferencias = PantallaBs.verificarReferencias(model, null);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -444,7 +444,7 @@ public class PantallasCtrl extends ActionSupportPRISMA implements
 		try {
 			Accion accion = AccionBs.consultarAccion(idAccion);
 			elementosReferencias = new ArrayList<String>();
-			elementosReferencias = AccionBs.verificarReferencias(accion);
+			elementosReferencias = AccionBs.verificarReferencias(accion, null);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

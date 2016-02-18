@@ -12,6 +12,7 @@
 </head>
 
 <body>
+	<div class="modal" id="modal"><!-- Place at bottom of page --></div>
 	<h1>Gestionar Módulos</h1>
 	<s:actionmessage theme="jquery"/>
 	<s:actionerror theme="jquery"/>
@@ -45,7 +46,7 @@
 							<img id="" class="button" title="Modificar Módulo"
 									src="${pageContext.request.contextPath}/resources/images/icons/editar.png" />
 						</s:a>
-						<s:a onclick="return mostrarMensajeEliminacion(%{#modulo.id});">
+						<s:a onclick="return verificarEliminacionElemento(%{#modulo.id});">
 						<img id="" class="button" title="Eliminar Módulo"
 								src="${pageContext.request.contextPath}/resources/images/icons/eliminar.png" /></s:a>
 						${blanks}
@@ -59,7 +60,7 @@
 	<br />
 	<br />
 	<div align="center">
-		<button class="boton" formmethod="post"
+		<button class="boton" 
 			onclick="location.href='${pageContext.request.contextPath}/modulos/new'">
 			<s:text name="Registrar"></s:text>
 		</button>
@@ -82,10 +83,10 @@
 	</sj:dialog>
 	<!-- EMERGENTE ERROR REFERENCIAS -->
 	<sj:dialog id="mensajeReferenciasDialog" title="Confirmación" autoOpen="false"
-		minHeight="200" minWidth="700" modal="true" draggable="true">
+		minHeight="150" minWidth="700" modal="true" draggable="true">
 		<s:form autocomplete="off" id="frmConfirmarEliminacion" name="frmConfirmarEliminacionName" theme="simple">
 				<div class="seccion">
-				<s:text name="MSG14"/>
+				<s:text name="MSG40"/>
 				<div id="elementosReferencias"></div>
 				</div>
 			<br />

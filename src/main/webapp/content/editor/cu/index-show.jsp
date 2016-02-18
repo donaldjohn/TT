@@ -89,6 +89,22 @@
 						<td class="ui-widget"><s:text name="labelSinInformacion" /></td>
 					</s:else>
 				</tr>
+				<tr>
+					<td class="label consulta"><s:text name="labelTipo"></s:text>
+					</td>
+					<td>
+						<s:if test="model.extendidoDe.size > 0">
+							<s:text name="labelSecundario"/>
+							<ul>
+								<s:iterator value="model.extendidoDe" var="extension">
+									<li><s:property value="%{#extension.casoUsoOrigen.clave + #extension.casoUsoOrigen.numero + ' ' + #extension.casoUsoOrigen.nombre}"/></li>
+								</s:iterator>
+							</ul>
+						</s:if> <s:else>
+							<s:text name="labelPrimario" />
+						</s:else>
+					</td>
+				</tr>
 			</table>
 		</div>
 	</div>
@@ -196,9 +212,7 @@
 									${extension.region}</span> <br /> <span class="labelIzq consulta"><s:text
 										name="labelCasoUsoExtiende" /></span> <span class="ui-widget">
 									${blanks} 
-										${extension.casoUsoDestino.clave}
-										${extension.casoUsoDestino.numero} ${blanks}
-										${extension.casoUsoDestino.nombre}
+										<s:property value="%{#extension.casoUsoDestino.clave + #extension.casoUsoDestino.numero + ' ' + #extension.casoUsoDestino.nombre}"/>
 							</span></td>
 						</tr>
 					</table>

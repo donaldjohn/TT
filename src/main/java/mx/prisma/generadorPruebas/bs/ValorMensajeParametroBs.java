@@ -10,10 +10,10 @@ import mx.prisma.generadorPruebas.model.ValorMensajeParametro;
 
 public class ValorMensajeParametroBs {
 
-	public static Set<ValorMensajeParametro> consultarValores(ReferenciaParametro referencia) {
+	public static List<ValorMensajeParametro> consultarValores(ReferenciaParametro referencia) {
 		List<ValorMensajeParametro> vmp = new ValorMensajeParametroDAO().findByReferenciaParametro(referencia);
 		if(vmp != null) {
-			return new HashSet<ValorMensajeParametro>(vmp);
+			return vmp;
 		}
 		
 		return null;

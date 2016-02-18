@@ -1,6 +1,5 @@
 $(document).ready(function() {
 	contextPath = $("#rutaContexto").val();
-	console.log("$(#pruebaGenerada).value: " + document.getElementById("pruebaGenerada").value);
 	
 	if(document.getElementById("pruebaGenerada").value == "true") {
 		window.location.href = contextPath + "/configuracion-caso-uso!descargarPrueba";
@@ -79,6 +78,7 @@ function mostrarMensajeEliminacion(json, id) {
 }
 
 function verificarTerminarCasoUso(idElemento) {
+	mostrarMensajeCargando();
 	rutaTerminar = contextPath + '/cu!verificarTermino';
 	$.ajax({
 		dataType : 'json',
@@ -88,11 +88,12 @@ function verificarTerminarCasoUso(idElemento) {
 			idSel : idElemento
 		},
 		success : function(data) {
-			console.log(data);
+			ocultarMensajeCargando();
 			mostrarMensajeRestriccion(data, idElemento);
 		},
 		error : function(err) {
-			alert("AJAX error in request: " + JSON.stringify(err, null, 2));
+			ocultarMensajeCargando();
+			alert("Ha ocurrido un error");
 		}
 	});
 
@@ -127,4 +128,8 @@ function mostrarMensajeRestriccion(json, id) {
 
 function mostrarMensajeCargando() {
 	$("#modal").css("display", "block");
+}
+
+function ocultarMensajeCargando() {
+	$("#modal").css("display", "");
 }
