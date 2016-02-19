@@ -49,10 +49,8 @@ function mostrarPrevisualizacion(inputFile, nombre) {
 function verificarRegistroModificacion() {
 	var indexFilaAccion = document.getElementById("filaAccion").value;
 	if(indexFilaAccion == -1) {
-		console.log("registro");
 		registrarAccion();
 	} else {
-		console.log("modificacion");
 		modificarAccion();
 	}
 }
@@ -91,7 +89,6 @@ function modificarAccion() {
 
 	if (esValidaAccion("tablaAccion", nombre, descripcion, imagen, selectTipoAccion, selectPantallaDestino)) {
 		var indexFilaAccion = document.getElementById("filaAccion").value;
-		console.log("indexFilaAccion: " + indexFilaAccion); 
 		
 		var rowSelData = $("#tablaAccion").DataTable().row(indexFilaAccion).data();
 		rowNewData = construirFila(srcAccion, nombre, descripcion, tipoAccion, idPantallaDestino);

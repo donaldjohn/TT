@@ -248,7 +248,6 @@ public class PantallaBs {
 								+ paso.getTrayectoria().getClave()
 								: "principal") + " del caso de uso " + casoUso;
 			} else if (accion != null && (modulo == null || accion.getPantalla().getModulo().getId() != modulo.getId())) {
-				System.out.println("accion.getPantalla().getModulo().getId() "+ accion.getPantalla().getModulo().getId());
 				if (accion.getPantalla() != model) {
 					pantalla = accion.getPantalla().getClave()
 							+ accion.getPantalla().getNumero() + " "

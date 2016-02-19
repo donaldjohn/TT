@@ -138,16 +138,15 @@ public class ColaboradorBs {
 
 	public static void enviarCorreo(Colaborador model,
 			String contrasenaAnterior, String correoAnterior) throws AddressException, MessagingException {
-		System.out.println(correoAnterior + ", " + model.getCorreoElectronico());
 		if(contrasenaAnterior == null || correoAnterior == null) {
-			//Correo.enviarCorreo(model, 0);
-			System.out.println("Se envia correo porque es registro");
+			Correo.enviarCorreo(model, 0);
+			System.out.println("Se envió un correo al usuario que se registró.");
 		} else if(!contrasenaAnterior.equals(model.getContrasenia())) {
-			//Correo.enviarCorreo(model, 0);
-			System.out.println("Se envia correo porque cambio la contrasena");
+			Correo.enviarCorreo(model, 0);
+			System.out.println("Se envió un correo porque cambió la contraseña.");
 		} else if(!correoAnterior.equals(model.getCorreoElectronico())) {
-			//Correo.enviarCorreo(model, 0);
-			System.out.println("Se envia correo porque cambio el correo electronico");
+			Correo.enviarCorreo(model, 0);
+			System.out.println("Se envió un correo porque cambio el correo electrónico.");
 		}
 	}
 

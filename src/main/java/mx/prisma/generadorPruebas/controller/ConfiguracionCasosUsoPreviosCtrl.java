@@ -279,7 +279,6 @@ public class ConfiguracionCasosUsoPreviosCtrl extends ActionSupportPRISMA {
 							valores.add(valorBD);
 						}
 						
-						System.out.println("id bd: " + valorBD.getId());
 						if(valorBD.getId().equals(veVista.getId())){
 							veValido = valorBD;
 						}

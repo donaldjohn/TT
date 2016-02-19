@@ -185,7 +185,6 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 			prepararVista();
 
 			resultado = EDIT;
-			System.out.println("jsonEnv: " + jsonParametros);
 		} catch (PRISMAValidacionException pve) {
 			ErrorManager.agregaMensajeError(this, pve);
 			resultado = edit();
@@ -202,7 +201,6 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 	public String update() {
 		String resultado = null;
 		try {
-			System.out.println("jsonRec: " + jsonParametros);
 			colaborador = SessionManager.consultarColaboradorActivo();
 			proyecto = SessionManager.consultarProyectoActivo();
 			if (proyecto == null) {
@@ -352,7 +350,6 @@ public class MensajesCtrl extends ActionSupportPRISMA implements
 
 	private void agregarParametros() throws Exception {
 		model.setParametrizado(true);
-		System.out.println("jsonParametros: " + jsonParametros);
 		if (jsonParametros != null && !jsonParametros.equals("")) {
 			Set<Parametro> parametros = JsonUtil.mapJSONToSet(jsonParametros,
 					Parametro.class);

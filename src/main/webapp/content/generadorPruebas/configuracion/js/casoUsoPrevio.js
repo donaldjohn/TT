@@ -95,7 +95,6 @@ function agregarCamposAccionesSeccion() {
 					
 					label = item.tipoAccion.nombre + " " + item.nombre;
 					
-					console.log("item.pantallaDestino: " + item.pantallaDestino);
 					if(item.pantallaDestino != null) {
 						clavePantallaDestino = item.pantallaDestino.clave;
 						numeroPantallaDestino = item.pantallaDestino.numero;

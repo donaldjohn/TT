@@ -4,7 +4,6 @@ $(document).ready(function() {
 } );
 
 function confirmarEliminacion(urlEliminar) {
-	console.log(urlEliminar);
 	$('#confirmarEliminacionDialog').dialog('close');
 	window.location.href = urlEliminar;
 }

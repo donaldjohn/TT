@@ -303,7 +303,6 @@ function solicitarModificacionAccion(registro) {
 	var row = $("#tablaAccion").DataTable().row($(registro).parents('tr'));
 	document.getElementById("filaAccion").value = row.index();
 	var rowData = row.data();
-	console.log("row: " + rowData);
 	
 	document.getElementById("accion.nombre").value = rowData[1];
 	if(rowData[2] != null && rowData[2] != "") {

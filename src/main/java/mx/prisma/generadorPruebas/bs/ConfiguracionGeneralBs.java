@@ -13,7 +13,6 @@ public class ConfiguracionGeneralBs {
 			validar(cbd, validarObligatorios);
 			validar(chttp, validarObligatorios);
 			
-			System.out.println("Desde modificar configuración general: " + cbd.getContrasenia());
 			new ConfiguracionDAO().modificarConfiguracionGeneral(cbd);	
 			new ConfiguracionDAO().modificarConfiguracionGeneral(chttp);
 	}

@@ -1059,7 +1059,6 @@ public class CuBs {
 		postprecondiciones.addAll(new PostPrecondicionDAO().consultarPostPrecondiciones(model, false));
 		
 		for(PostPrecondicion pp : postprecondiciones) {
-			System.out.println("pp: " + pp);
 			List<ReferenciaParametro> referencias = new ReferenciaParametroDAO().consultarReferenciasParametro(pp);
 			if(referencias != null) {
 				for(ReferenciaParametro referencia : referencias) {

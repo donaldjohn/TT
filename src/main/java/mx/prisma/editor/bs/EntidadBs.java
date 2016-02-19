@@ -206,8 +206,6 @@ public class EntidadBs {
 		Set<Atributo> atributos = entidad.getAtributos();
 		for (Atributo atributo : atributos) {
 			if (atributo.getTipoDato().getNombre().equals("Fecha")) {
-				System.out.println("tipoDato "
-						+ atributo.getTipoDato().getNombre());
 				return true;
 			}
 		}

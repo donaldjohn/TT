@@ -158,7 +158,6 @@ function construirFila(noPaso, realiza, redaccion, verbo, otroVerbo) {
 					"<img class='icon'  id='icon' src='" + window.contextPath + 
 					"/resources/images/icons/eliminar.png' title='Eliminar Paso'/></a>" +
 				"</center>" ];
-	console.log("row: " + row);
 	return row;
 }
   

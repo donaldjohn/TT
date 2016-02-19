@@ -50,7 +50,6 @@ function verificarEliminacionElemento(idElemento) {
 }
 
 function mostrarMensajeEliminacion(json, id) {
-	console.log("json: " + json + "/" + id);
 	var elementos = document.createElement("ul");
 	var elementosReferencias = document.getElementById("elementosReferencias");
 	var urlEliminar = contextPath + "/modulos/" +id+ "?_method=delete";

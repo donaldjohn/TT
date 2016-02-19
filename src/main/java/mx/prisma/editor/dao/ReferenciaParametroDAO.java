@@ -95,7 +95,6 @@ public class ReferenciaParametroDAO extends GenericDAO {
 			break;
 		case TRAYECTORIA:
 			Trayectoria trayectoria = (Trayectoria) objeto;
-			System.out.println("ID tray: " + trayectoria.getId());
 			queryCadena = "FROM ReferenciaParametro WHERE trayectoria.id = "+trayectoria.getId();
 			break;
 		default:
@@ -114,7 +113,6 @@ public class ReferenciaParametroDAO extends GenericDAO {
 			session.getTransaction().rollback();
 			throw he;
 		}
-		System.out.println("results size: " + results.size());
 		return results;
 	}
 

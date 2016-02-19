@@ -156,10 +156,8 @@ public class SessionManager {
 
 		String url = request.getHeader("Referer");
 		if(url == null) {
-			//System.out.println("url null");
 			url = request.getRequestURL().toString();
 		}
-		//System.out.println("push url: " + url);
 		URLStack.push(url);
 		SessionManager.set(URLStack, "URLStack");
 	}
@@ -178,7 +176,6 @@ public class SessionManager {
 			urlPrev = request.getContextPath();
 		}
 		SessionManager.set(URLStack, "URLStack");
-//		System.out.println("pop url: " + urlPrev);
 		return urlPrev;
 	}
 

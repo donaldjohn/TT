@@ -252,7 +252,6 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 	}
 	
 	public String probarConexion() {
-		System.out.println("datos para conexion: " + driver + ", " + url + ", " + usuario + ", " + contrasenia);
 		resultadoConexion = "Hubo un error en la conexión\n";
 		try {
 			Class.forName(driver);
@@ -262,7 +261,6 @@ public class ConfiguracionGeneralCtrl extends ActionSupportPRISMA {
 			cne.printStackTrace();
 			return "conexion";
 		}
-		System.out.println("1");
 		try {
 			Connection conn = DriverManager.getConnection(url, usuario, contrasenia);
 			

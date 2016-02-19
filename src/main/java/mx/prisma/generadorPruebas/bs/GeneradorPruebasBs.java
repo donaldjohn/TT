@@ -298,8 +298,6 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String terminarControladorIf() {
-		System.out.println("If-}");
-
 		return "</hashTree>\n";
 	}
 
@@ -440,7 +438,6 @@ public class GeneradorPruebasBs {
 
 	 */
 	public static String peticionJDBC(Paso paso) {
-		System.out.println("JDBC " + AnalizadorPasosBs.seguimiento(paso) );
 
 		String bloque = null;
 		String id = calcularIdentificador(prefijoPeticionJDBC, paso);
@@ -461,7 +458,6 @@ public class GeneradorPruebasBs {
 	}
 
 	public static String iniciarControladorIf(Paso paso, String operador) {
-		System.out.println("If-{ " + AnalizadorPasosBs.seguimiento(paso) );
 		String bloque = null;
 		String id = calcularIdentificador(prefijoControladorIf, paso);
 		String idPeticionJDBC = calcularIdentificador(prefijoPeticionJDBC, paso);
@@ -473,7 +469,6 @@ public class GeneradorPruebasBs {
 	}
 
 	public static String peticionHTTP(Paso paso, boolean hijos) {
-		System.out.println("HTTP " + AnalizadorPasosBs.seguimiento(paso) );
 
 		String bloque;
 		String id = null;
@@ -503,7 +498,6 @@ public class GeneradorPruebasBs {
 	}
 	
 	public static String peticionHTTP(Paso paso, Paso pasoRN, Entrada entrada, boolean hijos) {
-		System.out.println("HTTP "+AnalizadorPasosBs.seguimiento(paso) + " _ "+AnalizadorPasosBs.seguimiento(pasoRN));
 		String bloque;
 		String id = null;
 		ReferenciaParametro refParam;
@@ -532,7 +526,6 @@ public class GeneradorPruebasBs {
 	}
 		
 	public static String asercion(Paso paso) {
-		System.out.println("Aserción "+AnalizadorPasosBs.seguimiento(paso));
 		
 		String bloque;
 		String id;
@@ -598,7 +591,6 @@ public class GeneradorPruebasBs {
 	
 
 	public static String contenedorCSV(Paso paso, boolean terminar) throws Exception {
-		System.out.println("CSV " + AnalizadorPasosBs.seguimiento(paso));
 		String bloque = null;
 		String idCSV;
 		String idPeticionHTTP;
@@ -627,12 +619,6 @@ public class GeneradorPruebasBs {
 	
 	
 	public static String contenedorCSV(Paso paso, Paso rn, Entrada entradaInvalida, boolean terminar) throws Exception {
-		
-		if(entradaInvalida == null) {
-			System.out.println("CSV " + AnalizadorPasosBs.seguimiento(paso) + " _ " + AnalizadorPasosBs.seguimiento(rn) + ": Unicidad");
-		} else {
-			System.out.println("CSV " + AnalizadorPasosBs.seguimiento(paso) + " _ " + AnalizadorPasosBs.seguimiento(rn) + ": " + entradaInvalida.getNombreHTML());
-		}
 
 		String bloque = null;
 		String idCSV;
@@ -893,8 +879,6 @@ public class GeneradorPruebasBs {
 		archivo += GeneradorPruebasBs.estadisticas();
 		archivo += prepararPrueba(casoUso);
 
-
-		System.out.println("-- Terminan predecesores --");
 		for (Trayectoria trayectoria : casoUso.getTrayectorias()) {
 			if (!trayectoria.isAlternativa()) {
 				pasos.addAll(trayectoria.getPasos());

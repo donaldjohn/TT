@@ -219,7 +219,6 @@ function esValidoAtributo(idTabla, nombre, descripcion, tipoDato, otroTipoDato,
 				return false;
 			}
 			if (tipoDato == 'Otro') {
-				console.log('otro---');
 				if (vacioONula(otroTipoDato)) {
 					agregarMensaje("Agregue todos los campos obligatorios.");
 					return false;
@@ -364,7 +363,6 @@ function solicitarModificacionAtributo(registro) {
 	document.getElementById("filaAtributo").value = row.index();
 	
 	var cells = row.data();
-	console.log("cells: " + cells);
 	
 	document.getElementById("atributo.tipoDato").value = cells[3];
 	disablefromTipoDato();

@@ -205,7 +205,6 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 				break;
 			}
 			
-			System.out.println("ids: " + this.idEntidadUnicidad + ", " + this.idAtributoUnicidad);
 
 			// Se prepara el modelo para el registro
 			proyecto = SessionManager.consultarProyectoActivo();
@@ -214,7 +213,6 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 					.consultarEstadoElemento(Estado.EDICION));
 
 			// Se registra la regla de negocio
-			System.out.println("Proyecto activo: " + proyecto.getNombre());
 			ReglaNegocioBs.registrarReglaNegocio(model);
 			resultado = SUCCESS;
 
@@ -629,9 +627,7 @@ public class ReglasNegocioCtrl extends ActionSupportPRISMA implements
 
 	public String cargarOperadores() {
 		try {
-			System.out.println("Desde cargar op: " + this.idAtributo);
 			Atributo atributo = AtributoBs.consultarAtributo(this.idAtributo);
-			System.out.println("Desde cargar op 2: " + atributo.getNombre());
 			listOperadores = ReglaNegocioBs
 					.consultarOperadoresDisponibles(atributo.getTipoDato()
 							.getNombre());

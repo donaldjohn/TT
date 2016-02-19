@@ -11,7 +11,7 @@ $(document)
 					try {
 						token.cargarListasToken();
 					} catch (err) {
-						console.log("No se puede cargar el token");
+						console.log("No se puede cargar el token.");
 					}
 
 					// Fin de la creación de la tabla de parámetros
@@ -55,6 +55,7 @@ function prepararEnvio() {
 		//$('#mensajeComentarios').dialog('open');
 		return true;
 	} catch (err) {
+		alert("Ha ocurrido un error.");
 		console.log("Ocurrió un error: " + err);
 		return false;
 		
@@ -66,7 +67,6 @@ function verificarEsParametrizado() {
 	if(/PARAM·[a-zA-Z0-9]+(\s|\.\s|,\s|$|\.$)/m.test(redaccion)) {
 		verificarParametros();
 	} else {
-		console.log("no contiene parametros");
 		limpiarParametros();
 	}
 	
@@ -112,7 +112,7 @@ function tablaToJson(idTable) {
 			document.getElementById("jsonParametros").value = jsonParametros;
 		}
 	} catch (err) {
-		console.log("sin parámetros");
+		console.log("Sin parámetros.");
 	}	
 }
 
