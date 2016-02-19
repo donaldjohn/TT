@@ -592,6 +592,7 @@ public class GeneradorPruebasBs {
 			break;
 			
 		}
+		patron = org.apache.commons.lang.StringEscapeUtils.escapeHtml(patron);
 		return patron;
 	}
 	
@@ -668,7 +669,9 @@ public class GeneradorPruebasBs {
 			entrada = new EntradaDAO().findById(entrada.getId());
 			for (ValorEntrada valorEntrada : entrada.getValores()) {
 				if (valorEntrada.getValido()) {
-					valores.add(valorEntrada.getValor());
+					String valor = valorEntrada.getValor();
+					String valorEscCSV = org.apache.commons.lang.StringEscapeUtils.escapeCsv(valor);
+					valores.add(valorEscCSV);
 				}
 			}
 		}
@@ -690,11 +693,15 @@ public class GeneradorPruebasBs {
 			for (ValorEntrada valorEntrada : entrada.getValores()) {
 				if (buscarInvalida) {
 					if (!valorEntrada.getValido() && valorEntrada.getReglaNegocio().getId() == reglaNegocio.getId()) {
-						valores.add(valorEntrada.getValor());
+						String valor = valorEntrada.getValor();
+						String valorEscCSV = org.apache.commons.lang.StringEscapeUtils.escapeCsv(valor);
+						valores.add(valorEscCSV);
 					}
 				} else {
 					if (valorEntrada.getValido()) {
-						valores.add(valorEntrada.getValor());
+						String valor = valorEntrada.getValor();
+						String valorEscCSV = org.apache.commons.lang.StringEscapeUtils.escapeCsv(valor);
+						valores.add(valorEscCSV);
 					}
 				}
 			}
